@@ -3,29 +3,29 @@
   const COOKIE_DAYS = 30;
 
   const VIDEOS = {
-    start: "O5S27YawM7A",
-    deadEnd: "EgWjbPEmdkQ",
-    sludge: "YcH0wyTQOts",
-    direction: "9TcxLtdIZ_E",
-    sewerWater: "tzJQruzWStY",
-    disease: "zglR2L61w80",
-    getOutWater: "vnyvGqEH3tQ",
-    continue: "PdzHVIt_kec",
-    breakGate: "QqWqNT8EEZI",
-    pickLock: "MNdrBO2FoIs",
-    gotKey: "nu9v_DkgHjY",
-    useKey: "L8BinuAL0DU",
-    fog: "6OY9GQBNwuQ",
-    fireDoor: "DiQS2Itt6ZY",
-    knock: "6EHeRETttjA",
-    uponTruck: "jLGDNVfgvpE",
-    insideTruck: "Vq0GJULfI3g",
-    walkAway: "kI0wB7lxp5I",
-    shadowDance: "ZeJMYw19_9A",
-    explorePowers: "aNJmIrKdSEI",
-    consumeLight: "dEaB1FN9HTE",
-    shadowStitch: "4OLvCW0jlp4",
-    destroyTown: "SVmUanmBCGg"
+    start: "/assets/video/start.mp4",
+    deadEnd: "/assets/video/dead-end.mp4",
+    sludge: "/assets/video/sludge.mp4",
+    direction: "/assets/video/direction.mp4",
+    sewerWater: "/assets/video/sewer-water.mp4",
+    disease: "/assets/video/trench-foot.mp4",
+    getOutWater: "/assets/video/out-of-water.mp4",
+    continue: "/assets/video/gate.mp4",
+    breakGate: "/assets/video/break-gate.mp4",
+    pickLock: "/assets/video/pick-lock.mp4",
+    gotKey: "/assets/video/got-key.mp4",
+    useKey: "/assets/video/use-key.mp4",
+    fog: "/assets/video/fog.mp4",
+    fireDoor: "/assets/video/fire-door.mp4",
+    knock: "/assets/video/knock.mp4",
+    uponTruck: "/assets/video/truck.mp4",
+    insideTruck: "/assets/video/inside-truck.mp4",
+    walkAway: "/assets/video/walk-away.mp4",
+    shadowDance: "/assets/video/shadow-dance.mp4",
+    explorePowers: "/assets/video/explore-powers.mp4",
+    consumeLight: "/assets/video/consume-light.mp4",
+    shadowStitch: "/assets/video/shadow-stitch.mp4",
+    destroyTown: "/assets/video/destroy-town.mp4"
   };
 
   const UI = {
@@ -398,6 +398,35 @@
       "</span>";
   }
 
+  var activeClip = null;
+  var clipUnlock = null;
+
+  function stopClipUnlock() {
+    if (!clipUnlock) return;
+    document.removeEventListener("pointerdown", clipUnlock, true);
+    clipUnlock = null;
+  }
+
+  function playClip(video) {
+    activeClip = video;
+    stopClipUnlock();
+    video.muted = false;
+    var started = video.play();
+    if (!started || !started.catch) return;
+    started.catch(function () {
+      if (activeClip !== video) return;
+      clipUnlock = function (event) {
+        var el = event.target;
+        if (el.closest && el.closest(".choice, #spark-back, .spark-tab")) return;
+        stopClipUnlock();
+        if (activeClip !== video) return;
+        video.muted = false;
+        video.play();
+      };
+      document.addEventListener("pointerdown", clipUnlock, true);
+    });
+  }
+
   function show(sceneId) {
     const scene = SCENES[sceneId];
     if (!scene) return;
@@ -416,19 +445,19 @@
     );
 
     videoBox.replaceChildren();
-    const videoId = scene.video ? VIDEOS[scene.video] : null;
+    const videoSrc = scene.video ? VIDEOS[scene.video] : null;
 
-    if (videoId) {
-      const iframe = document.createElement("iframe");
-      iframe.src =
-        "https://www.youtube-nocookie.com/embed/" +
-        videoId +
-        "?autoplay=0&controls=0&playsinline=1&rel=0&iv_load_policy=3";
-      iframe.title = "The Final Spark story video";
-      iframe.setAttribute("allow", "encrypted-media; picture-in-picture");
-      iframe.setAttribute("allowfullscreen", "");
-      iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
-      videoBox.appendChild(iframe);
+    if (videoSrc) {
+      const video = document.createElement("video");
+      video.src = videoSrc;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.preload = "auto";
+      video.title = "The Final Spark story video";
+      videoBox.appendChild(video);
+      playClip(video);
     }
 
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
