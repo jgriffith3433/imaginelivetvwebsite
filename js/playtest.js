@@ -144,11 +144,17 @@ async function smoke(options, t) {
   t.note(`${buttons.length} choices: ${buttons.map(enText).join(" / ")}`);
   if (ok && buttons.length) {
     // One step in and back out again.
+    const startStory = enText($("spark-story"));
     buttons[0].click();
     await sleep(300);
     t.event("choice", `${enText(buttons[0])} -> ${sceneId()}`);
     if (sceneId() === "start") t.problem("bug", `start: "${enText(buttons[0])}" goes nowhere`);
-    else await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1);
+    else {
+      if (enText($("spark-story")) === startStory) t.problem("bug", `${sceneId()}: the page text didn't change after the choice`);
+      await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1);
+      // Stay on the new page a moment, so a screenshot shows it before Back returns to the start.
+      await sleep(1500);
+    }
     $("spark-back").click();
     await sleep(300);
     if (sceneId() !== "start") t.problem("bug", "Back didn't return to the start");
