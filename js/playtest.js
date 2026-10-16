@@ -144,10 +144,12 @@ async function smoke(options, t) {
   t.note(`${buttons.length} choices: ${buttons.map(enText).join(" / ")}`);
   if (ok && buttons.length) {
     // One step in and back out again.
+    const storyBefore = $("spark-story").textContent;
     buttons[0].click();
     await sleep(300);
     t.event("choice", `${enText(buttons[0])} -> ${sceneId()}`);
     if (sceneId() === "start") t.problem("bug", `start: "${enText(buttons[0])}" goes nowhere`);
+    else if ($("spark-story").textContent === storyBefore) t.problem("bug", `${sceneId()}: the page text didn't change after "${enText(buttons[0])}"`);
     else await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1);
     $("spark-back").click();
     await sleep(300);
