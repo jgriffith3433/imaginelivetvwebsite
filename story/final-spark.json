@@ -1,0 +1,859 @@
+{
+  "title": "The Final Spark",
+  "doc": "story/README.md",
+  "start": "start",
+  "use": "film",
+  "style": "Cinematic live-action video still, gritty, low light, handheld feel.",
+  "negative": "text, watermark, cartoon, subtitles",
+  "characters": {
+    "hero": {
+      "name": "You",
+      "look": "a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands",
+      "seed": "story/characters/hero-seed.jpg",
+      "sheet": "story/characters/hero.png"
+    },
+    "rat": {
+      "name": "The rat",
+      "look": "a brown sewer rat with glossy black eyes, pink ears and long whiskers",
+      "seed": "story/characters/rat-seed.jpg",
+      "sheet": "story/characters/rat.png"
+    },
+    "old-man": {
+      "name": "The old man",
+      "look": "an old man with swept-back grey hair, round wire glasses and a dark wool coat",
+      "seed": "story/characters/old-man-seed.jpg",
+      "sheet": "story/characters/old-man.png",
+      "voice": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    "shadow": {
+      "name": "The shadow",
+      "look": "a towering, thin, smoke-black humanoid shadow with long clawed fingers",
+      "seed": "story/characters/shadow-seed.jpg",
+      "sheet": "story/characters/shadow.png"
+    }
+  },
+  "narrator": {
+    "voice": "nPczCjzI2devNBz1zQrb",
+    "model": "eleven_v4"
+  },
+  "music": {
+    "sewer": "dark ambient drone, dripping water, low cello, distant metallic hum, tense, slow, instrumental",
+    "death": "mournful solo piano, sparse, reverb, quiet strings swell, instrumental",
+    "gate": "tense pulsing low strings, ticking percussion, suspense, instrumental",
+    "fog": "eerie music box, airy pads, distant bells, hushed, instrumental",
+    "shadow": "dark cinematic trailer score, deep brass, heartbeat drums, rising choir, instrumental"
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "folder": "the-sewer",
+      "lang": "zh",
+      "title": [
+        "下水道",
+        "The sewer"
+      ],
+      "story": [
+        "你在黑暗的下水道里醒来。空气很难闻，黑暗里不知哪里在滴水。",
+        "You wake up in a dark sewer. The air smells terrible, and water drips somewhere in the darkness."
+      ],
+      "question": [
+        "你要做什么？",
+        "What will you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. 往回走",
+          "en": "1. Go back",
+          "next": "deadEnd"
+        },
+        {
+          "say": "2. 往右走",
+          "en": "2. Go right",
+          "next": "sewerWater"
+        }
+      ],
+      "film": "/assets/video/start.mp4",
+      "use": "gen",
+      "shot": {
+        "scene": "first-person, kneeling on wet cobbles in a dark brick sewer tunnel; a brown sewer rat sits in front of you beside a battered matchbox",
+        "motion": "the rat twitches its whiskers and stares at you, water drips",
+        "cast": [
+          "rat"
+        ]
+      },
+      "music": "sewer"
+    },
+    {
+      "id": "deadEnd",
+      "folder": "you-went-back",
+      "lang": "hi",
+      "title": [
+        "बंद सिरा",
+        "Dead end"
+      ],
+      "story": [
+        "तुम एक बंद सिरे पर पहुँच गए। फर्श पर कुछ काला और घिनौना पसरा है।",
+        "You reach a dead end. Something dark and disgusting is covering the floor."
+      ],
+      "question": [
+        "तुम क्या करोगे?",
+        "What will you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. वापस जाओ",
+          "en": "1. Go back",
+          "next": "direction"
+        },
+        {
+          "say": "2. कीचड़ को छुओ",
+          "en": "2. Touch the sludge",
+          "next": "sludge"
+        }
+      ],
+      "film": "/assets/video/dead-end.mp4",
+      "shot": {
+        "scene": "first-person, your hand holds a lit match up to a bricked-up dead end; black sludge covers the floor",
+        "motion": "the match flame flickers, the camera looks down at the sludge",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "sewer"
+    },
+    {
+      "id": "direction",
+      "folder": "back-where-you-started",
+      "lang": "es",
+      "title": [
+        "El pasadizo",
+        "The passage"
+      ],
+      "story": [
+        "Vuelves al pasadizo. La cloaca se alarga hacia la oscuridad.",
+        "You return to the passage. The sewer stretches into the darkness."
+      ],
+      "question": [
+        "¿Hacia dónde irás?",
+        "Which way will you go?"
+      ],
+      "choices": [
+        {
+          "say": "1. Vuelve atrás",
+          "en": "1. Go back",
+          "next": "deadEnd"
+        },
+        {
+          "say": "2. Ve a la derecha",
+          "en": "2. Go right",
+          "next": "sewerWater"
+        }
+      ],
+      "film": "/assets/video/direction.mp4",
+      "shot": {
+        "scene": "first-person, a lit match held out toward a long arched stone sewer passage",
+        "motion": "slow push forward down the passage, the flame wavers",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "sewer"
+    },
+    {
+      "id": "sludge",
+      "folder": "touch-the-sludge",
+      "lang": "fr",
+      "title": [
+        "La boue",
+        "The sludge"
+      ],
+      "story": [
+        "Tu touches la boue. La substance dégoûtante te couvre la peau, et tu commences à te sentir gravement malade.",
+        "You touch the sludge. The disgusting substance gets all over your skin, and you begin to feel seriously ill."
+      ],
+      "question": [
+        "Tu es mort.",
+        "You have died."
+      ],
+      "dead": true,
+      "choices": [
+        {
+          "say": "1. Réessaie dans une autre vie",
+          "en": "1. Try again in another life",
+          "next": "start"
+        }
+      ],
+      "film": "/assets/video/sludge.mp4",
+      "shot": {
+        "scene": "close-up of your dirty hand touching glowing green sludge on the sewer floor",
+        "motion": "the fingers sink in, the green glow creeps up the skin, the hand trembles",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "death"
+    },
+    {
+      "id": "sewerWater",
+      "folder": "you-turned-right",
+      "lang": "ar",
+      "dir": "rtl",
+      "title": [
+        "ماء المجاري",
+        "Sewer water"
+      ],
+      "story": [
+        "تدخل قسمًا مغمورًا من المجاري. الماء يبدو قذرًا.",
+        "You enter a flooded section of the sewer. The water looks filthy."
+      ],
+      "question": [
+        "ماذا ستفعل؟",
+        "What will you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. اخرج من الماء",
+          "en": "1. Get out of the water",
+          "next": "getOutWater"
+        },
+        {
+          "say": "2. تجاهله وتابع",
+          "en": "2. Ignore it and continue",
+          "next": "disease"
+        }
+      ],
+      "film": "/assets/video/sewer-water.mp4",
+      "shot": {
+        "scene": "first-person, wading through ankle-deep filthy sewer water under a stone arch, match in hand",
+        "motion": "slow wading steps, ripples, the match light dances on the water",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "sewer"
+    },
+    {
+      "id": "getOutWater",
+      "folder": "get-out-of-the-water",
+      "lang": "pt",
+      "title": [
+        "Fora da água",
+        "Out of the water"
+      ],
+      "story": [
+        "Você consegue sair da água e continua pela cloaca.",
+        "You manage to get out of the water and continue through the sewer."
+      ],
+      "question": [
+        "Você descobre um portão trancado à frente.",
+        "You discover a locked gate ahead."
+      ],
+      "choices": [
+        {
+          "say": "Continuar",
+          "en": "Continue",
+          "next": "gate"
+        }
+      ],
+      "film": "/assets/video/out-of-water.mp4",
+      "shot": {
+        "scene": "you climb out of the sewer water onto a narrow stone ledge, boots dripping",
+        "motion": "the hero hauls up onto the ledge and stands",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "sewer"
+    },
+    {
+      "id": "disease",
+      "folder": "died-by-trench-foot",
+      "lang": "ru",
+      "title": [
+        "Окопная стопа",
+        "Trench foot"
+      ],
+      "story": [
+        "Пробыв слишком долго в грязной воде, ты заболеваешь окопной стопой. Тебе становится всё хуже, пока ты уже не можешь идти дальше.",
+        "After spending too long in the contaminated water, you develop trench foot. Your condition worsens until you can no longer continue."
+      ],
+      "question": [
+        "Ты умер.",
+        "You have died."
+      ],
+      "dead": true,
+      "choices": [
+        {
+          "say": "1. Попробуй снова в другой жизни",
+          "en": "1. Try again in another life",
+          "next": "start"
+        }
+      ],
+      "film": "/assets/video/trench-foot.mp4",
+      "shot": {
+        "scene": "close-up of pale, swollen, wrinkled feet beside a pair of soaked boots in the dark",
+        "motion": "the light dims, a slow fade toward black",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "death"
+    },
+    {
+      "id": "gate",
+      "folder": "you-found-the-light",
+      "lang": "ja",
+      "title": [
+        "門",
+        "The gate"
+      ],
+      "story": [
+        "錠のかかった門が道をふさいでいる。通り抜ける方法を見つけなければならない。",
+        "A locked gate blocks your way. You need to find a way through."
+      ],
+      "question": [
+        "どうする？",
+        "What will you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. 門を壊す",
+          "en": "1. Break the gate",
+          "next": "breakGate"
+        },
+        {
+          "say": "2. 錠をこじる",
+          "en": "2. Pick the lock",
+          "next": "pickLock"
+        }
+      ],
+      "film": "/assets/video/gate.mp4",
+      "shot": {
+        "scene": "a rusted iron gate blocks the sewer tunnel, lit by a single match; faint light beyond the bars",
+        "motion": "the camera approaches the gate, the match flame flutters",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "gate"
+    },
+    {
+      "id": "breakGate",
+      "folder": "try-to-break-the-gate",
+      "lang": "bn",
+      "title": [
+        "গেট ভাঙো",
+        "Break the gate"
+      ],
+      "story": [
+        "তুমি গেট ভাঙতে চেষ্টা করো, কিন্তু পার হওয়া সহজ হবে না।",
+        "You try to break the gate, but getting through won't be easy."
+      ],
+      "question": [
+        "এরপর কী করবে?",
+        "What will you do next?"
+      ],
+      "choices": [
+        {
+          "say": "1. একটা চাবি খোঁজো",
+          "en": "1. Search for a key",
+          "next": "gotKey"
+        }
+      ],
+      "film": "/assets/video/break-gate.mp4",
+      "shot": {
+        "scene": "your hands grip the bars of the rusted iron gate and pull hard",
+        "motion": "the hero shakes the gate, rust falls, it does not give",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "gate"
+    },
+    {
+      "id": "pickLock",
+      "folder": "try-to-pick-the-lock",
+      "lang": "de",
+      "title": [
+        "Das Schloss knacken",
+        "Pick the lock"
+      ],
+      "story": [
+        "Du versuchst, das Schloss zu knacken. Mit bloßen Händen reicht es vielleicht nicht.",
+        "You try to pick the lock. You may need something more than your bare hands."
+      ],
+      "question": [
+        "Was machst du als Nächstes?",
+        "What will you do next?"
+      ],
+      "choices": [
+        {
+          "say": "1. Nach einem Schlüssel suchen",
+          "en": "1. Search for a key",
+          "next": "gotKey"
+        }
+      ],
+      "film": "/assets/video/pick-lock.mp4",
+      "shot": {
+        "scene": "close-up of your fingers working a bent wire in the gate's rusted padlock by match light",
+        "motion": "the fingers twist the wire, the lock does not open",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "gate"
+    },
+    {
+      "id": "gotKey",
+      "folder": "you-found-a-key",
+      "lang": "ko",
+      "title": [
+        "열쇠",
+        "The key"
+      ],
+      "story": [
+        "열쇠를 찾았다!",
+        "You found a key!"
+      ],
+      "question": [
+        "그걸로 무엇을 할 거야?",
+        "What will you do with it?"
+      ],
+      "choices": [
+        {
+          "say": "1. 열쇠를 쓴다",
+          "en": "1. Use the key",
+          "next": "useKey"
+        }
+      ],
+      "film": "/assets/video/got-key.mp4",
+      "shot": {
+        "scene": "first-person, a match lights a skeleton chained to the sewer wall; an old iron key hangs from its ribs",
+        "motion": "the hand reaches toward the key, smoke curls from the match",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "gate"
+    },
+    {
+      "id": "useKey",
+      "folder": "you-unlocked-the-gate",
+      "lang": "tr",
+      "title": [
+        "Kilidi aç",
+        "Unlock"
+      ],
+      "story": [
+        "Anahtarla kapının kilidini açarsın. Ötesini kalın bir sis doldurur.",
+        "You use the key to unlock the gate. Beyond it, a thick fog fills the passage."
+      ],
+      "question": [
+        "Sisin içine girecek misin?",
+        "Will you enter the fog?"
+      ],
+      "choices": [
+        {
+          "say": "Siste devam et",
+          "en": "Continue in the fog",
+          "next": "fog"
+        }
+      ],
+      "film": "/assets/video/use-key.mp4",
+      "shot": {
+        "scene": "the old key turns in the padlock; the gate swings open onto thick white fog",
+        "motion": "the gate creaks open and fog rolls through",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "fog"
+    },
+    {
+      "id": "fog",
+      "folder": "into-the-fog",
+      "lang": "vi",
+      "title": [
+        "Sương mù",
+        "The fog"
+      ],
+      "story": [
+        "Bạn bước qua cổng và đi vào sương mù. Bạn hầu như không thấy phía trước có gì.",
+        "You step through the gate and enter the fog. You can barely see what lies ahead."
+      ],
+      "question": [
+        "Bạn sẽ làm gì?",
+        "What will you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. Đốt cánh cửa",
+          "en": "1. Set the door on fire",
+          "next": "fireDoor"
+        },
+        {
+          "say": "2. Gõ cửa",
+          "en": "2. Knock",
+          "next": "knock"
+        }
+      ],
+      "film": "/assets/video/fog.mp4",
+      "shot": {
+        "scene": "a foggy cobblestone street of an old town at dusk; a tall dark house with a closed door looms ahead",
+        "motion": "slow walk forward through the fog toward the house",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "fog"
+    },
+    {
+      "id": "fireDoor",
+      "folder": "set-the-door-on-fire",
+      "lang": "it",
+      "title": [
+        "Brucia la porta",
+        "Burn the door"
+      ],
+      "story": [
+        "Decidi di dare fuoco alla porta.",
+        "You decide to set the door on fire."
+      ],
+      "question": [
+        "Che cosa succede dopo?",
+        "What happens next?"
+      ],
+      "choices": [
+        {
+          "say": "Continua",
+          "en": "Continue",
+          "next": "uponTruck"
+        }
+      ],
+      "film": "/assets/video/fire-door.mp4",
+      "shot": {
+        "scene": "first-person, a lit match held to a weathered wooden front door in the fog",
+        "motion": "the flame catches and creeps up the door",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "fog"
+    },
+    {
+      "id": "knock",
+      "folder": "knock-at-the-door",
+      "lang": "id",
+      "title": [
+        "Ketuk",
+        "Knock"
+      ],
+      "story": [
+        "Kamu mendekati pintu dan mengetuk.",
+        "You approach the door and knock."
+      ],
+      "question": [
+        "Apa yang terjadi selanjutnya?",
+        "What happens next?"
+      ],
+      "choices": [
+        {
+          "say": "Lanjutkan",
+          "en": "Continue",
+          "next": "uponTruck"
+        }
+      ],
+      "film": "/assets/video/knock.mp4",
+      "shot": {
+        "scene": "an old man with grey hair and round glasses opens the door and glares out into the fog",
+        "motion": "the old man leans out and speaks sharply",
+        "cast": [
+          "old-man"
+        ]
+      },
+      "music": "fog",
+      "lines": [
+        {
+          "speaker": "old-man",
+          "text": "Do you know what time it is? Go away. Nobody comes out of that fog.",
+          "draft": true
+        }
+      ]
+    },
+    {
+      "id": "uponTruck",
+      "folder": "the-truck",
+      "lang": "ur",
+      "dir": "rtl",
+      "title": [
+        "ٹرک",
+        "The truck"
+      ],
+      "story": [
+        "تم اپنے آپ کو ایک ٹرک کے سامنے کھڑا پاتے ہو۔",
+        "You find yourself standing before a truck."
+      ],
+      "question": [
+        "تم کیا کرو گے؟",
+        "What will you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. ٹرک کے اندر جاؤ",
+          "en": "1. Get inside truck",
+          "next": "insideTruck"
+        },
+        {
+          "say": "2. ٹرک سے دور چل دو",
+          "en": "2. Walk away from truck",
+          "next": "walkAway"
+        }
+      ],
+      "film": "/assets/video/truck.mp4",
+      "shot": {
+        "scene": "a white van stands alone with its door open on a foggy cobbled street",
+        "motion": "the hero walks up to the van, fog drifts",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "fog"
+    },
+    {
+      "id": "insideTruck",
+      "folder": "get-inside-the-truck",
+      "lang": "pl",
+      "title": [
+        "W środku",
+        "Inside"
+      ],
+      "story": [
+        "Wchodzisz do ciężarówki.",
+        "You get inside the truck."
+      ],
+      "question": [
+        "Co dzieje się dalej?",
+        "What happens next?"
+      ],
+      "choices": [
+        {
+          "say": "Zatańcz z cieniem",
+          "en": "Dance with the shadow",
+          "next": "shadowDance"
+        }
+      ],
+      "film": "/assets/video/inside-truck.mp4",
+      "shot": {
+        "scene": "the hero, a young person in a worn olive canvas jacket and hood, climbs into the white van",
+        "motion": "the hero pulls themself inside, the door swings",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "shadow"
+    },
+    {
+      "id": "walkAway",
+      "folder": "walk-away-from-the-truck",
+      "lang": "th",
+      "title": [
+        "เดินจากไป",
+        "Walk away"
+      ],
+      "story": [
+        "เจ้าตัดสินใจเดินหนีจากรถบรรทุก",
+        "You decide to walk away from the truck."
+      ],
+      "question": [
+        "เจ้าจะทำอะไร?",
+        "What will you do?"
+      ],
+      "choices": [
+        {
+          "say": "เต้นกับเงา",
+          "en": "Dance with the shadow",
+          "next": "shadowDance"
+        }
+      ],
+      "film": "/assets/video/walk-away.mp4",
+      "shot": {
+        "scene": "the hero walks away down a foggy cobbled street, a match glowing in one hand",
+        "motion": "the figure walks away and fades into the fog",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "shadow"
+    },
+    {
+      "id": "shadowDance",
+      "folder": "dance-with-the-shadow",
+      "lang": "sw",
+      "title": [
+        "Densi ya kivuli",
+        "Shadow dance"
+      ],
+      "story": [
+        "Unacheza na kivuli. Mnapoenda pamoja, kitu kinaamka ndani yako. Mwanguko wa nguvu ya ajabu unapita mwilini mwako, na unagundua umepata nguvu mpya.",
+        "You dance with the shadow. As you move together, something awakens within you. A surge of strange energy courses through your body, and you discover that you have gained new powers."
+      ],
+      "question": [
+        "Nguvu zako mpya zimeamka.",
+        "Your new powers have awakened."
+      ],
+      "choices": [
+        {
+          "say": "Chunguza nguvu mpya",
+          "en": "Explore new powers",
+          "next": "explorePowers"
+        }
+      ],
+      "film": "/assets/video/shadow-dance.mp4",
+      "shot": {
+        "scene": "a towering shadow creature with long claws stands in white fog over the hero's boots on the cobbles",
+        "motion": "the hero and the shadow move together in a slow dance",
+        "cast": [
+          "hero",
+          "shadow"
+        ]
+      },
+      "music": "shadow"
+    },
+    {
+      "id": "explorePowers",
+      "folder": "your-new-powers",
+      "lang": "ta",
+      "title": [
+        "புதிய சக்திகள்",
+        "New powers"
+      ],
+      "story": [
+        "அவற்றை சரியாகப் பயன்படுத்த இன்னும் தெரியவில்லை.\n\nஉனக்கு 2 புதிய சக்திகள் உள்ளன:\n\n• ஒளியை விழுங்கு\n• நிழல் தையல்",
+        "You haven't figured out how to use them properly yet.\n\nYou have 2 new powers:\n\n• Consume Light\n• Shadow Stitch"
+      ],
+      "question": [
+        "எந்த சக்தியை ஆராய்வாய்?",
+        "Which power will you explore?"
+      ],
+      "choices": [
+        {
+          "say": "1. ஒளியை விழுங்கு",
+          "en": "1. Consume Light",
+          "next": "consumeLight"
+        },
+        {
+          "say": "2. நிழல் தையல்",
+          "en": "2. Shadow Stitch",
+          "next": "shadowStitch"
+        }
+      ],
+      "film": "/assets/video/explore-powers.mp4",
+      "shot": {
+        "scene": "the hero's open hand, dark smoke curling from the fingers, in a foggy street",
+        "motion": "the smoke wraps around the hand and pulses",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "shadow"
+    },
+    {
+      "id": "consumeLight",
+      "folder": "consume-light",
+      "lang": "te",
+      "title": [
+        "కాంతిని మింగు",
+        "Consume Light"
+      ],
+      "story": [
+        "నువ్వు కాంతిని మింగడానికి ప్రయత్నిస్తావు.",
+        "You attempt to use Consume Light."
+      ],
+      "question": [
+        "తర్వాత ఏం జరుగుతుంది?",
+        "What happens next?"
+      ],
+      "choices": [
+        {
+          "say": "పట్టణాన్ని నాశనం చేయి",
+          "en": "Destroy town",
+          "next": "destroyTown"
+        }
+      ],
+      "film": "/assets/video/consume-light.mp4",
+      "shot": {
+        "scene": "first-person, the hand reaches toward candles on a foggy windowsill; the flames bend toward the palm",
+        "motion": "the candle flames stretch and pour into the hand",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "shadow"
+    },
+    {
+      "id": "shadowStitch",
+      "folder": "shadow-stitch",
+      "lang": "mr",
+      "title": [
+        "सावली शिवणे",
+        "Shadow Stitch"
+      ],
+      "story": [
+        "तू सावली शिवण्याचा प्रयत्न करतोस.",
+        "You attempt to use Shadow Stitch."
+      ],
+      "question": [
+        "पुढे काय होते?",
+        "What happens next?"
+      ],
+      "choices": [
+        {
+          "say": "शहर उद्ध्वस्त कर",
+          "en": "Destroy town",
+          "next": "destroyTown"
+        }
+      ],
+      "film": "/assets/video/shadow-stitch.mp4",
+      "shot": {
+        "scene": "the hero's shadow on the cobbles stretches and stitches itself to the shadow of a lamppost",
+        "motion": "black threads pull the shadows together",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "shadow"
+    },
+    {
+      "id": "destroyTown",
+      "folder": "destroy-the-town",
+      "lang": "pa",
+      "title": [
+        "ਸ਼ਹਿਰ ਤਬਾਹ ਕਰੋ",
+        "Destroy town"
+      ],
+      "story": [
+        "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ।",
+        "You decided to destroy the whole town."
+      ],
+      "question": [
+        "ਅੱਗੇ ਕੀ ਹੁੰਦਾ ਹੈ?",
+        "What happens next?"
+      ],
+      "ending": [
+        "ਹੋਰ ਕਹਾਣੀ ਜਲਦੀ ਆ ਰਹੀ ਹੈ...",
+        "MORE OF THE STORY COMING SOON..."
+      ],
+      "choices": [],
+      "film": "/assets/video/destroy-town.mp4",
+      "shot": {
+        "scene": "the old foggy town burning and falling apart, seen from a hill, shadows pouring through the streets",
+        "motion": "slow push in as buildings collapse into darkness",
+        "cast": [
+          "hero",
+          "shadow"
+        ]
+      },
+      "music": "shadow"
+    }
+  ]
+}

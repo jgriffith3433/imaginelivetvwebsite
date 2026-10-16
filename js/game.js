@@ -2,31 +2,9 @@
   const COOKIE_NAME = "finalSparkProgress";
   const COOKIE_DAYS = 30;
 
-  const VIDEOS = {
-    start: "/assets/video/start.mp4",
-    deadEnd: "/assets/video/dead-end.mp4",
-    sludge: "/assets/video/sludge.mp4",
-    direction: "/assets/video/direction.mp4",
-    sewerWater: "/assets/video/sewer-water.mp4",
-    disease: "/assets/video/trench-foot.mp4",
-    getOutWater: "/assets/video/out-of-water.mp4",
-    continue: "/assets/video/gate.mp4",
-    breakGate: "/assets/video/break-gate.mp4",
-    pickLock: "/assets/video/pick-lock.mp4",
-    gotKey: "/assets/video/got-key.mp4",
-    useKey: "/assets/video/use-key.mp4",
-    fog: "/assets/video/fog.mp4",
-    fireDoor: "/assets/video/fire-door.mp4",
-    knock: "/assets/video/knock.mp4",
-    uponTruck: "/assets/video/truck.mp4",
-    insideTruck: "/assets/video/inside-truck.mp4",
-    walkAway: "/assets/video/walk-away.mp4",
-    shadowDance: "/assets/video/shadow-dance.mp4",
-    explorePowers: "/assets/video/explore-powers.mp4",
-    consumeLight: "/assets/video/consume-light.mp4",
-    shadowStitch: "/assets/video/shadow-stitch.mp4",
-    destroyTown: "/assets/video/destroy-town.mp4"
-  };
+  // The scenes come from js/story-data.js, built from story/final-spark.json by tools/build-story.mjs.
+  const STORY = window.FINAL_SPARK;
+  if (!STORY) return;
 
   const UI = {
     zh: { back: "← 返回", mouth: "隧道口", depth: "深度" },
@@ -78,224 +56,11 @@
     };
   }
 
-  const SCENES = {
-    start: line("zh", "", {
-      title: ["下水道", "The sewer"],
-      story: ["你在黑暗的下水道里醒来。空气很难闻，黑暗里不知哪里在滴水。", "You wake up in a dark sewer. The air smells terrible, and water drips somewhere in the darkness."],
-      question: ["你要做什么？", "What will you do?"],
-      video: "start",
-      choices: [
-        ["1. 往回走", "1. Go back", "deadEnd"],
-        ["2. 往右走", "2. Go right", "sewerWater"]
-      ]
-    }),
-    deadEnd: line("hi", "", {
-      title: ["बंद सिरा", "Dead end"],
-      story: ["तुम एक बंद सिरे पर पहुँच गए। फर्श पर कुछ काला और घिनौना पसरा है।", "You reach a dead end. Something dark and disgusting is covering the floor."],
-      question: ["तुम क्या करोगे?", "What will you do?"],
-      video: "deadEnd",
-      choices: [
-        ["1. वापस जाओ", "1. Go back", "direction"],
-        ["2. कीचड़ को छुओ", "2. Touch the sludge", "sludge"]
-      ]
-    }),
-    direction: line("es", "", {
-      title: ["El pasadizo", "The passage"],
-      story: ["Vuelves al pasadizo. La cloaca se alarga hacia la oscuridad.", "You return to the passage. The sewer stretches into the darkness."],
-      question: ["¿Hacia dónde irás?", "Which way will you go?"],
-      video: "direction",
-      choices: [
-        ["1. Vuelve atrás", "1. Go back", "deadEnd"],
-        ["2. Ve a la derecha", "2. Go right", "sewerWater"]
-      ]
-    }),
-    sludge: line("fr", "", {
-      title: ["La boue", "The sludge"],
-      story: ["Tu touches la boue. La substance dégoûtante te couvre la peau, et tu commences à te sentir gravement malade.", "You touch the sludge. The disgusting substance gets all over your skin, and you begin to feel seriously ill."],
-      question: ["Tu es mort.", "You have died."],
-      video: "sludge",
-      dead: true,
-      choices: [
-        ["1. Réessaie dans une autre vie", "1. Try again in another life", "start"]
-      ]
-    }),
-    sewerWater: line("ar", "rtl", {
-      title: ["ماء المجاري", "Sewer water"],
-      story: ["تدخل قسمًا مغمورًا من المجاري. الماء يبدو قذرًا.", "You enter a flooded section of the sewer. The water looks filthy."],
-      question: ["ماذا ستفعل؟", "What will you do?"],
-      video: "sewerWater",
-      choices: [
-        ["1. اخرج من الماء", "1. Get out of the water", "getOutWater"],
-        ["2. تجاهله وتابع", "2. Ignore it and continue", "disease"]
-      ]
-    }),
-    getOutWater: line("pt", "", {
-      title: ["Fora da água", "Out of the water"],
-      story: ["Você consegue sair da água e continua pela cloaca.", "You manage to get out of the water and continue through the sewer."],
-      question: ["Você descobre um portão trancado à frente.", "You discover a locked gate ahead."],
-      video: "getOutWater",
-      choices: [
-        ["Continuar", "Continue", "gate"]
-      ]
-    }),
-    disease: line("ru", "", {
-      title: ["Окопная стопа", "Trench foot"],
-      story: ["Пробыв слишком долго в грязной воде, ты заболеваешь окопной стопой. Тебе становится всё хуже, пока ты уже не можешь идти дальше.", "After spending too long in the contaminated water, you develop trench foot. Your condition worsens until you can no longer continue."],
-      question: ["Ты умер.", "You have died."],
-      video: "disease",
-      dead: true,
-      choices: [
-        ["1. Попробуй снова в другой жизни", "1. Try again in another life", "start"]
-      ]
-    }),
-    gate: line("ja", "", {
-      title: ["門", "The gate"],
-      story: ["錠のかかった門が道をふさいでいる。通り抜ける方法を見つけなければならない。", "A locked gate blocks your way. You need to find a way through."],
-      question: ["どうする？", "What will you do?"],
-      video: "continue",
-      choices: [
-        ["1. 門を壊す", "1. Break the gate", "breakGate"],
-        ["2. 錠をこじる", "2. Pick the lock", "pickLock"]
-      ]
-    }),
-    breakGate: line("bn", "", {
-      title: ["গেট ভাঙো", "Break the gate"],
-      story: ["তুমি গেট ভাঙতে চেষ্টা করো, কিন্তু পার হওয়া সহজ হবে না।", "You try to break the gate, but getting through won't be easy."],
-      question: ["এরপর কী করবে?", "What will you do next?"],
-      video: "breakGate",
-      choices: [
-        ["1. একটা চাবি খোঁজো", "1. Search for a key", "gotKey"]
-      ]
-    }),
-    pickLock: line("de", "", {
-      title: ["Das Schloss knacken", "Pick the lock"],
-      story: ["Du versuchst, das Schloss zu knacken. Mit bloßen Händen reicht es vielleicht nicht.", "You try to pick the lock. You may need something more than your bare hands."],
-      question: ["Was machst du als Nächstes?", "What will you do next?"],
-      video: "pickLock",
-      choices: [
-        ["1. Nach einem Schlüssel suchen", "1. Search for a key", "gotKey"]
-      ]
-    }),
-    gotKey: line("ko", "", {
-      title: ["열쇠", "The key"],
-      story: ["열쇠를 찾았다!", "You found a key!"],
-      question: ["그걸로 무엇을 할 거야?", "What will you do with it?"],
-      video: "gotKey",
-      choices: [
-        ["1. 열쇠를 쓴다", "1. Use the key", "useKey"]
-      ]
-    }),
-    useKey: line("tr", "", {
-      title: ["Kilidi aç", "Unlock"],
-      story: ["Anahtarla kapının kilidini açarsın. Ötesini kalın bir sis doldurur.", "You use the key to unlock the gate. Beyond it, a thick fog fills the passage."],
-      question: ["Sisin içine girecek misin?", "Will you enter the fog?"],
-      video: "useKey",
-      choices: [
-        ["Siste devam et", "Continue in the fog", "fog"]
-      ]
-    }),
-    fog: line("vi", "", {
-      title: ["Sương mù", "The fog"],
-      story: ["Bạn bước qua cổng và đi vào sương mù. Bạn hầu như không thấy phía trước có gì.", "You step through the gate and enter the fog. You can barely see what lies ahead."],
-      question: ["Bạn sẽ làm gì?", "What will you do?"],
-      video: "fog",
-      choices: [
-        ["1. Đốt cánh cửa", "1. Set the door on fire", "fireDoor"],
-        ["2. Gõ cửa", "2. Knock", "knock"]
-      ]
-    }),
-    fireDoor: line("it", "", {
-      title: ["Brucia la porta", "Burn the door"],
-      story: ["Decidi di dare fuoco alla porta.", "You decide to set the door on fire."],
-      question: ["Che cosa succede dopo?", "What happens next?"],
-      video: "fireDoor",
-      choices: [
-        ["Continua", "Continue", "uponTruck"]
-      ]
-    }),
-    knock: line("id", "", {
-      title: ["Ketuk", "Knock"],
-      story: ["Kamu mendekati pintu dan mengetuk.", "You approach the door and knock."],
-      question: ["Apa yang terjadi selanjutnya?", "What happens next?"],
-      video: "knock",
-      choices: [
-        ["Lanjutkan", "Continue", "uponTruck"]
-      ]
-    }),
-    uponTruck: line("ur", "rtl", {
-      title: ["ٹرک", "The truck"],
-      story: ["تم اپنے آپ کو ایک ٹرک کے سامنے کھڑا پاتے ہو۔", "You find yourself standing before a truck."],
-      question: ["تم کیا کرو گے؟", "What will you do?"],
-      video: "uponTruck",
-      choices: [
-        ["1. ٹرک کے اندر جاؤ", "1. Get inside truck", "insideTruck"],
-        ["2. ٹرک سے دور چل دو", "2. Walk away from truck", "walkAway"]
-      ]
-    }),
-    insideTruck: line("pl", "", {
-      title: ["W środku", "Inside"],
-      story: ["Wchodzisz do ciężarówki.", "You get inside the truck."],
-      question: ["Co dzieje się dalej?", "What happens next?"],
-      video: "insideTruck",
-      choices: [
-        ["Zatańcz z cieniem", "Dance with the shadow", "shadowDance"]
-      ]
-    }),
-    walkAway: line("th", "", {
-      title: ["เดินจากไป", "Walk away"],
-      story: ["เจ้าตัดสินใจเดินหนีจากรถบรรทุก", "You decide to walk away from the truck."],
-      question: ["เจ้าจะทำอะไร?", "What will you do?"],
-      video: "walkAway",
-      choices: [
-        ["เต้นกับเงา", "Dance with the shadow", "shadowDance"]
-      ]
-    }),
-    shadowDance: line("sw", "", {
-      title: ["Densi ya kivuli", "Shadow dance"],
-      story: ["Unacheza na kivuli. Mnapoenda pamoja, kitu kinaamka ndani yako. Mwanguko wa nguvu ya ajabu unapita mwilini mwako, na unagundua umepata nguvu mpya.", "You dance with the shadow. As you move together, something awakens within you. A surge of strange energy courses through your body, and you discover that you have gained new powers."],
-      question: ["Nguvu zako mpya zimeamka.", "Your new powers have awakened."],
-      video: "shadowDance",
-      choices: [
-        ["Chunguza nguvu mpya", "Explore new powers", "explorePowers"]
-      ]
-    }),
-    explorePowers: line("ta", "", {
-      title: ["புதிய சக்திகள்", "New powers"],
-      story: ["அவற்றை சரியாகப் பயன்படுத்த இன்னும் தெரியவில்லை.\n\nஉனக்கு 2 புதிய சக்திகள் உள்ளன:\n\n• ஒளியை விழுங்கு\n• நிழல் தையல்", "You haven't figured out how to use them properly yet.\n\nYou have 2 new powers:\n\n• Consume Light\n• Shadow Stitch"],
-      question: ["எந்த சக்தியை ஆராய்வாய்?", "Which power will you explore?"],
-      video: "explorePowers",
-      choices: [
-        ["1. ஒளியை விழுங்கு", "1. Consume Light", "consumeLight"],
-        ["2. நிழல் தையல்", "2. Shadow Stitch", "shadowStitch"]
-      ]
-    }),
-    consumeLight: line("te", "", {
-      title: ["కాంతిని మింగు", "Consume Light"],
-      story: ["నువ్వు కాంతిని మింగడానికి ప్రయత్నిస్తావు.", "You attempt to use Consume Light."],
-      question: ["తర్వాత ఏం జరుగుతుంది?", "What happens next?"],
-      video: "consumeLight",
-      choices: [
-        ["పట్టణాన్ని నాశనం చేయి", "Destroy town", "destroyTown"]
-      ]
-    }),
-    shadowStitch: line("mr", "", {
-      title: ["सावली शिवणे", "Shadow Stitch"],
-      story: ["तू सावली शिवण्याचा प्रयत्न करतोस.", "You attempt to use Shadow Stitch."],
-      question: ["पुढे काय होते?", "What happens next?"],
-      video: "shadowStitch",
-      choices: [
-        ["शहर उद्ध्वस्त कर", "Destroy town", "destroyTown"]
-      ]
-    }),
-    destroyTown: line("pa", "", {
-      title: ["ਸ਼ਹਿਰ ਤਬਾਹ ਕਰੋ", "Destroy town"],
-      story: ["ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ।", "You decided to destroy the whole town."],
-      question: ["ਅੱਗੇ ਕੀ ਹੁੰਦਾ ਹੈ?", "What happens next?"],
-      video: "destroyTown",
-      choices: [],
-      ending: ["ਹੋਰ ਕਹਾਣੀ ਜਲਦੀ ਆ ਰਹੀ ਹੈ...", "MORE OF THE STORY COMING SOON..."]
-    })
-  };
+  const SCENES = {};
+  Object.keys(STORY.scenes).forEach(function (id) {
+    const s = STORY.scenes[id];
+    SCENES[id] = line(s.lang, s.dir, s);
+  });
 
   const root = document.getElementById("spark");
   const videoBox = document.getElementById("spark-video");
@@ -445,7 +210,7 @@
     );
 
     videoBox.replaceChildren();
-    const videoSrc = scene.video ? VIDEOS[scene.video] : null;
+    const videoSrc = scene.video || null;
 
     if (videoSrc) {
       const video = document.createElement("video");

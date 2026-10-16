@@ -9,21 +9,13 @@ import { installPlaytest } from "./hawkes-playtest.js";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const $ = (id) => document.getElementById(id);
 
-// The branch pages, one folder per branch (the map from TheFinalSpark/Decision tree.txt).
-// The sewer itself is the home page; its two choices are the first two folders.
-const BRANCH_ROOTS = ["/you-went-back/", "/you-turned-right/"];
-const BRANCH_FOLDERS = [
-  "/you-went-back/",
-  "/you-turned-right/",
-  "/back-where-you-started/",
-  "/touch-the-sludge/",
-  "/died-by-trench-foot/",
-  "/get-out-of-the-water/",
-  "/you-found-the-light/",
-  "/try-to-break-the-gate/",
-  "/try-to-pick-the-lock/",
-];
-// What Decision tree.txt promises for the player's opening scenes.
+// The branch pages, one folder per scene, from js/story-data.js (built from story/final-spark.json by
+// tools/build-story.mjs, the same data the player uses). The crawl starts at the start scene's page.
+const story = () => window.FINAL_SPARK || { start: "start", scenes: {} };
+const folderOf = (id) => `/${story().scenes[id].folder}/`;
+const branchRoots = () => [folderOf(story().start)];
+const branchFolders = () => Object.keys(story().scenes).map(folderOf);
+// What Decision tree.txt promises for the player's opening scenes (checked by hand, not from the data).
 const TREE = {
   start: { choices: 2, to: ["deadEnd", "sewerWater"] },
   deadEnd: { choices: 2, to: ["direction", "sludge"] },
@@ -292,15 +284,15 @@ async function openByClick(t, from, target) {
 
 async function pages(options, t) {
   t.scene("Branch pages");
-  const parent = new Map(BRANCH_ROOTS.map((p) => [p, null]));
-  const queue = [...BRANCH_ROOTS];
+  const parent = new Map(branchRoots().map((p) => [p, null]));
+  const queue = branchRoots();
   const done = new Set();
   while (queue.length) {
     const path = queue.shift();
     if (done.has(path)) continue;
     done.add(path);
     t.scene(path);
-    t.progress(done.size / BRANCH_FOLDERS.length);
+    t.progress(done.size / branchFolders().length);
     if ((await status(path)) !== 200) {
       t.problem("bug", `${path}: page missing (from ${parent.get(path) || "the home page"})`);
       continue;
@@ -315,7 +307,9 @@ async function pages(options, t) {
     await checkVideo(t, doc.querySelector("video"), path, 2);
     const links = [...doc.querySelectorAll(".spark-choices a.choice")].map((a) => ({ label: enText(a), to: pathOf(a.getAttribute("href"), doc.baseURI) }));
     t.event("page", `${path}: ${links.length} choices`);
-    if (!links.length) t.problem("warning", `${path}: dead end, no choices (the player on the home page goes on from here)`);
+    const ending = doc.querySelector('main[data-state="soon"]');
+    if (!links.length && ending) t.event("ending", `${path}: ${enText(ending.querySelector(".passage-prompt:last-of-type"))}`);
+    else if (!links.length) t.problem("warning", `${path}: dead end, no choices and no ending`);
     for (const l of links) {
       if (l.to === "/") {
         t.event("back-to-start", `${path}: "${l.label}"`);
@@ -330,7 +324,7 @@ async function pages(options, t) {
     }
     doc.querySelectorAll("video").forEach((v) => v.pause());
   }
-  BRANCH_FOLDERS.filter((p) => !done.has(p)).forEach((p) => t.problem("warning", `${p}: no choice links here (orphan page)`));
+  branchFolders().filter((p) => !done.has(p)).forEach((p) => t.problem("warning", `${p}: no choice links here (orphan page)`));
   t.metric("pages", done.size);
   closeFrame();
   t.progress(1);

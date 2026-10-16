@@ -1,0 +1,35 @@
+{
+  "start-voice": {
+    "recipe": "05d97c816d6a89da",
+    "job": "j_24b4d8856933",
+    "made": "2026-10-16T07:03:07.916Z",
+    "files": {
+      "the-sewer/media/narration.mp3": "2d2e22ded792ca512f93bf995676bb0d6e8631c78bfc6f0a5e66e78427013caf"
+    }
+  },
+  "music-sewer": {
+    "recipe": "bf773230018b5fe9",
+    "job": "j_ceeb1344afd6",
+    "made": "2026-10-16T07:32:06.640Z",
+    "files": {
+      "assets/story/music/sewer.mp3": "a9fc6871e36fa09db73ad0d7124841b393688793860861389458a9fb89e98cea"
+    }
+  },
+  "char-rat": {
+    "recipe": "310c17778bcab363",
+    "job": "j_9caaa6018e1b",
+    "made": "2026-10-16T07:38:05.256Z",
+    "files": {
+      "story/characters/rat.png": "7f2de4e7ce1f6adb611e0a448b60b34c661da43b237d4c36c655f6b31ac33378"
+    }
+  },
+  "start-shot": {
+    "recipe": "5bf15acf4ba7a235",
+    "job": "j_649627bdd127",
+    "made": "2026-10-16T08:10:10.552Z",
+    "files": {
+      "the-sewer/media/keyframe.png": "05ca20ea91305b9d503d4c85c24ced510c3a5bcee74119aad763145b0fe6b301",
+      "the-sewer/media/clip.mp4": "cf7815debcd95f2253abc42796f60b051fac0a977029c89b7ce0849ca9c524cc"
+    }
+  }
+}
