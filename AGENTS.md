@@ -50,3 +50,10 @@ go live (minor when players get something new, patch for fixes) plus the build (
 player-facing notes J approved in the go-live plan. `whatsnew.html` and the home page footer's version read it through `hawkes-release.js` (a copy of
 `hawkesstudio/clients/web/hawkes-release.js`: `[data-hawkes-version]`, `[data-hawkes-releases]`). Don't bump versions
 by hand; a typo in old notes can be fixed in the file on beta.
+
+## Making content (agents)
+
+New branches of The Final Spark and their media are made end to end with the `iltv-story-branch` skill
+(`.claude/skills/`, loaded by Claude Code): scenes in `story/final-spark.json` → `npm run story` → the scene's assets
+in `hawkes.assets.json` made through Studio (priced first, J's OK for GPU) → `use: "gen"` → `branches` and `pages`
+playtests. Anything in the story doc's "Waiting for J" stays a draft until J approves it.
