@@ -774,6 +774,13 @@
     show(history.pop());
   });
 
+  // Read-only view for the playtest (js/playtest.js).
+  window.finalSpark = {
+    scene: function () { return currentScene; },
+    scenes: function () { return Object.keys(SCENES); },
+    depth: function () { return history.length; }
+  };
+
   const savedProgress = readProgress();
   if (savedProgress) {
     history = savedProgress.history;
