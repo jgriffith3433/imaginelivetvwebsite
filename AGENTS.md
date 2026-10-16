@@ -41,3 +41,12 @@ progress cookie is put back.
 `js/game.js` exposes a read-only `window.finalSpark` (`scene()`, `scenes()`, `depth()`) for the bot. Try it:
 open http://localhost:8090/?playtest=branches and, when it's done, run `hawkesPlaytest.report()` in the console.
 If the browser blocks unmuted autoplay, the bot plays the video muted and logs an `autoplay-blocked` event.
+
+## Versions and What's new
+
+Every go live is a release, made by Hawkes Studio (`hawkesstudio/src/releases.ts`): a semver version bumped at
+go live (minor when players get something new, patch for fixes) plus the build (the commit), shown as
+"1.4.0 (build ...)" and tagged `v<version>` in git. Studio adds the release to `releases.json` at the repo root (newest first) with the
+player-facing notes J approved in the go-live plan. `whatsnew.html` and the home page footer's version read it through `hawkes-release.js` (a copy of
+`hawkesstudio/clients/web/hawkes-release.js`: `[data-hawkes-version]`, `[data-hawkes-releases]`). Don't bump versions
+by hand; a typo in old notes can be fixed in the file on beta.
