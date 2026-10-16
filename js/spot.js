@@ -12,7 +12,7 @@
   var bar = document.createElement("div");
   bar.className = "inventory";
   bar.innerHTML =
-    '<p class="inventory-label">Inventory</p>' +
+    '<p class="inventory-label">Inventory<span class="inventory-hint"> · shine the light on the words</span></p>' +
     '<button type="button" class="torch-slot" id="torch-slot" aria-label="Flashlight. Click to carry it over the words."></button>';
   document.body.appendChild(bar);
 
@@ -29,6 +29,19 @@
   document.body.appendChild(beam);
 
   var slot = bar.querySelector("#torch-slot");
+  var HINT_KEY = "finalSparkTorchUsed";
+
+  // The words are in another language on purpose; the hint says how to read them until the flashlight is first used.
+  function torchUsed() {
+    try { return localStorage.getItem(HINT_KEY) === "1"; } catch (err) { return false; }
+  }
+
+  function hideHint() {
+    bar.classList.add("is-known");
+    try { localStorage.setItem(HINT_KEY, "1"); } catch (err) { /* private mode */ }
+  }
+
+  if (torchUsed()) bar.classList.add("is-known");
 
   function beamRadius() {
     var raw = getComputedStyle(document.documentElement).getPropertyValue("--beam");
@@ -100,6 +113,7 @@
   slot.addEventListener("pointerdown", function (event) {
     if (event.button !== 0 && event.pointerType === "mouse") return;
     event.preventDefault();
+    hideHint();
     if (event.pointerType === "mouse") {
       following = true;
       moved = false;

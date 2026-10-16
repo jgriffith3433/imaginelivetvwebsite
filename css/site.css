@@ -897,6 +897,12 @@ a.choice.spot,
   text-transform: uppercase;
 }
 
+.inventory-hint {
+  color: #b9b5ae;
+}
+
+.inventory.is-known .inventory-hint { display: none; }
+
 .torch-slot {
   pointer-events: auto;
   width: 5.6rem;
