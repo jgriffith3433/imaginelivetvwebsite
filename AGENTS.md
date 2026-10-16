@@ -33,7 +33,7 @@ progress cookie is put back.
 
 | Scenario | What it does |
 | --- | --- |
-| `smoke` (~6 s) | Go back to the start (Tree tab, start node), the first video loads and plays 3 s, the choices show, one choice in, Back. |
+| `smoke` (~15 s) | Go back to the start (Tree tab, start node), the first video loads and plays 3 s, the inventory hint shows, the flashlight is picked up and swept over the story and question (`flashlight` events log the English it shows), put back, then the choices show, one choice in, Back. |
 | `branches` (~90 s) | Walks every scene of the player by clicking every choice and Back. Each video must load (readyState, duration) and play 2 s. Checks every scene is reachable, that non-ending scenes have choices, and that the opening matches `TheFinalSpark/Decision tree.txt` (the `TREE` table in `js/playtest.js`). |
 | `pages` (~30 s) | The branch pages, one folder per branch (`BRANCH_FOLDERS` in `js/playtest.js`; add new folders there). Each page's video loads and plays, and each choice links to a page that exists. Reports dead ends and orphan pages. |
 | `blog` (~5 s) | Opens every post card from the home page: the page exists, its images load, its videos play, its local links resolve. |

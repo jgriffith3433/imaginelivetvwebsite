@@ -120,6 +120,76 @@ async function toStart(t) {
   t.event("reset", "start (via Tree)");
 }
 
+/* ---------------- the flashlight (js/spot.js) ---------------- */
+
+// Every scene is in another language on purpose (story/README.md); the flashlight shows the English under the words.
+const TORCH_KEY = "finalSparkTorchUsed";
+let savedTorch;
+function rememberTorch() {
+  try {
+    savedTorch = localStorage.getItem(TORCH_KEY);
+  } catch {}
+}
+function restoreTorch() {
+  if (savedTorch === undefined) return;
+  try {
+    if (savedTorch == null) localStorage.removeItem(TORCH_KEY);
+    else localStorage.setItem(TORCH_KEY, savedTorch);
+  } catch {}
+  if (savedTorch == null) document.querySelector(".inventory")?.classList.remove("is-known");
+  savedTorch = undefined;
+}
+
+const BEAM_LIFT = 168; // spot.js holds the beam this far above the pointer
+const mouse = (type, x, y, target = window) =>
+  target.dispatchEvent(new PointerEvent(type, { bubbles: true, cancelable: true, pointerType: "mouse", pointerId: 1, isPrimary: true, button: 0, buttons: type === "pointerup" ? 0 : 1, clientX: x, clientY: y }));
+
+/** Read the hint, pick up the flashlight, sweep it over the story and the question, then put it back. */
+async function readWithFlashlight(t) {
+  const bar = document.querySelector(".inventory");
+  const slot = $("torch-slot");
+  if (!bar || !slot) {
+    t.problem("bug", "no flashlight in the inventory");
+    return;
+  }
+  const hint = bar.querySelector(".inventory-hint");
+  if (hint && getComputedStyle(hint).display !== "none") t.event("hint", bar.querySelector(".inventory-label").textContent.trim());
+  else if (bar.classList.contains("is-known")) t.note("the flashlight hint was already dismissed in this browser");
+  else t.problem("bug", "the inventory doesn't say how to read the words");
+
+  t.scene("The flashlight");
+  $("spark-story").scrollIntoView({ block: "center" });
+  await sleep(300);
+  const s = slot.getBoundingClientRect();
+  mouse("pointerdown", s.left + s.width / 2, s.top + s.height / 2, slot);
+  await sleep(400);
+
+  for (const id of ["spark-story", "spark-question"]) {
+    const el = $(id);
+    const r = el.getBoundingClientRect();
+    const y = r.top + Math.min(r.height / 2, 40) + BEAM_LIFT;
+    // Sweep left to right over the line, the way a viewer reads with the light.
+    for (let i = 0; i <= 8; i++) {
+      mouse("pointermove", r.left + (r.width * i) / 8, y);
+      await sleep(120);
+    }
+    mouse("pointermove", r.left + r.width / 2, y);
+    await sleep(1500); // hold so the footage shows the English
+    const lit = el.classList.contains("is-lit");
+    const shown = `"${enText(el)}" (under "${(el.querySelector(".spot-src") || el).textContent.trim()}")`;
+    if (lit) t.event("flashlight", `${id.replace("spark-", "")}: ${shown}`);
+    else t.problem("bug", `the flashlight didn't light the ${id.replace("spark-", "")}`);
+  }
+
+  // Click to put it back (pointerdown and click, as a mouse does).
+  mouse("pointerdown", 4, 4, document.body);
+  document.body.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, clientX: 4, clientY: 4 }));
+  await sleep(300);
+  if (document.querySelector(".torch.is-docked")) t.event("flashlight", "back in the inventory");
+  else t.problem("bug", "the flashlight didn't go back to the inventory");
+  t.scene("The sewer");
+}
+
 function stopVideos() {
   document.querySelectorAll("video").forEach((v) => {
     try {
@@ -130,6 +200,7 @@ function stopVideos() {
 
 async function smoke(options, t) {
   rememberProgress();
+  rememberTorch();
   t.scene("Home");
   if (!spark()) throw new Error("the player (js/game.js) didn't start");
   document.querySelector("#spark").scrollIntoView({ block: "start" });
@@ -137,6 +208,8 @@ async function smoke(options, t) {
   t.scene("The sewer");
   t.progress(0.2);
   const ok = await checkVideo(t, document.querySelector("#spark-video video"), "start", 3);
+  t.progress(0.4);
+  await readWithFlashlight(t);
   t.progress(0.6);
   const buttons = choiceButtons();
   if (!buttons.length || buttons.some((b) => b.offsetParent === null)) t.problem("bug", "start: no visible choices");
@@ -382,7 +455,7 @@ async function blog(options, t) {
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "Home, the story's first video plays, a choice appears, one step in and back", seconds: 20, tags: ["smoke"] },
+    { id: "smoke", title: "Home, the story's first video plays, the flashlight shows the English under the words, a choice appears, one step in and back", seconds: 30, tags: ["smoke"] },
     { id: "branches", title: "The Final Spark player: every scene, every choice, every video", seconds: 150, tags: ["full"] },
     { id: "pages", title: "The branch pages (one folder per branch): videos and choice links", seconds: 60, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
@@ -398,11 +471,13 @@ installPlaytest({
       stopVideos();
       closeFrame();
       restoreProgress();
+      restoreTorch();
     }
   },
   stop() {
     stopVideos();
     closeFrame();
     restoreProgress();
+    restoreTorch();
   },
 });
