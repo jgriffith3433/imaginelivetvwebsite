@@ -180,13 +180,20 @@
     if (!started || !started.catch) return;
     started.catch(function () {
       if (activeClip !== video) return;
+      // No sound before the viewer's first tap: play muted so the picture moves, unmute on the tap.
+      video.muted = true;
+      var quiet = video.play();
+      if (quiet && quiet.catch) quiet.catch(function () {});
       clipUnlock = function (event) {
         var el = event.target;
         if (el.closest && el.closest(".choice, #spark-back, .spark-tab")) return;
         stopClipUnlock();
         if (activeClip !== video) return;
         video.muted = false;
-        video.play();
+        if (video.paused) {
+          var again = video.play();
+          if (again && again.catch) again.catch(function () {});
+        }
       };
       document.addEventListener("pointerdown", clipUnlock, true);
     });

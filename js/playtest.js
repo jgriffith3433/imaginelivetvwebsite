@@ -33,23 +33,33 @@ const enText = (el) => ((el && (el.querySelector(".spot-en") || el).textContent)
 
 const MEDIA_ERR = { 1: "aborted", 2: "network error", 3: "decode error", 4: "not found or unsupported" };
 
-/** The video loads (metadata and a frame), then plays for `seconds`. Returns true when it did. */
-async function checkVideo(t, video, where, seconds = 2) {
+/** The video loads (metadata and a frame), then plays for `seconds`. Returns true when it did.
+    `autoplay`: the player's videos must start by themselves (muted if the browser wants a tap for sound). */
+async function checkVideo(t, video, where, seconds = 2, { autoplay = false } = {}) {
   if (!video) {
     t.problem("bug", `${where}: no video`);
     return false;
   }
   const src = decodeURI(new URL(video.currentSrc || video.src, location.href).pathname);
   const t0 = performance.now();
-  const loaded = await waitFor(() => video.error || (video.readyState >= 2 && isFinite(video.duration) && video.duration > 0), 20000);
+  const ready = () => video.readyState >= 2 && isFinite(video.duration) && video.duration > 0;
+  const already = ready();
+  const loaded = await waitFor(() => video.error || ready(), 20000);
   if (video.error || !loaded) {
     const why = video.error ? MEDIA_ERR[video.error.code] || `error ${video.error.code}` : `readyState ${video.readyState} after 20 s`;
     t.problem("bug", `${where}: video ${src} didn't load (${why})`);
     return false;
   }
   t.add("videosLoaded");
-  t.metric("lastVideoLoadMs", Math.round(performance.now() - t0));
-  t.log(`${where}: ${src} ${video.duration.toFixed(1)} s, loaded in ${Math.round(performance.now() - t0)} ms`);
+  const loadMs = Math.round(performance.now() - t0);
+  if (!already) t.metric("lastVideoLoadMs", loadMs);
+  t.log(`${where}: ${src} ${video.duration.toFixed(1)} s, ${already ? "already loaded" : `loaded in ${loadMs} ms`}, at ${video.currentTime.toFixed(1)} s${video.paused ? ", paused" : ""}${video.muted ? ", muted" : ""}`);
+
+  if (autoplay && !video.ended) {
+    const t1 = video.currentTime;
+    const moving = await waitFor(() => !video.paused && video.currentTime > t1 + 0.3, 3000);
+    if (!moving) t.problem("bug", `${where}: video ${src} doesn't start by itself (stuck at ${video.currentTime.toFixed(1)} s${video.paused ? ", paused" : ""}): it shows one frozen frame until a tap`);
+  }
 
   const start = video.currentTime;
   if (video.paused) {
@@ -74,6 +84,7 @@ async function checkVideo(t, video, where, seconds = 2) {
     return false;
   }
   t.add("videosPlayed");
+  t.metric("lastVideoTime", Number(video.currentTime.toFixed(1)));
   return true;
 }
 
@@ -136,7 +147,7 @@ async function smoke(options, t) {
   await toStart(t);
   t.scene("The sewer");
   t.progress(0.2);
-  const ok = await checkVideo(t, document.querySelector("#spark-video video"), "start", 3);
+  const ok = await checkVideo(t, document.querySelector("#spark-video video"), "start", 3, { autoplay: true });
   t.progress(0.6);
   const buttons = choiceButtons();
   if (!buttons.length || buttons.some((b) => b.offsetParent === null)) t.problem("bug", "start: no visible choices");
@@ -150,10 +161,11 @@ async function smoke(options, t) {
     t.event("choice", `${enText(buttons[0])} -> ${sceneId()}`);
     if (sceneId() === "start") t.problem("bug", `start: "${enText(buttons[0])}" goes nowhere`);
     else if ($("spark-story").textContent === storyBefore) t.problem("bug", `${sceneId()}: the page text didn't change after "${enText(buttons[0])}"`);
-    else await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1);
+    else await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1, { autoplay: true });
     $("spark-back").click();
     await sleep(300);
     if (sceneId() !== "start") t.problem("bug", "Back didn't return to the start");
+    else await checkVideo(t, document.querySelector("#spark-video video"), "start (after Back)", 1, { autoplay: true });
   }
   t.progress(1);
 }
@@ -176,7 +188,7 @@ async function branches(options, t) {
     t.note(path.join(" > "));
     t.event("scene", `${id} (${info.state}, ${info.choices.length} choices)`);
     t.progress(seen.size / all.length);
-    await checkVideo(t, document.querySelector("#spark-video video"), id, 2);
+    await checkVideo(t, document.querySelector("#spark-video video"), id, 2, { autoplay: true });
     if (!info.choices.length) {
       if (info.state === "soon") t.event("ending", `${id}: ${enText($("spark-ending"))}`);
       else t.problem("bug", `${id}: dead end with no choices and no ending`);
