@@ -998,3 +998,206 @@ body.is-holding { touch-action: none; }
 .hawkes-release-date { margin-left: auto; opacity: 0.6; font-size: 0.85rem; font-weight: 400; }
 .footer-version { font-size: 0.85rem; opacity: 0.75; }
 .footer-version a { color: inherit; }
+
+/* The standard sound setup (js/hawkes-sound.js): the Tap to play prompt and the Settings panel. */
+html.is-tap-waiting, html.is-tap-waiting body { overflow: hidden; }
+
+.tap-to-play {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vmin, 1.4rem);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 170, 70, 0.16), transparent 34vmax),
+    #070807;
+  color: var(--ink);
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition: opacity 0.25s ease;
+}
+
+.tap-to-play.is-gone { opacity: 0; pointer-events: none; }
+.tap-to-play:focus { outline: none; }
+
+.tap-title {
+  margin: 0;
+  padding: 0 1rem;
+  color: var(--green-soft);
+  font-size: clamp(1.3rem, 6.2vmin, 3.4rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+}
+
+.tap-match {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #ffb347;
+  box-shadow: 0 0 1.2rem 0.4rem rgba(255, 160, 60, 0.55), 0 0 3.5rem 1.4rem rgba(255, 120, 30, 0.2);
+  animation: tap-flicker 1.6s ease-in-out infinite;
+}
+
+.tap-button {
+  min-height: 3.2rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 2rem;
+  border: 1px solid var(--green-mid);
+  border-radius: 999px;
+  background: var(--green-deep);
+  color: var(--green-soft);
+  font-size: clamp(1.05rem, 4.6vmin, 1.5rem);
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+
+.tap-to-play:hover .tap-button,
+.tap-to-play:focus-visible .tap-button { border-color: var(--green); }
+
+.tap-note {
+  margin: 0;
+  padding: 0 6vw;
+  color: var(--muted);
+  font-size: clamp(0.85rem, 3.2vmin, 1.05rem);
+}
+
+@keyframes tap-flicker {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  45% { opacity: 0.78; transform: scale(0.92); }
+  60% { opacity: 0.95; transform: scale(1.05); }
+}
+
+.sound-gear {
+  position: absolute;
+  top: 50%;
+  right: max(0.5rem, env(safe-area-inset-right));
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.sound-gear svg { width: 1.35rem; height: 1.35rem; }
+.sound-gear:hover, .sound-gear:focus-visible { color: var(--green-soft); background: rgba(255, 255, 255, 0.06); }
+.sound-gear.is-floating { position: fixed; top: 0.5rem; transform: none; z-index: 70; }
+
+.sound-settings {
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.sound-card {
+  width: min(22rem, 100%);
+  padding: 1.2rem 1.3rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--raise);
+  box-shadow: var(--shadow);
+}
+
+.sound-card h2 {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sound-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3rem;
+}
+
+.sound-label { flex: 0 0 4.5rem; color: var(--ink); }
+
+.sound-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.75rem;
+  padding: 0 0.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.sound-switch-knob {
+  position: relative;
+  width: 2.8rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  background: var(--green-mid);
+  transition: background 0.15s ease;
+}
+
+.sound-switch-knob::after {
+  content: "";
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.sound-switch[aria-checked="true"] .sound-switch-knob { background: #c98a3c; }
+.sound-switch[aria-checked="true"] .sound-switch-knob::after { transform: translateX(1.25rem); background: #fff; }
+
+.sound-row input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  height: 2.75rem;
+  accent-color: #c98a3c;
+}
+
+.sound-row input[type="range"]:disabled { opacity: 0.4; }
+.sound-value { flex: 0 0 2.8rem; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.sound-done {
+  width: 100%;
+  min-height: 2.9rem;
+  margin-top: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--green-deep);
+  color: var(--green-soft);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.sound-done:hover, .sound-done:focus-visible { border-color: var(--green); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tap-match { animation: none; }
+  .tap-to-play, .sound-switch-knob, .sound-switch-knob::after { transition: none; }
+}

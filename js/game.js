@@ -175,6 +175,15 @@
   function playClip(video) {
     activeClip = video;
     stopClipUnlock();
+    // js/hawkes-sound.js: the first video waits for the Tap to play prompt, which starts it with sound. The next
+    // ones start here, inside the viewer's click, with the saved Settings.
+    var sound = window.hawkesSound;
+    if (sound) {
+      video.setAttribute("data-sound-start", "");
+      if (sound.unlocked()) sound.play(video);
+      else sound.apply(video);
+      return;
+    }
     video.muted = false;
     var started = video.play();
     if (!started || !started.catch) return;
@@ -222,7 +231,8 @@
     if (videoSrc) {
       const video = document.createElement("video");
       video.src = videoSrc;
-      video.autoplay = true;
+      // With the sound prompt, playClip starts it (autoplay would start it behind the prompt).
+      video.autoplay = !window.hawkesSound;
       video.playsInline = true;
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");

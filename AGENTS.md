@@ -36,11 +36,17 @@ progress cookie is put back.
 | `smoke` (~6 s) | Go back to the start (Tree tab, start node), the first video loads and plays 3 s, the choices show, one choice in, Back. |
 | `branches` (~90 s) | Walks every scene of the player by clicking every choice and Back. Each video must load (readyState, duration) and play 2 s. Checks every scene is reachable, that non-ending scenes have choices, and that the opening matches `TheFinalSpark/Decision tree.txt` (the `TREE` table in `js/playtest.js`). |
 | `pages` (~30 s) | The branch pages, one folder per branch (`BRANCH_FOLDERS` in `js/playtest.js`; add new folders there). Each page's video loads and plays, and each choice links to a page that exists. Reports dead ends and orphan pages. |
+| `sound` (~45 s) | The studio's standard sound setup (`js/hawkes-sound.js`): the Tap to play prompt covers the screen, a hit-tested press on it unlocks sound and the video plays unmuted (and the next scene's after a choice); Settings (header gear) Sound off + Volume 40% are saved in `localStorage["hawkes.sound"]`, the page reloads (the run carries on through `?playtest=sound`), the choice is back and applied, then a branch page's prompt and video. |
 | `blog` (~5 s) | Opens every post card from the home page: the page exists, its images load, its videos play, its local links resolve. |
 
 `js/game.js` exposes a read-only `window.finalSpark` (`scene()`, `scenes()`, `depth()`) for the bot. Try it:
 open http://localhost:8090/?playtest=branches and, when it's done, run `hawkesPlaytest.report()` in the console.
 If the browser blocks unmuted autoplay, the bot plays the video muted and logs an `autoplay-blocked` event.
+Every page with a story video loads `js/hawkes-sound.js` (the home page before `js/game.js`; the branch pages through
+`tools/build-story.mjs`): a full-screen Tap to play prompt, then the video marked `data-sound-start` plays with sound
+inside that tap. Every scenario taps the prompt first, like a viewer. Unmuted play from the bot's synthetic presses
+works because the runner starts Chromium with `--autoplay-policy=no-user-gesture-required`; by hand in a normal
+browser, tap the prompt yourself.
 
 ## Versions and What's new
 

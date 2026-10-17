@@ -104,6 +104,56 @@ function waitFor(test, ms) {
   });
 }
 
+/* ---------------- the Tap to play prompt and Settings (js/hawkes-sound.js) ---------------- */
+
+const SOUND_KEY = "hawkes.sound";
+const SOUND_RUN = "iltv.playtest.sound"; // sessionStorage: the sound scenario carries on after its reload
+const soundOf = (doc = document) => doc.defaultView && doc.defaultView.hawkesSound;
+
+/** A press where a viewer's finger or mouse would go: whatever is on top there gets it, so a covered control fails. */
+async function tapAt(t, el, label) {
+  if (!el) throw new Error(`${label} is not on the page`);
+  const doc = el.ownerDocument;
+  const win = doc.defaultView;
+  const r = el.getBoundingClientRect();
+  const x = r.left + r.width / 2;
+  const y = r.top + r.height / 2;
+  const target = doc.elementFromPoint(x, y) || el;
+  if (!el.contains(target)) t.problem("bug", `${label} is covered: a press on it lands on ${target.id ? "#" + target.id : target.tagName.toLowerCase()}`);
+  const touch = win.matchMedia("(pointer: coarse)").matches;
+  const init = { pointerType: touch ? "touch" : "mouse", pointerId: touch ? 51 : 1, isPrimary: true, button: 0, buttons: 1, bubbles: true, cancelable: true, composed: true, clientX: x, clientY: y, view: win };
+  target.dispatchEvent(new win.PointerEvent("pointerdown", init));
+  target.dispatchEvent(new win.MouseEvent("mousedown", init));
+  await sleep(60);
+  target.dispatchEvent(new win.PointerEvent("pointerup", { ...init, buttons: 0 }));
+  target.dispatchEvent(new win.MouseEvent("mouseup", { ...init, buttons: 0 }));
+  target.dispatchEvent(new win.MouseEvent("click", { ...init, buttons: 0 }));
+  t.log(`tap ${label}`);
+  await sleep(120);
+}
+
+/** The prompt covers the whole screen, then a tap on it makes it go. Every scenario starts here, like a viewer. */
+async function passPrompt(t, doc = document, where = "home") {
+  const sound = soundOf(doc);
+  if (!sound) {
+    t.problem("bug", `${where}: no sound setup (js/hawkes-sound.js isn't loaded)`);
+    return false;
+  }
+  const prompt = sound.prompt();
+  if (!prompt) {
+    if (!sound.unlocked()) t.problem("bug", `${where}: no Tap to play prompt when the page loads`);
+    return sound.unlocked();
+  }
+  const r = prompt.getBoundingClientRect();
+  const win = doc.defaultView;
+  if (r.width < win.innerWidth - 2 || r.height < win.innerHeight - 2) t.problem("bug", `${where}: the Tap to play prompt doesn't cover the screen (${Math.round(r.width)}x${Math.round(r.height)} of ${win.innerWidth}x${win.innerHeight})`);
+  await tapAt(t, prompt.querySelector(".tap-button") || prompt, `Tap to play (${where})`);
+  const gone = await waitFor(() => !sound.prompt(), 3000);
+  if (!gone) t.problem("bug", `${where}: the Tap to play prompt stays up after a tap`);
+  t.event("tap-to-play", `${where}: audio ${sound.state().audio}`);
+  return gone;
+}
+
 /* ---------------- the player on the home page ---------------- */
 
 const COOKIE = "finalSparkProgress";
@@ -143,6 +193,7 @@ async function smoke(options, t) {
   rememberProgress();
   t.scene("Home");
   if (!spark()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
   document.querySelector("#spark").scrollIntoView({ block: "start" });
   await toStart(t);
   t.scene("The sewer");
@@ -174,6 +225,7 @@ async function branches(options, t) {
   rememberProgress();
   t.scene("The Final Spark");
   if (!spark()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
   document.querySelector("#spark").scrollIntoView({ block: "start" });
   await toStart(t);
   const all = spark().scenes();
@@ -318,7 +370,9 @@ async function pages(options, t) {
     }
     t.add("pagesOpened");
     t.note((doc.querySelector("h1 .spot-en") || doc.querySelector("h1") || {}).textContent || path);
-    await checkVideo(t, doc.querySelector("video"), path, 2);
+    await waitFor(() => soundOf(doc), 3000);
+    await passPrompt(t, doc, path);
+    await checkVideo(t, doc.querySelector("video"), path, 2, { autoplay: true });
     const links = [...doc.querySelectorAll(".spark-choices a.choice")].map((a) => ({ label: enText(a), to: pathOf(a.getAttribute("href"), doc.baseURI) }));
     t.event("page", `${path}: ${links.length} choices`);
     const ending = doc.querySelector('main[data-state="soon"]');
@@ -391,6 +445,153 @@ async function blog(options, t) {
   t.progress(1);
 }
 
+/* ---------------- sound: the prompt, the unlock, Settings that survive a reload ---------------- */
+
+const savedSound = () => {
+  try {
+    return JSON.parse(localStorage.getItem(SOUND_KEY));
+  } catch {
+    return null;
+  }
+};
+const near = (a, b) => Math.abs(a - b) < 0.011;
+
+/** The video plays with sound (or muted, when Sound is off) at the saved volume, moving by itself. */
+async function checkSound(t, video, where, { on, volume }) {
+  if (!video) return t.problem("bug", `${where}: no video`);
+  const t1 = video.currentTime;
+  const moving = await waitFor(() => !video.paused && video.currentTime > t1 + 0.5, 6000);
+  if (!moving) t.problem("bug", `${where}: the video doesn't play after the tap (at ${video.currentTime.toFixed(1)} s${video.paused ? ", paused" : ""})`);
+  if (on && video.muted) t.problem("bug", `${where}: the video plays muted with Sound on`);
+  if (!on && !video.muted) t.problem("bug", `${where}: the video has sound with Sound off`);
+  const sound = soundOf(video.ownerDocument);
+  if (sound && sound.state().volumeWorks && !near(video.volume, volume)) t.problem("bug", `${where}: video volume ${video.volume.toFixed(2)}, Settings say ${volume}`);
+  t.metric("videoMuted", video.muted ? 1 : 0);
+  t.metric("videoVolume", Number(video.volume.toFixed(2)));
+  t.event("video-sound", `${where}: ${video.paused ? "paused" : "playing"}, ${video.muted ? "muted" : "sound"}, volume ${video.volume.toFixed(2)}`);
+}
+
+async function openSettings(t, where) {
+  await tapAt(t, $("sound-gear"), `Settings (${where})`);
+  if (!(await waitFor(() => soundOf().state().settingsOpen, 3000))) throw new Error(`Settings didn't open (${where})`);
+  t.scene(`Settings (${where})`);
+  await sleep(600);
+}
+
+function slide(input, value) {
+  input.value = String(value);
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+}
+
+async function sound(options, t) {
+  const carried = JSON.parse(sessionStorage.getItem(SOUND_RUN) || "null");
+  if (!soundOf()) throw new Error("js/hawkes-sound.js isn't loaded");
+
+  if (!carried) {
+    // Part 1: the prompt, a tap, the video plays with sound; Sound off and Volume 40%; reload.
+    const original = localStorage.getItem(SOUND_KEY);
+    rememberProgress();
+    localStorage.removeItem(SOUND_KEY); // a first visit: Sound on, full volume
+    t.scene("Tap to play");
+    if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt when the page loads");
+    await sleep(1200);
+    const firstVideo = document.querySelector("#spark-video video");
+    if (firstVideo && !firstVideo.paused) t.problem("bug", "the video plays behind the prompt, before the tap");
+    await passPrompt(t);
+    const st = soundOf().state();
+    if (!st.unlocked) t.problem("bug", "the tap didn't unlock sound");
+    if (st.audio !== "running") t.problem("bug", `the AudioContext is "${st.audio}" after the tap, not running`);
+    t.scene("The Final Spark (sound on)");
+    await checkSound(t, document.querySelector("#spark-video video"), "after the tap", { on: true, volume: 1 });
+    t.progress(0.2);
+
+    // A choice: the next scene's video starts with sound too, no extra tap.
+    await toStart(t);
+    const button = choiceButtons()[0];
+    if (button) {
+      await tapAt(t, button, `choice "${enText(button)}"`);
+      await sleep(300);
+      t.scene(`${sceneId()} (sound on)`);
+      await checkSound(t, document.querySelector("#spark-video video"), `${sceneId()}, after a choice`, { on: true, volume: 1 });
+      await tapAt(t, $("spark-back"), "Back");
+      await sleep(300);
+    }
+    t.progress(0.35);
+
+    await openSettings(t, "home");
+    await tapAt(t, $("sound-on"), "Sound off");
+    slide($("sound-volume"), 40);
+    await sleep(600);
+    const now = savedSound();
+    if (!now || now.on !== false || !near(now.music, 0.4) || !near(now.sfx, 0.4)) t.problem("bug", `hawkes.sound didn't save Sound off and Volume 40%: ${JSON.stringify(now)}`);
+    else t.event("setting-saved", JSON.stringify(now));
+    if (!document.querySelector("#spark-video video").muted) t.problem("bug", "Sound off didn't mute the video right away");
+    await tapAt(t, $("sound-done"), "Done");
+    await sleep(300);
+    if (soundOf().state().settingsOpen) t.problem("bug", "Done didn't close Settings");
+    t.progress(0.5);
+
+    // What part 1 found goes with the run (its report starts over after the reload).
+    const sofar = window.hawkesPlaytest.report() || { events: [], problems: [] };
+    const events = sofar.events.filter((e) => !["start", "scene", "problem"].includes(e.type)).map(({ type, detail }) => ({ type, detail }));
+    sessionStorage.setItem(SOUND_RUN, JSON.stringify({ original, cookie: savedCookie, events, problems: sofar.problems }));
+    savedCookie = null; // put back after the reload
+    t.event("reload", "the page reloads; the run carries on after it");
+    const url = new URL(location.href);
+    url.searchParams.set("playtest", "sound");
+    url.searchParams.set("seed", String(options.seed ?? 1));
+    url.searchParams.set("speed", String(options.speed ?? 1));
+    await sleep(300);
+    location.replace(url.toString());
+    await new Promise(() => {}); // the page is going away
+    return;
+  }
+
+  // Part 2, after the reload: the prompt again, the saved choice is back and applied, then Sound on at 40%.
+  sessionStorage.removeItem(SOUND_RUN);
+  savedCookie = carried.cookie;
+  try {
+    for (const e of carried.events) t.event(`before-reload:${e.type}`, e.detail);
+    for (const p of carried.problems || []) t.problem(p.severity, `before the reload: ${p.message}`);
+    t.progress(0.55);
+    t.scene("Tap to play (after reload)");
+    if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt after the reload");
+    await sleep(1000);
+    const back = soundOf().settings();
+    if (back.on !== false || !near(back.music, 0.4)) t.problem("bug", `the setting didn't survive the reload: ${JSON.stringify(back)}`);
+    else t.event("setting-survived-reload", JSON.stringify(back));
+    await passPrompt(t, document, "home, after the reload");
+    t.scene("The Final Spark (sound off)");
+    await checkSound(t, document.querySelector("#spark-video video"), "after the reload", { on: false, volume: 0.4 });
+    t.progress(0.7);
+
+    await openSettings(t, "after the reload");
+    const shows = `${$("sound-on").getAttribute("aria-checked") === "true" ? "On" : "Off"} / ${$("sound-volume").value}%`;
+    if (shows !== "Off / 40%") t.problem("bug", `Settings show "${shows}" after the reload, not Off / 40%`);
+    await tapAt(t, $("sound-on"), "Sound on");
+    await sleep(400);
+    await tapAt(t, $("sound-done"), "Done");
+    t.scene("The Final Spark (sound on, 40%)");
+    await checkSound(t, document.querySelector("#spark-video video"), "Sound on at 40%", { on: true, volume: 0.4 });
+    t.progress(0.85);
+
+    // A branch page (its own page load): the prompt, then its video with the same saved sound.
+    const path = folderOf(story().start);
+    const doc = await frameLoad(t, (f) => (f.src = path));
+    if (!doc) throw new Error(`${path} didn't load`);
+    t.scene(`${path} (branch page)`);
+    await sleep(800);
+    await passPrompt(t, doc, path);
+    await checkSound(t, doc.querySelector("video"), path, { on: true, volume: 0.4 });
+    closeFrame();
+    t.progress(1);
+  } finally {
+    if (carried.original == null) localStorage.removeItem(SOUND_KEY);
+    else localStorage.setItem(SOUND_KEY, carried.original);
+  }
+}
+
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
@@ -398,14 +599,22 @@ installPlaytest({
     { id: "branches", title: "The Final Spark player: every scene, every choice, every video", seconds: 150, tags: ["full"] },
     { id: "pages", title: "The branch pages (one folder per branch): videos and choice links", seconds: 60, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
+    {
+      id: "sound",
+      title: "Tap to play unlocks sound, Settings (Sound, Volume) that survive a reload",
+      seconds: 45,
+      tags: ["full", "menus"],
+      description: "Shows the Tap to play prompt and taps it with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs and the video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the prompt is back, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back.",
+    },
   ],
-  isReady: () => document.readyState === "complete" && !!spark(),
+  isReady: () => document.readyState === "complete" && !!spark() && !!soundOf(),
   async start(id, options, t) {
     try {
       if (id === "smoke") await smoke(options, t);
       else if (id === "branches") await branches(options, t);
       else if (id === "pages") await pages(options, t);
       else if (id === "blog") await blog(options, t);
+      else if (id === "sound") await sound(options, t);
     } finally {
       stopVideos();
       closeFrame();

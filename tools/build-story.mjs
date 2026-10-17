@@ -147,7 +147,7 @@ function page(s) {
 
   <main class="passage"${s.dead ? ' data-state="dead"' : s.ending ? ' data-state="soon"' : ''}>
     ${spot(s, s.title, 'h1')}
-    <video src="${esc(videoOf(s))}" controls playsinline preload="metadata"></video>
+    <video src="${esc(videoOf(s))}" controls playsinline preload="auto" data-sound-start></video>
     ${spot(s, s.story, 'p', 'passage-note')}
     ${spot(s, s.question, 'p', 'passage-prompt')}
     ${choices ? `<div class="spark-choices">${choices}</div>` : ''}${s.ending ? `\n    ${spot(s, s.ending, 'p', 'passage-prompt')}` : ''}
@@ -157,6 +157,7 @@ function page(s) {
     <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>
     <p class="powered">Powered by Someone</p>
   </footer>
+  <script src="/js/hawkes-sound.js"></script>
   <script src="/js/spot.js"></script>
 </body>
 </html>
