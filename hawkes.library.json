@@ -1,0 +1,20 @@
+{
+  "_about": "The Final Spark in the Hawkes Gen library (hawkesgen/clients/js/hawkesgen-folders.mjs): the cast from story/characters (a frame from the filmed clips, and the reference sheet made from it) and every page's video from assets/video. Picks write back to the same files.",
+  "project": "imaginelivetv",
+  "layout": "files",
+  "mappings": [
+    {
+      "kind": "character",
+      "root": "story/characters",
+      "slots": [
+        { "slot": "seed", "current": "{entity}-seed.jpg" },
+        { "slot": "sheet", "current": "{entity}.png" }
+      ]
+    },
+    {
+      "kind": "page",
+      "root": "assets/video",
+      "slots": [{ "slot": "clip", "current": "{entity}.mp4" }]
+    }
+  ]
+}
