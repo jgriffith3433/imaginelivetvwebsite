@@ -34,6 +34,12 @@ Deaths send you back to the sewer ("try again in another life").
   generated shot keeps the same faces): **you** (a young person in a worn olive canvas jacket), **the rat**, **the old
   man** at the door, **the shadow**.
 
+- **Sound.** Every story page opens on a black "Tap to play" screen (*THE FINAL SPARK*, one lit match, "Sound on.
+  Strike the first match."). The tap is the first match: it unlocks sound, and the page's video starts with it. The
+  gear in the header is Settings (Sound on/off, Volume), kept for every page (`js/hawkes-sound.js`, the studio's
+  standard sound setup). The prompt and Settings are in English, like the Play/Tree tabs: they are the site, not
+  the story.
+
 ## Waiting for J (not canon until approved)
 
 - **The old man's line** at the door (`knock`, marked `draft`): *"Do you know what time it is? Go away. Nobody comes
