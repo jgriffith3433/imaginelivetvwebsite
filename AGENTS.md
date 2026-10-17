@@ -38,6 +38,7 @@ progress cookie is put back.
 | `pages` (~30 s) | The branch pages, one folder per branch (`BRANCH_FOLDERS` in `js/playtest.js`; add new folders there). Each page's video loads and plays, and each choice links to a page that exists. Reports dead ends and orphan pages. |
 | `sound` (~45 s) | The studio's standard sound setup (`js/hawkes-sound.js`): the Tap to play prompt covers the screen, a hit-tested press on it unlocks sound and the video plays unmuted (and the next scene's after a choice); Settings (header gear) Sound off + Volume 40% are saved in `localStorage["hawkes.sound"]`, the page reloads (the run carries on through `?playtest=sound`), the choice is back and applied, then a branch page's prompt and video. |
 | `blog` (~5 s) | Opens every post card from the home page: the page exists, its images load, its videos play, its local links resolve. |
+| `credits` (~12 s) | Every page's footer says "Powered by HAWKES GEN" linking to https://hawkesgen.com, and the home page's links to the parent company, https://hawkesbiomedical.com (each visible and hit-tested). Checks the home page, a blog post, the start's branch page and What's new, and that nothing lies over the story video. The footer is in `tools/build-story.mjs` for branch pages and hand-written in every other page. |
 
 `js/game.js` exposes a read-only `window.finalSpark` (`scene()`, `scenes()`, `depth()`) for the bot. Try it:
 open http://localhost:8090/?playtest=branches and, when it's done, run `hawkesPlaytest.report()` in the console.

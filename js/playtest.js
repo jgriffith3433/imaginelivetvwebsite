@@ -445,6 +445,93 @@ async function blog(options, t) {
   t.progress(1);
 }
 
+/* ---------------- credits: "Powered by HAWKES GEN" on every page, the parent company on the home page ---------------- */
+
+const GEN_URL = "https://hawkesgen.com";
+const PARENT_URL = "https://hawkesbiomedical.com";
+const sameUrl = (a, b) => {
+  try {
+    return new URL(a).href === new URL(b).href;
+  } catch {
+    return false;
+  }
+};
+const overlaps = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+
+/** A footer link a viewer can see and press: scrolled to, on top where it is, going to `url`. */
+async function checkLink(t, doc, find, url, label, where) {
+  const link = [...doc.querySelectorAll("a[href]")].find((a) => find(a) && sameUrl(a.href, url));
+  if (!link) {
+    t.problem("bug", `${where}: no "${label}" link to ${url}`);
+    return null;
+  }
+  link.scrollIntoView({ block: "center", behavior: "instant" });
+  await sleep(500);
+  const r = link.getBoundingClientRect();
+  const win = doc.defaultView;
+  const style = win.getComputedStyle(link);
+  if (!r.width || !r.height || style.visibility === "hidden" || Number(style.opacity) === 0) {
+    t.problem("bug", `${where}: the "${label}" link is not visible`);
+    return link;
+  }
+  const top = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+  if (!top || !link.contains(top)) t.problem("bug", `${where}: the "${label}" link is covered by ${top ? (top.id ? "#" + top.id : top.tagName.toLowerCase()) : "nothing on screen"}`);
+  else t.event("credit-link", `${where}: "${label}" -> ${link.href}`);
+  t.add("creditLinks");
+  return link;
+}
+
+/** The mark: "Powered by HAWKES GEN" linking to hawkesgen.com, and never over the page's story video. */
+async function checkMark(t, doc, where) {
+  const link = await checkLink(t, doc, (a) => /powered by\s+hawkes gen/i.test(((a.parentElement || a).textContent || "").replace(/\s+/g, " ")) && /^HAWKES GEN$/i.test(a.textContent.trim()), GEN_URL, "Powered by HAWKES GEN", where);
+  if (!link) return;
+  for (const v of doc.querySelectorAll("video")) {
+    v.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(300);
+    const vr = v.getBoundingClientRect();
+    const mark = (link.closest(".powered") || link).getBoundingClientRect();
+    const onTop = doc.elementFromPoint(vr.left + vr.width / 2, vr.top + vr.height / 2);
+    if (overlaps(vr, mark)) t.problem("bug", `${where}: the HAWKES GEN mark overlaps the story video`);
+    else if (onTop && !v.contains(onTop) && !(onTop.closest && onTop.closest("video"))) t.problem("bug", `${where}: the story video is covered by ${onTop.id ? "#" + onTop.id : onTop.tagName.toLowerCase()}`);
+    else t.event("video-clear", `${where}: nothing over the story video`);
+  }
+}
+
+async function credits(options, t) {
+  rememberProgress();
+  t.scene("Home footer");
+  await passPrompt(t);
+  await checkMark(t, document, "home");
+  await checkLink(t, document, (a) => /hawkes biomedical/i.test(a.textContent), PARENT_URL, "Hawkes Biomedical", "home");
+  await sleep(1500); // the footer stays on screen for the footage
+  t.progress(0.25);
+
+  // A blog post and a branch page, opened by a viewer's click from the home page, then What's new.
+  const post = document.querySelector("#blog a.post-card");
+  const pagesToCheck = [
+    post && { from: "/", to: pathOf(post.getAttribute("href")), name: "blog post" },
+    { from: null, to: folderOf(story().start), name: "branch page" },
+    { from: "/", to: "/whatsnew.html", name: "What's new" },
+  ].filter(Boolean);
+  for (let i = 0; i < pagesToCheck.length; i++) {
+    const p = pagesToCheck[i];
+    t.scene(`${p.name} footer`);
+    const doc = await openByClick(t, p.from, p.to);
+    if (isMissingPage(doc)) {
+      t.problem("bug", `${p.to}: opened the not-found page`);
+      continue;
+    }
+    if (soundOf(doc)) await passPrompt(t, doc, p.to);
+    await checkMark(t, doc, `${p.name} ${p.to}`);
+    doc.querySelectorAll("video").forEach((v) => v.pause());
+    await sleep(1200);
+    t.progress(0.25 + (0.75 * (i + 1)) / pagesToCheck.length);
+  }
+  closeFrame();
+  window.scrollTo(0, 0);
+  t.progress(1);
+}
+
 /* ---------------- sound: the prompt, the unlock, Settings that survive a reload ---------------- */
 
 const savedSound = () => {
@@ -600,6 +687,13 @@ installPlaytest({
     { id: "pages", title: "The branch pages (one folder per branch): videos and choice links", seconds: 60, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {
+      id: "credits",
+      title: "Powered by HAWKES GEN on every kind of page, Hawkes Biomedical on the home page",
+      seconds: 30,
+      tags: ["full"],
+      description: "Taps Tap to play, scrolls to the home page footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered). Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it).",
+    },
+    {
       id: "sound",
       title: "Tap to play unlocks sound, Settings (Sound, Volume) that survive a reload",
       seconds: 45,
@@ -615,6 +709,7 @@ installPlaytest({
       else if (id === "pages") await pages(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
+      else if (id === "credits") await credits(options, t);
     } finally {
       stopVideos();
       closeFrame();

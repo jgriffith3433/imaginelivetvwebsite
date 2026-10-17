@@ -103,6 +103,24 @@ a { color: var(--green); }
 
 .powered { letter-spacing: 0.04em; }
 
+/* "Powered by HAWKES GEN" on every page, and the parent company on the home page. */
+.powered-mark {
+  color: var(--ink);
+  font-weight: 650;
+  letter-spacing: 0.22em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.powered-mark:hover,
+.powered-mark:focus-visible { color: var(--green-soft); border-bottom-color: var(--muted); }
+
+.parent-company { font-size: 0.85rem; }
+
+.parent-company a { color: inherit; text-underline-offset: 0.2em; }
+
+.parent-company a:hover { color: var(--ink); }
+
 .spark {
   scroll-margin-top: 3.4rem;
   width: min(920px, calc(100% - 1.25rem));
