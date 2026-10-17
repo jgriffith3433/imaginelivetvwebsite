@@ -429,6 +429,7 @@ async function pages(options, t) {
 
 async function blog(options, t) {
   t.scene("Blog");
+  await passPrompt(t); // like a viewer: the home page's Tap to play goes first, so no splash is left behind the post frame
   const posts = [...document.querySelectorAll("#blog a.post-card")].map((a) => ({
     to: pathOf(a.getAttribute("href")),
     title: enText(a.querySelector("h3")),
