@@ -132,6 +132,34 @@ async function tapAt(t, el, label) {
   await sleep(120);
 }
 
+/** The prompt's line says the saved Sound setting: "Sound on." or "Sound off.", never "Sound on." over a saved Off. */
+function checkNote(t, doc, where) {
+  const sound = soundOf(doc);
+  const note = sound && sound.prompt() && sound.prompt().querySelector(".tap-note");
+  if (!note) return t.problem("bug", `${where}: the Tap to play prompt has no sound line`);
+  const on = sound.settings().on;
+  const says = note.textContent.trim();
+  if (!says.startsWith(on ? "Sound on" : "Sound off")) t.problem("bug", `${where}: the Tap to play prompt says "${says}" but the saved setting is Sound ${on ? "on" : "off"}`);
+  t.event("tap-note", `${where}: "${says}" (saved: Sound ${on ? "on" : "off"})`);
+}
+
+/** Settings from the Tap to play prompt's own button (before the tap): Sound off or on, then Done. */
+async function gateSound(t, doc, on, where) {
+  const sound = soundOf(doc);
+  const byId = (id) => doc.getElementById(id);
+  await tapAt(t, sound.prompt().querySelector(".tap-settings"), `Settings on the prompt (${where})`);
+  if (!(await waitFor(() => sound.state().settingsOpen, 3000))) throw new Error(`the prompt's Settings didn't open (${where})`);
+  if (!sound.prompt()) t.problem("bug", `${where}: the prompt's Settings button counted as the tap`);
+  await sleep(500);
+  if (sound.settings().on !== on) await tapAt(t, byId("sound-on"), `Sound ${on ? "on" : "off"} (${where})`);
+  await sleep(400);
+  await tapAt(t, byId("sound-done"), `Done (${where})`);
+  await sleep(300);
+  const saved = JSON.parse(doc.defaultView.localStorage.getItem(SOUND_KEY) || "null");
+  if (!saved || saved.on !== on) t.problem("bug", `${where}: Sound ${on ? "on" : "off"} from the prompt wasn't saved: ${JSON.stringify(saved)}`);
+  else t.event("setting-saved", `${where}: ${JSON.stringify(saved)}`);
+}
+
 /** The prompt covers the whole screen, then a tap on it makes it go. Every scenario starts here, like a viewer. */
 async function passPrompt(t, doc = document, where = "home") {
   const sound = soundOf(doc);
@@ -147,6 +175,7 @@ async function passPrompt(t, doc = document, where = "home") {
   const r = prompt.getBoundingClientRect();
   const win = doc.defaultView;
   if (r.width < win.innerWidth - 2 || r.height < win.innerHeight - 2) t.problem("bug", `${where}: the Tap to play prompt doesn't cover the screen (${Math.round(r.width)}x${Math.round(r.height)} of ${win.innerWidth}x${win.innerHeight})`);
+  checkNote(t, doc, where);
   await tapAt(t, prompt.querySelector(".tap-button") || prompt, `Tap to play (${where})`);
   const gone = await waitFor(() => !sound.prompt(), 3000);
   if (!gone) t.problem("bug", `${where}: the Tap to play prompt stays up after a tap`);
@@ -499,6 +528,26 @@ async function checkMark(t, doc, where) {
 
 async function credits(options, t) {
   rememberProgress();
+  const originalSound = localStorage.getItem(SOUND_KEY);
+  try {
+    await creditsRun(t);
+  } finally {
+    if (originalSound == null) localStorage.removeItem(SOUND_KEY);
+    else localStorage.setItem(SOUND_KEY, originalSound);
+  }
+}
+
+async function creditsRun(t) {
+  // Sound off from the prompt's own Settings: its line must say so, and so must the next page's prompt,
+  // which loads with Sound off already saved.
+  if (soundOf().prompt()) {
+    t.scene("Tap to play");
+    await sleep(800);
+    await gateSound(t, document, false, "home");
+    t.scene("Tap to play (Sound off)");
+    checkNote(t, document, "home, after Sound off");
+    await sleep(1500);
+  }
   t.scene("Home footer");
   await passPrompt(t);
   await checkMark(t, document, "home");
@@ -521,7 +570,13 @@ async function credits(options, t) {
       t.problem("bug", `${p.to}: opened the not-found page`);
       continue;
     }
-    if (soundOf(doc)) await passPrompt(t, doc, p.to);
+    if (soundOf(doc)) {
+      if (soundOf(doc).prompt()) {
+        t.scene(`${p.name}: Tap to play (Sound off saved)`);
+        await sleep(1200);
+      }
+      await passPrompt(t, doc, p.to);
+    }
     await checkMark(t, doc, `${p.name} ${p.to}`);
     doc.querySelectorAll("video").forEach((v) => v.pause());
     await sleep(1200);
@@ -691,7 +746,7 @@ installPlaytest({
       title: "Powered by HAWKES GEN on every kind of page, Hawkes Biomedical on the home page",
       seconds: 30,
       tags: ["full"],
-      description: "Taps Tap to play, scrolls to the home page footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered). Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it).",
+      description: "Taps Tap to play, scrolls to the home page footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered). Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before the first tap it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back.",
     },
     {
       id: "sound",
