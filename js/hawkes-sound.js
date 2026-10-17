@@ -161,8 +161,19 @@
       '<p class="tap-title">THE FINAL SPARK</p>' +
       '<span class="tap-match" aria-hidden="true"></span>' +
       '<span class="tap-button">Tap to play</span>' +
-      '<p class="tap-note">Sound on. Strike the first match.</p>';
+      '<p class="tap-note"></p>' +
+      '<button type="button" class="tap-settings">Settings</button>';
     document.body.appendChild(overlay);
+    renderNote();
+    // Settings on the first screen: it must not count as the tap.
+    var opener = overlay.querySelector(".tap-settings");
+    ["click", "touchend"].forEach(function (type) {
+      opener.addEventListener(type, function (event) {
+        event.stopPropagation();
+        if (type === "touchend") event.preventDefault();
+        openSettings();
+      }, type === "touchend" ? { passive: false } : false);
+    });
     document.documentElement.classList.add("is-tap-waiting");
     overlay.addEventListener("click", onTap);
     // touchend is a gesture on iOS; preventDefault stops the follow-up click landing on a choice underneath.
@@ -174,8 +185,14 @@
     try { overlay.focus({ preventScroll: true }); } catch (e) { /* old browsers */ }
   }
 
+  function renderNote() {
+    var note = overlay && overlay.querySelector(".tap-note");
+    if (note) note.textContent = (settings.on ? "Sound on" : "Sound off") + ". Strike the first match.";
+  }
+
   function onKey(event) {
     if (!overlay || event.repeat) return;
+    if (panel || (event.target && event.target.closest && event.target.closest(".tap-settings"))) return;
     if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -273,6 +290,7 @@
     save();
     applyAll();
     render();
+    renderNote();
   }
 
   function openSettings() {

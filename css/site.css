@@ -1089,6 +1089,19 @@ html.is-tap-waiting, html.is-tap-waiting body { overflow: hidden; }
   font-size: clamp(0.85rem, 3.2vmin, 1.05rem);
 }
 
+.tap-settings {
+  margin-top: 0.4rem;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: clamp(0.85rem, 3vmin, 1rem);
+  cursor: pointer;
+}
+.tap-settings:hover, .tap-settings:focus-visible { color: var(--green-soft); border-color: var(--green); }
+
 @keyframes tap-flicker {
   0%, 100% { opacity: 1; transform: scale(1); }
   45% { opacity: 0.78; transform: scale(0.92); }
