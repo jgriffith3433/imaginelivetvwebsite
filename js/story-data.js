@@ -888,7 +888,7 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
+     "video": "/water-road/the-heat/scene.mp4",
      "dead": true,
      "inventory": {
       "water": -3
@@ -980,7 +980,7 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
+     "video": "/water-road/the-rockslide/scene.mp4",
      "dead": true,
      "inventory": {
       "bullets": -1
@@ -1157,7 +1157,7 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
+     "video": "/water-road/the-high-ground/scene.mp4",
      "dead": true,
      "inventory": {
       "water": -3
@@ -1221,7 +1221,7 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
+     "video": "/water-road/the-gunfight/scene.mp4",
      "dead": true,
      "inventory": {
       "bullets": -6
