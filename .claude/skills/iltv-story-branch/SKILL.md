@@ -20,7 +20,8 @@ Follow "Adding a story" in `story/README.md`:
   `negative`, `characters` (no `seed` = a sheet from the `look` alone), `narrator`, `music`, `use: "gen"`, `scenes`.
 - A listing entry in `story/stories.json`: `id`, `logline` (one line), `image` + `alt` (9:16, optional), and
   `"listed": false` until J approves it and every scene has a video. Its pages go under `/<id>/<folder>/` and its
-  asset ids start with `<id>-`; only The Final Spark lives at the site root.
+  asset ids start with `<id>-`; only The Final Spark lives at the site root. `"status": "complete"` once the story
+  has its ending and J calls it finished: its landing card wears a Completed ribbon.
 - Then steps 1 to 3 below for its scenes. A new story is a proposal until J approves it.
 
 ## 1. Story (no GPU)

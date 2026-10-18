@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Builds every choose-your-path story on the site from its data (story doc: story/README.md):
 //
-//   story/stories.json    the listing: which stories, in what order, each one's card (logline, key image)
+//   story/stories.json    the listing: which stories, in what order, each one's card (logline, key image, Completed)
 //   story/<id>.json       a story's scenes, cast, music and labels (The Final Spark is story/final-spark.json)
 //
 // into
@@ -31,6 +31,8 @@ const CHECK = process.argv.includes('--check');
 // Top-level folders that aren't story pages.
 const RESERVED = new Set(['assets', 'css', 'js', 'f', 'story', 'tools', 'node_modules', 'hawkesgen', 'media']);
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+// A listing entry's status: "complete" when the story has its ending (its card wears a Completed ribbon).
+const STATUSES = ['complete'];
 
 const problems = [];
 const warnings = [];
@@ -76,6 +78,7 @@ function validate(st) {
   const at = (s) => `${id}/${s.id}`;
   if (!Array.isArray(data.title) && typeof data.title !== 'string') problems.push(`${id}: no title`);
   if (!st.entry.logline) problems.push(`${id}: no logline in ${LISTING} (its card's one line)`);
+  if (st.entry.status != null && !STATUSES.includes(st.entry.status)) problems.push(`${id}: status must be ${STATUSES.map((v) => `"${v}"`).join(' or ')}, or left out while the story is still growing`);
   if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) problems.push(`${id}: card image ${st.entry.image} doesn't exist`);
   if (!data.cookie || !/^[A-Za-z0-9_-]+$/.test(data.cookie)) problems.push(`${id}: cookie (the name its progress is saved under) must be letters, digits, - or _`);
   if (!data.ui || !data.ui.en) problems.push(`${id}: ui.en (the English under the player's labels) is missing`);
@@ -179,6 +182,7 @@ function storyData() {
       logline: st.entry.logline,
       image: st.entry.image ?? null,
       listed: st.listed,
+      status: st.entry.status ?? null,
       cookie: st.data.cookie,
       tap: st.data.tap ?? { title: titleOf(st).toUpperCase(), line: '' },
       start: st.data.start,
@@ -203,8 +207,9 @@ function card(st) {
     : first
       ? `<video src="${esc(first)}#t=0.5" muted playsinline preload="metadata" aria-hidden="true"></video>`
       : `<span class="story-card-blank" aria-hidden="true"></span>`;
-  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}">
-        ${picture}
+  const done = st.entry.status === 'complete';
+  return `      <a class="story-card${done ? ' is-complete' : ''}" href="/?story=${st.id}" data-story="${st.id}"${done ? ' data-status="complete"' : ''}>
+        ${picture}${done ? '\n        <span class="story-card-ribbon">Completed</span>' : ''}
         <div class="story-card-text">
           <h2>${esc(titleOf(st))}</h2>
           <p>${esc(st.entry.logline)}</p>

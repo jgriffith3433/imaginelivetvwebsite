@@ -1,12 +1,13 @@
 {
-  "$comment": "The stories on imaginelivetv.com, in the order the landing page lists them. Each one's scenes are in story/<id>.json. Fields: id (the data file's name), logline (one line for its card), image (its card's key image, 9:16; without one the card shows the first video's opening frame) and alt (what the image shows), pages (where its branch pages live: \"/\" for The Final Spark only, every other story under /<id>/), listed (false: built and playable at /?story=<id>, but not on the landing page). `npm run story` builds them all. Story doc: story/README.md.",
+  "$comment": "The stories on imaginelivetv.com, in the order the landing page lists them. Each one's scenes are in story/<id>.json. Fields: id (the data file's name), logline (one line for its card), image (its card's key image, 9:16; without one the card shows the first video's opening frame) and alt (what the image shows), pages (where its branch pages live: \"/\" for The Final Spark only, every other story under /<id>/), status (\"complete\" once the story has its ending: its card wears a Completed ribbon; leave it out while the story is still growing), listed (false: built and playable at /?story=<id>, but not on the landing page). `npm run story` builds them all. Story doc: story/README.md.",
   "stories": [
     {
       "id": "final-spark",
       "logline": "You wake in a sewer with no name and no past. A rat is watching. Every page costs a match.",
       "image": "/assets/images/final-spark.jpg",
       "alt": "A rat sitting on a rusted pipe",
-      "pages": "/"
+      "pages": "/",
+      "status": "complete"
     }
   ]
 }

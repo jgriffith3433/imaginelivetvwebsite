@@ -8,6 +8,7 @@ window.ILTV_STORIES = {
    "logline": "You wake in a sewer with no name and no past. A rat is watching. Every page costs a match.",
    "image": "/assets/images/final-spark.jpg",
    "listed": true,
+   "status": "complete",
    "cookie": "finalSparkProgress",
    "tap": {
     "title": "THE FINAL SPARK",

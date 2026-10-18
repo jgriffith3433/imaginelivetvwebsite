@@ -424,6 +424,17 @@ async function storiesRun(options, t) {
     } else if (poster) {
       if (!(await waitFor(() => poster.readyState >= 2 || poster.error, 15000)) || poster.error) t.problem("bug", `${st.id}: the card's video frame didn't load`);
     } else t.problem("warning", `${st.id}: the card has no picture`);
+    // A finished story (status "complete" in story/stories.json) wears the Completed ribbon; the others don't.
+    const ribbon = card.querySelector(".story-card-ribbon");
+    if (st.status === "complete") {
+      if (!ribbon || ribbon.offsetParent === null || ribbon.textContent.trim() !== "Completed") t.problem("bug", `${st.id}: the story is complete but its card shows no Completed ribbon`);
+      else {
+        const r = ribbon.getBoundingClientRect();
+        const c = card.getBoundingClientRect();
+        if (r.right < c.right - 1 && r.top > c.top + 1) t.problem("bug", `${st.id}: the Completed ribbon isn't across the card's corner`);
+        t.event("completed", st.id);
+      }
+    } else if (ribbon) t.problem("bug", `${st.id}: the card shows a Completed ribbon, but the story isn't complete`);
 
     // A tap on it opens that story's player, with its title, its first page's text, video and choices.
     await openStory(t, st.id);

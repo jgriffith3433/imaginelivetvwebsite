@@ -30,6 +30,8 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
    and `alt` (a 9:16 key image; without one the card shows the first video's opening frame). Leave `pages` out:
    its pages go under `/<id>/<folder>/` (only The Final Spark lives at the site root). Set `"listed": false` while
    it is a draft: it builds and plays at `/?story=<id>` but has no card, and its scenes may have no video yet.
+   When the story is finished (its tree ends and J calls it done), add `"status": "complete"`: its card wears a
+   **Completed** ribbon across the corner. The Final Spark has it (it ends at Destroy the town, THE END).
 4. `npm run story`, then `npm run story -- --check`. It checks every story's tree, writes the card into
    `index.html`, the story's link page `/<id>/` (it opens `/?story=<id>`), its branch pages and its media recipes
    in `hawkes.assets.json` (ids `<id>-<scene>-shot`, `<id>-char-<who>`, `<id>-music-<cue>`; files under

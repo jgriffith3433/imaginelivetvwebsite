@@ -731,6 +731,7 @@ a { color: var(--green); }
 }
 
 .story-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -792,6 +793,29 @@ a { color: var(--green); }
 }
 
 .story-card:hover .story-card-go { color: #fff; border-color: #8d9096; }
+
+/* A finished story's card (status "complete" in story/stories.json): a ribbon across its top right corner. */
+.story-card-ribbon {
+  position: absolute;
+  top: 1.45rem;
+  right: -2.6rem;
+  z-index: 1;
+  width: 10.5rem;
+  padding: 0.32rem 0;
+  color: #121417;
+  background: var(--green);
+  border-block: 1px solid var(--green-soft);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
 
 #spark-tree {
   flex: 1;
