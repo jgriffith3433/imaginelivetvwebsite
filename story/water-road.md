@@ -82,8 +82,8 @@ bar along the bottom of the player and of its pages (never on the landing page):
 
 It is data (`inventory` in `story/water-road.json`): the items with their start and most, and on each scene what it
 does to them: `"inventory": { "water": -1 }` takes one, `{ "water": { "set": 4 } }` fills it. The counts are worked
-out from the way you came (the start, then every page since, the same list the Back button walks), so Back puts the
-counts back and a saved place comes back with them. Coming back to the start (dying, "Try again") starts the counts
+out from the way you came (the start, then every page since), so a saved place comes back with them. There is no
+going back a page to win a swallow back: a choice stands. Coming back to the start (dying, "Try again") starts the counts
 over. A branch page (`/water-road/<folder>/`) is a page on its own, so it shows the counts as you would have them on
 the shortest way there.
 
