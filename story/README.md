@@ -77,9 +77,14 @@ Deaths send you back to the sewer ("try again in another life").
   Strike the first match."). The tap is the first match: it unlocks sound, and the page's video starts with it. The
   gear in the header is Settings (Sound on/off, Volume), kept for every page (`js/hawkes-sound.js`, the studio's
   standard sound setup). The prompt and Settings are in English, like the Play/Tree tabs: they are the site, not
-  the story. (The words come from `tap` in the data. The landing page's prompt is the site's own: *IMAGINE LIVE
-  TV*, "Sound on. Choose a story."; a link straight into the story, `/?story=final-spark` or `/final-spark/`,
-  shows The Final Spark's.)
+  the story. (The words come from `tap` in the data.) Opening the story from its card on the landing page shows the
+  same prompt, and so does a link straight into it, `/?story=final-spark` or `/final-spark/`.
+- **The landing page has no prompt.** It has no video, so nothing to unlock: on a first visit it opens on a title
+  splash, just *IMAGINE LIVE TV* on the prompt's black background, that holds a moment and fades away by itself
+  into "Choose your story". Each story's own Tap to play is where its sound starts. (`splash()` in
+  `js/hawkes-sound.js`; the home page's `<html data-tap-splash>`.)
+- **The inventory is the story's.** The flashlight bar (`js/spot.js`) shows in a story's player and on its pages,
+  never on the landing page.
 
 ## Waiting for J (not canon until approved)
 

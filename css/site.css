@@ -1150,6 +1150,12 @@ body.is-holding .torch-slot { cursor: grabbing; }
 
 .torch-beam.is-on { opacity: 1; }
 
+/* The inventory belongs to the stories: the landing page (js/game.js sets <html data-view>) has none. */
+html[data-view="landing"] { --inventory-h: 0px; }
+html[data-view="landing"] .inventory,
+html[data-view="landing"] .torch,
+html[data-view="landing"] .torch-beam { display: none; }
+
 body.is-holding { touch-action: none; }
 
 @media (max-width: 720px) {
@@ -1197,6 +1203,10 @@ html.is-tap-waiting, html.is-tap-waiting body { overflow: hidden; }
 }
 
 .tap-to-play.is-gone { opacity: 0; pointer-events: none; }
+
+/* The landing page's title splash (splash() in js/hawkes-sound.js): the prompt's background and title, nothing to
+   tap; it fades away by itself (SPLASH_FADE there matches this transition). */
+.tap-splash { cursor: default; transition: opacity 0.9s ease; }
 .tap-to-play:focus { outline: none; }
 
 .tap-title {
