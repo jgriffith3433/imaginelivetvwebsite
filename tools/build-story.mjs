@@ -293,14 +293,18 @@ function card(st) {
     : first
       ? `<video src="${esc(first)}#t=0.5" muted playsinline preload="metadata" aria-hidden="true"></video>`
       : `<span class="story-card-blank" aria-hidden="true"></span>`;
-  // The badge is the player's own progress: js/game.js sets it from the story's saved place (Started, Completed).
+  // The badge, the percent explored and the button are the player's own progress: js/game.js sets them from the
+  // story's cookies (its run and its unlocks).
   return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}" data-progress="new">
         ${picture}
         <span class="story-card-ribbon">Not started</span>
         <div class="story-card-text">
           <h2>${esc(titleOf(st))}</h2>
           <p>${esc(st.entry.logline)}</p>
-          <span class="story-card-go">Play</span>
+          <div class="story-card-foot">
+            <span class="story-card-go">Play</span>
+            <span class="story-card-explored">0% explored</span>
+          </div>
         </div>
       </a>`;
 }
