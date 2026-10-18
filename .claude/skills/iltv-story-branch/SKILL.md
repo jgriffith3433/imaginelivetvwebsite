@@ -18,6 +18,8 @@ Follow "Adding a story" in `story/README.md`:
 - `story/<id>.json` in `final-spark.json`'s shape: `title`, `tagline`, `doc`, `start`, its own `cookie`, `tap`
   (`title`, `line`: its Tap to play screen), `ui` labels for every language its scenes use (plus `en`), `style`,
   `negative`, `characters` (no `seed` = a sheet from the `look` alone), `narrator`, `music`, `use: "gen"`, `scenes`.
+  Optional: its own `inventory` (items + per-scene `inventory` changes, drawn by `js/kit.js`; story doc "A story's
+  inventory"; The Water Road is the example), `unspoken` words and `camera`.
 - A listing entry in `story/stories.json`: `id`, `logline` (one line), `image` + `alt` (9:16, optional), and
   `"listed": false` until J approves it and every scene has a video. Its pages go under `/<id>/<folder>/` and its
   asset ids start with `<id>-`; only The Final Spark lives at the site root. `"status": "complete"` once the story

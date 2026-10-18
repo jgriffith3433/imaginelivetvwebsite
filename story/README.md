@@ -11,6 +11,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
 | Story | Data | Pages | Doc |
 | --- | --- | --- | --- |
 | **The Final Spark** | `story/final-spark.json` | the site root, as they always were: `/the-sewer/`, `/you-turned-right/`, … | this file, below |
+| **The Water Road** (draft, waiting for J; `"listed": false`, plays at `/?story=water-road`) | `story/water-road.json` | `/water-road/the-water-road/`, … | `story/water-road.md` |
 
 ## Adding a story (a data job, no code)
 
@@ -32,12 +33,31 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
    it is a draft: it builds and plays at `/?story=<id>` but has no card, and its scenes may have no video yet.
    When the story is finished (its tree ends and J calls it done), add `"status": "complete"`: its card wears a
    **Completed** ribbon across the corner. The Final Spark has it (it ends at Destroy the town, THE END).
+   Optional: `inventory` (the story's own inventory, below), `unspoken` (words no page may say: the build fails
+   if a scene's text has one) and `camera` (how the camera moves in its clips; default "Slow, tense handheld camera").
 4. `npm run story`, then `npm run story -- --check`. It checks every story's tree, writes the card into
    `index.html`, the story's link page `/<id>/` (it opens `/?story=<id>`), its branch pages and its media recipes
    in `hawkes.assets.json` (ids `<id>-<scene>-shot`, `<id>-char-<who>`, `<id>-music-<cue>`; files under
    `<id>/<folder>/media/` and `assets/story/<id>/music/`).
 5. Media through Studio (GPU: J's OK first), then `listed` comes out of the entry once every scene has a video,
    and the `stories`, `branches` and `pages` playtests cover it.
+
+## A story's inventory
+
+The Final Spark's inventory is the flashlight (`js/spot.js`), and it stays its own. Another story can have its own
+bar of items instead (`js/kit.js`; The Water Road's revolver, bullets and flask), all data in `story/<id>.json`:
+
+- `inventory.items`: each with `id`, `name`, `icon` (one `js/kit.js` draws: `revolver`, `rounds`, `flask`), and for
+  a counted item `start` and `max`; `note` is its tooltip. `"empty": "dead"` says running out of it ends the run.
+- On a scene, `inventory` is what it does: `{ "water": -1 }` takes one, `{ "water": { "set": 4 } }` sets it.
+
+The counts at a scene come from the way you came: the start, then every scene since (the player's history), kept
+between 0 and `max`; back at the start they start over. So Back puts them back and a saved place brings them back.
+A branch page shows the counts on the shortest way to it. `npm run story` checks every way through the story: no
+count goes below none except on a death page, and an `"empty": "dead"` item runs out only on a death page. The
+player and its pages set `<html data-kit>`, which swaps the flashlight for the story's bar; the landing page has
+neither. The `branches` playtest checks the bar against the data on every scene and after every Back, `stories` a
+saved place, `pages` every branch page.
 
 # The Final Spark
 

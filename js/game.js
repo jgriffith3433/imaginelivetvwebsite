@@ -218,6 +218,8 @@
       scene.dir
     );
 
+    showKit();
+
     videoBox.replaceChildren();
     const videoSrc = scene.video || null;
 
@@ -233,6 +235,12 @@
       video.title = STORY.title + " story video";
       videoBox.appendChild(video);
       playClip(video);
+    } else {
+      // A draft story's scene before its media is made: its title on black, where the video will be.
+      const blank = document.createElement("div");
+      blank.className = "spark-video-blank";
+      blank.textContent = scene.titleEn;
+      videoBox.appendChild(blank);
     }
 
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
@@ -270,6 +278,17 @@
     }
 
     markTreeCurrent();
+  }
+
+  /** The open story's own inventory (js/kit.js), counted along the way you came: the start, then every scene
+      since (history), so Back and a saved place give the same counts. The Final Spark's is the flashlight. */
+  function kitCounts() {
+    if (!STORY || !STORY.inventory || !window.iltvKit || !currentScene) return null;
+    return window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, history.concat(currentScene));
+  }
+
+  function showKit() {
+    if (window.iltvKit) window.iltvKit.show(STORY && STORY.inventory ? STORY.inventory : null, kitCounts() || {});
   }
 
   const treeRoot = document.getElementById("spark-tree");
@@ -623,6 +642,8 @@
     root.hidden = false;
     if (firstScreen) firstScreen.classList.remove("is-landing");
     document.documentElement.dataset.view = "story";
+    if (story.inventory) document.documentElement.dataset.kit = story.id;
+    else delete document.documentElement.dataset.kit;
     setView("play");
     window.scrollTo(0, 0);
 
@@ -641,6 +662,8 @@
     landing.hidden = false;
     if (firstScreen) firstScreen.classList.add("is-landing");
     document.documentElement.dataset.view = "landing";
+    delete document.documentElement.dataset.kit;
+    showKit();
     document.title = SITE_TITLE;
     prompt(SITE_TAP);
     sound("dismiss");
@@ -681,7 +704,9 @@
     start: function () { return STORY ? STORY.start : null; },
     scene: function () { return currentScene; },
     scenes: function () { return Object.keys(SCENES); },
-    depth: function () { return history.length; }
+    depth: function () { return history.length; },
+    path: function () { return currentScene ? history.concat(currentScene) : []; },
+    inventory: function () { return kitCounts(); }
   };
   window.iltvStories = {
     list: function () { return DATA.stories.map(function (story) { return story.id; }); },
