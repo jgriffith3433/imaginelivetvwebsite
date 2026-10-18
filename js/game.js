@@ -580,6 +580,13 @@
     if (window.hawkesSound && window.hawkesSound.label) window.hawkesSound.label(words.title, words.line);
   }
 
+  // js/hawkes-sound.js on the home page (<html data-tap-splash>): a story asks for its own Tap to play (that tap
+  // unlocks sound); the landing page has no video, so the first time it shows the site's title splash instead.
+  let splashed = false;
+  function sound(what, arg) {
+    if (window.hawkesSound && window.hawkesSound[what]) window.hawkesSound[what](arg);
+  }
+
   /** The cards say Continue for a story with a saved place past its start. */
   function markCards() {
     if (!storyList) return;
@@ -609,6 +616,8 @@
     if (tabs) tabs.setAttribute("aria-label", story.title);
     document.title = story.title + " · " + SITE_TITLE;
     prompt(story.tap);
+    sound("ask");
+    splashed = true;
 
     landing.hidden = true;
     root.hidden = false;
@@ -634,6 +643,9 @@
     document.documentElement.dataset.view = "landing";
     document.title = SITE_TITLE;
     prompt(SITE_TAP);
+    sound("dismiss");
+    if (!splashed) sound("splash", SITE_TAP.title);
+    splashed = true;
     markCards();
   }
 

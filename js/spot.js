@@ -174,4 +174,16 @@
   requestAnimationFrame(function () {
     torch.classList.add("can-slide");
   });
+
+  // The home page hides the inventory on its landing page (<html data-view>, css/site.css); when a story opens
+  // it comes back, docked in its slot straight away rather than sliding in from the corner.
+  if (window.MutationObserver) {
+    new MutationObserver(function () {
+      torch.classList.remove("can-slide");
+      dock();
+      requestAnimationFrame(function () {
+        torch.classList.add("can-slide");
+      });
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-view"] });
+  }
 })();

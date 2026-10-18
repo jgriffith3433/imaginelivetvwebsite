@@ -165,13 +165,15 @@ async function gateSound(t, doc, on, where) {
   else t.event("setting-saved", `${where}: ${JSON.stringify(saved)}`);
 }
 
-/** The prompt covers the whole screen, then a tap on it makes it go. Every scenario starts here, like a viewer. */
+/** The prompt covers the whole screen, then a tap on it makes it go. Every scenario starts here, like a viewer.
+    The home page's landing page has no prompt: its title splash fades by itself, and the run waits for it. */
 async function passPrompt(t, doc = document, where = "home") {
   const sound = soundOf(doc);
   if (!sound) {
     t.problem("bug", `${where}: no sound setup (js/hawkes-sound.js isn't loaded)`);
     return false;
   }
+  if (doc === document && stories() && stories().view() === "landing") return passSplash(t, where);
   const prompt = sound.prompt();
   if (!prompt) {
     if (!sound.unlocked()) t.problem("bug", `${where}: no Tap to play prompt when the page loads`);
@@ -186,6 +188,60 @@ async function passPrompt(t, doc = document, where = "home") {
   if (!gone) t.problem("bug", `${where}: the Tap to play prompt stays up after a tap`);
   t.event("tap-to-play", `${where}: audio ${sound.state().audio}`);
   return gone;
+}
+
+const SPLASH_WAIT = 6000; // the splash holds about 1.6 s and fades in 0.9 s
+
+/** The landing page's title splash: the site's title alone (no Tap to play, no sound line) on the prompt's
+    background, covering the screen; nothing to tap: it fades away by itself and leaves the stories. A run that
+    starts after it has gone reads what hawkes-sound.js recorded of it. */
+async function passSplash(t, where = "home") {
+  const sound = soundOf();
+  const title = document.documentElement.getAttribute("data-tap-title") || "";
+  if (sound.prompt()) t.problem("bug", `${where}: the landing page shows a Tap to play prompt, not the title splash`);
+  const el = $("title-splash");
+  if (el && sound.state().splash === "shown") {
+    const r = el.getBoundingClientRect();
+    if (r.width < innerWidth - 2 || r.height < innerHeight - 2) t.problem("bug", `${where}: the title splash doesn't cover the screen (${Math.round(r.width)}x${Math.round(r.height)} of ${innerWidth}x${innerHeight})`);
+    const says = el.textContent.replace(/\s+/g, " ").trim();
+    if (says !== title) t.problem("bug", `${where}: the title splash says "${says}", not just "${title}"`);
+    if (el.querySelector(".tap-button, .tap-note, .tap-settings")) t.problem("bug", `${where}: the title splash has Tap to play, a sound line or Settings on it`);
+    const bg = getComputedStyle(el).backgroundImage;
+    if (!bg || bg === "none") t.problem("warning", `${where}: the title splash hasn't the prompt's background`);
+    t.event("splash", `${where}: "${says}"`);
+    // No tap: it goes by itself.
+    if (!(await waitFor(() => !$("title-splash"), SPLASH_WAIT))) t.problem("bug", `${where}: the title splash is still up after ${SPLASH_WAIT / 1000} s (it should fade by itself)`);
+  } else if (!sound.state().splashes) {
+    t.problem("bug", `${where}: no title splash when the landing page loads`);
+    return false;
+  } else await waitFor(() => !$("title-splash"), SPLASH_WAIT);
+  const log = sound.state().splashLog;
+  if (log) {
+    if (log.title !== title) t.problem("bug", `${where}: the title splash said "${log.title}", not "${title}"`);
+    if (log.fading == null || log.gone == null) t.problem("bug", `${where}: the title splash never went away`);
+    else {
+      const fade = log.gone - log.fading;
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduced && fade < 300) t.problem("bug", `${where}: the title splash vanished (${fade} ms) instead of fading out`);
+      t.event("splash-gone", `${where}: held ${log.fading - log.shown} ms, faded ${fade} ms`);
+      t.metric("splashMs", log.gone - log.shown);
+    }
+  }
+  if (sound.prompt()) t.problem("bug", `${where}: a Tap to play prompt is up on the landing page after the splash`);
+  if (document.documentElement.classList.contains("is-tap-waiting")) t.problem("bug", `${where}: the page still can't scroll after the splash`);
+  checkInventory(t, where);
+  return true;
+}
+
+/** The flashlight inventory (js/spot.js) is The Final Spark's: none on the landing page, there in the player. */
+function checkInventory(t, where) {
+  const shown = (el) => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden";
+  const bar = document.querySelector(".inventory");
+  if (landingShown()) {
+    if (shown(bar) || shown($("torch"))) t.problem("bug", `${where}: the landing page shows the inventory (the flashlight)`);
+    else t.event("no-inventory", `${where}: landing page`);
+  } else if (!shown(bar) || !shown($("torch-slot"))) t.problem("bug", `${where}: ${stories().current()} is open but its inventory (the flashlight) isn't shown`);
+  else t.event("inventory", `${where}: ${stories().current()}`);
 }
 
 /* ---------------- the player on the home page ---------------- */
@@ -210,8 +266,9 @@ function restoreProgress() {
 const landingShown = () => !$("stories").hidden && $("spark").hidden;
 const cardOf = (id) => document.querySelector(`#story-list a.story-card[data-story="${id}"]`);
 
-/** Opens a story from its card on the landing page, a viewer's tap (hit-tested). */
-async function openStory(t, id) {
+/** Opens a story from its card on the landing page, a viewer's tap (hit-tested). Its own Tap to play prompt comes
+    up (until sound is unlocked) and is tapped, unless `tap` is false (the caller does it). */
+async function openStory(t, id, { tap = true } = {}) {
   if (stories().current() === id && !$("spark").hidden) return;
   if (!landingShown()) await toLanding(t);
   const card = cardOf(id);
@@ -224,6 +281,12 @@ async function openStory(t, id) {
   if ($("spark").hidden) t.problem("bug", `${id}: the card opened the story but the player is hidden`);
   if (new URL(location.href).searchParams.get("story") !== id) t.problem("bug", `${id}: the address doesn't say ?story=${id} (a reload would lose the story)`);
   t.event("story-open", `${id} (${story(id).title})`);
+  const sound = soundOf();
+  if (sound.prompt()) {
+    const promptTitle = (sound.prompt().querySelector(".tap-title")?.textContent || "").trim();
+    if (promptTitle !== story(id).tap.title) t.problem("bug", `${id}: the Tap to play prompt says "${promptTitle}", not "${story(id).tap.title}"`);
+    if (tap) await passPrompt(t, document, id);
+  } else if (!sound.unlocked()) t.problem("bug", `${id}: the story opened without its Tap to play prompt (sound is still locked)`);
   document.querySelector("#spark").scrollIntoView({ block: "start", behavior: "instant" });
 }
 
@@ -405,6 +468,7 @@ async function storiesRun(options, t) {
   const order = cards.map((c) => c.dataset.story);
   if (order.join() !== list.map((st) => st.id).join()) t.problem("bug", `the landing page shows ${order.join(", ") || "no stories"}, the listing has ${list.map((st) => st.id).join(", ")}`);
   allStories().filter((st) => !st.listed && cardOf(st.id)).forEach((st) => t.problem("bug", `${st.id} has a card but isn't listed`));
+  checkInventory(t, "landing page");
   await sleep(1000); // the landing page stays on screen for the footage
 
   for (let i = 0; i < list.length; i++) {
@@ -441,6 +505,7 @@ async function storiesRun(options, t) {
     t.scene(`${st.title}: player`);
     if ($("spark-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("spark-title").textContent}"`);
     if (!st.scenes[sceneId()]) t.problem("bug", `${st.id}: the player is on ${sceneId()}, which isn't one of its scenes`);
+    if (st.id === FIRST) checkInventory(t, st.title);
     await toStart(t);
     const first = st.scenes[st.start];
     if (enText($("spark-story")) !== first.story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
@@ -454,6 +519,9 @@ async function storiesRun(options, t) {
     // All stories brings the landing page back (and stops the story's video).
     await toLanding(t);
     if (new URL(location.href).searchParams.has("story")) t.problem("bug", "the address still names a story on the landing page");
+    if ($("title-splash")) t.problem("bug", "All stories shows the title splash again (it's for the first visit)");
+    await sleep(100);
+    checkInventory(t, "landing page, after All stories");
     t.progress((i + 1) / (list.length + 1));
   }
 
@@ -470,6 +538,7 @@ async function storiesRun(options, t) {
       t.event("story-link", `/${st.id}/ -> ${win.location.pathname}${win.location.search}`);
       const promptTitle = (win.hawkesSound?.prompt()?.querySelector(".tap-title")?.textContent || "").trim();
       if (promptTitle !== st.tap.title) t.problem("bug", `/${st.id}/: the Tap to play prompt says "${promptTitle}", not "${st.tap.title}"`);
+      if (win.hawkesSound?.state().splashes) t.problem("bug", `/${st.id}/: the title splash showed over the story (it's the landing page's)`);
     }
     await sleep(800);
     closeFrame();
@@ -600,7 +669,7 @@ async function crawlPages(t, st, done, total) {
 
 async function blog(options, t) {
   t.scene("Blog");
-  await passPrompt(t); // like a viewer: the home page's Tap to play goes first, so no splash is left behind the post frame
+  await passPrompt(t); // like a viewer: the home page's title splash goes first, so none is left behind the post frame
   const posts = [...document.querySelectorAll("#blog a.post-card")].map((a) => ({
     to: pathOf(a.getAttribute("href")),
     title: enText(a.querySelector("h3")),
@@ -710,18 +779,8 @@ async function credits(options, t) {
 }
 
 async function creditsRun(t) {
-  // Sound off from the prompt's own Settings: its line must say so, and so must the next page's prompt,
-  // which loads with Sound off already saved.
-  if (soundOf().prompt()) {
-    t.scene("Tap to play");
-    await sleep(800);
-    await gateSound(t, document, false, "home");
-    t.scene("Tap to play (Sound off)");
-    checkNote(t, document, "home, after Sound off");
-    await sleep(1500);
-  }
   t.scene("Home footer");
-  await passPrompt(t);
+  await passPrompt(t); // the landing page's title splash
   if (!landingShown()) await toLanding(t);
   await checkMark(t, document, "home (stories)");
   await checkLink(t, document, (a) => /hawkes biomedical/i.test(a.textContent), PARENT_URL, "Hawkes Biomedical", "home");
@@ -729,8 +788,19 @@ async function creditsRun(t) {
   t.progress(0.15);
 
   // The same with a story open in the player: the mark is still there and nothing lies over the story video.
+  // Sound off from the story's Tap to play prompt, its own Settings button: its line must say so, and so must the
+  // branch page's prompt, which loads with Sound off already saved.
   t.scene("The Final Spark: footer and video");
-  await openStory(t, FIRST);
+  await openStory(t, FIRST, { tap: false });
+  if (soundOf().prompt()) {
+    t.scene("Tap to play");
+    await sleep(800);
+    await gateSound(t, document, false, "The Final Spark");
+    t.scene("Tap to play (Sound off)");
+    checkNote(t, document, "The Final Spark, after Sound off");
+    await sleep(1500);
+  }
+  await passPrompt(t, document, FIRST);
   await checkMark(t, document, "home (The Final Spark)");
   await sleep(800);
   await toLanding(t);
@@ -816,17 +886,20 @@ async function sound(options, t) {
     const original = localStorage.getItem(SOUND_KEY);
     rememberProgress();
     localStorage.removeItem(SOUND_KEY); // a first visit: Sound on, full volume
+    // The landing page: the title splash fades by itself, no prompt, no sound to unlock (it has no video).
+    t.scene("Title splash");
+    await passPrompt(t);
+    // The story's card: its Tap to play prompt, and that tap unlocks sound and starts the first video with it.
+    await openStory(t, FIRST, { tap: false });
     t.scene("Tap to play");
-    if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt when the page loads");
+    if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt when The Final Spark opens");
     await sleep(1200);
     const firstVideo = document.querySelector("#spark-video video");
     if (firstVideo && !firstVideo.paused) t.problem("bug", "the video plays behind the prompt, before the tap");
-    await passPrompt(t);
+    await passPrompt(t, document, "The Final Spark");
     const st = soundOf().state();
     if (!st.unlocked) t.problem("bug", "the tap didn't unlock sound");
     if (st.audio !== "running") t.problem("bug", `the AudioContext is "${st.audio}" after the tap, not running`);
-    // The story's first video starts with sound from the card's tap (the player starts it inside the click).
-    await openStory(t, FIRST);
     t.scene("The Final Spark (sound on)");
     await checkSound(t, document.querySelector("#spark-video video"), "after the tap", { on: true, volume: 1 });
     t.progress(0.2);
@@ -884,6 +957,7 @@ async function sound(options, t) {
     if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt after the reload");
     // The address kept ?story=final-spark, so the page opens straight into the story, and the prompt names it.
     if (stories().current() !== FIRST) t.problem("bug", `after the reload the page didn't open The Final Spark again (open: ${stories().current() || "the landing page"})`);
+    if (soundOf().state().splashes) t.problem("bug", "the title splash showed over The Final Spark (it's the landing page's)");
     const promptTitle = (soundOf().prompt()?.querySelector(".tap-title")?.textContent || "").trim();
     if (stories().current() === FIRST && promptTitle !== story().tap.title) t.problem("bug", `the prompt over The Final Spark says "${promptTitle}", not "${story().tap.title}"`);
     await sleep(1000);
@@ -932,7 +1006,7 @@ installPlaytest({
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
       seconds: 40,
       tags: ["full"],
-      description: "Taps Tap to play, checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address), its first page's text, video and choices; All stories brings the landing page back with the video gone. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices; All stories brings the landing page back with the video gone (no splash again, no inventory). Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
     },
     { id: "branches", title: "Every listed story's player: every scene, every choice, every video", seconds: 150, tags: ["full"] },
     { id: "pages", title: "Every story's branch pages (one folder per branch): videos and choice links", seconds: 60, tags: ["full"] },
@@ -942,14 +1016,14 @@ installPlaytest({
       title: "Powered by HAWKES GEN on every kind of page, Hawkes Biomedical on the home page",
       seconds: 30,
       tags: ["full"],
-      description: "Taps Tap to play, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before the first tap it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back.",
+      description: "Waits for the landing page's title splash to fade, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before tapping The Final Spark's Tap to play it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back.",
     },
     {
       id: "sound",
       title: "Tap to play unlocks sound, Settings (Sound, Volume) that survive a reload",
       seconds: 45,
       tags: ["full", "menus"],
-      description: "Shows the Tap to play prompt and taps it with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs, The Final Spark's card opens the story and its video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back.",
+      description: "Waits for the landing page's title splash to fade (no prompt there), opens The Final Spark from its card: its Tap to play prompt shows and is tapped with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs and the story's video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back.",
     },
   ],
   isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
