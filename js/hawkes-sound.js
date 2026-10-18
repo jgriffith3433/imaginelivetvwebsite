@@ -1,7 +1,9 @@
-/* The Hawkes standard sound setup for The Final Spark (shared memory m_d00535b22659).
+/* The Hawkes standard sound setup for the site's stories (shared memory m_d00535b22659).
 
    Loaded on the home page (before js/game.js) and on every branch page (tools/build-story.mjs puts it there).
-   1. A full-screen "Tap to play" prompt shows as soon as the page loads, in any orientation.
+   1. A full-screen "Tap to play" prompt shows as soon as the page loads, in any orientation. Its title and line
+      come from <html data-tap-title data-tap-line> (a branch page: its story's; the home page: the site's), or
+      label(title, line) once js/game.js knows which story is open; The Final Spark's words when neither is set.
    2. That tap unlocks sound: it resumes an AudioContext (with a silent buffer, which iOS wants) and starts the
       page's video with sound, inside the tap, so iOS plays it inline and unmuted. Videos marked
       data-sound-start wait for the tap; js/game.js marks the player's video and plays the next ones itself.
@@ -12,7 +14,8 @@
       music together, so the one Volume slider sets both music and sfx. iOS ignores video.volume, so there the
       video is routed through a gain node instead.
 
-   window.hawkesSound: state(), settings(), set({ on, music, sfx }), apply(video), unlocked(), prompt(), open().
+   window.hawkesSound: state(), settings(), set({ on, music, sfx }), apply(video), unlocked(), prompt(), open(),
+   label(title, line).
    Plain ES5, no dependencies: it must run on old iOS Safari too. */
 (function () {
   "use strict";
@@ -30,6 +33,10 @@
   var panel = null;
   var gear = null;
   var wasPlaying = [];
+  var words = {
+    title: document.documentElement.getAttribute("data-tap-title") || "THE FINAL SPARK",
+    line: document.documentElement.getAttribute("data-tap-line") || "Strike the first match."
+  };
 
   // iOS: video.volume is read-only (always 1).
   var volumeWorks = (function () {
@@ -158,7 +165,7 @@
     overlay.setAttribute("tabindex", "0");
     overlay.setAttribute("aria-label", "Tap to play");
     overlay.innerHTML =
-      '<p class="tap-title">THE FINAL SPARK</p>' +
+      '<p class="tap-title"></p>' +
       '<span class="tap-match" aria-hidden="true"></span>' +
       '<span class="tap-button">Tap to play</span>' +
       '<p class="tap-note"></p>' +
@@ -186,8 +193,17 @@
   }
 
   function renderNote() {
+    var title = overlay && overlay.querySelector(".tap-title");
+    if (title) title.textContent = words.title;
     var note = overlay && overlay.querySelector(".tap-note");
-    if (note) note.textContent = (settings.on ? "Sound on" : "Sound off") + ". Strike the first match.";
+    if (note) note.textContent = (settings.on ? "Sound on" : "Sound off") + "." + (words.line ? " " + words.line : "");
+  }
+
+  // The prompt's words for the story that's open (js/game.js, when the home page opens straight into one).
+  function label(title, line) {
+    if (title) words.title = String(title);
+    if (line != null) words.line = String(line);
+    renderNote();
   }
 
   function onKey(event) {
@@ -348,6 +364,7 @@
     unlocked: function () { return unlocked; },
     prompt: function () { return overlay; },
     open: openSettings,
+    label: label,
     /** What the playtest reads: the prompt, the tap, the AudioContext and the Settings panel. */
     state: function () {
       return {

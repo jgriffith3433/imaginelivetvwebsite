@@ -1,45 +1,27 @@
 (function () {
-  const COOKIE_NAME = "finalSparkProgress";
   const COOKIE_DAYS = 30;
 
-  // The scenes come from js/story-data.js, built from story/final-spark.json by tools/build-story.mjs.
-  const STORY = window.FINAL_SPARK;
-  if (!STORY) return;
+  // Every story comes from js/story-data.js, built from story/stories.json and story/<id>.json by
+  // tools/build-story.mjs. The home page is the landing page (one card per story); choosing one opens it here,
+  // at /?story=<id>, without a page load.
+  const DATA = window.ILTV_STORIES;
+  if (!DATA || !DATA.stories || !DATA.stories.length) return;
+  const STORIES = {};
+  DATA.stories.forEach(function (story) { STORIES[story.id] = story; });
 
-  const UI = {
-    zh: { back: "← 返回", mouth: "隧道口", depth: "深度" },
-    hi: { back: "← वापस", mouth: "सुरंग का मुँह", depth: "गहराई" },
-    es: { back: "← Atrás", mouth: "La boca del túnel", depth: "Profundidad" },
-    fr: { back: "← Retour", mouth: "L'entrée du tunnel", depth: "Profondeur" },
-    ar: { back: "← رجوع", mouth: "فم النفق", depth: "العمق" },
-    pt: { back: "← Voltar", mouth: "A boca do túnel", depth: "Profundidade" },
-    ru: { back: "← Назад", mouth: "Устье тоннеля", depth: "Глубина" },
-    ja: { back: "← 戻る", mouth: "トンネルの入口", depth: "深さ" },
-    bn: { back: "← ফিরে যাও", mouth: "সুড়ঙ্গের মুখ", depth: "গভীরতা" },
-    de: { back: "← Zurück", mouth: "Der Tunnelmund", depth: "Tiefe" },
-    ko: { back: "← 뒤로", mouth: "터널 입구", depth: "깊이" },
-    tr: { back: "← Geri", mouth: "Tünelin ağzı", depth: "Derinlik" },
-    vi: { back: "← Quay lại", mouth: "Miệng đường hầm", depth: "Độ sâu" },
-    it: { back: "← Indietro", mouth: "La bocca del tunnel", depth: "Profondità" },
-    id: { back: "← Kembali", mouth: "Mulut terowongan", depth: "Kedalaman" },
-    ur: { back: "← واپس", mouth: "سرنگ کا منہ", depth: "گہرائی" },
-    pl: { back: "← Wstecz", mouth: "Ujście tunelu", depth: "Głębokość" },
-    th: { back: "← กลับ", mouth: "ปากอุโมงค์", depth: "ความลึก" },
-    sw: { back: "← Rudi", mouth: "Mdomo wa handaki", depth: "Kina" },
-    ta: { back: "← பின்", mouth: "சுரங்க வாயில்", depth: "ஆழம்" },
-    te: { back: "← వెనక్కి", mouth: "సొరంగం నోరు", depth: "లోతు" },
-    mr: { back: "← मागे", mouth: "बोगद्याचे तोंड", depth: "खोली" },
-    pa: { back: "← ਪਿੱਛੇ", mouth: "ਸੁਰੰਗ ਦਾ ਮੂੰਹ", depth: "ਡੂੰਘਾਈ" }
-  };
+  let STORY = null;
+  let SCENES = {};
 
-  function line(lang, dir, spec) {
-    const ui = UI[lang];
+  function line(ui, en, spec) {
     return {
-      lang: lang,
-      dir: dir || "",
+      lang: spec.lang,
+      dir: spec.dir || "",
       back: ui.back,
       mouth: ui.mouth,
       depth: ui.depth,
+      backEn: en.back,
+      mouthEn: en.mouth,
+      depthEn: en.depth,
       title: spec.title[0],
       titleEn: spec.title[1],
       story: spec.story[0],
@@ -56,11 +38,15 @@
     };
   }
 
-  const SCENES = {};
-  Object.keys(STORY.scenes).forEach(function (id) {
-    const s = STORY.scenes[id];
-    SCENES[id] = line(s.lang, s.dir, s);
-  });
+  function scenesOf(story) {
+    const scenes = {};
+    const en = story.ui.en;
+    Object.keys(story.scenes).forEach(function (id) {
+      const s = story.scenes[id];
+      scenes[id] = line(story.ui[s.lang] || en, en, s);
+    });
+    return scenes;
+  }
 
   const root = document.getElementById("spark");
   const videoBox = document.getElementById("spark-video");
@@ -70,18 +56,25 @@
   const endingBox = document.getElementById("spark-ending");
   const backButton = document.getElementById("spark-back");
   const stepBox = document.getElementById("spark-step");
+  const landing = document.getElementById("stories");
+  const storyList = document.getElementById("story-list");
+  const firstScreen = document.getElementById("first-screen");
+  const titleBox = document.getElementById("spark-title");
+  const taglineBox = document.getElementById("spark-tagline");
+  const storiesLink = document.getElementById("spark-stories");
 
-  if (!root || !videoBox || !storyBox || !questionBox || !choicesBox || !endingBox || !backButton) {
+  if (!root || !videoBox || !storyBox || !questionBox || !choicesBox || !endingBox || !backButton || !landing) {
     return;
   }
 
-  let currentScene = "start";
+  let currentScene = null;
   let history = [];
   let fromPlayer = false;
 
-  function readProgress() {
+  /** A story's saved place ({ scene, history }), from its own cookie. */
+  function readProgress(story, scenes) {
     try {
-      const prefix = COOKIE_NAME + "=";
+      const prefix = story.cookie + "=";
       const item = document.cookie
         .split(";")
         .map(function (part) { return part.trim(); })
@@ -90,13 +83,13 @@
       if (!item) return null;
 
       const saved = JSON.parse(decodeURIComponent(item.substring(prefix.length)));
-      if (!saved || !SCENES[saved.scene]) return null;
+      if (!saved || !scenes[saved.scene]) return null;
 
       return {
         scene: saved.scene,
         history: Array.isArray(saved.history)
           ? saved.history.filter(function (id) {
-              return typeof id === "string" && !!SCENES[id];
+              return typeof id === "string" && !!scenes[id];
             })
           : []
       };
@@ -113,7 +106,7 @@
       }));
 
       let cookie =
-        COOKIE_NAME + "=" + progress +
+        STORY.cookie + "=" + progress +
         "; Max-Age=" + (COOKIE_DAYS * 24 * 60 * 60) +
         "; Path=/; SameSite=Lax";
 
@@ -195,7 +188,7 @@
       if (quiet && quiet.catch) quiet.catch(function () {});
       clipUnlock = function (event) {
         var el = event.target;
-        if (el.closest && el.closest(".choice, #spark-back, .spark-tab")) return;
+        if (el.closest && el.closest(".choice, #spark-back, .spark-tab, .stories-back")) return;
         stopClipUnlock();
         if (activeClip !== video) return;
         video.muted = false;
@@ -216,11 +209,11 @@
     saveProgress();
     root.dataset.state = sceneState(scene);
     backButton.disabled = history.length === 0;
-    fillSpot(backButton, scene.back, "← Back", scene.lang, scene.dir);
+    fillSpot(backButton, scene.back, scene.backEn, scene.lang, scene.dir);
     fillSpot(
       stepBox,
       history.length === 0 ? scene.mouth : scene.depth + " " + history.length,
-      history.length === 0 ? "The tunnel mouth" : "Depth " + history.length,
+      history.length === 0 ? scene.mouthEn : scene.depthEn + " " + history.length,
       scene.lang,
       scene.dir
     );
@@ -237,7 +230,7 @@
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");
       video.preload = "auto";
-      video.title = "The Final Spark story video";
+      video.title = STORY.title + " story video";
       videoBox.appendChild(video);
       playClip(video);
     }
@@ -330,11 +323,13 @@
   function renderTree() {
     if (!treeRoot) return;
 
-    const depthOf = { start: 0 };
-    const children = { start: [] };
+    const depthOf = {};
+    const children = {};
+    depthOf[STORY.start] = 0;
+    children[STORY.start] = [];
     const extra = [];
     spanParent = {};
-    const queue = ["start"];
+    const queue = [STORY.start];
 
     while (queue.length) {
       const id = queue.shift();
@@ -556,18 +551,132 @@
     show(history.pop());
   });
 
-  // Read-only view for the playtest (js/playtest.js).
+  /* ---------------- the landing page and the stories ---------------- */
+
+  const SITE_TITLE = document.title;
+  const SITE_TAP = {
+    title: document.documentElement.getAttribute("data-tap-title") || "",
+    line: document.documentElement.getAttribute("data-tap-line") || ""
+  };
+
+  function stopVideo() {
+    stopClipUnlock();
+    activeClip = null;
+    videoBox.querySelectorAll("video").forEach(function (video) {
+      try { video.pause(); } catch (error) { /* already gone */ }
+    });
+    videoBox.replaceChildren();
+  }
+
+  function urlFor(storyId) {
+    const url = new URL(location.href);
+    if (storyId) url.searchParams.set("story", storyId);
+    else url.searchParams.delete("story");
+    url.hash = "";
+    return url.pathname + url.search;
+  }
+
+  function prompt(words) {
+    if (window.hawkesSound && window.hawkesSound.label) window.hawkesSound.label(words.title, words.line);
+  }
+
+  /** The cards say Continue for a story with a saved place past its start. */
+  function markCards() {
+    if (!storyList) return;
+    storyList.querySelectorAll(".story-card").forEach(function (card) {
+      const story = STORIES[card.dataset.story];
+      const go = card.querySelector(".story-card-go");
+      if (!story || !go) return;
+      const saved = readProgress(story, story.scenes);
+      go.textContent = saved && saved.scene !== story.start ? "Continue" : "Play";
+    });
+  }
+
+  function openStory(storyId, push) {
+    const story = STORIES[storyId];
+    if (!story) return showLanding(false);
+    if (push) window.history.pushState({ story: storyId }, "", urlFor(storyId));
+    if (STORY !== story) {
+      stopVideo();
+      STORY = story;
+      SCENES = scenesOf(story);
+      if (treeRoot) treeRoot.replaceChildren();
+    }
+    titleBox.textContent = story.title.toUpperCase();
+    taglineBox.textContent = story.tagline;
+    taglineBox.hidden = !story.tagline;
+    const tabs = root.querySelector(".spark-tabs");
+    if (tabs) tabs.setAttribute("aria-label", story.title);
+    document.title = story.title + " · " + SITE_TITLE;
+    prompt(story.tap);
+
+    landing.hidden = true;
+    root.hidden = false;
+    if (firstScreen) firstScreen.classList.remove("is-landing");
+    document.documentElement.dataset.view = "story";
+    setView("play");
+    window.scrollTo(0, 0);
+
+    const saved = readProgress(story, SCENES);
+    history = saved ? saved.history : [];
+    show(saved ? saved.scene : story.start);
+  }
+
+  function showLanding(push) {
+    if (push) window.history.pushState({}, "", urlFor(null));
+    else if (new URL(location.href).searchParams.has("story")) window.history.replaceState({}, "", urlFor(null));
+    stopVideo();
+    STORY = null;
+    currentScene = null;
+    root.hidden = true;
+    landing.hidden = false;
+    if (firstScreen) firstScreen.classList.add("is-landing");
+    document.documentElement.dataset.view = "landing";
+    document.title = SITE_TITLE;
+    prompt(SITE_TAP);
+    markCards();
+  }
+
+  function route() {
+    const id = new URL(location.href).searchParams.get("story");
+    if (id && STORIES[id]) openStory(id, false);
+    else showLanding(false);
+  }
+
+  if (storyList) {
+    storyList.addEventListener("click", function (event) {
+      const card = event.target.closest && event.target.closest("a.story-card");
+      if (!card || !STORIES[card.dataset.story]) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
+      event.preventDefault();
+      openStory(card.dataset.story, true);
+    });
+  }
+
+  if (storiesLink) {
+    storiesLink.addEventListener("click", function (event) {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
+      event.preventDefault();
+      showLanding(true);
+    });
+  }
+
+  window.addEventListener("popstate", route);
+
+  // Read-only views for the playtest (js/playtest.js): the open story's player, and the stories.
   window.finalSpark = {
+    story: function () { return STORY ? STORY.id : null; },
+    start: function () { return STORY ? STORY.start : null; },
     scene: function () { return currentScene; },
     scenes: function () { return Object.keys(SCENES); },
     depth: function () { return history.length; }
   };
+  window.iltvStories = {
+    list: function () { return DATA.stories.map(function (story) { return story.id; }); },
+    listed: function () { return DATA.stories.filter(function (story) { return story.listed; }).map(function (story) { return story.id; }); },
+    current: function () { return STORY ? STORY.id : null; },
+    view: function () { return STORY ? "story" : "landing"; }
+  };
 
-  const savedProgress = readProgress();
-  if (savedProgress) {
-    history = savedProgress.history;
-    show(savedProgress.scene);
-  } else {
-    show("start");
-  }
+  route();
 })();
