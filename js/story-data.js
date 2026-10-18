@@ -16,122 +16,98 @@ window.ILTV_STORIES = {
    "start": "start",
    "ui": {
     "en": {
-     "back": "← Back",
      "mouth": "The tunnel mouth",
      "depth": "Depth"
     },
     "zh": {
-     "back": "← 返回",
      "mouth": "隧道口",
      "depth": "深度"
     },
     "hi": {
-     "back": "← वापस",
      "mouth": "सुरंग का मुँह",
      "depth": "गहराई"
     },
     "es": {
-     "back": "← Atrás",
      "mouth": "La boca del túnel",
      "depth": "Profundidad"
     },
     "fr": {
-     "back": "← Retour",
      "mouth": "L'entrée du tunnel",
      "depth": "Profondeur"
     },
     "ar": {
-     "back": "← رجوع",
      "mouth": "فم النفق",
      "depth": "العمق"
     },
     "pt": {
-     "back": "← Voltar",
      "mouth": "A boca do túnel",
      "depth": "Profundidade"
     },
     "ru": {
-     "back": "← Назад",
      "mouth": "Устье тоннеля",
      "depth": "Глубина"
     },
     "ja": {
-     "back": "← 戻る",
      "mouth": "トンネルの入口",
      "depth": "深さ"
     },
     "bn": {
-     "back": "← ফিরে যাও",
      "mouth": "সুড়ঙ্গের মুখ",
      "depth": "গভীরতা"
     },
     "de": {
-     "back": "← Zurück",
      "mouth": "Der Tunnelmund",
      "depth": "Tiefe"
     },
     "ko": {
-     "back": "← 뒤로",
      "mouth": "터널 입구",
      "depth": "깊이"
     },
     "tr": {
-     "back": "← Geri",
      "mouth": "Tünelin ağzı",
      "depth": "Derinlik"
     },
     "vi": {
-     "back": "← Quay lại",
      "mouth": "Miệng đường hầm",
      "depth": "Độ sâu"
     },
     "it": {
-     "back": "← Indietro",
      "mouth": "La bocca del tunnel",
      "depth": "Profondità"
     },
     "id": {
-     "back": "← Kembali",
      "mouth": "Mulut terowongan",
      "depth": "Kedalaman"
     },
     "ur": {
-     "back": "← واپس",
      "mouth": "سرنگ کا منہ",
      "depth": "گہرائی"
     },
     "pl": {
-     "back": "← Wstecz",
      "mouth": "Ujście tunelu",
      "depth": "Głębokość"
     },
     "th": {
-     "back": "← กลับ",
      "mouth": "ปากอุโมงค์",
      "depth": "ความลึก"
     },
     "sw": {
-     "back": "← Rudi",
      "mouth": "Mdomo wa handaki",
      "depth": "Kina"
     },
     "ta": {
-     "back": "← பின்",
      "mouth": "சுரங்க வாயில்",
      "depth": "ஆழம்"
     },
     "te": {
-     "back": "← వెనక్కి",
      "mouth": "సొరంగం నోరు",
      "depth": "లోతు"
     },
     "mr": {
-     "back": "← मागे",
      "mouth": "बोगद्याचे तोंड",
      "depth": "खोली"
     },
     "pa": {
-     "back": "← ਪਿੱਛੇ",
      "mouth": "ਸੁਰੰਗ ਦਾ ਮੂੰਹ",
      "depth": "ਡੂੰਘਾਈ"
     }
@@ -742,13 +718,656 @@ window.ILTV_STORIES = {
       "You decided to destroy the whole town."
      ],
      "question": [
-      "ਅੱਗੇ ਕੀ ਹੁੰਦਾ ਹੈ?",
-      "What happens next?"
+      "",
+      ""
      ],
      "video": "/assets/video/destroy-town.mp4",
      "ending": [
-      "ਹੋਰ ਕਹਾਣੀ ਜਲਦੀ ਆ ਰਹੀ ਹੈ...",
-      "MORE OF THE STORY COMING SOON..."
+      "ਅੰਤ",
+      "THE END"
+     ],
+     "choices": []
+    }
+   }
+  },
+  {
+   "id": "water-road",
+   "title": "The Water Road",
+   "tagline": "Every drop has to go somewhere.",
+   "logline": "Forty barrels of water, a dying town on the far side of the desert, and a revolver you've never fired. Every page costs water.",
+   "image": "/assets/images/water-road.jpg",
+   "listed": true,
+   "cookie": "waterRoadProgress",
+   "tap": {
+    "title": "THE WATER ROAD",
+    "line": "Fill your flask."
+   },
+   "start": "start",
+   "ui": {
+    "en": {
+     "mouth": "The trail head",
+     "depth": "Mile"
+    }
+   },
+   "inventory": {
+    "label": "Inventory",
+    "items": [
+     {
+      "id": "revolver",
+      "name": "Revolver",
+      "icon": "revolver",
+      "note": "A Colt Single Action Army, 1873: six shots."
+     },
+     {
+      "id": "bullets",
+      "name": "Bullets",
+      "icon": "rounds",
+      "start": 6,
+      "max": 6
+     },
+     {
+      "id": "water",
+      "name": "Water",
+      "icon": "flask",
+      "start": 4,
+      "max": 4,
+      "empty": "dead"
+     }
+    ]
+   },
+   "unspoken": [
+    "bird",
+    "dove",
+    "wings",
+    "feather"
+   ],
+   "scenes": {
+    "start": {
+     "folder": "water-road/the-water-road",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The water road",
+      "The water road"
+     ],
+     "story": [
+      "The caravan moves out at dawn: six wagons, forty barrels of water, and a dry town called Dry Fork on the far side of the desert. You ride at the back with a revolver you've never fired.",
+      "The caravan moves out at dawn: six wagons, forty barrels of water, and a dry town called Dry Fork on the far side of the desert. You ride at the back with a revolver you've never fired."
+     ],
+     "question": [
+      "Which way does the caravan go?",
+      "Which way does the caravan go?"
+     ],
+     "video": "/water-road/the-water-road/scene.mp4",
+     "choices": [
+      [
+       "1. Cut across the salt flats",
+       "1. Cut across the salt flats",
+       "flats"
+      ],
+      [
+       "2. Take the long trail under the mesa",
+       "2. Take the long trail under the mesa",
+       "mesa"
+      ]
+     ]
+    },
+    "flats": {
+     "folder": "water-road/the-salt-flats",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The salt flats",
+      "The salt flats"
+     ],
+     "story": [
+      "By noon the salt flats shine like a stove top, and a wagon wheel cracks. The mules won't stand still in the heat.",
+      "By noon the salt flats shine like a stove top, and a wagon wheel cracks. The mules won't stand still in the heat."
+     ],
+     "question": [
+      "What do you do?",
+      "What do you do?"
+     ],
+     "video": "/water-road/the-salt-flats/scene.mp4",
+     "inventory": {
+      "water": -1
+     },
+     "choices": [
+      [
+       "1. Push on through the heat",
+       "1. Push on through the heat",
+       "sunstroke"
+      ],
+      [
+       "2. Wait for dark and mend the wheel",
+       "2. Wait for dark and mend the wheel",
+       "nightCrossing"
+      ]
+     ]
+    },
+    "sunstroke": {
+     "folder": "water-road/the-heat",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The heat",
+      "The heat"
+     ],
+     "story": [
+      "You drink the last of your flask and keep riding. The sky goes white, and then the ground comes up to meet you.",
+      "You drink the last of your flask and keep riding. The sky goes white, and then the ground comes up to meet you."
+     ],
+     "question": [
+      "You have died.",
+      "You have died."
+     ],
+     "video": "/water-road/the-heat/scene.mp4",
+     "dead": true,
+     "inventory": {
+      "water": -3
+     },
+     "choices": [
+      [
+       "1. Try again",
+       "1. Try again",
+       "start"
+      ]
+     ]
+    },
+    "nightCrossing": {
+     "folder": "water-road/under-the-stars",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Under the stars",
+      "Under the stars"
+     ],
+     "story": [
+      "You mend the wheel by lantern light and cross the flats in the cool of the night. At sunrise there's a wagon ahead, lying on its side.",
+      "You mend the wheel by lantern light and cross the flats in the cool of the night. At sunrise there's a wagon ahead, lying on its side."
+     ],
+     "question": [
+      "Do you stop?",
+      "Do you stop?"
+     ],
+     "video": "/water-road/under-the-stars/scene.mp4",
+     "choices": [
+      [
+       "1. Ride over to it",
+       "1. Ride over to it",
+       "family"
+      ],
+      [
+       "2. Ride on by",
+       "2. Ride on by",
+       "passBy"
+      ]
+     ]
+    },
+    "mesa": {
+     "folder": "water-road/under-the-mesa",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Under the mesa",
+      "Under the mesa"
+     ],
+     "story": [
+      "The long trail hugs the shade of the mesa. Up on the rocks, something glints, the way a rifle does.",
+      "The long trail hugs the shade of the mesa. Up on the rocks, something glints, the way a rifle does."
+     ],
+     "question": [
+      "What do you do?",
+      "What do you do?"
+     ],
+     "video": "/water-road/under-the-mesa/scene.mp4",
+     "inventory": {
+      "water": -1
+     },
+     "choices": [
+      [
+       "1. Fire a warning shot",
+       "1. Fire a warning shot",
+       "rockslide"
+      ],
+      [
+       "2. Wave, and wait",
+       "2. Wave, and wait",
+       "lookout"
+      ]
+     ]
+    },
+    "rockslide": {
+     "folder": "water-road/the-rockslide",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The rockslide",
+      "The rockslide"
+     ],
+     "story": [
+      "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock.",
+      "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock."
+     ],
+     "question": [
+      "You have died.",
+      "You have died."
+     ],
+     "video": "/water-road/the-rockslide/scene.mp4",
+     "dead": true,
+     "inventory": {
+      "bullets": -1
+     },
+     "choices": [
+      [
+       "1. Try again",
+       "1. Try again",
+       "start"
+      ]
+     ]
+    },
+    "lookout": {
+     "folder": "water-road/the-lookout",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The lookout",
+      "The lookout"
+     ],
+     "story": [
+      "It's a boy with a brass spyglass. His family's wagon broke down a mile on, and their water is gone.",
+      "It's a boy with a brass spyglass. His family's wagon broke down a mile on, and their water is gone."
+     ],
+     "question": [
+      "What do you do?",
+      "What do you do?"
+     ],
+     "video": "/water-road/the-lookout/scene.mp4",
+     "choices": [
+      [
+       "1. Follow him",
+       "1. Follow him",
+       "family"
+      ],
+      [
+       "2. Ride on by",
+       "2. Ride on by",
+       "passBy"
+      ]
+     ]
+    },
+    "family": {
+     "folder": "water-road/the-broken-wagon",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The broken wagon",
+      "The broken wagon"
+     ],
+     "story": [
+      "A mother, a father and a little girl sit in the shade of a broken wagon, beside an empty cask. Nobody asks you for anything.",
+      "A mother, a father and a little girl sit in the shade of a broken wagon, beside an empty cask. Nobody asks you for anything."
+     ],
+     "question": [
+      "What do you do?",
+      "What do you do?"
+     ],
+     "video": "/water-road/the-broken-wagon/scene.mp4",
+     "choices": [
+      [
+       "1. Give them your flask",
+       "1. Give them your flask",
+       "giveFlask"
+      ],
+      [
+       "2. Tell them the water's spoken for",
+       "2. Tell them the water's spoken for",
+       "passBy"
+      ]
+     ]
+    },
+    "giveFlask": {
+     "folder": "water-road/your-flask",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Your flask",
+      "Your flask"
+     ],
+     "story": [
+      "You hand down your flask and the girl drinks first. The trail boss watches, then has a barrel opened, and the family rides on with the caravan.",
+      "You hand down your flask and the girl drinks first. The trail boss watches, then has a barrel opened, and the family rides on with the caravan."
+     ],
+     "question": [
+      "What's ahead?",
+      "What's ahead?"
+     ],
+     "video": "/water-road/your-flask/scene.mp4",
+     "inventory": {
+      "water": -2
+     },
+     "choices": [
+      [
+       "1. Ride on together",
+       "1. Ride on together",
+       "dustStorm"
+      ]
+     ]
+    },
+    "passBy": {
+     "folder": "water-road/ride-on-by",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Spoken for",
+      "Spoken for"
+     ],
+     "story": [
+      "You ride past them. The barrels slosh behind you, loud as church bells.",
+      "You ride past them. The barrels slosh behind you, loud as church bells."
+     ],
+     "question": [
+      "Do you look back?",
+      "Do you look back?"
+     ],
+     "video": "/water-road/ride-on-by/scene.mp4",
+     "choices": [
+      [
+       "1. Turn around",
+       "1. Turn around",
+       "family"
+      ],
+      [
+       "2. Keep riding",
+       "2. Keep riding",
+       "dustStorm"
+      ]
+     ]
+    },
+    "dustStorm": {
+     "folder": "water-road/the-dust",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The dust",
+      "The dust"
+     ],
+     "story": [
+      "A wall of dust rolls in from the west and swallows the caravan. When it clears the trail is gone, and two barrels have split.",
+      "A wall of dust rolls in from the west and swallows the caravan. When it clears the trail is gone, and two barrels have split."
+     ],
+     "question": [
+      "Which way?",
+      "Which way?"
+     ],
+     "video": "/water-road/the-dust/scene.mp4",
+     "choices": [
+      [
+       "1. Follow the dry wash",
+       "1. Follow the dry wash",
+       "wash"
+      ],
+      [
+       "2. Ride for the high ground",
+       "2. Ride for the high ground",
+       "highGround"
+      ]
+     ]
+    },
+    "highGround": {
+     "folder": "water-road/the-high-ground",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The high ground",
+      "The high ground"
+     ],
+     "story": [
+      "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry.",
+      "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry."
+     ],
+     "question": [
+      "You have died.",
+      "You have died."
+     ],
+     "video": "/water-road/the-high-ground/scene.mp4",
+     "dead": true,
+     "inventory": {
+      "water": -3
+     },
+     "choices": [
+      [
+       "1. Try again",
+       "1. Try again",
+       "start"
+      ]
+     ]
+    },
+    "wash": {
+     "folder": "water-road/the-dry-wash",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The dry wash",
+      "The dry wash"
+     ],
+     "story": [
+      "The wash bends between red rocks, and the mules start pulling hard, ears forward. Then five riders block the way, guns out. They want the water.",
+      "The wash bends between red rocks, and the mules start pulling hard, ears forward. Then five riders block the way, guns out. They want the water."
+     ],
+     "question": [
+      "What do you do?",
+      "What do you do?"
+     ],
+     "video": "/water-road/the-dry-wash/scene.mp4",
+     "choices": [
+      [
+       "1. Draw your revolver",
+       "1. Draw your revolver",
+       "gunfight"
+      ],
+      [
+       "2. Fire over their heads",
+       "2. Fire over their heads",
+       "warningShots"
+      ],
+      [
+       "3. Open a barrel for them",
+       "3. Open a barrel for them",
+       "shareWater"
+      ]
+     ]
+    },
+    "gunfight": {
+     "folder": "water-road/the-gunfight",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The gunfight",
+      "The gunfight"
+     ],
+     "story": [
+      "You draw. So do they, faster. The water runs out of the barrels into the sand.",
+      "You draw. So do they, faster. The water runs out of the barrels into the sand."
+     ],
+     "question": [
+      "You have died.",
+      "You have died."
+     ],
+     "video": "/water-road/the-gunfight/scene.mp4",
+     "dead": true,
+     "inventory": {
+      "bullets": -6
+     },
+     "choices": [
+      [
+       "1. Try again",
+       "1. Try again",
+       "start"
+      ]
+     ]
+    },
+    "warningShots": {
+     "folder": "water-road/over-their-heads",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Over their heads",
+      "Over their heads"
+     ],
+     "story": [
+      "Two shots off the rocks, and the riders scatter. The caravan makes camp at the mouth of the wash with every eye on the dark.",
+      "Two shots off the rocks, and the riders scatter. The caravan makes camp at the mouth of the wash with every eye on the dark."
+     ],
+     "question": [
+      "What now?",
+      "What now?"
+     ],
+     "video": "/water-road/over-their-heads/scene.mp4",
+     "inventory": {
+      "bullets": -2
+     },
+     "choices": [
+      [
+       "1. Keep watch",
+       "1. Keep watch",
+       "nightRaid"
+      ]
+     ]
+    },
+    "nightRaid": {
+     "folder": "water-road/they-come-back",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "They come back",
+      "They come back"
+     ],
+     "story": [
+      "They come back after midnight, on foot, for the barrels. You can hear how dry their voices are.",
+      "They come back after midnight, on foot, for the barrels. You can hear how dry their voices are."
+     ],
+     "question": [
+      "What do you do?",
+      "What do you do?"
+     ],
+     "video": "/water-road/they-come-back/scene.mp4",
+     "choices": [
+      [
+       "1. Shoot it out",
+       "1. Shoot it out",
+       "gunfight"
+      ],
+      [
+       "2. Open a barrel and call them in",
+       "2. Open a barrel and call them in",
+       "shareWater"
+      ]
+     ]
+    },
+    "shareWater": {
+     "folder": "water-road/a-drink-for-strangers",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "A drink for strangers",
+      "A drink for strangers"
+     ],
+     "story": [
+      "You knock the bung out of a barrel and hand their leader the dipper. He drinks slowly, puts his gun away, and his men ride with the caravan.",
+      "You knock the bung out of a barrel and hand their leader the dipper. He drinks slowly, puts his gun away, and his men ride with the caravan."
+     ],
+     "question": [
+      "Where does the wash go?",
+      "Where does the wash go?"
+     ],
+     "video": "/water-road/a-drink-for-strangers/scene.mp4",
+     "choices": [
+      [
+       "1. Follow it to the end",
+       "1. Follow it to the end",
+       "spring"
+      ]
+     ]
+    },
+    "spring": {
+     "folder": "water-road/the-cottonwoods",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The cottonwoods",
+      "The cottonwoods"
+     ],
+     "story": [
+      "Where the wash ends there are cottonwoods, green as a lie, and a spring that's on nobody's map. You fill your flask to the top.",
+      "Where the wash ends there are cottonwoods, green as a lie, and a spring that's on nobody's map. You fill your flask to the top."
+     ],
+     "question": [
+      "What do you do with it?",
+      "What do you do with it?"
+     ],
+     "video": "/water-road/the-cottonwoods/scene.mp4",
+     "inventory": {
+      "water": {
+       "set": 4
+      }
+     },
+     "choices": [
+      [
+       "1. Bring Dry Fork the way here",
+       "1. Bring Dry Fork the way here",
+       "heroEnding"
+      ],
+      [
+       "2. Keep the spring a secret and sell the water",
+       "2. Keep the spring a secret and sell the water",
+       "sellWater"
+      ]
+     ]
+    },
+    "heroEnding": {
+     "folder": "water-road/dry-fork",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Dry Fork",
+      "Dry Fork"
+     ],
+     "story": [
+      "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before.",
+      "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/water-road/dry-fork/scene.mp4",
+     "ending": [
+      "THE END. This is how it started.",
+      "THE END. This is how it started."
+     ],
+     "choices": []
+    },
+    "sellWater": {
+     "folder": "water-road/the-price-of-water",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The price of water",
+      "The price of water"
+     ],
+     "story": [
+      "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye.",
+      "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/water-road/the-price-of-water/scene.mp4",
+     "ending": [
+      "THE END. Not every story makes a hero.",
+      "THE END. Not every story makes a hero."
      ],
      "choices": []
     }

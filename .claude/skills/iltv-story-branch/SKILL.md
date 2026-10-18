@@ -18,9 +18,16 @@ Follow "Adding a story" in `story/README.md`:
 - `story/<id>.json` in `final-spark.json`'s shape: `title`, `tagline`, `doc`, `start`, its own `cookie`, `tap`
   (`title`, `line`: its Tap to play screen), `ui` labels for every language its scenes use (plus `en`), `style`,
   `negative`, `characters` (no `seed` = a sheet from the `look` alone), `narrator`, `music`, `use: "gen"`, `scenes`.
+  Optional: its own `inventory` (items + per-scene `inventory` changes, drawn by `js/kit.js`; story doc "A story's
+  inventory"; The Water Road is the example), `unspoken` words and `camera`.
 - A listing entry in `story/stories.json`: `id`, `logline` (one line), `image` + `alt` (9:16, optional), and
   `"listed": false` until J approves it and every scene has a video. Its pages go under `/<id>/<folder>/` and its
-  asset ids start with `<id>-`; only The Final Spark lives at the site root.
+  asset ids start with `<id>-`; only The Final Spark lives at the site root. Mark its endings (scenes with
+  an `ending` line; deaths aren't endings): every card wears the viewer's progress badge (Not started, Started,
+  Completed once an ending is reached) and its percent explored (unlocked scenes / all; story doc "Progress on the
+  cards" and "Unlocked scenes"). There is no `status` to set. Its `cookie` names two cookies: the run (`<cookie>`)
+  and the unlocks (`<cookie>Unlocked`); never rename a listed story's `cookie` (players would lose their unlocks),
+  and know that a new scene lowers everyone's percent until they find it.
 - Then steps 1 to 3 below for its scenes. A new story is a proposal until J approves it.
 
 ## 1. Story (no GPU)
@@ -60,4 +67,6 @@ scene and `npm run story` again (it cuts `<folder>/scene.mp4`).
 
 `.hawkes/scenario.txt` = `branches` (`stories` for a new story or a change to the landing page). Criteria: every scene is reachable from `start` and each choice lands on its
 `next` page; the new scene's page shows its text and plays its video (generated cut when `use: "gen"`); the narration
-is in the scene's language; no 404s; the ending still counts as an ending. Then `pages` for the built branch pages.
+is in the scene's language; no 404s; the ending still counts as an ending; the new scene unlocks
+(percent explored up by one scene, 100% only with every scene found) and the Tree shows it only once reached (a "?"
+before, nothing in the Tree pressable). Then `pages` for the built branch pages.

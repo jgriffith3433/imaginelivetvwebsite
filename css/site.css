@@ -205,7 +205,15 @@ a { color: var(--green); }
   text-transform: uppercase;
 }
 
-.back-button,
+/* How much of the story you've found (unlocked scenes / all of them), in the site's English like the tabs. */
+.spark-explored {
+  color: #8e8b86;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .choice {
   font: inherit;
   color: #f4f2ee;
@@ -216,20 +224,8 @@ a { color: var(--green); }
   text-decoration: none;
 }
 
-.back-button {
-  padding: 0.55rem 0.9rem;
-  background: #1a1c20;
-  border-color: #4a4e54;
-}
-
-.back-button:hover:not(:disabled),
 .choice:hover {
   background: #3c4046;
-}
-
-.back-button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
 }
 
 #spark-play {
@@ -633,7 +629,7 @@ a { color: var(--green); }
   .spark h1 { font-size: 0.95rem; }
   .spark-sub { display: none; }
   .spark-tabs { margin-bottom: 0.1rem; }
-  .back-button, .choice { padding: 0.28rem 0.5rem; }
+  .choice { padding: 0.28rem 0.5rem; }
   .spark-story { font-size: 0.78rem; line-height: 1.25; margin-bottom: 0.2rem; }
   .spark-question { margin: 0.05rem 0 0.25rem; font-size: 0.86rem; }
   .spark-choices { gap: 0.25rem; }
@@ -731,6 +727,7 @@ a { color: var(--green); }
 }
 
 .story-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -778,9 +775,23 @@ a { color: var(--green); }
   line-height: 1.45;
 }
 
+.story-card-foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  margin-top: 0.7rem;
+}
+
+.story-card-explored {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .story-card-go {
   display: inline-block;
-  margin-top: 0.7rem;
   padding: 0.35rem 0.95rem;
   color: #f4f2ee;
   background: #1c1e22;
@@ -792,6 +803,42 @@ a { color: var(--green); }
 }
 
 .story-card:hover .story-card-go { color: #fff; border-color: #8d9096; }
+
+/* Every card's progress badge, a ribbon across its top right corner: the viewer's own progress in that story
+   (js/game.js sets data-progress from its saved place). Completed is the bright one. */
+.story-card-ribbon {
+  position: absolute;
+  top: 1.45rem;
+  right: -2.6rem;
+  z-index: 1;
+  width: 10.5rem;
+  padding: 0.32rem 0;
+  color: #121417;
+  background: var(--green);
+  border-block: 1px solid var(--green-soft);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.story-card[data-progress="new"] .story-card-ribbon {
+  color: var(--muted);
+  background: #1c1e22;
+  border-color: #4a4d53;
+}
+
+.story-card[data-progress="started"] .story-card-ribbon {
+  color: #121417;
+  background: #8d9096;
+  border-color: #a9acb1;
+}
 
 #spark-tree {
   flex: 1;
@@ -913,17 +960,26 @@ a { color: var(--green); }
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 12px;
   box-shadow: 0 12px 22px rgba(0, 0, 0, 0.28);
-  cursor: pointer;
   font: inherit;
 }
 
-.tree-node:hover,
+/* The tree is a map, not a way around: nothing in it can be pressed. */
 .tree-node.is-current {
   border-color: #f4f2ee;
   background: #0c0d0f;
 }
 
 .tree-node.is-dead { color: #c8c4be; }
+
+/* A way you haven't taken: a "?", nothing below it. */
+.tree-node.is-locked {
+  color: #8e8b86;
+  background: rgba(16, 17, 19, 0.6);
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.tree-node.is-locked .tree-node-title { font-size: 1.2rem; }
 
 .tree-node-title {
   display: block;
@@ -979,7 +1035,6 @@ a.choice.spot,
   max-width: 100%;
 }
 
-.back-button.spot,
 .spark-step.spot,
 .recent-list strong.spot {
   display: inline-grid;
@@ -1126,6 +1181,91 @@ body.is-holding .torch-slot { cursor: grabbing; }
 
 .torch-beam.is-on { opacity: 1; }
 
+/* The inventory belongs to the stories: the landing page (js/game.js sets <html data-view>) has none. */
+html[data-view="landing"] { --inventory-h: 0px; }
+html[data-view="landing"] .inventory,
+html[data-view="landing"] .torch,
+html[data-view="landing"] .torch-beam { display: none; }
+
+/* A story with its own inventory (js/kit.js: The Water Road's revolver, bullets and flask) instead of the
+   flashlight: js/game.js and its branch pages set <html data-kit>. */
+html[data-kit] .inventory:not(.kit),
+html[data-kit] .torch,
+html[data-kit] .torch-beam,
+html:not([data-kit]) .inventory.kit { display: none; }
+
+.kit-items {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.kit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.9rem;
+  padding: 0 0.7rem;
+  border: 1px solid #4a3f33;
+  border-radius: 14px;
+  color: #d9c7a8;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 220, 170, 0.06), transparent 60%),
+    #17140f;
+  box-shadow: inset 0 10px 16px rgba(0, 0, 0, 0.55);
+}
+
+.kit-icon svg { display: block; height: 1.6rem; width: auto; }
+.kit-revolver .kit-icon svg { height: 1.25rem; }
+
+.kit-rounds { display: flex; gap: 2px; }
+.kit-round svg { display: block; height: 1.45rem; width: auto; }
+.kit-round.is-spent { opacity: 0.22; }
+
+.kit-name {
+  color: #9c8d78;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kit-count {
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 30rem) {
+  .kit-items { gap: 0.3rem; }
+  .kit-item { padding: 0 0.45rem; gap: 0.3rem; }
+  .kit-name { display: none; }
+  .kit-round svg { height: 1.2rem; }
+}
+
+/* A draft story's scene with no video yet: its title where the video will be. */
+.spark-video-blank,
+.passage-blank {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  color: #8e8b86;
+  background: radial-gradient(ellipse at 50% 45%, #1d1b18, #000 75%);
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.passage-blank {
+  width: min(22rem, 100%);
+  height: auto;
+  aspect-ratio: 9 / 16;
+  max-height: 60vh;
+  margin: 0 auto 1.2rem;
+  border-radius: 12px;
+}
+
 body.is-holding { touch-action: none; }
 
 @media (max-width: 720px) {
@@ -1173,6 +1313,10 @@ html.is-tap-waiting, html.is-tap-waiting body { overflow: hidden; }
 }
 
 .tap-to-play.is-gone { opacity: 0; pointer-events: none; }
+
+/* The landing page's title splash (splash() in js/hawkes-sound.js): the prompt's background and title, nothing to
+   tap; it fades away by itself (SPLASH_FADE there matches this transition). */
+.tap-splash { cursor: default; transition: opacity 0.9s ease; }
 .tap-to-play:focus { outline: none; }
 
 .tap-title {

@@ -2,8 +2,12 @@
 
    Loaded on the home page (before js/game.js) and on every branch page (tools/build-story.mjs puts it there).
    1. A full-screen "Tap to play" prompt shows as soon as the page loads, in any orientation. Its title and line
-      come from <html data-tap-title data-tap-line> (a branch page: its story's; the home page: the site's), or
-      label(title, line) once js/game.js knows which story is open; The Final Spark's words when neither is set.
+      come from <html data-tap-title data-tap-line> (a branch page: its story's), or label(title, line) once
+      js/game.js knows which story is open; The Final Spark's words when neither is set.
+      The home page has <html data-tap-splash>: nothing shows at load, js/game.js decides. The landing page gets
+      splash(): just the site's title on the prompt's background, held a moment, then it fades by itself (no tap,
+      no sound: the landing page has no video). Opening a story calls ask(), its own Tap to play prompt, and that
+      tap unlocks sound; dismiss() takes an untapped prompt away again (back to the landing page).
    2. That tap unlocks sound: it resumes an AudioContext (with a silent buffer, which iOS wants) and starts the
       page's video with sound, inside the tap, so iOS plays it inline and unmuted. Videos marked
       data-sound-start wait for the tap; js/game.js marks the player's video and plays the next ones itself.
@@ -15,7 +19,7 @@
       video is routed through a gain node instead.
 
    window.hawkesSound: state(), settings(), set({ on, music, sfx }), apply(video), unlocked(), prompt(), open(),
-   label(title, line).
+   label(title, line), ask(), dismiss(), splash(title).
    Plain ES5, no dependencies: it must run on old iOS Safari too. */
 (function () {
   "use strict";
@@ -30,6 +34,12 @@
   var trusted = false;
   var context = null;
   var overlay = null;
+  var splashEl = null;
+  var splashes = 0;
+  var splashLog = null; // the last splash, for the playtest: { title, shown, fading, gone } (ms, performance.now())
+  var deferred = document.documentElement.hasAttribute("data-tap-splash");
+  var SPLASH_HOLD = 1600;
+  var SPLASH_FADE = 900;
   var panel = null;
   var gear = null;
   var wasPlaying = [];
@@ -158,6 +168,7 @@
 
   function showPrompt() {
     if (overlay || !document.body) return;
+    endSplash(true);
     overlay = document.createElement("div");
     overlay.className = "tap-to-play";
     overlay.id = "tap-to-play";
@@ -220,15 +231,86 @@
     if (!overlay) return;
     taps++;
     trusted = !!(event && event.isTrusted);
+    hidePrompt();
+    unlock();
+  }
+
+  function hidePrompt() {
     var gone = overlay;
+    if (!gone) return;
     overlay = null;
     window.removeEventListener("keydown", onKey, true);
     document.documentElement.classList.remove("is-tap-waiting");
-    unlock();
     gone.classList.add("is-gone");
     setTimeout(function () {
       if (gone.parentNode) gone.parentNode.removeChild(gone);
     }, 300);
+  }
+
+  // A story opens (js/game.js): its Tap to play prompt, unless sound is already unlocked.
+  function ask() {
+    if (!unlocked) showPrompt();
+  }
+
+  // Back on the landing page before the tap: the story's prompt goes, sound stays locked.
+  function dismiss() {
+    if (overlay && !unlocked) hidePrompt();
+  }
+
+  // ─── The title splash (the landing page) ───────────────────────
+
+  function splash(title) {
+    if (splashEl || overlay || !document.body) return;
+    splashes++;
+    var el = document.createElement("div");
+    el.className = "tap-to-play tap-splash";
+    el.id = "title-splash";
+    el.setAttribute("aria-hidden", "true");
+    el.innerHTML = '<p class="tap-title"></p>';
+    el.firstChild.textContent = title || words.title;
+    document.body.appendChild(el);
+    splashEl = el;
+    splashLog = { title: el.firstChild.textContent, shown: now(), fading: null, gone: null };
+    document.documentElement.classList.add("is-tap-waiting");
+    // No tap needed, but a tap (or a key) skips the wait; it never reaches a card underneath.
+    el.addEventListener("click", function () { endSplash(false); });
+    el.addEventListener("touchend", function (event) {
+      event.preventDefault();
+      endSplash(false);
+    }, { passive: false });
+    window.addEventListener("keydown", skipSplash, true);
+    el.hawkesTimer = setTimeout(function () { endSplash(false); }, SPLASH_HOLD);
+  }
+
+  function skipSplash(event) {
+    if (event.key === "Tab") return;
+    endSplash(false);
+  }
+
+  // The splash fades away (instant: removed at once, a prompt is taking its place).
+  function endSplash(instant) {
+    var el = splashEl;
+    if (!el) return;
+    splashEl = null;
+    clearTimeout(el.hawkesTimer);
+    window.removeEventListener("keydown", skipSplash, true);
+    if (!overlay) document.documentElement.classList.remove("is-tap-waiting");
+    var log = splashLog;
+    if (instant) {
+      if (el.parentNode) el.parentNode.removeChild(el);
+      log.fading = log.gone = now();
+      return;
+    }
+    el.classList.add("is-gone");
+    log.fading = now();
+    setTimeout(function () {
+      if (el.parentNode) el.parentNode.removeChild(el);
+      log.gone = now();
+    }, SPLASH_FADE + 100);
+  }
+
+  function now() {
+    return window.performance && performance.now ? Math.round(performance.now()) : Date.now();
   }
 
   // ─── Coming back ───────────────────────────────────────────────
@@ -365,10 +447,16 @@
     prompt: function () { return overlay; },
     open: openSettings,
     label: label,
+    ask: ask,
+    dismiss: dismiss,
+    splash: splash,
     /** What the playtest reads: the prompt, the tap, the AudioContext and the Settings panel. */
     state: function () {
       return {
         prompt: overlay ? "shown" : "gone",
+        splash: splashEl ? "shown" : "gone",
+        splashes: splashes,
+        splashLog: splashLog ? { title: splashLog.title, shown: splashLog.shown, fading: splashLog.fading, gone: splashLog.gone } : null,
         unlocked: unlocked,
         taps: taps,
         trusted: trusted,
@@ -380,5 +468,11 @@
   };
 
   addGear();
-  showPrompt();
+  if (!deferred) showPrompt();
+  else {
+    // Nobody decided (js/game.js didn't run): the standard prompt after all.
+    document.addEventListener("DOMContentLoaded", function () {
+      if (!overlay && !splashes && !unlocked) showPrompt();
+    });
+  }
 })();

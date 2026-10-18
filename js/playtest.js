@@ -19,6 +19,9 @@ const storyOf = (id) => allStories().find((s) => s.id === id);
 const story = (id = FIRST) => storyOf(id) || { id, start: "start", scenes: {} };
 const folderOf = (id, st = story()) => `/${st.scenes[id].folder}/`;
 const branchFolders = (st) => Object.keys(st.scenes).map((id) => folderOf(id, st));
+// Stories made on generated media (The Water Road, story/water-road.md): every scene must play its own generated cut.
+const MADE = ["water-road"];
+const mustPlay = (st) => st.listed || MADE.includes(st.id);
 // What Decision tree.txt promises for The Final Spark's opening scenes (checked by hand, not from the data).
 const TREE = {
   start: { choices: 2, to: ["deadEnd", "sewerWater"] },
@@ -93,6 +96,25 @@ async function checkVideo(t, video, where, seconds = 2, { autoplay = false } = {
   return true;
 }
 
+/** A made story's scene plays its generated cut (<folder>/scene.mp4): 9:16, with its sound (narration and music). */
+function checkCut(t, video, where) {
+  const src = decodeURI(new URL(video.currentSrc || video.src, location.href).pathname);
+  const ratio = video.videoWidth / video.videoHeight;
+  if (!/\/scene\.mp4$/.test(src)) t.problem("bug", `${where}: plays ${src}, not its generated cut (scene.mp4)`);
+  if (!(Math.abs(ratio - 9 / 16) < 0.01)) t.problem("bug", `${where}: the video is ${video.videoWidth}×${video.videoHeight}, not 9:16`);
+  // Chromium counts the audio it decoded: the cut's narration and music. (Muted playback still decodes.)
+  const heard = video.webkitAudioDecodedByteCount;
+  if (heard === 0) t.problem("bug", `${where}: ${src} has no sound (no narration or music)`);
+  t.event("cut", `${where}: ${src} ${video.videoWidth}×${video.videoHeight}, ${video.duration.toFixed(1)} s${heard ? `, ${heard} bytes of sound` : ""}`);
+  t.add("cutsPlayed");
+}
+
+/** The story's words (title, story, question, choices) never say an `unspoken` word: the dove is only in the pictures. */
+function checkUnspoken(t, st, root, where) {
+  const said = (root.textContent || "").toLowerCase();
+  for (const w of st.unspoken || []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) t.problem("bug", `${where}: the page says "${w}" (${st.title} never says it)`);
+}
+
 function waitFor(test, ms) {
   const t0 = performance.now();
   return new Promise((resolve) => {
@@ -165,13 +187,15 @@ async function gateSound(t, doc, on, where) {
   else t.event("setting-saved", `${where}: ${JSON.stringify(saved)}`);
 }
 
-/** The prompt covers the whole screen, then a tap on it makes it go. Every scenario starts here, like a viewer. */
+/** The prompt covers the whole screen, then a tap on it makes it go. Every scenario starts here, like a viewer.
+    The home page's landing page has no prompt: its title splash fades by itself, and the run waits for it. */
 async function passPrompt(t, doc = document, where = "home") {
   const sound = soundOf(doc);
   if (!sound) {
     t.problem("bug", `${where}: no sound setup (js/hawkes-sound.js isn't loaded)`);
     return false;
   }
+  if (doc === document && stories() && stories().view() === "landing") return passSplash(t, where);
   const prompt = sound.prompt();
   if (!prompt) {
     if (!sound.unlocked()) t.problem("bug", `${where}: no Tap to play prompt when the page loads`);
@@ -188,14 +212,138 @@ async function passPrompt(t, doc = document, where = "home") {
   return gone;
 }
 
+const SPLASH_WAIT = 6000; // the splash holds about 1.6 s and fades in 0.9 s
+
+/** The landing page's title splash: the site's title alone (no Tap to play, no sound line) on the prompt's
+    background, covering the screen; nothing to tap: it fades away by itself and leaves the stories. A run that
+    starts after it has gone reads what hawkes-sound.js recorded of it. */
+async function passSplash(t, where = "home") {
+  const sound = soundOf();
+  const title = document.documentElement.getAttribute("data-tap-title") || "";
+  if (sound.prompt()) t.problem("bug", `${where}: the landing page shows a Tap to play prompt, not the title splash`);
+  const el = $("title-splash");
+  if (el && sound.state().splash === "shown") {
+    const r = el.getBoundingClientRect();
+    if (r.width < innerWidth - 2 || r.height < innerHeight - 2) t.problem("bug", `${where}: the title splash doesn't cover the screen (${Math.round(r.width)}x${Math.round(r.height)} of ${innerWidth}x${innerHeight})`);
+    const says = el.textContent.replace(/\s+/g, " ").trim();
+    if (says !== title) t.problem("bug", `${where}: the title splash says "${says}", not just "${title}"`);
+    if (el.querySelector(".tap-button, .tap-note, .tap-settings")) t.problem("bug", `${where}: the title splash has Tap to play, a sound line or Settings on it`);
+    const bg = getComputedStyle(el).backgroundImage;
+    if (!bg || bg === "none") t.problem("warning", `${where}: the title splash hasn't the prompt's background`);
+    t.event("splash", `${where}: "${says}"`);
+    // No tap: it goes by itself.
+    if (!(await waitFor(() => !$("title-splash"), SPLASH_WAIT))) t.problem("bug", `${where}: the title splash is still up after ${SPLASH_WAIT / 1000} s (it should fade by itself)`);
+  } else if (!sound.state().splashes) {
+    t.problem("bug", `${where}: no title splash when the landing page loads`);
+    return false;
+  } else await waitFor(() => !$("title-splash"), SPLASH_WAIT);
+  const log = sound.state().splashLog;
+  if (log) {
+    if (log.title !== title) t.problem("bug", `${where}: the title splash said "${log.title}", not "${title}"`);
+    if (log.fading == null || log.gone == null) t.problem("bug", `${where}: the title splash never went away`);
+    else {
+      const fade = log.gone - log.fading;
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduced && fade < 300) t.problem("bug", `${where}: the title splash vanished (${fade} ms) instead of fading out`);
+      t.event("splash-gone", `${where}: held ${log.fading - log.shown} ms, faded ${fade} ms`);
+      t.metric("splashMs", log.gone - log.shown);
+    }
+  }
+  if (sound.prompt()) t.problem("bug", `${where}: a Tap to play prompt is up on the landing page after the splash`);
+  if (document.documentElement.classList.contains("is-tap-waiting")) t.problem("bug", `${where}: the page still can't scroll after the splash`);
+  checkInventory(t, where);
+  return true;
+}
+
+const shown = (el) => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden";
+
+/** The inventory is the open story's: none on the landing page; The Final Spark's flashlight (js/spot.js) in its
+    player; a story with its own `inventory` (js/kit.js) shows that bar instead, and no flashlight. */
+function checkInventory(t, where, doc = document) {
+  const torchBar = doc.querySelector(".inventory:not(.kit)");
+  const kitBar = doc.querySelector(".inventory.kit");
+  const torch = doc.getElementById("torch");
+  if (doc === document && landingShown()) {
+    if (shown(torchBar) || shown(torch) || shown(kitBar)) t.problem("bug", `${where}: the landing page shows an inventory`);
+    else t.event("no-inventory", `${where}: landing page`);
+    return;
+  }
+  const id = doc === document ? stories().current() : doc.documentElement.getAttribute("data-kit") || FIRST;
+  const st = storyOf(id);
+  if (st && st.inventory) {
+    if (!shown(kitBar) || !kitBar.querySelector(".kit-item")) t.problem("bug", `${where}: ${id} is open but its inventory (${st.inventory.items.map((i) => i.name).join(", ")}) isn't shown`);
+    else if (shown(torchBar) || shown(torch)) t.problem("bug", `${where}: ${id} shows The Final Spark's flashlight`);
+    else t.event("inventory", `${where}: ${id} (${kitText(kitBar)})`);
+  } else if (!shown(torchBar) || !shown(doc.getElementById("torch-slot"))) t.problem("bug", `${where}: ${id} is open but its inventory (the flashlight) isn't shown`);
+  else if (shown(kitBar)) t.problem("bug", `${where}: ${id} shows another story's inventory`);
+  else t.event("inventory", `${where}: ${id}`);
+}
+
+/* ---------------- a story's own inventory (js/kit.js): the counts the data gives, at every scene ---------------- */
+
+/** What the data says you hold after walking `chain` (scene ids from the start), worked out here on its own (not
+    with js/kit.js): every item's start, each scene's change ({ n } adds, { set: n } sets), kept between 0 and the
+    item's max; back at the start, the counts start over. */
+function expectKit(st, chain) {
+  const items = st.inventory.items.filter((i) => typeof i.start === "number");
+  const fresh = () => Object.fromEntries(items.map((i) => [i.id, i.start]));
+  let now = fresh();
+  for (const id of chain) {
+    if (id === st.start) now = fresh();
+    const changes = st.scenes[id].inventory || {};
+    for (const i of items) {
+      const c = changes[i.id];
+      let v = now[i.id];
+      if (c && typeof c === "object") v = c.set;
+      else if (typeof c === "number") v += c;
+      now[i.id] = Math.max(0, Math.min(i.max ?? Infinity, v));
+    }
+  }
+  return now;
+}
+
+/** The counts a bar shows ({ item: n }), from its count and, for rounds, the rounds still lit. */
+function shownKit(bar) {
+  const out = {};
+  if (!bar) return out;
+  bar.querySelectorAll(".kit-item[data-item]").forEach((el) => {
+    const count = el.querySelector(".kit-count");
+    if (!count) return;
+    out[el.dataset.item] = Number(count.textContent.split("/")[0]);
+    const rounds = el.querySelectorAll(".kit-round");
+    if (rounds.length) out[el.dataset.item + ":rounds"] = rounds.length - el.querySelectorAll(".kit-round.is-spent").length;
+  });
+  return out;
+}
+const kitText = (bar) => Object.entries(shownKit(bar)).filter(([k]) => !k.includes(":")).map(([k, v]) => `${k} ${v}`).join(", ");
+
+/** The bar on `doc` shows exactly what the data gives for `chain`. */
+function checkKit(t, st, chain, where, doc = document) {
+  if (!st.inventory) return;
+  const want = expectKit(st, chain);
+  const bar = doc.querySelector(".inventory.kit");
+  const got = shownKit(bar);
+  if (doc === document && !shown(bar)) return t.problem("bug", `${where}: the inventory isn't shown`);
+  const wrong = Object.entries(want).filter(([k, v]) => got[k] !== v || (`${k}:rounds` in got && got[`${k}:rounds`] !== v));
+  if (wrong.length) t.problem("bug", `${where}: the inventory shows ${wrong.map(([k]) => `${k} ${got[k]}${`${k}:rounds` in got ? ` (${got[`${k}:rounds`]} rounds lit)` : ""}`).join(", ")}; the data gives ${wrong.map(([k, v]) => `${k} ${v}`).join(", ")} (via ${chain.join(" > ")})`);
+  else t.add("inventoryChecked");
+  if (doc === document && spark().inventory) {
+    const api = spark().inventory() || {};
+    if (Object.entries(want).some(([k, v]) => api[k] !== v)) t.problem("bug", `${where}: finalSpark.inventory() says ${JSON.stringify(api)}, the data gives ${JSON.stringify(want)}`);
+  }
+}
+
 /* ---------------- the player on the home page ---------------- */
 
-// Every story saves its place in its own cookie; a run puts them all back as they were (and the URL: the run
-// leaves the page on the landing page or the story it was on).
+// Every story keeps two cookies (js/game.js): its run (`cookie`: { scene, history }) and its unlocks
+// (`<cookie>Unlocked`: { seen, completed }, every scene reached in the player). A run puts them all back as they were
+// (and the URL: the run leaves the page on the landing page or the story it was on).
+const unlocksCookie = (st) => `${st.cookie}Unlocked`;
+const cookiesOf = (st) => [st.cookie, unlocksCookie(st)];
 let savedCookie = null; // { name: "name=value" or "" }
 function rememberProgress() {
   const jar = document.cookie.split(";").map((s) => s.trim());
-  savedCookie = Object.fromEntries(allStories().map((s) => [s.cookie, jar.find((c) => c.startsWith(s.cookie + "=")) ?? ""]));
+  savedCookie = Object.fromEntries(allStories().flatMap(cookiesOf).map((name) => [name, jar.find((c) => c.startsWith(name + "=")) ?? ""]));
 }
 function restoreProgress() {
   if (savedCookie == null) return;
@@ -207,23 +355,158 @@ function restoreProgress() {
 
 /* ---------------- the landing page ---------------- */
 
+// Every card wears the viewer's own progress in its story (js/game.js, from the story's cookies): Not started
+// (nothing reached), Started (opened), Completed (an ending reached once: a scene with an "ending"; deaths aren't),
+// and how much of it is explored (unlocked scenes / all, rounded down). Its button follows the run: Play (none, or
+// at the start), Continue (mid-run), Start Over (at an ending).
+const BADGE = { new: "Not started", started: "Started", completed: "Completed" };
+const GO = { start: "Play", mid: "Continue", end: "Start Over" };
+/** A fresh browser: every story's run and unlocks forgotten. */
+function clearProgress() {
+  for (const name of allStories().flatMap(cookiesOf)) document.cookie = `${name}=; Max-Age=0; Path=/`;
+}
+
+/** What a story's unlocks cookie holds ({ seen, completed }), or null. */
+function savedUnlocks(st) {
+  return readJsonCookie(unlocksCookie(st));
+}
+
+/** The percent explored the data and the unlocks cookie give: unlocked scenes / all, rounded down. */
+function exploredWant(st) {
+  const seen = new Set((savedUnlocks(st)?.seen || []).filter((id) => st.scenes[id]));
+  return Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
+}
+
+/** Where the run cookie says the story's run is: start (none, or at the first page), mid or end (an ending). */
+function runWant(st) {
+  const run = savedPlace(st);
+  if (!run || !st.scenes[run.scene] || run.scene === st.start) return "start";
+  return st.scenes[run.scene].ending ? "end" : "mid";
+}
+
+/** A card's badge says `want` (new, started, completed), visible across the card's top right corner. */
+function checkBadge(t, card, st, want, where) {
+  const ribbon = card && card.querySelector(".story-card-ribbon");
+  const win = ribbon && ribbon.ownerDocument.defaultView;
+  if (!ribbon || !ribbon.getClientRects().length || win.getComputedStyle(ribbon).visibility === "hidden") {
+    t.problem("bug", `${where}: ${st.title}'s card has no progress badge (it should say ${BADGE[want]})`);
+    return false;
+  }
+  const says = ribbon.textContent.trim();
+  if (says !== BADGE[want] || card.dataset.progress !== want) {
+    t.problem("bug", `${where}: ${st.title}'s card says "${says}" (${card.dataset.progress}), not "${BADGE[want]}"`);
+    return false;
+  }
+  // Its button follows the run (the cookies are the frame's too: same origin), and its percent the unlocks.
+  const go = (card.querySelector(".story-card-go")?.textContent || "").trim();
+  const label = GO[runWant(st)];
+  if (go !== label) t.problem("bug", `${where}: ${st.title}'s run is at ${runWant(st)} but its button says "${go}", not "${label}"`);
+  const explored = (card.querySelector(".story-card-explored")?.textContent || "").trim();
+  const pct = `${exploredWant(st)}% explored`;
+  if (explored !== pct) t.problem("bug", `${where}: ${st.title}'s card says "${explored || "nothing"}", its unlocks give "${pct}"`);
+  const r = ribbon.getBoundingClientRect();
+  const c = card.getBoundingClientRect();
+  if (r.right < c.right - 1 && r.top > c.top + 1) t.problem("bug", `${where}: ${st.title}'s badge isn't across the card's corner`);
+  if (card.ownerDocument === document && stories().progress && stories().progress(st.id) !== want) t.problem("bug", `${where}: iltvStories.progress("${st.id}") says ${stories().progress(st.id)}, the card ${want}`);
+  t.event("badge", `${where}: ${st.id} ${says}, ${explored}, ${go}`);
+  return true;
+}
+
+/** The home page loaded fresh in the frame (a reload): every listed story's card says `want(st)`. */
+async function badgesAfterLoad(t, want, where) {
+  const doc = await frameLoad(t, (f) => (f.src = "/"));
+  const win = frame && frame.contentWindow;
+  if (!doc || !(await waitFor(() => win.iltvStories && doc.querySelector("#story-list a.story-card[data-progress]"), 10000))) {
+    t.problem("bug", `${where}: the home page didn't load in the frame`);
+    closeFrame();
+    return;
+  }
+  await sleep(300);
+  for (const st of listedStories()) checkBadge(t, doc.querySelector(`#story-list a.story-card[data-story="${st.id}"]`), st, want(st), where);
+  await sleep(600); // on screen for the footage
+  closeFrame();
+}
+
+/** The shortest way from the start (not through a death) to a scene that passes `test`: the scene ids after the start. */
+function wayTo(st, test) {
+  const from = { [st.start]: null };
+  const queue = [st.start];
+  while (queue.length) {
+    const id = queue.shift();
+    if (id !== st.start && test(st.scenes[id])) {
+      const way = [];
+      for (let at = id; at !== st.start; at = from[at]) way.unshift(at);
+      return way;
+    }
+    if (st.scenes[id].dead) continue;
+    for (const c of st.scenes[id].choices) if (!(c[2] in from) && st.scenes[c[2]]) (from[c[2]] = id), queue.push(c[2]);
+  }
+  return null;
+}
+
+/** Plays a way through the open story from where it is, clicking the choice that leads to each next scene. */
+async function playWay(t, st, way) {
+  for (const next of way) {
+    const at = st.scenes[sceneId()];
+    const i = at.choices.findIndex((c) => c[2] === next);
+    const button = choiceButtons()[i];
+    if (i < 0 || !button) throw new Error(`${st.id}: no choice from ${sceneId()} to ${next}`);
+    button.click();
+    await sleep(150);
+    if (sceneId() !== next) throw new Error(`${st.id}: the choice "${enText(button)}" didn't open ${next} (on ${sceneId()})`);
+  }
+}
+
+/** Opens a story the way its shared link does, /?story=<id> (the player follows the address): its saved place,
+    whatever its card says. */
+function openByLink(t, id) {
+  window.history.pushState({ story: id }, "", `/?story=${id}`);
+  window.dispatchEvent(new PopStateEvent("popstate", { state: { story: id } }));
+}
+
+function readJsonCookie(name) {
+  const item = document.cookie.split(";").map((c) => c.trim()).find((c) => c.startsWith(name + "="));
+  try {
+    return item ? JSON.parse(decodeURIComponent(item.slice(name.length + 1))) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** A story's current run as its cookie holds it ({ scene, history }), or null. */
+function savedPlace(st) {
+  return readJsonCookie(st.cookie);
+}
+
 const landingShown = () => !$("stories").hidden && $("spark").hidden;
 const cardOf = (id) => document.querySelector(`#story-list a.story-card[data-story="${id}"]`);
 
-/** Opens a story from its card on the landing page, a viewer's tap (hit-tested). */
-async function openStory(t, id) {
+/** Opens a story from its card on the landing page, a viewer's tap (hit-tested). Its own Tap to play prompt comes
+    up (until sound is unlocked) and is tapped, unless `tap` is false (the caller does it). */
+async function openStory(t, id, { tap = true } = {}) {
   if (stories().current() === id && !$("spark").hidden) return;
   if (!landingShown()) await toLanding(t);
   const card = cardOf(id);
-  if (!card) throw new Error(`the landing page has no card for ${id}`);
-  card.scrollIntoView({ block: "center", behavior: "instant" });
-  await sleep(200);
-  await tapAt(t, card.querySelector("h2") || card, `the ${story(id).title} card`);
+  if (card) {
+    card.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(200);
+    await tapAt(t, card.querySelector("h2") || card, `the ${story(id).title} card`);
+  } else if (!story(id).listed) {
+    // A draft has no card: it opens the way its shared link does.
+    openByLink(t, id);
+    t.log(`open ${id} by its link (a draft: no card)`);
+  } else throw new Error(`the landing page has no card for ${id}`);
   await sleep(300);
-  if (stories().current() !== id) throw new Error(`the ${story(id).title} card didn't open the story (open: ${stories().current()})`);
+  if (stories().current() !== id) throw new Error(`${card ? `the ${story(id).title} card` : `/?story=${id}`} didn't open the story (open: ${stories().current()})`);
   if ($("spark").hidden) t.problem("bug", `${id}: the card opened the story but the player is hidden`);
   if (new URL(location.href).searchParams.get("story") !== id) t.problem("bug", `${id}: the address doesn't say ?story=${id} (a reload would lose the story)`);
   t.event("story-open", `${id} (${story(id).title})`);
+  const sound = soundOf();
+  if (sound.prompt()) {
+    const promptTitle = (sound.prompt().querySelector(".tap-title")?.textContent || "").trim();
+    if (promptTitle !== story(id).tap.title) t.problem("bug", `${id}: the Tap to play prompt says "${promptTitle}", not "${story(id).tap.title}"`);
+    if (tap) await passPrompt(t, document, id);
+  } else if (!sound.unlocked()) t.problem("bug", `${id}: the story opened without its Tap to play prompt (sound is still locked)`);
   document.querySelector("#spark").scrollIntoView({ block: "start", behavior: "instant" });
 }
 
@@ -237,19 +520,83 @@ async function toLanding(t) {
   t.event("landing", "All stories");
 }
 
-/** Back to the story's first page the way a viewer would: the Tree tab, then the first node. */
-async function toStart(t) {
+/** The player has no Back button (J, 2026-10-18: players own their choices; a death means starting over). */
+function checkNoBack(t, where) {
+  if ($("spark-back") || document.querySelector("#spark .back-button")) t.problem("bug", `${where}: the player has a Back button (there's no stepping back to undo a choice)`);
+}
+
+/** Back to the story's first page, a new run: there's no Back and the Tree can't be pressed, so the bot does what
+    Start Over does: the story's run cookie goes (its unlocks stay) and the story opens again by its link. */
+async function toStart(t, { quiet = false } = {}) {
+  const id = spark().story();
   const start = spark().start();
   $("tab-play").click();
   if (sceneId() === start && spark().depth() === 0) return;
+  const unlocked = spark().unlocked().length;
+  document.cookie = `${story(id).cookie}=; Max-Age=0; Path=/`;
+  window.history.replaceState({ story: id }, "", `/?story=${id}`);
+  window.dispatchEvent(new PopStateEvent("popstate", { state: { story: id } }));
+  await sleep(200);
+  if (soundOf().prompt()) await passPrompt(t, document, id);
+  if (sceneId() !== start || spark().depth() !== 0) throw new Error(`${id}: a new run opened ${sceneId()} (${spark().depth()} steps in), not the start`);
+  if (spark().unlocked().length !== unlocked) t.problem("bug", `${id}: a new run changed the unlocked scenes (${unlocked} -> ${spark().unlocked().length}): they must stay`);
+  if (!quiet) t.event("reset", `${id}: ${start} (a new run, unlocks kept)`);
+}
+
+/** The Tree tab is a map of what you've found (J, 2026-10-18: no cheating): a node for each unlocked scene (the
+    current one marked), a locked "?" for each choice from one of them to a scene not reached yet, with nothing
+    below it and nothing of that scene in it, and nothing in it can be pressed. */
+async function checkTree(t, st, where) {
+  const before = sceneId();
   $("tab-tree").click();
   await sleep(200);
-  const node = document.querySelector(`#spark-tree .tree-node[data-scene="${start}"]`);
-  if (!node) throw new Error("the Tree view has no start node");
-  node.click();
-  await sleep(200);
-  if (sceneId() !== start) throw new Error("the Tree's start node didn't open the start");
-  t.event("reset", `${spark().story()}: ${start} (via Tree)`);
+  const tree = $("spark-tree");
+  const unlocked = new Set(spark().unlocked());
+  const nodes = [...tree.querySelectorAll(".tree-node")];
+  const shown = nodes.filter((n) => n.dataset.scene).map((n) => n.dataset.scene);
+  const locked = nodes.filter((n) => n.classList.contains("is-locked"));
+  // The scenes the tree can draw: the unlocked ones reachable from the start through unlocked scenes.
+  const reach = new Set();
+  const queue = unlocked.has(st.start) ? [st.start] : [];
+  let ways = 0;
+  while (queue.length) {
+    const id = queue.shift();
+    if (reach.has(id)) continue;
+    reach.add(id);
+    for (const c of st.scenes[id].choices) {
+      if (!st.scenes[c[2]]) continue;
+      if (unlocked.has(c[2])) queue.push(c[2]);
+      else ways++;
+    }
+  }
+  if (tree.querySelector("button, a[href], [tabindex], [onclick]")) t.problem("bug", `${where}: the Tree has something to press (it's a map now: no node opens a scene)`);
+  shown.filter((id) => !unlocked.has(id)).forEach((id) => t.problem("bug", `${where}: the Tree shows ${id}, which the player hasn't reached`));
+  [...reach].filter((id) => !shown.includes(id)).forEach((id) => t.problem("bug", `${where}: the Tree is missing ${id}, which the player has reached`));
+  if (locked.length !== ways) t.problem("bug", `${where}: the Tree has ${locked.length} locked "?", there are ${ways} ways not taken`);
+  // A locked node is a "?" and the choice that leads there (on the page already): no id, title, death or ending.
+  for (const n of locked) {
+    const extra = [...n.children].filter((c) => !c.matches(".tree-node-title, .tree-node-via"));
+    if (n.dataset.scene || extra.length || (n.querySelector(".tree-node-title")?.textContent || "").trim() !== "?" || n.className.trim() !== "tree-node is-locked") t.problem("bug", `${where}: a locked node gives its scene away (${n.outerHTML.slice(0, 160)})`);
+  }
+  const current = nodes.filter((n) => n.classList.contains("is-current")).map((n) => n.dataset.scene);
+  if (current.join() !== before) t.problem("bug", `${where}: the Tree marks ${current.join(", ") || "nothing"} as current, not ${before}`);
+  // Pressing a node does nothing (the old Tree opened any scene from it).
+  const target = nodes.find((n) => n.dataset.scene && n.dataset.scene !== before) || locked[0];
+  if (target) {
+    target.click();
+    await sleep(150);
+    if (sceneId() !== before || $("spark-tree").hidden) t.problem("bug", `${where}: pressing a Tree node changed the scene or left the Tree (${before} -> ${sceneId()})`);
+  }
+  t.event("tree", `${where}: ${shown.length} found, ${locked.length} locked`);
+  $("tab-play").click();
+  await sleep(100);
+}
+
+/** The percent explored the player shows, against the unlocked scenes. */
+function checkExplored(t, st, want, where) {
+  const got = spark().explored();
+  const text = ($("spark-explored")?.textContent || "").trim();
+  if (got !== want || text !== `${want}% explored`) t.problem("bug", `${where}: the player says "${text}" (explored() ${got}), the unlocked scenes give ${want}%`);
 }
 
 function stopVideos() {
@@ -274,6 +621,7 @@ async function smoke(options, t) {
   await sleep(800);
   await openStory(t, FIRST);
   await toStart(t);
+  await checkTree(t, story(FIRST), "The Final Spark's Tree");
   t.scene("The sewer");
   t.progress(0.2);
   const ok = await checkVideo(t, document.querySelector("#spark-video video"), "start", 3, { autoplay: true });
@@ -283,7 +631,7 @@ async function smoke(options, t) {
   t.metric("choices", buttons.length);
   t.note(`${buttons.length} choices: ${buttons.map(enText).join(" / ")}`);
   if (ok && buttons.length) {
-    // One step in and back out again.
+    // One step in (there's no Back: a choice stands).
     const storyBefore = $("spark-story").textContent;
     buttons[0].click();
     await sleep(300);
@@ -291,11 +639,8 @@ async function smoke(options, t) {
     if (sceneId() === "start") t.problem("bug", `start: "${enText(buttons[0])}" goes nowhere`);
     else if ($("spark-story").textContent === storyBefore) t.problem("bug", `${sceneId()}: the page text didn't change after "${enText(buttons[0])}"`);
     else await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1, { autoplay: true });
-    $("spark-back").click();
-    await sleep(300);
-    if (sceneId() !== "start") t.problem("bug", "Back didn't return to the start");
-    else await checkVideo(t, document.querySelector("#spark-video video"), "start (after Back)", 1, { autoplay: true });
   }
+  checkNoBack(t, "The Final Spark");
   await toLanding(t);
   t.progress(1);
 }
@@ -304,7 +649,9 @@ async function branches(options, t) {
   rememberProgress();
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
   await passPrompt(t);
-  const list = listedStories();
+  // A fresh browser: nothing unlocked, so the walk must unlock every scene (and only then 100%).
+  clearProgress();
+  const list = allStories(); // the drafts too (opened by their link)
   const total = list.reduce((n, st) => n + Object.keys(st.scenes).length, 0);
   const sums = { scenes: 0, endings: 0, deaths: 0 };
   t.metric("stories", list.length);
@@ -314,6 +661,7 @@ async function branches(options, t) {
     await openStory(t, st.id);
     await walkStory(t, st, sums, total);
     await toLanding(t);
+    if (st.listed) checkBadge(t, cardOf(st.id), st, wayTo(st, (s) => !!s.ending) ? "completed" : "started", `after every scene of ${st.title}`);
   }
   t.metric("scenesVisited", sums.scenes);
   t.metric("endings", sums.endings);
@@ -321,24 +669,40 @@ async function branches(options, t) {
   t.progress(1);
 }
 
-/** Every scene of the open story, by clicking every choice and Back. */
+/** Every scene of the open story, by clicking every choice. The player has no Back, so after each choice the bot
+    comes back the way Start Over does: a new run from the start (the run cookie cleared, the unlocks kept), the
+    same choices. Every new scene unlocks one more: the percent explored follows, and is 100 only after the last. */
 async function walkStory(t, st, sums, total) {
   await toStart(t);
   const all = spark().scenes();
   const seen = new Map(); // id -> { state, choices, to: [] }
   const at = (id) => (st.id === FIRST ? id : `${st.id}/${id}`);
+  let noVideo = 0;
 
-  async function visit(id, path) {
+  /** To the end of `chain` (scene ids from the start) again, from the start. */
+  async function rewalk(chain) {
+    await toStart(t, { quiet: true });
+    await playWay(t, st, chain.slice(1));
+    t.add("rewalks");
+  }
+
+  async function visit(id, path, chain) {
     const root = $("spark");
     const info = { state: root.dataset.state, choices: choiceButtons().map(enText), to: [] };
     seen.set(id, info);
     t.scene(at(id));
+    checkExplored(t, st, Math.floor((seen.size * 100) / all.length), at(id));
+    if (spark().unlocked().length !== seen.size) t.problem("bug", `${at(id)}: ${spark().unlocked().length} scenes unlocked, the bot has reached ${seen.size}`);
+    if (seen.size === 1) await checkTree(t, st, `${st.title}'s Tree at the start`);
     t.note(`${st.title}: ${path.join(" > ")}`);
     t.event("scene", `${at(id)} (${info.state}, ${info.choices.length} choices)`);
     t.progress((sums.scenes + seen.size) / total);
     const video = document.querySelector("#spark-video video");
-    if (video || st.scenes[id].video) await checkVideo(t, video, at(id), 2, { autoplay: true });
-    else t.problem(st.listed ? "bug" : "warning", `${at(id)}: no video yet`);
+    if (video || st.scenes[id].video || mustPlay(st)) {
+      if ((await checkVideo(t, video, at(id), 2, { autoplay: true })) && MADE.includes(st.id)) checkCut(t, video, at(id));
+    } else noVideo++;
+    if (st.unspoken) checkUnspoken(t, st, root, at(id));
+    checkKit(t, st, chain, at(id));
     if (!info.choices.length) {
       if (info.state === "soon") t.event("ending", `${at(id)}: ${enText($("spark-ending"))}`);
       else t.problem("bug", `${at(id)}: dead end with no choices and no ending`);
@@ -357,19 +721,21 @@ async function walkStory(t, st, sums, total) {
       }
       info.to.push(next);
       t.add("choicesClicked");
-      if (!seen.has(next)) await visit(next, [...path, label]);
-      $("spark-back").click();
-      await sleep(150);
-      if (sceneId() !== id) {
-        t.problem("bug", `${st.title}: Back from ${next} went to ${sceneId()}, not ${id}`);
-        await toStart(t);
-        return;
-      }
+      if (!seen.has(next)) await visit(next, [...path, label], [...chain, next]);
+      else checkKit(t, st, [...chain, next], at(next));
+      if (i === info.choices.length - 1) break;
+      await rewalk(chain);
       t.scene(at(id));
+      checkKit(t, st, chain, `${at(id)} (again from the start)`);
     }
   }
-  await visit(st.start, [st.start]);
+  if (st.inventory) checkInventory(t, st.title);
+  await visit(st.start, [st.start], [st.start]);
   stopVideos();
+  if (noVideo) t.problem("warning", `${st.title}: ${noVideo} scene(s) have no video yet (a draft, not on the landing page)`);
+  // Every scene found: the whole tree, nothing locked, 100%.
+  await checkTree(t, st, `${st.title}'s Tree, every scene found`);
+  if (seen.size === all.length) checkExplored(t, st, 100, `${st.title}, every scene found`);
 
   // Every scene is reachable, and The Final Spark's opening matches Decision tree.txt.
   all.filter((id) => !seen.has(id)).forEach((id) => t.problem("bug", `${at(id)}: no choice leads here (unreachable)`));
@@ -405,7 +771,13 @@ async function storiesRun(options, t) {
   const order = cards.map((c) => c.dataset.story);
   if (order.join() !== list.map((st) => st.id).join()) t.problem("bug", `the landing page shows ${order.join(", ") || "no stories"}, the listing has ${list.map((st) => st.id).join(", ")}`);
   allStories().filter((st) => !st.listed && cardOf(st.id)).forEach((st) => t.problem("bug", `${st.id} has a card but isn't listed`));
+  checkInventory(t, "landing page");
   await sleep(1000); // the landing page stays on screen for the footage
+
+  // A fresh browser (no saved places): every card says Not started.
+  t.scene("Progress: a fresh browser");
+  clearProgress();
+  await badgesAfterLoad(t, () => "new", "fresh browser");
 
   for (let i = 0; i < list.length; i++) {
     const st = list[i];
@@ -424,13 +796,21 @@ async function storiesRun(options, t) {
     } else if (poster) {
       if (!(await waitFor(() => poster.readyState >= 2 || poster.error, 15000)) || poster.error) t.problem("bug", `${st.id}: the card's video frame didn't load`);
     } else t.problem("warning", `${st.id}: the card has no picture`);
+    // Its progress badge (the landing page was drawn before the run cleared the saved places: the first card's is
+    // checked after All stories).
+    if (i > 0) checkBadge(t, card, st, "new", "before opening it");
 
     // A tap on it opens that story's player, with its title, its first page's text, video and choices.
     await openStory(t, st.id);
     t.scene(`${st.title}: player`);
     if ($("spark-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("spark-title").textContent}"`);
     if (!st.scenes[sceneId()]) t.problem("bug", `${st.id}: the player is on ${sceneId()}, which isn't one of its scenes`);
+    checkInventory(t, st.title);
+    checkNoBack(t, st.title);
     await toStart(t);
+    // Only the first page is found: the Tree is it and a "?" per choice, and the percent is one scene's worth.
+    checkExplored(t, st, Math.floor(100 / Object.keys(st.scenes).length), `${st.id}: ${st.start}`);
+    await checkTree(t, st, `${st.title}'s Tree on its first page`);
     const first = st.scenes[st.start];
     if (enText($("spark-story")) !== first.story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
     if (first.video || document.querySelector("#spark-video video")) await checkVideo(t, document.querySelector("#spark-video video"), `${st.id}: ${st.start}`, 2, { autoplay: true });
@@ -443,11 +823,140 @@ async function storiesRun(options, t) {
     // All stories brings the landing page back (and stops the story's video).
     await toLanding(t);
     if (new URL(location.href).searchParams.has("story")) t.problem("bug", "the address still names a story on the landing page");
-    t.progress((i + 1) / (list.length + 1));
+    if ($("title-splash")) t.problem("bug", "All stories shows the title splash again (it's for the first visit)");
+    await sleep(100);
+    checkInventory(t, "landing page, after All stories");
+    // Opening it started it; the stories not opened yet are still Not started.
+    list.forEach((other, j) => checkBadge(t, cardOf(other.id), other, j <= i ? "started" : "new", `after opening ${st.title}`));
+    t.progress((i + 1) / (list.length + 2));
+  }
+
+  // Reaching an ending completes a story; a death and Try again don't undo it; a reload keeps it.
+  for (const st of list) {
+    const ending = wayTo(st, (s) => !!s.ending);
+    if (!ending) {
+      t.problem("warning", `${st.id}: no ending to reach (no scene with an "ending")`);
+      continue;
+    }
+    t.scene(`${st.title}: to an ending`);
+    await openStory(t, st.id);
+    await toStart(t);
+    await playWay(t, st, ending);
+    const end = sceneId();
+    if ($("spark").dataset.state !== "soon" || $("spark-ending").hidden) t.problem("bug", `${st.id}: ${end} is an ending but the player doesn't show it as one`);
+    const chain = spark().path();
+    t.event("ending", `${st.id}: ${chain.join(" > ")}`);
+    checkExplored(t, st, exploredWant(st), `${st.id}: ${end}`);
+    if (spark().explored() >= 100 && spark().unlocked().length < Object.keys(st.scenes).length) t.problem("bug", `${st.id}: 100% explored with scenes still locked`);
+    await checkTree(t, st, `${st.title}'s Tree at an ending`);
+    await sleep(800);
+    await toLanding(t);
+    checkBadge(t, cardOf(st.id), st, "completed", `after ${st.title}'s ending`);
+    // The saved place is the ending (with the counts of the way there). The card now says Start Over, so the
+    // ending is opened again by the story's link, not the card.
+    openByLink(t, st.id);
+    await sleep(300);
+    if (soundOf().prompt()) await passPrompt(t, document, st.id);
+    if (sceneId() !== end) t.problem("bug", `${st.id}: the saved place was ${end}, it opened at ${sceneId()}`);
+    else if (st.inventory) checkKit(t, st, chain, `${st.id}: ${end} (saved place)`);
+    // A death, then Try again: back at the start, still Completed.
+    const death = wayTo(st, (s) => !!s.dead);
+    if (death) {
+      await toStart(t);
+      await playWay(t, st, death);
+      t.event("death", `${st.id}: ${sceneId()}`);
+      const again = choiceButtons()[st.scenes[sceneId()].choices.findIndex((c) => c[2] === st.start)];
+      if (!again) t.problem("bug", `${st.id}: the death ${sceneId()} has no Try again back to the start`);
+      else {
+        again.click();
+        await sleep(200);
+        if (sceneId() !== st.start) t.problem("bug", `${st.id}: Try again didn't go back to the start`);
+      }
+      await toLanding(t);
+      checkBadge(t, cardOf(st.id), st, "completed", `after a death and Try again in ${st.title}`);
+    }
+  }
+  // A reload keeps every badge.
+  t.scene("Progress: after a reload");
+  await badgesAfterLoad(t, () => "completed", "after a reload");
+
+  // Start Over: at an ending the card says Start Over; pressing it forgets that story's run only (its run cookie:
+  // its unlocks, its percent and Completed stay, and the other stories' cookies are untouched) and opens it at the
+  // start with an empty history. Its card then says Completed, the same percent, and Play.
+  for (const st of list) {
+    const ending = wayTo(st, (s) => !!s.ending);
+    if (!ending) continue;
+    t.scene(`${st.title}: Start Over`);
+    await openStory(t, st.id);
+    await toStart(t);
+    await playWay(t, st, ending);
+    await toLanding(t);
+    if (!checkBadge(t, cardOf(st.id), st, "completed", `before Start Over in ${st.title}`)) continue;
+    const go = () => (cardOf(st.id).querySelector(".story-card-go")?.textContent || "").trim();
+    if (go() !== "Start Over") t.problem("bug", `${st.id}: at an ending its card's button says "${go()}", not Start Over`);
+    const unlocks = JSON.stringify(savedUnlocks(st));
+    const pct = exploredWant(st);
+    const others = Object.fromEntries(allStories().filter((o) => o.id !== st.id).flatMap(cookiesOf).map((name) => [name, readJsonCookie(name)]));
+    await openStory(t, st.id);
+    const saved = savedPlace(st);
+    if (sceneId() !== st.start || spark().depth() !== 0) t.problem("bug", `${st.id}: Start Over opened ${sceneId()} (${spark().depth()} steps in), not its start`);
+    if (!saved || saved.scene !== st.start || saved.history.length) t.problem("bug", `${st.id}: after Start Over its run is ${JSON.stringify(saved)}, not the start with an empty history`);
+    if (JSON.stringify(savedUnlocks(st)) !== unlocks) t.problem("bug", `${st.id}: Start Over changed its unlocks (${unlocks} -> ${JSON.stringify(savedUnlocks(st))}): they must stay`);
+    checkExplored(t, st, pct, `${st.id}: after Start Over`);
+    if (stories().progress(st.id) !== "completed") t.problem("bug", `${st.id}: after Start Over iltvStories.progress says ${stories().progress(st.id)}, not completed (an ending stays reached)`);
+    if (st.inventory) checkKit(t, st, [st.start], `${st.id}: ${st.start} (after Start Over)`);
+    for (const [name, was] of Object.entries(others)) {
+      if (JSON.stringify(readJsonCookie(name)) !== JSON.stringify(was)) t.problem("bug", `Start Over in ${st.id} changed the cookie ${name} (${JSON.stringify(was)} -> ${JSON.stringify(readJsonCookie(name))})`);
+    }
+    t.event("start-over", `${st.id}: at ${sceneId()}, ${pct}% explored kept; ${Object.keys(others).length} other cookies untouched`);
+    await sleep(600);
+    await toLanding(t);
+    checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);
+    if (go() !== "Play") t.problem("bug", `${st.id}: after Start Over its card's button says "${go()}", not Play`);
+  }
+  t.progress((list.length + 1) / (list.length + 2));
+
+  // A draft (listed: false) has no card, but plays at /?story=<id>: its title, first page, choices, inventory; and its
+  // saved place (a few choices in, then All stories and back) comes back with the same scene and counts.
+  for (const st of allStories().filter((s) => !s.listed)) {
+    t.scene(`${st.title}: draft, by its link`);
+    await openStory(t, st.id);
+    if ($("spark-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("spark-title").textContent}"`);
+    await toStart(t);
+    if (enText($("spark-story")) !== st.scenes[st.start].story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
+    if (!choiceButtons().length) t.problem("bug", `${st.id}: no choices on the first page`);
+    if (MADE.includes(st.id)) {
+      // Its media is made: the first page plays its cut (still no card until J lists it).
+      const video = document.querySelector("#spark-video video");
+      if (await checkVideo(t, video, `${st.id}: ${st.start}`, 3, { autoplay: true })) checkCut(t, video, `${st.id}: ${st.start}`);
+    }
+    checkInventory(t, st.title);
+    if (st.inventory) {
+      checkKit(t, st, [st.start], `${st.id}: ${st.start}`);
+      for (let i = 0; i < 3 && choiceButtons().length; i++) {
+        choiceButtons()[0].click();
+        await sleep(200);
+      }
+      const where = sceneId();
+      const chain = spark().path();
+      checkKit(t, st, chain, `${st.id}: ${where}`);
+      const before = kitText(document.querySelector(".inventory.kit"));
+      await toLanding(t);
+      checkInventory(t, "landing page, after a draft");
+      await openStory(t, st.id);
+      if (sceneId() !== where) t.problem("bug", `${st.id}: the saved place was ${where}, it opened at ${sceneId()}`);
+      else {
+        checkKit(t, st, chain, `${st.id}: ${where} (saved place)`);
+        t.event("saved-place", `${st.id}: ${where} (${before})`);
+      }
+      await toStart(t);
+    }
+    await sleep(800);
+    await toLanding(t);
   }
 
   // A shared link opens a story straight away: /?story=<id> and the story's own /<id>/.
-  for (const st of list) {
+  for (const st of allStories()) {
     t.scene(`${st.title}: its link`);
     await frameLoad(t, (f) => (f.src = `/${st.id}/`));
     // It forwards to /?story=<id>, a second page load in the frame.
@@ -459,6 +968,7 @@ async function storiesRun(options, t) {
       t.event("story-link", `/${st.id}/ -> ${win.location.pathname}${win.location.search}`);
       const promptTitle = (win.hawkesSound?.prompt()?.querySelector(".tap-title")?.textContent || "").trim();
       if (promptTitle !== st.tap.title) t.problem("bug", `/${st.id}/: the Tap to play prompt says "${promptTitle}", not "${st.tap.title}"`);
+      if (win.hawkesSound?.state().splashes) t.problem("bug", `/${st.id}/: the title splash showed over the story (it's the landing page's)`);
     }
     await sleep(800);
     closeFrame();
@@ -537,6 +1047,14 @@ async function pages(options, t) {
 /** One story's branch pages, from its start page, following every choice link a viewer can click. */
 async function crawlPages(t, st, done, total) {
   const first = folderOf(st.start, st);
+  let noVideo = 0;
+  // A branch page shows the counts you'd have on the shortest way there from the start.
+  const sceneAt = new Map(Object.keys(st.scenes).map((id) => [folderOf(id, st), id]));
+  const shortest = new Map([[st.start, [st.start]]]);
+  for (const queue = [st.start]; queue.length; ) {
+    const id = queue.shift();
+    for (const [, , next] of st.scenes[id].choices) if (!shortest.has(next)) shortest.set(next, [...shortest.get(id), next]), queue.push(next);
+  }
   const parent = new Map([[first, null]]);
   const queue = [first];
   const mine = new Set();
@@ -561,8 +1079,14 @@ async function crawlPages(t, st, done, total) {
     await waitFor(() => soundOf(doc), 3000);
     await passPrompt(t, doc, path);
     const video = doc.querySelector("video");
-    if (video || st.listed) await checkVideo(t, video, path, 2, { autoplay: true });
-    else t.problem("warning", `${path}: no video yet (${st.title} isn't on the landing page)`);
+    if (video || mustPlay(st)) {
+      if ((await checkVideo(t, video, path, 2, { autoplay: true })) && MADE.includes(st.id)) checkCut(t, video, path);
+    } else noVideo++;
+    if (st.unspoken) checkUnspoken(t, st, doc.body, path);
+    if (st.inventory) {
+      checkInventory(t, path, doc);
+      checkKit(t, st, shortest.get(sceneAt.get(path)) || [], path, doc);
+    }
     const links = [...doc.querySelectorAll(".spark-choices a.choice")].map((a) => ({ label: enText(a), to: pathOf(a.getAttribute("href"), doc.baseURI) }));
     t.event("page", `${path}: ${links.length} choices`);
     const ending = doc.querySelector('main[data-state="soon"]');
@@ -582,6 +1106,7 @@ async function crawlPages(t, st, done, total) {
     }
     doc.querySelectorAll("video").forEach((v) => v.pause());
   }
+  if (noVideo) t.problem("warning", `${st.title}: ${noVideo} page(s) have no video yet (a draft, not on the landing page)`);
   branchFolders(st).filter((p) => !mine.has(p)).forEach((p) => t.problem("warning", `${p}: no choice links here (orphan page)`));
   // The story's own link, /<id>/, opens its player.
   if ((await status(`/${st.id}/`)) !== 200) t.problem("bug", `/${st.id}/ (${st.title}'s link) is missing`);
@@ -589,7 +1114,7 @@ async function crawlPages(t, st, done, total) {
 
 async function blog(options, t) {
   t.scene("Blog");
-  await passPrompt(t); // like a viewer: the home page's Tap to play goes first, so no splash is left behind the post frame
+  await passPrompt(t); // like a viewer: the home page's title splash goes first, so none is left behind the post frame
   const posts = [...document.querySelectorAll("#blog a.post-card")].map((a) => ({
     to: pathOf(a.getAttribute("href")),
     title: enText(a.querySelector("h3")),
@@ -699,18 +1224,8 @@ async function credits(options, t) {
 }
 
 async function creditsRun(t) {
-  // Sound off from the prompt's own Settings: its line must say so, and so must the next page's prompt,
-  // which loads with Sound off already saved.
-  if (soundOf().prompt()) {
-    t.scene("Tap to play");
-    await sleep(800);
-    await gateSound(t, document, false, "home");
-    t.scene("Tap to play (Sound off)");
-    checkNote(t, document, "home, after Sound off");
-    await sleep(1500);
-  }
   t.scene("Home footer");
-  await passPrompt(t);
+  await passPrompt(t); // the landing page's title splash
   if (!landingShown()) await toLanding(t);
   await checkMark(t, document, "home (stories)");
   await checkLink(t, document, (a) => /hawkes biomedical/i.test(a.textContent), PARENT_URL, "Hawkes Biomedical", "home");
@@ -718,8 +1233,19 @@ async function creditsRun(t) {
   t.progress(0.15);
 
   // The same with a story open in the player: the mark is still there and nothing lies over the story video.
+  // Sound off from the story's Tap to play prompt, its own Settings button: its line must say so, and so must the
+  // branch page's prompt, which loads with Sound off already saved.
   t.scene("The Final Spark: footer and video");
-  await openStory(t, FIRST);
+  await openStory(t, FIRST, { tap: false });
+  if (soundOf().prompt()) {
+    t.scene("Tap to play");
+    await sleep(800);
+    await gateSound(t, document, false, "The Final Spark");
+    t.scene("Tap to play (Sound off)");
+    checkNote(t, document, "The Final Spark, after Sound off");
+    await sleep(1500);
+  }
+  await passPrompt(t, document, FIRST);
   await checkMark(t, document, "home (The Final Spark)");
   await sleep(800);
   await toLanding(t);
@@ -805,17 +1331,20 @@ async function sound(options, t) {
     const original = localStorage.getItem(SOUND_KEY);
     rememberProgress();
     localStorage.removeItem(SOUND_KEY); // a first visit: Sound on, full volume
+    // The landing page: the title splash fades by itself, no prompt, no sound to unlock (it has no video).
+    t.scene("Title splash");
+    await passPrompt(t);
+    // The story's card: its Tap to play prompt, and that tap unlocks sound and starts the first video with it.
+    await openStory(t, FIRST, { tap: false });
     t.scene("Tap to play");
-    if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt when the page loads");
+    if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt when The Final Spark opens");
     await sleep(1200);
     const firstVideo = document.querySelector("#spark-video video");
     if (firstVideo && !firstVideo.paused) t.problem("bug", "the video plays behind the prompt, before the tap");
-    await passPrompt(t);
+    await passPrompt(t, document, "The Final Spark");
     const st = soundOf().state();
     if (!st.unlocked) t.problem("bug", "the tap didn't unlock sound");
     if (st.audio !== "running") t.problem("bug", `the AudioContext is "${st.audio}" after the tap, not running`);
-    // The story's first video starts with sound from the card's tap (the player starts it inside the click).
-    await openStory(t, FIRST);
     t.scene("The Final Spark (sound on)");
     await checkSound(t, document.querySelector("#spark-video video"), "after the tap", { on: true, volume: 1 });
     t.progress(0.2);
@@ -828,8 +1357,6 @@ async function sound(options, t) {
       await sleep(300);
       t.scene(`${sceneId()} (sound on)`);
       await checkSound(t, document.querySelector("#spark-video video"), `${sceneId()}, after a choice`, { on: true, volume: 1 });
-      await tapAt(t, $("spark-back"), "Back");
-      await sleep(300);
     }
     t.progress(0.35);
 
@@ -873,6 +1400,7 @@ async function sound(options, t) {
     if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt after the reload");
     // The address kept ?story=final-spark, so the page opens straight into the story, and the prompt names it.
     if (stories().current() !== FIRST) t.problem("bug", `after the reload the page didn't open The Final Spark again (open: ${stories().current() || "the landing page"})`);
+    if (soundOf().state().splashes) t.problem("bug", "the title splash showed over The Final Spark (it's the landing page's)");
     const promptTitle = (soundOf().prompt()?.querySelector(".tap-title")?.textContent || "").trim();
     if (stories().current() === FIRST && promptTitle !== story().tap.title) t.problem("bug", `the prompt over The Final Spark says "${promptTitle}", not "${story().tap.title}"`);
     await sleep(1000);
@@ -915,30 +1443,30 @@ async function sound(options, t) {
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, The Final Spark from its card: the first video plays, a choice appears, one step in and back, All stories", seconds: 25, tags: ["smoke"] },
+    { id: "smoke", title: "The landing page, The Final Spark from its card: its Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories", seconds: 25, tags: ["smoke"] },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
-      seconds: 40,
+      seconds: 75,
       tags: ["full"],
-      description: "Taps Tap to play, checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address), its first page's text, video and choices; All stories brings the landing page back with the video gone. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
     },
-    { id: "branches", title: "Every listed story's player: every scene, every choice, every video", seconds: 150, tags: ["full"] },
-    { id: "pages", title: "Every story's branch pages (one folder per branch): videos and choice links", seconds: 60, tags: ["full"] },
+    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts, the percent explored rising scene by scene to 100% only at the last, the Tree locked until found (no Back: after each choice it walks again from the start, a new run)", seconds: 330, tags: ["full"] },
+    { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts", seconds: 90, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {
       id: "credits",
       title: "Powered by HAWKES GEN on every kind of page, Hawkes Biomedical on the home page",
       seconds: 30,
       tags: ["full"],
-      description: "Taps Tap to play, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before the first tap it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back.",
+      description: "Waits for the landing page's title splash to fade, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before tapping The Final Spark's Tap to play it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back.",
     },
     {
       id: "sound",
       title: "Tap to play unlocks sound, Settings (Sound, Volume) that survive a reload",
       seconds: 45,
       tags: ["full", "menus"],
-      description: "Shows the Tap to play prompt and taps it with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs, The Final Spark's card opens the story and its video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back.",
+      description: "Waits for the landing page's title splash to fade (no prompt there), opens The Final Spark from its card: its Tap to play prompt shows and is tapped with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs and the story's video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back.",
     },
   ],
   isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
