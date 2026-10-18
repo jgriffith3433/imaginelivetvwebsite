@@ -408,7 +408,7 @@ function checkBadge(t, card, st, want, where) {
   const c = card.getBoundingClientRect();
   if (r.right < c.right - 1 && r.top > c.top + 1) t.problem("bug", `${where}: ${st.title}'s badge isn't across the card's corner`);
   if (card.ownerDocument === document && stories().progress && stories().progress(st.id) !== want) t.problem("bug", `${where}: iltvStories.progress("${st.id}") says ${stories().progress(st.id)}, the card ${want}`);
-  t.event("badge", `${where}: ${st.id} ${says}, ${explored}, ${go}`);
+  t.event("badge", `${where}: ${st.id} ${says}, ${explored}, ${go} (run at ${runWant(st)}: Play at the start, Continue mid-run, Start Over at an ending)`);
   return true;
 }
 
