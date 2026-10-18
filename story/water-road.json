@@ -11,6 +11,7 @@
   "start": "start",
   "use": "gen",
   "style": "A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+  "avoid": "A modern 3D game render, not a photograph and not live action, not a cartoon or anime; a clean image with no writing on it.",
   "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
   "camera": "Slow cinematic game camera, gently drifting",
   "unspoken": ["bird", "dove", "wings", "feather"],
@@ -43,12 +44,12 @@
   "characters": {
     "hero": {
       "name": "You",
-      "look": "a young trail hand of about twenty, sun-browned face, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots, riding a bay horse",
+      "look": "a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots",
       "sheet": "story/characters/water-road/hero.png"
     },
     "dove": {
       "name": "The dove",
-      "look": "a small mourning dove, soft grey-brown feathers, a black spot on each wing, a long pointed tail, dark eyes ringed in pale blue",
+      "look": "a small slender mourning dove, soft grey-brown feathers with a buff breast, no ring or collar on the neck, a small black spot on the cheek, a few black spots on each wing, a long pointed tail, dark eyes ringed in pale blue",
       "sheet": "story/characters/water-road/dove.png"
     },
     "boss": {
@@ -68,7 +69,7 @@
     }
   },
   "narrator": {
-    "voice": "2EiwWnXFnvU5JabPnv8n",
+    "voice": "YXpFCvM1S3JbWEJhoskW",
     "model": "eleven_v4"
   },
   "music": {
@@ -102,8 +103,8 @@
         { "say": "2. Take the long trail under the mesa", "en": "2. Take the long trail under the mesa", "next": "mesa" }
       ],
       "shot": {
-        "scene": "dawn in the desert; a mourning dove sits alone on a dead mesquite branch in the foreground, sharp, the sky pink behind it; far below and out of focus, a line of six covered water wagons with barrels starts across the sand, a young rider on a bay horse at the back",
-        "motion": "the dove turns its head; the camera racks focus off the dove and drifts down to find the caravan moving out",
+        "scene": "first light at dawn in the open desert, a low golden sun and dust haze; in the close foreground a mourning dove sits alone on a dead mesquite branch, sharp, filling the top of the frame; far below and behind it, soft and out of focus in the haze, a long wagon train of six canvas-covered wagons loaded with water barrels, each pulled by a team of mules, starts out across the flats; at the very back of the line, small in the distance, a young rider on a bay horse",
+        "motion": "the dove turns its head and flies off the branch; the camera tilts down past the branch and racks focus onto the wagon train, the mule teams hauling the covered wagons forward through the dust, the young rider at the back",
         "cast": ["dove", "hero"]
       },
       "music": "trail"
@@ -146,9 +147,9 @@
         { "say": "1. Try again", "en": "1. Try again", "next": "start" }
       ],
       "shot": {
-        "scene": "low angle on the cracked white salt; an empty tin flask lies beside a fallen tan hat; the bay horse stands riderless against a white sky",
+        "scene": "low angle on the cracked white salt flats under a white-hot sky, nobody in sight; an empty tin flask lies on its side beside a fallen dusty tan hat; behind them a saddled bay horse stands alone with an empty saddle, head low",
         "motion": "the image bleaches toward white, the horse lowers its head, the flask rolls slightly",
-        "cast": ["hero"]
+        "cast": []
       },
       "music": "death"
     },
@@ -274,7 +275,7 @@
         { "say": "1. Ride on together", "en": "1. Ride on together", "next": "dustStorm" }
       ],
       "shot": {
-        "scene": "close on a little girl drinking from a dented tin flask held by the young rider's hand; a mourning dove stands on the wagon rail just behind, watching; an old woman trail boss in the background points at a barrel",
+        "scene": "close on a little girl in a faded calico dress drinking from a dented tin flask held out by the young rider's gloved hand, the rider beside her with the red bandana and tan hat; a small grey-brown mourning dove (not a crow, not black) stands on the wagon rail just behind her, watching; an old woman trail boss with a grey braid and black hat in the background points at a water barrel",
         "motion": "the girl drinks, a drop runs down the flask; the dove steps closer along the rail",
         "cast": ["hero", "family", "boss"]
       },
@@ -360,7 +361,7 @@
         { "say": "3. Open a barrel for them", "en": "3. Open a barrel for them", "next": "shareWater" }
       ],
       "shot": {
-        "scene": "a winding dry wash between red rock walls; a mourning dove flies low along the sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front",
+        "scene": "a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere; a small grey-brown mourning dove flies low along the dry sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front",
         "motion": "the dove skims low along the wash and over the riders' heads; the riders' horses shift; the leader raises a hand",
         "cast": ["dove", "leader", "hero"]
       },
@@ -382,9 +383,9 @@
         { "say": "1. Try again", "en": "1. Try again", "next": "start" }
       ],
       "shot": {
-        "scene": "gun smoke drifting in the dry wash; water pouring from bullet holes in wooden barrels and soaking into the sand; a dropped single-action revolver, empty, by a tan hat",
+        "scene": "gun smoke drifting in a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere, nobody standing; water pouring from bullet holes in wooden barrels and soaking dark into the dry sand; a dropped single-action revolver, empty, lying by a fallen tan hat",
         "motion": "water streams from the barrels and darkens the sand; the smoke drifts away",
-        "cast": ["hero"]
+        "cast": []
       },
       "music": "death"
     },
@@ -403,7 +404,7 @@
         { "say": "1. Keep watch", "en": "1. Keep watch", "next": "nightRaid" }
       ],
       "shot": {
-        "scene": "the young rider fires a single-action revolver into the air in the dry wash; the five riders wheel their horses and gallop away up the rocks",
+        "scene": "in a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere, the young rider fires a single-action revolver into the air; the five riders wheel their horses and gallop away up the rocks in a cloud of dust",
         "motion": "two muzzle flashes, the riders scatter in a cloud of dust",
         "cast": ["hero", "leader"]
       },
@@ -424,7 +425,7 @@
         { "say": "2. Open a barrel and call them in", "en": "2. Open a barrel and call them in", "next": "shareWater" }
       ],
       "shot": {
-        "scene": "night camp at the mouth of the wash, a low campfire, the wagons in a ring; dark figures creep toward the barrels in the moonlight; the young rider crouches by a wheel, revolver in hand",
+        "scene": "night camp in a dry desert wash with no water, a low campfire, the wagons in a ring; dark figures creep toward the water barrels in the moonlight; the young rider crouches low behind a wagon wheel, revolver in hand",
         "motion": "the fire crackles, the shadows creep closer, the rider's thumb rests on the hammer",
         "cast": ["hero", "leader"]
       },
@@ -504,7 +505,7 @@
       "ending": ["THE END. Not every story makes a hero.", "THE END. Not every story makes a hero."],
       "choices": [],
       "shot": {
-        "scene": "the young rider alone at a saloon table counting a pile of silver dollars beside a water barrel with a padlock on it; townsfolk in the doorway look away",
+        "scene": "inside a dim 1870s frontier saloon, the young rider alone at a wooden table counting a pile of silver dollar coins beside a wooden water barrel with an iron padlock on it; townsfolk in the doorway look away; only period objects, no glass bottles",
         "motion": "coins clink onto the pile; one by one the people in the doorway turn and leave",
         "cast": ["hero"]
       },

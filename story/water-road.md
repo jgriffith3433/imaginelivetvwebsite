@@ -6,7 +6,7 @@ under `/water-road/` (`/water-road/the-water-road/`, …), its asset ids start w
 
 **Everything below is a draft, waiting for J** (J's direction on a call, 2026-10-18). It is not canon until he
 approves it. The story is in the data with `"listed": false`: it builds and plays end to end at `/?story=water-road`
-on beta, text only (no videos yet), and has no card on the landing page.
+on beta, every page with its video, narration and music (made 2026-10-18), and has no card on the landing page.
 
 ## The idea
 
@@ -112,12 +112,13 @@ the gun as you die. No way through the story leaves you with fewer than none (th
   English: that is its own thing. Every page here is in English (`lang: "en"`), and the flashlight is not here.
 - **Look: a modern 3D western video game** (Red Dead Redemption 2's look): a real-time game render, not live action
   and not a cartoon. Wide desert light, dust in the air, warm sun and long shadows, the camera mostly behind or beside
-  you on your horse. Vertical 9:16. It is in the story's `style` and `negative`, so every recipe carries it.
+  you on your horse. Vertical 9:16. It is in the story's `style` and `negative` (and `avoid`, for the sheets made from words alone, whose tool has no negative), so every recipe carries it.
 - **Cast** (no filmed clips: every reference sheet is made from its `look` alone): **you** (a young trail hand),
   **the dove**, **the trail boss** (an old woman who runs the caravan), **the family** (a mother, a father, a boy and a
   little girl), **the riders' leader**. Nobody speaks on camera; the narrator tells it.
 - **Sound.** Its own Tap to play (*THE WATER ROAD*, "Sound on. Fill your flask."), the studio's standard Settings.
-  Narration by a weathered western voice; music by mood (`music` in the data: trail, heat, danger, death, hope, end).
+  Narration by a weathered western voice (ElevenLabs "Wyatt – Wise Rustic Cowboy", `YXpFCvM1S3JbWEJhoskW`: an old,
+  deep American cowboy voice, "weathered wisdom from a cowboy who's lived a hard life on the range"); music by mood (`music` in the data: trail, heat, danger, death, hope, end).
 
 ## Waiting for J (all of it, until he approves)
 
@@ -125,9 +126,12 @@ the gun as you die. No way through the story leaves you with fewer than none (th
 - **The bird is a mourning dove** (for the doves-fly-to-water saying). A hawk, a cactus wren or a raven would also
   work; the shots would change, not the words.
 - **Running out:** an empty flask is death, an empty gun isn't.
-- **The narrator's voice** (`narrator.voice`, an ElevenLabs stock voice picked for a weathered American western
-  narrator; to be heard and approved with the first narration).
+- **The narrator's voice**: "Wyatt – Wise Rustic Cowboy" (`narrator.voice`, `YXpFCvM1S3JbWEJhoskW`), picked from the
+  ElevenLabs library for "a weathered western voice" (the first id was a guess). Every page's narration is made with
+  it: J to hear it and approve or pick another (changing it remakes the 20 narrations, about $0.80).
 - **The second ending** (*The price of water*): an ending, not a death; it closes the story without the hero.
-- **Media (GPU).** None is made. Every scene's recipe is in `hawkes.assets.json` (ids `water-road-…`), priced in the
-  change's summary. When J approves it: make it through Studio, set `use: "gen"` (already on), and the scenes play
-  their cuts. Then a card image, and `listed` comes out of its entry in `story/stories.json`.
+- **Media (GPU).** Made 2026-10-18 within J's $8: the five character sheets (`story/characters/water-road/`), a
+  keyframe per page (best of 3, picked by Claude and looked at before its clip), a 9:16 clip per page, the 20
+  narrations and the six music cues; `npm run story` cuts each page's `scene.mp4`. The card image
+  (`/assets/images/water-road.jpg`, the opening's dove on the dead branch) is in its listing entry, but there is no
+  card until J approves the story and `listed` comes out of its entry in `story/stories.json`.

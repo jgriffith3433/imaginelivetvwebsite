@@ -34,7 +34,9 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
    When the story is finished (its tree ends and J calls it done), add `"status": "complete"`: its card wears a
    **Completed** ribbon across the corner. The Final Spark has it (it ends at Destroy the town, THE END).
    Optional: `inventory` (the story's own inventory, below), `unspoken` (words no page may say: the build fails
-   if a scene's text has one) and `camera` (how the camera moves in its clips; default "Slow, tense handheld camera").
+   if a scene's text has one), `camera` (how the camera moves in its clips; default "Slow, tense handheld camera")
+   and `avoid` (a line added to every `image.generate` prompt: that tool has no negative prompt, so what matters of
+   `negative` is said there in positive words, e.g. "A modern 3D game render, not a photograph").
 4. `npm run story`, then `npm run story -- --check`. It checks every story's tree, writes the card into
    `index.html`, the story's link page `/<id>/` (it opens `/?story=<id>`), its branch pages and its media recipes
    in `hawkes.assets.json` (ids `<id>-<scene>-shot`, `<id>-char-<who>`, `<id>-music-<cue>`; files under
@@ -129,7 +131,8 @@ plus one reference sheet per character (`char-<id>`) and one music cue per mood 
 
 A scene plays its generated cut only when its `use` (or the story's `use`) is `"gen"`. The build then joins the
 clip (looped under the narration), any talking shot and the mood music into `<folder>/scene.mp4` with ffmpeg.
-Until then the filmed clip plays.
+Until then the filmed clip plays. A draft (`"listed": false`) whose music cue isn't made yet is cut without it (a
+warning), and cut again with it once the cue is made; a listed story waits for its music.
 
 # Build
 

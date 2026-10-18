@@ -19,6 +19,9 @@ const storyOf = (id) => allStories().find((s) => s.id === id);
 const story = (id = FIRST) => storyOf(id) || { id, start: "start", scenes: {} };
 const folderOf = (id, st = story()) => `/${st.scenes[id].folder}/`;
 const branchFolders = (st) => Object.keys(st.scenes).map((id) => folderOf(id, st));
+// Drafts whose media is made (story/water-road.md): like a listed story, every scene must play its own generated cut.
+const MADE = ["water-road"];
+const mustPlay = (st) => st.listed || MADE.includes(st.id);
 // What Decision tree.txt promises for The Final Spark's opening scenes (checked by hand, not from the data).
 const TREE = {
   start: { choices: 2, to: ["deadEnd", "sewerWater"] },
@@ -91,6 +94,25 @@ async function checkVideo(t, video, where, seconds = 2, { autoplay = false } = {
   t.add("videosPlayed");
   t.metric("lastVideoTime", Number(video.currentTime.toFixed(1)));
   return true;
+}
+
+/** A made story's scene plays its generated cut (<folder>/scene.mp4): 9:16, with its sound (narration and music). */
+function checkCut(t, video, where) {
+  const src = decodeURI(new URL(video.currentSrc || video.src, location.href).pathname);
+  const ratio = video.videoWidth / video.videoHeight;
+  if (!/\/scene\.mp4$/.test(src)) t.problem("bug", `${where}: plays ${src}, not its generated cut (scene.mp4)`);
+  if (!(Math.abs(ratio - 9 / 16) < 0.01)) t.problem("bug", `${where}: the video is ${video.videoWidth}×${video.videoHeight}, not 9:16`);
+  // Chromium counts the audio it decoded: the cut's narration and music. (Muted playback still decodes.)
+  const heard = video.webkitAudioDecodedByteCount;
+  if (heard === 0) t.problem("bug", `${where}: ${src} has no sound (no narration or music)`);
+  t.event("cut", `${where}: ${src} ${video.videoWidth}×${video.videoHeight}, ${video.duration.toFixed(1)} s${heard ? `, ${heard} bytes of sound` : ""}`);
+  t.add("cutsPlayed");
+}
+
+/** The story's words (title, story, question, choices) never say an `unspoken` word: the dove is only in the pictures. */
+function checkUnspoken(t, st, root, where) {
+  const said = (root.textContent || "").toLowerCase();
+  for (const w of st.unspoken || []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) t.problem("bug", `${where}: the page says "${w}" (${st.title} never says it)`);
 }
 
 function waitFor(test, ms) {
@@ -474,9 +496,10 @@ async function walkStory(t, st, sums, total) {
     t.event("scene", `${at(id)} (${info.state}, ${info.choices.length} choices)`);
     t.progress((sums.scenes + seen.size) / total);
     const video = document.querySelector("#spark-video video");
-    if (video || st.scenes[id].video) await checkVideo(t, video, at(id), 2, { autoplay: true });
-    else if (st.listed) t.problem("bug", `${at(id)}: no video`);
-    else noVideo++;
+    if (video || st.scenes[id].video || mustPlay(st)) {
+      if ((await checkVideo(t, video, at(id), 2, { autoplay: true })) && MADE.includes(st.id)) checkCut(t, video, at(id));
+    } else noVideo++;
+    if (st.unspoken) checkUnspoken(t, st, root, at(id));
     checkKit(t, st, chain, at(id));
     if (!info.choices.length) {
       if (info.state === "soon") t.event("ending", `${at(id)}: ${enText($("spark-ending"))}`);
@@ -614,6 +637,11 @@ async function storiesRun(options, t) {
     await toStart(t);
     if (enText($("spark-story")) !== st.scenes[st.start].story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
     if (!choiceButtons().length) t.problem("bug", `${st.id}: no choices on the first page`);
+    if (MADE.includes(st.id)) {
+      // Its media is made: the first page plays its cut (still no card until J lists it).
+      const video = document.querySelector("#spark-video video");
+      if (await checkVideo(t, video, `${st.id}: ${st.start}`, 3, { autoplay: true })) checkCut(t, video, `${st.id}: ${st.start}`);
+    }
     checkInventory(t, st.title);
     if (st.inventory) {
       checkKit(t, st, [st.start], `${st.id}: ${st.start}`);
@@ -763,8 +791,10 @@ async function crawlPages(t, st, done, total) {
     await waitFor(() => soundOf(doc), 3000);
     await passPrompt(t, doc, path);
     const video = doc.querySelector("video");
-    if (video || st.listed) await checkVideo(t, video, path, 2, { autoplay: true });
-    else noVideo++;
+    if (video || mustPlay(st)) {
+      if ((await checkVideo(t, video, path, 2, { autoplay: true })) && MADE.includes(st.id)) checkCut(t, video, path);
+    } else noVideo++;
+    if (st.unspoken) checkUnspoken(t, st, doc.body, path);
     if (st.inventory) {
       checkInventory(t, path, doc);
       checkKit(t, st, shortest.get(sceneAt.get(path)) || [], path, doc);
@@ -1133,9 +1163,9 @@ installPlaytest({
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
       seconds: 40,
       tags: ["full"],
-      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory, and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made, The Water Road, plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
     },
-    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video, the inventory's counts", seconds: 180, tags: ["full"] },
+    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts", seconds: 240, tags: ["full"] },
     { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts", seconds: 90, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {

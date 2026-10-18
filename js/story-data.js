@@ -760,7 +760,7 @@ window.ILTV_STORIES = {
    "title": "The Water Road",
    "tagline": "Every drop has to go somewhere.",
    "logline": "Forty barrels of water, a dying town on the far side of the desert, and a revolver you've never fired. Every page costs water.",
-   "image": null,
+   "image": "/assets/images/water-road.jpg",
    "listed": false,
    "status": null,
    "cookie": "waterRoadProgress",
@@ -802,6 +802,12 @@ window.ILTV_STORIES = {
      }
     ]
    },
+   "unspoken": [
+    "bird",
+    "dove",
+    "wings",
+    "feather"
+   ],
    "scenes": {
     "start": {
      "folder": "water-road/the-water-road",
@@ -819,7 +825,7 @@ window.ILTV_STORIES = {
       "Which way does the caravan go?",
       "Which way does the caravan go?"
      ],
-     "video": null,
+     "video": "/water-road/the-water-road/scene.mp4",
      "choices": [
       [
        "1. Cut across the salt flats",
@@ -849,7 +855,7 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-salt-flats/scene.mp4",
      "inventory": {
       "water": -1
      },
@@ -911,7 +917,7 @@ window.ILTV_STORIES = {
       "Do you stop?",
       "Do you stop?"
      ],
-     "video": null,
+     "video": "/water-road/under-the-stars/scene.mp4",
      "choices": [
       [
        "1. Ride over to it",
@@ -941,7 +947,7 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/under-the-mesa/scene.mp4",
      "inventory": {
       "water": -1
      },
@@ -1003,7 +1009,7 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-lookout/scene.mp4",
      "choices": [
       [
        "1. Follow him",
@@ -1033,7 +1039,7 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-broken-wagon/scene.mp4",
      "choices": [
       [
        "1. Give them your flask",
@@ -1063,7 +1069,7 @@ window.ILTV_STORIES = {
       "What's ahead?",
       "What's ahead?"
      ],
-     "video": null,
+     "video": "/water-road/your-flask/scene.mp4",
      "inventory": {
       "water": -2
      },
@@ -1091,7 +1097,7 @@ window.ILTV_STORIES = {
       "Do you look back?",
       "Do you look back?"
      ],
-     "video": null,
+     "video": "/water-road/ride-on-by/scene.mp4",
      "choices": [
       [
        "1. Turn around",
@@ -1121,7 +1127,7 @@ window.ILTV_STORIES = {
       "Which way?",
       "Which way?"
      ],
-     "video": null,
+     "video": "/water-road/the-dust/scene.mp4",
      "choices": [
       [
        "1. Follow the dry wash",
@@ -1180,7 +1186,7 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-dry-wash/scene.mp4",
      "choices": [
       [
        "1. Draw your revolver",
@@ -1244,7 +1250,7 @@ window.ILTV_STORIES = {
       "What now?",
       "What now?"
      ],
-     "video": null,
+     "video": "/water-road/over-their-heads/scene.mp4",
      "inventory": {
       "bullets": -2
      },
@@ -1272,7 +1278,7 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/they-come-back/scene.mp4",
      "choices": [
       [
        "1. Shoot it out",
@@ -1302,7 +1308,7 @@ window.ILTV_STORIES = {
       "Where does the wash go?",
       "Where does the wash go?"
      ],
-     "video": null,
+     "video": "/water-road/a-drink-for-strangers/scene.mp4",
      "choices": [
       [
        "1. Follow it to the end",
@@ -1327,7 +1333,7 @@ window.ILTV_STORIES = {
       "What do you do with it?",
       "What do you do with it?"
      ],
-     "video": null,
+     "video": "/water-road/the-cottonwoods/scene.mp4",
      "inventory": {
       "water": {
        "set": 4
@@ -1362,7 +1368,7 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
+     "video": "/water-road/dry-fork/scene.mp4",
      "ending": [
       "THE END. This is how it started.",
       "THE END. This is how it started."
@@ -1385,7 +1391,7 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
+     "video": "/water-road/the-price-of-water/scene.mp4",
      "ending": [
       "THE END. Not every story makes a hero.",
       "THE END. Not every story makes a hero."
