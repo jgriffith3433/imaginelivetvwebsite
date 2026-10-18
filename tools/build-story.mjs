@@ -1,14 +1,22 @@
 #!/usr/bin/env node
-// Builds The Final Spark from its data file, story/final-spark.json (the source of truth; story doc: story/README.md):
+// Builds every choose-your-path story on the site from its data (story doc: story/README.md):
 //
-//   js/story-data.js      the scenes for the player on the home page (js/game.js) and the playtest bot (js/playtest.js)
-//   <folder>/index.html   one static page per scene (the branch pages)
+//   story/stories.json    the listing: which stories, in what order, each one's card (logline, key image, Completed)
+//   story/<id>.json       a story's scenes, cast, music and labels (The Final Spark is story/final-spark.json)
+//
+// into
+//
+//   js/story-data.js      every story's scenes for the player on the home page (js/game.js) and the playtest bot
+//   index.html            the landing page's story cards (between the <!-- stories --> markers)
+//   <id>/index.html       a link to each story's player (/?story=<id>)
+//   <pages><folder>/      one static page per scene (the branch pages): The Final Spark's at the site root, as
+//                         they always were (/the-sewer/), every other story's under its id (/<id>/<folder>/)
 //   hawkes.assets.json    the Hawkes Gen recipes for every scene's media (made by `studio.cmd assets imaginelivetv make`)
 //   <folder>/scene.mp4    for scenes that use generated media: the clip, narration, talking shots and music, cut
 //                         together with ffmpeg (skipped, with a warning, until the media exists)
 //
 //   node tools/build-story.mjs           build
-//   node tools/build-story.mjs --check   exit 1 if the tree is broken or a generated file is out of date
+//   node tools/build-story.mjs --check   exit 1 if a tree is broken or a generated file is out of date
 //
 // Never hand-edit the outputs: change the data and run this again.
 
@@ -18,101 +26,251 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DATA = 'story/final-spark.json';
+const LISTING = 'story/stories.json';
 const CHECK = process.argv.includes('--check');
+// Top-level folders that aren't story pages.
+const RESERVED = new Set(['assets', 'css', 'js', 'f', 'story', 'tools', 'node_modules', 'hawkesgen', 'media']);
+const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+// A listing entry's status: "complete" when the story has its ending (its card wears a Completed ribbon).
+const STATUSES = ['complete'];
 
-const story = JSON.parse(fs.readFileSync(path.join(ROOT, DATA), 'utf8'));
-const scenes = story.scenes;
-const byId = new Map(scenes.map((s) => [s.id, s]));
 const problems = [];
 const warnings = [];
+const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 
-/* ---------------- the tree ---------------- */
+/* ---------------- the stories ---------------- */
 
-function validate() {
+const listing = readJson(LISTING).stories;
+const stories = [];
+for (const entry of listing) {
+  if (!ID.test(entry.id || '')) {
+    problems.push(`${LISTING}: story id "${entry.id}" must be lower-case-with-dashes`);
+    continue;
+  }
+  const file = `story/${entry.id}.json`;
+  if (!fs.existsSync(path.join(ROOT, file))) {
+    problems.push(`${LISTING}: ${entry.id} has no data file (${file})`);
+    continue;
+  }
+  const data = readJson(file);
+  const root = entry.pages === '/';
+  if (entry.pages != null && !root && entry.pages !== `/${entry.id}/`) problems.push(`${entry.id}: pages must be "/" or "/${entry.id}/" (the default)`);
+  stories.push({
+    id: entry.id,
+    entry,
+    file,
+    data,
+    scenes: data.scenes,
+    byId: new Map(data.scenes.map((s) => [s.id, s])),
+    root,
+    // Where its pages, media and asset ids go. The Final Spark keeps the site root and its old asset ids.
+    base: root ? '' : `${entry.id}/`,
+    prefix: root ? '' : `${entry.id}-`,
+    musicDir: root ? 'assets/story/music' : `assets/story/${entry.id}/music`,
+    listed: entry.listed !== false,
+  });
+}
+
+/* ---------------- the trees ---------------- */
+
+function validate(st) {
+  const { id, data, scenes, byId } = st;
+  const at = (s) => `${id}/${s.id}`;
+  if (!Array.isArray(data.title) && typeof data.title !== 'string') problems.push(`${id}: no title`);
+  if (!st.entry.logline) problems.push(`${id}: no logline in ${LISTING} (its card's one line)`);
+  if (st.entry.status != null && !STATUSES.includes(st.entry.status)) problems.push(`${id}: status must be ${STATUSES.map((v) => `"${v}"`).join(' or ')}, or left out while the story is still growing`);
+  if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) problems.push(`${id}: card image ${st.entry.image} doesn't exist`);
+  if (!data.cookie || !/^[A-Za-z0-9_-]+$/.test(data.cookie)) problems.push(`${id}: cookie (the name its progress is saved under) must be letters, digits, - or _`);
+  if (!data.ui || !data.ui.en) problems.push(`${id}: ui.en (the English under the player's labels) is missing`);
+  for (const [lang, ui] of Object.entries(data.ui ?? {})) for (const k of ['back', 'mouth', 'depth']) if (!ui[k]) problems.push(`${id}: ui.${lang} has no ${k}`);
+  for (const s of scenes) if (!data.ui?.[s.lang]) problems.push(`${at(s)}: language ${s.lang} has no labels in ui`);
+  if (!byId.has(data.start)) problems.push(`${id}: start scene ${data.start} doesn't exist`);
   const folders = new Set();
-  // The player's button labels exist per language (UI in js/game.js).
-  const langs = new Set([...fs.readFileSync(path.join(ROOT, 'js/game.js'), 'utf8').matchAll(/^\s+([a-z]{2}): \{ back:/gm)].map((m) => m[1]));
-  for (const s of scenes) if (!langs.has(s.lang)) problems.push(`${s.id}: language ${s.lang} has no labels in js/game.js (UI)`);
-  if (!byId.has('start') || story.start !== 'start') problems.push('the first scene must have id "start" (js/game.js starts there)');
   for (const s of scenes) {
-    if (byId.get(s.id) !== s) problems.push(`duplicate scene id ${s.id}`);
-    if (!s.folder || !/^[a-z0-9-]+$/.test(s.folder)) problems.push(`${s.id}: folder must be lower-case-with-dashes`);
-    if (folders.has(s.folder)) problems.push(`${s.id}: folder ${s.folder} is used twice`);
+    if (byId.get(s.id) !== s) problems.push(`${id}: duplicate scene id ${s.id}`);
+    if (!s.folder || !ID.test(s.folder)) problems.push(`${at(s)}: folder must be lower-case-with-dashes`);
+    if (folders.has(s.folder)) problems.push(`${at(s)}: folder ${s.folder} is used twice`);
+    if (st.root && (RESERVED.has(s.folder) || stories.some((o) => o.id === s.folder))) problems.push(`${at(s)}: folder ${s.folder} is taken at the site root`);
     folders.add(s.folder);
-    for (const k of ['title', 'story', 'question']) if (!Array.isArray(s[k]) || s[k].length !== 2) problems.push(`${s.id}: ${k} must be [in ${s.lang}, in English]`);
-    if (!s.choices.length && !s.ending) problems.push(`${s.id}: no choices and no ending (a dead end)`);
-    for (const c of s.choices) if (!byId.has(c.next)) problems.push(`${s.id}: choice "${c.en}" goes to ${c.next}, which doesn't exist`);
-    for (const who of s.shot?.cast ?? []) if (!story.characters[who]) problems.push(`${s.id}: cast member ${who} isn't in characters`);
+    for (const k of ['title', 'story', 'question']) if (!Array.isArray(s[k]) || s[k].length !== 2) problems.push(`${at(s)}: ${k} must be [in ${s.lang}, in English]`);
+    if (!s.choices.length && !s.ending) problems.push(`${at(s)}: no choices and no ending (a dead end)`);
+    for (const c of s.choices) if (!byId.has(c.next)) problems.push(`${at(s)}: choice "${c.en}" goes to ${c.next}, which doesn't exist`);
+    for (const who of s.shot?.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
     for (const l of s.lines ?? []) {
-      const who = story.characters[l.speaker];
-      if (!who) problems.push(`${s.id}: speaker ${l.speaker} isn't in characters`);
-      else if (!who.voice) problems.push(`${s.id}: ${l.speaker} has no voice id`);
+      const who = data.characters?.[l.speaker];
+      if (!who) problems.push(`${at(s)}: speaker ${l.speaker} isn't in characters`);
+      else if (!who.voice) problems.push(`${at(s)}: ${l.speaker} has no voice id`);
     }
-    if (s.music && !story.music[s.music]) problems.push(`${s.id}: music cue ${s.music} isn't in music`);
-    if (!s.film && useOf(s) !== 'gen') problems.push(`${s.id}: no filmed clip, so it must use "gen"`);
+    if (s.music && !data.music?.[s.music]) problems.push(`${at(s)}: music cue ${s.music} isn't in music`);
+    if (!s.shot) problems.push(`${at(s)}: no shot (what the camera sees, for its generated media)`);
+    if (!s.film && useOf(st, s) !== 'gen') problems.push(`${at(s)}: no filmed clip, so it must use "gen"`);
   }
   // Every scene can be reached from the start.
-  const seen = new Set(['start']);
-  const queue = ['start'];
+  const seen = new Set([data.start]);
+  const queue = [data.start];
   while (queue.length) for (const c of byId.get(queue.shift())?.choices ?? []) if (!seen.has(c.next) && byId.has(c.next)) seen.add(c.next), queue.push(c.next);
-  for (const s of scenes) if (!seen.has(s.id)) problems.push(`${s.id}: no choice leads here (unreachable)`);
+  for (const s of scenes) if (!seen.has(s.id)) problems.push(`${at(s)}: no choice leads here (unreachable)`);
+}
+
+function validateAll() {
+  if (stories.filter((st) => st.root).length > 1) problems.push(`${LISTING}: only one story can have its pages at the site root ("/")`);
+  const ids = new Set();
+  for (const st of stories) {
+    if (ids.has(st.id)) problems.push(`${LISTING}: ${st.id} is listed twice`);
+    ids.add(st.id);
+    if (RESERVED.has(st.id)) problems.push(`${st.id}: that name is taken at the site root (${[...RESERVED].join(', ')})`);
+    validate(st);
+  }
+  if (!stories.some((st) => st.listed)) problems.push(`${LISTING}: no listed story (the landing page would be empty)`);
 }
 
 /* ---------------- media paths ---------------- */
 
-const useOf = (s) => s.use ?? story.use ?? 'film';
-const media = (s, file) => `${s.folder}/media/${file}`;
-const musicFile = (cue) => `assets/story/music/${cue}.mp3`;
-const cutFile = (s) => `${s.folder}/scene.mp4`;
+const useOf = (st, s) => s.use ?? st.data.use ?? 'film';
+const media = (st, s, file) => `${st.base}${s.folder}/media/${file}`;
+const musicFile = (st, cue) => `${st.musicDir}/${cue}.mp3`;
+const cutFile = (st, s) => `${st.base}${s.folder}/scene.mp4`;
 const exists = (rel) => fs.existsSync(path.join(ROOT, rel));
+const titleOf = (st) => st.data.title;
 
 /** The parts of a scene's generated cut, and whether they're all there. */
-function cutParts(s) {
-  const talks = (s.lines ?? []).map((l, i) => ({ video: media(s, `talk-${i + 1}.mp4`), audio: media(s, `line-${i + 1}.mp3`) }));
-  const parts = { clip: media(s, 'clip.mp4'), narration: media(s, 'narration.mp3'), talks, music: s.music ? musicFile(s.music) : null };
+function cutParts(st, s) {
+  const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }));
+  const parts = { clip: media(st, s, 'clip.mp4'), narration: media(st, s, 'narration.mp3'), talks, music: s.music ? musicFile(st, s.music) : null };
   const need = [parts.clip, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
   return { ...parts, missing: need.filter((f) => !exists(f)), all: need };
 }
 
 /** What the player and the page play: the generated cut when the scene uses it and it's made, else the film. */
-function videoOf(s) {
-  if (useOf(s) === 'gen') {
-    const { missing } = cutParts(s);
-    if (!missing.length) return '/' + cutFile(s);
-    if (s.film) warnings.push(`${s.id}: uses "gen" but ${missing.length} media file(s) aren't made yet (${missing[0]}…); playing the film`);
-    else problems.push(`${s.id}: uses "gen", has no film, and its media isn't made yet`);
+function videoOf(st, s) {
+  if (useOf(st, s) === 'gen') {
+    const { missing } = cutParts(st, s);
+    if (!missing.length) return '/' + cutFile(st, s);
+    const why = `${st.id}/${s.id}: uses "gen" but ${missing.length} media file(s) aren't made yet (${missing[0]}…)`;
+    if (s.film) warnings.push(`${why}; playing the film`);
+    // A story off the landing page can be drafted before its media exists: its pages show no video until then.
+    else if (!st.listed) warnings.push(`${why}; no video until they are`);
+    else problems.push(`${st.id}/${s.id}: uses "gen", has no film, and its media isn't made yet`);
   }
-  return s.film;
+  return s.film ?? null;
 }
 
 /* ---------------- js/story-data.js ---------------- */
 
 function storyData() {
-  const out = {};
-  for (const s of scenes) {
-    out[s.id] = {
-      folder: s.folder,
-      lang: s.lang,
-      dir: s.dir ?? '',
-      title: s.title,
-      story: s.story,
-      question: s.question,
-      video: videoOf(s),
-      ...(s.dead ? { dead: true } : {}),
-      ...(s.ending ? { ending: s.ending } : {}),
-      choices: s.choices.map((c) => [c.say, c.en, c.next]),
+  const list = stories.map((st) => {
+    const out = {};
+    for (const s of st.scenes) {
+      out[s.id] = {
+        folder: st.base + s.folder,
+        lang: s.lang,
+        dir: s.dir ?? '',
+        title: s.title,
+        story: s.story,
+        question: s.question,
+        video: videoOf(st, s),
+        ...(s.dead ? { dead: true } : {}),
+        ...(s.ending ? { ending: s.ending } : {}),
+        choices: s.choices.map((c) => [c.say, c.en, c.next]),
+      };
+    }
+    const langs = new Set(['en', ...st.scenes.map((s) => s.lang)]);
+    return {
+      id: st.id,
+      title: titleOf(st),
+      tagline: st.data.tagline ?? '',
+      logline: st.entry.logline,
+      image: st.entry.image ?? null,
+      listed: st.listed,
+      status: st.entry.status ?? null,
+      cookie: st.data.cookie,
+      tap: st.data.tap ?? { title: titleOf(st).toUpperCase(), line: '' },
+      start: st.data.start,
+      ui: Object.fromEntries(Object.entries(st.data.ui).filter(([lang]) => langs.has(lang))),
+      scenes: out,
     };
-  }
+  });
   return (
-    `// Generated by tools/build-story.mjs from ${DATA}. Do not edit: change the data and run \`npm run story\`.\n` +
-    `window.FINAL_SPARK = ${JSON.stringify({ title: story.title, start: story.start, scenes: out }, null, 1)};\n`
+    `// Generated by tools/build-story.mjs from ${LISTING} and the story files. Do not edit: change the data and run \`npm run story\`.\n` +
+    `window.ILTV_STORIES = ${JSON.stringify({ stories: list }, null, 1)};\n`
   );
+}
+
+/* ---------------- the landing page's cards (index.html) ---------------- */
+
+const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
+
+function card(st) {
+  const first = videoOf(st, st.byId.get(st.data.start));
+  const picture = st.entry.image
+    ? `<img src="${esc(st.entry.image)}" alt="${esc(st.entry.alt ?? titleOf(st))}">`
+    : first
+      ? `<video src="${esc(first)}#t=0.5" muted playsinline preload="metadata" aria-hidden="true"></video>`
+      : `<span class="story-card-blank" aria-hidden="true"></span>`;
+  const done = st.entry.status === 'complete';
+  return `      <a class="story-card${done ? ' is-complete' : ''}" href="/?story=${st.id}" data-story="${st.id}"${done ? ' data-status="complete"' : ''}>
+        ${picture}${done ? '\n        <span class="story-card-ribbon">Completed</span>' : ''}
+        <div class="story-card-text">
+          <h2>${esc(titleOf(st))}</h2>
+          <p>${esc(st.entry.logline)}</p>
+          <span class="story-card-go">Play</span>
+        </div>
+      </a>`;
+}
+
+const CARDS_START = '<!-- stories: generated by tools/build-story.mjs from story/stories.json. Do not edit: change the data and run `npm run story`. -->';
+const CARDS_END = '<!-- /stories -->';
+
+function landing() {
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const a = html.indexOf(CARDS_START);
+  const b = html.indexOf(CARDS_END);
+  if (a < 0 || b < a) {
+    problems.push(`index.html: the story cards' markers are missing (${CARDS_START} … ${CARDS_END})`);
+    return html;
+  }
+  const cards = stories.filter((st) => st.listed).map(card).join('\n');
+  return html.slice(0, a + CARDS_START.length) + '\n' + cards + '\n      ' + html.slice(b);
+}
+
+/* ---------------- a story's own link: /<id>/ opens its player ---------------- */
+
+function storyLink(st) {
+  const to = `/?story=${st.id}`;
+  return `<!DOCTYPE html>
+<!-- Generated by tools/build-story.mjs from ${LISTING} (story "${st.id}"). Do not edit: change the data and run \`npm run story\`. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${esc(titleOf(st))} · Imagine Live TV</title>
+  <meta name="description" content="${esc(st.entry.logline)}">
+  <link rel="canonical" href="https://imaginelivetv.com${to}">
+  <meta http-equiv="refresh" content="0; url=${to}">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/site.css">
+  <meta name="theme-color" content="#070807">
+  <script>location.replace(${JSON.stringify(to)});</script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/">Imagine Live TV</a>
+  </header>
+  <main class="missing">
+    <h1>${esc(titleOf(st))}</h1>
+    <p><a href="${to}">Play</a></p>
+  </main>
+  <footer class="site-footer">
+    <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>
+    <p class="powered">Powered by <a class="powered-mark" href="https://hawkesgen.com">HAWKES GEN</a></p>
+  </footer>
+</body>
+</html>
+`;
 }
 
 /* ---------------- branch pages ---------------- */
 
-const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
 const spot = (s, [say, en], tag = 'span', attrs = '') => {
   const dir = s.dir ? ` dir="${s.dir}"` : '';
   const src = esc(say).replace(/\n/g, '<br>');
@@ -120,22 +278,24 @@ const spot = (s, [say, en], tag = 'span', attrs = '') => {
   return `<${tag} class="${attrs ? attrs + ' ' : ''}spot"><span class="spot-src" lang="${s.lang}"${dir}>${src}</span><span class="spot-en" aria-hidden="true">${eng}</span></${tag}>`;
 };
 
-function page(s) {
+function page(st, s) {
+  const tap = st.data.tap ?? {};
   const choices = s.choices
     .map((c) => {
-      const to = byId.get(c.next);
-      return `<a class="choice spot" href="/${to.folder}/"><span class="spot-src" lang="${s.lang}"${s.dir ? ` dir="${s.dir}"` : ''}>${esc(c.say)}</span><span class="spot-en" aria-hidden="true">${esc(c.en)}</span></a>`;
+      const to = st.byId.get(c.next);
+      return `<a class="choice spot" href="/${st.base}${to.folder}/"><span class="spot-src" lang="${s.lang}"${s.dir ? ` dir="${s.dir}"` : ''}>${esc(c.say)}</span><span class="spot-en" aria-hidden="true">${esc(c.en)}</span></a>`;
     })
     .join('');
+  const video = videoOf(st, s);
   return `<!DOCTYPE html>
-<!-- Generated by tools/build-story.mjs from ${DATA} (scene "${s.id}"). Do not edit: change the data and run \`npm run story\`. -->
-<html lang="${s.lang}">
+<!-- Generated by tools/build-story.mjs from ${st.file} (scene "${s.id}"). Do not edit: change the data and run \`npm run story\`. -->
+<html lang="${s.lang}"${tap.title ? ` data-tap-title="${esc(tap.title)}"` : ''}${tap.line ? ` data-tap-line="${esc(tap.line)}"` : ''}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(s.title[0])}</title>
   <meta name="description" content="${esc(s.story[0].replace(/\s+/g, ' '))}">
-  <link rel="canonical" href="https://imaginelivetv.com/${s.folder}">
+  <link rel="canonical" href="https://imaginelivetv.com/${st.base}${s.folder}">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/site.css">
   <meta name="theme-color" content="#070807">
@@ -147,7 +307,7 @@ function page(s) {
 
   <main class="passage"${s.dead ? ' data-state="dead"' : s.ending ? ' data-state="soon"' : ''}>
     ${spot(s, s.title, 'h1')}
-    <video src="${esc(videoOf(s))}" controls playsinline preload="auto" data-sound-start></video>
+    ${video ? `<video src="${esc(video)}" controls playsinline preload="auto" data-sound-start></video>` : ''}
     ${spot(s, s.story, 'p', 'passage-note')}
     ${s.question[1] ? spot(s, s.question, 'p', 'passage-prompt') : ''}
     ${choices ? `<div class="spark-choices">${choices}</div>` : ''}${s.ending ? `\n    ${spot(s, s.ending, 'p', 'passage-prompt')}` : ''}
@@ -169,36 +329,34 @@ function page(s) {
 const words = (t) => String(t).split(/\s+/).filter(Boolean).length;
 const flat = (t) => String(t).replace(/\n+•?\s*/g, ' ').replace(/\s+/g, ' ').trim();
 
-function castRefs(cast) {
-  return cast.map((who, i) => `image ${i + 1} is the reference sheet for ${who === 'hero' ? 'the hero' : story.characters[who].name.toLowerCase()} (${story.characters[who].look})`).join('; ');
+function castRefs(st, cast) {
+  return cast.map((who, i) => `image ${i + 1} is the reference sheet for ${who === 'hero' ? 'the hero' : st.data.characters[who].name.toLowerCase()} (${st.data.characters[who].look})`).join('; ');
 }
 
-function assets() {
+function assets(st) {
+  const story = st.data;
+  const scenes = st.scenes;
+  const P = st.prefix;
+  const of = st.root ? '' : ` (${titleOf(st)})`;
   const list = [];
   const used = new Set(scenes.map((s) => s.shot?.cast ?? []).flat().concat(scenes.flatMap((s) => (s.lines ?? []).map((l) => l.speaker))));
 
-  // One reference sheet per character, from a frame of J's filmed clips, so every shot keeps the same faces.
-  for (const [id, c] of Object.entries(story.characters)) {
+  // One reference sheet per character, from a frame of J's filmed clips (or, with no film, from its look alone),
+  // so every shot keeps the same faces.
+  for (const [id, c] of Object.entries(story.characters ?? {})) {
     if (!used.has(id)) continue;
+    const prompt = `Character reference sheet of this exact individual: ${c.look}. Full-body front view, three-quarter view, side view and back view, plus a close-up of the face, side by side on a plain mid-grey background. Same proportions and clothes in every view. ${story.style}`;
     list.push({
-      id: `char-${id}`,
-      note: `Reference sheet for ${c.name}, from a frame of the filmed clips (${c.seed}).`,
-      inputs: [c.seed],
+      id: `${P}char-${id}`,
+      note: c.seed ? `Reference sheet for ${c.name}${of}, from a frame of the filmed clips (${c.seed}).` : `Reference sheet for ${c.name}${of}, from the description alone (no filmed clip).`,
+      ...(c.seed ? { inputs: [c.seed] } : {}),
       steps: [
-        {
-          tool: 'image.edit',
-          params: {
-            prompt: `Character reference sheet of this exact individual: ${c.look}. Full-body front view, three-quarter view, side view and back view, plus a close-up of the face, side by side on a plain mid-grey background. Same proportions and clothes in every view. ${story.style}`,
-            negative: story.negative,
-            width: 1536,
-            height: 1024,
-          },
-          inputs: { images: ['$input:0'] },
-          save: 'sheet',
-        },
+        c.seed
+          ? { tool: 'image.edit', params: { prompt, negative: story.negative, width: 1536, height: 1024 }, inputs: { images: ['$input:0'] }, save: 'sheet' }
+          : { tool: 'image.generate', params: { prompt, negative: story.negative, width: 1536, height: 1024 }, save: 'sheet' },
       ],
       candidates: 3,
-      pick: 'the same individual as the reference photo; every view consistent; clean grey background; no text',
+      pick: c.seed ? 'the same individual as the reference photo; every view consistent; clean grey background; no text' : `matches the description (${c.look}); every view consistent; clean grey background; no text`,
       files: { sheet: c.sheet },
     });
   }
@@ -206,32 +364,30 @@ function assets() {
   // One music cue per mood, shared by the scenes that use it.
   for (const cue of [...new Set(scenes.map((s) => s.music).filter(Boolean))]) {
     list.push({
-      id: `music-${cue}`,
-      note: `Music for the ${cue} scenes (${scenes.filter((s) => s.music === cue).map((s) => s.id).join(', ')}).`,
+      id: `${P}music-${cue}`,
+      note: `Music for the ${cue} scenes${of} (${scenes.filter((s) => s.music === cue).map((s) => s.id).join(', ')}).`,
       steps: [{ tool: 'audio.music', params: { prompt: story.music[cue], lyrics: '[Instrumental]', seconds: 60, bpm: 70 }, save: 'music' }],
-      files: { music: musicFile(cue) },
+      files: { music: musicFile(st, cue) },
     });
   }
 
   for (const s of scenes) {
     const cast = (s.shot?.cast ?? []).slice(0, 3);
-    // The keyframe (image.edit from the cast's sheets, best of 3) and its clip (video.i2v).
+    const still = `A vertical 9:16 film still: ${s.shot.scene}.`;
+    // The keyframe (image.edit from the cast's sheets, or image.generate with nobody in it; best of 3) and its clip (video.i2v).
     list.push({
-      id: `${s.id}-shot`,
-      note: `${s.title[1]}: keyframe and clip.`,
-      inputs: cast.map((who) => story.characters[who].sheet),
+      id: `${P}${s.id}-shot`,
+      note: `${s.title[1]}${of}: keyframe and clip.`,
+      ...(cast.length ? { inputs: cast.map((who) => story.characters[who].sheet) } : {}),
       steps: [
-        {
-          tool: 'image.edit',
-          params: {
-            prompt: `A vertical 9:16 film still: ${s.shot.scene}. ${castRefs(cast)}; keep their faces, bodies and clothes exactly. ${story.style}`,
-            negative: story.negative,
-            width: 720,
-            height: 1280,
-          },
-          inputs: { images: cast.map((_, i) => `$input:${i}`) },
-          save: 'keyframe',
-        },
+        cast.length
+          ? {
+              tool: 'image.edit',
+              params: { prompt: `${still} ${castRefs(st, cast)}; keep their faces, bodies and clothes exactly. ${story.style}`, negative: story.negative, width: 720, height: 1280 },
+              inputs: { images: cast.map((_, i) => `$input:${i}`) },
+              save: 'keyframe',
+            }
+          : { tool: 'image.generate', params: { prompt: `${still} ${story.style}`, negative: story.negative, width: 720, height: 1280 }, save: 'keyframe' },
         {
           tool: 'video.i2v',
           params: { prompt: `${s.shot.motion}. Slow, tense handheld camera. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
@@ -241,15 +397,15 @@ function assets() {
       ],
       candidates: 3,
       pick: `matches the scene (${s.shot.scene}); the characters match their reference sheets; reads clearly as a vertical frame; no text`,
-      files: { keyframe: media(s, 'keyframe.png'), clip: media(s, 'clip.mp4') },
+      files: { keyframe: media(st, s, 'keyframe.png'), clip: media(st, s, 'clip.mp4') },
     });
 
     // Narration: the story and the question, spoken in the scene's language.
     list.push({
-      id: `${s.id}-voice`,
-      note: `${s.title[1]}: narration in ${s.lang}.`,
+      id: `${P}${s.id}-voice`,
+      note: `${s.title[1]}${of}: narration in ${s.lang}.`,
       steps: [{ tool: 'audio.voice', params: { text: `${flat(s.story[0])} ${flat(s.question[0])}`, voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
-      files: { narration: media(s, 'narration.mp3') },
+      files: { narration: media(st, s, 'narration.mp3') },
     });
 
     // Talking shots: a close-up of the speaker (image.edit), the line (audio.voice), lips and head to it (video.talk).
@@ -257,9 +413,9 @@ function assets() {
       const who = story.characters[l.speaker];
       const seconds = words(l.text) / 2.5 + 1;
       list.push({
-        id: `${s.id}-talk-${i + 1}`,
-        note: `${s.title[1]}: ${who.name} says "${l.text}"${l.draft ? ' (DRAFT line: J to approve)' : ''}. video.talk is experimental.`,
-        inputs: [who.sheet, media(s, 'keyframe.png')],
+        id: `${P}${s.id}-talk-${i + 1}`,
+        note: `${s.title[1]}${of}: ${who.name} says "${l.text}"${l.draft ? ' (DRAFT line: J to approve)' : ''}. video.talk is experimental.`,
+        inputs: [who.sheet, media(st, s, 'keyframe.png')],
         steps: [
           {
             tool: 'image.edit',
@@ -282,11 +438,21 @@ function assets() {
         ],
         candidates: 2,
         pick: 'front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet',
-        files: { [`portrait-${i + 1}`]: media(s, `portrait-${i + 1}.png`), [`line-${i + 1}`]: media(s, `line-${i + 1}.mp3`), [`talk-${i + 1}`]: media(s, `talk-${i + 1}.mp4`) },
+        files: { [`portrait-${i + 1}`]: media(st, s, `portrait-${i + 1}.png`), [`line-${i + 1}`]: media(st, s, `line-${i + 1}.mp3`), [`talk-${i + 1}`]: media(st, s, `talk-${i + 1}.mp4`) },
       });
     });
   }
-  return JSON.stringify({ $comment: `Generated by tools/build-story.mjs from ${DATA}. Do not edit: change the data and run \`npm run story\`.`, project: 'imaginelivetv', assets: list }, null, 2) + '\n';
+  return list;
+}
+
+function assetsFile() {
+  const list = stories.flatMap(assets);
+  const ids = new Set();
+  for (const a of list) {
+    if (ids.has(a.id)) problems.push(`hawkes.assets.json: asset id ${a.id} comes from two stories`);
+    ids.add(a.id);
+  }
+  return JSON.stringify({ $comment: `Generated by tools/build-story.mjs from ${LISTING} and the story files. Do not edit: change the data and run \`npm run story\`.`, project: 'imaginelivetv', assets: list }, null, 2) + '\n';
 }
 
 /* ---------------- the generated cut (ffmpeg) ---------------- */
@@ -301,13 +467,13 @@ function ffmpegBin(name) {
 const duration = (rel) => Number(execFileSync(ffmpegBin('ffprobe'), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(ROOT, rel)], { encoding: 'utf8' }).trim());
 
 /** Clip looped under the narration, then each talking shot with its line, all over the mood music. */
-function cut(s) {
-  const p = cutParts(s);
+function cut(st, s) {
+  const p = cutParts(st, s);
   if (p.missing.length) return;
-  const out = path.join(ROOT, cutFile(s));
-  const newest = Math.max(...p.all.map((f) => fs.statSync(path.join(ROOT, f)).mtimeMs), fs.statSync(path.join(ROOT, DATA)).mtimeMs);
+  const out = path.join(ROOT, cutFile(st, s));
+  const newest = Math.max(...p.all.map((f) => fs.statSync(path.join(ROOT, f)).mtimeMs), fs.statSync(path.join(ROOT, st.file)).mtimeMs);
   if (fs.existsSync(out) && fs.statSync(out).mtimeMs >= newest) return;
-  if (CHECK) return problems.push(`${cutFile(s)} is out of date`);
+  if (CHECK) return problems.push(`${cutFile(st, s)} is out of date`);
 
   const fit = 'scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=24,setsar=1';
   const args = ['-v', 'error', '-y'];
@@ -337,9 +503,9 @@ function cut(s) {
   args.push('-filter_complex', graph.join(';'), '-map', '[v]', '-map', audio, '-c:v', 'libx264', '-crf', '23', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out);
   try {
     execFileSync(ffmpegBin('ffmpeg'), args, { stdio: ['ignore', 'inherit', 'inherit'] });
-    console.log(`cut      ${cutFile(s)} (${total.toFixed(1)} s)`);
+    console.log(`cut      ${cutFile(st, s)} (${total.toFixed(1)} s)`);
   } catch (e) {
-    warnings.push(`${s.id}: ffmpeg failed to cut ${cutFile(s)} (${e.message.split('\n')[0]})`);
+    warnings.push(`${st.id}/${s.id}: ffmpeg failed to cut ${cutFile(st, s)} (${e.message.split('\n')[0]})`);
   }
 }
 
@@ -356,30 +522,49 @@ function write(rel, text) {
   fs.writeFileSync(f, text);
 }
 
-validate();
-if (!problems.length) {
-  for (const s of scenes) if (useOf(s) === 'gen') cut(s);
-  write('js/story-data.js', storyData());
-  for (const s of scenes) write(`${s.folder}/index.html`, page(s));
-  write('hawkes.assets.json', assets());
-  // Folders with a generated page that no scene owns any more.
-  const owned = new Set(scenes.map((s) => s.folder));
-  for (const d of fs.readdirSync(ROOT, { withFileTypes: true })) {
-    if (!d.isDirectory() || owned.has(d.name)) continue;
-    const f = path.join(ROOT, d.name, 'index.html');
-    if (fs.existsSync(f) && fs.readFileSync(f, 'utf8').includes('Generated by tools/build-story.mjs')) warnings.push(`${d.name}/ is a generated page no scene owns any more (delete it)`);
+/** Folders (at the root, and inside each story's own folder) with a generated page nothing owns any more. */
+function strays() {
+  const owned = new Set(stories.flatMap((st) => [st.id, ...st.scenes.map((s) => st.base + s.folder)]));
+  const dirs = ['', ...stories.filter((st) => !st.root).map((st) => st.base)];
+  for (const dir of dirs) {
+    if (!fs.existsSync(path.join(ROOT, dir))) continue;
+    for (const d of fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
+      const rel = dir + d.name;
+      if (!d.isDirectory() || owned.has(rel)) continue;
+      const f = path.join(ROOT, rel, 'index.html');
+      if (fs.existsSync(f) && fs.readFileSync(f, 'utf8').includes('Generated by tools/build-story.mjs')) warnings.push(`${rel}/ is a generated page no scene or story owns any more (delete it)`);
+    }
   }
 }
 
-for (const w of warnings) console.warn(`warning  ${w}`);
-for (const p of problems) console.error(`problem  ${p}`);
+validateAll();
+if (!problems.length) {
+  for (const st of stories) for (const s of st.scenes) if (useOf(st, s) === 'gen') cut(st, s);
+  const assetsText = assetsFile();
+  write('js/story-data.js', storyData());
+  write('index.html', landing());
+  for (const st of stories) {
+    write(`${st.id}/index.html`, storyLink(st));
+    for (const s of st.scenes) write(`${st.base}${s.folder}/index.html`, page(st, s));
+  }
+  if (!problems.length) write('hawkes.assets.json', assetsText);
+  strays();
+}
+
+const sceneCount = stories.reduce((n, st) => n + st.scenes.length, 0);
+// A scene's media is looked up for the player, its card and its page: say each thing once.
+for (const w of new Set(warnings)) console.warn(`warning  ${w}`);
+for (const p of new Set(problems)) console.error(`problem  ${p}`);
 if (CHECK) {
   for (const c of changed) console.error(`stale    ${c}`);
   if (problems.length || changed.length) process.exit(1);
-  console.log(`ok       ${scenes.length} scenes, everything generated is up to date`);
+  console.log(`ok       ${stories.length} stor${stories.length === 1 ? 'y' : 'ies'}, ${sceneCount} scenes, everything generated is up to date`);
 } else {
   if (problems.length) process.exit(1);
   for (const c of changed) console.log(`wrote    ${c}`);
-  const gen = scenes.filter((s) => useOf(s) === 'gen').length;
-  console.log(`${scenes.length} scenes (${gen} on generated media), ${changed.length} file(s) changed`);
+  for (const st of stories) {
+    const gen = st.scenes.filter((s) => useOf(st, s) === 'gen').length;
+    console.log(`${st.id}: ${st.scenes.length} scenes (${gen} on generated media)${st.listed ? '' : ', not on the landing page'}`);
+  }
+  console.log(`${changed.length} file(s) changed`);
 }
