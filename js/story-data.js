@@ -16,122 +16,98 @@ window.ILTV_STORIES = {
    "start": "start",
    "ui": {
     "en": {
-     "back": "← Back",
      "mouth": "The tunnel mouth",
      "depth": "Depth"
     },
     "zh": {
-     "back": "← 返回",
      "mouth": "隧道口",
      "depth": "深度"
     },
     "hi": {
-     "back": "← वापस",
      "mouth": "सुरंग का मुँह",
      "depth": "गहराई"
     },
     "es": {
-     "back": "← Atrás",
      "mouth": "La boca del túnel",
      "depth": "Profundidad"
     },
     "fr": {
-     "back": "← Retour",
      "mouth": "L'entrée du tunnel",
      "depth": "Profondeur"
     },
     "ar": {
-     "back": "← رجوع",
      "mouth": "فم النفق",
      "depth": "العمق"
     },
     "pt": {
-     "back": "← Voltar",
      "mouth": "A boca do túnel",
      "depth": "Profundidade"
     },
     "ru": {
-     "back": "← Назад",
      "mouth": "Устье тоннеля",
      "depth": "Глубина"
     },
     "ja": {
-     "back": "← 戻る",
      "mouth": "トンネルの入口",
      "depth": "深さ"
     },
     "bn": {
-     "back": "← ফিরে যাও",
      "mouth": "সুড়ঙ্গের মুখ",
      "depth": "গভীরতা"
     },
     "de": {
-     "back": "← Zurück",
      "mouth": "Der Tunnelmund",
      "depth": "Tiefe"
     },
     "ko": {
-     "back": "← 뒤로",
      "mouth": "터널 입구",
      "depth": "깊이"
     },
     "tr": {
-     "back": "← Geri",
      "mouth": "Tünelin ağzı",
      "depth": "Derinlik"
     },
     "vi": {
-     "back": "← Quay lại",
      "mouth": "Miệng đường hầm",
      "depth": "Độ sâu"
     },
     "it": {
-     "back": "← Indietro",
      "mouth": "La bocca del tunnel",
      "depth": "Profondità"
     },
     "id": {
-     "back": "← Kembali",
      "mouth": "Mulut terowongan",
      "depth": "Kedalaman"
     },
     "ur": {
-     "back": "← واپس",
      "mouth": "سرنگ کا منہ",
      "depth": "گہرائی"
     },
     "pl": {
-     "back": "← Wstecz",
      "mouth": "Ujście tunelu",
      "depth": "Głębokość"
     },
     "th": {
-     "back": "← กลับ",
      "mouth": "ปากอุโมงค์",
      "depth": "ความลึก"
     },
     "sw": {
-     "back": "← Rudi",
      "mouth": "Mdomo wa handaki",
      "depth": "Kina"
     },
     "ta": {
-     "back": "← பின்",
      "mouth": "சுரங்க வாயில்",
      "depth": "ஆழம்"
     },
     "te": {
-     "back": "← వెనక్కి",
      "mouth": "సొరంగం నోరు",
      "depth": "లోతు"
     },
     "mr": {
-     "back": "← मागे",
      "mouth": "बोगद्याचे तोंड",
      "depth": "खोली"
     },
     "pa": {
-     "back": "← ਪਿੱਛੇ",
      "mouth": "ਸੁਰੰਗ ਦਾ ਮੂੰਹ",
      "depth": "ਡੂੰਘਾਈ"
     }
@@ -769,7 +745,6 @@ window.ILTV_STORIES = {
    "start": "start",
    "ui": {
     "en": {
-     "back": "← Back",
      "mouth": "The trail head",
      "depth": "Mile"
     }

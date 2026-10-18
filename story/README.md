@@ -22,7 +22,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
    - `title`, `tagline` (the line under the title in the player), `doc`, `start` (the first scene's id);
    - `cookie`: the name its progress is saved under (each story keeps its own place);
    - `tap`: the Tap to play screen's `title` and `line` on its pages ("Sound on." + the line);
-   - `ui`: the player's labels per language (`back`, `mouth` = where you start, `depth`), with `en` for the English
+   - `ui`: the player's labels per language (`mouth` = where you start, `depth`), with `en` for the English
      under them; every scene's `lang` needs an entry;
    - `style`, `negative`, `characters`, `narrator`, `music`, `use`, and `scenes`, each as described below under
      "How a page's media is made". A character without a filmed `seed` gets its reference sheet from its `look`
@@ -56,9 +56,21 @@ that story (J, 2026-10-18):
   and The price of water. Deaths are not endings.
 
 It is kept with the story's saved place, in its own cookie (`cookie` in its data: `{ scene, history, completed }`),
-so it survives a reload; once Completed it stays Completed through Back, a death and Try again (only an ending sets
-it, nothing clears it). `js/game.js` draws it whenever the landing page shows. A story with no ending yet builds
-with a warning: its badge can't say Completed. The `stories` playtest checks all three states.
+so it survives a reload; once Completed it stays Completed through a death and Try again (only an ending sets it).
+`js/game.js` draws it whenever the landing page shows. A story with no ending yet builds with a warning: its badge
+can't say Completed.
+
+The card's button follows the badge: **Play** (not started, or saved at the start), **Continue** (a saved place
+further in), **Start Over** (completed). Pressing Start Over forgets that story's saved place, its cookie only (the
+other stories keep theirs), and opens it at its first page with an empty history, not completed: the badge says
+Started again from then on, until another ending. The `stories` playtest checks all three states and Start Over.
+
+## No going back
+
+Players own their choices (J, 2026-10-18): the player has no Back button, in every story. A choice stands; the
+only ways to another path are a death (its Try again goes back to the start) or Start Over on a completed story's
+card. The history is still kept (the way you came), for the inventory's counts and the saved place. The Tree tab is
+unchanged (it can still open any scene; J decides about it separately).
 
 ## A story's inventory
 
@@ -70,11 +82,11 @@ bar of items instead (`js/kit.js`; The Water Road's revolver, bullets and flask)
 - On a scene, `inventory` is what it does: `{ "water": -1 }` takes one, `{ "water": { "set": 4 } }` sets it.
 
 The counts at a scene come from the way you came: the start, then every scene since (the player's history), kept
-between 0 and `max`; back at the start they start over. So Back puts them back and a saved place brings them back.
+between 0 and `max`; back at the start they start over. So a saved place brings them back.
 A branch page shows the counts on the shortest way to it. `npm run story` checks every way through the story: no
 count goes below none except on a death page, and an `"empty": "dead"` item runs out only on a death page. The
 player and its pages set `<html data-kit>`, which swaps the flashlight for the story's bar; the landing page has
-neither. The `branches` playtest checks the bar against the data on every scene and after every Back, `stories` a
+neither. The `branches` playtest checks the bar against the data on every scene (walking each way again from the start), `stories` a
 saved place, `pages` every branch page.
 
 # The Final Spark

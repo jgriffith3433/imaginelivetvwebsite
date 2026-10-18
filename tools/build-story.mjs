@@ -83,7 +83,7 @@ function validate(st) {
   if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) problems.push(`${id}: card image ${st.entry.image} doesn't exist`);
   if (!data.cookie || !/^[A-Za-z0-9_-]+$/.test(data.cookie)) problems.push(`${id}: cookie (the name its progress is saved under) must be letters, digits, - or _`);
   if (!data.ui || !data.ui.en) problems.push(`${id}: ui.en (the English under the player's labels) is missing`);
-  for (const [lang, ui] of Object.entries(data.ui ?? {})) for (const k of ['back', 'mouth', 'depth']) if (!ui[k]) problems.push(`${id}: ui.${lang} has no ${k}`);
+  for (const [lang, ui] of Object.entries(data.ui ?? {})) for (const k of ['mouth', 'depth']) if (!ui[k]) problems.push(`${id}: ui.${lang} has no ${k}`);
   for (const s of scenes) if (!data.ui?.[s.lang]) problems.push(`${at(s)}: language ${s.lang} has no labels in ui`);
   if (!byId.has(data.start)) problems.push(`${id}: start scene ${data.start} doesn't exist`);
   const folders = new Set();
