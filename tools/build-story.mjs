@@ -12,6 +12,7 @@
 //   <pages><folder>/      one static page per scene (the branch pages): The Final Spark's at the site root, as
 //                         they always were (/the-sewer/), every other story's under its id (/<id>/<folder>/)
 //   hawkes.assets.json    the Hawkes Gen recipes for every scene's media (made by `studio.cmd assets imaginelivetv make`)
+//                         (a story with an `inventory` gets its own bar, js/kit.js, instead of the flashlight)
 //   <folder>/scene.mp4    for scenes that use generated media: the clip, narration, talking shots and music, cut
 //                         together with ffmpeg (skipped, with a warning, until the media exists)
 //
@@ -24,6 +25,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+// A story's own inventory (counts per scene): the same code the player and the branch pages run.
+import '../js/kit.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LISTING = 'story/stories.json';
@@ -104,12 +107,88 @@ function validate(st) {
     if (s.music && !data.music?.[s.music]) problems.push(`${at(s)}: music cue ${s.music} isn't in music`);
     if (!s.shot) problems.push(`${at(s)}: no shot (what the camera sees, for its generated media)`);
     if (!s.film && useOf(st, s) !== 'gen') problems.push(`${at(s)}: no filmed clip, so it must use "gen"`);
+    // Words no page may say (The Water Road's bird is only ever seen).
+    const said = [s.title, s.story, s.question, s.ending ?? [], ...s.choices.map((c) => [c.say, c.en])].flat().join(' ').toLowerCase();
+    for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) problems.push(`${at(s)}: its words say "${w}", which this story never says (unspoken)`);
   }
+  validateInventory(st);
   // Every scene can be reached from the start.
   const seen = new Set([data.start]);
   const queue = [data.start];
   while (queue.length) for (const c of byId.get(queue.shift())?.choices ?? []) if (!seen.has(c.next) && byId.has(c.next)) seen.add(c.next), queue.push(c.next);
   for (const s of scenes) if (!seen.has(s.id)) problems.push(`${at(s)}: no choice leads here (unreachable)`);
+}
+
+/* ---------------- a story's inventory (js/kit.js) ---------------- */
+
+const kit = globalThis.iltvKit;
+const KIT_EMPTY = ['dead'];
+
+/** The counts on the shortest way to each scene (what its branch page shows). */
+function kitCounts(st) {
+  const inv = st.data.inventory;
+  if (!inv) return new Map();
+  const scenes = Object.fromEntries(st.scenes.map((s) => [s.id, s]));
+  const path = new Map([[st.data.start, [st.data.start]]]);
+  const queue = [st.data.start];
+  while (queue.length) {
+    const id = queue.shift();
+    for (const c of st.byId.get(id)?.choices ?? []) if (!path.has(c.next) && st.byId.has(c.next)) path.set(c.next, [...path.get(id), c.next]), queue.push(c.next);
+  }
+  return new Map([...path].map(([id, p]) => [id, kit.counts(inv, scenes, st.data.start, p)]));
+}
+
+function validateInventory(st) {
+  const { id, data, scenes, byId } = st;
+  const inv = data.inventory;
+  if (!inv) {
+    for (const s of scenes) if (s.inventory) problems.push(`${id}/${s.id}: changes the inventory, but ${id} has none (inventory.items)`);
+    return;
+  }
+  const before = problems.length;
+  const items = new Map((inv.items ?? []).map((item) => [item.id, item]));
+  if (!items.size) problems.push(`${id}: inventory has no items`);
+  for (const item of inv.items ?? []) {
+    if (!item.id || !item.name) problems.push(`${id}: an inventory item needs an id and a name`);
+    if (!kit.icons.includes(item.icon)) problems.push(`${id}: inventory item ${item.id} has icon "${item.icon}"; js/kit.js draws ${kit.icons.join(', ')}`);
+    if (item.start != null && (!Number.isInteger(item.start) || item.start < 0)) problems.push(`${id}: inventory item ${item.id}'s start must be a whole number, 0 or more`);
+    if (item.max != null && (!Number.isInteger(item.max) || item.max < (item.start ?? 0))) problems.push(`${id}: inventory item ${item.id}'s max must be a whole number, at least its start`);
+    if (item.empty != null && !KIT_EMPTY.includes(item.empty)) problems.push(`${id}: inventory item ${item.id}'s empty must be "dead" (running out ends the run) or left out`);
+  }
+  for (const s of scenes) {
+    for (const [k, v] of Object.entries(s.inventory ?? {})) {
+      const item = items.get(k);
+      if (!item) problems.push(`${id}/${s.id}: inventory changes ${k}, which isn't an item`);
+      else if (item.start == null) problems.push(`${id}/${s.id}: inventory changes ${k}, which has no count (no start)`);
+      else if (!Number.isInteger(v) && !(v && Number.isInteger(v.set) && v.set >= 0)) problems.push(`${id}/${s.id}: inventory.${k} must be a whole number (a change) or { "set": n }`);
+    }
+  }
+  if (problems.length > before) return;
+  // Every way through the story (a scene and the counts you have there): nothing goes below none, and an item
+  // whose running out ends the run ("empty": "dead") only runs out on a death page.
+  const all = Object.fromEntries(scenes.map((s) => [s.id, s]));
+  const first = kit.apply(inv, kit.fresh(inv), all[data.start]).counts;
+  const key = (sid, c) => sid + ' ' + JSON.stringify(c);
+  const seen = new Set([key(data.start, first)]);
+  const queue = [[data.start, first]];
+  const told = new Set();
+  const tell = (msg) => !told.has(msg) && (told.add(msg), problems.push(msg));
+  while (queue.length && seen.size < 20000) {
+    const [sid, counts] = queue.shift();
+    for (const c of byId.get(sid).choices) {
+      const next = all[c.next];
+      const base = c.next === data.start ? kit.fresh(inv) : counts;
+      const { counts: after, raw } = kit.apply(inv, base, next);
+      for (const item of inv.items) {
+        if (!(item.id in raw)) continue;
+        if (raw[item.id] < 0 && !next.dead) tell(`${id}/${next.id}: ${item.name} goes below none (${raw[item.id]}) on the way from ${sid}; only a death page may empty it past zero`);
+        if (item.empty === 'dead' && after[item.id] === 0 && !next.dead) tell(`${id}/${next.id}: ${item.name} runs out on the way from ${sid}, but running out ends the run and this isn't a death page`);
+      }
+      const k = key(c.next, after);
+      if (!seen.has(k)) seen.add(k), queue.push([c.next, after]);
+    }
+  }
+  if (seen.size >= 20000) warnings.push(`${id}: more than 20000 ways through the inventory; not all checked`);
 }
 
 function validateAll() {
@@ -149,7 +228,7 @@ function videoOf(st, s) {
     const why = `${st.id}/${s.id}: uses "gen" but ${missing.length} media file(s) aren't made yet (${missing[0]}…)`;
     if (s.film) warnings.push(`${why}; playing the film`);
     // A story off the landing page can be drafted before its media exists: its pages show no video until then.
-    else if (!st.listed) warnings.push(`${why}; no video until they are`);
+    else if (!st.listed) warnings.push(`${st.id}: a draft (not on the landing page) whose media isn't made yet: its scenes show no video until it is`);
     else problems.push(`${st.id}/${s.id}: uses "gen", has no film, and its media isn't made yet`);
   }
   return s.film ?? null;
@@ -171,6 +250,7 @@ function storyData() {
         video: videoOf(st, s),
         ...(s.dead ? { dead: true } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
+        ...(s.inventory ? { inventory: s.inventory } : {}),
         choices: s.choices.map((c) => [c.say, c.en, c.next]),
       };
     }
@@ -187,6 +267,7 @@ function storyData() {
       tap: st.data.tap ?? { title: titleOf(st).toUpperCase(), line: '' },
       start: st.data.start,
       ui: Object.fromEntries(Object.entries(st.data.ui).filter(([lang]) => langs.has(lang))),
+      ...(st.data.inventory ? { inventory: st.data.inventory } : {}),
       scenes: out,
     };
   });
@@ -278,8 +359,9 @@ const spot = (s, [say, en], tag = 'span', attrs = '') => {
   return `<${tag} class="${attrs ? attrs + ' ' : ''}spot"><span class="spot-src" lang="${s.lang}"${dir}>${src}</span><span class="spot-en" aria-hidden="true">${eng}</span></${tag}>`;
 };
 
-function page(st, s) {
+function page(st, s, counts) {
   const tap = st.data.tap ?? {};
+  const inv = st.data.inventory;
   const choices = s.choices
     .map((c) => {
       const to = st.byId.get(c.next);
@@ -289,7 +371,7 @@ function page(st, s) {
   const video = videoOf(st, s);
   return `<!DOCTYPE html>
 <!-- Generated by tools/build-story.mjs from ${st.file} (scene "${s.id}"). Do not edit: change the data and run \`npm run story\`. -->
-<html lang="${s.lang}"${tap.title ? ` data-tap-title="${esc(tap.title)}"` : ''}${tap.line ? ` data-tap-line="${esc(tap.line)}"` : ''}>
+<html lang="${s.lang}"${tap.title ? ` data-tap-title="${esc(tap.title)}"` : ''}${tap.line ? ` data-tap-line="${esc(tap.line)}"` : ''}${inv ? ` data-kit="${st.id}"` : ''}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -307,7 +389,7 @@ function page(st, s) {
 
   <main class="passage"${s.dead ? ' data-state="dead"' : s.ending ? ' data-state="soon"' : ''}>
     ${spot(s, s.title, 'h1')}
-    ${video ? `<video src="${esc(video)}" controls playsinline preload="auto" data-sound-start></video>` : ''}
+    ${video ? `<video src="${esc(video)}" controls playsinline preload="auto" data-sound-start></video>` : `<div class="passage-blank" aria-hidden="true"><span>${esc(s.title[1])}</span></div>`}
     ${spot(s, s.story, 'p', 'passage-note')}
     ${s.question[1] ? spot(s, s.question, 'p', 'passage-prompt') : ''}
     ${choices ? `<div class="spark-choices">${choices}</div>` : ''}${s.ending ? `\n    ${spot(s, s.ending, 'p', 'passage-prompt')}` : ''}
@@ -317,8 +399,9 @@ function page(st, s) {
     <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>
     <p class="powered">Powered by <a class="powered-mark" href="https://hawkesgen.com">HAWKES GEN</a></p>
   </footer>
-  <script src="/js/hawkes-sound.js"></script>
-  <script src="/js/spot.js"></script>
+${inv ? `  <div class="inventory kit" data-kit="${esc(JSON.stringify({ inventory: inv, counts }))}"></div>
+` : ''}  <script src="/js/hawkes-sound.js"></script>
+  <script src="/js/${inv ? 'kit' : 'spot'}.js"></script>
 </body>
 </html>
 `;
@@ -390,7 +473,7 @@ function assets(st) {
           : { tool: 'image.generate', params: { prompt: `${still} ${story.style}`, negative: story.negative, width: 720, height: 1280 }, save: 'keyframe' },
         {
           tool: 'video.i2v',
-          params: { prompt: `${s.shot.motion}. Slow, tense handheld camera. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
+          params: { prompt: `${s.shot.motion}. ${story.camera ?? 'Slow, tense handheld camera'}. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
           inputs: { start: '$prev' },
           save: 'clip',
         },
@@ -545,7 +628,8 @@ if (!problems.length) {
   write('index.html', landing());
   for (const st of stories) {
     write(`${st.id}/index.html`, storyLink(st));
-    for (const s of st.scenes) write(`${st.base}${s.folder}/index.html`, page(st, s));
+    const counts = kitCounts(st);
+    for (const s of st.scenes) write(`${st.base}${s.folder}/index.html`, page(st, s, counts.get(s.id)));
   }
   if (!problems.length) write('hawkes.assets.json', assetsText);
   strays();

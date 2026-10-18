@@ -233,15 +233,82 @@ async function passSplash(t, where = "home") {
   return true;
 }
 
-/** The flashlight inventory (js/spot.js) is The Final Spark's: none on the landing page, there in the player. */
-function checkInventory(t, where) {
-  const shown = (el) => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden";
-  const bar = document.querySelector(".inventory");
-  if (landingShown()) {
-    if (shown(bar) || shown($("torch"))) t.problem("bug", `${where}: the landing page shows the inventory (the flashlight)`);
+const shown = (el) => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden";
+
+/** The inventory is the open story's: none on the landing page; The Final Spark's flashlight (js/spot.js) in its
+    player; a story with its own `inventory` (js/kit.js) shows that bar instead, and no flashlight. */
+function checkInventory(t, where, doc = document) {
+  const torchBar = doc.querySelector(".inventory:not(.kit)");
+  const kitBar = doc.querySelector(".inventory.kit");
+  const torch = doc.getElementById("torch");
+  if (doc === document && landingShown()) {
+    if (shown(torchBar) || shown(torch) || shown(kitBar)) t.problem("bug", `${where}: the landing page shows an inventory`);
     else t.event("no-inventory", `${where}: landing page`);
-  } else if (!shown(bar) || !shown($("torch-slot"))) t.problem("bug", `${where}: ${stories().current()} is open but its inventory (the flashlight) isn't shown`);
-  else t.event("inventory", `${where}: ${stories().current()}`);
+    return;
+  }
+  const id = doc === document ? stories().current() : doc.documentElement.getAttribute("data-kit") || FIRST;
+  const st = storyOf(id);
+  if (st && st.inventory) {
+    if (!shown(kitBar) || !kitBar.querySelector(".kit-item")) t.problem("bug", `${where}: ${id} is open but its inventory (${st.inventory.items.map((i) => i.name).join(", ")}) isn't shown`);
+    else if (shown(torchBar) || shown(torch)) t.problem("bug", `${where}: ${id} shows The Final Spark's flashlight`);
+    else t.event("inventory", `${where}: ${id} (${kitText(kitBar)})`);
+  } else if (!shown(torchBar) || !shown(doc.getElementById("torch-slot"))) t.problem("bug", `${where}: ${id} is open but its inventory (the flashlight) isn't shown`);
+  else if (shown(kitBar)) t.problem("bug", `${where}: ${id} shows another story's inventory`);
+  else t.event("inventory", `${where}: ${id}`);
+}
+
+/* ---------------- a story's own inventory (js/kit.js): the counts the data gives, at every scene ---------------- */
+
+/** What the data says you hold after walking `chain` (scene ids from the start), worked out here on its own (not
+    with js/kit.js): every item's start, each scene's change ({ n } adds, { set: n } sets), kept between 0 and the
+    item's max; back at the start, the counts start over. */
+function expectKit(st, chain) {
+  const items = st.inventory.items.filter((i) => typeof i.start === "number");
+  const fresh = () => Object.fromEntries(items.map((i) => [i.id, i.start]));
+  let now = fresh();
+  for (const id of chain) {
+    if (id === st.start) now = fresh();
+    const changes = st.scenes[id].inventory || {};
+    for (const i of items) {
+      const c = changes[i.id];
+      let v = now[i.id];
+      if (c && typeof c === "object") v = c.set;
+      else if (typeof c === "number") v += c;
+      now[i.id] = Math.max(0, Math.min(i.max ?? Infinity, v));
+    }
+  }
+  return now;
+}
+
+/** The counts a bar shows ({ item: n }), from its count and, for rounds, the rounds still lit. */
+function shownKit(bar) {
+  const out = {};
+  if (!bar) return out;
+  bar.querySelectorAll(".kit-item[data-item]").forEach((el) => {
+    const count = el.querySelector(".kit-count");
+    if (!count) return;
+    out[el.dataset.item] = Number(count.textContent.split("/")[0]);
+    const rounds = el.querySelectorAll(".kit-round");
+    if (rounds.length) out[el.dataset.item + ":rounds"] = rounds.length - el.querySelectorAll(".kit-round.is-spent").length;
+  });
+  return out;
+}
+const kitText = (bar) => Object.entries(shownKit(bar)).filter(([k]) => !k.includes(":")).map(([k, v]) => `${k} ${v}`).join(", ");
+
+/** The bar on `doc` shows exactly what the data gives for `chain`. */
+function checkKit(t, st, chain, where, doc = document) {
+  if (!st.inventory) return;
+  const want = expectKit(st, chain);
+  const bar = doc.querySelector(".inventory.kit");
+  const got = shownKit(bar);
+  if (doc === document && !shown(bar)) return t.problem("bug", `${where}: the inventory isn't shown`);
+  const wrong = Object.entries(want).filter(([k, v]) => got[k] !== v || (`${k}:rounds` in got && got[`${k}:rounds`] !== v));
+  if (wrong.length) t.problem("bug", `${where}: the inventory shows ${wrong.map(([k]) => `${k} ${got[k]}${`${k}:rounds` in got ? ` (${got[`${k}:rounds`]} rounds lit)` : ""}`).join(", ")}; the data gives ${wrong.map(([k, v]) => `${k} ${v}`).join(", ")} (via ${chain.join(" > ")})`);
+  else t.add("inventoryChecked");
+  if (doc === document && spark().inventory) {
+    const api = spark().inventory() || {};
+    if (Object.entries(want).some(([k, v]) => api[k] !== v)) t.problem("bug", `${where}: finalSpark.inventory() says ${JSON.stringify(api)}, the data gives ${JSON.stringify(want)}`);
+  }
 }
 
 /* ---------------- the player on the home page ---------------- */
@@ -272,12 +339,18 @@ async function openStory(t, id, { tap = true } = {}) {
   if (stories().current() === id && !$("spark").hidden) return;
   if (!landingShown()) await toLanding(t);
   const card = cardOf(id);
-  if (!card) throw new Error(`the landing page has no card for ${id}`);
-  card.scrollIntoView({ block: "center", behavior: "instant" });
-  await sleep(200);
-  await tapAt(t, card.querySelector("h2") || card, `the ${story(id).title} card`);
+  if (card) {
+    card.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(200);
+    await tapAt(t, card.querySelector("h2") || card, `the ${story(id).title} card`);
+  } else if (!story(id).listed) {
+    // A draft has no card: it opens the way its shared link does, /?story=<id> (the player follows the address).
+    window.history.pushState({ story: id }, "", `/?story=${id}`);
+    window.dispatchEvent(new PopStateEvent("popstate", { state: { story: id } }));
+    t.log(`open ${id} by its link (a draft: no card)`);
+  } else throw new Error(`the landing page has no card for ${id}`);
   await sleep(300);
-  if (stories().current() !== id) throw new Error(`the ${story(id).title} card didn't open the story (open: ${stories().current()})`);
+  if (stories().current() !== id) throw new Error(`${card ? `the ${story(id).title} card` : `/?story=${id}`} didn't open the story (open: ${stories().current()})`);
   if ($("spark").hidden) t.problem("bug", `${id}: the card opened the story but the player is hidden`);
   if (new URL(location.href).searchParams.get("story") !== id) t.problem("bug", `${id}: the address doesn't say ?story=${id} (a reload would lose the story)`);
   t.event("story-open", `${id} (${story(id).title})`);
@@ -367,7 +440,7 @@ async function branches(options, t) {
   rememberProgress();
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
   await passPrompt(t);
-  const list = listedStories();
+  const list = allStories(); // the drafts too (opened by their link)
   const total = list.reduce((n, st) => n + Object.keys(st.scenes).length, 0);
   const sums = { scenes: 0, endings: 0, deaths: 0 };
   t.metric("stories", list.length);
@@ -390,8 +463,9 @@ async function walkStory(t, st, sums, total) {
   const all = spark().scenes();
   const seen = new Map(); // id -> { state, choices, to: [] }
   const at = (id) => (st.id === FIRST ? id : `${st.id}/${id}`);
+  let noVideo = 0;
 
-  async function visit(id, path) {
+  async function visit(id, path, chain) {
     const root = $("spark");
     const info = { state: root.dataset.state, choices: choiceButtons().map(enText), to: [] };
     seen.set(id, info);
@@ -401,7 +475,9 @@ async function walkStory(t, st, sums, total) {
     t.progress((sums.scenes + seen.size) / total);
     const video = document.querySelector("#spark-video video");
     if (video || st.scenes[id].video) await checkVideo(t, video, at(id), 2, { autoplay: true });
-    else t.problem(st.listed ? "bug" : "warning", `${at(id)}: no video yet`);
+    else if (st.listed) t.problem("bug", `${at(id)}: no video`);
+    else noVideo++;
+    checkKit(t, st, chain, at(id));
     if (!info.choices.length) {
       if (info.state === "soon") t.event("ending", `${at(id)}: ${enText($("spark-ending"))}`);
       else t.problem("bug", `${at(id)}: dead end with no choices and no ending`);
@@ -420,7 +496,8 @@ async function walkStory(t, st, sums, total) {
       }
       info.to.push(next);
       t.add("choicesClicked");
-      if (!seen.has(next)) await visit(next, [...path, label]);
+      if (!seen.has(next)) await visit(next, [...path, label], [...chain, next]);
+      else checkKit(t, st, [...chain, next], at(next));
       $("spark-back").click();
       await sleep(150);
       if (sceneId() !== id) {
@@ -429,10 +506,13 @@ async function walkStory(t, st, sums, total) {
         return;
       }
       t.scene(at(id));
+      checkKit(t, st, chain, `${at(id)} (Back from ${next})`);
     }
   }
-  await visit(st.start, [st.start]);
+  if (st.inventory) checkInventory(t, st.title);
+  await visit(st.start, [st.start], [st.start]);
   stopVideos();
+  if (noVideo) t.problem("warning", `${st.title}: ${noVideo} scene(s) have no video yet (a draft, not on the landing page)`);
 
   // Every scene is reachable, and The Final Spark's opening matches Decision tree.txt.
   all.filter((id) => !seen.has(id)).forEach((id) => t.problem("bug", `${at(id)}: no choice leads here (unreachable)`));
@@ -505,7 +585,7 @@ async function storiesRun(options, t) {
     t.scene(`${st.title}: player`);
     if ($("spark-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("spark-title").textContent}"`);
     if (!st.scenes[sceneId()]) t.problem("bug", `${st.id}: the player is on ${sceneId()}, which isn't one of its scenes`);
-    if (st.id === FIRST) checkInventory(t, st.title);
+    checkInventory(t, st.title);
     await toStart(t);
     const first = st.scenes[st.start];
     if (enText($("spark-story")) !== first.story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
@@ -525,8 +605,42 @@ async function storiesRun(options, t) {
     t.progress((i + 1) / (list.length + 1));
   }
 
+  // A draft (listed: false) has no card, but plays at /?story=<id>: its title, first page, choices, inventory; and its
+  // saved place (a few choices in, then All stories and back) comes back with the same scene and counts.
+  for (const st of allStories().filter((s) => !s.listed)) {
+    t.scene(`${st.title}: draft, by its link`);
+    await openStory(t, st.id);
+    if ($("spark-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("spark-title").textContent}"`);
+    await toStart(t);
+    if (enText($("spark-story")) !== st.scenes[st.start].story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
+    if (!choiceButtons().length) t.problem("bug", `${st.id}: no choices on the first page`);
+    checkInventory(t, st.title);
+    if (st.inventory) {
+      checkKit(t, st, [st.start], `${st.id}: ${st.start}`);
+      for (let i = 0; i < 3 && choiceButtons().length; i++) {
+        choiceButtons()[0].click();
+        await sleep(200);
+      }
+      const where = sceneId();
+      const chain = spark().path();
+      checkKit(t, st, chain, `${st.id}: ${where}`);
+      const before = kitText(document.querySelector(".inventory.kit"));
+      await toLanding(t);
+      checkInventory(t, "landing page, after a draft");
+      await openStory(t, st.id);
+      if (sceneId() !== where) t.problem("bug", `${st.id}: the saved place was ${where}, it opened at ${sceneId()}`);
+      else {
+        checkKit(t, st, chain, `${st.id}: ${where} (saved place)`);
+        t.event("saved-place", `${st.id}: ${where} (${before})`);
+      }
+      await toStart(t);
+    }
+    await sleep(800);
+    await toLanding(t);
+  }
+
   // A shared link opens a story straight away: /?story=<id> and the story's own /<id>/.
-  for (const st of list) {
+  for (const st of allStories()) {
     t.scene(`${st.title}: its link`);
     await frameLoad(t, (f) => (f.src = `/${st.id}/`));
     // It forwards to /?story=<id>, a second page load in the frame.
@@ -617,6 +731,14 @@ async function pages(options, t) {
 /** One story's branch pages, from its start page, following every choice link a viewer can click. */
 async function crawlPages(t, st, done, total) {
   const first = folderOf(st.start, st);
+  let noVideo = 0;
+  // A branch page shows the counts you'd have on the shortest way there from the start.
+  const sceneAt = new Map(Object.keys(st.scenes).map((id) => [folderOf(id, st), id]));
+  const shortest = new Map([[st.start, [st.start]]]);
+  for (const queue = [st.start]; queue.length; ) {
+    const id = queue.shift();
+    for (const [, , next] of st.scenes[id].choices) if (!shortest.has(next)) shortest.set(next, [...shortest.get(id), next]), queue.push(next);
+  }
   const parent = new Map([[first, null]]);
   const queue = [first];
   const mine = new Set();
@@ -642,7 +764,11 @@ async function crawlPages(t, st, done, total) {
     await passPrompt(t, doc, path);
     const video = doc.querySelector("video");
     if (video || st.listed) await checkVideo(t, video, path, 2, { autoplay: true });
-    else t.problem("warning", `${path}: no video yet (${st.title} isn't on the landing page)`);
+    else noVideo++;
+    if (st.inventory) {
+      checkInventory(t, path, doc);
+      checkKit(t, st, shortest.get(sceneAt.get(path)) || [], path, doc);
+    }
     const links = [...doc.querySelectorAll(".spark-choices a.choice")].map((a) => ({ label: enText(a), to: pathOf(a.getAttribute("href"), doc.baseURI) }));
     t.event("page", `${path}: ${links.length} choices`);
     const ending = doc.querySelector('main[data-state="soon"]');
@@ -662,6 +788,7 @@ async function crawlPages(t, st, done, total) {
     }
     doc.querySelectorAll("video").forEach((v) => v.pause());
   }
+  if (noVideo) t.problem("warning", `${st.title}: ${noVideo} page(s) have no video yet (a draft, not on the landing page)`);
   branchFolders(st).filter((p) => !mine.has(p)).forEach((p) => t.problem("warning", `${p}: no choice links here (orphan page)`));
   // The story's own link, /<id>/, opens its player.
   if ((await status(`/${st.id}/`)) !== 200) t.problem("bug", `/${st.id}/ (${st.title}'s link) is missing`);
@@ -1006,10 +1133,10 @@ installPlaytest({
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
       seconds: 40,
       tags: ["full"],
-      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices; All stories brings the landing page back with the video gone (no splash again, no inventory). Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory, and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
     },
-    { id: "branches", title: "Every listed story's player: every scene, every choice, every video", seconds: 150, tags: ["full"] },
-    { id: "pages", title: "Every story's branch pages (one folder per branch): videos and choice links", seconds: 60, tags: ["full"] },
+    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video, the inventory's counts", seconds: 180, tags: ["full"] },
+    { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts", seconds: 90, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {
       id: "credits",

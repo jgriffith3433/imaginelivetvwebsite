@@ -1,0 +1,514 @@
+{
+  "title": "The Water Road",
+  "tagline": "Every drop has to go somewhere.",
+  "doc": "story/water-road.md",
+  "draft": true,
+  "cookie": "waterRoadProgress",
+  "tap": {
+    "title": "THE WATER ROAD",
+    "line": "Fill your flask."
+  },
+  "start": "start",
+  "use": "gen",
+  "style": "A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+  "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+  "camera": "Slow cinematic game camera, gently drifting",
+  "unspoken": ["bird", "dove", "wings", "feather"],
+  "inventory": {
+    "label": "Inventory",
+    "items": [
+      {
+        "id": "revolver",
+        "name": "Revolver",
+        "icon": "revolver",
+        "note": "A Colt Single Action Army, 1873: six shots."
+      },
+      {
+        "id": "bullets",
+        "name": "Bullets",
+        "icon": "rounds",
+        "start": 6,
+        "max": 6
+      },
+      {
+        "id": "water",
+        "name": "Water",
+        "icon": "flask",
+        "start": 4,
+        "max": 4,
+        "empty": "dead"
+      }
+    ]
+  },
+  "characters": {
+    "hero": {
+      "name": "You",
+      "look": "a young trail hand of about twenty, sun-browned face, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots, riding a bay horse",
+      "sheet": "story/characters/water-road/hero.png"
+    },
+    "dove": {
+      "name": "The dove",
+      "look": "a small mourning dove, soft grey-brown feathers, a black spot on each wing, a long pointed tail, dark eyes ringed in pale blue",
+      "sheet": "story/characters/water-road/dove.png"
+    },
+    "boss": {
+      "name": "The trail boss",
+      "look": "a lean old woman with a weathered face, grey braid, a battered black hat, a long duster coat and a coiled bullwhip at her hip",
+      "sheet": "story/characters/water-road/boss.png"
+    },
+    "family": {
+      "name": "The family",
+      "look": "a homesteading family: a thin mother in a faded blue calico dress and bonnet, a bearded father in suspenders, a boy of about twelve with a brass spyglass, and a little girl with a rag doll, all dusty and sunburnt",
+      "sheet": "story/characters/water-road/family.png"
+    },
+    "leader": {
+      "name": "The riders' leader",
+      "look": "a hard-faced rider of about forty, black stubble, a dark low-crowned hat, a long grey duster, a gun belt with two revolvers, cracked lips",
+      "sheet": "story/characters/water-road/leader.png"
+    }
+  },
+  "narrator": {
+    "voice": "2EiwWnXFnvU5JabPnv8n",
+    "model": "eleven_v4"
+  },
+  "music": {
+    "trail": "lonesome western acoustic guitar, soft harmonica, slow horse-trot percussion, wide open desert, instrumental",
+    "heat": "shimmering desert heat drone, sparse twangy baritone guitar, slow, uneasy, instrumental",
+    "danger": "tense spaghetti-western standoff score, ticking percussion, low strings, distant whistle, instrumental",
+    "death": "mournful solo harmonica over a slow fingerpicked guitar, sparse, reverb, instrumental",
+    "hope": "warm swelling western strings, gentle acoustic guitar, rising and hopeful, instrumental",
+    "end": "grand western sunrise theme, full orchestra, horns and strings, triumphant but quiet at the end, instrumental"
+  },
+  "ui": {
+    "en": {
+      "back": "← Back",
+      "mouth": "The trail head",
+      "depth": "Mile"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "folder": "the-water-road",
+      "lang": "en",
+      "title": ["The water road", "The water road"],
+      "story": [
+        "The caravan moves out at dawn: six wagons, forty barrels of water, and a dry town called Dry Fork on the far side of the desert. You ride at the back with a revolver you've never fired.",
+        "The caravan moves out at dawn: six wagons, forty barrels of water, and a dry town called Dry Fork on the far side of the desert. You ride at the back with a revolver you've never fired."
+      ],
+      "question": ["Which way does the caravan go?", "Which way does the caravan go?"],
+      "choices": [
+        { "say": "1. Cut across the salt flats", "en": "1. Cut across the salt flats", "next": "flats" },
+        { "say": "2. Take the long trail under the mesa", "en": "2. Take the long trail under the mesa", "next": "mesa" }
+      ],
+      "shot": {
+        "scene": "dawn in the desert; a mourning dove sits alone on a dead mesquite branch in the foreground, sharp, the sky pink behind it; far below and out of focus, a line of six covered water wagons with barrels starts across the sand, a young rider on a bay horse at the back",
+        "motion": "the dove turns its head; the camera racks focus off the dove and drifts down to find the caravan moving out",
+        "cast": ["dove", "hero"]
+      },
+      "music": "trail"
+    },
+    {
+      "id": "flats",
+      "folder": "the-salt-flats",
+      "lang": "en",
+      "inventory": { "water": -1 },
+      "title": ["The salt flats", "The salt flats"],
+      "story": [
+        "By noon the salt flats shine like a stove top, and a wagon wheel cracks. The mules won't stand still in the heat.",
+        "By noon the salt flats shine like a stove top, and a wagon wheel cracks. The mules won't stand still in the heat."
+      ],
+      "question": ["What do you do?", "What do you do?"],
+      "choices": [
+        { "say": "1. Push on through the heat", "en": "1. Push on through the heat", "next": "sunstroke" },
+        { "say": "2. Wait for dark and mend the wheel", "en": "2. Wait for dark and mend the wheel", "next": "nightCrossing" }
+      ],
+      "shot": {
+        "scene": "blinding white salt flats at noon, heat haze; a water wagon tilts on a cracked wooden wheel, mules stamping; the young rider wipes sweat from under the hat brim",
+        "motion": "heat shimmer rolls across the salt, the wagon creaks and settles, the rider looks up at the sun",
+        "cast": ["hero"]
+      },
+      "music": "heat"
+    },
+    {
+      "id": "sunstroke",
+      "folder": "the-heat",
+      "lang": "en",
+      "dead": true,
+      "inventory": { "water": -3 },
+      "title": ["The heat", "The heat"],
+      "story": [
+        "You drink the last of your flask and keep riding. The sky goes white, and then the ground comes up to meet you.",
+        "You drink the last of your flask and keep riding. The sky goes white, and then the ground comes up to meet you."
+      ],
+      "question": ["You have died.", "You have died."],
+      "choices": [
+        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+      ],
+      "shot": {
+        "scene": "low angle on the cracked white salt; an empty tin flask lies beside a fallen tan hat; the bay horse stands riderless against a white sky",
+        "motion": "the image bleaches toward white, the horse lowers its head, the flask rolls slightly",
+        "cast": ["hero"]
+      },
+      "music": "death"
+    },
+    {
+      "id": "nightCrossing",
+      "folder": "under-the-stars",
+      "lang": "en",
+      "title": ["Under the stars", "Under the stars"],
+      "story": [
+        "You mend the wheel by lantern light and cross the flats in the cool of the night. At sunrise there's a wagon ahead, lying on its side.",
+        "You mend the wheel by lantern light and cross the flats in the cool of the night. At sunrise there's a wagon ahead, lying on its side."
+      ],
+      "question": ["Do you stop?", "Do you stop?"],
+      "choices": [
+        { "say": "1. Ride over to it", "en": "1. Ride over to it", "next": "family" },
+        { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy" }
+      ],
+      "shot": {
+        "scene": "sunrise over the salt flats after a night crossing; a mourning dove perches on the tailgate of the last water wagon; in the distance a small homestead wagon lies on its side",
+        "motion": "the dove ruffles its feathers in the first light; the camera drifts past it toward the overturned wagon on the horizon",
+        "cast": ["dove", "hero"]
+      },
+      "music": "trail"
+    },
+    {
+      "id": "mesa",
+      "folder": "under-the-mesa",
+      "lang": "en",
+      "inventory": { "water": -1 },
+      "title": ["Under the mesa", "Under the mesa"],
+      "story": [
+        "The long trail hugs the shade of the mesa. Up on the rocks, something glints, the way a rifle does.",
+        "The long trail hugs the shade of the mesa. Up on the rocks, something glints, the way a rifle does."
+      ],
+      "question": ["What do you do?", "What do you do?"],
+      "choices": [
+        { "say": "1. Fire a warning shot", "en": "1. Fire a warning shot", "next": "rockslide" },
+        { "say": "2. Wave, and wait", "en": "2. Wave, and wait", "next": "lookout" }
+      ],
+      "shot": {
+        "scene": "the caravan winds along a trail in the long shadow of a towering red mesa; high on the sunlit rocks a small bright glint; the young rider in the foreground, hand near the holster",
+        "motion": "the glint flashes twice; the rider slows the horse and looks up",
+        "cast": ["hero"]
+      },
+      "music": "danger"
+    },
+    {
+      "id": "rockslide",
+      "folder": "the-rockslide",
+      "lang": "en",
+      "dead": true,
+      "inventory": { "bullets": -1 },
+      "title": ["The rockslide", "The rockslide"],
+      "story": [
+        "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock.",
+        "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock."
+      ],
+      "question": ["You have died.", "You have died."],
+      "choices": [
+        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+      ],
+      "shot": {
+        "scene": "the red mesa wall breaking apart above the trail, boulders and dust pouring down toward the wagons; the young rider with a smoking revolver raised",
+        "motion": "the rockfall roars down, dust swallows the frame",
+        "cast": ["hero"]
+      },
+      "music": "death"
+    },
+    {
+      "id": "lookout",
+      "folder": "the-lookout",
+      "lang": "en",
+      "title": ["The lookout", "The lookout"],
+      "story": [
+        "It's a boy with a brass spyglass. His family's wagon broke down a mile on, and their water is gone.",
+        "It's a boy with a brass spyglass. His family's wagon broke down a mile on, and their water is gone."
+      ],
+      "question": ["What do you do?", "What do you do?"],
+      "choices": [
+        { "say": "1. Follow him", "en": "1. Follow him", "next": "family" },
+        { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy" }
+      ],
+      "shot": {
+        "scene": "a thin boy of about twelve scrambles down the red rocks holding a brass spyglass, waving one arm; the young rider waits on horseback below",
+        "motion": "the boy slides the last few feet of rock and points down the trail",
+        "cast": ["family", "hero"]
+      },
+      "music": "trail"
+    },
+    {
+      "id": "family",
+      "folder": "the-broken-wagon",
+      "lang": "en",
+      "title": ["The broken wagon", "The broken wagon"],
+      "story": [
+        "A mother, a father and a little girl sit in the shade of a broken wagon, beside an empty cask. Nobody asks you for anything.",
+        "A mother, a father and a little girl sit in the shade of a broken wagon, beside an empty cask. Nobody asks you for anything."
+      ],
+      "question": ["What do you do?", "What do you do?"],
+      "choices": [
+        { "say": "1. Give them your flask", "en": "1. Give them your flask", "next": "giveFlask" },
+        { "say": "2. Tell them the water's spoken for", "en": "2. Tell them the water's spoken for", "next": "passBy" }
+      ],
+      "shot": {
+        "scene": "a homesteading family, sunburnt and silent, sits in the thin shade of a broken covered wagon beside an empty wooden cask; the young rider looks down at them from the horse",
+        "motion": "the little girl looks up at the rider; the mother pulls her close",
+        "cast": ["family", "hero"]
+      },
+      "music": "heat"
+    },
+    {
+      "id": "giveFlask",
+      "folder": "your-flask",
+      "lang": "en",
+      "inventory": { "water": -2 },
+      "title": ["Your flask", "Your flask"],
+      "story": [
+        "You hand down your flask and the girl drinks first. The trail boss watches, then has a barrel opened, and the family rides on with the caravan.",
+        "You hand down your flask and the girl drinks first. The trail boss watches, then has a barrel opened, and the family rides on with the caravan."
+      ],
+      "question": ["What's ahead?", "What's ahead?"],
+      "choices": [
+        { "say": "1. Ride on together", "en": "1. Ride on together", "next": "dustStorm" }
+      ],
+      "shot": {
+        "scene": "close on a little girl drinking from a dented tin flask held by the young rider's hand; a mourning dove stands on the wagon rail just behind, watching; an old woman trail boss in the background points at a barrel",
+        "motion": "the girl drinks, a drop runs down the flask; the dove steps closer along the rail",
+        "cast": ["hero", "family", "boss"]
+      },
+      "music": "hope"
+    },
+    {
+      "id": "passBy",
+      "folder": "ride-on-by",
+      "lang": "en",
+      "title": ["Spoken for", "Spoken for"],
+      "story": [
+        "You ride past them. The barrels slosh behind you, loud as church bells.",
+        "You ride past them. The barrels slosh behind you, loud as church bells."
+      ],
+      "question": ["Do you look back?", "Do you look back?"],
+      "choices": [
+        { "say": "1. Turn around", "en": "1. Turn around", "next": "family" },
+        { "say": "2. Keep riding", "en": "2. Keep riding", "next": "dustStorm" }
+      ],
+      "shot": {
+        "scene": "from behind the young rider at the back of the caravan, water barrels sloshing in the wagon ahead; far behind, a small broken wagon and a family shrinking into the heat haze",
+        "motion": "the rider's head half turns, then the horse keeps walking; the family grows smaller",
+        "cast": ["hero"]
+      },
+      "music": "heat"
+    },
+    {
+      "id": "dustStorm",
+      "folder": "the-dust",
+      "lang": "en",
+      "title": ["The dust", "The dust"],
+      "story": [
+        "A wall of dust rolls in from the west and swallows the caravan. When it clears the trail is gone, and two barrels have split.",
+        "A wall of dust rolls in from the west and swallows the caravan. When it clears the trail is gone, and two barrels have split."
+      ],
+      "question": ["Which way?", "Which way?"],
+      "choices": [
+        { "say": "1. Follow the dry wash", "en": "1. Follow the dry wash", "next": "wash" },
+        { "say": "2. Ride for the high ground", "en": "2. Ride for the high ground", "next": "highGround" }
+      ],
+      "shot": {
+        "scene": "a towering brown dust storm sweeping over the desert toward the wagons; in the lee of a wagon wheel a mourning dove crouches; the young rider pulls the red bandana over the face",
+        "motion": "the dust wall rolls in and darkens the sun; sand streams past the wagon wheel",
+        "cast": ["hero", "dove"]
+      },
+      "music": "danger"
+    },
+    {
+      "id": "highGround",
+      "folder": "the-high-ground",
+      "lang": "en",
+      "dead": true,
+      "inventory": { "water": -3 },
+      "title": ["The high ground", "The high ground"],
+      "story": [
+        "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry.",
+        "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry."
+      ],
+      "question": ["You have died.", "You have died."],
+      "choices": [
+        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+      ],
+      "shot": {
+        "scene": "the young rider alone on a rocky ridge at dusk, an empty desert to every horizon, holding an upturned tin flask with nothing coming out",
+        "motion": "the rider shakes the flask; the sun sinks; the camera pulls slowly away",
+        "cast": ["hero"]
+      },
+      "music": "death"
+    },
+    {
+      "id": "wash",
+      "folder": "the-dry-wash",
+      "lang": "en",
+      "title": ["The dry wash", "The dry wash"],
+      "story": [
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Then five riders block the way, guns out. They want the water.",
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Then five riders block the way, guns out. They want the water."
+      ],
+      "question": ["What do you do?", "What do you do?"],
+      "choices": [
+        { "say": "1. Draw your revolver", "en": "1. Draw your revolver", "next": "gunfight" },
+        { "say": "2. Fire over their heads", "en": "2. Fire over their heads", "next": "warningShots" },
+        { "say": "3. Open a barrel for them", "en": "3. Open a barrel for them", "next": "shareWater" }
+      ],
+      "shot": {
+        "scene": "a winding dry wash between red rock walls; a mourning dove flies low along the sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front",
+        "motion": "the dove skims low along the wash and over the riders' heads; the riders' horses shift; the leader raises a hand",
+        "cast": ["dove", "leader", "hero"]
+      },
+      "music": "danger"
+    },
+    {
+      "id": "gunfight",
+      "folder": "the-gunfight",
+      "lang": "en",
+      "dead": true,
+      "inventory": { "bullets": -6 },
+      "title": ["The gunfight", "The gunfight"],
+      "story": [
+        "You draw. So do they, faster. The water runs out of the barrels into the sand.",
+        "You draw. So do they, faster. The water runs out of the barrels into the sand."
+      ],
+      "question": ["You have died.", "You have died."],
+      "choices": [
+        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+      ],
+      "shot": {
+        "scene": "gun smoke drifting in the dry wash; water pouring from bullet holes in wooden barrels and soaking into the sand; a dropped single-action revolver, empty, by a tan hat",
+        "motion": "water streams from the barrels and darkens the sand; the smoke drifts away",
+        "cast": ["hero"]
+      },
+      "music": "death"
+    },
+    {
+      "id": "warningShots",
+      "folder": "over-their-heads",
+      "lang": "en",
+      "inventory": { "bullets": -2 },
+      "title": ["Over their heads", "Over their heads"],
+      "story": [
+        "Two shots off the rocks, and the riders scatter. The caravan makes camp at the mouth of the wash with every eye on the dark.",
+        "Two shots off the rocks, and the riders scatter. The caravan makes camp at the mouth of the wash with every eye on the dark."
+      ],
+      "question": ["What now?", "What now?"],
+      "choices": [
+        { "say": "1. Keep watch", "en": "1. Keep watch", "next": "nightRaid" }
+      ],
+      "shot": {
+        "scene": "the young rider fires a single-action revolver into the air in the dry wash; the five riders wheel their horses and gallop away up the rocks",
+        "motion": "two muzzle flashes, the riders scatter in a cloud of dust",
+        "cast": ["hero", "leader"]
+      },
+      "music": "danger"
+    },
+    {
+      "id": "nightRaid",
+      "folder": "they-come-back",
+      "lang": "en",
+      "title": ["They come back", "They come back"],
+      "story": [
+        "They come back after midnight, on foot, for the barrels. You can hear how dry their voices are.",
+        "They come back after midnight, on foot, for the barrels. You can hear how dry their voices are."
+      ],
+      "question": ["What do you do?", "What do you do?"],
+      "choices": [
+        { "say": "1. Shoot it out", "en": "1. Shoot it out", "next": "gunfight" },
+        { "say": "2. Open a barrel and call them in", "en": "2. Open a barrel and call them in", "next": "shareWater" }
+      ],
+      "shot": {
+        "scene": "night camp at the mouth of the wash, a low campfire, the wagons in a ring; dark figures creep toward the barrels in the moonlight; the young rider crouches by a wheel, revolver in hand",
+        "motion": "the fire crackles, the shadows creep closer, the rider's thumb rests on the hammer",
+        "cast": ["hero", "leader"]
+      },
+      "music": "danger"
+    },
+    {
+      "id": "shareWater",
+      "folder": "a-drink-for-strangers",
+      "lang": "en",
+      "title": ["A drink for strangers", "A drink for strangers"],
+      "story": [
+        "You knock the bung out of a barrel and hand their leader the dipper. He drinks slowly, puts his gun away, and his men ride with the caravan.",
+        "You knock the bung out of a barrel and hand their leader the dipper. He drinks slowly, puts his gun away, and his men ride with the caravan."
+      ],
+      "question": ["Where does the wash go?", "Where does the wash go?"],
+      "choices": [
+        { "say": "1. Follow it to the end", "en": "1. Follow it to the end", "next": "spring" }
+      ],
+      "shot": {
+        "scene": "the hard-faced leader in the grey duster drinks from a tin dipper beside an open water barrel, his revolver holstered; the young rider holds the barrel steady; his men lower their guns behind him",
+        "motion": "the leader drinks, closes his eyes, then hands the dipper back and nods",
+        "cast": ["leader", "hero"]
+      },
+      "music": "hope"
+    },
+    {
+      "id": "spring",
+      "folder": "the-cottonwoods",
+      "lang": "en",
+      "inventory": { "water": { "set": 4 } },
+      "title": ["The cottonwoods", "The cottonwoods"],
+      "story": [
+        "Where the wash ends there are cottonwoods, green as a lie, and a spring that's on nobody's map. You fill your flask to the top.",
+        "Where the wash ends there are cottonwoods, green as a lie, and a spring that's on nobody's map. You fill your flask to the top."
+      ],
+      "question": ["What do you do with it?", "What do you do with it?"],
+      "choices": [
+        { "say": "1. Bring Dry Fork the way here", "en": "1. Bring Dry Fork the way here", "next": "heroEnding" },
+        { "say": "2. Keep the spring a secret and sell the water", "en": "2. Keep the spring a secret and sell the water", "next": "sellWater" }
+      ],
+      "shot": {
+        "scene": "a hidden spring under bright green cottonwood trees at the end of a red rock wash, clear water pooling over stones; a mourning dove already drinking at the edge; the caravan's mules pushing toward the water behind",
+        "motion": "the dove dips its head to drink; leaves shimmer; the young rider kneels and fills a tin flask",
+        "cast": ["dove", "hero"]
+      },
+      "music": "hope"
+    },
+    {
+      "id": "heroEnding",
+      "folder": "dry-fork",
+      "lang": "en",
+      "title": ["Dry Fork", "Dry Fork"],
+      "story": [
+        "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before.",
+        "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before."
+      ],
+      "question": ["", ""],
+      "ending": ["THE END. This is how it started.", "THE END. This is how it started."],
+      "choices": [],
+      "shot": {
+        "scene": "a dusty frontier mining town at golden hour, townsfolk crowding around water barrels with buckets and cups; the young rider on the bay horse in the street; a mourning dove sits on top of the wooden water tower above",
+        "motion": "people drink and laugh, a child splashes water; the camera rises up the water tower to the dove against the sunset",
+        "cast": ["hero", "dove", "family", "boss"]
+      },
+      "music": "end"
+    },
+    {
+      "id": "sellWater",
+      "folder": "the-price-of-water",
+      "lang": "en",
+      "title": ["The price of water", "The price of water"],
+      "story": [
+        "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye.",
+        "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye."
+      ],
+      "question": ["", ""],
+      "ending": ["THE END. Not every story makes a hero.", "THE END. Not every story makes a hero."],
+      "choices": [],
+      "shot": {
+        "scene": "the young rider alone at a saloon table counting a pile of silver dollars beside a water barrel with a padlock on it; townsfolk in the doorway look away",
+        "motion": "coins clink onto the pile; one by one the people in the doorway turn and leave",
+        "cast": ["hero"]
+      },
+      "music": "heat"
+    }
+  ]
+}

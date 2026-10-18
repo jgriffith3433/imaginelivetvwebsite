@@ -1156,6 +1156,85 @@ html[data-view="landing"] .inventory,
 html[data-view="landing"] .torch,
 html[data-view="landing"] .torch-beam { display: none; }
 
+/* A story with its own inventory (js/kit.js: The Water Road's revolver, bullets and flask) instead of the
+   flashlight: js/game.js and its branch pages set <html data-kit>. */
+html[data-kit] .inventory:not(.kit),
+html[data-kit] .torch,
+html[data-kit] .torch-beam,
+html:not([data-kit]) .inventory.kit { display: none; }
+
+.kit-items {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.kit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.9rem;
+  padding: 0 0.7rem;
+  border: 1px solid #4a3f33;
+  border-radius: 14px;
+  color: #d9c7a8;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 220, 170, 0.06), transparent 60%),
+    #17140f;
+  box-shadow: inset 0 10px 16px rgba(0, 0, 0, 0.55);
+}
+
+.kit-icon svg { display: block; height: 1.6rem; width: auto; }
+.kit-revolver .kit-icon svg { height: 1.25rem; }
+
+.kit-rounds { display: flex; gap: 2px; }
+.kit-round svg { display: block; height: 1.45rem; width: auto; }
+.kit-round.is-spent { opacity: 0.22; }
+
+.kit-name {
+  color: #9c8d78;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kit-count {
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 30rem) {
+  .kit-items { gap: 0.3rem; }
+  .kit-item { padding: 0 0.45rem; gap: 0.3rem; }
+  .kit-name { display: none; }
+  .kit-round svg { height: 1.2rem; }
+}
+
+/* A draft story's scene with no video yet: its title where the video will be. */
+.spark-video-blank,
+.passage-blank {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  color: #8e8b86;
+  background: radial-gradient(ellipse at 50% 45%, #1d1b18, #000 75%);
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.passage-blank {
+  width: min(22rem, 100%);
+  height: auto;
+  aspect-ratio: 9 / 16;
+  max-height: 60vh;
+  margin: 0 auto 1.2rem;
+  border-radius: 12px;
+}
+
 body.is-holding { touch-action: none; }
 
 @media (max-width: 720px) {
