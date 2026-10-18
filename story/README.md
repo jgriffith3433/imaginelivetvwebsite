@@ -49,28 +49,50 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
 Every story card on the landing page wears a ribbon across its top right corner with the viewer's own progress in
 that story (J, 2026-10-18):
 
-- **Not started**: no saved place for it in this browser.
-- **Started**: they have opened it (its first page saves a place).
+- **Not started**: nothing of it reached in this browser.
+- **Started**: they have opened it (its first page is the first scene unlocked).
 - **Completed**: they have reached one of its **endings** once. An ending is a scene with an `ending` line in
   `story/<id>.json` (no choices, not a death): The Final Spark's is Destroy the town; The Water Road's are Dry Fork
   and The price of water. Deaths are not endings.
 
-It is kept with the story's saved place, in its own cookie (`cookie` in its data: `{ scene, history, completed }`),
-so it survives a reload; once Completed it stays Completed through a death and Try again (only an ending sets it).
-`js/game.js` draws it whenever the landing page shows. A story with no ending yet builds with a warning: its badge
-can't say Completed.
+Under the button the card says how much of the story they have **explored** ("42% explored", below "Unlocked
+scenes"). Completed is kept with the unlocks, so it survives a reload, a death, Try again and Start Over: once
+Completed, always Completed (only an ending sets it). `js/game.js` draws the cards whenever the landing page shows.
+A story with no ending yet builds with a warning: its badge can't say Completed.
 
-The card's button follows the badge: **Play** (not started, or saved at the start), **Continue** (a saved place
-further in), **Start Over** (completed). Pressing Start Over forgets that story's saved place, its cookie only (the
-other stories keep theirs), and opens it at its first page with an empty history, not completed: the badge says
-Started again from then on, until another ending. The `stories` playtest checks all three states and Start Over.
+The card's button follows the current **run** (where they are now): **Play** (no run, or at the first page),
+**Continue** (somewhere further in), **Start Over** (the run is at an ending). Pressing Start Over forgets that
+story's run only, its run cookie (the other stories keep theirs), and opens it at its first page with an empty
+history; its unlocked scenes, its percent and Completed stay. The `stories` playtest checks the badges, the percent,
+the buttons and Start Over.
+
+## Unlocked scenes
+
+Scenes are unlockable (J, 2026-10-18: "so the user doesn't know if decisions continue down the path... they can't
+cheat"). Every story keeps two cookies, both named from `cookie` in its data:
+
+- the **run**, `<cookie>`: `{ scene, history }`, where they are and the way they came (the inventory's counts come
+  from it). Start Over clears it.
+- the **unlocks**, `<cookie>Unlocked`: `{ seen, completed }`, every scene ever reached in the player (by id, once)
+  and whether an ending was. Nothing in the game clears it: deaths, Try again and Start Over keep it.
+
+Only the player unlocks a scene: the branch pages (`/<folder>/`) never touch the cookies. A story's percent explored
+is its unlocked scenes over all its scenes, rounded down, so it is 100% only when every scene has been seen (a new
+scene added to a story lowers everyone's percent until they find it). It shows on the card and in the player, next
+to the depth.
+
+**The Tree tab is a map of what you've found**, not a way around: it draws the unlocked scenes, the current one
+marked, and for each choice from one of them to a scene not reached yet a locked **?** (with the choice's words,
+which the page showed anyway) and nothing below it. One "?" per choice, so it never tells whether a choice leads on,
+how deep it goes, its title or video, whether two ways meet, or whether it's a death or an ending. Nothing in the
+tree can be pressed. (A choice between two scenes you have both reached draws its branch even if you never took it.)
 
 ## No going back
 
 Players own their choices (J, 2026-10-18): the player has no Back button, in every story. A choice stands; the
 only ways to another path are a death (its Try again goes back to the start) or Start Over on a completed story's
-card. The history is still kept (the way you came), for the inventory's counts and the saved place. The Tree tab is
-unchanged (it can still open any scene; J decides about it separately).
+card. The history is still kept (the way you came), for the inventory's counts and the saved place. The Tree tab can't
+open scenes either (above, "Unlocked scenes").
 
 ## A story's inventory
 

@@ -68,38 +68,84 @@
   let history = [];
   let fromPlayer = false;
 
-  /** A story's saved place ({ scene, history, completed }), from its own cookie. `completed`: an ending was reached
-      once (kept through deaths and Try again: only an ending sets it, only Start Over on its card clears it). */
-  function readProgress(story, scenes) {
+  /** One of a story's cookies, parsed (JSON), or null. */
+  function readCookie(name) {
     try {
-      const prefix = story.cookie + "=";
+      const prefix = name + "=";
       const item = document.cookie
         .split(";")
         .map(function (part) { return part.trim(); })
         .find(function (part) { return part.startsWith(prefix); });
-
-      if (!item) return null;
-
-      const saved = JSON.parse(decodeURIComponent(item.substring(prefix.length)));
-      if (!saved || !scenes[saved.scene]) return null;
-
-      return {
-        scene: saved.scene,
-        completed: saved.completed === true,
-        history: Array.isArray(saved.history)
-          ? saved.history.filter(function (id) {
-              return typeof id === "string" && !!scenes[id];
-            })
-          : []
-      };
+      return item ? JSON.parse(decodeURIComponent(item.substring(prefix.length))) : null;
     } catch (error) {
       return null;
     }
   }
 
-  let completed = false;
+  function writeCookie(name, value) {
+    try {
+      document.cookie = name + "=" + encodeURIComponent(JSON.stringify(value)) +
+        "; Max-Age=" + (COOKIE_DAYS * 24 * 60 * 60) +
+        "; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
+    } catch (error) {
+      // The game stays playable if cookies are blocked.
+    }
+  }
 
-  /** Start Over: forgets one story's saved place (only its own cookie; the other stories keep theirs). */
+  // Every story keeps two cookies: its run (`cookie` in its data: { scene, history }, the place you're at and the
+  // way you came) and its unlocks (`<cookie>Unlocked`: { seen, completed }, every scene ever reached in the player
+  // and whether an ending was). Start Over clears the run only; deaths, Try again and Start Over keep the unlocks.
+  function unlocksCookie(story) {
+    return story.cookie + "Unlocked";
+  }
+
+  /** A story's current run ({ scene, history }), or null. */
+  function readProgress(story, scenes) {
+    const saved = readCookie(story.cookie);
+    if (!saved || !scenes[saved.scene]) return null;
+    return {
+      scene: saved.scene,
+      history: Array.isArray(saved.history)
+        ? saved.history.filter(function (id) {
+            return typeof id === "string" && !!scenes[id];
+          })
+        : []
+    };
+  }
+
+  /** A story's unlocks: `seen` (each scene reached in the player, once, as an id → true map) and `completed` (an
+      ending reached once: only an ending sets it, nothing clears it). A run saved before unlocks existed counts the
+      way it came. */
+  function readUnlocks(story) {
+    const seen = {};
+    let done = false;
+    const saved = readCookie(unlocksCookie(story));
+    const add = function (id) { if (typeof id === "string" && story.scenes[id]) seen[id] = true; };
+    if (saved) {
+      (Array.isArray(saved.seen) ? saved.seen : []).forEach(add);
+      done = saved.completed === true;
+    } else {
+      const old = readCookie(story.cookie);
+      if (old && story.scenes[old.scene]) {
+        (Array.isArray(old.history) ? old.history : []).forEach(add);
+        add(old.scene);
+        done = old.completed === true;
+      }
+    }
+    return { seen: seen, completed: done };
+  }
+
+  /** How much of a story has been explored: unlocked scenes / all its scenes, in whole percent, rounded down (so
+      100 only once every scene has been seen). */
+  function exploredOf(story, seen) {
+    const all = Object.keys(story.scenes).length;
+    return all ? Math.floor((Object.keys(seen).length * 100) / all) : 0;
+  }
+
+  let completed = false;
+  let unlocked = {};
+
+  /** Start Over: forgets one story's current run (its run cookie only; its unlocks and the other stories stay). */
   function clearProgress(story) {
     try {
       document.cookie = story.cookie + "=; Max-Age=0; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
@@ -109,26 +155,8 @@
   }
 
   function saveProgress() {
-    try {
-      const progress = encodeURIComponent(JSON.stringify({
-        scene: currentScene,
-        history: history,
-        completed: completed
-      }));
-
-      let cookie =
-        STORY.cookie + "=" + progress +
-        "; Max-Age=" + (COOKIE_DAYS * 24 * 60 * 60) +
-        "; Path=/; SameSite=Lax";
-
-      if (location.protocol === "https:") {
-        cookie += "; Secure";
-      }
-
-      document.cookie = cookie;
-    } catch (error) {
-      // The game stays playable if cookies are blocked.
-    }
+    writeCookie(STORY.cookie, { scene: currentScene, history: history });
+    writeCookie(unlocksCookie(STORY), { seen: Object.keys(unlocked), completed: completed });
   }
 
   function sceneState(scene) {
@@ -217,8 +245,11 @@
     if (!scene) return;
 
     currentScene = sceneId;
+    // Only the player unlocks a scene (the branch pages don't touch the cookies).
+    unlocked[sceneId] = true;
     if (scene.ending) completed = true;
     saveProgress();
+    showExplored();
     root.dataset.state = sceneState(scene);
     fillSpot(
       stepBox,
@@ -297,6 +328,12 @@
     return window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, history.concat(currentScene));
   }
 
+  const exploredBox = document.getElementById("spark-explored");
+
+  function showExplored() {
+    if (exploredBox) exploredBox.textContent = exploredOf(STORY, unlocked) + "% explored";
+  }
+
   function showKit() {
     if (window.iltvKit) window.iltvKit.show(STORY && STORY.inventory ? STORY.inventory : null, kitCounts() || {});
   }
@@ -304,7 +341,6 @@
   const treeRoot = document.getElementById("spark-tree");
   const tabPlay = document.getElementById("tab-play");
   const tabTree = document.getElementById("tab-tree");
-  let spanParent = {};
 
   function choiceLabel(text) {
     return String(text).replace(/^\d+\.\s*/, "");
@@ -333,38 +369,32 @@
     });
   }
 
-  function openFromTree(sceneId) {
-    if (!SCENES[sceneId]) return;
-    const trail = [];
-    let cursor = sceneId;
-    const seen = {};
-    while (spanParent[cursor] && !seen[cursor]) {
-      seen[cursor] = true;
-      trail.push(spanParent[cursor]);
-      cursor = spanParent[cursor];
-    }
-    history = trail.reverse();
-    fromPlayer = true;
-    show(sceneId);
-    setView("play");
-  }
-
+  /** The Tree tab: a map of what you've found, not a way to get around. It draws only the scenes you have unlocked;
+      a choice from one of them to a scene you haven't reached is a locked "?" with nothing below it (one per
+      choice, so it never tells whether two ways meet, where they go, how deep it goes, or if it's a death or an
+      ending). Nothing in it can be pressed; the current scene is marked. */
   function renderTree() {
     if (!treeRoot) return;
 
     const depthOf = {};
     const children = {};
+    const spanParent = {};
+    const locked = {};
     depthOf[STORY.start] = 0;
     children[STORY.start] = [];
     const extra = [];
-    spanParent = {};
-    const queue = [STORY.start];
+    const queue = unlocked[STORY.start] ? [STORY.start] : [];
 
     while (queue.length) {
       const id = queue.shift();
       SCENES[id].choices.forEach(function (choice) {
-        const next = choice.next;
+        let next = choice.next;
         if (!SCENES[next]) return;
+        if (!unlocked[next]) {
+          // A locked "?": its key says nothing about the scene behind it.
+          next = "?" + Object.keys(locked).length;
+          locked[next] = true;
+        }
         if (depthOf[next] == null) {
           depthOf[next] = depthOf[id] + 1;
           spanParent[next] = id;
@@ -374,7 +404,7 @@
             en: choiceLabel(choice.en)
           });
           children[next] = [];
-          queue.push(next);
+          if (!locked[next]) queue.push(next);
         } else {
           extra.push({
             from: id,
@@ -386,9 +416,8 @@
     }
 
     const columns = [];
-    Object.keys(SCENES).forEach(function (id) {
+    Object.keys(depthOf).forEach(function (id) {
       const depth = depthOf[id];
-      if (depth == null) return;
       columns[depth] = columns[depth] || [];
       columns[depth].push(id);
     });
@@ -463,38 +492,40 @@
     });
 
     const nodes = Object.keys(pos).map(function (id) {
-      const scene = SCENES[id];
       const parent = spanParent[id] ? SCENES[spanParent[id]] : null;
       const via = parent
         ? children[spanParent[id]].filter(function (child) { return child.id === id; })[0]
         : null;
+      const point = pos[id];
+      const at = ' style="left:' + point.x + "px;top:" + point.y + 'px"';
+      if (locked[id]) {
+        // Only the choice you'd make to get there: you saw it on the page.
+        return '<div class="tree-node is-locked"' + at + '>' +
+          '<span class="tree-node-title">?</span>' +
+          (via ? '<span class="tree-node-via">' + spotHtml(via.label, via.en, parent.lang, parent.dir) + "</span>" : "") +
+          "</div>";
+      }
+      const scene = SCENES[id];
       const viaText = via && via.en.toLowerCase() !== String(scene.titleEn).toLowerCase()
         ? via
         : null;
-      const point = pos[id];
-      return '<button type="button" class="tree-node' +
+      return '<div class="tree-node' +
         (scene.dead ? " is-dead" : "") +
         (id === currentScene ? " is-current" : "") +
-        '" data-scene="' + id + '" style="left:' + point.x + "px;top:" + point.y + 'px">' +
+        '" data-scene="' + id + '"' + at + '>' +
         '<span class="tree-node-title">' + spotHtml(scene.title, scene.titleEn, scene.lang, scene.dir) + "</span>" +
         (viaText ? '<span class="tree-node-via">' + spotHtml(viaText.label, viaText.en, parent.lang, parent.dir) + "</span>" : "") +
-        "</button>";
+        "</div>";
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">Drag sideways. The black branches are the choices.</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
       "</svg>" +
       nodes +
       "</div></div>";
-
-    treeRoot.querySelectorAll(".tree-node").forEach(function (node) {
-      node.addEventListener("click", function () {
-        openFromTree(node.dataset.scene);
-      });
-    });
 
     bindTreePan(treeRoot.querySelector(".tree-scroll"));
   }
@@ -613,26 +644,39 @@
   // The badge on a story's card: the viewer's own progress, from its saved place (opening a story saves one).
   const BADGES = { "new": "Not started", started: "Started", completed: "Completed" };
 
-  /** A story's progress: "new" (no saved place), "started" or "completed" (an ending reached once). */
+  /** A story's progress: "new" (nothing reached yet), "started" or "completed" (an ending reached once). */
   function progressOf(story) {
-    const saved = readProgress(story, story.scenes);
-    return !saved ? "new" : saved.completed ? "completed" : "started";
+    const unlocks = readUnlocks(story);
+    if (unlocks.completed) return "completed";
+    return Object.keys(unlocks.seen).length || readProgress(story, story.scenes) ? "started" : "new";
   }
 
-  /** Each card's badge (Not started, Started, Completed) and its button: Start Over for a completed story, Continue
-      for a saved place past its start, else Play. */
+  /** Where a story's current run is: "start" (none, or at its first page), "end" (at an ending) or "mid". */
+  function runOf(story) {
+    const run = readProgress(story, story.scenes);
+    if (!run || run.scene === story.start) return "start";
+    return story.scenes[run.scene].ending ? "end" : "mid";
+  }
+
+  const GO = { start: "Play", mid: "Continue", end: "Start Over" };
+
+  /** Each card's badge (Not started, Started, Completed), how much of it is explored, and its button: Play (no run,
+      or at the start), Continue (mid-run) or Start Over (the run is at an ending). */
   function markCards() {
     if (!storyList) return;
     storyList.querySelectorAll(".story-card").forEach(function (card) {
       const story = STORIES[card.dataset.story];
       if (!story) return;
       const progress = progressOf(story);
+      const run = runOf(story);
       card.dataset.progress = progress;
+      card.dataset.run = run;
       const badge = card.querySelector(".story-card-ribbon");
       if (badge) badge.textContent = BADGES[progress];
+      const explored = card.querySelector(".story-card-explored");
+      if (explored) explored.textContent = exploredOf(story, readUnlocks(story).seen) + "% explored";
       const go = card.querySelector(".story-card-go");
-      const saved = readProgress(story, story.scenes);
-      if (go) go.textContent = progress === "completed" ? "Start Over" : saved && saved.scene !== story.start ? "Continue" : "Play";
+      if (go) go.textContent = GO[run];
     });
   }
 
@@ -666,8 +710,10 @@
     window.scrollTo(0, 0);
 
     const saved = readProgress(story, SCENES);
+    const unlocks = readUnlocks(story);
     history = saved ? saved.history : [];
-    completed = !!(saved && saved.completed);
+    unlocked = unlocks.seen;
+    completed = unlocks.completed;
     show(saved ? saved.scene : story.start);
   }
 
@@ -703,8 +749,8 @@
       if (!card || !STORIES[card.dataset.story]) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
       event.preventDefault();
-      // A completed story's card says Start Over: its saved place goes, and it opens at the start.
-      if (card.dataset.progress === "completed") clearProgress(STORIES[card.dataset.story]);
+      // At an ending the card says Start Over: the run goes (its unlocks stay), and it opens at the start.
+      if (card.dataset.run === "end") clearProgress(STORIES[card.dataset.story]);
       openStory(card.dataset.story, true);
     });
   }
@@ -731,6 +777,8 @@
     scenes: function () { return Object.keys(SCENES); },
     depth: function () { return history.length; },
     path: function () { return currentScene ? history.concat(currentScene) : []; },
+    unlocked: function () { return STORY ? Object.keys(unlocked) : []; },
+    explored: function () { return STORY ? exploredOf(STORY, unlocked) : null; },
     inventory: function () { return kitCounts(); }
   };
   window.iltvStories = {
@@ -738,6 +786,8 @@
     listed: function () { return DATA.stories.filter(function (story) { return story.listed; }).map(function (story) { return story.id; }); },
     current: function () { return STORY ? STORY.id : null; },
     progress: function (id) { return STORIES[id] ? progressOf(STORIES[id]) : null; },
+    run: function (id) { return STORIES[id] ? runOf(STORIES[id]) : null; },
+    explored: function (id) { return STORIES[id] ? exploredOf(STORIES[id], readUnlocks(STORIES[id]).seen) : null; },
     view: function () { return STORY ? "story" : "landing"; }
   };
 

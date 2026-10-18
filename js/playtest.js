@@ -335,12 +335,15 @@ function checkKit(t, st, chain, where, doc = document) {
 
 /* ---------------- the player on the home page ---------------- */
 
-// Every story saves its place in its own cookie; a run puts them all back as they were (and the URL: the run
-// leaves the page on the landing page or the story it was on).
+// Every story keeps two cookies (js/game.js): its run (`cookie`: { scene, history }) and its unlocks
+// (`<cookie>Unlocked`: { seen, completed }, every scene reached in the player). A run puts them all back as they were
+// (and the URL: the run leaves the page on the landing page or the story it was on).
+const unlocksCookie = (st) => `${st.cookie}Unlocked`;
+const cookiesOf = (st) => [st.cookie, unlocksCookie(st)];
 let savedCookie = null; // { name: "name=value" or "" }
 function rememberProgress() {
   const jar = document.cookie.split(";").map((s) => s.trim());
-  savedCookie = Object.fromEntries(allStories().map((s) => [s.cookie, jar.find((c) => c.startsWith(s.cookie + "=")) ?? ""]));
+  savedCookie = Object.fromEntries(allStories().flatMap(cookiesOf).map((name) => [name, jar.find((c) => c.startsWith(name + "=")) ?? ""]));
 }
 function restoreProgress() {
   if (savedCookie == null) return;
@@ -352,11 +355,33 @@ function restoreProgress() {
 
 /* ---------------- the landing page ---------------- */
 
-// Every card wears the viewer's own progress in its story (js/game.js, from the story's saved place): Not started
-// (no saved place), Started (opened), Completed (an ending reached once: a scene with an "ending"; deaths aren't).
+// Every card wears the viewer's own progress in its story (js/game.js, from the story's cookies): Not started
+// (nothing reached), Started (opened), Completed (an ending reached once: a scene with an "ending"; deaths aren't),
+// and how much of it is explored (unlocked scenes / all, rounded down). Its button follows the run: Play (none, or
+// at the start), Continue (mid-run), Start Over (at an ending).
 const BADGE = { new: "Not started", started: "Started", completed: "Completed" };
+const GO = { start: "Play", mid: "Continue", end: "Start Over" };
+/** A fresh browser: every story's run and unlocks forgotten. */
 function clearProgress() {
-  for (const st of allStories()) document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
+  for (const name of allStories().flatMap(cookiesOf)) document.cookie = `${name}=; Max-Age=0; Path=/`;
+}
+
+/** What a story's unlocks cookie holds ({ seen, completed }), or null. */
+function savedUnlocks(st) {
+  return readJsonCookie(unlocksCookie(st));
+}
+
+/** The percent explored the data and the unlocks cookie give: unlocked scenes / all, rounded down. */
+function exploredWant(st) {
+  const seen = new Set((savedUnlocks(st)?.seen || []).filter((id) => st.scenes[id]));
+  return Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
+}
+
+/** Where the run cookie says the story's run is: start (none, or at the first page), mid or end (an ending). */
+function runWant(st) {
+  const run = savedPlace(st);
+  if (!run || !st.scenes[run.scene] || run.scene === st.start) return "start";
+  return st.scenes[run.scene].ending ? "end" : "mid";
 }
 
 /** A card's badge says `want` (new, started, completed), visible across the card's top right corner. */
@@ -372,15 +397,18 @@ function checkBadge(t, card, st, want, where) {
     t.problem("bug", `${where}: ${st.title}'s card says "${says}" (${card.dataset.progress}), not "${BADGE[want]}"`);
     return false;
   }
-  // Its button: Start Over on a completed story, Play on one not started (Started says Continue or Play).
+  // Its button follows the run (the cookies are the frame's too: same origin), and its percent the unlocks.
   const go = (card.querySelector(".story-card-go")?.textContent || "").trim();
-  const label = { completed: "Start Over", new: "Play" }[want];
-  if (label && go !== label) t.problem("bug", `${where}: ${st.title}'s card says ${BADGE[want]} but its button says "${go}", not "${label}"`);
+  const label = GO[runWant(st)];
+  if (go !== label) t.problem("bug", `${where}: ${st.title}'s run is at ${runWant(st)} but its button says "${go}", not "${label}"`);
+  const explored = (card.querySelector(".story-card-explored")?.textContent || "").trim();
+  const pct = `${exploredWant(st)}% explored`;
+  if (explored !== pct) t.problem("bug", `${where}: ${st.title}'s card says "${explored || "nothing"}", its unlocks give "${pct}"`);
   const r = ribbon.getBoundingClientRect();
   const c = card.getBoundingClientRect();
   if (r.right < c.right - 1 && r.top > c.top + 1) t.problem("bug", `${where}: ${st.title}'s badge isn't across the card's corner`);
   if (card.ownerDocument === document && stories().progress && stories().progress(st.id) !== want) t.problem("bug", `${where}: iltvStories.progress("${st.id}") says ${stories().progress(st.id)}, the card ${want}`);
-  t.event("badge", `${where}: ${st.id} ${says}`);
+  t.event("badge", `${where}: ${st.id} ${says}, ${explored}, ${go}`);
   return true;
 }
 
@@ -436,14 +464,18 @@ function openByLink(t, id) {
   window.dispatchEvent(new PopStateEvent("popstate", { state: { story: id } }));
 }
 
-/** A story's saved place as its cookie holds it ({ scene, history, completed }), or null. */
-function savedPlace(st) {
-  const item = document.cookie.split(";").map((c) => c.trim()).find((c) => c.startsWith(st.cookie + "="));
+function readJsonCookie(name) {
+  const item = document.cookie.split(";").map((c) => c.trim()).find((c) => c.startsWith(name + "="));
   try {
-    return item ? JSON.parse(decodeURIComponent(item.slice(st.cookie.length + 1))) : null;
+    return item ? JSON.parse(decodeURIComponent(item.slice(name.length + 1))) : null;
   } catch {
     return null;
   }
+}
+
+/** A story's current run as its cookie holds it ({ scene, history }), or null. */
+function savedPlace(st) {
+  return readJsonCookie(st.cookie);
 }
 
 const landingShown = () => !$("stories").hidden && $("spark").hidden;
@@ -493,19 +525,78 @@ function checkNoBack(t, where) {
   if ($("spark-back") || document.querySelector("#spark .back-button")) t.problem("bug", `${where}: the player has a Back button (there's no stepping back to undo a choice)`);
 }
 
-/** Back to the story's first page the way a viewer would: the Tree tab, then the first node. */
+/** Back to the story's first page, a new run: there's no Back and the Tree can't be pressed, so the bot does what
+    Start Over does: the story's run cookie goes (its unlocks stay) and the story opens again by its link. */
 async function toStart(t, { quiet = false } = {}) {
+  const id = spark().story();
   const start = spark().start();
   $("tab-play").click();
   if (sceneId() === start && spark().depth() === 0) return;
+  const unlocked = spark().unlocked().length;
+  document.cookie = `${story(id).cookie}=; Max-Age=0; Path=/`;
+  window.history.replaceState({ story: id }, "", `/?story=${id}`);
+  window.dispatchEvent(new PopStateEvent("popstate", { state: { story: id } }));
+  await sleep(200);
+  if (soundOf().prompt()) await passPrompt(t, document, id);
+  if (sceneId() !== start || spark().depth() !== 0) throw new Error(`${id}: a new run opened ${sceneId()} (${spark().depth()} steps in), not the start`);
+  if (spark().unlocked().length !== unlocked) t.problem("bug", `${id}: a new run changed the unlocked scenes (${unlocked} -> ${spark().unlocked().length}): they must stay`);
+  if (!quiet) t.event("reset", `${id}: ${start} (a new run, unlocks kept)`);
+}
+
+/** The Tree tab is a map of what you've found (J, 2026-10-18: no cheating): a node for each unlocked scene (the
+    current one marked), a locked "?" for each choice from one of them to a scene not reached yet, with nothing
+    below it and nothing of that scene in it, and nothing in it can be pressed. */
+async function checkTree(t, st, where) {
+  const before = sceneId();
   $("tab-tree").click();
   await sleep(200);
-  const node = document.querySelector(`#spark-tree .tree-node[data-scene="${start}"]`);
-  if (!node) throw new Error("the Tree view has no start node");
-  node.click();
-  await sleep(200);
-  if (sceneId() !== start) throw new Error("the Tree's start node didn't open the start");
-  if (!quiet) t.event("reset", `${spark().story()}: ${start} (via Tree)`);
+  const tree = $("spark-tree");
+  const unlocked = new Set(spark().unlocked());
+  const nodes = [...tree.querySelectorAll(".tree-node")];
+  const shown = nodes.filter((n) => n.dataset.scene).map((n) => n.dataset.scene);
+  const locked = nodes.filter((n) => n.classList.contains("is-locked"));
+  // The scenes the tree can draw: the unlocked ones reachable from the start through unlocked scenes.
+  const reach = new Set();
+  const queue = unlocked.has(st.start) ? [st.start] : [];
+  let ways = 0;
+  while (queue.length) {
+    const id = queue.shift();
+    if (reach.has(id)) continue;
+    reach.add(id);
+    for (const c of st.scenes[id].choices) {
+      if (!st.scenes[c[2]]) continue;
+      if (unlocked.has(c[2])) queue.push(c[2]);
+      else ways++;
+    }
+  }
+  if (tree.querySelector("button, a[href], [tabindex], [onclick]")) t.problem("bug", `${where}: the Tree has something to press (it's a map now: no node opens a scene)`);
+  shown.filter((id) => !unlocked.has(id)).forEach((id) => t.problem("bug", `${where}: the Tree shows ${id}, which the player hasn't reached`));
+  [...reach].filter((id) => !shown.includes(id)).forEach((id) => t.problem("bug", `${where}: the Tree is missing ${id}, which the player has reached`));
+  if (locked.length !== ways) t.problem("bug", `${where}: the Tree has ${locked.length} locked "?", there are ${ways} ways not taken`);
+  // A locked node is a "?" and the choice that leads there (on the page already): no id, title, death or ending.
+  for (const n of locked) {
+    const extra = [...n.children].filter((c) => !c.matches(".tree-node-title, .tree-node-via"));
+    if (n.dataset.scene || extra.length || (n.querySelector(".tree-node-title")?.textContent || "").trim() !== "?" || n.className.trim() !== "tree-node is-locked") t.problem("bug", `${where}: a locked node gives its scene away (${n.outerHTML.slice(0, 160)})`);
+  }
+  const current = nodes.filter((n) => n.classList.contains("is-current")).map((n) => n.dataset.scene);
+  if (current.join() !== before) t.problem("bug", `${where}: the Tree marks ${current.join(", ") || "nothing"} as current, not ${before}`);
+  // Pressing a node does nothing (the old Tree opened any scene from it).
+  const target = nodes.find((n) => n.dataset.scene && n.dataset.scene !== before) || locked[0];
+  if (target) {
+    target.click();
+    await sleep(150);
+    if (sceneId() !== before || $("spark-tree").hidden) t.problem("bug", `${where}: pressing a Tree node changed the scene or left the Tree (${before} -> ${sceneId()})`);
+  }
+  t.event("tree", `${where}: ${shown.length} found, ${locked.length} locked`);
+  $("tab-play").click();
+  await sleep(100);
+}
+
+/** The percent explored the player shows, against the unlocked scenes. */
+function checkExplored(t, st, want, where) {
+  const got = spark().explored();
+  const text = ($("spark-explored")?.textContent || "").trim();
+  if (got !== want || text !== `${want}% explored`) t.problem("bug", `${where}: the player says "${text}" (explored() ${got}), the unlocked scenes give ${want}%`);
 }
 
 function stopVideos() {
@@ -530,6 +621,7 @@ async function smoke(options, t) {
   await sleep(800);
   await openStory(t, FIRST);
   await toStart(t);
+  await checkTree(t, story(FIRST), "The Final Spark's Tree");
   t.scene("The sewer");
   t.progress(0.2);
   const ok = await checkVideo(t, document.querySelector("#spark-video video"), "start", 3, { autoplay: true });
@@ -557,6 +649,8 @@ async function branches(options, t) {
   rememberProgress();
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
   await passPrompt(t);
+  // A fresh browser: nothing unlocked, so the walk must unlock every scene (and only then 100%).
+  clearProgress();
   const list = allStories(); // the drafts too (opened by their link)
   const total = list.reduce((n, st) => n + Object.keys(st.scenes).length, 0);
   const sums = { scenes: 0, endings: 0, deaths: 0 };
@@ -567,6 +661,7 @@ async function branches(options, t) {
     await openStory(t, st.id);
     await walkStory(t, st, sums, total);
     await toLanding(t);
+    if (st.listed) checkBadge(t, cardOf(st.id), st, wayTo(st, (s) => !!s.ending) ? "completed" : "started", `after every scene of ${st.title}`);
   }
   t.metric("scenesVisited", sums.scenes);
   t.metric("endings", sums.endings);
@@ -575,7 +670,8 @@ async function branches(options, t) {
 }
 
 /** Every scene of the open story, by clicking every choice. The player has no Back, so after each choice the bot
-    comes back the way a viewer would have to: from the start again (the Tree's start node), the same choices. */
+    comes back the way Start Over does: a new run from the start (the run cookie cleared, the unlocks kept), the
+    same choices. Every new scene unlocks one more: the percent explored follows, and is 100 only after the last. */
 async function walkStory(t, st, sums, total) {
   await toStart(t);
   const all = spark().scenes();
@@ -595,6 +691,9 @@ async function walkStory(t, st, sums, total) {
     const info = { state: root.dataset.state, choices: choiceButtons().map(enText), to: [] };
     seen.set(id, info);
     t.scene(at(id));
+    checkExplored(t, st, Math.floor((seen.size * 100) / all.length), at(id));
+    if (spark().unlocked().length !== seen.size) t.problem("bug", `${at(id)}: ${spark().unlocked().length} scenes unlocked, the bot has reached ${seen.size}`);
+    if (seen.size === 1) await checkTree(t, st, `${st.title}'s Tree at the start`);
     t.note(`${st.title}: ${path.join(" > ")}`);
     t.event("scene", `${at(id)} (${info.state}, ${info.choices.length} choices)`);
     t.progress((sums.scenes + seen.size) / total);
@@ -634,6 +733,9 @@ async function walkStory(t, st, sums, total) {
   await visit(st.start, [st.start], [st.start]);
   stopVideos();
   if (noVideo) t.problem("warning", `${st.title}: ${noVideo} scene(s) have no video yet (a draft, not on the landing page)`);
+  // Every scene found: the whole tree, nothing locked, 100%.
+  await checkTree(t, st, `${st.title}'s Tree, every scene found`);
+  if (seen.size === all.length) checkExplored(t, st, 100, `${st.title}, every scene found`);
 
   // Every scene is reachable, and The Final Spark's opening matches Decision tree.txt.
   all.filter((id) => !seen.has(id)).forEach((id) => t.problem("bug", `${at(id)}: no choice leads here (unreachable)`));
@@ -706,6 +808,9 @@ async function storiesRun(options, t) {
     checkInventory(t, st.title);
     checkNoBack(t, st.title);
     await toStart(t);
+    // Only the first page is found: the Tree is it and a "?" per choice, and the percent is one scene's worth.
+    checkExplored(t, st, Math.floor(100 / Object.keys(st.scenes).length), `${st.id}: ${st.start}`);
+    await checkTree(t, st, `${st.title}'s Tree on its first page`);
     const first = st.scenes[st.start];
     if (enText($("spark-story")) !== first.story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
     if (first.video || document.querySelector("#spark-video video")) await checkVideo(t, document.querySelector("#spark-video video"), `${st.id}: ${st.start}`, 2, { autoplay: true });
@@ -741,6 +846,9 @@ async function storiesRun(options, t) {
     if ($("spark").dataset.state !== "soon" || $("spark-ending").hidden) t.problem("bug", `${st.id}: ${end} is an ending but the player doesn't show it as one`);
     const chain = spark().path();
     t.event("ending", `${st.id}: ${chain.join(" > ")}`);
+    checkExplored(t, st, exploredWant(st), `${st.id}: ${end}`);
+    if (spark().explored() >= 100 && spark().unlocked().length < Object.keys(st.scenes).length) t.problem("bug", `${st.id}: 100% explored with scenes still locked`);
+    await checkTree(t, st, `${st.title}'s Tree at an ending`);
     await sleep(800);
     await toLanding(t);
     checkBadge(t, cardOf(st.id), st, "completed", `after ${st.title}'s ending`);
@@ -772,34 +880,39 @@ async function storiesRun(options, t) {
   t.scene("Progress: after a reload");
   await badgesAfterLoad(t, () => "completed", "after a reload");
 
-  // Start Over: a completed story's card says Start Over; pressing it forgets that story's saved place (only its
-  // cookie: the other stories keep theirs) and opens it at the start, an empty history, not completed. Its card
-  // then says Started (opening it saved a place again) and Play.
+  // Start Over: at an ending the card says Start Over; pressing it forgets that story's run only (its run cookie:
+  // its unlocks, its percent and Completed stay, and the other stories' cookies are untouched) and opens it at the
+  // start with an empty history. Its card then says Completed, the same percent, and Play.
   for (const st of list) {
-    if (!wayTo(st, (s) => !!s.ending)) continue;
+    const ending = wayTo(st, (s) => !!s.ending);
+    if (!ending) continue;
     t.scene(`${st.title}: Start Over`);
-    if (!landingShown()) await toLanding(t);
+    await openStory(t, st.id);
+    await toStart(t);
+    await playWay(t, st, ending);
+    await toLanding(t);
     if (!checkBadge(t, cardOf(st.id), st, "completed", `before Start Over in ${st.title}`)) continue;
-    const others = Object.fromEntries(allStories().filter((o) => o.id !== st.id).map((o) => [o.id, savedPlace(o)]));
+    const go = () => (cardOf(st.id).querySelector(".story-card-go")?.textContent || "").trim();
+    if (go() !== "Start Over") t.problem("bug", `${st.id}: at an ending its card's button says "${go()}", not Start Over`);
+    const unlocks = JSON.stringify(savedUnlocks(st));
+    const pct = exploredWant(st);
+    const others = Object.fromEntries(allStories().filter((o) => o.id !== st.id).flatMap(cookiesOf).map((name) => [name, readJsonCookie(name)]));
     await openStory(t, st.id);
     const saved = savedPlace(st);
     if (sceneId() !== st.start || spark().depth() !== 0) t.problem("bug", `${st.id}: Start Over opened ${sceneId()} (${spark().depth()} steps in), not its start`);
-    if (!saved || saved.scene !== st.start || saved.history.length || saved.completed !== false) t.problem("bug", `${st.id}: after Start Over its saved place is ${JSON.stringify(saved)}, not the start with an empty history and completed false`);
-    if (stories().progress(st.id) !== "started") t.problem("bug", `${st.id}: after Start Over iltvStories.progress says ${stories().progress(st.id)}, not started`);
+    if (!saved || saved.scene !== st.start || saved.history.length) t.problem("bug", `${st.id}: after Start Over its run is ${JSON.stringify(saved)}, not the start with an empty history`);
+    if (JSON.stringify(savedUnlocks(st)) !== unlocks) t.problem("bug", `${st.id}: Start Over changed its unlocks (${unlocks} -> ${JSON.stringify(savedUnlocks(st))}): they must stay`);
+    checkExplored(t, st, pct, `${st.id}: after Start Over`);
+    if (stories().progress(st.id) !== "completed") t.problem("bug", `${st.id}: after Start Over iltvStories.progress says ${stories().progress(st.id)}, not completed (an ending stays reached)`);
     if (st.inventory) checkKit(t, st, [st.start], `${st.id}: ${st.start} (after Start Over)`);
-    for (const [id, was] of Object.entries(others)) {
-      if (JSON.stringify(savedPlace(storyOf(id))) !== JSON.stringify(was)) t.problem("bug", `Start Over in ${st.id} changed ${id}'s saved place (${JSON.stringify(was)} -> ${JSON.stringify(savedPlace(storyOf(id)))})`);
+    for (const [name, was] of Object.entries(others)) {
+      if (JSON.stringify(readJsonCookie(name)) !== JSON.stringify(was)) t.problem("bug", `Start Over in ${st.id} changed the cookie ${name} (${JSON.stringify(was)} -> ${JSON.stringify(readJsonCookie(name))})`);
     }
-    t.event("start-over", `${st.id}: at ${sceneId()}; ${Object.keys(others).join(", ") || "no other stories"} untouched`);
+    t.event("start-over", `${st.id}: at ${sceneId()}, ${pct}% explored kept; ${Object.keys(others).length} other cookies untouched`);
     await sleep(600);
     await toLanding(t);
-    checkBadge(t, cardOf(st.id), st, "started", `after Start Over in ${st.title}`);
-    const go = (cardOf(st.id).querySelector(".story-card-go")?.textContent || "").trim();
-    if (go !== "Play") t.problem("bug", `${st.id}: after Start Over its card's button says "${go}", not Play`);
-    list.filter((o) => o.id !== st.id && wayTo(o, (s) => !!s.ending)).forEach((o) => {
-      const want = list.indexOf(o) < list.indexOf(st) ? "started" : "completed";
-      checkBadge(t, cardOf(o.id), o, want, `after Start Over in ${st.title}`);
-    });
+    checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);
+    if (go() !== "Play") t.problem("bug", `${st.id}: after Start Over its card's button says "${go()}", not Play`);
   }
   t.progress((list.length + 1) / (list.length + 2));
 
@@ -1330,15 +1443,15 @@ async function sound(options, t) {
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, The Final Spark from its card: the first video plays, a choice appears, one step in (no Back button), All stories", seconds: 25, tags: ["smoke"] },
+    { id: "smoke", title: "The landing page, The Final Spark from its card: its Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories", seconds: 25, tags: ["smoke"] },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
       seconds: 75,
       tags: ["full"],
-      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress badges: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started; opening a story makes its card say Started; reaching one of its endings (the shortest way) makes it Completed and its card's button Start Over, the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed; the home page loaded again shows every card Completed. Then each completed card's Start Over: it forgets only that story's saved place (the other stories' cookies are untouched) and opens it at its start with an empty history and completed false; back on the landing page its card says Started and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
     },
-    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts (no Back: after each choice it walks again from the start)", seconds: 330, tags: ["full"] },
+    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts, the percent explored rising scene by scene to 100% only at the last, the Tree locked until found (no Back: after each choice it walks again from the start, a new run)", seconds: 330, tags: ["full"] },
     { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts", seconds: 90, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {

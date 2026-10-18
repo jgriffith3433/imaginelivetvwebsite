@@ -205,6 +205,15 @@ a { color: var(--green); }
   text-transform: uppercase;
 }
 
+/* How much of the story you've found (unlocked scenes / all of them), in the site's English like the tabs. */
+.spark-explored {
+  color: #8e8b86;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .choice {
   font: inherit;
   color: #f4f2ee;
@@ -766,9 +775,23 @@ a { color: var(--green); }
   line-height: 1.45;
 }
 
+.story-card-foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  margin-top: 0.7rem;
+}
+
+.story-card-explored {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .story-card-go {
   display: inline-block;
-  margin-top: 0.7rem;
   padding: 0.35rem 0.95rem;
   color: #f4f2ee;
   background: #1c1e22;
@@ -937,17 +960,26 @@ a { color: var(--green); }
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 12px;
   box-shadow: 0 12px 22px rgba(0, 0, 0, 0.28);
-  cursor: pointer;
   font: inherit;
 }
 
-.tree-node:hover,
+/* The tree is a map, not a way around: nothing in it can be pressed. */
 .tree-node.is-current {
   border-color: #f4f2ee;
   background: #0c0d0f;
 }
 
 .tree-node.is-dead { color: #c8c4be; }
+
+/* A way you haven't taken: a "?", nothing below it. */
+.tree-node.is-locked {
+  color: #8e8b86;
+  background: rgba(16, 17, 19, 0.6);
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.tree-node.is-locked .tree-node-title { font-size: 1.2rem; }
 
 .tree-node-title {
   display: block;
