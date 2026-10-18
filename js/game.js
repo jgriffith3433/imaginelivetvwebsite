@@ -16,10 +16,8 @@
     return {
       lang: spec.lang,
       dir: spec.dir || "",
-      back: ui.back,
       mouth: ui.mouth,
       depth: ui.depth,
-      backEn: en.back,
       mouthEn: en.mouth,
       depthEn: en.depth,
       title: spec.title[0],
@@ -54,7 +52,6 @@
   const questionBox = document.getElementById("spark-question");
   const choicesBox = document.getElementById("spark-choices");
   const endingBox = document.getElementById("spark-ending");
-  const backButton = document.getElementById("spark-back");
   const stepBox = document.getElementById("spark-step");
   const landing = document.getElementById("stories");
   const storyList = document.getElementById("story-list");
@@ -63,7 +60,7 @@
   const taglineBox = document.getElementById("spark-tagline");
   const storiesLink = document.getElementById("spark-stories");
 
-  if (!root || !videoBox || !storyBox || !questionBox || !choicesBox || !endingBox || !backButton || !landing) {
+  if (!root || !videoBox || !storyBox || !questionBox || !choicesBox || !endingBox || !landing) {
     return;
   }
 
@@ -72,7 +69,7 @@
   let fromPlayer = false;
 
   /** A story's saved place ({ scene, history, completed }), from its own cookie. `completed`: an ending was reached
-      once (kept through deaths, Try again and Back: only an ending sets it). */
+      once (kept through deaths and Try again: only an ending sets it, only Start Over on its card clears it). */
   function readProgress(story, scenes) {
     try {
       const prefix = story.cookie + "=";
@@ -101,6 +98,15 @@
   }
 
   let completed = false;
+
+  /** Start Over: forgets one story's saved place (only its own cookie; the other stories keep theirs). */
+  function clearProgress(story) {
+    try {
+      document.cookie = story.cookie + "=; Max-Age=0; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
+    } catch (error) {
+      // Cookies blocked: there was nothing saved.
+    }
+  }
 
   function saveProgress() {
     try {
@@ -193,7 +199,7 @@
       if (quiet && quiet.catch) quiet.catch(function () {});
       clipUnlock = function (event) {
         var el = event.target;
-        if (el.closest && el.closest(".choice, #spark-back, .spark-tab, .stories-back")) return;
+        if (el.closest && el.closest(".choice, .spark-tab, .stories-back")) return;
         stopClipUnlock();
         if (activeClip !== video) return;
         video.muted = false;
@@ -214,8 +220,6 @@
     if (scene.ending) completed = true;
     saveProgress();
     root.dataset.state = sceneState(scene);
-    backButton.disabled = history.length === 0;
-    fillSpot(backButton, scene.back, scene.backEn, scene.lang, scene.dir);
     fillSpot(
       stepBox,
       history.length === 0 ? scene.mouth : scene.depth + " " + history.length,
@@ -287,7 +291,7 @@
   }
 
   /** The open story's own inventory (js/kit.js), counted along the way you came: the start, then every scene
-      since (history), so Back and a saved place give the same counts. The Final Spark's is the flashlight. */
+      since (history), so a saved place gives the same counts. The Final Spark's is the flashlight. */
   function kitCounts() {
     if (!STORY || !STORY.inventory || !window.iltvKit || !currentScene) return null;
     return window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, history.concat(currentScene));
@@ -570,12 +574,6 @@
     tabTree.addEventListener("click", function () { setView("tree"); });
   }
 
-  backButton.addEventListener("click", function () {
-    if (history.length === 0) return;
-    fromPlayer = true;
-    show(history.pop());
-  });
-
   /* ---------------- the landing page and the stories ---------------- */
 
   const SITE_TITLE = document.title;
@@ -621,7 +619,8 @@
     return !saved ? "new" : saved.completed ? "completed" : "started";
   }
 
-  /** Each card's badge (Not started, Started, Completed), and Continue for a story with a saved place past its start. */
+  /** Each card's badge (Not started, Started, Completed) and its button: Start Over for a completed story, Continue
+      for a saved place past its start, else Play. */
   function markCards() {
     if (!storyList) return;
     storyList.querySelectorAll(".story-card").forEach(function (card) {
@@ -633,7 +632,7 @@
       if (badge) badge.textContent = BADGES[progress];
       const go = card.querySelector(".story-card-go");
       const saved = readProgress(story, story.scenes);
-      if (go) go.textContent = saved && saved.scene !== story.start ? "Continue" : "Play";
+      if (go) go.textContent = progress === "completed" ? "Start Over" : saved && saved.scene !== story.start ? "Continue" : "Play";
     });
   }
 
@@ -704,6 +703,8 @@
       if (!card || !STORIES[card.dataset.story]) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
       event.preventDefault();
+      // A completed story's card says Start Over: its saved place goes, and it opens at the start.
+      if (card.dataset.progress === "completed") clearProgress(STORIES[card.dataset.story]);
       openStory(card.dataset.story, true);
     });
   }
