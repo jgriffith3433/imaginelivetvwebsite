@@ -2,7 +2,6 @@
   "title": "The Water Road",
   "tagline": "Every drop has to go somewhere.",
   "doc": "story/water-road.md",
-  "draft": true,
   "cookie": "waterRoadProgress",
   "tap": {
     "title": "THE WATER ROAD",

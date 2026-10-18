@@ -71,7 +71,8 @@
   let history = [];
   let fromPlayer = false;
 
-  /** A story's saved place ({ scene, history }), from its own cookie. */
+  /** A story's saved place ({ scene, history, completed }), from its own cookie. `completed`: an ending was reached
+      once (kept through deaths, Try again and Back: only an ending sets it). */
   function readProgress(story, scenes) {
     try {
       const prefix = story.cookie + "=";
@@ -87,6 +88,7 @@
 
       return {
         scene: saved.scene,
+        completed: saved.completed === true,
         history: Array.isArray(saved.history)
           ? saved.history.filter(function (id) {
               return typeof id === "string" && !!scenes[id];
@@ -98,11 +100,14 @@
     }
   }
 
+  let completed = false;
+
   function saveProgress() {
     try {
       const progress = encodeURIComponent(JSON.stringify({
         scene: currentScene,
-        history: history
+        history: history,
+        completed: completed
       }));
 
       let cookie =
@@ -206,6 +211,7 @@
     if (!scene) return;
 
     currentScene = sceneId;
+    if (scene.ending) completed = true;
     saveProgress();
     root.dataset.state = sceneState(scene);
     backButton.disabled = history.length === 0;
@@ -606,15 +612,28 @@
     if (window.hawkesSound && window.hawkesSound[what]) window.hawkesSound[what](arg);
   }
 
-  /** The cards say Continue for a story with a saved place past its start. */
+  // The badge on a story's card: the viewer's own progress, from its saved place (opening a story saves one).
+  const BADGES = { "new": "Not started", started: "Started", completed: "Completed" };
+
+  /** A story's progress: "new" (no saved place), "started" or "completed" (an ending reached once). */
+  function progressOf(story) {
+    const saved = readProgress(story, story.scenes);
+    return !saved ? "new" : saved.completed ? "completed" : "started";
+  }
+
+  /** Each card's badge (Not started, Started, Completed), and Continue for a story with a saved place past its start. */
   function markCards() {
     if (!storyList) return;
     storyList.querySelectorAll(".story-card").forEach(function (card) {
       const story = STORIES[card.dataset.story];
+      if (!story) return;
+      const progress = progressOf(story);
+      card.dataset.progress = progress;
+      const badge = card.querySelector(".story-card-ribbon");
+      if (badge) badge.textContent = BADGES[progress];
       const go = card.querySelector(".story-card-go");
-      if (!story || !go) return;
       const saved = readProgress(story, story.scenes);
-      go.textContent = saved && saved.scene !== story.start ? "Continue" : "Play";
+      if (go) go.textContent = saved && saved.scene !== story.start ? "Continue" : "Play";
     });
   }
 
@@ -649,6 +668,7 @@
 
     const saved = readProgress(story, SCENES);
     history = saved ? saved.history : [];
+    completed = !!(saved && saved.completed);
     show(saved ? saved.scene : story.start);
   }
 
@@ -697,6 +717,10 @@
   }
 
   window.addEventListener("popstate", route);
+  // Back to the landing page from another page or tab (the browser's back cache, a story played in another tab):
+  // the badges follow the saved places.
+  window.addEventListener("pageshow", function () { if (!STORY) markCards(); });
+  document.addEventListener("visibilitychange", function () { if (!STORY && document.visibilityState === "visible") markCards(); });
 
   // Read-only views for the playtest (js/playtest.js): the open story's player, and the stories.
   window.finalSpark = {
@@ -712,6 +736,7 @@
     list: function () { return DATA.stories.map(function (story) { return story.id; }); },
     listed: function () { return DATA.stories.filter(function (story) { return story.listed; }).map(function (story) { return story.id; }); },
     current: function () { return STORY ? STORY.id : null; },
+    progress: function (id) { return STORIES[id] ? progressOf(STORIES[id]) : null; },
     view: function () { return STORY ? "story" : "landing"; }
   };
 

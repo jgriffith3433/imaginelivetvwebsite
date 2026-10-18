@@ -8,7 +8,6 @@ window.ILTV_STORIES = {
    "logline": "You wake in a sewer with no name and no past. A rat is watching. Every page costs a match.",
    "image": "/assets/images/final-spark.jpg",
    "listed": true,
-   "status": "complete",
    "cookie": "finalSparkProgress",
    "tap": {
     "title": "THE FINAL SPARK",
@@ -761,8 +760,7 @@ window.ILTV_STORIES = {
    "tagline": "Every drop has to go somewhere.",
    "logline": "Forty barrels of water, a dying town on the far side of the desert, and a revolver you've never fired. Every page costs water.",
    "image": "/assets/images/water-road.jpg",
-   "listed": false,
-   "status": null,
+   "listed": true,
    "cookie": "waterRoadProgress",
    "tap": {
     "title": "THE WATER ROAD",

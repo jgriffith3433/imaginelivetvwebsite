@@ -4,9 +4,10 @@
 under `/water-road/` (`/water-road/the-water-road/`, …), its asset ids start with `water-road-`, and it plays at
 `/?story=water-road`.
 
-**Everything below is a draft, waiting for J** (J's direction on a call, 2026-10-18). It is not canon until he
-approves it. The story is in the data with `"listed": false`: it builds and plays end to end at `/?story=water-road`
-on beta, every page with its video, narration and music (made 2026-10-18), and has no card on the landing page.
+**Approved by J, 2026-10-18: canon.** (J's direction on a call that day; he approved it the same day: "Add it to
+the landing page".) It is listed in `story/stories.json` and has its card on the landing page, after The Final
+Spark's, with its key image and its progress badge (Not started, Started, Completed: story/README.md, "Progress on
+the cards"). Every page plays its own video, narration and music (made 2026-10-18).
 
 ## The idea
 
@@ -17,7 +18,7 @@ taking it, and never by the gun.
 
 - **Title:** *The Water Road*
 - **Tagline** (under the title in the player): *Every drop has to go somewhere.*
-- **Logline** (its card, when it gets one): *Forty barrels of water, a dying town on the far side of the desert, and
+- **Logline** (its card): *Forty barrels of water, a dying town on the far side of the desert, and
   a revolver you've never fired. Every page costs water.*
 - **Tap to play:** *THE WATER ROAD*, "Sound on. Fill your flask."
 
@@ -47,7 +48,7 @@ You ride guard on the last wagon of a water caravan bound for Dry Fork, a mining
    Bring Dry Fork the way here (**Dry Fork**, the hero's ending), or keep the spring a secret and sell the water
    (**the price of water**, the other ending).
 
-**Endings.** *Dry Fork*: you ride in with full barrels, then lead the whole town back to the spring, and by the end
+**Endings** (the scenes with an `ending` in the data: reaching either makes its card say Completed). *Dry Fork*: you ride in with full barrels, then lead the whole town back to the spring, and by the end
 of summer they call you by a name you didn't have before. *THE END. This is how it started.* *The price of water*:
 Dry Fork pays what you ask, you are rich by fall, and nobody in town will look you in the eye. *THE END. Not every
 story makes a hero.*
@@ -120,18 +121,19 @@ the gun as you die. No way through the story leaves you with fewer than none (th
   Narration by a weathered western voice (ElevenLabs "Wyatt – Wise Rustic Cowboy", `YXpFCvM1S3JbWEJhoskW`: an old,
   deep American cowboy voice, "weathered wisdom from a cowboy who's lived a hard life on the range"); music by mood (`music` in the data: trail, heat, danger, death, hope, end).
 
-## Waiting for J (all of it, until he approves)
+## Approved (J, 2026-10-18)
 
-- **The title, tagline, logline and the whole tree above.** Twenty pages, two endings, four deaths.
-- **The bird is a mourning dove** (for the doves-fly-to-water saying). A hawk, a cactus wren or a raven would also
-  work; the shots would change, not the words.
-- **Running out:** an empty flask is death, an empty gun isn't.
-- **The narrator's voice**: "Wyatt – Wise Rustic Cowboy" (`narrator.voice`, `YXpFCvM1S3JbWEJhoskW`), picked from the
-  ElevenLabs library for "a weathered western voice" (the first id was a guess). Every page's narration is made with
-  it: J to hear it and approve or pick another (changing it remakes the 20 narrations, about $0.80).
-- **The second ending** (*The price of water*): an ending, not a death; it closes the story without the hero.
-- **Media (GPU).** Made 2026-10-18 within J's $8: the five character sheets (`story/characters/water-road/`), a
-  keyframe per page (best of 3, picked by Claude and looked at before its clip), a 9:16 clip per page, the 20
-  narrations and the six music cues; `npm run story` cuts each page's `scene.mp4`. The card image
-  (`/assets/images/water-road.jpg`, the opening's dove on the dead branch) is in its listing entry, but there is no
-  card until J approves the story and `listed` comes out of its entry in `story/stories.json`.
+Everything that was waiting for J, approved with "Add it to the landing page": the title, tagline, logline and the
+whole tree above (twenty pages, two endings, four deaths); the mourning dove; running out (an empty flask is death,
+an empty gun isn't); the second ending, *The price of water*; the narrator's voice, "Wyatt – Wise Rustic Cowboy"
+(`narrator.voice`, `YXpFCvM1S3JbWEJhoskW`, a weathered western voice; another would remake the 20 narrations, about
+$0.80); and the media as made.
+
+Nothing is waiting for J.
+
+## Media
+
+Made 2026-10-18 within J's $8: the five character sheets (`story/characters/water-road/`), a keyframe per page
+(best of 3, picked by Claude and looked at before its clip), a 9:16 clip per page, the 20 narrations and the six
+music cues; `npm run story` cuts each page's `scene.mp4`. The card image is `/assets/images/water-road.jpg`, the
+opening's dove on the dead branch.
