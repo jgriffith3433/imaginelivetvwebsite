@@ -215,7 +215,11 @@ const titleOf = (st) => st.data.title;
 /** The parts of a scene's generated cut, and whether they're all there. */
 function cutParts(st, s) {
   const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }));
-  const parts = { clip: media(st, s, 'clip.mp4'), narration: media(st, s, 'narration.mp3'), talks, music: s.music ? musicFile(st, s.music) : null };
+  let music = s.music ? musicFile(st, s.music) : null;
+  // A draft's scene isn't held back by a music cue that isn't made yet: it's cut without it, and cut again once it is.
+  const later = music && !st.listed && !exists(music) ? music : null;
+  if (later) music = null;
+  const parts = { clip: media(st, s, 'clip.mp4'), narration: media(st, s, 'narration.mp3'), talks, music, later };
   const need = [parts.clip, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
   return { ...parts, missing: need.filter((f) => !exists(f)), all: need };
 }
@@ -268,6 +272,7 @@ function storyData() {
       start: st.data.start,
       ui: Object.fromEntries(Object.entries(st.data.ui).filter(([lang]) => langs.has(lang))),
       ...(st.data.inventory ? { inventory: st.data.inventory } : {}),
+      ...(st.data.unspoken ? { unspoken: st.data.unspoken } : {}),
       scenes: out,
     };
   });
@@ -412,6 +417,10 @@ ${inv ? `  <div class="inventory kit" data-kit="${esc(JSON.stringify({ inventory
 const words = (t) => String(t).split(/\s+/).filter(Boolean).length;
 const flat = (t) => String(t).replace(/\n+•?\s*/g, ' ').replace(/\s+/g, ' ').trim();
 
+// image.generate (Z-Image Turbo) has no negative prompt: what matters of the story's `negative` goes into the prompt
+// as its `avoid` line (e.g. "a modern 3D game render, not a photograph"). image.edit and video.i2v keep `negative`.
+const positive = (story, prompt) => (story.avoid ? `${prompt} ${story.avoid}` : prompt);
+
 function castRefs(st, cast) {
   return cast.map((who, i) => `image ${i + 1} is the reference sheet for ${who === 'hero' ? 'the hero' : st.data.characters[who].name.toLowerCase()} (${st.data.characters[who].look})`).join('; ');
 }
@@ -436,7 +445,7 @@ function assets(st) {
       steps: [
         c.seed
           ? { tool: 'image.edit', params: { prompt, negative: story.negative, width: 1536, height: 1024 }, inputs: { images: ['$input:0'] }, save: 'sheet' }
-          : { tool: 'image.generate', params: { prompt, negative: story.negative, width: 1536, height: 1024 }, save: 'sheet' },
+          : { tool: 'image.generate', params: { prompt: positive(story, prompt), width: 1536, height: 1024 }, save: 'sheet' },
       ],
       candidates: 3,
       pick: c.seed ? 'the same individual as the reference photo; every view consistent; clean grey background; no text' : `matches the description (${c.look}); every view consistent; clean grey background; no text`,
@@ -470,7 +479,7 @@ function assets(st) {
               inputs: { images: cast.map((_, i) => `$input:${i}`) },
               save: 'keyframe',
             }
-          : { tool: 'image.generate', params: { prompt: `${still} ${story.style}`, negative: story.negative, width: 720, height: 1280 }, save: 'keyframe' },
+          : { tool: 'image.generate', params: { prompt: positive(story, `${still} ${story.style}`), width: 720, height: 1280 }, save: 'keyframe' },
         {
           tool: 'video.i2v',
           params: { prompt: `${s.shot.motion}. ${story.camera ?? 'Slow, tense handheld camera'}. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
@@ -553,6 +562,7 @@ const duration = (rel) => Number(execFileSync(ffmpegBin('ffprobe'), ['-v', 'erro
 function cut(st, s) {
   const p = cutParts(st, s);
   if (p.missing.length) return;
+  if (p.later) warnings.push(`${st.id}/${s.id}: cut without its music (${p.later} isn't made yet)`);
   const out = path.join(ROOT, cutFile(st, s));
   const newest = Math.max(...p.all.map((f) => fs.statSync(path.join(ROOT, f)).mtimeMs), fs.statSync(path.join(ROOT, st.file)).mtimeMs);
   if (fs.existsSync(out) && fs.statSync(out).mtimeMs >= newest) return;

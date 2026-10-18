@@ -31,5 +31,397 @@
       "the-sewer/media/keyframe.png": "05ca20ea91305b9d503d4c85c24ced510c3a5bcee74119aad763145b0fe6b301",
       "the-sewer/media/clip.mp4": "cf7815debcd95f2253abc42796f60b051fac0a977029c89b7ce0849ca9c524cc"
     }
+  },
+  "water-road-char-hero": {
+    "recipe": "1a657e6226a6a735",
+    "job": "j_73a2d23bcc8c",
+    "made": "2026-10-18T03:14:23.829Z",
+    "files": {
+      "story/characters/water-road/hero.png": "d417c9c5e476aabd47ceb505e35e45f33b39bcc0a8bc1ede24820945db63b8b6"
+    }
+  },
+  "water-road-char-dove": {
+    "recipe": "917987d9e1d4898b",
+    "job": "j_41d374381abc",
+    "made": "2026-10-18T03:14:23.870Z",
+    "files": {
+      "story/characters/water-road/dove.png": "0a22c2f1bc5ca3a529366c4d21eb3bed6ad6ac0a69345a717bde20b6de111554"
+    }
+  },
+  "water-road-char-boss": {
+    "recipe": "e294e91cc25ec4eb",
+    "job": "j_db2f966d03b1",
+    "made": "2026-10-18T03:17:47.772Z",
+    "files": {
+      "story/characters/water-road/boss.png": "8b68cbd75d03cb196a1456e98e3b62d9001334f7c48ca0b9ff32f0064cb650e7"
+    }
+  },
+  "water-road-char-family": {
+    "recipe": "ed2d3f6f639a985e",
+    "job": "j_8b643aac2b9f",
+    "made": "2026-10-18T03:18:03.009Z",
+    "files": {
+      "story/characters/water-road/family.png": "7171bf37fccbb19763908dd11fbdd5155b1419d178f573a449473b2e640cc5a6"
+    }
+  },
+  "water-road-char-leader": {
+    "recipe": "a305755023407307",
+    "job": "j_acccd51d5f44",
+    "made": "2026-10-18T03:18:03.186Z",
+    "files": {
+      "story/characters/water-road/leader.png": "f47d43f2fb8dd6bc23c36ebd829a91bfb0705ebffd3819a7b56b6b22cf908232"
+    }
+  },
+  "water-road-music-trail": {
+    "recipe": "f34094e2de4f3a20",
+    "job": "j_3a0471717a53",
+    "made": "2026-10-18T03:20:33.642Z",
+    "files": {
+      "assets/story/water-road/music/trail.mp3": "20ceda089f73d9630faff481bd4b65c963d60a33a125ab9bf94eb817660a8661"
+    }
+  },
+  "water-road-music-heat": {
+    "recipe": "3a1e4c13eab03725",
+    "job": "j_f6e4e2349afd",
+    "made": "2026-10-18T03:22:19.365Z",
+    "files": {
+      "assets/story/water-road/music/heat.mp3": "62612c700429590102fa37e5539320ff35fc25cc7117c1ccb6455084a59a0bb3"
+    }
+  },
+  "water-road-music-death": {
+    "recipe": "399d52f11350dfb4",
+    "job": "j_15548a4caf73",
+    "made": "2026-10-18T03:22:19.429Z",
+    "files": {
+      "assets/story/water-road/music/death.mp3": "778e385eba907f340e60b401ca2c98be92da66f19b098f7c79162b23788fd4bb"
+    }
+  },
+  "water-road-music-danger": {
+    "recipe": "a4b95b2d68236e02",
+    "job": "j_bb4b63e685b6",
+    "made": "2026-10-18T03:22:19.474Z",
+    "files": {
+      "assets/story/water-road/music/danger.mp3": "4690ca11f561bb07d7cffc7e43c1f9466026056feab6e38599102dd627718c51"
+    }
+  },
+  "water-road-music-hope": {
+    "recipe": "dfbba4ff7bb53828",
+    "job": "j_ce99c70b9897",
+    "made": "2026-10-18T03:22:19.547Z",
+    "files": {
+      "assets/story/water-road/music/hope.mp3": "b0ed2529c402a9a1cb87c394711221dfb7ec803f9314ccc5bb06eeb3b39dbfda"
+    }
+  },
+  "water-road-music-end": {
+    "recipe": "9485d768d7e20374",
+    "job": "j_07c787bbb8ac",
+    "made": "2026-10-18T03:22:19.765Z",
+    "files": {
+      "assets/story/water-road/music/end.mp3": "ed7ff316560e6370151b0b6eba46ffdc250992100cd7d436316b10dae06005d0"
+    }
+  },
+  "water-road-start-voice": {
+    "recipe": "7d51668d9aef146d",
+    "job": "j_182832e75bbb",
+    "made": "2026-10-18T03:22:19.853Z",
+    "files": {
+      "water-road/the-water-road/media/narration.mp3": "c4ef6d62114bef82eea6540a46b70a1ecbd14cc7ac99d38fe52698b60ecd1d75"
+    }
+  },
+  "water-road-flats-voice": {
+    "recipe": "3545a26b590a8372",
+    "job": "j_e621371b0e4c",
+    "made": "2026-10-18T03:22:19.929Z",
+    "files": {
+      "water-road/the-salt-flats/media/narration.mp3": "39e51fd4d43b31e25f7fd32c87d3422938879f4269ef8a263a0b9bba7f66f2ba"
+    }
+  },
+  "water-road-sunstroke-voice": {
+    "recipe": "91164479c5dc7cdf",
+    "job": "j_925983700f8d",
+    "made": "2026-10-18T03:22:20.137Z",
+    "files": {
+      "water-road/the-heat/media/narration.mp3": "dc23b0b057e9481ae29849277cee749abe5706a60993e1b031f88fffbf0ae628"
+    }
+  },
+  "water-road-nightCrossing-voice": {
+    "recipe": "f7d6a6c588f51b96",
+    "job": "j_167dd7d85263",
+    "made": "2026-10-18T03:22:20.184Z",
+    "files": {
+      "water-road/under-the-stars/media/narration.mp3": "01a53acbeddf70a8496d837697ab153d53c390914924c47700ade5e7a0c412d8"
+    }
+  },
+  "water-road-mesa-voice": {
+    "recipe": "0434ed1094eae4dd",
+    "job": "j_eaf89539261d",
+    "made": "2026-10-18T03:22:20.275Z",
+    "files": {
+      "water-road/under-the-mesa/media/narration.mp3": "21604a52a70ae8acf143aa3f032571d580a060623223676a2c7f384f230129ce"
+    }
+  },
+  "water-road-rockslide-voice": {
+    "recipe": "8521940729cd4dd6",
+    "job": "j_8458a54e63b0",
+    "made": "2026-10-18T03:22:20.325Z",
+    "files": {
+      "water-road/the-rockslide/media/narration.mp3": "c395868ff4672e4bb89a4f474638b3ed09e13da315b73fba9f1120ad756c3f20"
+    }
+  },
+  "water-road-lookout-voice": {
+    "recipe": "2a4c1cf8a580c934",
+    "job": "j_d3304d0190d6",
+    "made": "2026-10-18T03:22:20.361Z",
+    "files": {
+      "water-road/the-lookout/media/narration.mp3": "55c2ed681e7279a51c396fd8838857fed95577ee68157bfd0a24412be0d13080"
+    }
+  },
+  "water-road-family-voice": {
+    "recipe": "6e296b06e7cab314",
+    "job": "j_5a7c36dafb16",
+    "made": "2026-10-18T03:22:20.387Z",
+    "files": {
+      "water-road/the-broken-wagon/media/narration.mp3": "12b1b936bb46c2e82a398bc2c328a45dd16f5bda3e2bfb269a274ff201d6f825"
+    }
+  },
+  "water-road-giveFlask-voice": {
+    "recipe": "853657323ff290ae",
+    "job": "j_ee79487ae76b",
+    "made": "2026-10-18T03:22:20.430Z",
+    "files": {
+      "water-road/your-flask/media/narration.mp3": "901a9047309368c612fea761332c5b57927d86b8a7f62d565b6eed3f56f03bc0"
+    }
+  },
+  "water-road-passBy-voice": {
+    "recipe": "5962702d0562e353",
+    "job": "j_8c2769da80af",
+    "made": "2026-10-18T03:22:20.472Z",
+    "files": {
+      "water-road/ride-on-by/media/narration.mp3": "a32ba22ec8630bc37bcca15b7f4e16cdb677595773e104475c417c3a496ab00a"
+    }
+  },
+  "water-road-dustStorm-voice": {
+    "recipe": "c25bcb74812c0aa2",
+    "job": "j_5ca0d2e6e0a3",
+    "made": "2026-10-18T03:22:20.506Z",
+    "files": {
+      "water-road/the-dust/media/narration.mp3": "341f44364100f46bbb8113cc3504049a0cdc95efed9a38b6dd11e053b93aece7"
+    }
+  },
+  "water-road-highGround-voice": {
+    "recipe": "a3737274a5f2ea07",
+    "job": "j_1a8db22e7db6",
+    "made": "2026-10-18T03:22:20.555Z",
+    "files": {
+      "water-road/the-high-ground/media/narration.mp3": "26bb703be2495c7779892227e734f9021dd7890c1db6a7ed6f6a9a93078382f1"
+    }
+  },
+  "water-road-wash-voice": {
+    "recipe": "65384f5cd80f0585",
+    "job": "j_affdf1d1e515",
+    "made": "2026-10-18T03:22:20.644Z",
+    "files": {
+      "water-road/the-dry-wash/media/narration.mp3": "1c54716d2be81666503a602ddd517c386510c60f245cb7d66224229b5ef1813c"
+    }
+  },
+  "water-road-gunfight-voice": {
+    "recipe": "923fadd4d06bf771",
+    "job": "j_ea4df2efe8a3",
+    "made": "2026-10-18T03:22:20.702Z",
+    "files": {
+      "water-road/the-gunfight/media/narration.mp3": "2c69ed048f8025fc9cbeabb8bb1b7d2fe0d4cb7799ffa5d691f4d428d458648b"
+    }
+  },
+  "water-road-warningShots-voice": {
+    "recipe": "c48e1184029ec43d",
+    "job": "j_ad9ea24f0e1a",
+    "made": "2026-10-18T03:22:20.755Z",
+    "files": {
+      "water-road/over-their-heads/media/narration.mp3": "97dd6d1dd881177b020ec5c92a14494f3c18fe41af71bb94dabe5a04a2beb049"
+    }
+  },
+  "water-road-nightRaid-voice": {
+    "recipe": "4714d6ede8272a69",
+    "job": "j_ee3d30f94f5a",
+    "made": "2026-10-18T03:22:20.956Z",
+    "files": {
+      "water-road/they-come-back/media/narration.mp3": "803ac4a096ad08ab0d3fac71b51393917514074e589cc77b7d4da2059f078c0d"
+    }
+  },
+  "water-road-shareWater-voice": {
+    "recipe": "0070f047ef8afb9a",
+    "job": "j_e68c078db5ef",
+    "made": "2026-10-18T03:22:21.052Z",
+    "files": {
+      "water-road/a-drink-for-strangers/media/narration.mp3": "8643e6317ebf884eac95644b287514ab02217e5c08da86bfa1fd816ccb886c87"
+    }
+  },
+  "water-road-spring-voice": {
+    "recipe": "a2422a5ab5aca3a2",
+    "job": "j_b72a72add3cd",
+    "made": "2026-10-18T03:22:21.088Z",
+    "files": {
+      "water-road/the-cottonwoods/media/narration.mp3": "9d2c76ebb260bf186a1688294b97c4f10f307927d3c5d2fb4fec927044c81726"
+    }
+  },
+  "water-road-heroEnding-voice": {
+    "recipe": "fb58ef5853d0c8b1",
+    "job": "j_357530c089e3",
+    "made": "2026-10-18T03:22:21.107Z",
+    "files": {
+      "water-road/dry-fork/media/narration.mp3": "c7ae05a6d0fa83129cb3a7cac0e8761d53a681e61b865ce3d9f3598f8d0536bf"
+    }
+  },
+  "water-road-sellWater-voice": {
+    "recipe": "73214538ccb3598f",
+    "job": "j_b768a101a945",
+    "made": "2026-10-18T03:22:21.126Z",
+    "files": {
+      "water-road/the-price-of-water/media/narration.mp3": "95a959697e49a2a2077745c2feb95c54b3b6af5719ecd7ecd824c50e40fc0431"
+    }
+  },
+  "water-road-start-shot": {
+    "recipe": "8cc36e0b9ed869b6",
+    "job": "j_5ef2a5bb321b",
+    "made": "2026-10-18T03:47:33.663Z",
+    "files": {
+      "water-road/the-water-road/media/keyframe.png": "df92ef2c20373b099cc72b55c40d5280b6bb49623ee6245e76f1ce296c8b6c5d",
+      "water-road/the-water-road/media/clip.mp4": "6346eb33191f081c382ad2e64cd75367017401f9f0398d7f034bf425c16d04dc"
+    }
+  },
+  "water-road-flats-shot": {
+    "recipe": "0d4daf8c856ee8a0",
+    "job": "j_e2491890fd02",
+    "made": "2026-10-18T03:47:37.023Z",
+    "files": {
+      "water-road/the-salt-flats/media/keyframe.png": "e0e5e9ba9cf1f766ec2c4cf3f10a110b8ac3ebfd107ff05066ea422339e91aeb",
+      "water-road/the-salt-flats/media/clip.mp4": "d9399071ebcea2268b8a5a0988dad0c1b6515ad6a3fa772b953bc4aabfe3e22c"
+    }
+  },
+  "water-road-mesa-shot": {
+    "recipe": "825e98f0bc1abb75",
+    "job": "j_ee5adc700bf3",
+    "made": "2026-10-18T03:51:04.970Z",
+    "files": {
+      "water-road/under-the-mesa/media/keyframe.png": "dc2dc63945ab353a3929924fd8d13b1601bd010edfd342cd15c81906532f642b",
+      "water-road/under-the-mesa/media/clip.mp4": "f66bb383e5350cd46626cd54ff1cc56f482c3d9637dd59ce7cfd3e068c1b3b62"
+    }
+  },
+  "water-road-nightCrossing-shot": {
+    "recipe": "900241a572a5c420",
+    "job": "j_1831cacba74f",
+    "made": "2026-10-18T03:51:07.667Z",
+    "files": {
+      "water-road/under-the-stars/media/keyframe.png": "a5722e351e3d51d7b52f64fef9a36455a3c3aac92ed4d64c73205e4e026524da",
+      "water-road/under-the-stars/media/clip.mp4": "c39434758a50db2d5f26d77e30de8c0c49a68aa796191e74e05c7a282218a15b"
+    }
+  },
+  "water-road-family-shot": {
+    "recipe": "83264e1c6d7f0cdf",
+    "job": "j_dfc26a3732ff",
+    "made": "2026-10-18T03:54:21.144Z",
+    "files": {
+      "water-road/the-broken-wagon/media/keyframe.png": "3894d790a56487840c155f55b1b1748dc25127522d29b923f89294c2831299ab",
+      "water-road/the-broken-wagon/media/clip.mp4": "75f6652fc74ba57e9ffc5f9e33316d0a34edfce8220c18f8cf4f34bda6284716"
+    }
+  },
+  "water-road-giveFlask-shot": {
+    "recipe": "85e3405470a2eeb1",
+    "job": "j_a9a3071e9be2",
+    "made": "2026-10-18T03:54:23.184Z",
+    "files": {
+      "water-road/your-flask/media/keyframe.png": "afd8a3580fb960845f158e40d0fd9dea22fc8af7f5151996b404c84a789ee7d6",
+      "water-road/your-flask/media/clip.mp4": "a8211992e43522cb6eadb98a63c94d199c3687dd73eee31f94b8f58510abf821"
+    }
+  },
+  "water-road-dustStorm-shot": {
+    "recipe": "0e4451fe25df5a19",
+    "job": "j_b5578d10353c",
+    "made": "2026-10-18T03:57:37.914Z",
+    "files": {
+      "water-road/the-dust/media/keyframe.png": "0a021ec5c351835e465e68f1dae19febdfa22f6b020b057d914095eb9395571d",
+      "water-road/the-dust/media/clip.mp4": "32863b2bb3d31a343708c9063ab820ed34f52d1726782e51d9448d5d87bee06a"
+    }
+  },
+  "water-road-wash-shot": {
+    "recipe": "65f5358654d59939",
+    "job": "j_adb58ab35831",
+    "made": "2026-10-18T03:57:38.596Z",
+    "files": {
+      "water-road/the-dry-wash/media/keyframe.png": "121e3f9c9ab19596a89444bccb3b7df1611979a57f914799cc85be68ff2de5d1",
+      "water-road/the-dry-wash/media/clip.mp4": "ef6ee06bfde30add3b730a6ea7e98cf255626d9d9b79d27704817fae56857e1b"
+    }
+  },
+  "water-road-shareWater-shot": {
+    "recipe": "d0a42077d2d8a0a1",
+    "job": "j_2b02a05d6aa4",
+    "made": "2026-10-18T04:00:53.703Z",
+    "files": {
+      "water-road/a-drink-for-strangers/media/keyframe.png": "dff9a81ec3d870c3c5b4153e5fc02a71bfe70636a348a4c2381314787bb41032",
+      "water-road/a-drink-for-strangers/media/clip.mp4": "f94d9bf7ae5669e94ea8afaef2b6b869bf7e6f416c7d82b79ca8f7a3b4d92148"
+    }
+  },
+  "water-road-spring-shot": {
+    "recipe": "62492fb3d1a1c513",
+    "job": "j_85b2eeef9bb3",
+    "made": "2026-10-18T04:00:54.279Z",
+    "files": {
+      "water-road/the-cottonwoods/media/keyframe.png": "c1de79dc52c7921b1cdd8c854185226b42131b3b63e16e26257d2e800999592d",
+      "water-road/the-cottonwoods/media/clip.mp4": "1b3b916e7a3ed48b7efcb94a75f6b1e7fd882587f8ac61de2a1d884ed1e4edba"
+    }
+  },
+  "water-road-lookout-shot": {
+    "recipe": "8730c23eb9a0cf15",
+    "job": "j_aed44ddccd5e",
+    "made": "2026-10-18T04:03:56.807Z",
+    "files": {
+      "water-road/the-lookout/media/keyframe.png": "a447680816a458513e971193df1c6ccc0089f5e55a43ee7785ddd36029c54f8d",
+      "water-road/the-lookout/media/clip.mp4": "59cac71cc64888beb2c744f3a6fda5807396b04502ff793d325089233d7414fb"
+    }
+  },
+  "water-road-heroEnding-shot": {
+    "recipe": "6ad3e1a4d445ae93",
+    "job": "j_7d4f867b6b99",
+    "made": "2026-10-18T04:04:13.740Z",
+    "files": {
+      "water-road/dry-fork/media/keyframe.png": "5210985b9bbd510dd68d29e0c73e4795c2fb00244ade4f1fdc69715fe5ea4e99",
+      "water-road/dry-fork/media/clip.mp4": "89656029518a492bb76bf4706a0a833b998a980a7e5b1dcf20f9052fcd869684"
+    }
+  },
+  "water-road-passBy-shot": {
+    "recipe": "004edb302cfddebd",
+    "job": "j_28f796613018",
+    "made": "2026-10-18T04:07:18.670Z",
+    "files": {
+      "water-road/ride-on-by/media/keyframe.png": "ffcb0ba8b63db5acb08c6210ffe615f3679a337a77b7c2f4c8b1a4620f3de4f6",
+      "water-road/ride-on-by/media/clip.mp4": "2714d2790afe3f3e18fe76f2f84661177a4d782ae59275993e2a1f9b7ab14efe"
+    }
+  },
+  "water-road-warningShots-shot": {
+    "recipe": "9e451109c8d41dc3",
+    "job": "j_a760cc733941",
+    "made": "2026-10-18T04:07:33.564Z",
+    "files": {
+      "water-road/over-their-heads/media/keyframe.png": "a0e512bde96ad2b699c299eec1715608110d89deeba6ca48ead7b3e33b9fc53e",
+      "water-road/over-their-heads/media/clip.mp4": "6b9400159e858da2e778f626df790f31678833e4d7dbc584877b1503d834dec1"
+    }
+  },
+  "water-road-nightRaid-shot": {
+    "recipe": "d06a3bc89d975fef",
+    "job": "j_a8cbd749bc12",
+    "made": "2026-10-18T04:10:35.939Z",
+    "files": {
+      "water-road/they-come-back/media/keyframe.png": "c70468883f2bc540c60237b71947654a7cd69dbdf65aac9d168d2a8c3174ee50",
+      "water-road/they-come-back/media/clip.mp4": "d1121a0d48e1a6067fd50fa1ca4aaf1c8fe7441c3c11c12cf206c3ef113d07b3"
+    }
+  },
+  "water-road-sellWater-shot": {
+    "recipe": "835590f1b4be7117",
+    "job": "j_3182ab3dc0b5",
+    "made": "2026-10-18T04:10:50.749Z",
+    "files": {
+      "water-road/the-price-of-water/media/keyframe.png": "97b96ee5de41b1b8480f054d179c037752ecf605b00971dfb714b26dde2176bc",
+      "water-road/the-price-of-water/media/clip.mp4": "1c8556e0d49845030ae0c412e9eb31ac76ddceeceea4bf53d595cbf394a07c98"
+    }
   }
 }
