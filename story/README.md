@@ -11,7 +11,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
 | Story | Data | Pages | Doc |
 | --- | --- | --- | --- |
 | **The Final Spark** | `story/final-spark.json` | the site root, as they always were: `/the-sewer/`, `/you-turned-right/`, … | this file, below |
-| **The Water Road** (draft, waiting for J; `"listed": false`, plays at `/?story=water-road`) | `story/water-road.json` | `/water-road/the-water-road/`, … | `story/water-road.md` |
+| **The Water Road** (approved by J 2026-10-18, on the landing page) | `story/water-road.json` | `/water-road/the-water-road/`, … | `story/water-road.md` |
 
 ## Adding a story (a data job, no code)
 
@@ -31,8 +31,8 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
    and `alt` (a 9:16 key image; without one the card shows the first video's opening frame). Leave `pages` out:
    its pages go under `/<id>/<folder>/` (only The Final Spark lives at the site root). Set `"listed": false` while
    it is a draft: it builds and plays at `/?story=<id>` but has no card, and its scenes may have no video yet.
-   When the story is finished (its tree ends and J calls it done), add `"status": "complete"`: its card wears a
-   **Completed** ribbon across the corner. The Final Spark has it (it ends at Destroy the town, THE END).
+   Every card wears the viewer's own **progress badge** across its corner (below, "Progress on the cards"); there
+   is no status to set.
    Optional: `inventory` (the story's own inventory, below), `unspoken` (words no page may say: the build fails
    if a scene's text has one), `camera` (how the camera moves in its clips; default "Slow, tense handheld camera")
    and `avoid` (a line added to every `image.generate` prompt: that tool has no negative prompt, so what matters of
@@ -43,6 +43,22 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
    `<id>/<folder>/media/` and `assets/story/<id>/music/`).
 5. Media through Studio (GPU: J's OK first), then `listed` comes out of the entry once every scene has a video,
    and the `stories`, `branches` and `pages` playtests cover it.
+
+## Progress on the cards
+
+Every story card on the landing page wears a ribbon across its top right corner with the viewer's own progress in
+that story (J, 2026-10-18):
+
+- **Not started**: no saved place for it in this browser.
+- **Started**: they have opened it (its first page saves a place).
+- **Completed**: they have reached one of its **endings** once. An ending is a scene with an `ending` line in
+  `story/<id>.json` (no choices, not a death): The Final Spark's is Destroy the town; The Water Road's are Dry Fork
+  and The price of water. Deaths are not endings.
+
+It is kept with the story's saved place, in its own cookie (`cookie` in its data: `{ scene, history, completed }`),
+so it survives a reload; once Completed it stays Completed through Back, a death and Try again (only an ending sets
+it, nothing clears it). `js/game.js` draws it whenever the landing page shows. A story with no ending yet builds
+with a warning: its badge can't say Completed. The `stories` playtest checks all three states.
 
 ## A story's inventory
 

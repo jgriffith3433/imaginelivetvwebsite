@@ -19,7 +19,7 @@ const storyOf = (id) => allStories().find((s) => s.id === id);
 const story = (id = FIRST) => storyOf(id) || { id, start: "start", scenes: {} };
 const folderOf = (id, st = story()) => `/${st.scenes[id].folder}/`;
 const branchFolders = (st) => Object.keys(st.scenes).map((id) => folderOf(id, st));
-// Drafts whose media is made (story/water-road.md): like a listed story, every scene must play its own generated cut.
+// Stories made on generated media (The Water Road, story/water-road.md): every scene must play its own generated cut.
 const MADE = ["water-road"];
 const mustPlay = (st) => st.listed || MADE.includes(st.id);
 // What Decision tree.txt promises for The Final Spark's opening scenes (checked by hand, not from the data).
@@ -352,6 +352,79 @@ function restoreProgress() {
 
 /* ---------------- the landing page ---------------- */
 
+// Every card wears the viewer's own progress in its story (js/game.js, from the story's saved place): Not started
+// (no saved place), Started (opened), Completed (an ending reached once: a scene with an "ending"; deaths aren't).
+const BADGE = { new: "Not started", started: "Started", completed: "Completed" };
+function clearProgress() {
+  for (const st of allStories()) document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
+}
+
+/** A card's badge says `want` (new, started, completed), visible across the card's top right corner. */
+function checkBadge(t, card, st, want, where) {
+  const ribbon = card && card.querySelector(".story-card-ribbon");
+  const win = ribbon && ribbon.ownerDocument.defaultView;
+  if (!ribbon || !ribbon.getClientRects().length || win.getComputedStyle(ribbon).visibility === "hidden") {
+    t.problem("bug", `${where}: ${st.title}'s card has no progress badge (it should say ${BADGE[want]})`);
+    return false;
+  }
+  const says = ribbon.textContent.trim();
+  if (says !== BADGE[want] || card.dataset.progress !== want) {
+    t.problem("bug", `${where}: ${st.title}'s card says "${says}" (${card.dataset.progress}), not "${BADGE[want]}"`);
+    return false;
+  }
+  const r = ribbon.getBoundingClientRect();
+  const c = card.getBoundingClientRect();
+  if (r.right < c.right - 1 && r.top > c.top + 1) t.problem("bug", `${where}: ${st.title}'s badge isn't across the card's corner`);
+  if (card.ownerDocument === document && stories().progress && stories().progress(st.id) !== want) t.problem("bug", `${where}: iltvStories.progress("${st.id}") says ${stories().progress(st.id)}, the card ${want}`);
+  t.event("badge", `${where}: ${st.id} ${says}`);
+  return true;
+}
+
+/** The home page loaded fresh in the frame (a reload): every listed story's card says `want(st)`. */
+async function badgesAfterLoad(t, want, where) {
+  const doc = await frameLoad(t, (f) => (f.src = "/"));
+  const win = frame && frame.contentWindow;
+  if (!doc || !(await waitFor(() => win.iltvStories && doc.querySelector("#story-list a.story-card[data-progress]"), 10000))) {
+    t.problem("bug", `${where}: the home page didn't load in the frame`);
+    closeFrame();
+    return;
+  }
+  await sleep(300);
+  for (const st of listedStories()) checkBadge(t, doc.querySelector(`#story-list a.story-card[data-story="${st.id}"]`), st, want(st), where);
+  await sleep(600); // on screen for the footage
+  closeFrame();
+}
+
+/** The shortest way from the start (not through a death) to a scene that passes `test`: the scene ids after the start. */
+function wayTo(st, test) {
+  const from = { [st.start]: null };
+  const queue = [st.start];
+  while (queue.length) {
+    const id = queue.shift();
+    if (id !== st.start && test(st.scenes[id])) {
+      const way = [];
+      for (let at = id; at !== st.start; at = from[at]) way.unshift(at);
+      return way;
+    }
+    if (st.scenes[id].dead) continue;
+    for (const c of st.scenes[id].choices) if (!(c[2] in from) && st.scenes[c[2]]) (from[c[2]] = id), queue.push(c[2]);
+  }
+  return null;
+}
+
+/** Plays a way through the open story from where it is, clicking the choice that leads to each next scene. */
+async function playWay(t, st, way) {
+  for (const next of way) {
+    const at = st.scenes[sceneId()];
+    const i = at.choices.findIndex((c) => c[2] === next);
+    const button = choiceButtons()[i];
+    if (i < 0 || !button) throw new Error(`${st.id}: no choice from ${sceneId()} to ${next}`);
+    button.click();
+    await sleep(150);
+    if (sceneId() !== next) throw new Error(`${st.id}: the choice "${enText(button)}" didn't open ${next} (on ${sceneId()})`);
+  }
+}
+
 const landingShown = () => !$("stories").hidden && $("spark").hidden;
 const cardOf = (id) => document.querySelector(`#story-list a.story-card[data-story="${id}"]`);
 
@@ -574,6 +647,11 @@ async function storiesRun(options, t) {
   checkInventory(t, "landing page");
   await sleep(1000); // the landing page stays on screen for the footage
 
+  // A fresh browser (no saved places): every card says Not started.
+  t.scene("Progress: a fresh browser");
+  clearProgress();
+  await badgesAfterLoad(t, () => "new", "fresh browser");
+
   for (let i = 0; i < list.length; i++) {
     const st = list[i];
     const card = cardOf(st.id);
@@ -591,17 +669,9 @@ async function storiesRun(options, t) {
     } else if (poster) {
       if (!(await waitFor(() => poster.readyState >= 2 || poster.error, 15000)) || poster.error) t.problem("bug", `${st.id}: the card's video frame didn't load`);
     } else t.problem("warning", `${st.id}: the card has no picture`);
-    // A finished story (status "complete" in story/stories.json) wears the Completed ribbon; the others don't.
-    const ribbon = card.querySelector(".story-card-ribbon");
-    if (st.status === "complete") {
-      if (!ribbon || ribbon.offsetParent === null || ribbon.textContent.trim() !== "Completed") t.problem("bug", `${st.id}: the story is complete but its card shows no Completed ribbon`);
-      else {
-        const r = ribbon.getBoundingClientRect();
-        const c = card.getBoundingClientRect();
-        if (r.right < c.right - 1 && r.top > c.top + 1) t.problem("bug", `${st.id}: the Completed ribbon isn't across the card's corner`);
-        t.event("completed", st.id);
-      }
-    } else if (ribbon) t.problem("bug", `${st.id}: the card shows a Completed ribbon, but the story isn't complete`);
+    // Its progress badge (the landing page was drawn before the run cleared the saved places: the first card's is
+    // checked after All stories).
+    if (i > 0) checkBadge(t, card, st, "new", "before opening it");
 
     // A tap on it opens that story's player, with its title, its first page's text, video and choices.
     await openStory(t, st.id);
@@ -625,8 +695,59 @@ async function storiesRun(options, t) {
     if ($("title-splash")) t.problem("bug", "All stories shows the title splash again (it's for the first visit)");
     await sleep(100);
     checkInventory(t, "landing page, after All stories");
-    t.progress((i + 1) / (list.length + 1));
+    // Opening it started it; the stories not opened yet are still Not started.
+    list.forEach((other, j) => checkBadge(t, cardOf(other.id), other, j <= i ? "started" : "new", `after opening ${st.title}`));
+    t.progress((i + 1) / (list.length + 2));
   }
+
+  // Reaching an ending completes a story; Back, a death and Try again don't undo it; a reload keeps it.
+  for (const st of list) {
+    const ending = wayTo(st, (s) => !!s.ending);
+    if (!ending) {
+      t.problem("warning", `${st.id}: no ending to reach (no scene with an "ending")`);
+      continue;
+    }
+    t.scene(`${st.title}: to an ending`);
+    await openStory(t, st.id);
+    await toStart(t);
+    await playWay(t, st, ending);
+    const end = sceneId();
+    if ($("spark").dataset.state !== "soon" || $("spark-ending").hidden) t.problem("bug", `${st.id}: ${end} is an ending but the player doesn't show it as one`);
+    const chain = spark().path();
+    t.event("ending", `${st.id}: ${chain.join(" > ")}`);
+    await sleep(800);
+    await toLanding(t);
+    checkBadge(t, cardOf(st.id), st, "completed", `after ${st.title}'s ending`);
+    // The saved place is the ending (with the counts of the way there), and Back from it keeps Completed.
+    await openStory(t, st.id);
+    if (sceneId() !== end) t.problem("bug", `${st.id}: the saved place was ${end}, it opened at ${sceneId()}`);
+    else if (st.inventory) checkKit(t, st, chain, `${st.id}: ${end} (saved place)`);
+    $("spark-back").click();
+    await sleep(200);
+    await toLanding(t);
+    checkBadge(t, cardOf(st.id), st, "completed", `after Back from ${st.title}'s ending`);
+    // A death, then Try again: back at the start, still Completed.
+    const death = wayTo(st, (s) => !!s.dead);
+    if (death) {
+      await openStory(t, st.id);
+      await toStart(t);
+      await playWay(t, st, death);
+      t.event("death", `${st.id}: ${sceneId()}`);
+      const again = choiceButtons()[st.scenes[sceneId()].choices.findIndex((c) => c[2] === st.start)];
+      if (!again) t.problem("bug", `${st.id}: the death ${sceneId()} has no Try again back to the start`);
+      else {
+        again.click();
+        await sleep(200);
+        if (sceneId() !== st.start) t.problem("bug", `${st.id}: Try again didn't go back to the start`);
+      }
+      await toLanding(t);
+      checkBadge(t, cardOf(st.id), st, "completed", `after a death and Try again in ${st.title}`);
+    }
+  }
+  // A reload keeps every badge.
+  t.scene("Progress: after a reload");
+  await badgesAfterLoad(t, () => "completed", "after a reload");
+  t.progress((list.length + 1) / (list.length + 2));
 
   // A draft (listed: false) has no card, but plays at /?story=<id>: its title, first page, choices, inventory; and its
   // saved place (a few choices in, then All stories and back) comes back with the same scene and counts.
@@ -1161,9 +1282,9 @@ installPlaytest({
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
-      seconds: 40,
+      seconds: 75,
       tags: ["full"],
-      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made, The Water Road, plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress badges: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started; opening a story makes its card say Started; reaching one of its endings (the shortest way) makes it Completed, the story reopens at that ending (with the inventory's counts of the way there), and Back from the ending, a death and Try again keep it Completed; the home page loaded again shows every card Completed. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
     },
     { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts", seconds: 240, tags: ["full"] },
     { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts", seconds: 90, tags: ["full"] },

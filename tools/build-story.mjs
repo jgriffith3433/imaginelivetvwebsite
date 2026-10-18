@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Builds every choose-your-path story on the site from its data (story doc: story/README.md):
 //
-//   story/stories.json    the listing: which stories, in what order, each one's card (logline, key image, Completed)
+//   story/stories.json    the listing: which stories, in what order, each one's card (logline, key image)
 //   story/<id>.json       a story's scenes, cast, music and labels (The Final Spark is story/final-spark.json)
 //
 // into
@@ -34,8 +34,6 @@ const CHECK = process.argv.includes('--check');
 // Top-level folders that aren't story pages.
 const RESERVED = new Set(['assets', 'css', 'js', 'f', 'story', 'tools', 'node_modules', 'hawkesgen', 'media']);
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-// A listing entry's status: "complete" when the story has its ending (its card wears a Completed ribbon).
-const STATUSES = ['complete'];
 
 const problems = [];
 const warnings = [];
@@ -81,7 +79,7 @@ function validate(st) {
   const at = (s) => `${id}/${s.id}`;
   if (!Array.isArray(data.title) && typeof data.title !== 'string') problems.push(`${id}: no title`);
   if (!st.entry.logline) problems.push(`${id}: no logline in ${LISTING} (its card's one line)`);
-  if (st.entry.status != null && !STATUSES.includes(st.entry.status)) problems.push(`${id}: status must be ${STATUSES.map((v) => `"${v}"`).join(' or ')}, or left out while the story is still growing`);
+  if (st.entry.status != null) problems.push(`${id}: status is gone from ${LISTING}: every card wears the player's own progress badge (Not started, Started, Completed), and a story is completed at a scene with an "ending"`);
   if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) problems.push(`${id}: card image ${st.entry.image} doesn't exist`);
   if (!data.cookie || !/^[A-Za-z0-9_-]+$/.test(data.cookie)) problems.push(`${id}: cookie (the name its progress is saved under) must be letters, digits, - or _`);
   if (!data.ui || !data.ui.en) problems.push(`${id}: ui.en (the English under the player's labels) is missing`);
@@ -97,6 +95,8 @@ function validate(st) {
     folders.add(s.folder);
     for (const k of ['title', 'story', 'question']) if (!Array.isArray(s[k]) || s[k].length !== 2) problems.push(`${at(s)}: ${k} must be [in ${s.lang}, in English]`);
     if (!s.choices.length && !s.ending) problems.push(`${at(s)}: no choices and no ending (a dead end)`);
+    // An ending (its "ending" line) is where the story is completed (the card's badge says Completed); a death isn't one.
+    if (s.ending && (s.dead || s.choices.length)) problems.push(`${at(s)}: an ending has no choices and isn't a death`);
     for (const c of s.choices) if (!byId.has(c.next)) problems.push(`${at(s)}: choice "${c.en}" goes to ${c.next}, which doesn't exist`);
     for (const who of s.shot?.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
     for (const l of s.lines ?? []) {
@@ -111,6 +111,7 @@ function validate(st) {
     const said = [s.title, s.story, s.question, s.ending ?? [], ...s.choices.map((c) => [c.say, c.en])].flat().join(' ').toLowerCase();
     for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) problems.push(`${at(s)}: its words say "${w}", which this story never says (unspoken)`);
   }
+  if (!scenes.some((s) => s.ending)) warnings.push(`${id}: no ending yet (a scene with an "ending"): its card's badge can't say Completed until it has one`);
   validateInventory(st);
   // Every scene can be reached from the start.
   const seen = new Set([data.start]);
@@ -266,7 +267,6 @@ function storyData() {
       logline: st.entry.logline,
       image: st.entry.image ?? null,
       listed: st.listed,
-      status: st.entry.status ?? null,
       cookie: st.data.cookie,
       tap: st.data.tap ?? { title: titleOf(st).toUpperCase(), line: '' },
       start: st.data.start,
@@ -293,9 +293,10 @@ function card(st) {
     : first
       ? `<video src="${esc(first)}#t=0.5" muted playsinline preload="metadata" aria-hidden="true"></video>`
       : `<span class="story-card-blank" aria-hidden="true"></span>`;
-  const done = st.entry.status === 'complete';
-  return `      <a class="story-card${done ? ' is-complete' : ''}" href="/?story=${st.id}" data-story="${st.id}"${done ? ' data-status="complete"' : ''}>
-        ${picture}${done ? '\n        <span class="story-card-ribbon">Completed</span>' : ''}
+  // The badge is the player's own progress: js/game.js sets it from the story's saved place (Started, Completed).
+  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}" data-progress="new">
+        ${picture}
+        <span class="story-card-ribbon">Not started</span>
         <div class="story-card-text">
           <h2>${esc(titleOf(st))}</h2>
           <p>${esc(st.entry.logline)}</p>

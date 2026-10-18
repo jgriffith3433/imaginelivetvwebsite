@@ -794,7 +794,8 @@ a { color: var(--green); }
 
 .story-card:hover .story-card-go { color: #fff; border-color: #8d9096; }
 
-/* A finished story's card (status "complete" in story/stories.json): a ribbon across its top right corner. */
+/* Every card's progress badge, a ribbon across its top right corner: the viewer's own progress in that story
+   (js/game.js sets data-progress from its saved place). Completed is the bright one. */
 .story-card-ribbon {
   position: absolute;
   top: 1.45rem;
@@ -815,6 +816,18 @@ a { color: var(--green); }
   text-transform: uppercase;
   transform: rotate(45deg);
   pointer-events: none;
+}
+
+.story-card[data-progress="new"] .story-card-ribbon {
+  color: var(--muted);
+  background: #1c1e22;
+  border-color: #4a4d53;
+}
+
+.story-card[data-progress="started"] .story-card-ribbon {
+  color: #121417;
+  background: #8d9096;
+  border-color: #a9acb1;
 }
 
 #spark-tree {

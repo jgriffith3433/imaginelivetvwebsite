@@ -22,8 +22,9 @@ Follow "Adding a story" in `story/README.md`:
   inventory"; The Water Road is the example), `unspoken` words and `camera`.
 - A listing entry in `story/stories.json`: `id`, `logline` (one line), `image` + `alt` (9:16, optional), and
   `"listed": false` until J approves it and every scene has a video. Its pages go under `/<id>/<folder>/` and its
-  asset ids start with `<id>-`; only The Final Spark lives at the site root. `"status": "complete"` once the story
-  has its ending and J calls it finished: its landing card wears a Completed ribbon.
+  asset ids start with `<id>-`; only The Final Spark lives at the site root. Mark its endings (scenes with
+  an `ending` line; deaths aren't endings): every card wears the viewer's progress badge (Not started, Started,
+  Completed once an ending is reached; story doc "Progress on the cards"). There is no `status` to set.
 - Then steps 1 to 3 below for its scenes. A new story is a proposal until J approves it.
 
 ## 1. Story (no GPU)
