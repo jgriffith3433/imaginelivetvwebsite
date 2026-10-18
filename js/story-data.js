@@ -608,13 +608,13 @@ window.FINAL_SPARK = {
     "You decided to destroy the whole town."
    ],
    "question": [
-    "ਅੱਗੇ ਕੀ ਹੁੰਦਾ ਹੈ?",
-    "What happens next?"
+    "",
+    ""
    ],
    "video": "/assets/video/destroy-town.mp4",
    "ending": [
-    "ਹੋਰ ਕਹਾਣੀ ਜਲਦੀ ਆ ਰਹੀ ਹੈ...",
-    "MORE OF THE STORY COMING SOON..."
+    "ਅੰਤ",
+    "THE END"
    ],
    "choices": []
   }

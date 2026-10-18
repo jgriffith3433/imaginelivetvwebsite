@@ -1713,7 +1713,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ। ਅੱਗੇ ਕੀ ਹੁੰਦਾ ਹੈ?",
+            "text": "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ। ",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },

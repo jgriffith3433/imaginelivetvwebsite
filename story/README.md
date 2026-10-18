@@ -17,7 +17,7 @@ lit by a match, and the matches run out (the title is the last one).
    an old man answers and sends you away.
 5. **The truck.** A white van stands open in the street. Get in or walk away; either way you meet the shadow.
 6. **The shadow.** You dance with it and it wakes something in you: two powers, Consume Light and Shadow Stitch.
-   Either one ends with you destroying the town. *More of the story coming soon.*
+   Either one ends with you destroying the town. That is the end of the story.
 
 Deaths send you back to the sewer ("try again in another life").
 

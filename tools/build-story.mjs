@@ -149,7 +149,7 @@ function page(s) {
     ${spot(s, s.title, 'h1')}
     <video src="${esc(videoOf(s))}" controls playsinline preload="auto" data-sound-start></video>
     ${spot(s, s.story, 'p', 'passage-note')}
-    ${spot(s, s.question, 'p', 'passage-prompt')}
+    ${s.question[1] ? spot(s, s.question, 'p', 'passage-prompt') : ''}
     ${choices ? `<div class="spark-choices">${choices}</div>` : ''}${s.ending ? `\n    ${spot(s, s.ending, 'p', 'passage-prompt')}` : ''}
   </main>
 
