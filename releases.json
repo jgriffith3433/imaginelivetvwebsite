@@ -1,8 +1,21 @@
 {
   "product": "imaginelivetv",
   "name": "Imagine Live TV",
-  "current": "1.0.0",
+  "current": "1.1.0",
   "releases": [
+    {
+      "version": "1.1.0",
+      "date": "2026-10-18",
+      "build": "2376961",
+      "title": "New in this update",
+      "notes": [
+        "J (q_e4bf2de725d8): \"Add it to the landing page and put a badge on it \"Not started\" instead of completed. Make it so if",
+        "Generate The Water Road's media and wire it into the story",
+        "New story for Imagine Live TV, J's direction (2026-10-18, on a call). Use the multi-story structure now on beta (story/s",
+        "Two changes to the Imagine Live TV landing page (the new \"Choose your story\" home page). J's words: \"The inventory part",
+        "\"let's also put a completed banner on The Final Spark on the landing page.\" After the multi-story landing page (c_519"
+      ]
+    },
     {
       "version": "1.0.0",
       "date": "2026-10-16",
