@@ -354,6 +354,7 @@ function storyLink(st) {
   <footer class="site-footer">
     <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>
     <p class="powered">Powered by <a class="powered-mark" href="https://hawkesgen.com">HAWKES GEN</a></p>
+    <p class="stats-note">Anonymous viewing statistics (no cookies, no personal data, no IP stored) help us improve the stories. <a href="/privacy.html">Privacy</a></p>
   </footer>
 </body>
 </html>
@@ -397,7 +398,7 @@ function page(st, s, counts) {
     <a href="/">Imagine Live TV</a>
   </header>
 
-  <main class="passage"${s.dead ? ' data-state="dead"' : s.ending ? ' data-state="soon"' : ''}>
+  <main class="passage" data-story="${st.id}" data-node="${s.folder}"${s.dead ? ' data-state="dead"' : s.ending ? ' data-state="soon"' : ''}>
     ${spot(s, s.title, 'h1')}
     ${video ? `<video src="${esc(video)}" controls playsinline preload="auto" data-sound-start></video>` : `<div class="passage-blank" aria-hidden="true"><span>${esc(s.title[1])}</span></div>`}
     ${spot(s, s.story, 'p', 'passage-note')}
@@ -408,9 +409,13 @@ function page(st, s, counts) {
   <footer class="site-footer">
     <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>
     <p class="powered">Powered by <a class="powered-mark" href="https://hawkesgen.com">HAWKES GEN</a></p>
+    <p class="stats-note">Anonymous viewing statistics (no cookies, no personal data, no IP stored) help us improve the stories. <a href="/privacy.html">Privacy</a></p>
   </footer>
 ${inv ? `  <div class="inventory kit" data-kit="${esc(JSON.stringify({ inventory: inv, counts }))}"></div>
-` : ''}  <script src="/js/hawkes-sound.js"></script>
+` : ''}  <script src="/js/hawkes-build.js"></script>
+  <script src="/js/hawkes-analytics.js" data-product="imaginelivetv"></script>
+  <script src="/js/analytics.js"></script>
+  <script src="/js/hawkes-sound.js"></script>
   <script src="/js/${inv ? 'kit' : 'spot'}.js"></script>
 </body>
 </html>

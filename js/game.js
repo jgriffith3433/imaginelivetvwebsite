@@ -68,6 +68,16 @@
   let history = [];
   let fromPlayer = false;
 
+  /** Tells js/analytics.js (Hawkes Analytics) what just happened: "iltv:<what>" on the document. The player never
+      waits for it or depends on anyone listening. */
+  function tell(what, detail) {
+    try {
+      document.dispatchEvent(new CustomEvent("iltv:" + what, { detail: detail }));
+    } catch (error) {
+      // Nothing listening, or an old browser: the story plays on.
+    }
+  }
+
   /** One of a story's cookies, parsed (JSON), or null. */
   function readCookie(name) {
     try {
@@ -263,9 +273,10 @@
 
     videoBox.replaceChildren();
     const videoSrc = scene.video || null;
+    let video = null;
 
     if (videoSrc) {
-      const video = document.createElement("video");
+      video = document.createElement("video");
       video.src = videoSrc;
       // With the sound prompt, playClip starts it (autoplay would start it behind the prompt).
       video.autoplay = !window.hawkesSound;
@@ -295,6 +306,7 @@
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
       button.addEventListener("click", function () {
         if (!SCENES[choice.next]) return;
+        tell("choice", { story: STORY.id, from: currentScene, to: choice.next, option: choiceLabel(choice.en) });
         history.push(currentScene);
         fromPlayer = true;
         show(choice.next);
@@ -319,6 +331,7 @@
     }
 
     markTreeCurrent();
+    tell("scene", { story: STORY.id, scene: sceneId, path: history.concat(sceneId), video: video, explored: exploredOf(STORY, unlocked) });
   }
 
   /** The open story's own inventory (js/kit.js), counted along the way you came: the start, then every scene
@@ -714,10 +727,12 @@
     history = saved ? saved.history : [];
     unlocked = unlocks.seen;
     completed = unlocks.completed;
+    tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
     show(saved ? saved.scene : story.start);
   }
 
   function showLanding(push) {
+    tell("landing", { story: STORY ? STORY.id : null, scene: currentScene });
     if (push) window.history.pushState({}, "", urlFor(null));
     else if (new URL(location.href).searchParams.has("story")) window.history.replaceState({}, "", urlFor(null));
     stopVideo();
@@ -750,7 +765,11 @@
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
       event.preventDefault();
       // At an ending the card says Start Over: the run goes (its unlocks stay), and it opens at the start.
-      if (card.dataset.run === "end") clearProgress(STORIES[card.dataset.story]);
+      if (card.dataset.run === "end") {
+        clearProgress(STORIES[card.dataset.story]);
+        tell("restart", { story: card.dataset.story, via: "start_over" });
+      }
+      tell("card", { story: card.dataset.story, go: card.dataset.run, progress: card.dataset.progress });
       openStory(card.dataset.story, true);
     });
   }

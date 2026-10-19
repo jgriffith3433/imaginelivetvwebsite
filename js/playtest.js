@@ -1440,6 +1440,196 @@ async function sound(options, t) {
   }
 }
 
+/* ---------------- analytics: the events going out on a way through The Final Spark, and the two questions ---------------- */
+
+// js/hawkes-build.js turns on the SDK's debug mode in a bot's tab, so hawkesAnalytics.debugLog holds every event
+// and marks each one `sent` when its batch goes out. The scenario puts them on the timeline as they go.
+const ANALYTICS_SHOWN = ["story_open", "screen", "video", "choice", "death", "run_start", "run_end", "feature", "feedback_prompt", "feedback", "game_ready"];
+const ASK_KEYS = { session: ["hawkes.asked", "iltv.backs"], local: ["hawkes.askSnoozed"] };
+
+function describeEvent(e) {
+  const p = e.props || {};
+  const c = e.ctx || {};
+  const bits = {
+    screen: () => p.name,
+    video: () => `${p.action} ${p.id} at ${p.at ?? 0} s${p.watched != null ? `, watched ${p.watched} s` : ""}`,
+    choice: () => `${p.node}: "${p.option}" -> ${p.to}`,
+    death: () => `${p.cause} (at ${p.where})`,
+    run_start: () => `${p.run} (${p.mode})`,
+    run_end: () => `${p.run}: ${p.result}${p.ending ? `, ending ${p.ending}` : ""}${p.cause ? `, ${p.cause}` : ""}, depth ${p.depth}`,
+    feature: () => `${p.name}${p.via ? ` via ${p.via}` : ""}${p.from ? ` from ${p.from}` : ""}`,
+    feedback_prompt: () => `${p.action} ${p.id}`,
+    feedback: () => `${p.rating}${p.context ? ` (${p.context})` : ""}`,
+    story_open: () => `${p.story} via ${p.via}`,
+    game_ready: () => `${p.view}, ${p.ms} ms`,
+  }[e.name];
+  const where = c.node ? ` · ${c.story}/${c.node}, depth ${c.depth}` : "";
+  return `${e.name} ${bits ? bits() : ""}${where}`;
+}
+
+/** The feedback card the SDK draws (a shadow root on [data-hawkes-ask]), waited for. */
+async function waitForAsk(t, id, ms) {
+  const sel = `[data-hawkes-ask="${id}"]`;
+  if (!(await waitFor(() => document.querySelector(sel)?.shadowRoot?.querySelector(".ha-r button"), ms))) return null;
+  return document.querySelector(sel);
+}
+
+/** Answers the card the way a viewer would: the rating's button, then Skip on the optional comment. */
+async function answerAsk(t, host, which, label) {
+  const root = host.shadowRoot;
+  const buttons = [...root.querySelectorAll(".ha-r button")];
+  const button = which === "up" ? buttons[0] : buttons[which - 1];
+  button.click();
+  t.log(`tap ${label}`);
+  await sleep(400);
+  const skip = [...root.querySelectorAll(".ha-s button")].find((b) => b.textContent.trim() === "Skip");
+  if (skip) skip.click();
+  if (!(await waitFor(() => !host.isConnected, 4000))) t.problem("bug", `${label}: the feedback card didn't close after answering`);
+}
+
+async function analyticsRun(options, t) {
+  const A = window.hawkesAnalytics;
+  if (!A || !A.config) {
+    t.problem("bug", "Hawkes Analytics didn't load on the home page (js/hawkes-analytics.js)");
+    return;
+  }
+  const fromLoad = A.config().debug; // the bot's tab has it from the URL (js/hawkes-build.js)
+  if (!fromLoad) {
+    t.problem("warning", "The SDK's debug mode wasn't on from the page load (?hawkes-analytics-debug=1): the events before this run can't be shown");
+    A.init({ debug: true });
+  }
+  const c = A.config();
+  t.log(`analytics product ${c.product}, env ${c.env}, build ${JSON.stringify(c.build)}, session ${c.session}`);
+  t.event("analytics-config", `${c.product} · env ${c.env} · build ${c.build && c.build.version}${c.build && c.build.commit ? " @" + c.build.commit : ""}${c.build && c.build.date ? " (" + c.build.date + ")" : ""}`);
+  t.metric("analyticsEnv", c.env);
+  t.metric("analyticsBuild", (c.build && c.build.version) || "none");
+  if (c.product !== "imaginelivetv") t.problem("bug", `Analytics product is "${c.product}", not imaginelivetv`);
+  if (!c.build || !c.build.version || !c.build.commit) t.problem("bug", `Analytics has no build with a commit (HAWKES_BUILD is ${JSON.stringify(c.build)}): run npm run stamp (js/hawkes-build.js)`);
+  if (/\.hawkesgen\.com$/.test(location.hostname) && c.env !== "beta" && c.env !== "preview") t.problem("bug", `On ${location.hostname} the analytics env is ${c.env}, not beta`);
+
+  // Every sent event goes on the timeline as it goes out.
+  const shownSeqs = new Set();
+  const pump = () => {
+    for (const e of A.debugLog || []) {
+      if (!e.sent || shownSeqs.has(e.seq) || !ANALYTICS_SHOWN.includes(e.name)) continue;
+      shownSeqs.add(e.seq);
+      t.event("analytics", describeEvent(e));
+    }
+  };
+  const timer = setInterval(() => {
+    try {
+      pump();
+    } catch {}
+  }, 500);
+
+  // The questions show once a session and not for 7 days after a close: start this run as a new viewer would.
+  const saved = { session: {}, local: {} };
+  for (const k of ASK_KEYS.session) (saved.session[k] = sessionStorage.getItem(k)), sessionStorage.removeItem(k);
+  for (const k of ASK_KEYS.local) (saved.local[k] = localStorage.getItem(k)), localStorage.removeItem(k);
+  rememberProgress();
+  clearProgress();
+  const st = story(FIRST);
+  const tapChoice = async (to) => {
+    const i = st.scenes[sceneId()].choices.findIndex((ch) => ch[2] === to);
+    const button = choiceButtons()[i];
+    if (i < 0 || !button) throw new Error(`no choice from ${sceneId()} to ${to}`);
+    button.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, button, `"${enText(button)}"`);
+    await sleep(200);
+    if (sceneId() !== to) throw new Error(`"${enText(button)}" didn't open ${to} (on ${sceneId()})`);
+    t.scene(`${FIRST}/${st.scenes[to].folder}`);
+    // A moment on each page, so its video plays (and is skipped by the next choice).
+    await waitFor(() => !document.querySelector("#spark-video video")?.paused, 4000);
+    await sleep(900);
+  };
+
+  try {
+    t.scene("Home");
+    await passPrompt(t);
+    await openStory(t, FIRST);
+    await toStart(t);
+    t.scene(`${FIRST}/${st.scenes[st.start].folder}`);
+    await sleep(1200);
+    t.progress(0.1);
+
+    // Back up the tree twice: the dead end's "go back" (to a page nearer the tunnel), then a death and Try again.
+    await tapChoice("deadEnd");
+    await tapChoice("direction");
+    await tapChoice("deadEnd");
+    await tapChoice("sludge");
+    await tapChoice(st.start);
+    t.progress(0.3);
+    const thumbs = await waitForAsk(t, "back-twice", 8000);
+    if (!thumbs) t.problem("bug", "Going back up the tree twice (a back choice, then Try again) didn't show the thumbs question");
+    else {
+      const q = thumbs.shadowRoot.querySelector(".ha-q").textContent.trim();
+      const n = thumbs.shadowRoot.querySelectorAll(".ha-r button").length;
+      t.event("feedback-prompt", `after going back twice: "${q}" (${n === 2 ? "thumbs" : n + " buttons"})`);
+      if (n !== 2) t.problem("bug", `The going-back question should be thumbs, it has ${n} buttons`);
+      await sleep(1500);
+      await answerAsk(t, thumbs, "up", "thumbs up");
+    }
+
+    // The shortest way to an ending, a choice at a time.
+    const way = wayTo(st, (s) => !!s.ending);
+    if (!way) throw new Error("The Final Spark has no ending to reach");
+    for (let i = 0; i < way.length; i++) {
+      await tapChoice(way[i]);
+      t.progress(0.3 + (0.5 * (i + 1)) / way.length);
+    }
+    const end = st.scenes[sceneId()];
+    t.event("ending", `${end.folder}: ${enText($("spark-ending"))}`);
+    const stars = await waitForAsk(t, `ending-${FIRST}-${end.folder}`, 10000);
+    if (!stars) t.problem("bug", `Reaching the ending (${end.folder}) didn't show the "How was this ending?" question`);
+    else {
+      const q = stars.shadowRoot.querySelector(".ha-q").textContent.trim();
+      const n = stars.shadowRoot.querySelectorAll(".ha-r button").length;
+      t.event("feedback-prompt", `at the ending: "${q}" (${n} stars)`);
+      if (q !== "How was this ending?") t.problem("bug", `The ending's question says "${q}"`);
+      if (n !== 5) t.problem("bug", `The ending's question should be 1-5 stars, it has ${n} buttons`);
+      // It sits above the inventory bar, never on it.
+      const card = stars.shadowRoot.querySelector(".ha-c").getBoundingClientRect();
+      const bar = document.querySelector(".inventory")?.getBoundingClientRect();
+      if (bar && bar.height && card.bottom > bar.top + 1) t.problem("bug", `The feedback card covers the inventory bar (card bottom ${Math.round(card.bottom)}, bar top ${Math.round(bar.top)})`);
+      await sleep(2000);
+      await answerAsk(t, stars, 5, "5 stars");
+    }
+    t.progress(0.9);
+    await toLanding(t);
+    A.flush();
+    await sleep(600);
+    pump();
+
+    // What went out: the standard events at their moments, each with the build and the story's context.
+    const sent = (A.debugLog || []).filter((e) => e.sent);
+    t.metric("analyticsEvents", sent.length);
+    const has = (name, test) => sent.some((e) => e.name === name && (!test || test(e.props || {}, e)));
+    const want = [
+      ["screen", (p) => p.name === `${FIRST}/${st.scenes[st.start].folder}`, "a screen for the story's first page"],
+      ["video", (p) => p.action === "play", "a video play"],
+      ["video", (p) => p.action === "skip" && p.watched != null, "a video skip with the seconds watched"],
+      ["choice", (p, e) => p.node && p.option && e.ctx && e.ctx.story === FIRST && e.ctx.path, "a choice with its node, option and the path so far"],
+      ["run_start", null, "run_start"],
+      ["death", (p) => p.cause === st.scenes.sludge.folder, "the sludge's death"],
+      ["feature", (p) => p.name === "back" && p.via === "choice", "the back choice (feature back)"],
+      ["feature", (p) => p.name === "restart" && p.via === "try_again", "Try again (feature restart)"],
+      ["run_end", (p) => p.result === "win" && p.ending === end.folder, "run_end with the ending"],
+      ["feedback", (p) => p.rating === "up", "the thumbs answer"],
+      ["feedback", (p) => p.rating === 5, "the ending's stars"],
+    ];
+    if (fromLoad) want.push(["game_ready", null, "game_ready"]);
+    for (const [name, test, what] of want) if (!has(name, test)) t.problem("bug", `Analytics: no ${what} went out (${name})`);
+    const noCtx = sent.filter((e) => e.name === "choice" && !(e.ctx && e.ctx.node && e.ctx.depth != null));
+    if (noCtx.length) t.problem("bug", `Analytics: ${noCtx.length} choice event(s) without the node and depth in their context`);
+    t.note(`${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
+    t.progress(1);
+  } finally {
+    clearInterval(timer);
+    for (const k of ASK_KEYS.session) saved.session[k] == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, saved.session[k]);
+    for (const k of ASK_KEYS.local) saved.local[k] == null ? localStorage.removeItem(k) : localStorage.setItem(k, saved.local[k]);
+  }
+}
+
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
@@ -1468,6 +1658,13 @@ installPlaytest({
       tags: ["full", "menus"],
       description: "Waits for the landing page's title splash to fade (no prompt there), opens The Final Spark from its card: its Tap to play prompt shows and is tapped with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs and the story's video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back.",
     },
+    {
+      id: "analytics",
+      title: "Hawkes Analytics: the events going out on a way through The Final Spark (screen, video, choice, back, Try again, the ending), the thumbs question after going back twice and the stars question at the ending",
+      seconds: 75,
+      tags: ["analytics"],
+      description: "Checks the analytics SDK is loaded with product imaginelivetv and a build (version, commit, date) and, on beta, env beta. Puts every event the page sends on the timeline as its batch goes out (the SDK's debug mode, ?hawkes-analytics-debug=1, on in a bot's tab). Opens The Final Spark from its card (fresh progress), then by tapping choices: Go back, the dead end's go back (back up the tree), the sludge (a death), Try again: the thumbs question (\"Retracing your steps…\") comes up and is answered thumbs up. Then the shortest way to the ending, a page at a time (each video plays, the next choice skips it): at Destroy the town the stars question \"How was this ending?\" comes up above the inventory bar and is answered 5 stars. Then All stories, and a check that screen, video (play, skip with seconds watched), choice (node, option, path in context), run_start, death, back, restart, run_end with the ending, both feedback answers and game_ready went out. The viewer's progress and question history are put back.",
+    },
   ],
   isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
   async start(id, options, t) {
@@ -1479,6 +1676,7 @@ installPlaytest({
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
+      else if (id === "analytics") await analyticsRun(options, t);
     } finally {
       stopVideos();
       closeFrame();

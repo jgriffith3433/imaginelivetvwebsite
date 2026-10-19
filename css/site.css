@@ -121,6 +121,37 @@ a { color: var(--green); }
 
 .parent-company a:hover { color: var(--ink); }
 
+/* Hawkes Analytics (js/analytics.js): the footer's privacy line, the privacy page's switch, and the feedback card. */
+.stats-note { font-size: 0.78rem; opacity: 0.75; }
+
+.stats-note a { color: inherit; text-underline-offset: 0.2em; }
+
+.analytics-choice { margin: 1.2rem 0; }
+
+.analytics-toggle {
+  font: inherit;
+  color: #f4f2ee;
+  background: var(--green-deep);
+  border: 1px solid #5a5e64;
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+}
+
+.analytics-toggle:hover { background: #3c4046; }
+
+/* The SDK's card is fixed to the corner of its host: a zero-height strip just above the inventory bar, so the
+   card never sits on the flashlight or a story's items (the transform makes the strip its containing block). */
+[data-hawkes-ask] {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--inventory-h);
+  height: 0;
+  transform: translateZ(0);
+  z-index: 2147483000;
+}
+
 .spark {
   scroll-margin-top: 3.4rem;
   width: min(920px, calc(100% - 1.25rem));
