@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy | Imagine Live TV</title>
+  <meta name="description" content="What Imagine Live TV keeps about your visit: anonymous viewing statistics, and your place in each story.">
+  <link rel="canonical" href="https://imaginelivetv.com/privacy.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/site.css">
+  <meta name="theme-color" content="#070807">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/">Imagine Live TV</a>
+  </header>
+
+  <main class="post-layout">
+    <article class="post-article">
+      <a class="post-kicker" href="/">&larr; Back to the stories</a>
+      <h1>Privacy</h1>
+      <div class="post-body">
+        <h2>Viewing statistics</h2>
+        <p>We keep anonymous statistics about how the stories are watched, so we can make them better: which pages
+          people reach, which choices they make, how much of each video they watch, where they stop, how far blog
+          posts are read, and the ratings and comments you choose to send. With them come the kind of browser and
+          device, the screen size, the language, and the country and city your connection comes from.</p>
+        <ul>
+          <li>No cookies: the statistics use none.</li>
+          <li>No personal data: no name, no email, no account. Your browser gets a random number so we can tell
+            visits apart; it says nothing about who you are.</li>
+          <li>No IP address stored: it is used once to find the country and city, then thrown away.</li>
+          <li>Nobody else sees them: they go to our own service, Hawkes Gen, not to an advertising or tracking company.</li>
+        </ul>
+        <div class="analytics-choice" id="analytics-choice" hidden>
+          <p data-analytics-state></p>
+          <button type="button" class="analytics-toggle"></button>
+        </div>
+        <h2>Your place in the stories</h2>
+        <p>Each story remembers where you are, the scenes you have found and whether you reached an ending, in cookies
+          on your own device, so you can carry on later. We don't collect them. Clearing your cookies starts every
+          story from the beginning.</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>
+    <p class="powered">Powered by <a class="powered-mark" href="https://hawkesgen.com">HAWKES GEN</a></p>
+    <p class="stats-note">Anonymous viewing statistics (no cookies, no personal data, no IP stored) help us improve the stories. <a href="/privacy.html">Privacy</a></p>
+  </footer>
+  <!-- Hawkes Analytics (AGENTS.md "Analytics"): the build, the SDK, then what this site sends. -->
+  <script src="/js/hawkes-build.js"></script>
+  <script src="/js/hawkes-analytics.js" data-product="imaginelivetv"></script>
+  <script src="/js/analytics.js"></script>
+</body>
+</html>
