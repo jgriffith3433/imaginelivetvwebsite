@@ -357,8 +357,8 @@ function restoreProgress() {
 
 // Every card wears the viewer's own progress in its story (js/game.js, from the story's cookies): Not started
 // (nothing reached), Started (opened), Completed (an ending reached once: a scene with an "ending"; deaths aren't),
-// and how much of it is explored (unlocked scenes / all, rounded down). Its button follows the run: Play (none, or
-// at the start), Continue (mid-run), Start Over (at an ending).
+// and how much of it is explored (unlocked scenes / all, rounded down). Completed stories show Start Over; otherwise
+// the button follows the run: Play (none, or at the start), Continue (mid-run), Start Over (at an ending).
 const BADGE = { new: "Not started", started: "Started", completed: "Completed" };
 const GO = { start: "Play", mid: "Continue", end: "Start Over" };
 /** A fresh browser: every story's run and unlocks forgotten. */
@@ -397,10 +397,10 @@ function checkBadge(t, card, st, want, where) {
     t.problem("bug", `${where}: ${st.title}'s card says "${says}" (${card.dataset.progress}), not "${BADGE[want]}"`);
     return false;
   }
-  // Its button follows the run (the cookies are the frame's too: same origin), and its percent the unlocks.
+  // Completed stories always say Start Over; otherwise the button follows the run, and its percent the unlocks.
   const go = (card.querySelector(".story-card-go")?.textContent || "").trim();
-  const label = GO[runWant(st)];
-  if (go !== label) t.problem("bug", `${where}: ${st.title}'s run is at ${runWant(st)} but its button says "${go}", not "${label}"`);
+  const label = want === "completed" ? "Start Over" : GO[runWant(st)];
+  if (go !== label) t.problem("bug", `${where}: ${st.title}'s card is ${want} (run at ${runWant(st)}) but its button says "${go}", not "${label}"`);
   const explored = (card.querySelector(".story-card-explored")?.textContent || "").trim();
   const pct = `${exploredWant(st)}% explored`;
   if (explored !== pct) t.problem("bug", `${where}: ${st.title}'s card says "${explored || "nothing"}", its unlocks give "${pct}"`);
@@ -408,7 +408,7 @@ function checkBadge(t, card, st, want, where) {
   const c = card.getBoundingClientRect();
   if (r.right < c.right - 1 && r.top > c.top + 1) t.problem("bug", `${where}: ${st.title}'s badge isn't across the card's corner`);
   if (card.ownerDocument === document && stories().progress && stories().progress(st.id) !== want) t.problem("bug", `${where}: iltvStories.progress("${st.id}") says ${stories().progress(st.id)}, the card ${want}`);
-  t.event("badge", `${where}: ${st.id} ${says}, ${explored}, ${go} (run at ${runWant(st)}: Play at the start, Continue mid-run, Start Over at an ending)`);
+  t.event("badge", `${where}: ${st.id} ${says}, ${explored}, ${go}`);
   return true;
 }
 
@@ -523,6 +523,55 @@ async function toLanding(t) {
 /** The player has no Back button (J, 2026-10-18: players own their choices; a death means starting over). */
 function checkNoBack(t, where) {
   if ($("spark-back") || document.querySelector("#spark .back-button")) t.problem("bug", `${where}: the player has a Back button (there's no stepping back to undo a choice)`);
+}
+
+/** PLAY/TREE tabs and the settings gear button have at least 44x44px hit targets on mobile and desktop. */
+function checkHitTargets(t, doc = document, where = "player") {
+  const targets = [
+    ["#tab-play", "PLAY tab"],
+    ["#tab-tree", "TREE tab"],
+    ["#sound-gear", "Settings gear"],
+  ];
+  const sizes = [];
+  for (const [sel, name] of targets) {
+    const el = doc.querySelector(sel);
+    if (!el || !el.getClientRects().length) continue;
+    const r = el.getBoundingClientRect();
+    const w = Math.round(r.width);
+    const h = Math.round(r.height);
+    if (w < 44 || h < 44) t.problem("bug", `${where}: ${name} (${sel}) is ${w}x${h}px, smaller than 44x44px`);
+    else sizes.push(`${name} ${w}x${h}px`);
+  }
+  if (sizes.length) t.event("hit-targets", `${where}: ${sizes.join(", ")}`);
+}
+
+/** Recent Posts rows in the blog sidebar: each row is a flex row (thumbnail + min-width: 0 flex column) with the title above the date on its own line. */
+function checkRecentPosts(t, doc, where) {
+  const rows = [...doc.querySelectorAll(".recent-list li > a")];
+  if (!rows.length) return;
+  const win = doc.defaultView;
+  let checked = 0;
+  for (const a of rows) {
+    const aStyle = win.getComputedStyle(a);
+    const col = a.querySelector(":scope > span");
+    const title = col && col.querySelector(":scope > strong");
+    const date = col && col.querySelector(":scope > span");
+    if (!col || !title || !date) {
+      t.problem("bug", `${where}: Recent Posts item is missing its text column, title or date`);
+      continue;
+    }
+    const colStyle = win.getComputedStyle(col);
+    if (aStyle.display !== "flex") t.problem("bug", `${where}: Recent Posts row is display "${aStyle.display}", not flex`);
+    if (colStyle.display !== "flex" || colStyle.flexDirection !== "column" || colStyle.minWidth !== "0px") {
+      t.problem("bug", `${where}: Recent Posts text column is ${colStyle.display}/${colStyle.flexDirection} (min-width ${colStyle.minWidth}), not a min-width: 0 flex column`);
+    }
+    const tr = title.getBoundingClientRect();
+    const dr = date.getBoundingClientRect();
+    if (dr.top < tr.bottom - 1 || Math.abs(dr.left - tr.left) > 2) {
+      t.problem("bug", `${where}: Recent Posts date isn't stacked cleanly below the title (title bottom ${Math.round(tr.bottom)}, date top ${Math.round(dr.top)}, lefts ${Math.round(tr.left)} vs ${Math.round(dr.left)})`);
+    } else checked++;
+  }
+  if (checked) t.event("recent-posts", `${where}: ${checked}/${rows.length} rows stacked (title above date)`);
 }
 
 /** Back to the story's first page, a new run: there's no Back and the Tree can't be pressed, so the bot does what
@@ -641,6 +690,7 @@ async function smoke(options, t) {
     else await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1, { autoplay: true });
   }
   checkNoBack(t, "The Final Spark");
+  checkHitTargets(t, document, "The Final Spark");
   await toLanding(t);
   t.progress(1);
 }
@@ -659,9 +709,13 @@ async function branches(options, t) {
   for (const st of list) {
     t.scene(st.title);
     await openStory(t, st.id);
+    checkHitTargets(t, document, st.title);
     await walkStory(t, st, sums, total);
     await toLanding(t);
-    if (st.listed) checkBadge(t, cardOf(st.id), st, wayTo(st, (s) => !!s.ending) ? "completed" : "started", `after every scene of ${st.title}`);
+    if (st.listed) {
+      checkBadge(t, cardOf(st.id), st, wayTo(st, (s) => !!s.ending) ? "completed" : "started", `after every scene of ${st.title}`);
+      await sleep(600);
+    }
   }
   t.metric("scenesVisited", sums.scenes);
   t.metric("endings", sums.endings);
@@ -807,6 +861,7 @@ async function storiesRun(options, t) {
     if (!st.scenes[sceneId()]) t.problem("bug", `${st.id}: the player is on ${sceneId()}, which isn't one of its scenes`);
     checkInventory(t, st.title);
     checkNoBack(t, st.title);
+    checkHitTargets(t, document, st.title);
     await toStart(t);
     // Only the first page is found: the Tree is it and a "?" per choice, and the percent is one scene's worth.
     checkExplored(t, st, Math.floor(100 / Object.keys(st.scenes).length), `${st.id}: ${st.start}`);
@@ -852,6 +907,7 @@ async function storiesRun(options, t) {
     await sleep(800);
     await toLanding(t);
     checkBadge(t, cardOf(st.id), st, "completed", `after ${st.title}'s ending`);
+    await sleep(600); // on screen for the footage
     // The saved place is the ending (with the counts of the way there). The card now says Start Over, so the
     // ending is opened again by the story's link, not the card.
     openByLink(t, st.id);
@@ -880,9 +936,9 @@ async function storiesRun(options, t) {
   t.scene("Progress: after a reload");
   await badgesAfterLoad(t, () => "completed", "after a reload");
 
-  // Start Over: at an ending the card says Start Over; pressing it forgets that story's run only (its run cookie:
-  // its unlocks, its percent and Completed stay, and the other stories' cookies are untouched) and opens it at the
-  // start with an empty history. Its card then says Completed, the same percent, and Play.
+  // Start Over: once completed (or at an ending) the card says Start Over; pressing it forgets that story's run only
+  // (its run cookie: its unlocks, its percent and Completed stay, and the other stories' cookies are untouched) and
+  // opens it at the start with an empty history. Its card then says Completed, the same percent, and Start Over.
   for (const st of list) {
     const ending = wayTo(st, (s) => !!s.ending);
     if (!ending) continue;
@@ -912,7 +968,8 @@ async function storiesRun(options, t) {
     await sleep(600);
     await toLanding(t);
     checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);
-    if (go() !== "Play") t.problem("bug", `${st.id}: after Start Over its card's button says "${go()}", not Play`);
+    if (go() !== "Start Over") t.problem("bug", `${st.id}: after Start Over its card's button says "${go()}", not Start Over`);
+    await sleep(600);
   }
   t.progress((list.length + 1) / (list.length + 2));
 
@@ -971,6 +1028,13 @@ async function storiesRun(options, t) {
       if (win.hawkesSound?.state().splashes) t.problem("bug", `/${st.id}/: the title splash showed over the story (it's the landing page's)`);
     }
     await sleep(800);
+    closeFrame();
+  }
+  const postCard = document.querySelector("#blog a.post-card");
+  if (postCard) {
+    const postPath = pathOf(postCard.getAttribute("href"));
+    const postDoc = await openByClick(t, "/", postPath);
+    if (postDoc && !isMissingPage(postDoc)) checkRecentPosts(t, postDoc, postPath);
     closeFrame();
   }
   t.progress(1);
@@ -1140,6 +1204,7 @@ async function blog(options, t) {
       continue;
     }
     if (!doc.querySelector("h1")) t.problem("warning", `Post "${p.title}" has no heading`);
+    checkRecentPosts(t, doc, p.to);
     await waitFor(() => [...doc.images].every((img) => img.complete), 10000);
     [...doc.images].forEach((img) => !img.naturalWidth && t.problem("bug", `${p.to}: image ${pathOf(img.src)} didn't load`));
     for (const v of doc.querySelectorAll("video")) await checkVideo(t, v, p.to, 1);
@@ -1246,6 +1311,7 @@ async function creditsRun(t) {
     await sleep(1500);
   }
   await passPrompt(t, document, FIRST);
+  checkHitTargets(t, document, "home (The Final Spark)");
   await checkMark(t, document, "home (The Final Spark)");
   await sleep(800);
   await toLanding(t);
@@ -1274,6 +1340,7 @@ async function creditsRun(t) {
       await passPrompt(t, doc, p.to);
     }
     await checkMark(t, doc, `${p.name} ${p.to}`);
+    if (p.name === "blog post") checkRecentPosts(t, doc, p.to);
     doc.querySelectorAll("video").forEach((v) => v.pause());
     await sleep(1200);
     t.progress(0.25 + (0.75 * (i + 1)) / pagesToCheck.length);
@@ -1346,6 +1413,7 @@ async function sound(options, t) {
     if (!st.unlocked) t.problem("bug", "the tap didn't unlock sound");
     if (st.audio !== "running") t.problem("bug", `the AudioContext is "${st.audio}" after the tap, not running`);
     t.scene("The Final Spark (sound on)");
+    checkHitTargets(t, document, "The Final Spark (sound on)");
     await checkSound(t, document.querySelector("#spark-video video"), "after the tap", { on: true, volume: 1 });
     t.progress(0.2);
 

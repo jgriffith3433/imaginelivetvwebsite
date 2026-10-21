@@ -60,11 +60,11 @@ scenes"). Completed is kept with the unlocks, so it survives a reload, a death, 
 Completed, always Completed (only an ending sets it). `js/game.js` draws the cards whenever the landing page shows.
 A story with no ending yet builds with a warning: its badge can't say Completed.
 
-The card's button follows the current **run** (where they are now): **Play** (no run, or at the first page),
-**Continue** (somewhere further in), **Start Over** (the run is at an ending). Pressing Start Over forgets that
-story's run only, its run cookie (the other stories keep theirs), and opens it at its first page with an empty
-history; its unlocked scenes, its percent and Completed stay. The `stories` playtest checks the badges, the percent,
-the buttons and Start Over.
+The card's button says **Start Over** once the story is **Completed** (or when the run is at an ending); otherwise it
+follows the current **run**: **Play** (no run, or at the first page) or **Continue** (somewhere further in). Pressing
+Start Over forgets that story's run only, its run cookie (the other stories keep theirs), and opens it at its first
+page with an empty history; its unlocked scenes, its percent and Completed stay. The `stories` playtest checks the
+badges, the percent, the buttons and Start Over.
 
 ## Unlocked scenes
 
