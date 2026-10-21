@@ -673,8 +673,8 @@
 
   const GO = { start: "Play", mid: "Continue", end: "Start Over" };
 
-  /** Each card's badge (Not started, Started, Completed), how much of it is explored, and its button: Play (no run,
-      or at the start), Continue (mid-run) or Start Over (the run is at an ending). */
+  /** Each card's badge (Not started, Started, Completed), how much of it is explored, and its button: Start Over
+      once completed (or at an ending), Play (no run, or at the start) or Continue (mid-run). */
   function markCards() {
     if (!storyList) return;
     storyList.querySelectorAll(".story-card").forEach(function (card) {
@@ -689,7 +689,7 @@
       const explored = card.querySelector(".story-card-explored");
       if (explored) explored.textContent = exploredOf(story, readUnlocks(story).seen) + "% explored";
       const go = card.querySelector(".story-card-go");
-      if (go) go.textContent = GO[run];
+      if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
     });
   }
 
@@ -764,12 +764,13 @@
       if (!card || !STORIES[card.dataset.story]) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
       event.preventDefault();
-      // At an ending the card says Start Over: the run goes (its unlocks stay), and it opens at the start.
-      if (card.dataset.run === "end") {
+      // Once completed (or at an ending) the card says Start Over: the run goes (its unlocks stay), and it opens at the start.
+      const startOver = card.dataset.progress === "completed" || card.dataset.run === "end";
+      if (startOver) {
         clearProgress(STORIES[card.dataset.story]);
         tell("restart", { story: card.dataset.story, via: "start_over" });
       }
-      tell("card", { story: card.dataset.story, go: card.dataset.run, progress: card.dataset.progress });
+      tell("card", { story: card.dataset.story, go: startOver ? "end" : card.dataset.run, progress: card.dataset.progress });
       openStory(card.dataset.story, true);
     });
   }
