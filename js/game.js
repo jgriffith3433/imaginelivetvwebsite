@@ -648,8 +648,18 @@
   }
 
   // js/hawkes-sound.js on the home page (<html data-tap-splash>): a story asks for its own Tap to play (that tap
-  // unlocks sound); the landing page has no video, so the first time it shows the site's title splash instead.
+  // unlocks sound); the landing page has no video, so the first time in a session it shows the site's title splash instead.
+  const SPLASH_KEY = "iltv.splashed";
   let splashed = false;
+  try {
+    splashed = sessionStorage.getItem(SPLASH_KEY) === "1";
+  } catch (error) { /* storage blocked */ }
+  function markSplashed() {
+    splashed = true;
+    try {
+      sessionStorage.setItem(SPLASH_KEY, "1");
+    } catch (error) { /* storage blocked */ }
+  }
   function sound(what, arg) {
     if (window.hawkesSound && window.hawkesSound[what]) window.hawkesSound[what](arg);
   }
@@ -711,7 +721,7 @@
     document.title = story.title + " · " + SITE_TITLE;
     prompt(story.tap);
     sound("ask");
-    splashed = true;
+    markSplashed();
 
     landing.hidden = true;
     root.hidden = false;
@@ -747,8 +757,8 @@
     document.title = SITE_TITLE;
     prompt(SITE_TAP);
     sound("dismiss");
-    if (!splashed) sound("splash", SITE_TAP.title);
-    splashed = true;
+    if (!splashed && location.hash !== "#blog") sound("splash", SITE_TAP.title);
+    markSplashed();
     markCards();
   }
 

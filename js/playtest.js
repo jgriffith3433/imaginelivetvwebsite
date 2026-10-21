@@ -1087,12 +1087,37 @@ async function status(url) {
 const pathOf = (href, base) => decodeURI(new URL(href, base || location.href).pathname);
 const isMissingPage = (doc) => !doc || !!doc.querySelector("main.missing") || /not found/i.test(doc.title);
 
+/** No title splash or Tap to play overlay is visible on `doc` (or on the host page). */
+function checkNoSplash(t, doc, where) {
+  for (const [d, label] of [[doc, where], [document, `${where} (home)`]]) {
+    if (!d) continue;
+    const win = d.defaultView || window;
+    const splash = d.querySelector("#title-splash, .tap-splash, #tap-to-play, .tap-to-play");
+    if (splash) {
+      const style = win.getComputedStyle(splash);
+      if (splash.getClientRects().length > 0 && style.visibility !== "hidden" && Number(style.opacity) > 0) {
+        t.problem("bug", `${label}: splash overlay (${splash.id ? "#" + splash.id : splash.className}) is visible`);
+        return false;
+      }
+    }
+    if (d.documentElement.classList.contains("is-tap-waiting")) {
+      t.problem("bug", `${label}: page still has is-tap-waiting set`);
+      return false;
+    }
+  }
+  return true;
+}
+
 /** Opens `target` by clicking its link on `from` (a viewer's click). Falls back to loading it. */
 async function openByClick(t, from, target) {
   if (from) {
     const doc = await frameLoad(t, (f) => (f.src = from));
+    if (doc && /^\/f(\/|$)/.test(target)) checkNoSplash(t, doc, `${from} -> ${target}`);
     const link = doc && [...doc.querySelectorAll("a[href]")].find((a) => pathOf(a.getAttribute("href"), doc.baseURI) === target);
-    if (link) return frameLoad(t, () => link.click());
+    if (link) {
+      link.scrollIntoView({ block: "center", behavior: "instant" });
+      return frameLoad(t, () => link.click());
+    }
   }
   return frameLoad(t, (f) => (f.src = target));
 }
@@ -1192,13 +1217,13 @@ async function blog(options, t) {
   const links = new Set();
   for (let i = 0; i < posts.length; i++) {
     const p = posts[i];
-    t.scene(p.title || p.to);
     t.progress(i / posts.length);
     if ((await status(p.to)) !== 200) {
       t.problem("bug", `Post "${p.title}" (${p.to}) is missing`);
       continue;
     }
     const doc = await openByClick(t, "/", p.to);
+    t.scene(p.title || p.to);
     if (isMissingPage(doc)) {
       t.problem("bug", `Post "${p.title}" opened the not-found page`);
       continue;
@@ -1207,6 +1232,8 @@ async function blog(options, t) {
     checkRecentPosts(t, doc, p.to);
     await waitFor(() => [...doc.images].every((img) => img.complete), 10000);
     [...doc.images].forEach((img) => !img.naturalWidth && t.problem("bug", `${p.to}: image ${pathOf(img.src)} didn't load`));
+    await sleep(300);
+    if (checkNoSplash(t, doc, `${p.to} (300 ms after load)`)) t.add("postsSplashFree");
     for (const v of doc.querySelectorAll("video")) await checkVideo(t, v, p.to, 1);
     doc.querySelectorAll("video").forEach((v) => v.pause());
     doc.querySelectorAll("a[href]").forEach((a) => {
