@@ -26,10 +26,13 @@
   if (window.hawkesSound) return;
 
   var KEY = "hawkes.sound";
+  var SPLASH_KEY = "iltv.splashed";
   var NativeContext = window.AudioContext || window.webkitAudioContext;
 
   var settings = read();
   var unlocked = false;
+  var decided = false;
+  var isPostRoute = /^\/f(\/|$)/.test(location.pathname);
   var taps = 0;
   var trusted = false;
   var context = null;
@@ -40,6 +43,27 @@
   var deferred = document.documentElement.hasAttribute("data-tap-splash");
   var SPLASH_HOLD = 1600;
   var SPLASH_FADE = 900;
+
+  // A fresh playtest run on the top-level landing page starts with its own splash; framed pages and post navigations keep the session flag.
+  try {
+    if (window.top === window && /[?&]playtest=/.test(location.search) && !/[?&]story=/.test(location.search)) {
+      sessionStorage.removeItem(SPLASH_KEY);
+    }
+  } catch (e) { /* storage blocked */ }
+
+  function splashedInSession() {
+    try {
+      return sessionStorage.getItem(SPLASH_KEY) === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function markSplashed() {
+    try {
+      sessionStorage.setItem(SPLASH_KEY, "1");
+    } catch (e) { /* private mode */ }
+  }
   var panel = null;
   var gear = null;
   var wasPlaying = [];
@@ -249,18 +273,27 @@
 
   // A story opens (js/game.js): its Tap to play prompt, unless sound is already unlocked.
   function ask() {
+    decided = true;
+    markSplashed();
     if (!unlocked) showPrompt();
   }
 
   // Back on the landing page before the tap: the story's prompt goes, sound stays locked.
   function dismiss() {
+    decided = true;
     if (overlay && !unlocked) hidePrompt();
   }
 
   // ─── The title splash (the landing page) ───────────────────────
 
   function splash(title) {
+    decided = true;
     if (splashEl || overlay || !document.body) return;
+    if (isPostRoute || location.hash === "#blog" || splashedInSession()) {
+      markSplashed();
+      return;
+    }
+    markSplashed();
     splashes++;
     var el = document.createElement("div");
     el.className = "tap-to-play tap-splash";
@@ -468,11 +501,13 @@
   };
 
   addGear();
-  if (!deferred) showPrompt();
-  else {
-    // Nobody decided (js/game.js didn't run): the standard prompt after all.
-    document.addEventListener("DOMContentLoaded", function () {
-      if (!overlay && !splashes && !unlocked) showPrompt();
-    });
+  if (!isPostRoute) {
+    if (!deferred) showPrompt();
+    else {
+      // Nobody decided (js/game.js didn't run): the standard prompt after all.
+      document.addEventListener("DOMContentLoaded", function () {
+        if (!decided && !overlay && !splashes && !unlocked) showPrompt();
+      });
+    }
   }
 })();
