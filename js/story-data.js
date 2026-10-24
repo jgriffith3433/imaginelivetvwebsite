@@ -1372,6 +1372,391 @@ window.ILTV_STORIES = {
      "choices": []
     }
    }
+  },
+  {
+   "id": "night-shift-demo",
+   "type": "console",
+   "title": "Night Shift (demo)",
+   "tagline": "Observe and report.",
+   "logline": "A placeholder night in a Manhattan tower: a radio check, a door on camera four, and a report with your name on it.",
+   "image": null,
+   "listed": false,
+   "cookie": "nightShiftDemoProgress",
+   "tap": {
+    "title": "NIGHT SHIFT",
+    "line": "Radio check."
+   },
+   "start": "radio-check",
+   "ui": {
+    "en": {
+     "mouth": "Start",
+     "depth": "Step"
+    }
+   },
+   "state": {
+    "flags": [
+     "noticed_wedge",
+     "radio_answered",
+     "told_super_wedge",
+     "dee_read",
+     "log_fact",
+     "log_quiet"
+    ],
+    "meters": {
+     "trainer_trust": {
+      "min": 0,
+      "max": 5,
+      "start": 1
+     },
+     "post_orders": {
+      "min": 0,
+      "max": 5,
+      "start": 1
+     }
+    }
+   },
+   "cameras": [
+    {
+     "id": "c1",
+     "name": "Lobby",
+     "states": {
+      "normal": {
+       "desc": "The lobby desk, the turnstiles and the revolving door, all empty, the long bench by the window.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "name": "Vestibule",
+     "states": {
+      "normal": {
+       "desc": "The airlock between Madison Avenue and the lobby, one bench-like ledge, cold light from the street.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c3",
+     "name": "Loading dock",
+     "states": {
+      "normal": {
+       "desc": "The rollup door, the dock office window and a trash compactor under a single caged bulb.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "name": "Stairwell C, 31",
+     "states": {
+      "normal": {
+       "desc": "A fire door on a concrete landing with a painted number 31, closed.",
+       "image": null
+      },
+      "wedge": {
+       "desc": "The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c5",
+     "name": "Elevator lobby, 31",
+     "states": {
+      "normal": {
+       "desc": "Four elevator cars, a call panel and a plant, the floor shining.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c6",
+     "name": "Floor 44 corridor",
+     "states": {
+      "normal": {
+       "desc": "A long carpeted corridor and a janitor's closet door at the far end.",
+       "image": null
+      }
+     }
+    }
+   ],
+   "speakers": {
+    "dee": {
+     "name": "Dee"
+    },
+    "terrell": {
+     "name": "Terrell"
+    }
+   },
+   "ambience": {
+    "control-room": null,
+    "morning": null
+   },
+   "sfx": {
+    "radio-squelch": null,
+    "pencil": null
+   },
+   "scenes": {
+    "radio-check": {
+     "folder": "night-shift-demo/radio-check",
+     "lang": "en",
+     "dir": "",
+     "time": "19:00",
+     "title": [
+      "Radio check",
+      "Radio check"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Radio check.",
+       "sfx": "radio-squelch",
+       "file": "/assets/story/night-shift-demo/silence.wav",
+       "dur": 1.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. You're a minute late. Sit.",
+       "file": "/assets/story/night-shift-demo/silence.wav",
+       "dur": 1.2
+      }
+     ],
+     "log": "Radio check with D. Reyes. Wall: nine tiles.",
+     "choices": [
+      [
+       "Answer the radio check",
+       "Answer the radio check",
+       "the-wall",
+       {
+        "set": [
+         "radio_answered"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the check, a minute late."
+       }
+      ],
+      [
+       "Look at camera 4 first",
+       "Look at camera 4 first",
+       "the-wall",
+       {
+        "set": [
+         "noticed_wedge"
+        ],
+        "add": {
+         "post_orders": 1
+        },
+        "log": "Camera 4: the 31st floor stairwell door is not closed."
+       }
+      ]
+     ]
+    },
+    "the-wall": {
+     "folder": "night-shift-demo/the-wall",
+     "lang": "en",
+     "dir": "",
+     "time": "02:10",
+     "title": [
+      "The wall",
+      "The wall"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "focus": "c4",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Nothing happens at two o'clock. That's why we're here.",
+       "file": "/assets/story/night-shift-demo/silence.wav",
+       "dur": 1.5
+      },
+      {
+       "speaker": "terrell",
+       "text": "Camera four, the door. Is that, like, normal?",
+       "file": "/assets/story/night-shift-demo/silence.wav",
+       "dur": 1.2
+      }
+     ],
+     "log": "02:10. Wall quiet. Camera 4 stairwell door, 31st floor.",
+     "choices": [
+      [
+       "Point at camera 4",
+       "Point at camera 4",
+       "the-report",
+       {
+        "forbids": [
+         "noticed_wedge"
+        ],
+        "set": [
+         "noticed_wedge"
+        ],
+        "log": "Pointed out camera 4: the door, held open."
+       }
+      ],
+      [
+       "Call it in: wedge on 31",
+       "Call it in: wedge on 31",
+       "the-report",
+       {
+        "requires": [
+         "noticed_wedge"
+        ],
+        "set": [
+         "told_super_wedge"
+        ],
+        "add": {
+         "post_orders": 1,
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line: wedge, stairwell C, 31."
+       }
+      ],
+      [
+       "Keep your eyes on the lobby",
+       "Keep your eyes on the lobby",
+       "the-report",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed on the wall. Lobby clear."
+       }
+      ]
+     ]
+    },
+    "the-report": {
+     "folder": "night-shift-demo/the-report",
+     "lang": "en",
+     "dir": "",
+     "time": "05:30",
+     "title": [
+      "The report",
+      "The report"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c4": "normal"
+     },
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Write what you saw. Not what you think about what you saw.",
+       "sfx": "pencil",
+       "file": "/assets/story/night-shift-demo/silence.wav",
+       "dur": 1.5
+      }
+     ],
+     "log": "05:30. Writing up the shift.",
+     "choices": [
+      [
+       "Log the wedge, exactly",
+       "Log the wedge, exactly",
+       "clean-report",
+       {
+        "requires": [
+         "noticed_wedge"
+        ],
+        "set": [
+         "log_fact"
+        ],
+        "log": "Wrote: wedge, stairwell C, 31, 02:10."
+       }
+      ],
+      [
+       "Show Dee the log first",
+       "Show Dee the log first",
+       "clean-report",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 2
+         }
+        },
+        "set": [
+         "dee_read"
+        ],
+        "log": "Dee read the log in pencil."
+       }
+      ],
+      [
+       "Log: all quiet",
+       "Log: all quiet",
+       "quiet-report",
+       {
+        "set": [
+         "log_quiet"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Wrote: all quiet."
+       }
+      ]
+     ]
+    },
+    "clean-report": {
+     "folder": "night-shift-demo/clean-report",
+     "lang": "en",
+     "dir": "",
+     "time": "06:30",
+     "title": [
+      "Clean report",
+      "Clean report"
+     ],
+     "ambience": "morning",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "That's noted. Go home. Eat something.",
+       "file": "/assets/story/night-shift-demo/silence.wav",
+       "dur": 1.2
+      }
+     ],
+     "log": "06:30. Log read and signed.",
+     "ending": [
+      "Clean report.",
+      "Clean report."
+     ],
+     "choices": []
+    },
+    "quiet-report": {
+     "folder": "night-shift-demo/quiet-report",
+     "lang": "en",
+     "dir": "",
+     "time": "06:30",
+     "title": [
+      "All quiet",
+      "All quiet"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm. All quiet.",
+       "file": "/assets/story/night-shift-demo/silence.wav",
+       "dur": 1
+      }
+     ],
+     "log": "06:30. Log read. Camera 4 not mentioned.",
+     "ending": [
+      "All quiet.",
+      "All quiet."
+     ],
+     "choices": []
+    }
+   }
   }
  ]
 };

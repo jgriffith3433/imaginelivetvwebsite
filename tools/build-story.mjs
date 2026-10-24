@@ -27,6 +27,8 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 // A story's own inventory (counts per scene): the same code the player and the branch pages run.
 import '../js/kit.js';
+// A console story's state rules (flags, meters, conditions, the state explorer): the same code the player runs.
+import '../js/console-rules.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LISTING = 'story/stories.json';
@@ -64,6 +66,7 @@ for (const entry of listing) {
     scenes: data.scenes,
     byId: new Map(data.scenes.map((s) => [s.id, s])),
     root,
+    console: data.type === 'console',
     // Where its pages, media and asset ids go. The Final Spark keeps the site root and its old asset ids.
     base: root ? '' : `${entry.id}/`,
     prefix: root ? '' : `${entry.id}-`,
@@ -82,6 +85,7 @@ function validate(st) {
   if (st.entry.status != null) problems.push(`${id}: status is gone from ${LISTING}: every card wears the player's own progress badge (Not started, Started, Completed), and a story is completed at a scene with an "ending"`);
   if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) problems.push(`${id}: card image ${st.entry.image} doesn't exist`);
   if (!data.cookie || !/^[A-Za-z0-9_-]+$/.test(data.cookie)) problems.push(`${id}: cookie (the name its progress is saved under) must be letters, digits, - or _`);
+  if (st.console) return validateConsole(st);
   if (!data.ui || !data.ui.en) problems.push(`${id}: ui.en (the English under the player's labels) is missing`);
   for (const [lang, ui] of Object.entries(data.ui ?? {})) for (const k of ['mouth', 'depth']) if (!ui[k]) problems.push(`${id}: ui.${lang} has no ${k}`);
   for (const s of scenes) if (!data.ui?.[s.lang]) problems.push(`${at(s)}: language ${s.lang} has no labels in ui`);
@@ -227,6 +231,7 @@ function cutParts(st, s) {
 
 /** What the player and the page play: the generated cut when the scene uses it and it's made, else the film. */
 function videoOf(st, s) {
+  if (st.console) return null;
   if (useOf(st, s) === 'gen') {
     const { missing } = cutParts(st, s);
     if (!missing.length) return '/' + cutFile(st, s);
@@ -243,6 +248,7 @@ function videoOf(st, s) {
 
 function storyData() {
   const list = stories.map((st) => {
+    if (st.console) return consoleData(st);
     const out = {};
     for (const s of st.scenes) {
       out[s.id] = {
@@ -371,6 +377,7 @@ const spot = (s, [say, en], tag = 'span', attrs = '') => {
 };
 
 function page(st, s, counts) {
+  if (st.console) return consolePage(st, s);
   const tap = st.data.tap ?? {};
   const inv = st.data.inventory;
   const choices = s.choices
@@ -436,6 +443,7 @@ function castRefs(st, cast) {
 }
 
 function assets(st) {
+  if (st.console) return consoleAssets(st);
   const story = st.data;
   const scenes = st.scenes;
   const P = st.prefix;
@@ -612,6 +620,319 @@ function cut(st, s) {
   }
 }
 
+/* ---------------- console stories (story type "console": story/README.md, "Console stories") ---------------- */
+
+const rules = globalThis.iltvConsoleRules;
+const CAMERA_MIN = 6;
+const CAMERA_MAX = 9;
+const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
+const CHOICE_KEYS = ['say', 'next', 'requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic'];
+
+/** A choice as the player's data has it: [say, say, next, extra] (extra left out when empty). */
+function consoleChoice(c) {
+  const extra = {};
+  for (const k of ['requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic']) if (c[k] != null && !(Array.isArray(c[k]) && !c[k].length)) extra[k] = c[k];
+  return Object.keys(extra).length ? [c.say, c.say, c.next, extra] : [c.say, c.say, c.next];
+}
+
+/** The story the rules run on (js/console-rules.js): the same shape the player gets. */
+function consoleShape(st) {
+  return {
+    start: st.data.start,
+    state: st.data.state ?? {},
+    cameras: st.data.cameras ?? [],
+    scenes: Object.fromEntries(st.scenes.map((s) => [s.id, { ending: s.ending ? [s.ending, s.ending] : undefined, feeds: s.feeds, choices: (s.choices ?? []).map(consoleChoice) }])),
+  };
+}
+
+const sayOf = (state) => [...Object.keys(state.flags).sort(), ...Object.entries(state.meters).map(([k, v]) => `${k} ${v}`)].join(', ') || 'a fresh state';
+
+function validateConsole(st) {
+  const { id, data, scenes, byId } = st;
+  const at = (s) => `${id}/${s.id}`;
+  const flags = new Set(data.state?.flags ?? []);
+  const meters = data.state?.meters ?? {};
+  const cameras = data.cameras ?? [];
+  const cams = new Map(cameras.map((c) => [c.id, c]));
+  if (!data.tap?.title) problems.push(`${id}: tap.title (the Tap to play screen's title) is missing`);
+  if ((data.state?.flags ?? []).length !== flags.size) problems.push(`${id}: state.flags lists a flag twice`);
+  for (const [name, m] of Object.entries(meters)) {
+    if (![m.min, m.max, m.start].every(Number.isInteger) || m.min > m.start || m.start > m.max) problems.push(`${id}: meter ${name} needs whole numbers min <= start <= max`);
+  }
+  if (cameras.length < CAMERA_MIN || cameras.length > CAMERA_MAX) problems.push(`${id}: the monitor wall needs ${CAMERA_MIN} to ${CAMERA_MAX} cameras, has ${cameras.length}`);
+  if (cams.size !== cameras.length) problems.push(`${id}: a camera id is used twice`);
+  for (const c of cameras) {
+    if (!ID.test(c.id || '') || !c.name) problems.push(`${id}: every camera needs an id (lower-case-with-dashes) and a name`);
+    if (!c.states?.normal) problems.push(`${id}: camera ${c.id} has no "normal" state (its default picture)`);
+  }
+  if (!byId.has(data.start)) problems.push(`${id}: start scene ${data.start} doesn't exist`);
+  const noVoice = new Set();
+  const folders = new Set();
+  const read = new Set();
+  const wrote = new Set();
+  for (const s of scenes) {
+    if (byId.get(s.id) !== s) problems.push(`${id}: duplicate scene id ${s.id}`);
+    if (!s.folder || !ID.test(s.folder)) problems.push(`${at(s)}: folder must be lower-case-with-dashes`);
+    if (folders.has(s.folder)) problems.push(`${at(s)}: folder ${s.folder} is used twice`);
+    folders.add(s.folder);
+    if (typeof s.title !== 'string' || !s.title) problems.push(`${at(s)}: title must be a string`);
+    if (!TIME.test(s.time ?? '')) problems.push(`${at(s)}: time must be HH:MM (the shift log's timestamp)`);
+    if (s.ambience && !data.ambience?.[s.ambience]) problems.push(`${at(s)}: ambience ${s.ambience} isn't in ambience`);
+    for (const [cam, state] of Object.entries(s.feeds ?? {})) {
+      if (!cams.has(cam)) problems.push(`${at(s)}: feeds names camera ${cam}, which isn't in cameras`);
+      else if (!cams.get(cam).states?.[state]) problems.push(`${at(s)}: camera ${cam} has no state "${state}"`);
+    }
+    if (s.focus && !cams.has(s.focus)) problems.push(`${at(s)}: focus ${s.focus} isn't a camera`);
+    if (!Array.isArray(s.lines) || !s.lines.length) problems.push(`${at(s)}: no lines (a scene is heard: at least one voiced line)`);
+    for (const l of s.lines ?? []) {
+      const who = data.speakers?.[l.speaker];
+      if (!who) problems.push(`${at(s)}: speaker ${l.speaker} isn't in speakers`);
+      else if (!who.voice) noVoice.add(l.speaker);
+      if (!l.text) problems.push(`${at(s)}: a line of ${l.speaker} has no text`);
+      if (l.sfx && !data.sfx?.[l.sfx]) problems.push(`${at(s)}: sfx cue ${l.sfx} isn't in sfx`);
+    }
+    if (s.log != null && typeof s.log !== 'string') problems.push(`${at(s)}: log must be a string`);
+    if (!s.log) warnings.push(`${at(s)}: no log line (the shift log shows a blank for it)`);
+    if (s.ending && (typeof s.ending !== 'string' || (s.choices ?? []).length)) problems.push(`${at(s)}: an ending is a string and has no choices`);
+    if (!s.ending && !(s.choices ?? []).length) problems.push(`${at(s)}: no choices and no ending (a dead end)`);
+    for (const c of s.choices ?? []) {
+      for (const k of Object.keys(c)) if (!CHOICE_KEYS.includes(k)) problems.push(`${at(s)}: choice "${c.say}" has an unknown field ${k}`);
+      if (!c.say) problems.push(`${at(s)}: a choice has no words`);
+      if (!byId.has(c.next)) problems.push(`${at(s)}: choice "${c.say}" goes to ${c.next}, which doesn't exist`);
+      for (const k of ['requires', 'forbids']) for (const f of c[k] ?? []) (flags.has(f) ? read.add(f) : problems.push(`${at(s)}: choice "${c.say}" ${k} ${f}, which isn't in state.flags`));
+      for (const k of ['set', 'clear']) for (const f of c[k] ?? []) (flags.has(f) ? (k === 'set' && wrote.add(f)) : problems.push(`${at(s)}: choice "${c.say}" ${k}s ${f}, which isn't in state.flags`));
+      for (const m of Object.keys(c.meters ?? {})) (meters[m] ? read.add(m) : problems.push(`${at(s)}: choice "${c.say}" tests meter ${m}, which isn't in state.meters`));
+      for (const [m, n] of Object.entries(c.add ?? {})) {
+        if (!meters[m]) problems.push(`${at(s)}: choice "${c.say}" adds to meter ${m}, which isn't in state.meters`);
+        else if (!Number.isInteger(n) || !n) problems.push(`${at(s)}: choice "${c.say}" adds ${n} to ${m}: a whole number, not 0`);
+      }
+      if (c.cosmetic != null && (typeof c.cosmetic !== 'string' || !c.cosmetic)) problems.push(`${at(s)}: choice "${c.say}" is cosmetic: say why, as a string`);
+    }
+    const said = [s.title, s.ending ?? '', ...(s.lines ?? []).map((l) => l.text), ...(s.choices ?? []).map((c) => c.say)].join(' ').toLowerCase();
+    for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) problems.push(`${at(s)}: its words say "${w}", which this story never says (unspoken)`);
+  }
+  for (const who of noVoice) warnings.push(`${id}: ${who} has no voice id yet, so its lines have no voice recipe (the player reads them on a timer until they're made)`);
+  if (!scenes.some((s) => s.ending)) warnings.push(`${id}: no ending yet (a scene with an "ending"): its card's badge can't say Completed until it has one`);
+  for (const f of flags) {
+    if (read.has(f) && !wrote.has(f)) problems.push(`${id}: flag ${f} is read by a choice but nothing sets it`);
+    else if (!read.has(f)) warnings.push(`${id}: flag ${f} is set but no choice reads it`);
+  }
+  if (problems.some((p) => p.startsWith(`${id}`))) return;
+
+  // Every state the story can be in (the same explorer the playtest walks).
+  const shape = consoleShape(st);
+  const cap = data.stateCap ?? 50000;
+  const x = (st.explored = rules.explore(shape, { cap, maxCosmetic: 2 }));
+  const where = (path) => path.join(' > ');
+  if (x.capped) warnings.push(`${id}: more than ${cap} states; the state check stopped early, so unreachable scenes and unusable choices below may be missed`);
+  for (const s of scenes) if (!x.scenes[s.id] && !x.capped) problems.push(`${at(s)}: no way of playing reaches this scene (no usable choice leads here under any state)`);
+  for (const bad of x.stuck) problems.push(`${id}/${bad.scene}: no usable choice when you hold ${sayOf(bad.state)} (via ${where(bad.path)}); every state of a scene that isn't an ending needs a choice`);
+  for (const s of scenes) {
+    (s.choices ?? []).forEach((c, i) => {
+      const used = x.used[`${s.id}#${i}`];
+      if (!used) return void (x.capped || problems.push(`${at(s)}: choice "${c.say}" can never be made: its conditions fail in every state that reaches the scene`));
+      if (!c.cosmetic && !used.changes && !used.branch && !c.log) problems.push(`${at(s)}: choice "${c.say}" has no visible effect: it sets or changes nothing, adds no log line and leads where another choice here leads (give it an effect, or mark it "cosmetic" with a reason)`);
+    });
+  }
+  for (const c of x.cosmetic) problems.push(`${id}/${c.scene}: more than 2 cosmetic choices on one run (${where(c.path)})`);
+}
+
+/** Where a console story's made media would be, and whether it is. */
+const consoleFiles = (st) => ({
+  line: (s, i) => `${st.base}${s.folder}/media/line-${i + 1}.mp3`,
+  bed: (cue) => `${st.base}media/ambience/${cue}.mp3`,
+  sfx: (cue) => `${st.base}media/sfx/${cue}.mp3`,
+  feed: (cam, state) => `${st.base}media/feeds/${cam}-${state}.png`,
+});
+const urlIfMade = (rel) => (exists(rel) ? '/' + rel : null);
+
+function consoleData(st) {
+  const d = st.data;
+  const f = consoleFiles(st);
+  const scenes = {};
+  for (const s of st.scenes) {
+    scenes[s.id] = {
+      folder: st.base + s.folder,
+      lang: 'en',
+      dir: '',
+      time: s.time,
+      title: [s.title, s.title],
+      ...(s.ambience ? { ambience: s.ambience } : {}),
+      ...(s.feeds ? { feeds: s.feeds } : {}),
+      ...(s.focus ? { focus: s.focus } : {}),
+      lines: s.lines.map((l, i) => ({
+        speaker: l.speaker,
+        text: l.text,
+        ...(l.sfx ? { sfx: l.sfx } : {}),
+        file: l.file ?? urlIfMade(f.line(s, i)),
+        dur: l.dur ?? Math.round((words(l.text) / 2.5 + 1) * 10) / 10,
+      })),
+      log: s.log ?? '',
+      ...(s.ending ? { ending: [s.ending, s.ending] } : {}),
+      choices: s.choices.map(consoleChoice),
+    };
+  }
+  return {
+    id: st.id,
+    type: 'console',
+    title: titleOf(st),
+    tagline: d.tagline ?? '',
+    logline: st.entry.logline,
+    image: st.entry.image ?? null,
+    listed: st.listed,
+    cookie: d.cookie,
+    tap: d.tap,
+    start: d.start,
+    ui: { en: { mouth: 'Start', depth: 'Step' } },
+    state: d.state ?? { flags: [], meters: {} },
+    cameras: d.cameras.map((c) => ({
+      id: c.id,
+      name: c.name,
+      states: Object.fromEntries(Object.entries(c.states).map(([state, desc]) => [state, { desc, image: urlIfMade(f.feed(c.id, state)) }])),
+    })),
+    speakers: Object.fromEntries(Object.entries(d.speakers ?? {}).map(([k, v]) => [k, { name: v.name }])),
+    ambience: Object.fromEntries(Object.keys(d.ambience ?? {}).map((cue) => [cue, urlIfMade(f.bed(cue))])),
+    sfx: Object.fromEntries(Object.keys(d.sfx ?? {}).map((cue) => [cue, urlIfMade(f.sfx(cue))])),
+    ...(d.unspoken ? { unspoken: d.unspoken } : {}),
+    scenes,
+  };
+}
+
+/** A console scene's branch page: its wall, its words, its log line, the state on the shortest way here (marked), and
+    each choice (a link when the choice is open in that state, shown locked with what it needs when it isn't). */
+function consolePage(st, s) {
+  const d = st.data;
+  const tap = d.tap ?? {};
+  const canon = st.explored?.scenes[s.id];
+  const state = canon?.state ?? rules.fresh(consoleShape(st));
+  const feeds = rules.feedsOf(consoleShape(st), s);
+  const data = consoleData(st);
+  const ds = data.scenes[s.id];
+  const needs = (c) => [...(c.requires ?? []).map((f) => `${f} set`), ...(c.forbids ?? []).map((f) => `${f} not set`), ...Object.entries(c.meters ?? {}).map(([m, r]) => `${m} ${r.min != null ? `at least ${r.min}` : ''}${r.min != null && r.max != null ? ', ' : ''}${r.max != null ? `at most ${r.max}` : ''}`)];
+  const tiles = d.cameras
+    .map((cam, i) => {
+      const img = data.cameras[i].states[feeds[cam.id]]?.image;
+      return `<figure class="feed${cam.id === s.focus ? ' is-focus' : ''}" data-camera="${cam.id}" data-state="${esc(feeds[cam.id])}"><div class="feed-pic">${img ? `<img src="${esc(img)}" alt="${esc(cam.states[feeds[cam.id]])}" loading="lazy">` : `<span class="feed-blank" aria-hidden="true"></span>`}</div><figcaption><b>${esc(cam.id.toUpperCase())}</b> ${esc(cam.name)}${feeds[cam.id] === 'normal' ? '' : ` <em>${esc(feeds[cam.id])}</em>`}</figcaption></figure>`;
+    })
+    .join('');
+  const lines = s.lines
+    .map((l, i) => `<li><span class="line-who">${esc(d.speakers[l.speaker].name)}</span> ${esc(l.text)}${ds.lines[i].file ? ` <audio controls preload="none" src="${esc(ds.lines[i].file)}"></audio>` : ''}</li>`)
+    .join('');
+  const choices = s.choices
+    .map((c, i) => {
+      const to = st.byId.get(c.next);
+      const open = rules.usable(consoleChoice(c), state);
+      return open
+        ? `<a class="choice" href="/${st.base}${to.folder}/">${esc(c.say)}</a>`
+        : `<span class="choice is-locked" aria-disabled="true">${esc(c.say)} <small>(needs ${esc(needs(c).join('; '))})</small></span>`;
+    })
+    .join('');
+  const meters = Object.entries(state.meters).map(([k, v]) => `${esc(k)} ${v}`).join(', ');
+  return `<!DOCTYPE html>
+<!-- Generated by tools/build-story.mjs from ${st.file} (scene "${s.id}"). Do not edit: change the data and run \`npm run story\`. -->
+<html lang="en"${tap.title ? ` data-tap-title="${esc(tap.title)}"` : ''}${tap.line ? ` data-tap-line="${esc(tap.line)}"` : ''}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>${esc(s.title)} · ${esc(titleOf(st))}</title>
+  <meta name="description" content="${esc(s.lines.map((l) => l.text).join(' '))}">
+  <link rel="canonical" href="https://imaginelivetv.com/${st.base}${s.folder}">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/site.css">
+  <meta name="theme-color" content="#070807">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/">Imagine Live TV</a>
+  </header>
+
+  <main class="passage console-passage" data-story="${st.id}" data-node="${s.folder}" data-type="console"${s.ending ? ' data-state="soon"' : ''}>
+    <h1>${esc(s.title)}</h1>
+    <p class="passage-note"><time>${esc(s.time)}</time> · ${esc(s.log ?? '')}</p>
+    <aside class="canon" data-canon>
+      <strong>State on the shortest way here</strong>
+      <span class="canon-path">${esc((canon?.path ?? []).join(' > '))}</span>
+      <span class="canon-flags">Flags: ${Object.keys(state.flags).length ? Object.keys(state.flags).sort().map(esc).join(', ') : 'none'}</span>
+      <span class="canon-meters">Meters: ${meters || 'none'}</span>
+      <span class="canon-note">The page is drawn for this state: a choice that needs another state is shown locked. In the player, the state is the one you earned.</span>
+    </aside>
+    <div class="wall" data-wall>${tiles}</div>
+    <ol class="passage-lines">${lines}</ol>
+    ${s.ending ? `<p class="passage-prompt">${esc(s.ending)}</p>` : ''}
+    ${choices ? `<div class="spark-choices">${choices}</div>` : ''}
+  </main>
+
+  <footer class="site-footer">
+    <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>
+    <p class="powered">Powered by <a class="powered-mark" href="https://hawkesgen.com">HAWKES GEN</a></p>
+    <p class="stats-note">Anonymous viewing statistics (no cookies, no personal data, no IP stored) help us improve the stories. <a href="/privacy.html">Privacy</a></p>
+  </footer>
+  <script src="/js/hawkes-build.js"></script>
+  <script src="/js/hawkes-analytics.js" data-product="imaginelivetv"></script>
+  <script src="/js/analytics.js"></script>
+  <script src="/js/hawkes-sound.js"></script>
+</body>
+</html>
+`;
+}
+
+/** The recipes for a console story's media: camera stills (image.generate for the normal picture, image.edit for
+    every other state of it), ambience beds and sound effects (audio.sfx), and each voiced line (audio.voice,
+    eleven_v4, with the line's performance tags in front). */
+function consoleAssets(st) {
+  const d = st.data;
+  const f = consoleFiles(st);
+  const P = st.prefix;
+  const of = ` (${titleOf(st)})`;
+  const list = [];
+  const still = (desc) => `A fixed security camera frame, 16:9: ${desc}`;
+  for (const cam of d.cameras) {
+    const base = f.feed(cam.id, 'normal');
+    for (const [state, desc] of Object.entries(cam.states)) {
+      if (state === 'normal') {
+        list.push({
+          id: `${P}feed-${cam.id}-normal`,
+          note: `Camera ${cam.id.toUpperCase()} ${cam.name}${of}: the normal picture.`,
+          steps: [{ tool: 'image.generate', params: { prompt: positive(d, `${still(desc)} ${d.style}`), width: 1024, height: 576 }, save: 'image' }],
+          candidates: 3,
+          pick: `matches the description (${desc}); reads as a security camera frame; empty and quiet; no text, no timestamp`,
+          files: { image: base },
+        });
+      } else {
+        list.push({
+          id: `${P}feed-${cam.id}-${state}`,
+          note: `Camera ${cam.id.toUpperCase()} ${cam.name}${of}: ${state}.`,
+          inputs: [base],
+          steps: [{ tool: 'image.edit', params: { prompt: `${still(desc)} Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. ${d.style}`, negative: d.negative, width: 1024, height: 576 }, inputs: { images: ['$input:0'] }, save: 'image' }],
+          candidates: 2,
+          pick: `the same camera view as the normal picture with only this change: ${desc}; no text`,
+          files: { image: f.feed(cam.id, state) },
+        });
+      }
+    }
+  }
+  for (const [cue, text] of Object.entries(d.ambience ?? {})) {
+    list.push({ id: `${P}ambience-${cue}`, note: `Ambience bed ${cue}${of}: a loop under the scenes that use it.`, steps: [{ tool: 'audio.sfx', params: { text, duration: 30, loop: true }, save: 'bed' }], files: { bed: f.bed(cue) } });
+  }
+  for (const [cue, text] of Object.entries(d.sfx ?? {})) {
+    list.push({ id: `${P}sfx-${cue}`, note: `Sound effect ${cue}${of}.`, steps: [{ tool: 'audio.sfx', params: { text, duration: 2 }, save: 'sfx' }], files: { sfx: f.sfx(cue) } });
+  }
+  for (const s of st.scenes) {
+    s.lines.forEach((l, i) => {
+      const who = d.speakers[l.speaker];
+      if (!who?.voice) return;
+      const tags = String(l.perform ?? '').split(',').map((t) => t.trim()).filter(Boolean).map((t) => `[${t}]`).join('');
+      list.push({
+        id: `${P}${s.id}-line-${i + 1}`,
+        note: `${s.title}${of}: ${who.name} says "${l.text}"${l.draft ? ' (DRAFT line: J to approve)' : ''}.`,
+        steps: [{ tool: 'audio.voice', params: { text: `${tags ? tags + ' ' : ''}${l.text}`, voice: who.voice, model: d.narrator?.model ?? 'eleven_v4' }, save: 'line' }],
+        files: { line: f.line(s, i) },
+      });
+    });
+  }
+  return list;
+}
+
 /* ---------------- write ---------------- */
 
 const changed = [];
@@ -642,7 +963,7 @@ function strays() {
 
 validateAll();
 if (!problems.length) {
-  for (const st of stories) for (const s of st.scenes) if (useOf(st, s) === 'gen') cut(st, s);
+  for (const st of stories) for (const s of st.scenes) if (!st.console && useOf(st, s) === 'gen') cut(st, s);
   const assetsText = assetsFile();
   write('js/story-data.js', storyData());
   write('index.html', landing());
@@ -668,7 +989,7 @@ if (CHECK) {
   for (const c of changed) console.log(`wrote    ${c}`);
   for (const st of stories) {
     const gen = st.scenes.filter((s) => useOf(st, s) === 'gen').length;
-    console.log(`${st.id}: ${st.scenes.length} scenes (${gen} on generated media)${st.listed ? '' : ', not on the landing page'}`);
+    console.log(`${st.id}: ${st.scenes.length} scenes (${st.console ? `console story, ${st.explored?.states ?? 0} states explored` : `${gen} on generated media`})${st.listed ? '' : ', not on the landing page'}`);
   }
   console.log(`${changed.length} file(s) changed`);
 }

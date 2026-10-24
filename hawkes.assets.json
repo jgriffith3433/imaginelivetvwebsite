@@ -3209,6 +3209,225 @@
       "files": {
         "narration": "water-road/the-price-of-water/media/narration.mp3"
       }
+    },
+    {
+      "id": "night-shift-demo-feed-c1-normal",
+      "note": "Camera C1 Lobby (Night Shift (demo)): the normal picture.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: The lobby desk, the turnstiles and the revolving door, all empty, the long bench by the window. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the description (The lobby desk, the turnstiles and the revolving door, all empty, the long bench by the window.); reads as a security camera frame; empty and quiet; no text, no timestamp",
+      "files": {
+        "image": "night-shift-demo/media/feeds/c1-normal.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-feed-c2-normal",
+      "note": "Camera C2 Vestibule (Night Shift (demo)): the normal picture.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: The airlock between Madison Avenue and the lobby, one bench-like ledge, cold light from the street. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the description (The airlock between Madison Avenue and the lobby, one bench-like ledge, cold light from the street.); reads as a security camera frame; empty and quiet; no text, no timestamp",
+      "files": {
+        "image": "night-shift-demo/media/feeds/c2-normal.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-feed-c3-normal",
+      "note": "Camera C3 Loading dock (Night Shift (demo)): the normal picture.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: The rollup door, the dock office window and a trash compactor under a single caged bulb. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the description (The rollup door, the dock office window and a trash compactor under a single caged bulb.); reads as a security camera frame; empty and quiet; no text, no timestamp",
+      "files": {
+        "image": "night-shift-demo/media/feeds/c3-normal.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-feed-c4-normal",
+      "note": "Camera C4 Stairwell C, 31 (Night Shift (demo)): the normal picture.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: A fire door on a concrete landing with a painted number 31, closed. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the description (A fire door on a concrete landing with a painted number 31, closed.); reads as a security camera frame; empty and quiet; no text, no timestamp",
+      "files": {
+        "image": "night-shift-demo/media/feeds/c4-normal.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-feed-c4-wedge",
+      "note": "Camera C4 Stairwell C, 31 (Night Shift (demo)): wedge.",
+      "inputs": [
+        "night-shift-demo/media/feeds/c4-normal.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
+            "width": 1024,
+            "height": 576
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 2,
+      "pick": "the same camera view as the normal picture with only this change: The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge.; no text",
+      "files": {
+        "image": "night-shift-demo/media/feeds/c4-wedge.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-feed-c5-normal",
+      "note": "Camera C5 Elevator lobby, 31 (Night Shift (demo)): the normal picture.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: Four elevator cars, a call panel and a plant, the floor shining. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the description (Four elevator cars, a call panel and a plant, the floor shining.); reads as a security camera frame; empty and quiet; no text, no timestamp",
+      "files": {
+        "image": "night-shift-demo/media/feeds/c5-normal.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-feed-c6-normal",
+      "note": "Camera C6 Floor 44 corridor (Night Shift (demo)): the normal picture.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: A long carpeted corridor and a janitor's closet door at the far end. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the description (A long carpeted corridor and a janitor's closet door at the far end.); reads as a security camera frame; empty and quiet; no text, no timestamp",
+      "files": {
+        "image": "night-shift-demo/media/feeds/c6-normal.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-ambience-control-room",
+      "note": "Ambience bed control-room (Night Shift (demo)): a loop under the scenes that use it.",
+      "steps": [
+        {
+          "tool": "audio.sfx",
+          "params": {
+            "text": "The hum of a windowless control room at night: a wall of monitors, a ventilation fan, a distant elevator, nothing else.",
+            "duration": 30,
+            "loop": true
+          },
+          "save": "bed"
+        }
+      ],
+      "files": {
+        "bed": "night-shift-demo/media/ambience/control-room.mp3"
+      }
+    },
+    {
+      "id": "night-shift-demo-ambience-morning",
+      "note": "Ambience bed morning (Night Shift (demo)): a loop under the scenes that use it.",
+      "steps": [
+        {
+          "tool": "audio.sfx",
+          "params": {
+            "text": "A lobby at dawn: a revolving door turning once, the street far away, a coffee machine ticking.",
+            "duration": 30,
+            "loop": true
+          },
+          "save": "bed"
+        }
+      ],
+      "files": {
+        "bed": "night-shift-demo/media/ambience/morning.mp3"
+      }
+    },
+    {
+      "id": "night-shift-demo-sfx-radio-squelch",
+      "note": "Sound effect radio-squelch (Night Shift (demo)).",
+      "steps": [
+        {
+          "tool": "audio.sfx",
+          "params": {
+            "text": "A short handheld radio squelch and click, a man's hand keying it.",
+            "duration": 2
+          },
+          "save": "sfx"
+        }
+      ],
+      "files": {
+        "sfx": "night-shift-demo/media/sfx/radio-squelch.mp3"
+      }
+    },
+    {
+      "id": "night-shift-demo-sfx-pencil",
+      "note": "Sound effect pencil (Night Shift (demo)).",
+      "steps": [
+        {
+          "tool": "audio.sfx",
+          "params": {
+            "text": "A pencil writing on paper, a few short strokes.",
+            "duration": 2
+          },
+          "save": "sfx"
+        }
+      ],
+      "files": {
+        "sfx": "night-shift-demo/media/sfx/pencil.mp3"
+      }
     }
   ]
 }

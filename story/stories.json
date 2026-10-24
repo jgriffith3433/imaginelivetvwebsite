@@ -13,6 +13,11 @@
       "logline": "Forty barrels of water, a dying town on the far side of the desert, and a revolver you've never fired. Every page costs water.",
       "image": "/assets/images/water-road.jpg",
       "alt": "A mourning dove on a dead branch at dawn, a water caravan setting out across the desert below"
+    },
+    {
+      "id": "night-shift-demo",
+      "logline": "A placeholder night in a Manhattan tower: a radio check, a door on camera four, and a report with your name on it.",
+      "listed": false
     }
   ]
 }
