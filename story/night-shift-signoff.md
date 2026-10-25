@@ -135,8 +135,13 @@ Nothing new is claimed. What was looked at, and what was found:
   screens now fit (smaller card, wall 39dvh; at 360x640 the subtitles are a thin strip there). `stories`, `branches`, `pages`, `sound`, `credits`, `analytics`, `cctv-art` and
   `night-shift-signoff` `{"at":"whole"}` (about 50 minutes) have no run on this build. `npm run test:endings` and `test:player` skip here (jsdom isn't installed on this PC).
 
+## Status, 2026-10-25 (fourth attempt)
+
+- **Reports:** no beta report for this commit was available to this session, so every scenario in the criteria is **not run** here and no run id is cited. Nothing below claims a pass.
+- **Changed:** the landscape end screen (844x390) with a camera feed enlarged needed a scroll (`console-big` 339..440 of 390). `css/site.css` now makes the wall narrower and the enlarged picture shorter on that end screen. **Not yet seen in a run:** the next beta `night-shift-signoff` or `console` run shows whether it fits.
+- **Checked by command:** `npm run story -- --check` ok (4 stories, 304 scenes, nothing stale). Voices: all 1,410 have files (see the status above); no voice job was needed or run.
+- **GPU:** none used.
+
 ## Left
 
-1. **J's own listening to the voices and reading the script.** No agent has heard a voice or read the whole night as a viewer: a `perform` tag read aloud,
-   a drifting voice, two speakers alike, a wrong-sounding treatment, a line that reads badly.
-2. **Not J's: the landscape end screen above**, and the scenarios with no run on this build.
+1. **J's own listening to the voices and reading the script.**

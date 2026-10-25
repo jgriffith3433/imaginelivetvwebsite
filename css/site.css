@@ -1850,6 +1850,9 @@ figure.feed { cursor: default; }
   /* The wall is as tall as its tiles make it (a third of its width, three rows), so on a short screen its width follows the
      height that is left under the site bar and the console bar, whatever the width: it never pushes the page into a scroll. */
   .console-wall { width: min(100%, calc((100dvh - 7.6rem) * 16 / 9)); }
+  /* End screen with a feed enlarged: the wall gives the enlarged picture its height (it was 339..440 of 390). */
+  .console[data-state="soon"] .console-wall { width: min(100%, calc((100dvh - 7.6rem - 4.5rem) * 16 / 9)); }
+  .console[data-state="soon"] .big-pic { height: clamp(44px, 12dvh, 60px); }
   /* Many choices (up to twelve) scroll inside the words column; each stays whole and 44px tall. */
   .console-choices { padding-bottom: 0.15rem; }
   .console-choices .choice { flex: none; }
