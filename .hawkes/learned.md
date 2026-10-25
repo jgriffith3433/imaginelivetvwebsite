@@ -1,2 +1,0 @@
-- lesson: stale audit docs — story/night-shift-gaps.md was written before later merges; re-measure with scripts (explorer in js/console-rules.js, line files under night-shift/<folder>/media) before trusting it.
-- convention: scenario `night-shift-gaps` checks the gaps doc against js/story-data.js; update its numbers when the story changes.
