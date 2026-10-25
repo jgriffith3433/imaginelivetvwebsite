@@ -319,6 +319,15 @@
     if (hooks.tell) hooks.tell("feature", { story: story.id, feature: "feed", camera: id || "none" });
   }
 
+  // When the strip changes height (the end screen shrinks it, the phone turns), it stays on its newest line.
+  if (window.ResizeObserver) {
+    var subsH = 0;
+    new ResizeObserver(function () {
+      var h = els.subs.clientHeight;
+      if (h !== subsH) { subsH = h; els.subs.scrollTop = els.subs.scrollHeight; }
+    }).observe(els.subs);
+  }
+
   function renderSubs() {
     var s = scene();
     els.subs.replaceChildren();

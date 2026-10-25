@@ -2782,7 +2782,7 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
     const c = clipOf(subsEl);
     const top = Math.max(sr.top, c.top);
     const bottom = Math.min(sr.bottom, c.bottom);
-    if (lr.height > 0 && (lr.top < top - 1 || lr.bottom > bottom + 1)) bad(`the subtitle strip cuts the newest line off (the line is ${Math.round(lr.height)} px tall, ${Math.round(lr.top)}..${Math.round(lr.bottom)}; the strip shows ${Math.round(top)}..${Math.round(bottom)}, ${Math.round(bottom - top)} px)`);
+    if (lr.height > 0 && (lr.top < top - 1 || lr.bottom > bottom + 1)) bad(`the subtitle strip cuts the newest line off (the line is ${Math.round(lr.height)} px tall, ${Math.round(lr.top)}..${Math.round(lr.bottom)}; the strip shows ${Math.round(top)}..${Math.round(bottom)}, ${Math.round(bottom - top)} px; ${["#console-endcard", ".console-endcard", "#console-wall", "#console-big:not([hidden])", ".console-panel", "#console-subs", ".console-controls", "#console-ending:not([hidden])"].map((q) => { const b = doc.querySelector(q)?.getBoundingClientRect(); return b ? `${q} ${Math.round(b.top)}..${Math.round(b.bottom)}` : ""; }).filter(Boolean).join(", ")}; scrollTop ${Math.round(subsEl.scrollTop)} of ${Math.round(subsEl.scrollHeight)})`);
   }
   // A choice's words are all there (not cut off by the button).
   for (const b of openChoices(doc)) if (b.scrollWidth > b.clientWidth + 1) bad(`choice "${b.textContent.trim()}" is cut off at the side`);
@@ -4073,16 +4073,15 @@ async function nightSignoffRun(options, t) {
           if (shown.hidden || shown.textContent.trim() !== sc.ending[0]) t.problem("bug", `${label}: the ending isn't shown (it says "${shown.textContent.trim()}")`);
           if (!w && stories().run(st.id) !== "end") t.problem("bug", `${label}: at an ending the run says "${stories().run(st.id)}", not end`);
           await consoleFit(t, doc, `${label}, the end screen`, { endScreen: true });
-          // A viewer can enlarge a camera feed at the ending too: the end screen must still fit with no scroll.
+          // The ending opens with the scene's camera enlarged (checked above); a press on a feed toggles it, so the other state is checked too: the end screen fits with and without the enlarged feed.
           const bigTile = doc.querySelector("#console-wall .feed");
           if (bigTile) {
-            at("end screen with a feed enlarged");
+            at("end screen with the feed toggled");
+            const wasBig = !byIdIn(doc, "console-big").hidden;
             await tapAt(t, bigTile, `a feed on the end screen (${label})`);
             await sleep(200);
-            if (byIdIn(doc, "console-big").hidden) t.problem("bug", `${label}: pressing a feed on the end screen didn't enlarge it`);
-            await consoleFit(t, doc, `${label}, the end screen with a feed enlarged`, { endScreen: true });
-            const closeBig = doc.querySelector("#console-big .big-close");
-            if (closeBig) await tapAt(t, closeBig, `Shrink (${label})`);
+            if (byIdIn(doc, "console-big").hidden === wasBig) t.problem("bug", `${label}: pressing a feed on the end screen didn't ${wasBig ? "shrink" : "enlarge"} it`);
+            await consoleFit(t, doc, `${label}, the end screen ${wasBig ? "with the feed shrunk" : "with a feed enlarged"}`, { endScreen: true });
           }
           t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
           done++;
