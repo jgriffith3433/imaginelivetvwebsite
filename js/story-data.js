@@ -1757,6 +1757,11974 @@ window.ILTV_STORIES = {
      "choices": []
     }
    }
+  },
+  {
+   "id": "night-shift",
+   "type": "console",
+   "title": "Night Shift",
+   "tagline": "Observe and report.",
+   "logline": "Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who knows every door, and a report with your name on it.",
+   "image": null,
+   "listed": false,
+   "cookie": "nightShiftProgress",
+   "tap": {
+    "title": "NIGHT SHIFT",
+    "line": "Radio check."
+   },
+   "start": "handover",
+   "ui": {
+    "en": {
+     "mouth": "Start",
+     "depth": "Step"
+    }
+   },
+   "state": {
+    "flags": [
+     "asked_44",
+     "asked_sandwich",
+     "left_wall",
+     "lied",
+     "met_dev",
+     "noticed_12th",
+     "noticed_notice",
+     "opined",
+     "trouble_open",
+     "wedge_open"
+    ],
+    "meters": {
+     "trainer_trust": {
+      "min": 0,
+      "max": 3,
+      "start": 1
+     },
+     "trainer_warmth": {
+      "min": 0,
+      "max": 2,
+      "start": 0
+     },
+     "slips": {
+      "min": 0,
+      "max": 2,
+      "start": 0
+     },
+     "building_known": {
+      "min": 0,
+      "max": 2,
+      "start": 0
+     }
+    }
+   },
+   "cameras": [
+    {
+     "id": "c1",
+     "name": "1 Lobby",
+     "states": {
+      "normal": {
+       "desc": "The lobby: the long desk, the turnstiles, the revolving door and the bench by the window, all empty under flat light.",
+       "image": null
+      },
+      "desk-visitor": {
+       "desc": "The lobby desk: a young officer leaning over it, and a man in a hi-vis vest with a clipboard on the other side.",
+       "image": null
+      },
+      "laptop": {
+       "desc": "The bench by the window with a closed laptop and a lanyard left on it, nobody near.",
+       "image": null
+      },
+      "coat": {
+       "desc": "A man in a long dark coat crossing the lobby toward the elevators, phone in hand, not looking at the camera.",
+       "image": null
+      },
+      "box": {
+       "desc": "A cardboard box on the lobby desk, a courier's hand just leaving the frame.",
+       "image": null
+      },
+      "dawn": {
+       "desc": "The lobby in grey early light at the revolving door, the first shapes of the day staff beyond the glass.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "name": "2 Vestibule",
+     "states": {
+      "normal": {
+       "desc": "The glass airlock between Madison Avenue and the lobby, a ledge along one wall, the street light cold on the floor.",
+       "image": null
+      },
+      "sleeper": {
+       "desc": "The vestibule ledge with a man lying along it under a worn coat, his shoes together, frost at the corners of the glass.",
+       "image": null
+      },
+      "empty-cold": {
+       "desc": "The vestibule with a folded coat's worth of damp on the ledge and the outer door still swinging shut.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c3",
+     "name": "3 Loading dock",
+     "states": {
+      "normal": {
+       "desc": "The rollup door, the dock office window and a trash compactor under a single caged bulb.",
+       "image": null
+      },
+      "van": {
+       "desc": "The rollup door half raised, a white van's lights beyond it, a man in a cap standing at the intercom with a box.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "name": "4 Stairwell C, 31",
+     "states": {
+      "normal": {
+       "desc": "A fire door on a concrete landing with a painted number 31, closed.",
+       "image": null
+      },
+      "wedge": {
+       "desc": "The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c5",
+     "name": "5 Elevator lobby, 31",
+     "states": {
+      "normal": {
+       "desc": "Four elevator cars, a call panel and a plant, the floor shining.",
+       "image": null
+      },
+      "stuck": {
+       "desc": "The four elevators; the indicator over one car frozen between 30 and 31, its doors closed, the call light lit.",
+       "image": null
+      },
+      "cart": {
+       "desc": "The four elevators with a cleaning cart parked in front of them, bags tied on the rail.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c6",
+     "name": "6 Floor 44 corridor",
+     "states": {
+      "normal": {
+       "desc": "A long carpeted corridor and a janitor's closet door at the far end.",
+       "image": null
+      },
+      "reader": {
+       "desc": "A woman in a cleaner's smock and a younger man holding a mop bucket stand at a badge reader beside a door.",
+       "image": null
+      },
+      "leak": {
+       "desc": "The janitor's closet door at the end of the corridor with a dark stain spreading across the carpet from its sill.",
+       "image": null
+      },
+      "papers": {
+       "desc": "A woman holding a sheet of paper up toward the camera, the young man behind her with the bucket.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c7",
+     "name": "7 58 reception",
+     "states": {
+      "normal": {
+       "desc": "A reception with tall glass doors, a low desk nobody sits at and one lamp left on.",
+       "image": null
+      },
+      "coat": {
+       "desc": "The reception lit, a man in a long dark coat crossing it toward the glass doors, phone in hand.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c8",
+     "name": "8 Roof door",
+     "states": {
+      "normal": {
+       "desc": "A steel door with a push bar, a sign and a single light above it, closed.",
+       "image": null
+      }
+     }
+    },
+    {
+     "id": "c9",
+     "name": "9 Floor 2 alcove",
+     "states": {
+      "normal": {
+       "desc": "A small alcove with a grey cabinet and the fire panel's repeater, one steady green light.",
+       "image": null
+      },
+      "frozen": {
+       "desc": "The same alcove, the picture caught with a faint horizontal tear across it as if the signal has stopped.",
+       "image": null
+      },
+      "trouble": {
+       "desc": "The alcove with the repeater showing a steady amber light.",
+       "image": null
+      }
+     }
+    }
+   ],
+   "speakers": {
+    "narrator": {
+     "name": "Narrator"
+    },
+    "dee": {
+     "name": "Dee"
+    },
+    "okafor": {
+     "name": "Mr. Okafor"
+    },
+    "terrell": {
+     "name": "Terrell"
+    },
+    "marisol": {
+     "name": "Marisol"
+    },
+    "dev": {
+     "name": "Dev"
+    },
+    "adler": {
+     "name": "Ms. Adler"
+    },
+    "courier": {
+     "name": "Courier"
+    },
+    "sleeper": {
+     "name": "The man in the vestibule"
+    },
+    "pierce": {
+     "name": "Pierce Hawkes"
+    }
+   },
+   "ambience": {
+    "control-room": null,
+    "control-room-late": null,
+    "lobby": null,
+    "vestibule": null,
+    "dock": null,
+    "stairwell": null,
+    "corridor": null,
+    "elevator": null,
+    "roof": null,
+    "morning": null
+   },
+   "sfx": {
+    "radio-squelch": null,
+    "radio-charger": null,
+    "walkie-squelch": null,
+    "tablet-tap": null,
+    "pencil": null,
+    "foil": null,
+    "door-buzz": null,
+    "phone-ring": null,
+    "intercom": null,
+    "elevator-chime": null,
+    "panel-buzzer": null,
+    "footsteps-stairs": null,
+    "coffee": null,
+    "drawer": null,
+    "paper": null,
+    "door-heavy": null,
+    "keys": null,
+    "clock-tick": null
+   },
+   "unspoken": [
+    "restricted",
+    "chimera",
+    "creature",
+    "experiment",
+    "b3",
+    "vat",
+    "specimen",
+    "laboratory"
+   ],
+   "scenes": {
+    "handover": {
+     "folder": "night-shift/handover",
+     "lang": "en",
+     "dir": "",
+     "time": "18:45",
+     "title": [
+      "Handover",
+      "Handover"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Let's walk through the log. I have a train.",
+       "sfx": "tablet-tap",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "okafor",
+       "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Forty-four. Water in the closet. Monitored.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "Dolores. You can say hello.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Hello. Sit anywhere that isn't mine.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Extinguisher. Mm-hm. Your train, Okafor.",
+       "file": null,
+       "dur": 3
+      }
+     ],
+     "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer.",
+     "choices": [
+      [
+       "Ask about forty-four",
+       "Ask about forty-four",
+       "binder-44",
+       {
+        "set": [
+         "asked_44"
+        ]
+       }
+      ],
+      [
+       "Ask about Thursday",
+       "Ask about Thursday",
+       "binder-thu"
+      ]
+     ]
+    },
+    "binder-44": {
+     "folder": "night-shift/binder-44",
+     "lang": "en",
+     "dir": "",
+     "time": "18:52",
+     "title": [
+      "The binder",
+      "The binder"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "Forty-four is the third line. Water was dry by four.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor turns the tablet toward you. A box for your initials sits under the last line of the day.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "okafor",
+       "text": "Initial here. That says you've seen the day's log.",
+       "sfx": "tablet-tap",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Read it.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "It's two pages.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Then it's two minutes.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Initial.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "1852 hrs. Day log shown to night post. Initials requested.",
+     "choices": [
+      [
+       "Read it, then initial",
+       "Read it, then initial",
+       "okafor-out",
+       {
+        "log": "Read the day log, both pages, then initialed."
+       }
+      ],
+      [
+       "Initial it now",
+       "Initial it now",
+       "okafor-out-fast",
+       {
+        "log": "Initialed the day log without reading it."
+       }
+      ]
+     ]
+    },
+    "binder-thu": {
+     "folder": "night-shift/binder-thu",
+     "lang": "en",
+     "dir": "",
+     "time": "18:52",
+     "title": [
+      "The binder",
+      "The binder"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "Thursday. Ten a.m. Not your shift.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor turns the tablet toward you. A box for your initials sits under the last line of the day.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "okafor",
+       "text": "Initial here. That says you've seen the day's log.",
+       "sfx": "tablet-tap",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Read it.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "It's two pages.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Then it's two minutes.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Initial.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "1852 hrs. Day log shown to night post. Initials requested.",
+     "choices": [
+      [
+       "Read it, then initial",
+       "Read it, then initial",
+       "okafor-out",
+       {
+        "log": "Read the day log, both pages, then initialed."
+       }
+      ],
+      [
+       "Initial it now",
+       "Initial it now",
+       "okafor-out-fast",
+       {
+        "log": "Initialed the day log without reading it."
+       }
+      ]
+     ]
+    },
+    "okafor-out": {
+     "folder": "night-shift/okafor-out",
+     "lang": "en",
+     "dir": "",
+     "time": "18:58",
+     "title": [
+      "Okafor leaves",
+      "Okafor leaves"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
+       "sfx": "door-heavy",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "dee",
+       "text": "Four radios. Four on the charger when I walk in. Four when I leave.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Doesn't matter why.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Coffee's on the left. It's wrong. Don't tell me it's wrong.",
+       "sfx": "coffee",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer. You've got a name? Say it once. I'll use it when I use it.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "1858 hrs. Day supervisor off post. Radios 4 of 4 on charger.",
+     "choices": [
+      [
+       "Count them with her",
+       "Count them with her",
+       "the-chairs",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Counted the four radios with D. Reyes."
+       }
+      ],
+      [
+       "Ask what she's counting",
+       "Ask what she's counting",
+       "the-chairs",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes what she is counting."
+       }
+      ],
+      [
+       "Knock on the wall, grinning",
+       "Knock on the wall, grinning",
+       "the-chairs-knock",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Knocked twice on the wall."
+       }
+      ]
+     ]
+    },
+    "okafor-out-fast": {
+     "folder": "night-shift/okafor-out-fast",
+     "lang": "en",
+     "dir": "",
+     "time": "18:58",
+     "title": [
+      "Okafor leaves",
+      "Okafor leaves"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
+       "sfx": "door-heavy",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "okafor",
+       "text": "It's customary to read it first.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four radios. Four on the charger when I walk in. Four when I leave.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Doesn't matter why.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Coffee's on the left. It's wrong. Don't tell me it's wrong.",
+       "sfx": "coffee",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer. You've got a name? Say it once. I'll use it when I use it.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "1858 hrs. Day supervisor off post. Radios 4 of 4 on charger.",
+     "choices": [
+      [
+       "Count them with her",
+       "Count them with her",
+       "the-chairs",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Counted the four radios with D. Reyes."
+       }
+      ],
+      [
+       "Ask what she's counting",
+       "Ask what she's counting",
+       "the-chairs",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes what she is counting."
+       }
+      ],
+      [
+       "Knock on the wall, grinning",
+       "Knock on the wall, grinning",
+       "the-chairs-knock",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Knocked twice on the wall."
+       }
+      ]
+     ]
+    },
+    "the-chairs": {
+     "folder": "night-shift/the-chairs",
+     "lang": "en",
+     "dir": "",
+     "time": "19:00",
+     "title": [
+      "The two chairs",
+      "The two chairs"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Sit.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "The clock's two minutes fast. Leave it.",
+       "sfx": "clock-tick",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Radios. You've got one. Clip it on.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 3.8
+      }
+     ],
+     "log": "1900 hrs. Control room. Wall clock runs two minutes fast.",
+     "choices": [
+      [
+       "Sit in the good chair",
+       "Sit in the good chair",
+       "chair-good",
+       {
+        "log": "Sat in the chair with the good back."
+       }
+      ],
+      [
+       "Sit in her chair",
+       "Sit in her chair",
+       "chair-hers",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Sat in D. Reyes's chair."
+       }
+      ],
+      [
+       "Ask about the clock",
+       "Ask about the clock",
+       "chair-clock",
+       {
+        "add": {
+         "trainer_warmth": 1,
+         "building_known": 1
+        },
+        "log": "Asked why the wall clock runs fast."
+       }
+      ]
+     ]
+    },
+    "the-chairs-knock": {
+     "folder": "night-shift/the-chairs-knock",
+     "lang": "en",
+     "dir": "",
+     "time": "19:00",
+     "title": [
+      "The two chairs",
+      "The two chairs"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Knocking on it again, are we.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Sit.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "The clock's two minutes fast. Leave it.",
+       "sfx": "clock-tick",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Radios. You've got one. Clip it on.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 3.8
+      }
+     ],
+     "log": "1900 hrs. Control room. Wall clock runs two minutes fast.",
+     "choices": [
+      [
+       "Sit in the good chair",
+       "Sit in the good chair",
+       "chair-good",
+       {
+        "log": "Sat in the chair with the good back."
+       }
+      ],
+      [
+       "Sit in her chair",
+       "Sit in her chair",
+       "chair-hers",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Sat in D. Reyes's chair."
+       }
+      ],
+      [
+       "Ask about the clock",
+       "Ask about the clock",
+       "chair-clock",
+       {
+        "add": {
+         "trainer_warmth": 1,
+         "building_known": 1
+        },
+        "log": "Asked why the wall clock runs fast."
+       }
+      ]
+     ]
+    },
+    "chair-good": {
+     "folder": "night-shift/chair-good",
+     "lang": "en",
+     "dir": "",
+     "time": "19:00",
+     "title": [
+      "The good chair",
+      "The good chair"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Back's all right? It's the only thing in here that is.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "terrell",
+       "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "That's you.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "1900 hrs. Radio check, post one.",
+     "choices": [
+      [
+       "Post one. Loud and clear.",
+       "Post one. Loud and clear.",
+       "radio-ok",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the 1900 radio check on time."
+       }
+      ],
+      [
+       "Fumble for the button",
+       "Fumble for the button",
+       "radio-late",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Answered the 1900 radio check a minute late."
+       }
+      ],
+      [
+       "Hold the radio out to Dee",
+       "Hold the radio out to Dee",
+       "radio-dee",
+       {
+        "add": {
+         "trainer_trust": -1,
+         "slips": 1
+        },
+        "log": "Held the radio out to D. Reyes at the 1900 radio check."
+       }
+      ]
+     ]
+    },
+    "chair-hers": {
+     "folder": "night-shift/chair-hers",
+     "lang": "en",
+     "dir": "",
+     "time": "19:00",
+     "title": [
+      "Her chair",
+      "Her chair"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "You're in my chair, Officer. Go on, I'll live.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Fine. Sit. It's a chair.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "terrell",
+       "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "That's you.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "1900 hrs. Radio check, post one.",
+     "choices": [
+      [
+       "Post one. Loud and clear.",
+       "Post one. Loud and clear.",
+       "radio-ok",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the 1900 radio check on time."
+       }
+      ],
+      [
+       "Fumble for the button",
+       "Fumble for the button",
+       "radio-late",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Answered the 1900 radio check a minute late."
+       }
+      ],
+      [
+       "Hold the radio out to Dee",
+       "Hold the radio out to Dee",
+       "radio-dee",
+       {
+        "add": {
+         "trainer_trust": -1,
+         "slips": 1
+        },
+        "log": "Held the radio out to D. Reyes at the 1900 radio check."
+       }
+      ]
+     ]
+    },
+    "chair-clock": {
+     "folder": "night-shift/chair-clock",
+     "lang": "en",
+     "dir": "",
+     "time": "19:00",
+     "title": [
+      "The clock",
+      "The clock"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "So I'm never late for myself.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Leave it.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "terrell",
+       "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "That's you.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "1900 hrs. Radio check, post one.",
+     "choices": [
+      [
+       "Post one. Loud and clear.",
+       "Post one. Loud and clear.",
+       "radio-ok",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the 1900 radio check on time."
+       }
+      ],
+      [
+       "Fumble for the button",
+       "Fumble for the button",
+       "radio-late",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Answered the 1900 radio check a minute late."
+       }
+      ],
+      [
+       "Hold the radio out to Dee",
+       "Hold the radio out to Dee",
+       "radio-dee",
+       {
+        "add": {
+         "trainer_trust": -1,
+         "slips": 1
+        },
+        "log": "Held the radio out to D. Reyes at the 1900 radio check."
+       }
+      ]
+     ]
+    },
+    "radio-ok": {
+     "folder": "night-shift/radio-ok",
+     "lang": "en",
+     "dir": "",
+     "time": "19:05",
+     "title": [
+      "Loud and clear",
+      "Loud and clear"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
+       "sfx": "foil",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "terrell",
+       "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell. Desk.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "I'm going, I'm going.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Where do you live?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "1915 hrs. Break in the control room. Terrell Banks at the desk.",
+     "choices": [
+      [
+       "Tell her the commute",
+       "Tell her the commute",
+       "talk-commute",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Told D. Reyes about the commute."
+       }
+      ],
+      [
+       "Ask about the sandwich",
+       "Ask about the sandwich",
+       "talk-sandwich",
+       {
+        "set": [
+         "asked_sandwich"
+        ],
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes about her sandwich."
+       }
+      ],
+      [
+       "Ask Terrell about the game",
+       "Ask Terrell about the game",
+       "talk-game",
+       {
+        "log": "Asked Terrell Banks about the game."
+       }
+      ]
+     ]
+    },
+    "radio-late": {
+     "folder": "night-shift/radio-late",
+     "lang": "en",
+     "dir": "",
+     "time": "19:05",
+     "title": [
+      "A minute late",
+      "A minute late"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Button's on the side. Side. The…",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. A minute late.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
+       "sfx": "foil",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "terrell",
+       "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell. Desk.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "I'm going, I'm going.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Where do you live?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "1915 hrs. Break in the control room. Terrell Banks at the desk.",
+     "choices": [
+      [
+       "Tell her the commute",
+       "Tell her the commute",
+       "talk-commute",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Told D. Reyes about the commute."
+       }
+      ],
+      [
+       "Ask about the sandwich",
+       "Ask about the sandwich",
+       "talk-sandwich",
+       {
+        "set": [
+         "asked_sandwich"
+        ],
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes about her sandwich."
+       }
+      ],
+      [
+       "Ask Terrell about the game",
+       "Ask Terrell about the game",
+       "talk-game",
+       {
+        "log": "Asked Terrell Banks about the game."
+       }
+      ]
+     ]
+    },
+    "radio-dee": {
+     "folder": "night-shift/radio-dee",
+     "lang": "en",
+     "dir": "",
+     "time": "19:05",
+     "title": [
+      "The radio, held out",
+      "The radio, held out"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "It's not mine. Press the side.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. A minute late.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
+       "sfx": "foil",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "terrell",
+       "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell. Desk.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "I'm going, I'm going.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Where do you live?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "1915 hrs. Break in the control room. Terrell Banks at the desk.",
+     "choices": [
+      [
+       "Tell her the commute",
+       "Tell her the commute",
+       "talk-commute",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Told D. Reyes about the commute."
+       }
+      ],
+      [
+       "Ask about the sandwich",
+       "Ask about the sandwich",
+       "talk-sandwich",
+       {
+        "set": [
+         "asked_sandwich"
+        ],
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes about her sandwich."
+       }
+      ],
+      [
+       "Ask Terrell about the game",
+       "Ask Terrell about the game",
+       "talk-game",
+       {
+        "log": "Asked Terrell Banks about the game."
+       }
+      ]
+     ]
+    },
+    "talk-commute": {
+     "folder": "night-shift/talk-commute",
+     "lang": "en",
+     "dir": "",
+     "time": "19:25",
+     "title": [
+      "The seven",
+      "The seven"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "The seven? Mm. It stops. It always stops, right under Queensboro.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "It's wrong. I said not to say.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "dee",
+       "text": "One. Lobby. Two. Vestibule. Three, dock.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you see. Not what it is.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "1925 hrs. Wall: two monitors, nine feeds. First row reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Name each tile",
+       "Name each tile",
+       "w1-named",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Named each tile on the first row."
+       }
+      ],
+      [
+       "Ask what normal looks like",
+       "Ask what normal looks like",
+       "w1-normal",
+       {
+        "log": "Asked what normal looks like on the wall."
+       }
+      ],
+      [
+       "Say it all looks dead",
+       "Say it all looks dead",
+       "w1-dead",
+       {
+        "log": "Said the first row looks dead."
+       }
+      ]
+     ]
+    },
+    "talk-sandwich": {
+     "folder": "night-shift/talk-sandwich",
+     "lang": "en",
+     "dir": "",
+     "time": "19:25",
+     "title": [
+      "Pepper and egg",
+      "Pepper and egg"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Pepper and egg. Half past midnight. Don't ask for a bite.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Ray used to… Forget it. Drink the coffee.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "It's wrong. I said not to say.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "dee",
+       "text": "One. Lobby. Two. Vestibule. Three, dock.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you see. Not what it is.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "1925 hrs. Wall: two monitors, nine feeds. First row reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Name each tile",
+       "Name each tile",
+       "w1-named",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Named each tile on the first row."
+       }
+      ],
+      [
+       "Ask what normal looks like",
+       "Ask what normal looks like",
+       "w1-normal",
+       {
+        "log": "Asked what normal looks like on the wall."
+       }
+      ],
+      [
+       "Say it all looks dead",
+       "Say it all looks dead",
+       "w1-dead",
+       {
+        "log": "Said the first row looks dead."
+       }
+      ]
+     ]
+    },
+    "talk-game": {
+     "folder": "night-shift/talk-game",
+     "lang": "en",
+     "dir": "",
+     "time": "19:25",
+     "title": [
+      "The game",
+      "The game"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "terrell",
+       "text": "Hey, you see the game? Two points. Two. In the last…",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "It's wrong. I said not to say.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "dee",
+       "text": "One. Lobby. Two. Vestibule. Three, dock.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you see. Not what it is.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "1925 hrs. Wall: two monitors, nine feeds. First row reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Name each tile",
+       "Name each tile",
+       "w1-named",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Named each tile on the first row."
+       }
+      ],
+      [
+       "Ask what normal looks like",
+       "Ask what normal looks like",
+       "w1-normal",
+       {
+        "log": "Asked what normal looks like on the wall."
+       }
+      ],
+      [
+       "Say it all looks dead",
+       "Say it all looks dead",
+       "w1-dead",
+       {
+        "log": "Said the first row looks dead."
+       }
+      ]
+     ]
+    },
+    "w1-named": {
+     "folder": "night-shift/w1-named",
+     "lang": "en",
+     "dir": "",
+     "time": "19:35",
+     "title": [
+      "Named",
+      "Named"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Good. Next.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Look at it till it's boring. Then look again.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "The second row: a stairwell landing on thirty-one, the elevator lobby, a corridor on forty-four. Then the chairman's glass doors. The roof. A cabinet on two.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four. Five. Six.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "1935 hrs. Wall: nine feeds on two monitors, all normal.",
+     "choices": [
+      [
+       "Ask about camera nine",
+       "Ask about camera nine",
+       "w2-cam9",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked about camera 9."
+       }
+      ],
+      [
+       "Ask about the roof door",
+       "Ask about the roof door",
+       "w2-roof",
+       {
+        "log": "Asked about the roof door."
+       }
+      ],
+      [
+       "Keep looking at the wall",
+       "Keep looking at the wall",
+       "w2-look",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ]
+     ]
+    },
+    "w1-normal": {
+     "folder": "night-shift/w1-normal",
+     "lang": "en",
+     "dir": "",
+     "time": "19:35",
+     "title": [
+      "What normal is",
+      "What normal is"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Nothing's normal. Same lobby all night. That's normal.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Look at it till it's boring. Then look again.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "The second row: a stairwell landing on thirty-one, the elevator lobby, a corridor on forty-four. Then the chairman's glass doors. The roof. A cabinet on two.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four. Five. Six.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "1935 hrs. Wall: nine feeds on two monitors, all normal.",
+     "choices": [
+      [
+       "Ask about camera nine",
+       "Ask about camera nine",
+       "w2-cam9",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked about camera 9."
+       }
+      ],
+      [
+       "Ask about the roof door",
+       "Ask about the roof door",
+       "w2-roof",
+       {
+        "log": "Asked about the roof door."
+       }
+      ],
+      [
+       "Keep looking at the wall",
+       "Keep looking at the wall",
+       "w2-look",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ]
+     ]
+    },
+    "w1-dead": {
+     "folder": "night-shift/w1-dead",
+     "lang": "en",
+     "dir": "",
+     "time": "19:35",
+     "title": [
+      "Dead",
+      "Dead"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Dead. Mm. That's the idea.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Look at it till it's boring. Then look again.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. Next.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The second row: a stairwell landing on thirty-one, the elevator lobby, a corridor on forty-four. Then the chairman's glass doors. The roof. A cabinet on two.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four. Five. Six.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "1935 hrs. Wall: nine feeds on two monitors, all normal.",
+     "choices": [
+      [
+       "Ask about camera nine",
+       "Ask about camera nine",
+       "w2-cam9",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked about camera 9."
+       }
+      ],
+      [
+       "Ask about the roof door",
+       "Ask about the roof door",
+       "w2-roof",
+       {
+        "log": "Asked about the roof door."
+       }
+      ],
+      [
+       "Keep looking at the wall",
+       "Keep looking at the wall",
+       "w2-look",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ]
+     ]
+    },
+    "w2-cam9": {
+     "folder": "night-shift/w2-cam9",
+     "lang": "en",
+     "dir": "",
+     "time": "20:10",
+     "title": [
+      "Camera nine",
+      "Camera nine"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Nine never moves. If it moves, say.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "That's the wall. You've seen it. Now you've seen it.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "You walked the stairwells, the dock, the roof door. Back at the lobby desk, Dolores lays out the visitor sheet and puts a pen and a pencil beside it.",
+       "file": null,
+       "dur": 12.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "ID, you look at it. Look. Not glance.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "However nice.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Pen's for the sheet. Pencil's for… Pick one.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "2010 hrs. Tour: stairwells A, B, C, dock, roof door. No incident. Visitor sheet reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Take the pencil",
+       "Take the pencil",
+       "sign-pencil",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the pencil for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pencil",
+       "Take the pencil",
+       "sign-pencil-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the pencil for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pen",
+       "Take the pen",
+       "sign-pen",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "log": "Took the pen for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pen",
+       "Take the pen",
+       "sign-pen-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "log": "Took the pen for the visitor sheet."
+       }
+      ],
+      [
+       "Ask why the pencil",
+       "Ask why the pencil",
+       "sign-why",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2
+         }
+        },
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Asked D. Reyes why the pencil."
+       }
+      ],
+      [
+       "Ask why the pencil",
+       "Ask why the pencil",
+       "sign-why-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2
+         }
+        },
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Asked D. Reyes why the pencil."
+       }
+      ]
+     ]
+    },
+    "w2-roof": {
+     "folder": "night-shift/w2-roof",
+     "lang": "en",
+     "dir": "",
+     "time": "20:10",
+     "title": [
+      "The roof door",
+      "The roof door"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Roof door. Eight. I do that one at three. Alone.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "That's the wall. You've seen it. Now you've seen it.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "You walked the stairwells, the dock, the roof door. Back at the lobby desk, Dolores lays out the visitor sheet and puts a pen and a pencil beside it.",
+       "file": null,
+       "dur": 12.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "ID, you look at it. Look. Not glance.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "However nice.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Pen's for the sheet. Pencil's for… Pick one.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "2010 hrs. Tour: stairwells A, B, C, dock, roof door. No incident. Visitor sheet reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Take the pencil",
+       "Take the pencil",
+       "sign-pencil",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the pencil for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pencil",
+       "Take the pencil",
+       "sign-pencil-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the pencil for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pen",
+       "Take the pen",
+       "sign-pen",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "log": "Took the pen for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pen",
+       "Take the pen",
+       "sign-pen-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "log": "Took the pen for the visitor sheet."
+       }
+      ],
+      [
+       "Ask why the pencil",
+       "Ask why the pencil",
+       "sign-why",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2
+         }
+        },
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Asked D. Reyes why the pencil."
+       }
+      ],
+      [
+       "Ask why the pencil",
+       "Ask why the pencil",
+       "sign-why-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2
+         }
+        },
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Asked D. Reyes why the pencil."
+       }
+      ]
+     ]
+    },
+    "w2-look": {
+     "folder": "night-shift/w2-look",
+     "lang": "en",
+     "dir": "",
+     "time": "20:10",
+     "title": [
+      "The wall",
+      "The wall"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "That's the wall. You've seen it. Now you've seen it.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "You walked the stairwells, the dock, the roof door. Back at the lobby desk, Dolores lays out the visitor sheet and puts a pen and a pencil beside it.",
+       "file": null,
+       "dur": 12.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "ID, you look at it. Look. Not glance.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "However nice.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Pen's for the sheet. Pencil's for… Pick one.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "2010 hrs. Tour: stairwells A, B, C, dock, roof door. No incident. Visitor sheet reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Take the pencil",
+       "Take the pencil",
+       "sign-pencil",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the pencil for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pencil",
+       "Take the pencil",
+       "sign-pencil-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the pencil for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pen",
+       "Take the pen",
+       "sign-pen",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "log": "Took the pen for the visitor sheet."
+       }
+      ],
+      [
+       "Take the pen",
+       "Take the pen",
+       "sign-pen-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "log": "Took the pen for the visitor sheet."
+       }
+      ],
+      [
+       "Ask why the pencil",
+       "Ask why the pencil",
+       "sign-why",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2
+         }
+        },
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Asked D. Reyes why the pencil."
+       }
+      ],
+      [
+       "Ask why the pencil",
+       "Ask why the pencil",
+       "sign-why-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2
+         }
+        },
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Asked D. Reyes why the pencil."
+       }
+      ]
+     ]
+    },
+    "sign-pencil": {
+     "folder": "night-shift/sign-pencil",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "Forty-four",
+      "Forty-four"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm. Good.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
+    "sign-pencil-44": {
+     "folder": "night-shift/sign-pencil-44",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "Forty-four",
+      "Forty-four"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm. Good.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Forty-four. You asked about forty-four.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
+    "sign-pen": {
+     "folder": "night-shift/sign-pen",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "Forty-four",
+      "Forty-four"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
+    "sign-pen-44": {
+     "folder": "night-shift/sign-pen-44",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "Forty-four",
+      "Forty-four"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Forty-four. You asked about forty-four.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
+    "sign-why": {
+     "folder": "night-shift/sign-why",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "Forty-four",
+      "Forty-four"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Once it's ink, it's true. I write it in pencil first.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Good.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
+    "sign-why-44": {
+     "folder": "night-shift/sign-why-44",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "Forty-four",
+      "Forty-four"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Once it's ink, it's true. I write it in pencil first.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Good.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Forty-four. You asked about forty-four.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
+    "nephew-in": {
+     "folder": "night-shift/nephew-in",
+     "lang": "en",
+     "dir": "",
+     "time": "21:36",
+     "title": [
+      "Let in",
+      "Let in"
+     ],
+     "ambience": "control-room",
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You press the release. On tile six the reader goes green. The young man looks up at the lens, then goes in after the bucket.",
+       "sfx": "door-buzz",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "marisol",
+       "text": "Gracias, mi amor. Bendito. I owe you a plate.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I'd have done it.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "That's a line you write down, Officer.",
+       "file": null,
+       "dur": 3.8
+      }
+     ],
+     "log": "2136 hrs. Floor 44. Crew member admitted by door release.",
+     "choices": [
+      [
+       "Ask if that was right",
+       "Ask if that was right",
+       "log-in-asked",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Asked D. Reyes if that was right."
+       }
+      ],
+      [
+       "Watch tile six",
+       "Watch tile six",
+       "log-in-watch",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Kept watching tile six."
+       }
+      ]
+     ]
+    },
+    "nephew-held": {
+     "folder": "night-shift/nephew-held",
+     "lang": "en",
+     "dir": "",
+     "time": "21:36",
+     "title": [
+      "The night line",
+      "The night line"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor's night line rings four times. His voice is flatter on the phone, and there is a television somewhere behind it.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Not on the list. Then he doesn't go in tonight.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "Put it in the log. Both times. When you called, when he said.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Hijo de… *Okay.* Okay. I don't forget this.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "She'll be fine by Thursday.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "You called it. Fine. It's the book.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I'd have… Doesn't matter.",
+       "file": null,
+       "dur": 3
+      }
+     ],
+     "log": "2136 hrs. Floor 44. Supervisor's night line called. Entry refused on his instruction.",
+     "choices": [
+      [
+       "Tell Marisol: tomorrow",
+       "Tell Marisol: tomorrow",
+       "log-held",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Told M. Quintero the supervisor would speak to her tomorrow."
+       }
+      ],
+      [
+       "Ask Dee to talk to her",
+       "Ask Dee to talk to her",
+       "log-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Asked D. Reyes to speak to M. Quintero."
+       }
+      ]
+     ]
+    },
+    "nephew-papers": {
+     "folder": "night-shift/nephew-papers",
+     "lang": "en",
+     "dir": "",
+     "time": "21:36",
+     "title": [
+      "The paper",
+      "The paper"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "papers"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Marisol holds a photocopy up to the lens. It is a name, a date, a stamp that doesn't read on tile six.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "marisol",
+       "text": "I told you! Look. Look at it. Paper. He has paper.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Read me the name.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "That's a name. That's not the list.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. But it's a name.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "marisol",
+       "text": "So you let him wait in the hall. In the hall! Dios mío.",
+       "file": null,
+       "dur": 6.2
+      }
+     ],
+     "log": "2136 hrs. Floor 44. Photocopy of paperwork shown to camera. Name not read on the list.",
+     "choices": [
+      [
+       "Read the name to Dee",
+       "Read the name to Dee",
+       "log-papers-read",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Read the name on the photocopy to D. Reyes."
+       }
+      ],
+      [
+       "Hand it to Dee",
+       "Hand it to Dee",
+       "log-papers-pass",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Handed the photocopy to D. Reyes."
+       }
+      ]
+     ]
+    },
+    "log-in-asked": {
+     "folder": "night-shift/log-in-asked",
+     "lang": "en",
+     "dir": "",
+     "time": "21:55",
+     "title": [
+      "The log, 44",
+      "The log, 44"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. The cursor blinks.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you did.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "I said I'd have done it. I didn't say write that I did.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Time. Place. What you saw. What you did. Who you told.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Nothing about how he looked.",
+       "file": null,
+       "dur": 3
+      }
+     ],
+     "log": "2155 hrs. Incident field for 44 opened on the tablet.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "end1-fact",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "2134 hrs. Floor 44. Crew member of M. Quintero's crew, not on after-hours list, badge failed. Admitted on M. Quintero's verbal word. Supervisor not notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "end1-opinion",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "2134 hrs. Floor 44. Quintero's nephew seemed harmless, probably fine. Let him in."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "end1-omit",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for 44 blank."
+       }
+      ],
+      [
+       "Write that he badged",
+       "Write that he badged",
+       "end1-lie",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "2134 hrs. Floor 44. Crew member badged in. No incident."
+       }
+      ]
+     ]
+    },
+    "log-in-watch": {
+     "folder": "night-shift/log-in-watch",
+     "lang": "en",
+     "dir": "",
+     "time": "21:55",
+     "title": [
+      "The log, 44",
+      "The log, 44"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. The cursor blinks.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you did.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Water. Under the closet. You were watching.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Time. Place. What you saw. What you did. Who you told.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Nothing about how he looked.",
+       "file": null,
+       "dur": 3
+      }
+     ],
+     "log": "2155 hrs. Incident field for 44 opened on the tablet.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "end1-fact",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "2134 hrs. Floor 44. Crew member of M. Quintero's crew, not on after-hours list, badge failed. Admitted on M. Quintero's verbal word. Supervisor not notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "end1-opinion",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "2134 hrs. Floor 44. Quintero's nephew seemed harmless, probably fine. Let him in."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "end1-omit",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for 44 blank."
+       }
+      ],
+      [
+       "Write that he badged",
+       "Write that he badged",
+       "end1-lie",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "2134 hrs. Floor 44. Crew member badged in. No incident."
+       }
+      ]
+     ]
+    },
+    "log-held": {
+     "folder": "night-shift/log-held",
+     "lang": "en",
+     "dir": "",
+     "time": "21:55",
+     "title": [
+      "The log, 44",
+      "The log, 44"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. Marisol's walkie, far off on the floor, has gone quiet.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you did.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "I'd have done it differently. That doesn't go in.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Not 'she got mad.' When did she say it, and what did she say?",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Time. Place. What you saw. Who you told.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Slow. You'll want to hurry. Don't.",
+       "file": null,
+       "dur": 3.8
+      }
+     ],
+     "log": "2155 hrs. Incident field for 44 opened on the tablet.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "end1-fact",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "2133 hrs. Floor 44. Crew member of M. Quintero's crew, not on after-hours list, badge failed. Entry refused. Supervisor night line called 2135, instructed same."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "end1-opinion",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "2133 hrs. Floor 44. Quintero was rude and upset, seemed to think the rules don't apply. Refused entry."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "end1-omit",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for 44 blank."
+       }
+      ],
+      [
+       "Write that Okafor approved",
+       "Write that Okafor approved",
+       "end1-lie",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "2133 hrs. Floor 44. Crew member admitted with supervisor's approval."
+       }
+      ]
+     ]
+    },
+    "log-papers-read": {
+     "folder": "night-shift/log-papers-read",
+     "lang": "en",
+     "dir": "",
+     "time": "21:55",
+     "title": [
+      "The log, 44",
+      "The log, 44"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six.",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what happened. The paper's evidence. It's not permission.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "You read the name. Good. That's the first line.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Time. Place. What was shown. What you did.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "2155 hrs. Incident field for 44 opened on the tablet.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "end1-fact",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "2136 hrs. Floor 44. Crew member of M. Quintero's crew presented a photocopy of paperwork. Name not on after-hours list. Entry held pending list. Copy retained at desk."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "end1-opinion",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "2136 hrs. Floor 44. Paperwork looked legit, seemed to be in order. Probably fine."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "end1-omit",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for 44 blank."
+       }
+      ],
+      [
+       "Write that he was cleared",
+       "Write that he was cleared",
+       "end1-lie",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "2136 hrs. Floor 44. Crew member cleared by paperwork. No incident."
+       }
+      ]
+     ]
+    },
+    "log-papers-pass": {
+     "folder": "night-shift/log-papers-pass",
+     "lang": "en",
+     "dir": "",
+     "time": "21:55",
+     "title": [
+      "The log, 44",
+      "The log, 44"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six.",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what happened. The paper's evidence. It's not permission.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "You handed it to me. It goes in your log, not mine.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Time. Place. What was shown. What you did.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "2155 hrs. Incident field for 44 opened on the tablet.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "end1-fact",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "2136 hrs. Floor 44. Crew member of M. Quintero's crew presented a photocopy of paperwork. Name not on after-hours list. Entry held pending list. Copy retained at desk."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "end1-opinion",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "2136 hrs. Floor 44. Paperwork looked legit, seemed to be in order. Probably fine."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "end1-omit",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for 44 blank."
+       }
+      ],
+      [
+       "Write that he was cleared",
+       "Write that he was cleared",
+       "end1-lie",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "2136 hrs. Floor 44. Crew member cleared by paperwork. No incident."
+       }
+      ]
+     ]
+    },
+    "end1-fact": {
+     "folder": "night-shift/end1-fact",
+     "lang": "en",
+     "dir": "",
+     "time": "22:05",
+     "title": [
+      "Kept",
+      "Kept"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Keep that one.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Two hours to the half. Eat something.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell's desk.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
+     "choices": [
+      [
+       "Say nothing, watch",
+       "Say nothing, watch",
+       "visitor-waved",
+       {
+        "add": {
+         "slips": 2
+        },
+        "log": "Watched the lobby desk and said nothing about the contractor."
+       }
+      ],
+      [
+       "Radio Terrell: the list",
+       "Radio Terrell: the list",
+       "visitor-checked",
+       {
+        "log": "Radioed the desk to check the after-hours list."
+       }
+      ],
+      [
+       "Go to the desk, ask",
+       "Go to the desk, ask",
+       "visitor-desk",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Went to the lobby desk to see the contractor's paperwork."
+       }
+      ]
+     ]
+    },
+    "end1-opinion": {
+     "folder": "night-shift/end1-opinion",
+     "lang": "en",
+     "dir": "",
+     "time": "22:05",
+     "title": [
+      "Facts only",
+      "Facts only"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Facts only. What did you see?",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Two hours to the half. Eat something.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell's desk.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
+     "choices": [
+      [
+       "Say nothing, watch",
+       "Say nothing, watch",
+       "visitor-waved",
+       {
+        "add": {
+         "slips": 2
+        },
+        "log": "Watched the lobby desk and said nothing about the contractor."
+       }
+      ],
+      [
+       "Radio Terrell: the list",
+       "Radio Terrell: the list",
+       "visitor-checked",
+       {
+        "log": "Radioed the desk to check the after-hours list."
+       }
+      ],
+      [
+       "Go to the desk, ask",
+       "Go to the desk, ask",
+       "visitor-desk",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Went to the lobby desk to see the contractor's paperwork."
+       }
+      ]
+     ]
+    },
+    "end1-omit": {
+     "folder": "night-shift/end1-omit",
+     "lang": "en",
+     "dir": "",
+     "time": "22:05",
+     "title": [
+      "Blank",
+      "Blank"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Where's forty-four?",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Two hours to the half. Eat something.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell's desk.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
+     "choices": [
+      [
+       "Say nothing, watch",
+       "Say nothing, watch",
+       "visitor-waved",
+       {
+        "add": {
+         "slips": 2
+        },
+        "log": "Watched the lobby desk and said nothing about the contractor."
+       }
+      ],
+      [
+       "Radio Terrell: the list",
+       "Radio Terrell: the list",
+       "visitor-checked",
+       {
+        "log": "Radioed the desk to check the after-hours list."
+       }
+      ],
+      [
+       "Go to the desk, ask",
+       "Go to the desk, ask",
+       "visitor-desk",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Went to the lobby desk to see the contractor's paperwork."
+       }
+      ]
+     ]
+    },
+    "end1-lie": {
+     "folder": "night-shift/end1-lie",
+     "lang": "en",
+     "dir": "",
+     "time": "22:05",
+     "title": [
+      "Face down",
+      "Face down"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Two hours to the half. Eat something.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell's desk.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
+     "choices": [
+      [
+       "Say nothing, watch",
+       "Say nothing, watch",
+       "visitor-waved",
+       {
+        "add": {
+         "slips": 2
+        },
+        "log": "Watched the lobby desk and said nothing about the contractor."
+       }
+      ],
+      [
+       "Radio Terrell: the list",
+       "Radio Terrell: the list",
+       "visitor-checked",
+       {
+        "log": "Radioed the desk to check the after-hours list."
+       }
+      ],
+      [
+       "Go to the desk, ask",
+       "Go to the desk, ask",
+       "visitor-desk",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Went to the lobby desk to see the contractor's paperwork."
+       }
+      ]
+     ]
+    },
+    "visitor-waved": {
+     "folder": "night-shift/visitor-waved",
+     "lang": "en",
+     "dir": "",
+     "time": "22:20",
+     "title": [
+      "Waved up",
+      "Waved up"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c1": "desk-visitor"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "On tile one, Terrell pushes the sheet across and the man writes on it without looking up. Then the elevator doors close on the vest.",
+       "sfx": "elevator-chime",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "terrell",
+       "text": "Door's all you. You're good, you're good.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Stay on the wall.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "On the lobby tile, Dolores takes the sheet from the desk. She writes for some time, in pencil, and then she writes over it.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Eat something.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2222 hrs. Lobby. Contractor signed the visitor sheet and went up to 40. D. Reyes at the desk 2224.",
+     "choices": [
+      [
+       "Do as she says",
+       "Do as she says",
+       "terrell-goodbye",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ]
+     ]
+    },
+    "visitor-checked": {
+     "folder": "night-shift/visitor-checked",
+     "lang": "en",
+     "dir": "",
+     "time": "22:20",
+     "title": [
+      "Not on the list",
+      "Not on the list"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c1": "desk-visitor"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "terrell",
+       "text": "Let me see what I can do.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "Huh. There's no, uh. There's no yes. On forty. Sorry, man.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The man in the vest shrugs, takes his clipboard and goes out through the revolving door.",
+       "sfx": "elevator-chime",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "terrell",
+       "text": "He said Tuesday, you know? Tuesday he was fine.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. That's how Terrell learns.",
+       "file": null,
+       "dur": 3
+      }
+     ],
+     "log": "2224 hrs. Lobby. Contractor refused, no authorization for 40. Left the building.",
+     "choices": [
+      [
+       "Say goodnight to Terrell",
+       "Say goodnight to Terrell",
+       "terrell-goodbye",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Told Terrell Banks the list was right."
+       }
+      ]
+     ]
+    },
+    "visitor-desk": {
+     "folder": "night-shift/visitor-desk",
+     "lang": "en",
+     "dir": "",
+     "time": "22:20",
+     "title": [
+      "The third way",
+      "The third way"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c1": "desk-visitor"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Go. I have the wall.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "At the desk, the man shows a work order. It says forty, tonight, and a name. It does not say who said yes.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "I mean, he's got the paper, you know? The paper's real.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The night number for forty rings six times. A tired voice says send him up, sign him, he'll be an hour.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "terrell",
+       "text": "See? See, I said.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Initial the sheet. Both of you.",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "2234 hrs. Lobby. Contractor for 40 signed in after tenant call-up confirmed by phone 2231. ID checked.",
+     "choices": [
+      [
+       "Walk back to the wall",
+       "Walk back to the wall",
+       "terrell-goodbye",
+       {
+        "log": "Returned to the control room after the contractor was signed in."
+       }
+      ]
+     ]
+    },
+    "terrell-goodbye": {
+     "folder": "night-shift/terrell-goodbye",
+     "lang": "en",
+     "dir": "",
+     "time": "22:55",
+     "title": [
+      "Terrell leaves",
+      "Terrell leaves"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Terrell's bag is on his shoulder. He stands in the control-room doorway like a man leaving a party.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "Door's all you.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "Hey, she's eaten that sandwich every night since I started. I asked her once what's in it.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "terrell",
+       "text": "I'm going. I'm going!",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2255 hrs. Terrell Banks off post. Night post: two officers.",
+     "choices": [
+      [
+       "Say goodnight",
+       "Say goodnight",
+       "radio-23",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Said goodnight to Terrell Banks."
+       }
+      ],
+      [
+       "Walk him to the door",
+       "Walk him to the door",
+       "terrell-door",
+       {
+        "log": "Walked Terrell Banks to the lobby door."
+       }
+      ],
+      [
+       "Ask how long she's been here",
+       "Ask how long she's been here",
+       "terrell-ask",
+       {
+        "add": {
+         "building_known": 1,
+         "trainer_warmth": -1
+        },
+        "log": "Asked Terrell Banks how long D. Reyes has been on the post."
+       }
+      ]
+     ]
+    },
+    "radio-23": {
+     "folder": "night-shift/radio-23",
+     "lang": "en",
+     "dir": "",
+     "time": "23:00",
+     "title": [
+      "The wall is yours",
+      "The wall is yours"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "At eleven the lobby is quiet, and the wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Twenty minutes. Stay on the wall.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Radio check.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2300 hrs. D. Reyes on lobby and dock tour. Post one on the wall alone.",
+     "choices": [
+      [
+       "Key it: loud and clear",
+       "Key it: loud and clear",
+       "alone-ok",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the 2300 radio check on time."
+       }
+      ],
+      [
+       "Look for the button",
+       "Look for the button",
+       "alone-late",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Answered the 2300 radio check late."
+       }
+      ],
+      [
+       "Finish reading the log first",
+       "Finish reading the log first",
+       "alone-missed",
+       {
+        "add": {
+         "trainer_trust": -1,
+         "slips": 1
+        },
+        "log": "Did not answer the 2300 radio check."
+       }
+      ]
+     ]
+    },
+    "terrell-door": {
+     "folder": "night-shift/terrell-door",
+     "lang": "en",
+     "dir": "",
+     "time": "23:00",
+     "title": [
+      "At the door",
+      "At the door"
+     ],
+     "ambience": "lobby",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "In the lobby, Terrell holds the revolving door with one hand and his phone with the other. The street is white behind him.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "terrell",
+       "text": "She asked me your name twice. She never asks. I'm just saying.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "Okay. Okay! Radios, you know? Watch the radios.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door turns once and stops. You go back through the lobby to the control room.",
+       "sfx": "door-heavy",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "At eleven the lobby is quiet, and the wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Twenty minutes. Stay on the wall.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Radio check.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2300 hrs. D. Reyes on lobby and dock tour. Post one on the wall alone.",
+     "choices": [
+      [
+       "Key it: loud and clear",
+       "Key it: loud and clear",
+       "alone-ok",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the 2300 radio check on time."
+       }
+      ],
+      [
+       "Look for the button",
+       "Look for the button",
+       "alone-late",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Answered the 2300 radio check late."
+       }
+      ],
+      [
+       "Finish reading the log first",
+       "Finish reading the log first",
+       "alone-missed",
+       {
+        "add": {
+         "trainer_trust": -1,
+         "slips": 1
+        },
+        "log": "Did not answer the 2300 radio check."
+       }
+      ]
+     ]
+    },
+    "terrell-ask": {
+     "folder": "night-shift/terrell-ask",
+     "lang": "en",
+     "dir": "",
+     "time": "23:00",
+     "title": [
+      "Eleven years",
+      "Eleven years"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "terrell",
+       "text": "Eleven years? Twelve? She hasn't missed a night. Not one. Somebody told me that, I didn't ask.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell. Door.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "Going. Going! Night.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "Dolores looks at the wall. She does not look at you. The pencil goes behind her ear.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "At eleven the lobby is quiet, and the wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Twenty minutes. Stay on the wall.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Radio check.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "2300 hrs. D. Reyes on lobby and dock tour. Post one on the wall alone.",
+     "choices": [
+      [
+       "Key it: loud and clear",
+       "Key it: loud and clear",
+       "alone-ok",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the 2300 radio check on time."
+       }
+      ],
+      [
+       "Look for the button",
+       "Look for the button",
+       "alone-late",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Answered the 2300 radio check late."
+       }
+      ],
+      [
+       "Finish reading the log first",
+       "Finish reading the log first",
+       "alone-missed",
+       {
+        "add": {
+         "trainer_trust": -1,
+         "slips": 1
+        },
+        "log": "Did not answer the 2300 radio check."
+       }
+      ]
+     ]
+    },
+    "alone-ok": {
+     "folder": "night-shift/alone-ok",
+     "lang": "en",
+     "dir": "",
+     "time": "23:12",
+     "title": [
+      "Loud and clear",
+      "Loud and clear"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
+       "sfx": "drawer",
+       "file": null,
+       "dur": 8.6
+      }
+     ],
+     "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal.",
+     "choices": [
+      [
+       "Open the shelf drawer",
+       "Open the shelf drawer",
+       "drawer-notice",
+       {
+        "set": [
+         "noticed_notice"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Opened the shelf drawer under the binder."
+       }
+      ],
+      [
+       "Watch the wall",
+       "Watch the wall",
+       "wall-alone",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ],
+      [
+       "Step out for a minute",
+       "Step out for a minute",
+       "step-out",
+       {
+        "log": "Considered leaving the wall."
+       }
+      ]
+     ]
+    },
+    "alone-late": {
+     "folder": "night-shift/alone-late",
+     "lang": "en",
+     "dir": "",
+     "time": "23:12",
+     "title": [
+      "Late",
+      "Late"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Side. The side.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. A minute late.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
+       "sfx": "drawer",
+       "file": null,
+       "dur": 8.6
+      }
+     ],
+     "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal.",
+     "choices": [
+      [
+       "Open the shelf drawer",
+       "Open the shelf drawer",
+       "drawer-notice",
+       {
+        "set": [
+         "noticed_notice"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Opened the shelf drawer under the binder."
+       }
+      ],
+      [
+       "Watch the wall",
+       "Watch the wall",
+       "wall-alone",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ],
+      [
+       "Step out for a minute",
+       "Step out for a minute",
+       "step-out",
+       {
+        "log": "Considered leaving the wall."
+       }
+      ]
+     ]
+    },
+    "alone-missed": {
+     "folder": "night-shift/alone-missed",
+     "lang": "en",
+     "dir": "",
+     "time": "23:12",
+     "title": [
+      "No answer",
+      "No answer"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Radio check.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Post one. Radio check.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Answer when I call. Always. I'm not asking for a reason.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
+       "sfx": "drawer",
+       "file": null,
+       "dur": 8.6
+      }
+     ],
+     "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal.",
+     "choices": [
+      [
+       "Open the shelf drawer",
+       "Open the shelf drawer",
+       "drawer-notice",
+       {
+        "set": [
+         "noticed_notice"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Opened the shelf drawer under the binder."
+       }
+      ],
+      [
+       "Watch the wall",
+       "Watch the wall",
+       "wall-alone",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ],
+      [
+       "Step out for a minute",
+       "Step out for a minute",
+       "step-out",
+       {
+        "log": "Considered leaving the wall."
+       }
+      ]
+     ]
+    },
+    "drawer-notice": {
+     "folder": "night-shift/drawer-notice",
+     "lang": "en",
+     "dir": "",
+     "time": "23:25",
+     "title": [
+      "The notice",
+      "The notice"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Under the binder there is one page, folded in three. NOTICE TO NIGHT POST PERSONNEL. Effective the first of April, overnight coverage at this site transfers to a remote video monitoring service.",
+       "sfx": "paper",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "In-person night posts are discontinued as of that date. Affected officers will be offered day-shift reassignment where available. The date is under a stamp. The stamp has been signed.",
+       "file": null,
+       "dur": 12.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "You fold it back along its creases. You put it under the binder the way it was.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "2335 hrs. Control room. Shelf drawer closed.",
+     "choices": [
+      [
+       "Take your seat",
+       "Take your seat",
+       "sandwich",
+       {
+        "forbids": [
+         "asked_sandwich"
+        ],
+        "log": "Returned the page to the drawer and took your seat."
+       }
+      ],
+      [
+       "Take your seat",
+       "Take your seat",
+       "sandwich-ray",
+       {
+        "requires": [
+         "asked_sandwich"
+        ],
+        "clear": [
+         "asked_sandwich"
+        ],
+        "log": "Returned the page to the drawer and took your seat."
+       }
+      ]
+     ]
+    },
+    "wall-alone": {
+     "folder": "night-shift/wall-alone",
+     "lang": "en",
+     "dir": "",
+     "time": "23:25",
+     "title": [
+      "The wall",
+      "The wall"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "One. The lobby, the bench, the light on the desk. Two. The vestibule, the glass fogged at the corners. Three. The dock, the compactor ticking down. Nothing moves.",
+       "sfx": "clock-tick",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "Four, five, six. Seven is lit. Eight is a door. Nine is a cabinet. You say them aloud, quietly, because it helps.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you see.",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2340 hrs. Wall: nine feeds, all normal. Radios 4 of 4.",
+     "choices": [
+      [
+       "Say it back to her",
+       "Say it back to her",
+       "sandwich",
+       {
+        "forbids": [
+         "asked_sandwich"
+        ],
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Said the wall back to D. Reyes, tile by tile."
+       }
+      ],
+      [
+       "Say it back to her",
+       "Say it back to her",
+       "sandwich-ray",
+       {
+        "requires": [
+         "asked_sandwich"
+        ],
+        "clear": [
+         "asked_sandwich"
+        ],
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Said the wall back to D. Reyes, tile by tile."
+       }
+      ]
+     ]
+    },
+    "step-out": {
+     "folder": "night-shift/step-out",
+     "lang": "en",
+     "dir": "",
+     "time": "23:30",
+     "title": [
+      "Stepping out",
+      "Stepping out"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The coffee is wrong and the restroom is thirty steps away. The radio is on the desk. Dolores is on the dock, somewhere past tile three.",
+       "file": null,
+       "dur": 11.4
+      }
+     ],
+     "log": "2330 hrs. Control room. Considering leaving the wall.",
+     "choices": [
+      [
+       "Radio Dee first",
+       "Radio Dee first",
+       "step-told",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Radioed D. Reyes that you were stepping off the wall for two minutes."
+       }
+      ],
+      [
+       "Just go, quickly",
+       "Just go, quickly",
+       "step-left",
+       {
+        "set": [
+         "left_wall"
+        ],
+        "log": "Left the control room, wall unattended, without telling D. Reyes."
+       }
+      ]
+     ]
+    },
+    "step-told": {
+     "folder": "night-shift/step-told",
+     "lang": "en",
+     "dir": "",
+     "time": "23:34",
+     "title": [
+      "Two minutes",
+      "Two minutes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Go. Two minutes. Then back on it.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The restroom is cold and bright. When you come back, the wall is as you left it, and Dolores is in the doorway counting radios.",
+       "sfx": "door-heavy",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "2338 hrs. Returned to the wall after two minutes. Radios 4 of 4.",
+     "choices": [
+      [
+       "Take your seat",
+       "Take your seat",
+       "sandwich",
+       {
+        "forbids": [
+         "asked_sandwich"
+        ],
+        "log": "Took your seat at the wall."
+       }
+      ],
+      [
+       "Take your seat",
+       "Take your seat",
+       "sandwich-ray",
+       {
+        "requires": [
+         "asked_sandwich"
+        ],
+        "clear": [
+         "asked_sandwich"
+        ],
+        "log": "Took your seat at the wall."
+       }
+      ]
+     ]
+    },
+    "step-left": {
+     "folder": "night-shift/step-left",
+     "lang": "en",
+     "dir": "",
+     "time": "23:34",
+     "title": [
+      "The empty room",
+      "The empty room"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The restroom is cold and bright. When you come back, four minutes later, Dolores is standing in the doorway with her coat still on. She is looking at the wall, not at you.",
+       "file": null,
+       "dur": 14.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Where were you?",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Wall was empty four minutes. Nobody saw it. Nobody answered.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Next time you say. Mm. Next time.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "2338 hrs. Returned to the wall after four minutes. Wall unattended 2330 to 2334.",
+     "choices": [
+      [
+       "Take your seat",
+       "Take your seat",
+       "sandwich",
+       {
+        "forbids": [
+         "asked_sandwich"
+        ],
+        "log": "Took your seat at the wall."
+       }
+      ],
+      [
+       "Take your seat",
+       "Take your seat",
+       "sandwich-ray",
+       {
+        "requires": [
+         "asked_sandwich"
+        ],
+        "clear": [
+         "asked_sandwich"
+        ],
+        "log": "Took your seat at the wall."
+       }
+      ]
+     ]
+    },
+    "sandwich": {
+     "folder": "night-shift/sandwich",
+     "lang": "en",
+     "dir": "",
+     "time": "00:30",
+     "title": [
+      "Pepper and egg",
+      "Pepper and egg"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Half past midnight. Dolores unwraps the foil all the way this time and smooths it flat on her knee.",
+       "sfx": "foil",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Pepper and egg.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "0030 hrs. Dolores Reyes on meal break at the wall. Post one on the wall.",
+     "choices": [
+      [
+       "Eat your own in silence",
+       "Eat your own in silence",
+       "late-list",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Ate in silence beside D. Reyes."
+       }
+      ],
+      [
+       "Ask how she started",
+       "Ask how she started",
+       "sandwich-career",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes how she came to the job."
+       }
+      ],
+      [
+       "Offer her your coffee",
+       "Offer her your coffee",
+       "sandwich-coffee",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Offered D. Reyes your coffee."
+       }
+      ]
+     ]
+    },
+    "sandwich-ray": {
+     "folder": "night-shift/sandwich-ray",
+     "lang": "en",
+     "dir": "",
+     "time": "00:30",
+     "title": [
+      "Pepper and egg",
+      "Pepper and egg"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Half past midnight. Dolores unwraps the foil all the way this time and smooths it flat on her knee.",
+       "sfx": "foil",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Pepper and egg. You asked.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Ray used to take the corner. Said that's where the egg was.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Don't ask for a bite.",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "0030 hrs. Dolores Reyes on meal break at the wall. Post one on the wall.",
+     "choices": [
+      [
+       "Eat your own in silence",
+       "Eat your own in silence",
+       "late-list",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Ate in silence beside D. Reyes."
+       }
+      ],
+      [
+       "Ask how she started",
+       "Ask how she started",
+       "sandwich-career",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes how she came to the job."
+       }
+      ],
+      [
+       "Offer her your coffee",
+       "Offer her your coffee",
+       "sandwich-coffee",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Offered D. Reyes your coffee."
+       }
+      ]
+     ]
+    },
+    "sandwich-career": {
+     "folder": "night-shift/sandwich-career",
+     "lang": "en",
+     "dir": "",
+     "time": "00:45",
+     "title": [
+      "Twenty-six years",
+      "Twenty-six years"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "School safety agent. Then the courts. Then a bank on Fordham Road.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Then here. Twenty-six years. It goes fast when it's the same hall.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "You get good at one door. Mm. Eat.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile one, the revolving door turns once with nobody in it.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 01:30 the access terminal beeps once. The after-hours list has a new line. Dolores reads it off the screen without leaning in.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody's on it by name but those two.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0130 hrs. After-hours list: floor 58, Director Hale's office, late authorization to 0400. Lang on call with Zurich.",
+     "choices": [
+      [
+       "Read the list yourself",
+       "Read the list yourself",
+       "late-read",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Read the after-hours list for floor 58."
+       }
+      ],
+      [
+       "Ask about Zurich",
+       "Ask about Zurich",
+       "late-zurich",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes about Zurich."
+       }
+      ],
+      [
+       "Let it be",
+       "Let it be",
+       "late-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Left the after-hours list as it was."
+       }
+      ]
+     ]
+    },
+    "sandwich-coffee": {
+     "folder": "night-shift/sandwich-coffee",
+     "lang": "en",
+     "dir": "",
+     "time": "00:45",
+     "title": [
+      "The coffee",
+      "The coffee"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "It's wrong.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Give it here.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "She drinks half of it standing at the wall, and puts it down on the shelf, away from the sandwich.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Don't tell Terrell.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 01:30 the access terminal beeps once. The after-hours list has a new line. Dolores reads it off the screen without leaning in.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody's on it by name but those two.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0130 hrs. After-hours list: floor 58, Director Hale's office, late authorization to 0400. Lang on call with Zurich.",
+     "choices": [
+      [
+       "Read the list yourself",
+       "Read the list yourself",
+       "late-read",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Read the after-hours list for floor 58."
+       }
+      ],
+      [
+       "Ask about Zurich",
+       "Ask about Zurich",
+       "late-zurich",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes about Zurich."
+       }
+      ],
+      [
+       "Let it be",
+       "Let it be",
+       "late-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Left the after-hours list as it was."
+       }
+      ]
+     ]
+    },
+    "late-list": {
+     "folder": "night-shift/late-list",
+     "lang": "en",
+     "dir": "",
+     "time": "01:30",
+     "title": [
+      "The late list",
+      "The late list"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "At 01:30 the access terminal beeps once. The after-hours list has a new line. Dolores reads it off the screen without leaning in.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody's on it by name but those two.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0130 hrs. After-hours list: floor 58, Director Hale's office, late authorization to 0400. Lang on call with Zurich.",
+     "choices": [
+      [
+       "Read the list yourself",
+       "Read the list yourself",
+       "late-read",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Read the after-hours list for floor 58."
+       }
+      ],
+      [
+       "Ask about Zurich",
+       "Ask about Zurich",
+       "late-zurich",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes about Zurich."
+       }
+      ],
+      [
+       "Let it be",
+       "Let it be",
+       "late-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Left the after-hours list as it was."
+       }
+      ]
+     ]
+    },
+    "late-quiet": {
+     "folder": "night-shift/late-quiet",
+     "lang": "en",
+     "dir": "",
+     "time": "01:35",
+     "title": [
+      "Let it be",
+      "Let it be"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Tour. Stairwells A and B. Thirty minutes. You're the wall.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door swings shut. The clock says 01:37. It is 01:35. The wall is yours.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0135 hrs. D. Reyes on stairwell tour A and B. Post one on the wall.",
+     "choices": [
+      [
+       "Settle in at the wall",
+       "Settle in at the wall",
+       "wedge-watch",
+       {
+        "log": "Took the wall."
+       }
+      ]
+     ]
+    },
+    "late-read": {
+     "folder": "night-shift/late-read",
+     "lang": "en",
+     "dir": "",
+     "time": "01:35",
+     "title": [
+      "Fifty-eight",
+      "Fifty-eight"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Two lines. Director Hale's office, until 04:00. Lang, call with Zurich in progress. No other name. The 58th floor reception is lit on tile seven, the desk empty.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Seven's always lit. Don't ask me why.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Tour. Stairwells A and B. Thirty minutes. You're the wall.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door swings shut. The clock says 01:37. It is 01:35. The wall is yours.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0135 hrs. D. Reyes on stairwell tour A and B. Post one on the wall.",
+     "choices": [
+      [
+       "Settle in at the wall",
+       "Settle in at the wall",
+       "wedge-watch",
+       {
+        "log": "Took the wall."
+       }
+      ]
+     ]
+    },
+    "late-zurich": {
+     "folder": "night-shift/late-zurich",
+     "lang": "en",
+     "dir": "",
+     "time": "01:35",
+     "title": [
+      "Zurich",
+      "Zurich"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Six hours ahead. Their morning's our three.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Which means somebody up there is awake. Not our business.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Tour. Stairwells A and B. Thirty minutes. You're the wall.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door swings shut. The clock says 01:37. It is 01:35. The wall is yours.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0135 hrs. D. Reyes on stairwell tour A and B. Post one on the wall.",
+     "choices": [
+      [
+       "Settle in at the wall",
+       "Settle in at the wall",
+       "wedge-watch",
+       {
+        "log": "Took the wall."
+       }
+      ]
+     ]
+    },
+    "wedge-watch": {
+     "folder": "night-shift/wedge-watch",
+     "lang": "en",
+     "dir": "",
+     "time": "01:50",
+     "title": [
+      "The wall alone",
+      "The wall alone"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "01:50. Nine tiles, none moving, and a radio that breathes when Dolores climbs. You can watch only so many at once.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Stairwell A. Clear. Going up to B.",
+       "sfx": "footsteps-stairs",
+       "file": null,
+       "dur": 3.8
+      }
+     ],
+     "log": "0150 hrs. D. Reyes on stairwell tour. Post one on the wall.",
+     "choices": [
+      [
+       "Watch camera 4",
+       "Watch camera 4",
+       "wedge-seen",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Watched camera 4, stairwell C."
+       }
+      ],
+      [
+       "Watch the lobby",
+       "Watch the lobby",
+       "wedge-missed",
+       {
+        "log": "Watched the lobby."
+       }
+      ],
+      [
+       "Watch camera 9",
+       "Watch camera 9",
+       "wedge-missed",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Watched camera 9."
+       }
+      ]
+     ]
+    },
+    "wedge-seen": {
+     "folder": "night-shift/wedge-seen",
+     "lang": "en",
+     "dir": "",
+     "time": "01:52",
+     "title": [
+      "The wedge",
+      "The wedge"
+     ],
+     "ambience": "stairwell",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "focus": "c4",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "On tile four, a hand's width of orange at the foot of the fire door on thirty-one. A rubber wedge. The door is open to the landing and nobody is on it.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Stairwell B. Clear.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "0152 hrs. Camera 4, stairwell C, 31st floor landing. Fire door held open by a rubber wedge.",
+     "choices": [
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "wedge-called",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the wedge on 31."
+       }
+      ],
+      [
+       "Radio Dee: wedge on 31",
+       "Radio Dee: wedge on 31",
+       "wedge-dee",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Radioed D. Reyes: wedge in the door, stairwell C, 31."
+       }
+      ],
+      [
+       "Log it and keep watching",
+       "Log it and keep watching",
+       "wedge-wait",
+       {
+        "set": [
+         "wedge_open"
+        ],
+        "log": "Logged the wedge and kept watching camera 4."
+       }
+      ]
+     ]
+    },
+    "wedge-called": {
+     "folder": "night-shift/wedge-called",
+     "lang": "en",
+     "dir": "",
+     "time": "01:56",
+     "title": [
+      "The night line",
+      "The night line"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "focus": "c4",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The night line rings four times. Mr. Okafor sounds like a man sitting up in the dark.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Where on thirty-one. Is anyone in the stairwell?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Do not go up. Put it in the log. I will tell the building manager at six.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Okafor's line is lit. What did you tell him?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "A wedge. Mm. A wedge. {a long pause on the radio} It's the book.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0156 hrs. Supervisor notified of wedge, stairwell C, 31.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "laptop-watch",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0150 hrs. Stairwell C, 31st floor landing. Fire door held open by a rubber wedge. Nobody present. Supervisor notified 0154, instructed not to leave post. Wedge in place at time of entry."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "laptop-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0150 hrs. Stairwell C, 31. Some tenant probably being lazy and propped the door. Supervisor notified."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "laptop-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the stairwell blank."
+       }
+      ],
+      [
+       "Write that you removed it",
+       "Write that you removed it",
+       "laptop-watch",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0150 hrs. Stairwell C, 31. Wedge removed by officer, door secured. Supervisor notified."
+       }
+      ]
+     ]
+    },
+    "wedge-dee": {
+     "folder": "night-shift/wedge-dee",
+     "lang": "en",
+     "dir": "",
+     "time": "01:56",
+     "title": [
+      "Dee goes",
+      "Dee goes"
+     ],
+     "ambience": "stairwell",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "focus": "c4",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Wedge. Thirty-one. Mm. Stay on the wall. I'll go.",
+       "sfx": "footsteps-stairs",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile four the door stays open. Two minutes. Then Dolores on the landing, her back to the lens, and a younger man in shirtsleeves holding a cigarette he did not light.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Thirty-one. Orange. Rubber. Anand, law firm. He's sorry. He's very sorry.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Door's shut. He knows. {a pause} You said. Good.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0159 hrs. Stairwell C, 31. Wedge removed by D. Reyes. Tenant (Anand, 31) advised.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "laptop-watch",
+       {
+        "set": [
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0150 hrs. Stairwell C, 31st floor landing. Fire door held open by a rubber wedge, tenant present. D. Reyes responded 0156, wedge removed, door secured, tenant advised."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "laptop-watch",
+       {
+        "set": [
+         "met_dev",
+         "opined"
+        ],
+        "log": "0150 hrs. Stairwell C, 31. A tenant seemed sorry and probably wouldn't do it again. Dee dealt with it."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "laptop-watch",
+       {
+        "set": [
+         "met_dev",
+         "opined"
+        ],
+        "log": "Left the incident field for the stairwell blank."
+       }
+      ],
+      [
+       "Write that you removed it",
+       "Write that you removed it",
+       "laptop-watch",
+       {
+        "set": [
+         "lied",
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0150 hrs. Stairwell C, 31. Wedge removed by officer, door secured. Tenant advised."
+       }
+      ]
+     ]
+    },
+    "wedge-wait": {
+     "folder": "night-shift/wedge-wait",
+     "lang": "en",
+     "dir": "",
+     "time": "02:00",
+     "title": [
+      "Watching",
+      "Watching"
+     ],
+     "ambience": "stairwell",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "focus": "c4",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You log it and keep watching. For six minutes nothing on tile four changes. At 01:58 a man in shirtsleeves steps onto the landing, looks at the wedge, and goes back through the door to the floor.",
+       "file": null,
+       "dur": 15.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The wedge stays where it is.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Stairwell B. Clear. Heading to the roof side.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0158 hrs. Camera 4. Tenant on the landing, 31. Wedge still in place.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "laptop-watch",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0150 hrs. Stairwell C, 31st floor landing. Fire door held open by a rubber wedge. Wedge still in place at 0200. Not removed. No notification made."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "laptop-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0150 hrs. Stairwell C, 31. Door propped, probably harmless, tenant seemed to know what he was doing."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "laptop-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the stairwell blank."
+       }
+      ],
+      [
+       "Write that it was reported",
+       "Write that it was reported",
+       "laptop-watch",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0150 hrs. Stairwell C, 31. Door propped by wedge. Supervisor notified 0153. Wedge removed."
+       }
+      ]
+     ]
+    },
+    "wedge-missed": {
+     "folder": "night-shift/wedge-missed",
+     "lang": "en",
+     "dir": "",
+     "time": "02:05",
+     "title": [
+      "Thirty-one is open",
+      "Thirty-one is open"
+     ],
+     "ambience": "stairwell",
+     "feeds": {
+      "c4": "wedge"
+     },
+     "focus": "c4",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You watch something else. At 02:02 the radio clicks, and Dolores's voice comes from the thirty-first floor landing.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Thirty-one is open. Wedge. Orange.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "You were on the wall. Nine tiles. Not four. {a breath} Anand, law firm. Smoke on the landing. Sorry, he says.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Door's shut. Say it was me. It was me.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0202 hrs. Stairwell C, 31. Wedge found and removed by D. Reyes. Tenant (Anand, 31) advised.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "laptop-watch",
+       {
+        "set": [
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0150 hrs. Stairwell C, 31st floor landing. Fire door held open by a rubber wedge. Not seen on camera at time. Found by D. Reyes on tour 0202, wedge removed, tenant advised."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "laptop-watch",
+       {
+        "set": [
+         "met_dev",
+         "opined"
+        ],
+        "log": "0150 hrs. Stairwell C, 31. Door seemed propped for a while. Tenant probably smoking. Dee handled it."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "laptop-watch",
+       {
+        "set": [
+         "met_dev",
+         "opined"
+        ],
+        "log": "Left the incident field for the stairwell blank."
+       }
+      ],
+      [
+       "Write that you noticed it first",
+       "Write that you noticed it first",
+       "laptop-watch",
+       {
+        "set": [
+         "lied",
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0150 hrs. Stairwell C, 31. Wedge observed on camera 4 by officer 0152. D. Reyes dispatched, wedge removed."
+       }
+      ]
+     ]
+    },
+    "laptop-watch": {
+     "folder": "night-shift/laptop-watch",
+     "lang": "en",
+     "dir": "",
+     "time": "02:12",
+     "title": [
+      "Tile one, tile two",
+      "Tile one, tile two"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "02:12. Dolores is back at the wall with her coat over the chair. She puts the pencil against the glass of tile one and does not touch it.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Tile one. Tile two. Say.",
+       "file": null,
+       "dur": 3
+      }
+     ],
+     "log": "0212 hrs. D. Reyes on the wall. All feeds reviewed.",
+     "choices": [
+      [
+       "Look at the lobby",
+       "Look at the lobby",
+       "laptop-seen",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked at the lobby tile."
+       }
+      ],
+      [
+       "Look at the vestibule",
+       "Look at the vestibule",
+       "laptop-told",
+       {
+        "log": "Looked at the vestibule tile."
+       }
+      ],
+      [
+       "Look at camera 9",
+       "Look at camera 9",
+       "laptop-told",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Looked at camera 9."
+       }
+      ]
+     ]
+    },
+    "laptop-seen": {
+     "folder": "night-shift/laptop-seen",
+     "lang": "en",
+     "dir": "",
+     "time": "02:14",
+     "title": [
+      "The bench",
+      "The bench"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c1": "laptop"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Bench.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Good. Next.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On the long bench by the window: a laptop, closed, and a lanyard laid across it. Nobody is near. The lobby is empty.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Whose?",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0214 hrs. Lobby bench. Laptop and lanyard unattended.",
+     "choices": [
+      [
+       "Bring it to the desk",
+       "Bring it to the desk",
+       "laptop-got",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Brought the laptop and lanyard to the control room."
+       }
+      ],
+      [
+       "Check the badge on the lanyard",
+       "Check the badge on the lanyard",
+       "laptop-badge",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked up the lanyard's badge on the access terminal."
+       }
+      ],
+      [
+       "Open the laptop",
+       "Open the laptop",
+       "laptop-opened",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Opened the laptop to find its owner."
+       }
+      ]
+     ]
+    },
+    "laptop-told": {
+     "folder": "night-shift/laptop-told",
+     "lang": "en",
+     "dir": "",
+     "time": "02:14",
+     "title": [
+      "The bench",
+      "The bench"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c1": "laptop"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Lobby. The bench. Look at it.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody sat there tonight. Nobody.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "On the long bench by the window: a laptop, closed, and a lanyard laid across it. Nobody is near. The lobby is empty.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Whose?",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0214 hrs. Lobby bench. Laptop and lanyard unattended.",
+     "choices": [
+      [
+       "Bring it to the desk",
+       "Bring it to the desk",
+       "laptop-got",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Brought the laptop and lanyard to the control room."
+       }
+      ],
+      [
+       "Check the badge on the lanyard",
+       "Check the badge on the lanyard",
+       "laptop-badge",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked up the lanyard's badge on the access terminal."
+       }
+      ],
+      [
+       "Open the laptop",
+       "Open the laptop",
+       "laptop-opened",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Opened the laptop to find its owner."
+       }
+      ]
+     ]
+    },
+    "laptop-got": {
+     "folder": "night-shift/laptop-got",
+     "lang": "en",
+     "dir": "",
+     "time": "02:20",
+     "title": [
+      "In the control room",
+      "In the control room"
+     ],
+     "ambience": "control-room",
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The laptop is warm from the bench's heater. The lanyard says T. Marsh and a floor, thirty-four. You set both on the shelf beside the binder.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Tag it. Time. Where. Who touched it.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Not \"found.\" \"Found on the lobby bench at.\" Exact.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0220 hrs. Laptop and lanyard (T. Marsh, 34) secured in control room.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "leak-watch",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0214 hrs. Lobby bench. Laptop and lanyard unattended. Removed to control room 0218, tagged. Lanyard reads T. Marsh, floor 34. Owner to be contacted at 0700."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "leak-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0214 hrs. Lobby. Laptop on bench, owner probably on his way back. Seemed safe to move."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "leak-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the lobby bench blank."
+       }
+      ]
+     ]
+    },
+    "laptop-badge": {
+     "folder": "night-shift/laptop-badge",
+     "lang": "en",
+     "dir": "",
+     "time": "02:20",
+     "title": [
+      "The badge",
+      "The badge"
+     ],
+     "ambience": "control-room",
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The access terminal knows the badge on the lanyard: T. Marsh, floor 34, insurance broker. Last read: out through the turnstile at 23:12.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Out at 23:12. He's home. He's in bed and his laptop isn't.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Don't call him. You'll call him at seven. {flat} Go get it. Tag it.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0220 hrs. Access terminal: badge T. Marsh, 34. Last read 2312, exit.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "leak-watch",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0214 hrs. Lobby bench. Laptop and lanyard unattended. Access terminal shows badge T. Marsh, 34, exited 2312. Items secured in control room 0221. Owner to be contacted at 0700."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "leak-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0214 hrs. Lobby. Laptop and lanyard, owner seemed to have forgotten them. Probably fine."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "leak-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the lobby bench blank."
+       }
+      ]
+     ]
+    },
+    "laptop-opened": {
+     "folder": "night-shift/laptop-opened",
+     "lang": "en",
+     "dir": "",
+     "time": "02:20",
+     "title": [
+      "Not yours",
+      "Not yours"
+     ],
+     "ambience": "control-room",
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The laptop wakes on a login screen and a photograph of a dog on a beach. Dolores is out of her chair before you have read the name.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Not yours. Close it.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "One thing in this room nobody opens: what isn't theirs. {low} Close it.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The screen goes dark. The dog goes with it.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0220 hrs. Laptop opened by post one. Login screen displayed, no password entered. Closed.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "leak-watch",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0214 hrs. Lobby bench. Laptop and lanyard unattended. Laptop opened by officer 0219, login screen only, no entry made. Closed. Secured in control room."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "leak-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0214 hrs. Lobby. Laptop probably belongs to a tenant. Seemed fine to check. Secured."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "leak-watch",
+       {
+        "set": [
+         "opined"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Left the incident field for the lobby bench blank."
+       }
+      ]
+     ]
+    },
+    "leak-watch": {
+     "folder": "night-shift/leak-watch",
+     "lang": "en",
+     "dir": "",
+     "time": "02:35",
+     "title": [
+      "Water on forty-four",
+      "Water on forty-four"
+     ],
+     "ambience": "corridor",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "On tile six a dark edge is spreading across the carpet from the janitor's closet, very slowly, the way a stain does when no one is looking.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "That's the closet.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Marisol finished that floor at midnight.",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "0235 hrs. Camera 6, floor 44. Water spreading from the janitor's closet.",
+     "choices": [
+      [
+       "Radio Marisol",
+       "Radio Marisol",
+       "leak-marisol",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Radioed M. Quintero about water at the closet on 44."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "leak-okafor",
+       {
+        "log": "Called the supervisor's night line about water on 44."
+       }
+      ],
+      [
+       "Go up with Marisol",
+       "Go up with Marisol",
+       "leak-go",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Went up to 44 with M. Quintero."
+       }
+      ]
+     ]
+    },
+    "leak-marisol": {
+     "folder": "night-shift/leak-marisol",
+     "lang": "en",
+     "dir": "",
+     "time": "02:40",
+     "title": [
+      "Marisol, on the walkie",
+      "Marisol, on the walkie"
+     ],
+     "ambience": "corridor",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "marisol",
+       "text": "Ay! Dios mío! I'm there. I'm there! Don't hang up, mi amor!",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "marisol",
+       "text": "Somebody left the hose on in the sink. A hose! Not my girl. Not my girl, never.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "marisol",
+       "text": "Off. It's off. It's a lake. It's a little lake. {laughing, furious} Okay.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. A hose.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "0240 hrs. Floor 44. M. Quintero closed a sink hose in the closet. Water contained.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "leak-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0235 hrs. Floor 44 janitor's closet. Water on carpet from the sill. M. Quintero responded 0239, closed a hose left on in the sink. Leak stopped 0240. Wet carpet to be reported to day supervisor."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "leak-quiet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0235 hrs. Floor 44. Some careless cleaner probably left a hose on. Seemed minor. Marisol fixed it."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "leak-quiet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for floor 44 blank."
+       }
+      ]
+     ]
+    },
+    "leak-okafor": {
+     "folder": "night-shift/leak-okafor",
+     "lang": "en",
+     "dir": "",
+     "time": "02:40",
+     "title": [
+      "The night line",
+      "The night line"
+     ],
+     "ambience": "corridor",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The night line. Four rings. A television somewhere behind Mr. Okafor, turned low.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Water where? Is it near anything electrical?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "The engineer on call will come at six. Put the time you saw it in the log. And tell Ms. Quintero to stop mopping.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "dee",
+       "text": "He'd have said that for a puddle. {to the wall} Mm. It's a lake.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0240 hrs. Supervisor notified of water on 44. Engineer on call to attend at 0600.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "leak-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0235 hrs. Floor 44 janitor's closet. Water on carpet from the sill, spreading. Supervisor notified 0238. Engineer on call to attend 0600. M. Quintero instructed to stop mopping."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "leak-quiet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0235 hrs. Floor 44. Water seemed to be coming from the closet. Probably a pipe. Supervisor notified."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "leak-quiet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for floor 44 blank."
+       }
+      ]
+     ]
+    },
+    "leak-go": {
+     "folder": "night-shift/leak-go",
+     "lang": "en",
+     "dir": "",
+     "time": "02:50",
+     "title": [
+      "Forty-four",
+      "Forty-four"
+     ],
+     "ambience": "corridor",
+     "feeds": {
+      "c6": "leak"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Not alone. Nobody goes down alone.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Take Marisol. Radio every floor you pass. {a breath} Go.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "Forty-four is cold and bright and smells of wet carpet. Marisol is at the closet door with her sleeves up, holding a mop like a flag.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "marisol",
+       "text": "Look, look. A hose. In the sink. You see it? You see?",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She shows you the valve. You turn it together, and the sound in the wall stops.",
+       "file": null,
+       "dur": 7.4
+      }
+     ],
+     "log": "0250 hrs. Floor 44 janitor's closet. Sink hose found running, valve closed by post one and M. Quintero. Leak stopped.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "leak-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0235 hrs. Floor 44 janitor's closet. Water on carpet from the sill. Post one responded with M. Quintero, radioing each floor. Sink hose found running, valve closed 0248. Leak stopped. Wet carpet to be reported."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "leak-quiet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0235 hrs. Floor 44. Cleaner left a hose on, seemed like an accident. Probably fine now."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "leak-quiet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for floor 44 blank."
+       }
+      ]
+     ]
+    },
+    "leak-quiet": {
+     "folder": "night-shift/leak-quiet",
+     "lang": "en",
+     "dir": "",
+     "time": "02:55",
+     "title": [
+      "The cup",
+      "The cup"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Quarter to three. The wall is quiet again. Dolores holds her cup with both hands and does not drink from it.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
+       "file": null,
+       "dur": 5.8
+      }
+     ],
+     "log": "0255 hrs. Control room. Wall quiet.",
+     "choices": [
+      [
+       "Sit by her. Say nothing.",
+       "Sit by her. Say nothing.",
+       "four-hours",
+       {
+        "forbids": [
+         "left_wall"
+        ],
+        "meters": {
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Sat by D. Reyes and said nothing."
+       }
+      ],
+      [
+       "Ask about Ray",
+       "Ask about Ray",
+       "dee-shut",
+       {
+        "add": {
+         "trainer_warmth": -2,
+         "trainer_trust": -1
+        },
+        "log": "Asked D. Reyes about Ray."
+       }
+      ],
+      [
+       "Go back to the wall",
+       "Go back to the wall",
+       "three-oclock",
+       {
+        "log": "Went back to the wall."
+       }
+      ]
+     ]
+    },
+    "four-hours": {
+     "folder": "night-shift/four-hours",
+     "lang": "en",
+     "dir": "",
+     "time": "02:58",
+     "title": [
+      "Four hours",
+      "Four hours"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "She does not look up. The cup is still full.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Four hours.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She says nothing else for a while. The clock ticks. Two minutes ahead of everything.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "Clock's fast. Leave it.",
+       "sfx": "clock-tick",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "You do not ask whose. She does not say.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0258 hrs. Control room. Quiet at the wall with D. Reyes.",
+     "choices": [
+      [
+       "Stay on the wall",
+       "Stay on the wall",
+       "three-oclock",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Stayed on the wall."
+       }
+      ]
+     ]
+    },
+    "dee-shut": {
+     "folder": "night-shift/dee-shut",
+     "lang": "en",
+     "dir": "",
+     "time": "02:58",
+     "title": [
+      "Don't",
+      "Don't"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Don't.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Coffee.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She stands at the machine with her back to the room for a long time. It makes its sound and nothing comes out.",
+       "file": null,
+       "dur": 10.2
+      }
+     ],
+     "log": "0258 hrs. Control room. D. Reyes at the coffee machine.",
+     "choices": [
+      [
+       "Go back to the wall",
+       "Go back to the wall",
+       "three-oclock",
+       {
+        "log": "Went back to the wall."
+       }
+      ]
+     ]
+    },
+    "three-oclock": {
+     "folder": "night-shift/three-oclock",
+     "lang": "en",
+     "dir": "",
+     "time": "03:00",
+     "title": [
+      "Roof door",
+      "Roof door"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Two minutes to three by the wall clock. Dolores takes the keys off the hook and the radio off the charger. The fourth radio is the only one that clicks.",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "dee",
+       "text": "Roof door. Three. Alone. Stay on the wall.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Radio check at quarter past. Answer.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "She goes. The door swings shut behind her and the room is very quiet.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0258 hrs. D. Reyes on roof-door tour. Post one on the wall.",
+     "choices": [
+      [
+       "Let her go",
+       "Let her go",
+       "dev-stuck",
+       {
+        "forbids": [
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Let D. Reyes go up alone, as she asked."
+       }
+      ],
+      [
+       "Let her go",
+       "Let her go",
+       "dev-stuck-met",
+       {
+        "requires": [
+         "met_dev"
+        ],
+        "clear": [
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Let D. Reyes go up alone, as she asked."
+       }
+      ],
+      [
+       "Offer to go with her",
+       "Offer to go with her",
+       "three-no",
+       {
+        "log": "Offered to go with D. Reyes to the roof door."
+       }
+      ]
+     ]
+    },
+    "three-no": {
+     "folder": "night-shift/three-no",
+     "lang": "en",
+     "dir": "",
+     "time": "03:00",
+     "title": [
+      "Alone",
+      "Alone"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Wall.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I do that one alone. Always have. Mm.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The door swings shut. The elevator chime rings once, far off.",
+       "file": null,
+       "dur": 5.4
+      }
+     ],
+     "log": "0300 hrs. D. Reyes on roof-door tour, alone.",
+     "choices": [
+      [
+       "Take the wall",
+       "Take the wall",
+       "dev-stuck",
+       {
+        "forbids": [
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the wall."
+       }
+      ],
+      [
+       "Take the wall",
+       "Take the wall",
+       "dev-stuck-met",
+       {
+        "requires": [
+         "met_dev"
+        ],
+        "clear": [
+         "met_dev"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the wall."
+       }
+      ]
+     ]
+    },
+    "dev-stuck": {
+     "folder": "night-shift/dev-stuck",
+     "lang": "en",
+     "dir": "",
+     "time": "03:02",
+     "title": [
+      "Car three",
+      "Car three"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "At 03:02 the call light comes on over tile five. Car three has stopped between thirty and thirty-one. The intercom on the wall hisses, then a voice.",
+       "sfx": "intercom",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dev",
+       "text": "Hi, sorry, hi, I think the elevator, it, it stopped? Sorry.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dev",
+       "text": "No, no, it's fine. It's fine. It's a little close in here.",
+       "file": null,
+       "dur": 5.8
+      }
+     ],
+     "log": "0302 hrs. Elevator car 3 stopped between 30 and 31. Occupant on intercom. D. Reyes on roof-door tour.",
+     "choices": [
+      [
+       "Keep him talking",
+       "Keep him talking",
+       "dev-talk",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Stayed on the intercom with the occupant of car 3."
+       }
+      ],
+      [
+       "Call the elevator company",
+       "Call the elevator company",
+       "dev-company",
+       {
+        "log": "Called the elevator contractor's night line."
+       }
+      ],
+      [
+       "Call 911",
+       "Call 911",
+       "dev-911",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Called 911 for a stopped elevator with a person inside."
+       }
+      ],
+      [
+       "Radio Dee",
+       "Radio Dee",
+       "dev-dee",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "building_known": 1
+        },
+        "log": "Radioed D. Reyes: elevator stopped with a person inside."
+       }
+      ]
+     ]
+    },
+    "dev-stuck-met": {
+     "folder": "night-shift/dev-stuck-met",
+     "lang": "en",
+     "dir": "",
+     "time": "03:02",
+     "title": [
+      "Car three",
+      "Car three"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "At 03:02 the call light comes on over tile five. Car three has stopped between thirty and thirty-one. The intercom on the wall hisses, then a voice.",
+       "sfx": "intercom",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dev",
+       "text": "Hi, it's Dev. Anand. From the, the landing? Sorry. Not the door. The elevator. It stopped.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dev",
+       "text": "No, no, it's fine. It's fine. It's a little close in here.",
+       "file": null,
+       "dur": 5.8
+      }
+     ],
+     "log": "0302 hrs. Elevator car 3 stopped between 30 and 31. Occupant on intercom. D. Reyes on roof-door tour.",
+     "choices": [
+      [
+       "Keep him talking",
+       "Keep him talking",
+       "dev-talk",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Stayed on the intercom with the occupant of car 3."
+       }
+      ],
+      [
+       "Call the elevator company",
+       "Call the elevator company",
+       "dev-company",
+       {
+        "log": "Called the elevator contractor's night line."
+       }
+      ],
+      [
+       "Call 911",
+       "Call 911",
+       "dev-911",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Called 911 for a stopped elevator with a person inside."
+       }
+      ],
+      [
+       "Radio Dee",
+       "Radio Dee",
+       "dev-dee",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "building_known": 1
+        },
+        "log": "Radioed D. Reyes: elevator stopped with a person inside."
+       }
+      ]
+     ]
+    },
+    "dev-talk": {
+     "folder": "night-shift/dev-talk",
+     "lang": "en",
+     "dir": "",
+     "time": "03:06",
+     "title": [
+      "Keep talking",
+      "Keep talking"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "dev",
+       "text": "I have a closing at nine. Sorry. That's not your problem.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "You ask him to sit on the floor of the car. You hear him do it. You ask what the closing is, and he tells you for two minutes without a breath: a lease, an insurer, a signature page.",
+       "file": null,
+       "dur": 16.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Radio check.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dev",
+       "text": "It's — is it — it's getting a little —",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "0310 hrs. Intercom contact with occupant of car 3 maintained. Radio check from D. Reyes received.",
+     "choices": [
+      [
+       "Answer Dee: one minute",
+       "Answer Dee: one minute",
+       "dev-ok",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Answered the 0315 radio check and told D. Reyes about the elevator."
+       }
+      ],
+      [
+       "Stay with Dev",
+       "Stay with Dev",
+       "dev-stay",
+       {
+        "add": {
+         "trainer_warmth": 1,
+         "slips": 1
+        },
+        "log": "Stayed on the intercom and did not answer the 0315 radio check."
+       }
+      ]
+     ]
+    },
+    "dev-ok": {
+     "folder": "night-shift/dev-ok",
+     "lang": "en",
+     "dir": "",
+     "time": "03:14",
+     "title": [
+      "One minute",
+      "One minute"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You key the radio with one hand and hold the intercom with the other.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Go. {over the radio, no questions} Tell him the company's forty minutes. Tell him he can stand up or sit down.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "dev",
+       "text": "Okay. Okay. Sorry. You don't have to — okay.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "coat-lobby",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. Intercom contact maintained. Radio check answered 0314. Contractor ETA 40 min."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0302 hrs. Elevator car 3. Tenant seemed nervous, probably claustrophobic. Stayed on the intercom."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for car 3 blank."
+       }
+      ]
+     ]
+    },
+    "dev-stay": {
+     "folder": "night-shift/dev-stay",
+     "lang": "en",
+     "dir": "",
+     "time": "03:14",
+     "title": [
+      "Staying",
+      "Staying"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The radio calls again. You stay on the intercom. Dev's breath comes through it, then slows.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dev",
+       "text": "It's fine. I'm fine. Thank you. Sorry. Thank you.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Post one. {over the radio, flat, final} Mm.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "coat-lobby",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. Intercom contact maintained. Radio check 0315 not answered. Contractor not yet called."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0302 hrs. Elevator car 3. Tenant seemed nervous, probably claustrophobic. Stayed with him. Radio check missed."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for car 3 blank."
+       }
+      ]
+     ]
+    },
+    "dev-company": {
+     "folder": "night-shift/dev-company",
+     "lang": "en",
+     "dir": "",
+     "time": "03:08",
+     "title": [
+      "The contractor",
+      "The contractor"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The contractor's night line puts you on hold with a recorded voice, then a man named Gus who says forty minutes.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dev",
+       "text": "Forty? Forty minutes? Sorry. No. That's fine. That's fine.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "You tell him to sit on the floor of the car. You tell him you will stay on the line. You do.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Radio check.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "You key the radio. \"Post one. Loud and clear.\" Dolores says Mm. That is all she says.",
+       "file": null,
+       "dur": 7.8
+      }
+     ],
+     "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "coat-lobby",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. Elevator contractor notified 0306, ETA 0346. Radio check answered 0315."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0302 hrs. Elevator car 3. Tenant seemed fine, probably stuck on the door. Contractor called."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for car 3 blank."
+       }
+      ]
+     ]
+    },
+    "dev-911": {
+     "folder": "night-shift/dev-911",
+     "lang": "en",
+     "dir": "",
+     "time": "03:08",
+     "title": [
+      "Nine-one-one",
+      "Nine-one-one"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The dispatcher asks if anyone is hurt. No. If anyone is in distress. You say a little close in there. The dispatcher says the fire department is notified.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dev",
+       "text": "Did you — did you call the fire department? Sorry. I'm fine. Really.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 03:19 two firefighters come into the lobby with a bar and a bag. At 03:26 the car opens at thirty-one and Dev walks out with his laptop bag held to his chest.",
+       "file": null,
+       "dur": 14.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Who called them? {over the radio, quiet, thick} Mm. Never mind.",
+       "file": null,
+       "dur": 5.4
+      }
+     ],
+     "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "coat-lobby",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury reported. 911 called 0308. FDNY on site 0319, car released 0326. Supervisor not notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0302 hrs. Elevator car 3. Tenant seemed upset, probably claustrophobic. Called the fire department to be safe."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for car 3 blank."
+       }
+      ]
+     ]
+    },
+    "dev-dee": {
+     "folder": "night-shift/dev-dee",
+     "lang": "en",
+     "dir": "",
+     "time": "03:12",
+     "title": [
+      "Dee takes the intercom",
+      "Dee takes the intercom"
+     ],
+     "ambience": "elevator",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "On the stairs. Coming. Keep him on the line.",
+       "sfx": "footsteps-stairs",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "Her voice is rough. When she comes in at 03:12, her hands are cold, and she goes to the intercom before she takes off her coat.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Anand. Dolores. We met. Sit on the floor. It's a small thing. A box that stopped.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dev",
+       "text": "Okay. Okay. Sorry. Thank you.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "The company's forty minutes. I'll stay here. You talk.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "coat-lobby",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. D. Reyes returned to the control room 0312, intercom contact maintained. Contractor notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0302 hrs. Elevator car 3. Tenant seemed shaken, probably better now. Dee handled it."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "coat-lobby",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for car 3 blank."
+       }
+      ]
+     ]
+    },
+    "coat-lobby": {
+     "folder": "night-shift/coat-lobby",
+     "lang": "en",
+     "dir": "",
+     "time": "03:20",
+     "title": [
+      "A man in a coat",
+      "A man in a coat"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c1": "coat"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "On tile one a man in a long dark coat comes through the revolving door with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again.",
+       "file": null,
+       "dur": 15.8
+      },
+      {
+       "speaker": "pierce",
+       "text": "Evening. Don't get up. Whatever's on that screen, it's yours.",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "0320 hrs. Lobby. Chairman P. Hawkes arrived by the revolving door, proceeding to the elevators.",
+     "choices": [
+      [
+       "Stay in your seat",
+       "Stay in your seat",
+       "pierce-waved",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stayed in your seat. The Chairman went by."
+       }
+      ],
+      [
+       "Stand and ask him to sign in",
+       "Stand and ask him to sign in",
+       "pierce-signin",
+       {
+        "log": "Stood and asked the Chairman to sign in."
+       }
+      ]
+     ]
+    },
+    "pierce-waved": {
+     "folder": "night-shift/pierce-waved",
+     "lang": "en",
+     "dir": "",
+     "time": "03:21",
+     "title": [
+      "Waved through",
+      "Waved through"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c7": "coat"
+     },
+     "focus": "c7",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "A car chimes. The doors close on the coat. On tile seven the glass doors of fifty-eight open before the car has finished rising, and the man crosses the reception with his phone at his ear.",
+       "sfx": "elevator-chime",
+       "file": null,
+       "dur": 15.4
+      }
+     ],
+     "log": "0322 hrs. Camera 7, 58 reception. Chairman crossed reception, no further contact.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "dee-back-waved",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0320 hrs. Lobby. Chairman P. Hawkes arrived, proceeded to floor 58 by elevator. Not signed in. Post one did not stop him. Camera 7 shows him crossing 58 reception 0322."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "dee-back-waved",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0320 hrs. Lobby. Chairman seemed to be in a hurry, probably working late on 58. Didn't sign in."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "dee-back-waved",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the lobby blank."
+       }
+      ]
+     ]
+    },
+    "pierce-signin": {
+     "folder": "night-shift/pierce-signin",
+     "lang": "en",
+     "dir": "",
+     "time": "03:21",
+     "title": [
+      "Fifty-eight",
+      "Fifty-eight"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c7": "coat"
+     },
+     "focus": "c7",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You stand. \"Sir. After hours, I need you to sign in.\" He stops. For a second he looks at you the way you look at a tile.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "pierce",
+       "text": "Fair. Fifty-eight. I own it. Put that in your log.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0322. In. He does not write the Out column.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 10.2
+      }
+     ],
+     "log": "0322 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "dee-back-signed",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0320 hrs. Lobby. Chairman P. Hawkes arrived, proceeded to floor 58. Signed the visitor sheet at officer's request 0322, in only. Camera 7 shows him crossing 58 reception 0323."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "dee-back-signed",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0320 hrs. Lobby. Chairman seemed fine about signing in, probably in a hurry. Went up."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "dee-back-signed",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the lobby blank."
+       }
+      ]
+     ]
+    },
+    "dee-back-waved": {
+     "folder": "night-shift/dee-back-waved",
+     "lang": "en",
+     "dir": "",
+     "time": "03:30",
+     "title": [
+      "Back",
+      "Back"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:26. The radio on the charger is the fourth one. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
+       "sfx": "door-heavy",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "He walks past everyone.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Write it the way it was.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile five the indicator over car three drops to thirty-one. The doors open on Dev. He holds his bag to his chest. He does not look at the camera.",
+       "sfx": "elevator-chime",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "narrator",
+       "text": "03:41. Dolores has the cup. You have the wall. On tile nine the picture jumps once, a thin tear across it. Then it does not move at all.",
+       "file": null,
+       "dur": 12.2
+      }
+     ],
+     "log": "0341 hrs. Camera 9, floor 2 alcove. Picture jumped once.",
+     "choices": [
+      [
+       "Look at nine",
+       "Look at nine",
+       "cam9-seen",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked at camera 9."
+       }
+      ],
+      [
+       "Look at the lobby",
+       "Look at the lobby",
+       "cam9-missed",
+       {
+        "log": "Looked at the lobby."
+       }
+      ],
+      [
+       "Look at the roof door",
+       "Look at the roof door",
+       "cam9-missed",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Looked at camera 8, the roof door."
+       }
+      ]
+     ]
+    },
+    "dee-back-signed": {
+     "folder": "night-shift/dee-back-signed",
+     "lang": "en",
+     "dir": "",
+     "time": "03:30",
+     "title": [
+      "Back",
+      "Back"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:26. The radio on the charger is the fourth one. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
+       "sfx": "door-heavy",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "You made the Chairman sign.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "He wrote the time. He never writes the time. {a sip} I'd have waved.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile five the indicator over car three drops to thirty-one. The doors open on Dev. He holds his bag to his chest. He does not look at the camera.",
+       "sfx": "elevator-chime",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "narrator",
+       "text": "03:41. Dolores has the cup. You have the wall. On tile nine the picture jumps once, a thin tear across it. Then it does not move at all.",
+       "file": null,
+       "dur": 12.2
+      }
+     ],
+     "log": "0341 hrs. Camera 9, floor 2 alcove. Picture jumped once.",
+     "choices": [
+      [
+       "Look at nine",
+       "Look at nine",
+       "cam9-seen",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked at camera 9."
+       }
+      ],
+      [
+       "Look at the lobby",
+       "Look at the lobby",
+       "cam9-missed",
+       {
+        "log": "Looked at the lobby."
+       }
+      ],
+      [
+       "Look at the roof door",
+       "Look at the roof door",
+       "cam9-missed",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Looked at camera 8, the roof door."
+       }
+      ]
+     ]
+    },
+    "cam9-seen": {
+     "folder": "night-shift/cam9-seen",
+     "lang": "en",
+     "dir": "",
+     "time": "03:43",
+     "title": [
+      "Nine",
+      "Nine"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c9": "frozen"
+     },
+     "focus": "c9",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Say it.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Camera, time, what it did. Not \"something's wrong.\" That's a mood, not a sentence.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0343 hrs. Camera 9 feed frozen since 0341.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "trouble-signal",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0341 hrs. Camera 9, floor 2 alcove. Image frozen at 0341, no change since. Fire panel repeater not visible. Not yet checked in person."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "trouble-signal",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0341 hrs. Something is wrong with camera 9. Probably tampering or a bad cable."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "trouble-signal",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for camera 9 blank."
+       }
+      ],
+      [
+       "Write that you checked it",
+       "Write that you checked it",
+       "trouble-signal",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0341 hrs. Camera 9, floor 2 alcove. Checked in person 0345, equipment normal."
+       }
+      ]
+     ]
+    },
+    "cam9-missed": {
+     "folder": "night-shift/cam9-missed",
+     "lang": "en",
+     "dir": "",
+     "time": "03:55",
+     "title": [
+      "Fourteen minutes",
+      "Fourteen minutes"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c9": "frozen"
+     },
+     "focus": "c9",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Nine hasn't moved in fourteen minutes.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "You were looking right at it. Mm. Looking is not seeing. {a breath} Say it now. Exactly.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The picture on tile nine is the same cabinet, the same light, the same tear across the same place.",
+       "file": null,
+       "dur": 8.6
+      }
+     ],
+     "log": "0355 hrs. Camera 9 feed found frozen since 0341 by D. Reyes.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "trouble-signal",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0341 hrs. Camera 9, floor 2 alcove. Image frozen at 0341. Found by D. Reyes at 0355, not seen by post one at the time. Not yet checked in person."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "trouble-signal",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0341 hrs. Something is wrong with camera 9. Probably tampering. Dee noticed it."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "trouble-signal",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for camera 9 blank."
+       }
+      ],
+      [
+       "Write that you noticed it first",
+       "Write that you noticed it first",
+       "trouble-signal",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0341 hrs. Camera 9, floor 2 alcove. Image frozen, observed by post one 0341. D. Reyes advised."
+       }
+      ]
+     ]
+    },
+    "trouble-signal": {
+     "folder": "night-shift/trouble-signal",
+     "lang": "en",
+     "dir": "",
+     "time": "03:58",
+     "title": [
+      "The panel",
+      "The panel"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c9": "frozen"
+     },
+     "focus": "c9",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+       "sfx": "panel-buzzer",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile nine, frozen, the repeater is still green.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "That's the thirty-one detector. It does that. {flat, not turning} Press the silence. It stops. It always stops.",
+       "file": null,
+       "dur": 8.2
+      }
+     ],
+     "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+     "choices": [
+      [
+       "Silence it, like Dee says",
+       "Silence it, like Dee says",
+       "trouble-silenced",
+       {
+        "set": [
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Pressed the silence on the fire panel's trouble buzzer."
+       }
+      ],
+      [
+       "Call Ms. Adler",
+       "Call Ms. Adler",
+       "adler-call",
+       {
+        "log": "Called the certified fire safety director about the trouble signal."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "okafor-trouble",
+       {
+        "log": "Called the supervisor's night line about the fire panel."
+       }
+      ]
+     ]
+    },
+    "trouble-silenced": {
+     "folder": "night-shift/trouble-silenced",
+     "lang": "en",
+     "dir": "",
+     "time": "04:00",
+     "title": [
+      "Silence",
+      "Silence"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You press the button. The buzzer stops. The amber light stays where it is, steady, in the corner of your eye.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "There. {a nod, almost kind} See.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Nobody says anything for a while. Dolores hums, badly, under her breath, and stops when she hears herself.",
+       "sfx": "clock-tick",
+       "file": null,
+       "dur": 8.2
+      }
+     ],
+     "log": "0400 hrs. Fire panel trouble buzzer silenced by post one. Amber trouble light remains.",
+     "choices": [
+      [
+       "Look at the wall",
+       "Look at the wall",
+       "courier-intercom",
+       {
+        "log": "Looked at the wall."
+       }
+      ]
+     ]
+    },
+    "okafor-trouble": {
+     "folder": "night-shift/okafor-trouble",
+     "lang": "en",
+     "dir": "",
+     "time": "04:03",
+     "title": [
+      "The night line",
+      "The night line"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The night line rings once. Mr. Okafor sounds like a man already dressed.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Did you silence it? Good. Do not touch it. Read me the display.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "That is a fire panel. It belongs to Ms. Adler. Call her. I will call the building manager at six.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0403 hrs. Supervisor notified of fire panel trouble. Instructed to call the fire safety director.",
+     "choices": [
+      [
+       "Call Ms. Adler",
+       "Call Ms. Adler",
+       "adler-call",
+       {
+        "log": "Called the certified fire safety director on the supervisor's instruction."
+       }
+      ]
+     ]
+    },
+    "adler-call": {
+     "folder": "night-shift/adler-call",
+     "lang": "en",
+     "dir": "",
+     "time": "04:05",
+     "title": [
+      "Ms. Adler",
+      "Ms. Adler"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Ms. Adler picks up on the second ring, as if she has been waiting by the phone.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "adler",
+       "text": "Read me the display. Exactly. Do not paraphrase.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0405 hrs. Fire safety director on the phone. Display being read.",
+     "choices": [
+      [
+       "Read it word for word",
+       "Read it word for word",
+       "adler-exact",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "building_known": 1
+        },
+        "log": "Read the fire panel display to the fire safety director word for word."
+       }
+      ],
+      [
+       "Say: a trouble in zone 31",
+       "Say: a trouble in zone 31",
+       "adler-short",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Told the fire safety director there was a trouble in zone 31."
+       }
+      ]
+     ]
+    },
+    "adler-exact": {
+     "folder": "night-shift/adler-exact",
+     "lang": "en",
+     "dir": "",
+     "time": "04:07",
+     "title": [
+      "The correct answer",
+      "The correct answer"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You read it. TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT. There is a pause while a pen finishes.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "adler",
+       "text": "Thank you. That is the correct answer. Please put it in the log in the same words.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "adler",
+       "text": "Do not silence it. Do not reset it. I will be at the panel at ten past four.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Helen's good.",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "0407 hrs. Fire safety director instructed: do not silence, do not reset. ETA 0410.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "adler-arrives",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0358 hrs. Fire panel, control room. Display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT. FSD (H. Adler) notified 0405, instructed do not silence, do not reset. Panel untouched."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "adler-arrives",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0358 hrs. Fire panel beeping, probably a bad detector on 31. Seemed minor. FSD notified."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "adler-arrives",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the fire panel blank."
+       }
+      ],
+      [
+       "Write that it was cleared",
+       "Write that it was cleared",
+       "adler-arrives",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0358 hrs. Fire panel trouble signal 31. FSD notified. Panel reset and normal 0408."
+       }
+      ]
+     ]
+    },
+    "adler-short": {
+     "folder": "night-shift/adler-short",
+     "lang": "en",
+     "dir": "",
+     "time": "04:07",
+     "title": [
+      "Again",
+      "Again"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "adler",
+       "text": "That is not what it says. Again. Exactly.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "You read it again. TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "adler",
+       "text": "Thank you. Do not silence it. Do not reset it. I will be there at ten past four.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0407 hrs. Fire safety director instructed: do not silence, do not reset. ETA 0410.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "adler-arrives",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0358 hrs. Fire panel, control room. Display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT. FSD (H. Adler) notified 0405, display read twice at her request. Panel untouched."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "adler-arrives",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0358 hrs. Fire panel beeping, probably nothing. Seemed minor. FSD notified."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "adler-arrives",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the fire panel blank."
+       }
+      ],
+      [
+       "Write that it was cleared",
+       "Write that it was cleared",
+       "adler-arrives",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0358 hrs. Fire panel trouble signal 31. FSD notified. Panel reset and normal 0408."
+       }
+      ]
+     ]
+    },
+    "adler-arrives": {
+     "folder": "night-shift/adler-arrives",
+     "lang": "en",
+     "dir": "",
+     "time": "04:12",
+     "title": [
+      "At the panel",
+      "At the panel"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it the way you read a menu in a foreign language.",
+       "file": null,
+       "dur": 16.6
+      },
+      {
+       "speaker": "adler",
+       "text": "Dolores.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Helen.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "adler",
+       "text": "Detector thirty-one, fourteen. A loose head. A technician at eight. Initial the log beside mine.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "adler",
+       "text": "The alcove camera has stopped. That is on the same switch. It is a cable. Nobody did anything.",
+       "file": null,
+       "dur": 8.2
+      }
+     ],
+     "log": "0412 hrs. FSD H. Adler at the panel. Detector 31-14, loose head. Technician at 0800.",
+     "choices": [
+      [
+       "Initial the log beside hers",
+       "Initial the log beside hers",
+       "courier-intercom",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Initialed the log beside the fire safety director's entry."
+       }
+      ]
+     ]
+    },
+    "courier-intercom": {
+     "folder": "night-shift/courier-intercom",
+     "lang": "en",
+     "dir": "",
+     "time": "04:25",
+     "title": [
+      "The dock",
+      "The dock"
+     ],
+     "ambience": "dock",
+     "feeds": {
+      "c3": "van"
+     },
+     "focus": "c3",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "04:25. The dock intercom buzzes. On tile three a white van idles at the half-raised rollup door. A man in a cap stands at the intercom with a box under one arm.",
+       "sfx": "intercom",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "courier",
+       "text": "Package for fifty-eight.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "courier",
+       "text": "It says someone's expecting it.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody's expecting anything at four in the morning.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Sign for it. Tag it. It sits on the shelf till seven. We don't send things back into the cold.",
+       "file": null,
+       "dur": 9
+      }
+     ],
+     "log": "0425 hrs. Loading dock. Courier at the intercom with a box for floor 58. No authorization on the list.",
+     "choices": [
+      [
+       "Refuse: no authorization",
+       "Refuse: no authorization",
+       "courier-refused",
+       {
+        "log": "Refused the delivery for floor 58, no authorization."
+       }
+      ],
+      [
+       "Sign for it, hold it",
+       "Sign for it, hold it",
+       "courier-signed",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Signed for the delivery for floor 58 and held it in the control room."
+       }
+      ],
+      [
+       "Ask who sent it",
+       "Ask who sent it",
+       "courier-who",
+       {
+        "log": "Asked the courier who the box was from."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "courier-super",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the delivery."
+       }
+      ]
+     ]
+    },
+    "courier-who": {
+     "folder": "night-shift/courier-who",
+     "lang": "en",
+     "dir": "",
+     "time": "04:27",
+     "title": [
+      "Who sent it",
+      "Who sent it"
+     ],
+     "ambience": "dock",
+     "feeds": {
+      "c3": "van"
+     },
+     "focus": "c3",
+     "lines": [
+      {
+       "speaker": "courier",
+       "text": "Sender's blank. Says Chairman's office, by five. I don't make the labels, man.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Chairman's office is on the second floor of nobody's list at four in the morning.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0427 hrs. Courier states sender blank, label reads Chairman's office.",
+     "choices": [
+      [
+       "Refuse: no authorization",
+       "Refuse: no authorization",
+       "courier-refused",
+       {
+        "log": "Refused the delivery for floor 58, no authorization."
+       }
+      ],
+      [
+       "Sign for it, hold it",
+       "Sign for it, hold it",
+       "courier-signed",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Signed for the delivery for floor 58 and held it in the control room."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "courier-super",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the delivery."
+       }
+      ]
+     ]
+    },
+    "courier-refused": {
+     "folder": "night-shift/courier-refused",
+     "lang": "en",
+     "dir": "",
+     "time": "04:30",
+     "title": [
+      "Not tonight",
+      "Not tonight"
+     ],
+     "ambience": "dock",
+     "focus": "c3",
+     "lines": [
+      {
+       "speaker": "courier",
+       "text": "I just need a signature, man.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "You tell him there is no authorization on the list. You tell him the mailroom opens at seven. He says that is not his problem. He says it is in his log that he came.",
+       "file": null,
+       "dur": 15
+      },
+      {
+       "speaker": "courier",
+       "text": "Okay. Okay. Have a night.",
+       "sfx": "intercom",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. {low} The box will be at the mailroom at seven. It'll be fine.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0430 hrs. Courier refused at the dock. Left the building 0431.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "sleeper-core",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0425 hrs. Loading dock. Courier at intercom with a box for floor 58, sender blank. No authorization on the after-hours list. Delivery refused 0430. Courier left 0431."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "sleeper-core",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0425 hrs. Loading dock. Courier seemed annoyed, box probably nothing. Refused."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "sleeper-core",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the dock blank."
+       }
+      ]
+     ]
+    },
+    "courier-signed": {
+     "folder": "night-shift/courier-signed",
+     "lang": "en",
+     "dir": "",
+     "time": "04:30",
+     "title": [
+      "Signed",
+      "Signed"
+     ],
+     "ambience": "dock",
+     "feeds": {
+      "c3": "van"
+     },
+     "focus": "c3",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You go out to the dock door and sign on a screen that doesn't record your name. The box is lighter than it looks. You set it on the shelf under the binder.",
+       "file": null,
+       "dur": 14.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Tag it. Time. Where. Who touched it.",
+       "sfx": "paper",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Seven o'clock. Not before.",
+       "file": null,
+       "dur": 3
+      }
+     ],
+     "log": "0430 hrs. Box for floor 58 accepted at the dock and held on the control room shelf.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "sleeper-core",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0425 hrs. Loading dock. Courier at intercom with a box for floor 58, sender blank. No authorization on the after-hours list. Accepted and signed for 0430, tagged, held on the control room shelf. To be delivered to the mailroom at 0700."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "sleeper-core",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0425 hrs. Loading dock. Courier seemed trustworthy, box probably expected. Held it."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "sleeper-core",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the dock blank."
+       }
+      ]
+     ]
+    },
+    "courier-super": {
+     "folder": "night-shift/courier-super",
+     "lang": "en",
+     "dir": "",
+     "time": "04:30",
+     "title": [
+      "The night line",
+      "The night line"
+     ],
+     "ambience": "dock",
+     "focus": "c3",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The night line rings seven times. Mr. Okafor's voice comes in from far away.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Fifty-eight. Whose? Not on the list? Then you do not accept it.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "Log the courier's name if he gives it. The mailroom opens at seven. {a throat cleared} That's noted.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "That's what the book says. {to the wall} Mm.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0432 hrs. Supervisor notified of delivery for floor 58. Instructed not to accept. Courier left 0433.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "sleeper-core",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0425 hrs. Loading dock. Courier at intercom with a box for floor 58, sender blank. No authorization on the after-hours list. Supervisor notified 0431, instructed not to accept. Delivery refused 0432."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "sleeper-core",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0425 hrs. Loading dock. Courier seemed tired, box probably routine. Supervisor said refuse."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "sleeper-core",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the dock blank."
+       }
+      ]
+     ]
+    },
+    "sleeper-core": {
+     "folder": "night-shift/sleeper-core",
+     "lang": "en",
+     "dir": "",
+     "time": "04:45",
+     "title": [
+      "The ledge",
+      "The ledge"
+     ],
+     "ambience": "vestibule",
+     "feeds": {
+      "c2": "sleeper"
+     },
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Twenty minutes. {to the wall, flat} We let him stay twenty minutes. Then I call.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0445 hrs. Camera 2, vestibule. Individual asleep on the ledge. Outside temperature 14 degrees.",
+     "choices": [
+      [
+       "Watch him, twenty minutes",
+       "Watch him, twenty minutes",
+       "sleeper-watch",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Watched camera 2 with D. Reyes for twenty minutes."
+       }
+      ],
+      [
+       "Wake him, gently",
+       "Wake him, gently",
+       "sleeper-wake",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Went to the vestibule door to speak to the individual."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "sleeper-super",
+       {
+        "log": "Called the supervisor's night line about the individual in the vestibule."
+       }
+      ],
+      [
+       "Call 911",
+       "Call 911",
+       "sleeper-911",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Called 911 for a welfare check on the individual in the vestibule."
+       }
+      ]
+     ]
+    },
+    "sleeper-watch": {
+     "folder": "night-shift/sleeper-watch",
+     "lang": "en",
+     "dir": "",
+     "time": "05:05",
+     "title": [
+      "Twenty minutes",
+      "Twenty minutes"
+     ],
+     "ambience": "vestibule",
+     "feeds": {
+      "c2": "sleeper"
+     },
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Twenty minutes is a long time on a tile where nothing moves. The man turns once, toward the wall. Dolores watches him the whole time and never looks at the clock.",
+       "file": null,
+       "dur": 13.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Now.",
+       "sfx": "coffee",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile two, Dolores crouches by the ledge and holds the cup out. After a moment a hand takes it.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "He's got a place at six. A shelter on Fifty-second. I told him. {back at the wall, dry} Don't tell Okafor I gave away the coffee.",
+       "file": null,
+       "dur": 11.4
+      }
+     ],
+     "log": "0505 hrs. Vestibule. D. Reyes made contact with the individual, who left 0510 for a shelter.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "dawn-tablet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0445 hrs. Vestibule. Individual asleep on ledge, outside temperature 14 degrees. Observed on camera 20 min. D. Reyes made contact 0505. Individual left the premises 0510. Supervisor not notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0445 hrs. Vestibule. Homeless man seemed harmless, probably just cold. Dee talked to him."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the vestibule blank."
+       }
+      ]
+     ]
+    },
+    "sleeper-wake": {
+     "folder": "night-shift/sleeper-wake",
+     "lang": "en",
+     "dir": "",
+     "time": "04:50",
+     "title": [
+      "The glass",
+      "The glass"
+     ],
+     "ambience": "vestibule",
+     "feeds": {
+      "c2": "sleeper"
+     },
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The inner door sticks, then gives. The cold comes through like a hand. The man's eyes open slowly. He does not sit up.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "sleeper",
+       "text": "I'm going. I'm going.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Twenty minutes.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 1.8
+      }
+     ],
+     "log": "0450 hrs. Vestibule. Individual woke on contact.",
+     "choices": [
+      [
+       "Ask if he's all right",
+       "Ask if he's all right",
+       "sleeper-kind",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked the individual if he was all right."
+       }
+      ],
+      [
+       "Tell him he can't stay",
+       "Tell him he can't stay",
+       "sleeper-sent",
+       {
+        "add": {
+         "trainer_warmth": -1
+        },
+        "log": "Told the individual he could not stay in the vestibule."
+       }
+      ]
+     ]
+    },
+    "sleeper-kind": {
+     "folder": "night-shift/sleeper-kind",
+     "lang": "en",
+     "dir": "",
+     "time": "04:55",
+     "title": [
+      "Still cold",
+      "Still cold"
+     ],
+     "ambience": "vestibule",
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "sleeper",
+       "text": "Is it still cold out?",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is. You tell him so. You tell him he can stay inside the outer door until six, where the wind can't reach him. He looks at you for a while and nods.",
+       "file": null,
+       "dur": 14.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. {over your radio, a breath of a laugh} Twenty minutes. {flat, a woman making an exception} Six. Fine.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "When you come back, the cup from the shelf is gone. You don't ask where.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0455 hrs. Vestibule. Individual allowed to remain inside the outer door until 0600.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "dawn-tablet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0445 hrs. Vestibule. Individual asleep on ledge, outside temperature 14 degrees. Officer spoke to him 0450, he was not unwell. Allowed to remain inside the outer door until 0600. Supervisor not notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0445 hrs. Vestibule. Man seemed harmless, probably just cold. Let him stay till six."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the vestibule blank."
+       }
+      ]
+     ]
+    },
+    "sleeper-sent": {
+     "folder": "night-shift/sleeper-sent",
+     "lang": "en",
+     "dir": "",
+     "time": "04:55",
+     "title": [
+      "Out",
+      "Out"
+     ],
+     "ambience": "vestibule",
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "He gets up in sections. He folds the coat over his arm before he puts it on. The outer door lets in the wind, and then the vestibule is a vestibule again.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. {the whole sentence, to the wall} She watches tile two until he is out of the frame and for a while after.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile two the ledge is empty, the glass white at the corners.",
+       "file": null,
+       "dur": 6.2
+      }
+     ],
+     "log": "0455 hrs. Vestibule. Individual left the premises.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "dawn-tablet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0445 hrs. Vestibule. Individual asleep on ledge, outside temperature 14 degrees. Officer spoke to him 0450 and told him he could not remain. Individual left the premises 0455. Supervisor not notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0445 hrs. Vestibule. Man seemed harmless, probably nowhere to go. Told him to leave."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the vestibule blank."
+       }
+      ]
+     ]
+    },
+    "sleeper-super": {
+     "folder": "night-shift/sleeper-super",
+     "lang": "en",
+     "dir": "",
+     "time": "04:52",
+     "title": [
+      "The night line",
+      "The night line"
+     ],
+     "ambience": "vestibule",
+     "feeds": {
+      "c2": "sleeper"
+     },
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Four rings. Mr. Okafor is awake in the way of someone who has been told he is awake.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Is the individual breathing? Then he is not an emergency. He may stay inside the outer door until six if he is not a danger to himself.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "Log the temperature. Not \"homeless.\" \"Individual.\"",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. That's near what I'd do.",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "0452 hrs. Supervisor notified of individual in vestibule. Individual may remain inside the outer door until 0600.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "dawn-tablet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0445 hrs. Vestibule. Individual asleep on ledge, outside temperature 14 degrees. Supervisor notified 0451, instructed individual may remain inside outer door until 0600. Observed on camera."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0445 hrs. Vestibule. Homeless man seemed harmless, probably cold. Okafor said he could stay."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the vestibule blank."
+       }
+      ]
+     ]
+    },
+    "sleeper-911": {
+     "folder": "night-shift/sleeper-911",
+     "lang": "en",
+     "dir": "",
+     "time": "05:00",
+     "title": [
+      "The ambulance",
+      "The ambulance"
+     ],
+     "ambience": "vestibule",
+     "feeds": {
+      "c2": "sleeper"
+     },
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The dispatcher asks if he is breathing. Yes. If he is responsive. You don't know. An ambulance comes up Madison Avenue at 04:58 without its siren.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Two medics wake him. He gets up slowly. He says it again to them.",
+       "sfx": "door-buzz",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "sleeper",
+       "text": "I'm going. I'm going.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. They'll feed him. That's something. {to the wall} Ask me first, next time.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0458 hrs. EMS on site at the vestibule. Individual taken by ambulance 0504.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "dawn-tablet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0445 hrs. Vestibule. Individual asleep on ledge, outside temperature 14 degrees. 911 called 0449. EMS on site 0458, individual taken by ambulance 0504. Supervisor not notified."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0445 hrs. Vestibule. Man seemed to be in bad shape, probably needed help. Called 911."
+       }
+      ],
+      [
+       "Leave it out",
+       "Leave it out",
+       "dawn-tablet",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the incident field for the vestibule blank."
+       }
+      ]
+     ]
+    },
+    "dawn-tablet": {
+     "folder": "night-shift/dawn-tablet",
+     "lang": "en",
+     "dir": "",
+     "time": "05:15",
+     "title": [
+      "Her page",
+      "Her page"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "05:15. Dolores takes her coat to the restroom. The tablet stays where she was working, open to her own page. The 0300 line is there in grey type. ROOF DOOR. TOUR. NO INCIDENT. D. REYES.",
+       "file": null,
+       "dur": 15
+      }
+     ],
+     "log": "0515 hrs. D. Reyes off the wall, restroom. Post one on the wall.",
+     "choices": [
+      [
+       "Check the roof door against it",
+       "Check the roof door against it",
+       "twelve-check",
+       {
+        "set": [
+         "noticed_12th"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked camera 8 and the access terminal against D. Reyes's 0300 entry."
+       }
+      ],
+      [
+       "Leave the page alone",
+       "Leave the page alone",
+       "dee-back-0520",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Left D. Reyes's page alone."
+       }
+      ]
+     ]
+    },
+    "twelve-check": {
+     "folder": "night-shift/twelve-check",
+     "lang": "en",
+     "dir": "",
+     "time": "05:17",
+     "title": [
+      "The sensor",
+      "The sensor"
+     ],
+     "ambience": "control-room",
+     "focus": "c8",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Camera 8 watches the roof door in a window the size of a stamp. At 03:00 it did not open. At 03:10 it did not open. At 03:20 it did not open.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The access terminal keeps the stair doors in a list. Stair C, twelfth floor: open 03:02. Closed 03:22. There is no camera on twelve.",
+       "file": null,
+       "dur": 10.6
+      }
+     ],
+     "log": "0517 hrs. Camera 8: roof door closed throughout 0300 to 0330. Access terminal: stair door, floor 12, open 0302 to 0322.",
+     "choices": [
+      [
+       "Put the tablet down",
+       "Put the tablet down",
+       "dee-back-0520",
+       {
+        "log": "Put the tablet down as it was."
+       }
+      ]
+     ]
+    },
+    "dee-back-0520": {
+     "folder": "night-shift/dee-back-0520",
+     "lang": "en",
+     "dir": "",
+     "time": "05:20",
+     "title": [
+      "Back from the restroom",
+      "Back from the restroom"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Dolores comes back with her face washed and her sleeves wet. She sits. She does not look at the tablet and she does not look at you.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Light soon.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "0520 hrs. D. Reyes returned to the wall.",
+     "choices": [
+      [
+       "Say nothing",
+       "Say nothing",
+       "light",
+       {
+        "clear": [
+         "noticed_12th"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Said nothing about the page."
+       }
+      ],
+      [
+       "Ask where she goes at three",
+       "Ask where she goes at three",
+       "twelve",
+       {
+        "requires": [
+         "noticed_12th"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         }
+        },
+        "clear": [
+         "noticed_12th"
+        ],
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes where she goes at three."
+       }
+      ],
+      [
+       "Tell her you saw the door",
+       "Tell her you saw the door",
+       "twelve-shut",
+       {
+        "requires": [
+         "noticed_12th"
+        ],
+        "clear": [
+         "noticed_12th"
+        ],
+        "add": {
+         "trainer_trust": -1,
+         "trainer_warmth": -1
+        },
+        "log": "Told D. Reyes about the stair door reading on twelve."
+       }
+      ]
+     ]
+    },
+    "twelve": {
+     "folder": "night-shift/twelve",
+     "lang": "en",
+     "dir": "",
+     "time": "05:24",
+     "title": [
+      "Twelve",
+      "Twelve"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Twelve.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "It's a dentist now. There was a room. A bench. A kettle. {flat, the pencil still} They took it out. Nine years ago. {a beat} I stand where the door was.",
+       "file": null,
+       "dur": 13.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Ten minutes. Then I log it. I log it wrong. Mm. You know.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "She does not say whose room. The clock says 05:26. It is 05:24.",
+       "file": null,
+       "dur": 6.2
+      }
+     ],
+     "log": "0524 hrs. Control room. D. Reyes spoke about floor 12.",
+     "choices": [
+      [
+       "Sit with her",
+       "Sit with her",
+       "light",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Sat with D. Reyes and said nothing."
+       }
+      ],
+      [
+       "Give her the wall",
+       "Give her the wall",
+       "light",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took the wall and let D. Reyes sit."
+       }
+      ]
+     ]
+    },
+    "twelve-shut": {
+     "folder": "night-shift/twelve-shut",
+     "lang": "en",
+     "dir": "",
+     "time": "05:24",
+     "title": [
+      "Pencil",
+      "Pencil"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Facts only. Isn't that what I said. {flat, picking the pencil up} A sensor reads a door. It doesn't read a person.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She is formal for the rest of the hour. She calls you Officer twice, as if she were checking that it still fits.",
+       "file": null,
+       "dur": 10.2
+      }
+     ],
+     "log": "0524 hrs. Control room. D. Reyes formal.",
+     "choices": [
+      [
+       "Take the wall",
+       "Take the wall",
+       "light",
+       {
+        "log": "Took the wall."
+       }
+      ]
+     ]
+    },
+    "light": {
+     "folder": "night-shift/light",
+     "lang": "en",
+     "dir": "",
+     "time": "05:30",
+     "title": [
+      "Light",
+      "Light"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "05:30. The windows of the lobby turn from black to grey. On tile five the cleaning cart rolls toward the elevator, and Marisol's crew leave their floors one by one.",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "marisol",
+       "text": "Mi amor, we're out. Forty-four is dry. Bendito.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Go home, Marisol.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "You open the shift log on the tablet. It is long. It is in your hand, and in Dolores's pencil in the margins.",
+       "file": null,
+       "dur": 10.2
+      }
+     ],
+     "log": "0530 hrs. Cleaning crew off floors. Dawn. Shift log opened for review.",
+     "choices": [
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-clean",
+       {
+        "forbids": [
+         "lied",
+         "opined"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "forbids": [
+         "lied"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-lied",
+       {
+        "requires": [
+         "lied"
+        ]
+       }
+      ]
+     ]
+    },
+    "write-up-clean": {
+     "folder": "night-shift/write-up-clean",
+     "lang": "en",
+     "dir": "",
+     "time": "05:40",
+     "title": [
+      "Pencil first",
+      "Pencil first"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Pencil first.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "You wrote it the way it was. That's the whole job.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "It'll bore him. Good.",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "0540 hrs. Shift log reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Call Mr. Okafor about 31",
+       "Call Mr. Okafor about 31",
+       "late-okafor",
+       {
+        "requires": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the wedge on 31."
+       }
+      ],
+      [
+       "Call Ms. Adler about the panel",
+       "Call Ms. Adler about the panel",
+       "late-adler",
+       {
+        "requires": [
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the fire safety director about the silenced trouble signal."
+       }
+      ],
+      [
+       "Sign the log as it stands",
+       "Sign the log as it stands",
+       "six-thirty",
+       {
+        "log": "Signed the shift log."
+       }
+      ]
+     ]
+    },
+    "write-up-sloppy": {
+     "folder": "night-shift/write-up-sloppy",
+     "lang": "en",
+     "dir": "",
+     "time": "05:40",
+     "title": [
+      "Seemed",
+      "Seemed"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Pencil first.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Seemed. Probably. Seemed.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "He'll say: how did he seem? What did you see? Fix the ones you can.",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0540 hrs. Shift log reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Call Mr. Okafor about 31",
+       "Call Mr. Okafor about 31",
+       "late-okafor",
+       {
+        "requires": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the wedge on 31."
+       }
+      ],
+      [
+       "Call Ms. Adler about the panel",
+       "Call Ms. Adler about the panel",
+       "late-adler",
+       {
+        "requires": [
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the fire safety director about the silenced trouble signal."
+       }
+      ],
+      [
+       "Sign the log as it stands",
+       "Sign the log as it stands",
+       "six-thirty",
+       {
+        "log": "Signed the shift log."
+       }
+      ]
+     ]
+    },
+    "write-up-lied": {
+     "folder": "night-shift/write-up-lied",
+     "lang": "en",
+     "dir": "",
+     "time": "05:40",
+     "title": [
+      "Officer",
+      "Officer"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "I read it.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer. Which of these is not the way it was.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Once it's ink, it's true. Pencil's open till six.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0540 hrs. Shift log reviewed with D. Reyes.",
+     "choices": [
+      [
+       "Correct the entry, in ink",
+       "Correct the entry, in ink",
+       "confess",
+       {
+        "log": "Opened the entry that was not true."
+       }
+      ],
+      [
+       "Call Mr. Okafor about 31",
+       "Call Mr. Okafor about 31",
+       "late-okafor",
+       {
+        "requires": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the wedge on 31."
+       }
+      ],
+      [
+       "Call Ms. Adler about the panel",
+       "Call Ms. Adler about the panel",
+       "late-adler",
+       {
+        "requires": [
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the fire safety director about the silenced trouble signal."
+       }
+      ],
+      [
+       "Sign the log as it stands",
+       "Sign the log as it stands",
+       "six-thirty",
+       {
+        "log": "Signed the shift log."
+       }
+      ]
+     ]
+    },
+    "confess": {
+     "folder": "night-shift/confess",
+     "lang": "en",
+     "dir": "",
+     "time": "05:50",
+     "title": [
+      "In ink",
+      "In ink"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You take the pencil. You take out the line. You write the other one, the true one, in the same place. It takes a long time.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. {the whole of it} Once it's ink.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "It was a small lie. Small ones are the ones that get you. {flat} Leave it. It's true now.",
+       "file": null,
+       "dur": 8.6
+      }
+     ],
+     "log": "0550 hrs. Entry corrected by post one. Corrected entry replaces the previous entry.",
+     "choices": [
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-clean",
+       {
+        "forbids": [
+         "opined"
+        ],
+        "clear": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Corrected the false entry before the morning."
+       }
+      ],
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "clear": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Corrected the false entry before the morning."
+       }
+      ]
+     ]
+    },
+    "late-okafor": {
+     "folder": "night-shift/late-okafor",
+     "lang": "en",
+     "dir": "",
+     "time": "05:52",
+     "title": [
+      "Thirty-one",
+      "Thirty-one"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The night line rings nine times.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. It is ten to six. The wedge was at ten to two. That is four hours.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "Let's make sure we're aligned. You will tell me that now, not at the handover. Go and look at it. Together.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I'll go. {to the wall, getting up} Stay on the wall. Mm.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "When she comes back the wedge is in her pocket. She puts it on the shelf beside the binder like a witness.",
+       "file": null,
+       "dur": 9.8
+      }
+     ],
+     "log": "0552 hrs. Supervisor notified of the wedge on 31, found still in place at 0545. Wedge removed by D. Reyes 0556.",
+     "choices": [
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-clean",
+       {
+        "forbids": [
+         "lied",
+         "opined"
+        ],
+        "clear": [
+         "wedge_open"
+        ],
+        "log": "Reported the wedge on 31 four hours late."
+       }
+      ],
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "forbids": [
+         "lied"
+        ],
+        "clear": [
+         "wedge_open"
+        ],
+        "log": "Reported the wedge on 31 four hours late."
+       }
+      ],
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-lied",
+       {
+        "requires": [
+         "lied"
+        ],
+        "clear": [
+         "wedge_open"
+        ],
+        "log": "Reported the wedge on 31 four hours late."
+       }
+      ]
+     ]
+    },
+    "late-adler": {
+     "folder": "night-shift/late-adler",
+     "lang": "en",
+     "dir": "",
+     "time": "05:52",
+     "title": [
+      "The panel, late",
+      "The panel, late"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "The phone rings nine times. Ms. Adler picks up on the tenth, and she does not say hello.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "adler",
+       "text": "How long has the panel been silent? How long.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "adler",
+       "text": "I will be there at ten past six. Do not touch it again. Please put the time you silenced it in the log. In the same words.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0552 hrs. FSD H. Adler notified of the silenced trouble signal, 0358. Attending 0610.",
+     "choices": [
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-clean",
+       {
+        "forbids": [
+         "lied",
+         "opined"
+        ],
+        "clear": [
+         "trouble_open"
+        ],
+        "log": "Reported the silenced panel two hours late."
+       }
+      ],
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "forbids": [
+         "lied"
+        ],
+        "clear": [
+         "trouble_open"
+        ],
+        "log": "Reported the silenced panel two hours late."
+       }
+      ],
+      [
+       "Back to the log",
+       "Back to the log",
+       "write-up-lied",
+       {
+        "requires": [
+         "lied"
+        ],
+        "clear": [
+         "trouble_open"
+        ],
+        "log": "Reported the silenced panel two hours late."
+       }
+      ]
+     ]
+    },
+    "six-thirty": {
+     "folder": "night-shift/six-thirty",
+     "lang": "en",
+     "dir": "",
+     "time": "06:30",
+     "title": [
+      "The day supervisor",
+      "The day supervisor"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "06:30. The lobby has a day in it. Mr. Okafor comes through the revolving door with a coffee and a coat that has not been slept in.",
+       "sfx": "door-heavy",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Let's walk through the log. I have a nine o'clock.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "It's all in there. {at the charger, not turning} Four.",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "0630 hrs. Day supervisor on post. Shift log handed over.",
+     "choices": [
+      [
+       "Hand him the tablet",
+       "Hand him the tablet",
+       "okafor-reads-wall",
+       {
+        "requires": [
+         "left_wall"
+        ],
+        "log": "Handed the day supervisor the shift log."
+       }
+      ],
+      [
+       "Hand him the tablet",
+       "Hand him the tablet",
+       "okafor-reads-open",
+       {
+        "requires": [
+         "trouble_open"
+        ],
+        "forbids": [
+         "left_wall",
+         "wedge_open"
+        ],
+        "log": "Handed the day supervisor the shift log."
+       }
+      ],
+      [
+       "Hand him the tablet",
+       "Hand him the tablet",
+       "okafor-reads-open",
+       {
+        "requires": [
+         "wedge_open"
+        ],
+        "forbids": [
+         "left_wall"
+        ],
+        "log": "Handed the day supervisor the shift log."
+       }
+      ],
+      [
+       "Hand him the tablet",
+       "Hand him the tablet",
+       "okafor-reads-lie",
+       {
+        "requires": [
+         "lied"
+        ],
+        "forbids": [
+         "left_wall",
+         "wedge_open",
+         "trouble_open"
+        ],
+        "log": "Handed the day supervisor the shift log."
+       }
+      ],
+      [
+       "Hand him the tablet",
+       "Hand him the tablet",
+       "okafor-reads-solid",
+       {
+        "forbids": [
+         "left_wall",
+         "wedge_open",
+         "trouble_open",
+         "lied",
+         "opined"
+        ],
+        "meters": {
+         "slips": {
+          "max": 1
+         }
+        },
+        "log": "Handed the day supervisor the shift log."
+       }
+      ],
+      [
+       "Hand him the tablet",
+       "Hand him the tablet",
+       "okafor-reads-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "forbids": [
+         "left_wall",
+         "wedge_open",
+         "trouble_open",
+         "lied"
+        ],
+        "log": "Handed the day supervisor the shift log."
+       }
+      ],
+      [
+       "Hand him the tablet",
+       "Hand him the tablet",
+       "okafor-reads-slips",
+       {
+        "forbids": [
+         "left_wall",
+         "wedge_open",
+         "trouble_open",
+         "lied",
+         "opined"
+        ],
+        "meters": {
+         "slips": {
+          "min": 2
+         }
+        },
+        "log": "Handed the day supervisor the shift log."
+       }
+      ]
+     ]
+    },
+    "okafor-reads-solid": {
+     "folder": "night-shift/okafor-reads-solid",
+     "lang": "en",
+     "dir": "",
+     "time": "06:35",
+     "title": [
+      "The log, read",
+      "The log, read"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Forty-four. The stairwell on thirty-one. The bench. Car three. Camera nine. The panel. The dock. The vestibule.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "Times. Places. What you saw. Who you told. It reads like a log.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "That's noted. Thank you.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0635 hrs. Day supervisor read the shift log. No corrections.",
+     "choices": [
+      [
+       "Tell him about the notice",
+       "Tell him about the notice",
+       "end-by-the-book",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-by-the-book",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-by-the-book",
+       {
+        "forbids": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Tell him about the notice",
+       "Tell him about the notice",
+       "end-clean",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-clean",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-clean",
+       {
+        "forbids": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Tell him about the notice",
+       "Tell him about the notice",
+       "end-clean",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-clean",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-clean",
+       {
+        "forbids": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Tell him about the notice",
+       "Tell him about the notice",
+       "end-she-knew",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         },
+         "building_known": {
+          "min": 2
+         }
+        },
+        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
+       }
+      ],
+      [
+       "Tell him about the notice",
+       "Tell him about the notice",
+       "end-eat-something",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         },
+         "building_known": {
+          "max": 1
+         }
+        },
+        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-someone",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         },
+         "building_known": {
+          "min": 2
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-eat-something",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         },
+         "building_known": {
+          "max": 1
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-eat-something",
+       {
+        "forbids": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ]
+     ]
+    },
+    "okafor-reads-sloppy": {
+     "folder": "night-shift/okafor-reads-sloppy",
+     "lang": "en",
+     "dir": "",
+     "time": "06:35",
+     "title": [
+      "The log, read",
+      "The log, read"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Let's walk through the log.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "\"Seemed harmless.\" How did he seem harmless?",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "\"Probably fine.\" Probably what? Fine to whom? {the thumb moves} Not \"guy.\" \"Individual.\"",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0635 hrs. Day supervisor read the shift log. Corrections to wording of several entries.",
+     "choices": [
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-opinions",
+       {
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-opinions",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-opinions",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-friendly",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ]
+     ]
+    },
+    "okafor-reads-slips": {
+     "folder": "night-shift/okafor-reads-slips",
+     "lang": "en",
+     "dir": "",
+     "time": "06:35",
+     "title": [
+      "The log, read",
+      "The log, read"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. A few of these are not what the binder says. Not many.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "A contractor on forty with no authorization on the sheet. A box signed for at the dock. A call to nine-one-one for a man asleep.",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "okafor",
+       "text": "Let's make sure we're aligned. I'm not saying anyone was wrong. I'm saying they're in the log.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0635 hrs. Day supervisor read the shift log. Several entries differ from post orders.",
+     "choices": [
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-noted",
+       {
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-noted",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-noted",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-friendly",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ]
+     ]
+    },
+    "okafor-reads-wall": {
+     "folder": "night-shift/okafor-reads-wall",
+     "lang": "en",
+     "dir": "",
+     "time": "06:35",
+     "title": [
+      "The log, read",
+      "The log, read"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Twenty-three thirty. \"Left the control room, wall unattended.\" Four minutes.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "In your hand. Your own entry. That is the thing I would not have known.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "okafor",
+       "text": "Dolores. You know the rule. Eleven years.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "I know the rule.",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "0635 hrs. Day supervisor read the shift log. Wall unattended 2330 to 2334 noted.",
+     "choices": [
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-written-up",
+       {
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-four-hours",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-four-hours",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-four-hours",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ]
+     ]
+    },
+    "okafor-reads-open": {
+     "folder": "night-shift/okafor-reads-open",
+     "lang": "en",
+     "dir": "",
+     "time": "06:35",
+     "title": [
+      "The log, read",
+      "The log, read"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Life safety.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "A door on thirty-one. A panel in this room. One of them was left, and nobody who is allowed to fix it was told.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\"",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0635 hrs. Day supervisor read the shift log. Life-safety item not reported noted.",
+     "choices": [
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-written-up",
+       {
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-wedge",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-wedge",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-wedge",
+       {
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ]
+     ]
+    },
+    "okafor-reads-lie": {
+     "folder": "night-shift/okafor-reads-lie",
+     "lang": "en",
+     "dir": "",
+     "time": "06:35",
+     "title": [
+      "The log, read",
+      "The log, read"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "So. Let's make sure we're aligned.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "This entry says an event happened a certain way. The access terminal says it did not.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "I will not ask you why. The building manager will. {a breath} Dolores.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0635 hrs. Day supervisor read the shift log. Entry disagrees with access terminal record.",
+     "choices": [
+      [
+       "Say nothing",
+       "Say nothing",
+       "end-written-up",
+       {
+        "log": "Signed off the shift."
+       }
+      ]
+     ]
+    },
+    "end-clean": {
+     "folder": "night-shift/end-clean",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "Clean report",
+      "Clean report"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "07:02. The day officer is at the desk. The sun is a rumor on the revolving door. Mr. Okafor has gone upstairs with the tablet under his arm.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Tuesday. {putting her coat on, short} You'll want to sleep. Don't, till you've eaten.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "She goes. You hand your radio to the day officer. It clicks into the charger. Four.",
+       "file": null,
+       "dur": 7.4
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "Clean report.",
+      "Clean report."
+     ],
+     "choices": []
+    },
+    "end-someone": {
+     "folder": "night-shift/end-someone",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "Someone to leave it to",
+      "Someone to leave it to"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "07:02. Mr. Okafor has gone upstairs with the tablet. The day officer is at the desk. Dolores stands by the charger with her coat over her arm.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "April first. {to the charger} I know you read it. The drawer sticks. It didn't stick.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I put it where you'd find it. Not him. Mm.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Pencil. {holding it out, the one from behind her ear} Write it plain. Somebody should, when they stop.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is warm from her hand, and shorter than you thought. The rubber at the end is worn down to the metal.",
+       "file": null,
+       "dur": 9.8
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "Someone to leave it to.",
+      "Someone to leave it to."
+     ],
+     "choices": []
+    },
+    "end-she-knew": {
+     "folder": "night-shift/end-she-knew",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "She knew",
+      "She knew"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "Thank you for telling me. That's noted. I will raise it with the contractor.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "dee",
+       "text": "You told him. {at the charger, flat, no weight on it} Officer.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She says it again, \"Officer,\" and puts on her coat as if it were the first coat she had ever owned.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Thursday. The charger. She counts four, and then she holds the fourth one out to you.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. It's the book. {low} Clip it on.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "She knew.",
+      "She knew."
+     ],
+     "choices": []
+    },
+    "end-eat-something": {
+     "folder": "night-shift/end-eat-something",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "Eat something",
+      "Eat something"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "07:02. The day officer is at the desk. Mr. Okafor has gone upstairs. Dolores unwraps the foil on the shelf, all the way, and smooths it flat.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Eat something. {holding out half a sandwich} Not the corner. {quick, dry} The corner's mine.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is pepper and egg. It is cold. You eat it standing up at the wall while the day officer pretends not to watch.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "Eat something.",
+      "Eat something."
+     ],
+     "choices": []
+    },
+    "end-by-the-book": {
+     "folder": "night-shift/end-by-the-book",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "By the book, alone",
+      "By the book, alone"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "So. Perfect. There is nothing in this log I would change. {the thumb stops} Ms. Reyes's evaluation is one line. \"Competent.\"",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "That's the whole of it. It's noted. {a pause, almost an apology} Thank you.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "Dolores's coat is not on the hook. The foil is on the shelf, folded in four. She has not taken it.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The clock on the wall says 06:52. It is 06:50. Nobody has touched it.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "By the book, alone.",
+      "By the book, alone."
+     ],
+     "choices": []
+    },
+    "end-friendly": {
+     "folder": "night-shift/end-friendly",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "The friendly one",
+      "The friendly one"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "So. Two entries in Dolores's hand that aren't hers. And an initial on a visitor line at 2224.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mine. I initialed it.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Dolores, a word. Not now.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "He's new. I'm the one who counts. {quietly, once} Four.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "In the margin of the log there is a word crossed out in pencil and the right word written beside it. The hand is hers. The word was yours.",
+       "file": null,
+       "dur": 12.6
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "The friendly one.",
+      "The friendly one."
+     ],
+     "choices": []
+    },
+    "end-opinions": {
+     "folder": "night-shift/end-opinions",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "Opinions",
+      "Opinions"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "So. \"He seemed nervous.\" How did he seem nervous? {reading, flat, patient} \"Probably.\" Probably.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Next time: what he did. Not what he seemed. That's noted.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "He hands the tablet back. There are red marks beside each of them, down the margin like a staircase. You count them, and then you stop.",
+       "file": null,
+       "dur": 11.4
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "Opinions.",
+      "Opinions."
+     ],
+     "choices": []
+    },
+    "end-four-hours": {
+     "folder": "night-shift/end-four-hours",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "The four hours",
+      "The four hours"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "I'll write it as it stands. {quietly, not looking at either of you} Four minutes. {the stylus} It's the rule, Dolores.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I know the rule.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "Mr. Okafor goes upstairs with the tablet. Dolores stands at the charger with her hand flat on it.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Four.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "She counts them again. Four. She counts them again.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "The four hours.",
+      "The four hours."
+     ],
+     "choices": []
+    },
+    "end-written-up": {
+     "folder": "night-shift/end-written-up",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "Written up",
+      "Written up"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "I'll walk you through what happens now. The building manager reads this at nine. The company decides at the end of the ninety days.",
+       "file": null,
+       "dur": 10.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "I'm not unfair. I want you to know that I'm not. {the thumb on the glass} That's noted.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "You set your radio on the charger the way she showed you. It clicks. Four. Nobody says it.",
+       "file": null,
+       "dur": 8.2
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "Written up.",
+      "Written up."
+     ],
+     "choices": []
+    },
+    "end-wedge": {
+     "folder": "night-shift/end-wedge",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "The wedge",
+      "The wedge"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "Life safety. A door, a panel. Either one, left.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Nobody was hurt. It goes in the report, those words, because they are true. {his hand flat on the page} And they are not a defense.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "He closes the binder. He puts it back on the shelf, next to the extinguisher, exactly where it was. The binder is a little heavier than you remember.",
+       "file": null,
+       "dur": 12.2
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "The wedge.",
+      "The wedge."
+     ],
+     "choices": []
+    },
+    "end-noted": {
+     "folder": "night-shift/end-noted",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "title": [
+      "Noted",
+      "Noted"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "focus": "c1",
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "So. Not wrong. Not right. Next to the binder. {reading, flat} Noted.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Tuesday. {putting on her coat} Read the whole binder.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "She goes. The day officer takes the other chair. The clock on the wall says 07:06. It is 07:04.",
+       "file": null,
+       "dur": 8.6
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed.",
+     "ending": [
+      "Noted.",
+      "Noted."
+     ],
+     "choices": []
+    }
+   }
   }
  ]
 };
