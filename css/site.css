@@ -1854,6 +1854,15 @@ figure.feed { cursor: default; }
   .console-subs { font-size: 1.12rem; }
 }
 
+/* A phone upright (360x640): the wall and the bar keep their place and the words column scrolls by itself, so four or more
+   choices never push the page into a scroll; once the lines are heard the subtitles give room to the choices. */
+@media (max-width: 559px) and (orientation: portrait) {
+  .console-body { overflow-y: hidden; }
+  .console-panel { min-height: 8rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+  .console[data-lines="done"] .console-subs { flex: 0 0 auto; min-height: 2.6rem; max-height: 5rem; }
+  .console-choices { padding-bottom: 0.15rem; }
+}
+
 @media (max-width: 559px) {
   .console-bar h1 { display: none; }
   .console-bar .stories-back { flex: 1; font-size: 0.66rem; letter-spacing: 0.1em; }

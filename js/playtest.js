@@ -2704,6 +2704,9 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   // The end screen has nothing to choose: the card, the ending's name, the line buttons and the wall all fit with no scroll at all, at any size.
   const tallEnd = tall.filter((x) => x.startsWith(".console-body") || x.startsWith(".console-panel"));
   if (endScreen && (scrolled || tallEnd.length)) bad(`the end screen needs a scroll (${scrolledNames.join("; ") || "nothing off screen"}${tallEnd.length ? `; ${tallEnd.join(", ")}` : ""}); layout ${layout}`);
+  // The page itself must not have been scrolled to reach anything: the words column scrolling inside itself is fine.
+  const pageMoved = Math.max(win.scrollY || 0, doc.scrollingElement?.scrollTop || 0, doc.querySelector(".console-body")?.scrollTop || 0);
+  if (pageMoved > 1) bad(`the page itself scrolled ${Math.round(pageMoved)} px to bring things on screen (the words column should scroll inside itself)`);
   doc.querySelector(".console-body")?.scrollTo?.(0, 0);
   doc.querySelector(".console-panel")?.scrollTo?.(0, 0);
   return scrolled;
@@ -3384,7 +3387,11 @@ async function consoleListedStartOver(t, st) {
   for (const [name, was] of Object.entries(others)) {
     if (JSON.stringify(readJsonCookie(name)) !== JSON.stringify(was)) t.problem("bug", `Start Over in ${st.id} changed the cookie ${name}`);
   }
-  t.event("start-over", `${st.id}: at ${apiOf().scene()}, ${pct}% explored kept; ${Object.keys(others).length} other cookies untouched`);
+  // The rule (story doc "Progress on the cards"): Start Over forgets the run, not what was found, so the player's header
+  // reads the same percent as the card (the unlocks), not 0%.
+  const head = ($("console-explored")?.textContent || "").trim();
+  if (head !== `${pct}% explored`) t.problem("bug", `${st.id}: after Start Over the player's header says "${head}", the unlocks give "${pct}% explored" (the card's)`);
+  t.event("start-over", `${st.id}: at ${apiOf().scene()}, ${pct}% explored kept (header "${head}"); ${Object.keys(others).length} other cookies untouched`);
   await sleep(600);
   await toLanding(t);
   checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);

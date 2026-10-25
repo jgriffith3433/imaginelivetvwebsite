@@ -101,11 +101,13 @@ const ff = (...a) => execFileSync('ffmpeg', ['-nostdin', '-y', '-v', 'error', ..
 // Each: band (highpass, lowpass in Hz), compressor ratio, noise (amplitude of the bed under the band), hum (Hz, amplitude), tail
 // (a squelch burst of noise after the last word: seconds, amplitude). Loudness is set again at the end, to the voices' -16 LUFS.
 const TREATMENTS = {
-  radio: { hp: 350, lp: 3200, ratio: 3, noise: 0.006, tail: [0.12, 0.05] },
-  walkie: { hp: 450, lp: 2800, ratio: 5, noise: 0.010, drive: 1.6, tail: [0.16, 0.07] },
-  intercom: { hp: 500, lp: 2600, ratio: 3, noise: 0.006, hum: [120, 0.004] },
-  phone: { hp: 300, lp: 3400, ratio: 2.5, noise: 0.003 },
+  radio: { hp: 450, lp: 2600, ratio: 3, noise: 0.008, tail: [0.12, 0.05] },
+  walkie: { hp: 550, lp: 2300, ratio: 5, noise: 0.012, drive: 1.6, tail: [0.16, 0.07] },
+  intercom: { hp: 600, lp: 2200, ratio: 3, noise: 0.008, hum: [120, 0.004] },
+  phone: { hp: 400, lp: 2800, ratio: 2.5, noise: 0.005 },
 };
+// Bumped when the filters above change: every treated line is out of date until --treat puts it on again.
+const TREAT_REV = 3;
 const LINE_RE = new RegExp(`^${story}/([^/]+)/media/(line-\\d+\\.mp3)$`);
 const cleanOf = (rel) => { const m = LINE_RE.exec(rel); return m && `${story}/media/clean/${m[1]}-${m[2]}`; };
 const storyData = fs.existsSync(path.join(ROOT, 'story', story + '.json')) ? JSON.parse(fs.readFileSync(path.join(ROOT, 'story', story + '.json'), 'utf8')) : { scenes: [], speakers: {} };
@@ -133,6 +135,9 @@ function treat(src, dest, name) {
     graph += `;[m][${inputs.filter((x) => x === '-i').length - 1}]concat=n=2:v=0:a=1[o]`;
     last = 'o';
   }
+  // the squelch burst and the clipper make highs of their own: close the band once more over the whole line
+  graph += `;[${last}]lowpass=f=${T.lp},lowpass=f=${T.lp}[z]`;
+  last = 'z';
   const wav = dest + '.treated.wav', tmp = dest + '.tmp.mp3';
   ff(...inputs, '-filter_complex', graph, '-map', `[${last}]`, '-ar', '44100', '-ac', '1', wav);
   // two passes: a band-limited, compressed line is quieter and a short one is not measured well in one, and the playtest's window is narrow
@@ -167,7 +172,7 @@ function treatAll(dry = false) {
     const rel = relOf(a), f = path.join(ROOT, rel), clean = cleanOf(rel);
     if (!clean || !fs.existsSync(f)) continue;
     const want = treatmentOf(rel), have = lock[a.id]?.treatment ?? 'none', c = path.join(ROOT, clean);
-    if (want === have && (want === 'none' || fs.existsSync(c))) continue;
+    if (want === have && (want === 'none' || (fs.existsSync(c) && lock[a.id]?.rev === TREAT_REV))) continue;
     stale.push(`${a.id}: ${have} -> ${want}`);
     if (dry) continue;
     if (have === 'none') { if (want !== 'none') { fs.mkdirSync(path.dirname(c), { recursive: true }); fs.copyFileSync(f, c); } }
@@ -175,8 +180,8 @@ function treatAll(dry = false) {
     if (want === 'none') { if (have !== 'none') { fs.copyFileSync(c, f); fs.rmSync(c); } } else treat(c, f, want);
     const h = sha(f);
     mixed[rel] = h;
-    const { treatment, clean: _c, ...entry } = lock[a.id] ?? {};
-    lock[a.id] = { ...entry, recipe: recipeOf(a), files: { [rel]: h }, ...(want === 'none' ? {} : { treatment: want, clean: sha(c) }) };
+    const { treatment, clean: _c, rev: _r, ...entry } = lock[a.id] ?? {};
+    lock[a.id] = { ...entry, recipe: recipeOf(a), files: { [rel]: h }, ...(want === 'none' ? {} : { treatment: want, clean: sha(c), rev: TREAT_REV }) };
   }
   return stale;
 }
