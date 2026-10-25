@@ -4085,11 +4085,11 @@ async function nightSignoffRun(options, t) {
           await consoleFit(t, doc, `${label}, the end screen`, { endScreen: true });
           // The ending opens with the scene's camera enlarged (checked above); a press on a feed toggles it, so the other state is checked too: the end screen fits with and without the enlarged feed.
           // Once per size: it checks a layout, not an ending, and on every play it pushed the quick run past its 10 minutes.
-          const bigTile = toggled.has(sizeName) && near ? null : doc.querySelector("#console-wall .feed");
+          const wasBig = !byIdIn(doc, "console-big").hidden;
+          const bigTile = toggled.has(sizeName) && near ? null : (wasBig ? doc.querySelector("#console-wall .feed.is-selected") : doc.querySelector("#console-wall .feed"));
           if (bigTile) {
             toggled.add(sizeName);
             at("end screen with the feed toggled");
-            const wasBig = !byIdIn(doc, "console-big").hidden;
             await tapAt(t, bigTile, `a feed on the end screen (${label})`);
             await sleep(200);
             if (byIdIn(doc, "console-big").hidden === wasBig) t.problem("bug", `${label}: pressing a feed on the end screen didn't ${wasBig ? "shrink" : "enlarge"} it`);
