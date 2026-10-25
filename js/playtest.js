@@ -138,7 +138,7 @@ const SOUND_RUN = "iltv.playtest.sound"; // sessionStorage: the sound scenario c
 const soundOf = (doc = document) => doc.defaultView && doc.defaultView.hawkesSound;
 
 /** A press where a viewer's finger or mouse would go: whatever is on top there gets it, so a covered control fails. */
-async function tapAt(t, el, label) {
+async function tapAt(t, el, label, { quick = false } = {}) {
   if (!el) throw new Error(`${label} is not on the page`);
   const doc = el.ownerDocument;
   const win = doc.defaultView;
@@ -151,12 +151,12 @@ async function tapAt(t, el, label) {
   const init = { pointerType: touch ? "touch" : "mouse", pointerId: touch ? 51 : 1, isPrimary: true, button: 0, buttons: 1, bubbles: true, cancelable: true, composed: true, clientX: x, clientY: y, view: win };
   target.dispatchEvent(new win.PointerEvent("pointerdown", init));
   target.dispatchEvent(new win.MouseEvent("mousedown", init));
-  await sleep(60);
+  await sleep(quick ? 25 : 60);
   target.dispatchEvent(new win.PointerEvent("pointerup", { ...init, buttons: 0 }));
   target.dispatchEvent(new win.MouseEvent("mouseup", { ...init, buttons: 0 }));
   target.dispatchEvent(new win.MouseEvent("click", { ...init, buttons: 0 }));
-  t.log(`tap ${label}`);
-  await sleep(120);
+  if (!quick) t.log(`tap ${label}`);
+  await sleep(quick ? 15 : 120);
 }
 
 /** The prompt's line says the saved Sound setting: "Sound on." or "Sound off.", never "Sound on." over a saved Off. */
@@ -1345,7 +1345,7 @@ async function cctvArt(options, t) {
     presses every feed whose state hasn't been shown yet and checks the enlarged picture is that state's own, loaded. */
 async function cctvStates(t, st, used) {
   const R = rulesOf();
-  const x = R.explore(st, { cap: st.stateCap || 50000 });
+  const x = consoleExplore(st);
   const ways = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })));
   const pairsOf = (way) => new Set(way.path.flatMap((id) => Object.entries(R.feedsOf(st, st.scenes[id])).map(([c, s]) => `${c}/${s}`)));
   const want = new Set(st.cameras.flatMap((c) => [...new Set(["normal", ...(used[c.id] || [])])].map((s) => `${c.id}/${s}`)));
@@ -1496,6 +1496,25 @@ async function creditsRun(t) {
   await sleep(800);
   await toLanding(t);
   t.progress(0.25);
+
+  // Night Shift, from its card: its own Tap to play title, then the same footer under the console player.
+  const night = consoleStories().find((c) => c.listed);
+  if (night) {
+    t.scene(`${night.title}: footer`);
+    await consoleOpen(t, night, { tap: false });
+    if (soundOf().prompt()) {
+      await sleep(800);
+      checkNote(t, document, night.id);
+      await consolePrompt(t, document, night.id);
+    }
+    await consoleHeard(t, document, night.id);
+    checkHitTargets(t, document, `home (${night.title})`);
+    await checkMark(t, document, `home (${night.title})`);
+    await sleep(800);
+    await toLanding(t);
+    window.scrollTo(0, 0);
+    t.progress(0.3);
+  }
 
   // A blog post and a branch page, opened by a viewer's click from the home page, then What's new.
   const post = document.querySelector("#blog a.post-card");
@@ -1681,8 +1700,8 @@ async function sound(options, t) {
     await passPrompt(t, doc, path);
     await checkSound(t, doc.querySelector("video"), path, { on: true, volume: 0.4 });
     closeFrame();
-    // A console story's audio (voice, ambience, effects) follows the same Settings.
-    const cs = consoleStories()[0];
+    // A console story's audio (voice, ambience, effects) follows the same Settings: Night Shift, from its card.
+    const cs = consoleStories().find((c) => c.listed) || consoleStories()[0];
     if (cs) {
       t.scene(`${cs.title} (sound)`);
       await consoleOpen(t, cs);
@@ -1741,6 +1760,68 @@ async function answerAsk(t, host, which, label) {
   const skip = [...root.querySelectorAll(".ha-s button")].find((b) => b.textContent.trim() === "Skip");
   if (skip) skip.click();
   if (!(await waitFor(() => !host.isConnected, 4000))) t.problem("bug", `${label}: the feedback card didn't close after answering`);
+}
+
+/** Night Shift (a console story, no video): from its card, a camera enlarged, the shift log opened, one real choice, then
+    the shortest way's last choices to an ending (a seeded run, consoleSeedAt: setup shortcut), where "How was this
+    ending?" shows and is answered. What went out: story_open from the card, the screen and level, run_start, the choice,
+    the two features, run_end with the ending, the stars. */
+async function analyticsNight(t, A, pump, st) {
+  t.scene(`${st.title}: analytics`);
+  clearProgress();
+  const mark = (A.debugLog || []).length;
+  await consoleOpen(t, st);
+  const m = consoleModel(st);
+  await consoleHeard(t, document, st.id);
+  const tile = document.querySelector("#console-wall .feed");
+  if (tile) await tapAt(t, tile, "a camera feed");
+  await tapAt(t, byIdIn(document, "console-log-btn"), "Log");
+  await sleep(300);
+  await tapAt(t, byIdIn(document, "console-log-btn"), "Close log");
+  await sleep(300);
+  const first = m.open()[0];
+  await consoleChoose(t, st, m, first[1], document, st.id, null);
+  const sceneNode = (id) => String(st.scenes[id].folder || id).split("/").pop();
+  const way = consoleShortestEnding(st);
+  if (!way) throw new Error(`${st.id} has no ending to reach`);
+  const keep = 2;
+  const end = await consoleSeedAt(t, st, way.picks.slice(0, way.picks.length - keep), null);
+  await consoleHeard(t, document, `${st.id} (seeded)`);
+  for (const i of way.picks.slice(way.picks.length - keep)) await consoleChoose(t, st, end, i, document, st.id, null);
+  const node = sceneNode(end.scene);
+  t.event("ending", `${st.id}/${node}: ${st.scenes[end.scene].ending[0]}`);
+  const stars = await waitForAsk(t, `ending-${st.id}-${node}`, 10000);
+  if (!stars) t.problem("bug", `${st.id}: reaching the ending (${node}) didn't show the "How was this ending?" question`);
+  else {
+    const q = stars.shadowRoot.querySelector(".ha-q").textContent.trim();
+    const n = stars.shadowRoot.querySelectorAll(".ha-r button").length;
+    t.event("feedback-prompt", `${st.id} at the ending: "${q}" (${n} stars)`);
+    if (q !== "How was this ending?") t.problem("bug", `${st.id}: the ending's question says "${q}"`);
+    if (n !== 5) t.problem("bug", `${st.id}: the ending's question should be 1-5 stars, it has ${n} buttons`);
+    await sleep(1500);
+    await answerAsk(t, stars, 4, "4 stars");
+  }
+  await toLanding(t);
+  A.flush();
+  await sleep(600);
+  pump();
+  const sent = (A.debugLog || []).slice(mark).filter((e) => e.sent);
+  const has = (name, test) => sent.some((e) => e.name === name && (!test || test(e.props || {}, e)));
+  const want = [
+    ["story_open", (p) => p.story === st.id && p.via === "card" && p.button === "play", "story_open from the card (button play)"],
+    ["screen", (p) => p.name === `${st.id}/${sceneNode(st.start)}`, "a screen for the first scene"],
+    ["level_start", null, "level_start"],
+    ["run_start", (p) => p.run === st.id, "run_start"],
+    ["choice", (p, e) => p.node && p.option && e.ctx && e.ctx.story === st.id && e.ctx.path, "a choice with its node, option and the path so far"],
+    ["feature", (p) => p.name === "feed" && p.story === st.id, "a camera enlarged (feature feed)"],
+    ["feature", (p) => p.name === "log" && p.story === st.id, "the shift log opened (feature log)"],
+    ["run_end", (p) => p.result === "win" && p.ending === node, "run_end with the ending"],
+    ["feedback", (p) => p.rating === 4, "the ending's stars"],
+  ];
+  for (const [name, test, what] of want) if (!has(name, test)) t.problem("bug", `Analytics (${st.title}): no ${what} went out (${name})`);
+  if (has("feature", (p) => p.name === "back")) t.problem("bug", `Analytics (${st.title}): a "back" went out, a console story has no going back`);
+  if (has("video")) t.problem("bug", `Analytics (${st.title}): a video event went out, it has no video`);
+  t.note(`${st.title}: ${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
 }
 
 async function analyticsRun(options, t) {
@@ -1878,6 +1959,9 @@ async function analyticsRun(options, t) {
     const noCtx = sent.filter((e) => e.name === "choice" && !(e.ctx && e.ctx.node && e.ctx.depth != null));
     if (noCtx.length) t.problem("bug", `Analytics: ${noCtx.length} choice event(s) without the node and depth in their context`);
     t.note(`${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
+    t.progress(0.92);
+    const night = consoleStories().find((c) => c.listed);
+    if (night) await analyticsNight(t, A, pump, night);
     t.progress(1);
   } finally {
     clearInterval(timer);
@@ -1905,19 +1989,62 @@ function consoleModel(st) {
   const m = { scene: st.start, state: R.fresh(st), history: [], log: [] };
   const enter = () => {
     const s = st.scenes[m.scene];
-    if (s.log) m.log.push({ k: "s", t: s.time, text: s.log });
+    if (s.log) m.log.push({ k: "s", t: s.time, text: s.log, sc: m.scene });
   };
   enter();
   m.open = () => st.scenes[m.scene].choices.map((c, i) => [c, i]).filter(([c]) => R.usable(c, m.state));
   m.choose = (i) => {
     const s = st.scenes[m.scene];
     const c = s.choices[i];
-    m.log.push({ k: "c", t: s.time, text: R.extraOf(c).log || c[0], o: s.choices.length - 1 });
+    m.log.push({ k: "c", t: s.time, text: R.extraOf(c).log || c[0], o: s.choices.length - 1, sc: m.scene });
     m.state = R.apply(st, m.state, c);
     m.history.push(m.scene);
     m.scene = c[2];
     enter();
   };
+  return m;
+}
+
+/** The state explorer's result for a story, worked out once per page load (it takes seconds on a story this size). */
+const exploreCache = new Map();
+function consoleExplore(st) {
+  if (!exploreCache.has(st.id)) exploreCache.set(st.id, rulesOf().explore(st, { cap: st.stateCap || 50000 }));
+  return exploreCache.get(st.id);
+}
+
+/** Writes a cookie the way the player does (js/game.js writeCookie). */
+function writeJsonCookie(name, value) {
+  document.cookie = `${name}=${encodeURIComponent(JSON.stringify(value))}; Max-Age=${60 * 60 * 24 * 365}; Path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
+}
+
+/** SETUP SHORTCUT (named in the scenarios that use it: "seeded run"). A console story is hundreds of voiced lines long
+    (Night Shift: 36 minutes at the shortest), more than a check can sit through. This leaves the player the way a
+    viewer who had listened to the first `picks` choices would have left it: the saved run (state, history, shift log,
+    this scene's lines heard) and the two cookies (the place, and the unlocks: `seen` and the scenes of the way, with
+    Completed kept as it was). The story is closed first (it saves its run when it closes), then opened by its link,
+    so the player itself resumes it. What follows from there is real presses. Returns the model of that run. */
+async function consoleSeedAt(t, st, picks, seen) {
+  const m = consoleModel(st);
+  for (const i of picks) m.choose(i);
+  const api = window.iltvConsole;
+  if (api.story()) api.close();
+  const ids = Object.keys(st.scenes);
+  const unlocked = new Set([...(seen || []), ...m.history, m.scene]);
+  const was = readJsonCookie(unlocksCookie(st)) || {};
+  localStorage.setItem(
+    RUN_KEY + st.cookie,
+    JSON.stringify({ v: 1, scene: m.scene, history: m.history, flags: Object.keys(m.state.flags), meters: m.state.meters, log: m.log, done: st.scenes[m.scene].lines.length, sel: st.scenes[m.scene].focus || null }),
+  );
+  writeJsonCookie(st.cookie, { scene: m.scene, history: [] });
+  let ix = "";
+  for (let i = 0; i < ids.length; i += 4) ix += [0, 1, 2, 3].reduce((n, j) => (ids[i + j] && unlocked.has(ids[i + j]) ? n | (1 << j) : n), 0).toString(16);
+  writeJsonCookie(unlocksCookie(st), { ix, completed: was.completed === true });
+  openByLink(t, st.id);
+  if (!(await waitFor(() => window.iltvConsole.story() === st.id && window.iltvConsole.scene() === m.scene, 4000))) {
+    throw new Error(`${st.id}: the seeded run didn't open at ${m.scene} (it is at ${window.iltvConsole.scene()})`);
+  }
+  if (soundOf().prompt()) await consolePrompt(t, document, st.id);
+  t.event("seeded-run", `${st.id}: resumed at ${m.scene} after ${picks.length} choice(s) (setup shortcut: ${m.history.length} scene(s) of the way unlocked, this one's lines heard)`);
   return m;
 }
 
@@ -1947,11 +2074,14 @@ async function consoleHeard(t, doc, where, { skip = true } = {}) {
   };
   const t0 = performance.now();
   while (!done() && performance.now() - t0 < 30000) {
-    if (skip && !done()) await tapAt(t, byIdIn(doc, "console-skip"), `Skip line (${where})`).catch(() => {});
-    await sleep(skip ? 40 : 250);
+    if (skip && !done()) {
+      await tapAt(t, byIdIn(doc, "console-skip"), `Skip line (${where})`, { quick: true }).catch(() => {});
+      t.add("linesSkipped");
+    }
+    await sleep(skip ? 15 : 250);
   }
   if (!done()) t.problem("bug", `${where}: the lines never finished (${JSON.stringify(api.lines())})`);
-  await sleep(80);
+  await sleep(30);
 }
 
 /** The scene on screen matches what the data gives for the way the bot came: the state, the log, the wall, the choices. */
@@ -2000,15 +2130,16 @@ function consoleCheck(t, st, m, doc, where, seen) {
 const sayState = (state) => [...Object.keys(state.flags).sort(), ...Object.entries(state.meters).map(([k, v]) => `${k} ${v}`)].join(", ");
 
 /** Taps the choice the model picks (a real press on its button), waits for the lines, checks the new scene. */
-async function consoleChoose(t, st, m, i, doc, where, seen) {
+async function consoleChoose(t, st, m, i, doc, where, seen, { hear = true } = {}) {
   const label = st.scenes[m.scene].choices[i][0];
   const button = openChoices(doc).find((b) => b.textContent.trim() === label);
   if (!button) throw new Error(`${where}: no choice "${label}" on screen at ${m.scene} (${JSON.stringify(openChoices(doc).map((b) => b.textContent.trim()))})`);
-  await tapAt(t, button, `choice "${label}"`);
+  await tapAt(t, button, `choice "${label}"`, { quick: true });
+  t.log(`tap choice "${label}"`);
   m.choose(i);
   if (!(await waitFor(() => apiOf(doc).scene() === m.scene, 3000))) throw new Error(`${where}: "${label}" didn't open ${m.scene} (on ${apiOf(doc).scene()})`);
   t.add("choicesClicked");
-  await consoleHeard(t, doc, `${where} > ${m.scene}`);
+  if (hear) await consoleHeard(t, doc, `${where} > ${m.scene}`);
   consoleCheck(t, st, m, doc, `${where} > ${m.scene}`, seen);
 }
 
@@ -2055,24 +2186,14 @@ async function consoleOpen(t, st, { tap = true, real = 0 } = {}) {
     and each different set of open choices; the bot plays every one of those from a new run with real presses. */
 async function consoleWalk(t, st, sums = { scenes: 0, endings: 0 }) {
   const R = rulesOf();
-  const x = R.explore(st, { cap: st.stateCap || 50000 });
+  const x = consoleExplore(st);
   const total = Object.keys(st.scenes).length;
   const targets = Object.entries(x.variants)
     .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
     .sort((a, b) => a.picks.length - b.picks.length);
-  // A big story has hundreds of ways (every different set of open choices): play the fewest ways that reach every scene.
-  let plan = targets;
-  if (targets.length > 60) {
-    const covered = new Set();
-    plan = [];
-    for (const w of [...targets].sort((p, q) => q.path.length - p.path.length)) {
-      if (!w.path.some((id) => !covered.has(id))) continue;
-      plan.push(w);
-      w.path.forEach((id) => covered.add(id));
-    }
-    plan.sort((p, q) => p.picks.length - q.picks.length);
-  }
-  t.note(`${st.title}: ${x.states} states, ${targets.length} ways to play${plan.length < targets.length ? `, ${plan.length} played (every scene reached)` : ""}`);
+  // A small story is played way by way, every different set of open choices; a big one (hundreds of ways) scene by scene.
+  const plan = targets;
+  t.note(`${st.title}: ${x.states} states, ${targets.length} ways to play${targets.length > 60 ? ", every scene entered by a press" : ""}`);
   t.event("explored", `${st.id}: ${x.states} states, ${Object.keys(x.scenes).length}/${total} scenes reachable, ${targets.length} different sets of choices`);
   Object.keys(st.scenes).filter((id) => !x.scenes[id]).forEach((id) => t.problem("bug", `${st.id}/${id}: no state reaches this scene`));
   x.stuck.forEach((s) => t.problem("bug", `${st.id}/${s.scene}: no usable choice when ${sayState(s.state)}`));
@@ -2081,7 +2202,9 @@ async function consoleWalk(t, st, sums = { scenes: 0, endings: 0 }) {
   await consoleFresh(t, st);
   const seen = new Set();
   let ways = 0;
-  for (const target of plan) {
+  // A story this big (Night Shift: 228 scenes, 1,288 lines) isn't walked way by way: see consoleEveryScene.
+  if (targets.length > 60) await consoleEveryScene(t, st, x, seen, sums);
+  else for (const target of plan) {
     if (ways++) await consoleFresh(t, st);
     const m = consoleModel(st);
     const where = `${st.id}: ${target.path.join(" > ")}`;
@@ -2108,6 +2231,43 @@ async function consoleWalk(t, st, sums = { scenes: 0, endings: 0 }) {
   if (hasEnd && stories().progress(st.id) !== "completed") t.problem("bug", `${st.id}: an ending reached but its progress is ${stories().progress(st.id)}`);
   if (stories().explored(st.id) !== 100) t.problem("bug", `${st.id}: explored(${st.id}) is ${stories().explored(st.id)}, not 100`);
   return seen;
+}
+
+/** Every scene of a big console story, each entered by a real press of the choice that leads there. Ways this long can't
+    be played end to end for every scene (that is what `night-shift` does for four of them, and `console` for the
+    demo), so each scene is entered from a seeded run (consoleSeedAt: setup shortcut) that stands at its parent, with the
+    state, history and log the shortest way there gives. Scenes go by the length of that way, so a scene's parent is
+    always one already seen and the percent explored must follow the count. A scene with a gated choice and every
+    ending is heard to the end and its choices checked; the others are checked as they are entered. */
+async function consoleEveryScene(t, st, x, seen, sums) {
+  const R = rulesOf();
+  const total = Object.keys(st.scenes).length;
+  const gated = (id) => st.scenes[id].choices.some((c) => {
+    const e = R.extraOf(c);
+    return (e.requires && e.requires.length) || (e.forbids && e.forbids.length) || e.meters;
+  });
+  const order = Object.entries(x.scenes).sort((a, b) => a[1].picks.length - b[1].picks.length);
+  t.note(`${st.title}: ${order.length} scenes, each entered by a press from a seeded run at its parent`);
+  for (const [id, way] of order) {
+    const where = `${st.id}: ${way.path.join(" > ")}`;
+    t.scene(`${st.id}/${id}`);
+    if (!way.picks.length) {
+      const m = consoleModel(st);
+      await consoleHeard(t, document, where);
+      consoleCheck(t, st, m, document, where, seen);
+      continue;
+    }
+    const m = await consoleSeedAt(t, st, way.picks.slice(0, -1), seen);
+    const last = way.picks[way.picks.length - 1];
+    await consoleChoose(t, st, m, last, document, where, seen, { hear: !!st.scenes[id].ending || gated(id) });
+    if (m.scene !== id) t.problem("bug", `${where}: expected to enter ${id}, is at ${m.scene}`);
+    if (st.scenes[id].ending) {
+      t.event("ending", `${st.id}/${id}: ${st.scenes[id].ending[0]}`);
+      if (stories().run(st.id) !== "end") t.problem("bug", `${st.id}: at an ending the run says "${stories().run(st.id)}", not end`);
+    }
+    if (document.cookie.length > 3800) t.problem("bug", `${st.id}: the cookies are ${document.cookie.length} bytes, near the 4 KB limit`);
+    t.progress(((sums.scenes || 0) + seen.size) / Math.max(1, total));
+  }
 }
 
 /** The shift log (the Log button): it lists what was done and seen, a redacted line per way not taken, and has nothing
@@ -2323,7 +2483,7 @@ async function consoleView(t, st, [w, h, name]) {
   if (doc.documentElement.scrollWidth > doc.defaultView.innerWidth + 1) t.problem("bug", `${where}: the log scrolls the page sideways`);
   await tapAt(t, byIdIn(doc, "console-log-btn"), `Close log (${where})`);
   // The end screen: the shortest way to an ending, played in the frame, then the ending, the Log button and the way out fit.
-  const x = rulesOf().explore(st, { cap: st.stateCap || 50000 });
+  const x = consoleExplore(st);
   const end = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v }))).filter((v) => st.scenes[v.id].ending).sort((a, b) => a.picks.length - b.picks.length)[0];
   if (end) {
     const m = consoleModel(st);
@@ -2376,7 +2536,7 @@ async function consoleReloadAt(t, st, label) {
 async function consoleReload(t, st) {
   const R = rulesOf();
   t.scene("Reload: start, mid-scene, after a choice, at an ending");
-  const x = R.explore(st, { cap: st.stateCap || 50000 });
+  const x = consoleExplore(st);
   const all = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })));
   // The way to the scene with the most choices behind it that is not an ending: the explorer's longest variant.
   const target = all.filter((v) => v.picks.length && !st.scenes[v.id].ending).sort((a, b) => b.picks.length - a.picks.length)[0];
@@ -2537,7 +2697,7 @@ async function consoleWall(t, st) {
     sets the flag a later scene reads. */
 async function consoleGates(t, st) {
   const R = rulesOf();
-  const x = R.explore(st, { cap: st.stateCap || 50000 });
+  const x = consoleExplore(st);
   // A scene with two different sets of open choices, and the choice that makes the difference.
   const pair = Object.entries(x.variants).map(([id, vs]) => [id, Object.values(vs)]).find(([, vs]) => vs.length > 1);
   if (!pair) return t.problem("bug", `${st.id}: no choice is gated by a flag or meter (the story has to have one)`);
@@ -2588,7 +2748,7 @@ async function consoleRun(options, t) {
     await consoleFresh(t, st);
     const m = consoleModel(st);
     const R = rulesOf();
-    const x = R.explore(st, { cap: st.stateCap || 50000 });
+    const x = consoleExplore(st);
     const mid = Object.entries(x.scenes).filter(([id]) => !st.scenes[id].ending).sort((a, b) => b[1].picks.length - a[1].picks.length)[0];
     await consoleHeard(t, document, "log");
     await consoleLogCheck(t, st, m, document, `${st.id} log at the start`);
@@ -2629,7 +2789,7 @@ async function consoleRun(options, t) {
     saved place coming back after All stories. */
 /** The fewest choices from a new run to an ending, as the state explorer gives them: { picks, id } or null. */
 function consoleShortestEnding(st) {
-  const x = rulesOf().explore(st, { cap: st.stateCap || 50000 });
+  const x = consoleExplore(st);
   const ways = Object.entries(x.variants)
     .filter(([id]) => st.scenes[id].ending)
     .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
@@ -2660,22 +2820,23 @@ async function consoleListedOpen(t, st) {
   await sleep(100);
 }
 
-/** Plays the shortest way to an ending with real presses from a new run, then back on the landing page. */
-async function consolePlayToEnding(t, st) {
+/** Plays the shortest way to an ending, then stays on the ending. The way is long (Night Shift: 71 choices, 389 lines),
+    so the run is a seeded one (consoleSeedAt: setup shortcut) that stops `keep` choices short of the ending, and those
+    last choices are real presses with their lines skipped. The `night-shift` scenario plays whole ways, start to end. */
+async function consolePlayToEnding(t, st, keep = 2) {
   const way = consoleShortestEnding(st);
   if (!way) return null;
   await consoleOpen(t, st);
-  await consoleFresh(t, st);
-  const m = consoleModel(st);
+  const from = Math.max(0, way.picks.length - keep);
+  const m = await consoleSeedAt(t, st, way.picks.slice(0, from), null);
   const where = `${st.id}: ${way.path.join(" > ")}`;
-  const seen = new Set();
   await consoleHeard(t, document, where);
   consoleCheck(t, st, m, document, where, null);
-  for (const i of way.picks) await consoleChoose(t, st, m, i, document, where, null);
+  for (const i of way.picks.slice(from)) await consoleChoose(t, st, m, i, document, where, null);
   if (!st.scenes[m.scene].ending) t.problem("bug", `${where}: expected to end at an ending, is at ${m.scene}`);
   t.event("ending", `${st.id}/${m.scene}: ${st.scenes[m.scene].ending[0]}`);
   if (stories().run(st.id) !== "end") t.problem("bug", `${st.id}: at an ending the run says "${stories().run(st.id)}", not end`);
-  return seen;
+  return m;
 }
 
 /** Reaching an ending completes a console story; the percent follows the unlocked scenes; a reload keeps it. */
@@ -2695,7 +2856,11 @@ async function consoleListedEnding(t, st) {
     first scene, and its card still says Completed and Start Over. */
 async function consoleListedStartOver(t, st) {
   t.scene(`${st.title}: Start Over`);
-  if (!(await consolePlayToEnding(t, st))) return;
+  // The ending the run above reached is still where it was left (a card at an ending says Start Over): play it again
+  // only if it isn't.
+  if (stories().progress(st.id) !== "completed" || stories().run(st.id) !== "end") {
+    if (!(await consolePlayToEnding(t, st))) return;
+  }
   await toLanding(t);
   if (!checkBadge(t, cardOf(st.id), st, "completed", `before Start Over in ${st.title}`)) return;
   const go = () => (cardOf(st.id).querySelector(".story-card-go")?.textContent || "").trim();
@@ -2747,38 +2912,45 @@ async function consoleDraft(t, st) {
 }
 
 /** A console story's branch pages: its wall, its lines (with their audio), the canonical state marked, the choices as
-    links (locked ones shown locked), every link a page that exists. */
+    links (locked ones shown locked), every link a page that exists. A big story has a page per scene (Night Shift: 228,
+    1,288 recorded lines), so every page is fetched and read as a document, a few at a time, each line's recording asked
+    for with a HEAD request; the pages a viewer meets first (the start and every ending) are also opened in the frame, as
+    before, to pass their Tap to play prompt and load a line's recording in an audio element. */
 async function crawlConsolePages(t, st, done, total) {
   const R = rulesOf();
-  const x = R.explore(st, { cap: st.stateCap || 50000 });
+  const x = consoleExplore(st);
   const pageOf = (id) => `/${st.scenes[id].folder}/`;
   const sceneAt = new Map(Object.keys(st.scenes).map((id) => [pageOf(id), id]));
   const first = pageOf(st.start);
   const parent = new Map([[first, null]]);
-  const queue = [first];
   const mine = new Set();
-  while (queue.length) {
-    const path = queue.shift();
-    if (mine.has(path)) continue;
-    mine.add(path);
-    done.add(path);
-    t.scene(path);
-    t.progress(done.size / total);
-    if ((await status(path)) !== 200) {
-      t.problem("bug", `${path}: page missing (from ${parent.get(path) || "the home page"})`);
-      continue;
+  const heads = new Map();
+  const head = (url) => {
+    if (!heads.has(url)) {
+      heads.set(url, fetch(url, { method: "HEAD", cache: "no-store" }).then((r) => r.status, () => 0));
     }
-    const doc = await openByClick(t, parent.get(path), path);
-    if (isMissingPage(doc)) {
-      t.problem("bug", `${path}: opened the not-found page`);
-      continue;
+    return heads.get(url);
+  };
+  const exists = new Map();
+  const pageExists = (path) => {
+    if (!exists.has(path)) exists.set(path, status(path));
+    return exists.get(path);
+  };
+  const read = async (path) => {
+    try {
+      const r = await fetch(path, { cache: "no-store" });
+      const text = await r.text();
+      return r.status === 200 ? new DOMParser().parseFromString(text, "text/html") : null;
+    } catch {
+      return null;
     }
-    t.add("pagesOpened");
+  };
+
+  /** One page's checks; returns the links it offers. */
+  const check = async (path, doc) => {
     const id = sceneAt.get(path);
     const s = st.scenes[id];
     t.note(doc.querySelector("h1")?.textContent || path);
-    await waitFor(() => soundOf(doc), 3000);
-    await passPrompt(t, doc, path);
     const canon = x.scenes[id];
     const wall = [...doc.querySelectorAll("[data-wall] .feed")];
     const feeds = R.feedsOf(st, s);
@@ -2793,26 +2965,75 @@ async function crawlConsolePages(t, st, done, total) {
     }
     const lines = [...doc.querySelectorAll(".passage-lines li")].map((li) => li.textContent);
     if (lines.length !== s.lines.length) t.problem("bug", `${path}: ${lines.length} lines on the page, the scene has ${s.lines.length}`);
-    for (const a of doc.querySelectorAll(".passage-lines audio")) {
-      if (!(await waitFor(() => a.readyState >= 1 || a.error, 8000)) || a.error) t.problem("bug", `${path}: a line's audio didn't load (${a.src})`);
-    }
-    const links = [...doc.querySelectorAll(".spark-choices a.choice")].map((a) => ({ label: a.textContent.trim(), to: pathOf(a.getAttribute("href"), doc.baseURI) }));
+    // The recordings are not loaded with the page (preload none): each is asked for, and must be there.
+    const audio = [...doc.querySelectorAll(".passage-lines audio")].map((a) => a.getAttribute("src"));
+    const codes = await Promise.all(audio.map(head));
+    audio.forEach((src, i) => codes[i] !== 200 && t.problem("bug", `${path}: line ${i + 1}'s recording ${src} is missing (HTTP ${codes[i]})`));
+    const links = [...doc.querySelectorAll(".spark-choices a.choice")].map((a) => ({ label: a.textContent.trim(), to: pathOf(a.getAttribute("href"), location.origin + path) }));
     const locked = [...doc.querySelectorAll(".spark-choices .choice.is-locked")];
     const open = s.choices.filter((c) => R.usable(c, canon.state)).length;
     if (links.length !== open || links.length + locked.length !== s.choices.length) t.problem("bug", `${path}: ${links.length} links and ${locked.length} locked choices, the scene has ${s.choices.length} (${open} open in the marked state)`);
     t.event("page", `${path}: ${links.length} choices, ${locked.length} locked`);
     if (!links.length && !s.ending) t.problem("warning", `${path}: no open choice in its marked state`);
-    for (const l of links) {
-      if ((await status(l.to)) !== 200) {
-        t.problem("bug", `${path}: choice "${l.label}" links to ${l.to}, which doesn't exist`);
-        continue;
+    return links;
+  };
+
+  // Every page, level by level, eight at a time.
+  let level = [first];
+  while (level.length) {
+    const batch = level.filter((p) => !mine.has(p));
+    batch.forEach((p) => mine.add(p));
+    level = [];
+    for (let k = 0; k < batch.length; k += 8) {
+      const part = batch.slice(k, k + 8);
+      const docs = await Promise.all(part.map(read));
+      for (let n = 0; n < part.length; n++) {
+        const path = part[n];
+        done.add(path);
+        t.scene(path);
+        t.progress(done.size / total);
+        t.add("pagesOpened");
+        if (!docs[n]) {
+          t.problem("bug", `${path}: page missing (from ${parent.get(path) || "the home page"})`);
+          continue;
+        }
+        if (isMissingPage(docs[n])) {
+          t.problem("bug", `${path}: opened the not-found page`);
+          continue;
+        }
+        for (const l of await check(path, docs[n])) {
+          if ((await pageExists(l.to)) !== 200) {
+            t.problem("bug", `${path}: choice "${l.label}" links to ${l.to}, which doesn't exist`);
+            continue;
+          }
+          if (!parent.has(l.to)) parent.set(l.to, path);
+          if (!mine.has(l.to)) level.push(l.to);
+        }
       }
-      if (!parent.has(l.to)) parent.set(l.to, path);
-      queue.push(l.to);
     }
   }
   Object.keys(st.scenes).map(pageOf).filter((p) => !mine.has(p)).forEach((p) => t.problem("warning", `${p}: no open choice in a marked state links here (orphan page)`));
   if ((await status(`/${st.id}/`)) !== 200) t.problem("bug", `/${st.id}/ (${st.title}'s link) is missing`);
+
+  // The pages a viewer meets first, in the frame: the start, then the endings.
+  const sample = [first, ...Object.keys(st.scenes).filter((id) => st.scenes[id].ending).slice(0, 3).map(pageOf)];
+  for (const path of sample) {
+    t.scene(`${path} (in the frame)`);
+    const doc = await openByClick(t, null, path);
+    if (isMissingPage(doc)) {
+      t.problem("bug", `${path}: opened the not-found page`);
+      continue;
+    }
+    await waitFor(() => soundOf(doc), 3000);
+    await passPrompt(t, doc, path);
+    const a = doc.querySelector(".passage-lines audio");
+    if (a) {
+      a.preload = "metadata";
+      a.load();
+      if (!(await waitFor(() => a.readyState >= 1 || a.error, 8000)) || a.error) t.problem("bug", `${path}: a line's audio didn't load (${a.src})`);
+    }
+    t.add("pagesOpened");
+  }
 }
 
 /* ---------------- Night Shift: the whole night (story/night-shift.json), by its numbers and by real presses ---------------- */
@@ -2914,7 +3135,7 @@ async function nightShiftRun(options, t) {
   try {
     // 1. The numbers, from the data: endings, no dead ends, how long the night is, who speaks, what is never said.
     t.scene(`${st.title}: the night in numbers`);
-    const x = R.explore(st, { cap: st.stateCap || 50000 });
+    const x = consoleExplore(st);
     const ids = Object.keys(st.scenes);
     const endings = Object.entries(st.scenes).filter(([, sc]) => sc.ending);
     t.metric("scenes", ids.length);
@@ -3085,7 +3306,7 @@ async function nightSignoffRun(options, t) {
   clearProgress();
   const R = rulesOf();
   try {
-    const x = R.explore(st, { cap: st.stateCap || 50000 });
+    const x = consoleExplore(st);
     const lengths = nightLengths(st);
     const endings = Object.entries(st.scenes).filter(([id, sc]) => sc.ending && (!(options && options.only) || options.only === id));
     const sizes = [["the desktop size", 0, 0], ...((options && options.sizes) === "desktop" ? [] : VIEWPORTS.map(([w, h, name]) => [`${name} ${w}x${h}`, w, h]))];
@@ -3290,9 +3511,9 @@ installPlaytest({
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
-      seconds: 600,
+      seconds: 150,
       tags: ["full"],
-      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
     },
     {
       id: "night-shift-audio",
@@ -3301,8 +3522,8 @@ installPlaytest({
       tags: ["full"],
       description: "Opens the Night Shift draft by its link under its own Tap to play. Checks every line of every scene has a recording (and every bed and effect a scene uses has its file), that each recording loads and decodes and is not longer than the player waits for (dur + 4 s), that a few lines of each speaker are within 4 dB of each other (RMS, decoded in the page), that every ambience bed sits at least 12 dB under the voice and every effect at least 3 dB under it. Then it plays the opening scene from a new run without skipping: each of the first three lines must play its own recording (the voice element's source is the line's file, not paused or muted, its time advancing) over the scene's ambience bed (looped, playing). Logs the loudness of each speaker, bed and effect.",
     },
-    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts, the percent explored rising scene by scene to 100% only at the last, the Tree locked until found (no Back: after each choice it walks again from the start, a new run)", seconds: 330, tags: ["full"] },
-    { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts; a console story's wall, lines, marked state and open or locked choices", seconds: 100, tags: ["full"] },
+    { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts, the percent explored rising scene by scene to 100% only at the last, the Tree locked until found (no Back: after each choice it walks again from the start, a new run). Night Shift: every one of its 228 scenes is entered by a real press from a seeded run at its parent (setup shortcut, event seeded-run), the endings and scenes with gated choices heard to the end", seconds: 330, tags: ["full"] },
+    { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts; a console story's wall, lines, marked state and open or locked choices (Night Shift: all 228 pages read, every line's recording asked for; the start and three endings also opened in the frame)", seconds: 100, tags: ["full"] },
     {
       id: "console",
       title: "Console stories (Night Shift): the camera wall, voiced lines in order, gated choices and flags, a saved run that survives a reload, the shift log, Settings on the audio, three screen sizes",
@@ -3343,23 +3564,23 @@ installPlaytest({
     {
       id: "credits",
       title: "Powered by HAWKES GEN on every kind of page, Hawkes Biomedical on the home page",
-      seconds: 30,
+      seconds: 45,
       tags: ["full"],
-      description: "Waits for the landing page's title splash to fade, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before tapping The Final Spark's Tap to play it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back.",
+      description: "Waits for the landing page's title splash to fade, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before tapping The Final Spark's Tap to play it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back. Then Night Shift, opened from its card: its Tap to play prompt says what the saved Sound setting says, and the footer mark is visible and not covered under the console player.",
     },
     {
       id: "sound",
       title: "Tap to play unlocks sound, Settings (Sound, Volume) that survive a reload",
-      seconds: 45,
+      seconds: 60,
       tags: ["full", "menus"],
-      description: "Waits for the landing page's title splash to fade (no prompt there), opens The Final Spark from its card: its Tap to play prompt shows and is tapped with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs and the story's video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back.",
+      description: "Waits for the landing page's title splash to fade (no prompt there), opens The Final Spark from its card: its Tap to play prompt shows and is tapped with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs and the story's video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back. The Settings then follow Night Shift (opened from its card): the voice, ambience and effects elements are muted or not and take the volume, in the first scene and the next.",
     },
     {
       id: "analytics",
       title: "Hawkes Analytics: the events going out on a way through The Final Spark (screen, video, choice, back, Try again, the ending), the thumbs question after going back twice and the stars question at the ending",
-      seconds: 75,
+      seconds: 120,
       tags: ["analytics"],
-      description: "Checks the analytics SDK is loaded with product imaginelivetv and a build (version, commit, date) and, on beta, env beta. Puts every event the page sends on the timeline as its batch goes out (the SDK's debug mode, ?hawkes-analytics-debug=1, on in a bot's tab). Opens The Final Spark from its card (fresh progress), then by tapping choices: Go back, the dead end's go back (back up the tree), the sludge (a death), Try again: the thumbs question (\"Retracing your steps…\") comes up and is answered thumbs up. Then the shortest way to the ending, a page at a time (each video plays, the next choice skips it): at Destroy the town the stars question \"How was this ending?\" comes up above the inventory bar and is answered 5 stars. Then All stories, and a check that screen, video (play, skip with seconds watched), choice (node, option, path in context), run_start, death, back, restart, run_end with the ending, both feedback answers and game_ready went out. The viewer's progress and question history are put back.",
+      description: "Checks the analytics SDK is loaded with product imaginelivetv and a build (version, commit, date) and, on beta, env beta. Puts every event the page sends on the timeline as its batch goes out (the SDK's debug mode, ?hawkes-analytics-debug=1, on in a bot's tab). Opens The Final Spark from its card (fresh progress), then by tapping choices: Go back, the dead end's go back (back up the tree), the sludge (a death), Try again: the thumbs question (\"Retracing your steps…\") comes up and is answered thumbs up. Then the shortest way to the ending, a page at a time (each video plays, the next choice skips it): at Destroy the town the stars question \"How was this ending?\" comes up above the inventory bar and is answered 5 stars. Then All stories, and a check that screen, video (play, skip with seconds watched), choice (node, option, path in context), run_start, death, back, restart, run_end with the ending, both feedback answers and game_ready went out. The viewer's progress and question history are put back. Then Night Shift (a console story, no video): from its card, a camera enlarged (feature feed), the shift log opened (feature log), one real choice, and the last two choices of its shortest way to an ending after a seeded run (setup shortcut): story_open, screen, level_start, run_start, choice, run_end with the ending and the stars question answered went out, and no video or back event.",
     },
   ],
   isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
