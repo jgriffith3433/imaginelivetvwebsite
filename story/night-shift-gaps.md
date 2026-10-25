@@ -90,14 +90,14 @@ Cues: ambience beds 10 of 10 made and used (`control-room` 93 scenes, `control-r
    (someone, she-knew, four-hours, wedge), `ending-warm` in 2 (eat-something, friendly). `hawkesgen_estimate` (project imaginelivetv):
    **61 GPU-seconds, $0.08 GPU, $0.70 with the idle tail (stopping the server at once avoids it), about 3 minutes, 1 server**. Needs J's GPU
    approval; none was used. Fix: approve, make them, then `node tools/make-audio.mjs night-shift --mix` and `npm run story`.
-2. **One missing file is reported 19 times.** On the T4 `night-shift-audio` run (`j_a4a2b9c3d15c`) the 6 unmade stings are 18 `bug`s ("the music cue
+2. **(Fixed 2026-10-25: `night-shift-audio` reports one warning.) One missing file was reported 19 times.** On the T4 `night-shift-audio` run (`j_a4a2b9c3d15c`) the 6 unmade stings are 18 `bug`s ("the music cue
    ending-plain isn't in the story's music", one per scene that names it) plus one `warning` ("6 music stings are designed but not made yet"). A
    reviewer reads 18 bugs for one known cause. Fix: report one warning in `js/playtest.js` (`night-shift-audio`) while the stings are unmade, or leave the
    `music` field off those scenes until the files exist.
-3. **The bed `control-room-late` jumps 6.4 dB where it loops** (`night-shift-audio`, T4). It is the most used bed (62 scenes, the whole small hours), so
+3. **(Fixed 2026-10-25, `--beds`.) The bed `control-room-late` jumped 6.4 dB where it loops** (`night-shift-audio`, T4). It is the most used bed (62 scenes, the whole small hours), so
    the loop point is heard every time the bed repeats. Fix: re-cut the file `night-shift/media/ambience/control-room-late.mp3` with a crossfade at the
    loop, then `--mix`.
-4. **Two beds are too loud under the voice**: `roof` is 8.7 dB under the voice (3 scenes), `stairwell` 11.5 dB (8 scenes); the scenario's bar and the
+4. **(Fixed 2026-10-25, `--beds`: every bed is at -36 dB RMS or lower.) Two beds were too loud under the voice**: `roof` is 8.7 dB under the voice (3 scenes), `stairwell` 11.5 dB (8 scenes); the scenario's bar and the
    story rule are 12 dB (`night-shift-audio`, T4). The other 8 beds pass. Fix: `--mix` them 3.3 dB and 0.5 dB lower.
 5. **Treatments are not applied** (`story/night-shift.md` "Voices as made": "the recordings are clean"). The voice sheets ask for a radio, walkie, intercom
    or phone sound: Okafor on the night line (7 lines in `okafor-call*`, plus `sleeper-super`), Marisol on the walkie (6 lines in `sign-why`/`sign-why-44`,

@@ -3438,7 +3438,9 @@ async function nightAudioRun(options, t) {
   if (!st) throw new Error("no console story night-shift in js/story-data.js");
   await passPrompt(t);
   clearProgress();
+  const between = options && options.at === "between"; // {"at":"between"}: only the hand-over between scenes (about 40 s)
   try {
+   if (!between) {
     // 1. Every spoken line and cue has a recording that loads.
     t.scene(`${st.title}: every line and cue has its recording`);
     const lines = Object.entries(st.scenes).flatMap(([id, sc]) => sc.lines.map((l, i) => ({ id, n: i + 1, ...l })));
@@ -3454,7 +3456,8 @@ async function nightAudioRun(options, t) {
     const unmadeMusic = cues.filter(([kind, , f]) => kind === "music" && !f);
     t.metric("musicCuesUnmade", unmadeMusic.length);
     if (unmadeMusic.length) t.problem("warning", `${st.id}: ${unmadeMusic.length} music stings are designed but not made yet (GPU, waiting for J's approval): ${unmadeMusic.map((c) => c[1]).join(", ")}`);
-    Object.entries(st.scenes).filter(([, sc]) => sc.music && !(st.music || {})[sc.music]).forEach(([id, sc]) => t.problem("bug", `${st.id}/${id}: the music cue ${sc.music} isn't in the story's music`));
+    // A cue that is in the story's music but has no file is the one warning above; a scene naming a cue the story doesn't list is a bug.
+    Object.entries(st.scenes).filter(([, sc]) => sc.music && !Object.prototype.hasOwnProperty.call(st.music || {}, sc.music)).forEach(([id, sc]) => t.problem("bug", `${st.id}/${id}: the music cue ${sc.music} isn't in the story's music`));
     const noBed = Object.entries(st.scenes).filter(([, sc]) => !sc.ambience);
     t.event("criterion", `${Object.keys(st.scenes).length - noBed.length} of ${Object.keys(st.scenes).length} scenes have an ambience bed`);
     noBed.forEach(([id]) => t.problem("bug", `${st.id}/${id}: no ambience bed, the scene would be silent between lines`));
@@ -3540,10 +3543,112 @@ async function nightAudioRun(options, t) {
     }
     if (heard.size < want) t.problem("bug", `${st.id}/${st.start}: only ${heard.size} of the first ${want} lines were heard in 40 s`);
     await consoleHeard(t, document, `${st.id}/${st.start}`);
+   }
+    t.progress(0.6);
+    await nightAudioBetween(t, st);
     t.progress(1);
   } finally {
     await sleep(300);
     await toLanding(t).catch(() => {});
+  }
+}
+
+/** The bed, effects and sting elements of the console player (they are the page's audio elements; the looping one is the bed). */
+const bedElement = () => [...document.querySelectorAll("audio[data-sound-start]")].find((a) => a.loop);
+
+/** Is the bed audible right now: playing, not muted, enough data, and the file of the scene's cue (not the silence). */
+function bedAudible(file) {
+  const a = bedElement();
+  return !!a && !a.paused && !a.muted && a.readyState >= 3 && (a.currentSrc || a.src).endsWith(file);
+}
+
+/** Nothing is silent between scenes: for each bed the story has, one real press of the choice that leads into a scene
+    with that bed (from a seeded run, setup shortcut, at the parent: the shortest way there), timing how long the bed is
+    not audible from the press until the first line plays; the same bed carries on from where it was (no restart); then
+    one bed is seeked to its last half second to see the real loop wrap (it keeps playing, no pause, no stall).
+    A scene that names a music sting with a file must start it. */
+async function nightAudioBetween(t, st) {
+  t.scene(`${st.title}: the bed carries over from scene to scene, no silence, the loop wraps`);
+  const x = consoleExplore(st);
+  const bedOf = (id) => st.scenes[id].ambience;
+  const byBed = {};
+  let same = null;
+  for (const [id, w] of Object.entries(x.scenes)) {
+    if (w.path.length < 2) continue;
+    const parent = w.path[w.path.length - 2];
+    const entry = { parent, child: id, picks: w.picks, bed: bedOf(id), from: bedOf(parent) };
+    if (bedOf(parent) !== bedOf(id)) { if (!byBed[entry.bed] || byBed[entry.bed].picks.length > entry.picks.length) byBed[entry.bed] = entry; }
+    else if (!same || same.picks.length > entry.picks.length) same = entry;
+  }
+  const trips = [...Object.values(byBed).sort((a, b) => a.picks.length - b.picks.length), ...(same ? [same] : [])];
+  t.metric("bedHandovers", trips.length);
+  const beds = new Set(Object.values(st.scenes).map((sc) => sc.ambience));
+  const missingTrips = [...beds].filter((b) => !byBed[b] && bedOf(st.start) !== b);
+  if (missingTrips.length) t.note(`${st.title}: no way found into a scene with the bed ${missingTrips.join(", ")} from another bed (checked as the opening or not reached by a change)`);
+  const seen = new Set();
+  let worst = 0;
+  for (const trip of trips) {
+    const m = await consoleSeedAt(t, st, trip.picks.slice(0, -1), seen);
+    if (!(await waitFor(() => bedAudible(st.ambience[trip.from]), 5000))) {
+      t.problem("bug", `${st.id}/${trip.parent}: the ${trip.from} bed isn't playing before the choice`);
+      continue;
+    }
+    const before = bedElement().currentTime;
+    const file = st.ambience[trip.bed];
+    const i = trip.picks[trip.picks.length - 1];
+    const label = st.scenes[m.scene].choices[i][0];
+    const button = openChoices()[m.open().findIndex(([, j]) => j === i)]; // the open choices show in the data's order
+    if (!button || button.textContent.trim() !== label) { t.problem("bug", `${st.id}/${trip.parent}: no choice "${label}" on screen`); continue; }
+    // From the press until the scene's first line is playing, count how long the bed is not audible.
+    let silent = 0;
+    let last = performance.now();
+    let lineOn = false;
+    const sampler = setInterval(() => {
+      const now = performance.now();
+      if (!lineOn && !bedAudible(file)) silent += now - last;
+      last = now;
+      const l = window.iltvConsole.lines();
+      if (window.iltvConsole.scene() === trip.child && l && l.playing >= 0) lineOn = true;
+    }, 25);
+    await tapAt(t, button, `choice "${label}"`, { quick: true });
+    m.choose(i);
+    await waitFor(() => lineOn, 8000);
+    await sleep(300);
+    clearInterval(sampler);
+    worst = Math.max(worst, silent);
+    const bed = bedElement();
+    if (window.iltvConsole.scene() !== trip.child) { t.problem("bug", `${st.id}: "${label}" didn't open ${trip.child}`); continue; }
+    if (!bedAudible(file)) t.problem("bug", `${st.id}/${trip.child}: the ${trip.bed} bed isn't playing in the new scene (${bed && (bed.currentSrc || bed.src)}, paused ${bed && bed.paused})`);
+    else if (!bed.loop) t.problem("bug", `${st.id}/${trip.child}: the ${trip.bed} bed isn't set to loop`);
+    if (trip.from === trip.bed && bed.currentTime < before) t.problem("bug", `${st.id}/${trip.child}: the ${trip.bed} bed restarted at a scene with the same bed (${before.toFixed(1)} s back to ${bed.currentTime.toFixed(1)} s)`);
+    t.event("bed-handover", `${trip.parent} (${trip.from}) -> ${trip.child} (${trip.bed}): the bed was not audible for ${Math.round(silent)} ms from the press to the first line${trip.from === trip.bed ? `; same bed carried on ${before.toFixed(1)} s -> ${bed.currentTime.toFixed(1)} s` : ""}`);
+    if (silent > 1500) t.problem("bug", `${st.id}/${trip.child}: ${Math.round(silent)} ms of silence (no bed) between ${trip.parent} and ${trip.child}`);
+    else if (silent > 500) t.problem("warning", `${st.id}/${trip.child}: ${Math.round(silent)} ms without the bed between ${trip.parent} and ${trip.child}`);
+    const sc = st.scenes[trip.child];
+    if (sc.music && st.music && st.music[sc.music]) {
+      const sting = window.iltvConsole.audio().sting;
+      if (!sting || !sting.src.endsWith(st.music[sc.music])) t.problem("bug", `${st.id}/${trip.child}: the sting ${sc.music} isn't loaded`);
+    }
+  }
+  t.metric("worstBedSilenceMs", Math.round(worst));
+  t.event("criterion", `${trips.length} scene changes by a real press (${trips.filter((x) => x.from !== x.bed).length} to a different bed); the bed was never missing for more than ${Math.round(worst)} ms`);
+
+  // The loop as the player plays it: seek the bed to its last half second, it must wrap and keep playing.
+  const bed = bedElement();
+  if (bed && bed.duration > 2) {
+    const cue = window.iltvConsole.audio().bedCue;
+    bed.currentTime = bed.duration - 0.6;
+    let dips = 0;
+    let wrapped = false;
+    const t0 = performance.now();
+    while (performance.now() - t0 < 2000) {
+      if (bed.paused || bed.ended || bed.readyState < 3) dips++;
+      if (bed.currentTime < 1) wrapped = true;
+      await sleep(20);
+    }
+    t.event("loop-wrap", `bed ${cue}: ${bed.duration.toFixed(1)} s long, seeked to ${(bed.duration - 0.6).toFixed(1)} s, ${wrapped ? "wrapped to the start" : "did NOT wrap"}, ${dips} samples (20 ms) not playing`);
+    if (!wrapped) t.problem("bug", `${st.id}: the ${cue} bed didn't wrap round at its end`);
+    if (dips > 5) t.problem("bug", `${st.id}: the ${cue} bed stopped or stalled for ${dips * 20} ms where it loops`);
   }
 }
 
@@ -3618,10 +3723,10 @@ installPlaytest({
     },
     {
       id: "night-shift-audio",
-      title: "Night Shift's voices and sounds: every line and cue has a recording, each speaker keeps their voice, loudness is even, the bed sits under the voice, the opening is heard",
-      seconds: 120,
+      title: "Night Shift's voices and sounds: every line and cue has a recording, each speaker keeps their voice, loudness is even, the bed sits under the voice, the opening is heard, the bed carries from scene to scene without silence and its loop wraps",
+      seconds: 170,
       tags: ["full"],
-      description: "Opens the Night Shift draft by its link under its own Tap to play. Checks every line of every scene has a recording (and every bed and effect a scene uses has its file), that each recording loads and decodes and is not longer than the player waits for (dur + 4 s), that a few lines of each speaker are within 4 dB of each other (RMS, decoded in the page), that every ambience bed sits at least 12 dB under the voice and every effect at least 3 dB under it. Then it plays the opening scene from a new run without skipping: each of the first three lines must play its own recording (the voice element's source is the line's file, not paused or muted, its time advancing) over the scene's ambience bed (looped, playing). Logs the loudness of each speaker, bed and effect.",
+      description: "Opens the Night Shift draft by its link under its own Tap to play. Checks every line of every scene has a recording (and every bed and effect a scene uses has its file), that each recording loads and decodes and is not longer than the player waits for (dur + 4 s), that a few lines of each speaker are within 4 dB of each other (RMS, decoded in the page), that every ambience bed sits at least 12 dB under the voice and every effect at least 3 dB under it. Then it plays the opening scene from a new run without skipping: each of the first three lines must play its own recording (the voice element's source is the line's file, not paused or muted, its time advancing) over the scene's ambience bed (looped, playing). Logs the loudness of each speaker, bed and effect. Then, for each ambience bed the story has, it presses the real choice that leads into a scene with that bed (from a seeded run at the parent: setup shortcut, event seeded-run) and times how long the bed is not audible from the press to the first line (never silent between scenes; a warning over 0.5 s, a bug over 1.5 s), checks the same bed carries on without restarting, and seeks the bed to its last half second to see the loop wrap and keep playing. Options: {\"at\":\"between\"} runs only that last part (about 40 s).",
     },
     { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts, the percent explored rising scene by scene to 100% only at the last, the Tree locked until found (no Back: after each choice it walks again from the start, a new run). Night Shift: every one of its 228 scenes is entered by a real press from a seeded run at its parent (setup shortcut, event seeded-run), the endings and scenes with gated choices heard to the end", seconds: 330, tags: ["full"] },
     { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts; a console story's wall, lines, marked state and open or locked choices (Night Shift: all 228 pages read, every line's recording asked for; the start and three endings also opened in the frame)", seconds: 100, tags: ["full"] },
