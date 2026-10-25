@@ -3387,7 +3387,11 @@ async function consoleListedStartOver(t, st) {
   for (const [name, was] of Object.entries(others)) {
     if (JSON.stringify(readJsonCookie(name)) !== JSON.stringify(was)) t.problem("bug", `Start Over in ${st.id} changed the cookie ${name}`);
   }
-  t.event("start-over", `${st.id}: at ${apiOf().scene()}, ${pct}% explored kept; ${Object.keys(others).length} other cookies untouched`);
+  // The rule (story doc "Progress on the cards"): Start Over forgets the run, not what was found, so the player's header
+  // reads the same percent as the card (the unlocks), not 0%.
+  const head = ($("console-explored")?.textContent || "").trim();
+  if (head !== `${pct}% explored`) t.problem("bug", `${st.id}: after Start Over the player's header says "${head}", the unlocks give "${pct}% explored" (the card's)`);
+  t.event("start-over", `${st.id}: at ${apiOf().scene()}, ${pct}% explored kept (header "${head}"); ${Object.keys(others).length} other cookies untouched`);
   await sleep(600);
   await toLanding(t);
   checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);
