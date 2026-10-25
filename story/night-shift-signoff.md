@@ -123,15 +123,20 @@ Nothing new is claimed. What was looked at, and what was found:
 - **Checked by command today:** `npm run story -- --check` ok (4 stories, 304 scenes, nothing stale); `node tools/check-night-shift.mjs` ok (12 endings, 0 choices that change nothing).
 - **GPU:** none needed, none used.
 
-## Blocked, not done (not J's listening or reading)
+## Status on beta `29762f6`, 2026-10-25 (voices made, playtests run)
 
-1. **46 voice lines are unrecorded** (the 15 echo scenes). ElevenLabs refuses every call: the account's invoice is unpaid (J). When it is paid:
-   `node tools/make-audio.mjs night-shift --reuse`, `hawkesgen_run audio.voice` per listed line (about 1.2 dollars), `--ingest`, `--mix`, `--dur`,
-   `npm run story`. Until then `npm run test:endings` and `night-shift-audio` fail on the unmade lines and those lines play on a timer.
-2. **Beta's playtest of the merged commit** has to run (nobody can start it from here): `night-shift-signoff` at the four sizes, then the other scenarios above.
-   Fix what they report.
+- **Voices:** all 1,410 assets have a file (`make-audio --list`: 0 missing). The last 46 lines (the 15 echo scenes) and `held-tomorrow` line 2 were made with Hawkes Gen
+  `audio.voice` on ElevenLabs (J upgraded to Pro for this), each with its character's locked voice id, then `--ingest` (mix, treatment, loudness). The sleeper's 23 lines
+  were lifted 1 dB so the speakers sit within 4 dB (3.1 dB measured).
+- **Beta runs on this build:** `night-shift-audio` ship (0 problems, speaker spread 3.1 dB), `night-shift-treatment` ship (138 treated lines), `night-shift-card` ship,
+  `console` 0 problems (real Night Shift leg included), `night-shift-signoff` finishes (12 endings x 4 sizes, 48 plays in 1 min 26 s; it used to stall for 10 minutes: the
+  desktop play left the story open on the page, and the first phone frame then hung the tab, so the page now goes back to the landing page before each frame).
+- **Open:** at 844x390 (landscape phone) the end screen needs a scroll on every ending when a camera feed is enlarged (`console-big` 339..440 of 390). Portrait 390x844 and 360x640 end
+  screens now fit (smaller card, wall 39dvh; at 360x640 the subtitles are a thin strip there). `stories`, `branches`, `pages`, `sound`, `credits`, `analytics`, `cctv-art` and
+  `night-shift-signoff` `{"at":"whole"}` (about 50 minutes) have no run on this build. `npm run test:endings` and `test:player` skip here (jsdom isn't installed on this PC).
 
 ## Left
 
 1. **J's own listening to the voices and reading the script.** No agent has heard a voice or read the whole night as a viewer: a `perform` tag read aloud,
    a drifting voice, two speakers alike, a wrong-sounding treatment, a line that reads badly.
+2. **Not J's: the landscape end screen above**, and the scenarios with no run on this build.
