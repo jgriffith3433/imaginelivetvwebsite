@@ -22269,20 +22269,20 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "On tile six Marisol listens to you with her arms folded. Then she takes the walkie from her belt.",
-       "file": null,
-       "dur": 7.3
+       "file": "/night-shift/held-tomorrow/media/line-1.mp3",
+       "dur": 6.7
       },
       {
        "speaker": "marisol",
        "text": "Tomorrow. Okay. I hold you to tomorrow, mi amor.",
-       "file": null,
-       "dur": 3.5
+       "file": "/night-shift/held-tomorrow/media/line-2.mp3",
+       "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "She will.",
-       "file": null,
-       "dur": 2
+       "file": "/night-shift/held-tomorrow/media/line-3.mp3",
+       "dur": 1
       }
      ],
      "log": "2138 hrs. M. Quintero told the supervisor would speak to her tomorrow.",

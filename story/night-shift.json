@@ -17141,19 +17141,19 @@
         {
           "speaker": "narrator",
           "text": "On tile six Marisol listens to you with her arms folded. Then she takes the walkie from her belt.",
-          "dur": 7.3
+          "dur": 6.7
         },
         {
           "speaker": "marisol",
           "text": "Tomorrow. Okay. I hold you to tomorrow, mi amor.",
           "treatment": "walkie",
-          "dur": 3.5,
+          "dur": 3.6,
           "perform": "over the walkie, clipped, warm underneath"
         },
         {
           "speaker": "dee",
           "text": "She will.",
-          "dur": 2,
+          "dur": 1,
           "perform": "dry"
         }
       ],

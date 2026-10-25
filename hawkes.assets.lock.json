@@ -11818,5 +11818,32 @@
     "files": {
       "night-shift/media/music/ending-cold.mp3": "7e6ca4730e95c51bb110800626fff40c464663374b0e1f9a648d7ef944aaf60e"
     }
+  },
+  "night-shift-held-tomorrow-line-1": {
+    "recipe": "aad0357ccfdd785e",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:05:19.249Z",
+    "files": {
+      "night-shift/held-tomorrow/media/line-1.mp3": "0e220321f1ebf43f5e746f72991c6345339851fe475f8172df9dd88ee8c7fb7c"
+    }
+  },
+  "night-shift-held-tomorrow-line-2": {
+    "recipe": "bd4ed742a732ab1e",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:05:19.498Z",
+    "files": {
+      "night-shift/held-tomorrow/media/line-2.mp3": "bae7fadabb798cb30a6e626be678d34fc8bd29e09ec56e633c84ec2e3dca5d99"
+    },
+    "treatment": "walkie",
+    "clean": "90d3a171caaec8f181b56392137ded736afd12862bafd52f76c62863896764e3",
+    "rev": 3
+  },
+  "night-shift-held-tomorrow-line-3": {
+    "recipe": "2fddf4f0d22a5d0b",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:05:19.666Z",
+    "files": {
+      "night-shift/held-tomorrow/media/line-3.mp3": "ed7631df2c741137a261669bce688fc9c46e7dbd39b8660d44d0a7993a465f78"
+    }
   }
 }
