@@ -2931,6 +2931,80 @@ async function nightShiftRun(options, t) {
   }
 }
 
+/* ---------------- Night Shift gaps audit: story/night-shift-gaps.md against the live data, after the story is opened with real presses ---------------- */
+
+/** Opens Night Shift with real presses (its card, then its Tap to play), presses Settings, then reads story/night-shift-gaps.md
+    and checks it: groups (a) to (f) with numbered gaps, the counts it states against js/story-data.js, the shortest and typical
+    minutes against nightLengths, and the output of `npm run story -- --check` and of the console, stories and sound playtests
+    (or an honest "not run" for each, a warning). Options: {"at":"gaps"} reads the file without opening the story (about 5 s). */
+async function nightGapsRun(options, t) {
+  rememberProgress();
+  const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
+  if (!st) throw new Error("no console story night-shift in js/story-data.js");
+  const only = !!(options && options.at === "gaps");
+  try {
+    if (only) t.event("start-at", "gaps");
+    else {
+      await passPrompt(t);
+      clearProgress();
+      t.scene(`${st.title}: opened with real presses`);
+      await consoleOpen(t, st);
+      await openSettings(t, st.title);
+      await tapAt(t, $("sound-done"), "Done");
+      t.event("criterion", `${st.title} opened and its Settings pressed (group d's controls)`);
+    }
+    t.scene("story/night-shift-gaps.md");
+    const res = await fetch("/story/night-shift-gaps.md", { cache: "no-store" });
+    if (!res.ok) throw new Error(`story/night-shift-gaps.md: HTTP ${res.status}`);
+    const doc = await res.text();
+    const items = {};
+    let group = null;
+    for (const line of doc.split("\n")) {
+      const g = line.match(/^## \(([a-f])\)/);
+      if (g) { group = g[1]; items[group] = 0; continue; }
+      if (/^## /.test(line)) group = null;
+      if (group && /^\d+\. /.test(line)) items[group]++;
+    }
+    for (const g of "abcdef") {
+      if (!(g in items)) t.problem("bug", `night-shift-gaps.md: group (${g}) is missing`);
+      else if (!items[g]) t.problem("bug", `night-shift-gaps.md: group (${g}) has no numbered gap`);
+      else t.event("criterion", `group (${g}): ${items[g]} numbered gaps`);
+    }
+    t.metric("gapsListed", Object.values(items).reduce((a, b) => a + b, 0));
+    const scenes = Object.values(st.scenes);
+    const counts = [["scenes", scenes.length], ["lines", scenes.reduce((a, s) => a + s.lines.length, 0)], ["endings", scenes.filter((s) => s.ending).length]];
+    for (const [what, n] of counts) {
+      const say = n.toLocaleString("en-US");
+      if (!doc.includes(`${say} ${what}`)) t.problem("bug", `night-shift-gaps.md doesn't state ${say} ${what}, which is what the data has`);
+      else t.event("criterion", `the file states ${say} ${what}, as the data has`);
+    }
+    const lengths = nightLengths(st);
+    const minutes = (x) => (Math.round((x / 60) * 10) / 10).toFixed(1);
+    const sm = doc.match(/[Ss]hortest[^.\n]*?\*\*([\d.]+) minutes\*\*/);
+    const tm = doc.match(/[Tt]ypical[^.\n]*?\*\*([\d.]+) minutes\*\*/);
+    if (!sm) t.problem("bug", "night-shift-gaps.md doesn't state the shortest path in minutes");
+    else if (sm[1] !== minutes(lengths.shortest)) t.problem("bug", `night-shift-gaps.md says the shortest path is ${sm[1]} minutes, the data gives ${minutes(lengths.shortest)}`);
+    else t.event("criterion", `shortest path ${sm[1]} minutes, as the data gives`);
+    if (!tm) t.problem("bug", "night-shift-gaps.md doesn't state the typical path in minutes");
+    else if (tm[1] !== minutes(lengths.mean)) t.problem("bug", `night-shift-gaps.md says the typical path is ${tm[1]} minutes, the data gives ${minutes(lengths.mean)}`);
+    else t.event("criterion", `typical path ${tm[1]} minutes, as the data gives`);
+    const appendix = doc.split(/^## Appendix/m)[1] || "";
+    if (!appendix) t.problem("bug", "night-shift-gaps.md has no Appendix");
+    if (!/npm run story -- --check[\s\S]*?ok\s+\d+ stories, \d+ scenes/.test(appendix)) t.problem("bug", "night-shift-gaps.md doesn't include the output of npm run story -- --check");
+    else t.event("criterion", "the output of npm run story -- --check is in the file");
+    const sec = (appendix.match(/### Playtests[^\n]*\n([\s\S]*)/) || [])[1] || "";
+    for (const id of ["console", "stories", "sound"]) {
+      if (new RegExp(`#### ${id}\\b[\\s\\S]*?(problems|pass|fail)`, "i").test(sec)) t.event("criterion", `the ${id} playtest's report is in the file`);
+      else if (/Not run here/i.test(sec) && sec.includes(id)) t.problem("warning", `night-shift-gaps.md has no report of the ${id} playtest, only that it was not run`);
+      else t.problem("bug", `night-shift-gaps.md says nothing about the ${id} playtest`);
+    }
+  } finally {
+    await sleep(200);
+    if (!only) await toLanding(t).catch(() => {});
+    restoreProgress();
+  }
+}
+
 /* ---------------- Night Shift sign-off: every ending, played to the end with real presses, at the desktop size and at three phone sizes ---------------- */
 
 /** Every ending of the night, by its shortest way, from a new run, played with real presses (Skip line moves the lines along)
@@ -3178,6 +3252,14 @@ installPlaytest({
       description: "Opens the Night Shift draft (night-shift, listed: false) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45, and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged.",
     },
     {
+      id: "night-shift-gaps",
+      title: "Night Shift's gaps audit: the story opened with real presses, then story/night-shift-gaps.md checked: groups a to f numbered, its counts and the shortest and typical minutes against the data, the output of npm run story -- --check and the console, stories and sound playtests",
+      seconds: 40,
+      tags: ["full"],
+      starts: ["gaps"],
+      description: "Waits for the landing page's splash, opens Night Shift (its card, a real press, then its Tap to play), presses Settings and Done, then reads story/night-shift-gaps.md: each group (a) audio, (b) art, (c) script quality, (d) engine and mobile, (e) landing, (f) docs has numbered gaps; the scenes, lines and endings it states are the data's; the shortest and typical paths in minutes match the clock (words at 150 a minute or the recording, plus the pause); the appendix holds the real output of npm run story -- --check and a report (or, as a warning, an honest 'not run') for the console, stories and sound playtests. Options: {\"at\":\"gaps\"} reads the file without opening the story.",
+    },
+    {
       id: "night-shift-signoff",
       title: "Night Shift sign-off: every ending played to the end with real presses at the desktop size and at 390x844, 360x640 and 844x390, with its minutes of audio, the ending shown and nothing off screen",
       seconds: 3000,
@@ -3224,6 +3306,7 @@ installPlaytest({
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
+      else if (id === "night-shift-gaps") await nightGapsRun(options, t);
       else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "blog") await blog(options, t);
