@@ -3875,6 +3875,7 @@ async function nightSignoffRun(options, t) {
   const runStarted = performance.now();
   t.event("start-at", near ? `last-choices: each ending from a seeded run ${back} choice(s) before it` : "whole: every way pressed from a new run (about 50 minutes)");
   try {
+    t.scene("night-shift-signoff: preparing");
     t.event("signoff-prepare", "working out the state explorer's ways to every ending");
     const x = consoleExplore(st);
     const lengths = nightLengths(st);
@@ -3901,12 +3902,26 @@ async function nightSignoffRun(options, t) {
         let step = "starting";
         const at = (what) => {
           step = what;
+          t.scene(`${label}: ${what}`); // the runner's line in Studio is this scene (and the note), so it changes at every step
           t.note(`night-shift-signoff: ${label}: ${what}`);
           t.event("signoff-step", `${label}: ${what}`); // an event is progress for the stuck detector; a note is not
+          t.progress((done + skipped) / (endings.length * sizes.length));
           if (performance.now() - started > limit) throw new Error(`${label}: over ${Math.round(limit / 1000)} s, stopped at "${what}"`);
         };
         t.event("signoff-start", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices${seedLen ? `, ${seedLen} seeded` : ""} (play ${done + skipped + 1} of ${endings.length * sizes.length})`);
-        try {
+        // The step is the scene the runner shows, the share of plays done is its progress, and a heartbeat every 20 s says
+        // how long this step has been going: the stuck detector (and the job's line in Studio) sees movement at least
+        // that often. A play that hangs inside a step (a wait that never resolves) is cut off at its limit, named by step.
+        let cut;
+        const heart = setInterval(() => {
+          const sec = Math.round((performance.now() - started) / 1000);
+          t.note(`${label}: ${step}, ${sec} s into this play`);
+          t.event("signoff-heartbeat", `${label}: still at "${step}", ${sec} s into this play (limit ${Math.round(limit / 1000)} s)`);
+          if (performance.now() - started > limit && cut) cut(new Error(`${label}: over ${Math.round(limit / 1000)} s, stopped at "${step}"`));
+        }, 20000);
+        const deadline = new Promise((_, reject) => { cut = reject; });
+        deadline.catch(() => {});
+        const play = async () => {
           let doc = document;
           let m;
           if (!w) {
@@ -3949,12 +3964,16 @@ async function nightSignoffRun(options, t) {
           await consoleFit(t, doc, `${label}, the end screen`, { endScreen: true });
           t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
           done++;
+        };
+        try {
+          await Promise.race([play(), deadline]);
         } catch (e) {
           // One play that stalls or fails is a finding named by ending, size and step; the next play still runs.
           skipped++;
           t.problem("bug", `${label}: the play stopped at "${step}": ${e && e.message ? e.message : e}`);
           t.event("signoff-stopped", `${sc.ending[0]} (${id}) at ${sizeName}: at "${step}" after ${Math.round((performance.now() - started) / 1000)} s`);
         } finally {
+          clearInterval(heart);
           if (w) closeViewFrame();
         }
         t.progress((done + skipped) / (endings.length * sizes.length));
