@@ -4909,6 +4909,120 @@
       }
     },
     {
+      "id": "night-shift-music-shift-begins",
+      "note": "Music sting shift-begins (Night Shift): plays once as its scenes open, never under a line louder than the bed.",
+      "steps": [
+        {
+          "tool": "audio.music",
+          "params": {
+            "prompt": "Instrumental, sparse: one low felt-piano note every few seconds over a faint warm drone, dry and close, like a tired office at six in the evening. No melody, no swell, no drums. Restrained, quiet.",
+            "lyrics": "[Instrumental]",
+            "seconds": 20,
+            "bpm": 60
+          },
+          "save": "music"
+        }
+      ],
+      "files": {
+        "music": "night-shift/media/music/shift-begins.mp3"
+      }
+    },
+    {
+      "id": "night-shift-music-the-panel",
+      "note": "Music sting the-panel (Night Shift): plays once as its scenes open, never under a line louder than the bed.",
+      "steps": [
+        {
+          "tool": "audio.music",
+          "params": {
+            "prompt": "Instrumental, sparse: a single low muted pulse, slow, with a thin high tone far behind it, uneasy but small. No swell, no drums, no melody. Very quiet.",
+            "lyrics": "[Instrumental]",
+            "seconds": 20,
+            "bpm": 60
+          },
+          "save": "music"
+        }
+      ],
+      "files": {
+        "music": "night-shift/media/music/the-panel.mp3"
+      }
+    },
+    {
+      "id": "night-shift-music-fifty-eight",
+      "note": "Music sting fifty-eight (Night Shift): plays once as its scenes open, never under a line louder than the bed.",
+      "steps": [
+        {
+          "tool": "audio.music",
+          "params": {
+            "prompt": "Instrumental, sparse: two soft sustained notes on a warm electric piano that never resolve, a breath of room tone around them. No swell, no drums. Very quiet.",
+            "lyrics": "[Instrumental]",
+            "seconds": 20,
+            "bpm": 60
+          },
+          "save": "music"
+        }
+      ],
+      "files": {
+        "music": "night-shift/media/music/fifty-eight.mp3"
+      }
+    },
+    {
+      "id": "night-shift-music-ending-plain",
+      "note": "Music sting ending-plain (Night Shift): plays once as its scenes open, never under a line louder than the bed.",
+      "steps": [
+        {
+          "tool": "audio.music",
+          "params": {
+            "prompt": "Instrumental, sparse: a slow plain piano figure of three notes repeated and left to fade, early morning, dry. No strings swell, no drums, no melody build. Restrained.",
+            "lyrics": "[Instrumental]",
+            "seconds": 20,
+            "bpm": 60
+          },
+          "save": "music"
+        }
+      ],
+      "files": {
+        "music": "night-shift/media/music/ending-plain.mp3"
+      }
+    },
+    {
+      "id": "night-shift-music-ending-warm",
+      "note": "Music sting ending-warm (Night Shift): plays once as its scenes open, never under a line louder than the bed.",
+      "steps": [
+        {
+          "tool": "audio.music",
+          "params": {
+            "prompt": "Instrumental, sparse: a soft felt piano and a single bowed note, slightly warmer and major, morning light through a lobby. No swell, no drums, very restrained.",
+            "lyrics": "[Instrumental]",
+            "seconds": 20,
+            "bpm": 60
+          },
+          "save": "music"
+        }
+      ],
+      "files": {
+        "music": "night-shift/media/music/ending-warm.mp3"
+      }
+    },
+    {
+      "id": "night-shift-music-ending-cold",
+      "note": "Music sting ending-cold (Night Shift): plays once as its scenes open, never under a line louder than the bed.",
+      "steps": [
+        {
+          "tool": "audio.music",
+          "params": {
+            "prompt": "Instrumental, sparse: one low sustained note under a slow detuned piano note, cold and still, a door closing on something. No swell, no drums, no melody. Very quiet.",
+            "lyrics": "[Instrumental]",
+            "seconds": 20,
+            "bpm": 60
+          },
+          "save": "music"
+        }
+      ],
+      "files": {
+        "music": "night-shift/media/music/ending-cold.mp3"
+      }
+    },
+    {
       "id": "night-shift-handover-line-1",
       "note": "Handover (Night Shift): Narrator says \"Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath.\".",
       "steps": [

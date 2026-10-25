@@ -2831,6 +2831,19 @@ async function rmsDb(ctx, url) {
   return { db: 10 * Math.log10(sum / Math.max(1, n) + 1e-12), seconds: audio.duration };
 }
 
+/** A loop's seam: the step from its last sample to its first against a typical step inside it, and the level of its
+    last and first quarter second. A click or a jump shows in either. */
+async function seamOf(ctx, url) {
+  const audio = await ctx.decodeAudioData(await (await fetch(url)).arrayBuffer());
+  const d = audio.getChannelData(0);
+  let sq = 0;
+  for (let i = 1; i < d.length; i++) sq += (d[i] - d[i - 1]) * (d[i] - d[i - 1]);
+  const step = Math.sqrt(sq / d.length);
+  const q = Math.floor(audio.sampleRate / 4);
+  const rms = (a, b) => { let x = 0; for (let i = a; i < b; i++) x += d[i] * d[i]; return 10 * Math.log10(x / Math.max(1, b - a) + 1e-12); };
+  return { jump: Math.abs(d[0] - d[d.length - 1]), step, levelGap: Math.abs(rms(0, q) - rms(d.length - q, d.length)), seconds: audio.duration };
+}
+
 async function nightAudioRun(options, t) {
   rememberProgress();
   const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
@@ -2849,8 +2862,15 @@ async function nightAudioRun(options, t) {
     t.metric("linesWithoutRecording", missing.length);
     t.event("criterion", `${lines.length - missing.length} of ${lines.length} lines have a recording; speakers: ${Object.entries(bySpeaker).map(([w, ls]) => `${(st.speakers[w] || {}).name || w} ${ls.length}`).join(", ")}`);
     if (missing.length) t.problem("bug", `${st.id}: ${missing.length} lines have no recording yet (${missing.slice(0, 5).map((l) => `${l.id}#${l.n}`).join(", ")}...)`);
-    const cues = [...Object.entries(st.ambience || {}).map(([k, f]) => ["ambience", k, f]), ...Object.entries(st.sfx || {}).map(([k, f]) => ["sfx", k, f])];
-    cues.filter(([, , f]) => !f).forEach(([kind, k]) => t.problem("bug", `${st.id}: the ${kind} cue ${k} has no recording`));
+    const cues = [...Object.entries(st.ambience || {}).map(([k, f]) => ["ambience", k, f]), ...Object.entries(st.sfx || {}).map(([k, f]) => ["sfx", k, f]), ...Object.entries(st.music || {}).map(([k, f]) => ["music", k, f])];
+    cues.filter(([kind, , f]) => !f && kind !== "music").forEach(([kind, k]) => t.problem("bug", `${st.id}: the ${kind} cue ${k} has no recording`));
+    const unmadeMusic = cues.filter(([kind, , f]) => kind === "music" && !f);
+    t.metric("musicCuesUnmade", unmadeMusic.length);
+    if (unmadeMusic.length) t.problem("warning", `${st.id}: ${unmadeMusic.length} music stings are designed but not made yet (GPU, waiting for J's approval): ${unmadeMusic.map((c) => c[1]).join(", ")}`);
+    Object.entries(st.scenes).filter(([, sc]) => sc.music && !(st.music || {})[sc.music]).forEach(([id, sc]) => t.problem("bug", `${st.id}/${id}: the music cue ${sc.music} isn't in the story's music`));
+    const noBed = Object.entries(st.scenes).filter(([, sc]) => !sc.ambience);
+    t.event("criterion", `${Object.keys(st.scenes).length - noBed.length} of ${Object.keys(st.scenes).length} scenes have an ambience bed`);
+    noBed.forEach(([id]) => t.problem("bug", `${st.id}/${id}: no ambience bed, the scene would be silent between lines`));
     const usedBeds = new Set(Object.values(st.scenes).map((sc) => sc.ambience).filter(Boolean));
     const usedSfx = new Set(lines.map((l) => l.sfx).filter(Boolean));
     [...usedBeds].filter((k) => !(st.ambience || {})[k]).forEach((k) => t.problem("bug", `${st.id}: a scene uses the bed ${k}, which has no recording`));
@@ -2891,6 +2911,13 @@ async function nightAudioRun(options, t) {
           t.event("loudness", `${kind} ${k}: ${r.db.toFixed(1)} dB RMS, ${under.toFixed(1)} dB under the voice`);
           if (kind === "ambience" && under < 12) t.problem("bug", `${st.id}: the bed ${k} is only ${under.toFixed(1)} dB under the voice, it could drown a line`);
           if (kind === "sfx" && under < 3) t.problem("bug", `${st.id}: the effect ${k} is only ${under.toFixed(1)} dB under the voice`);
+          if (kind === "music" && under < 12) t.problem("bug", `${st.id}: the music ${k} is only ${under.toFixed(1)} dB under the voice, it could mask a line`);
+          if (kind === "ambience") {
+            const sm = await seamOf(ctx, f);
+            t.event("loop", `bed ${k}: ${sm.seconds.toFixed(1)} s, seam step ${sm.jump.toFixed(4)} (typical ${sm.step.toFixed(4)}), level gap ${sm.levelGap.toFixed(1)} dB`);
+            if (sm.jump > Math.max(0.02, sm.step * 8)) t.problem("bug", `${st.id}: the bed ${k} clicks where it loops (a step of ${sm.jump.toFixed(3)} against ${sm.step.toFixed(3)} typical)`);
+            if (sm.levelGap > 3) t.problem("bug", `${st.id}: the bed ${k} jumps ${sm.levelGap.toFixed(1)} dB in level where it loops`);
+          }
         } catch (e) { t.problem("bug", `${st.id}: ${kind} ${k} doesn't load or decode (${e && e.message})`); }
       }
     }

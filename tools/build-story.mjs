@@ -679,6 +679,7 @@ function validateConsole(st) {
     if (typeof s.title !== 'string' || !s.title) problems.push(`${at(s)}: title must be a string`);
     if (!TIME.test(s.time ?? '')) problems.push(`${at(s)}: time must be HH:MM (the shift log's timestamp)`);
     if (s.ambience && !data.ambience?.[s.ambience]) problems.push(`${at(s)}: ambience ${s.ambience} isn't in ambience`);
+    if (s.music && !data.music?.[s.music]) problems.push(`${at(s)}: music cue ${s.music} isn't in music`);
     for (const [cam, state] of Object.entries(s.feeds ?? {})) {
       if (!cams.has(cam)) problems.push(`${at(s)}: feeds names camera ${cam}, which isn't in cameras`);
       else if (!cams.get(cam).states?.[state]) problems.push(`${at(s)}: camera ${cam} has no state "${state}"`);
@@ -743,6 +744,7 @@ const consoleFiles = (st) => ({
   line: (s, i) => `${st.base}${s.folder}/media/line-${i + 1}.mp3`,
   bed: (cue) => `${st.base}media/ambience/${cue}.mp3`,
   sfx: (cue) => `${st.base}media/sfx/${cue}.mp3`,
+  music: (cue) => `${st.base}media/music/${cue}.mp3`,
   feed: (cam, state) => `${st.base}media/feeds/${cam}-${state}.png`,
   endcard: (scene) => `${st.base}media/endcards/${scene}.png`,
   // Stand-in art (tools/make-standins.mjs), shown only until the real picture is made.
@@ -764,6 +766,7 @@ function consoleData(st) {
       ...(s.ending ? { endcard: urlOrStandin(f.endcard(s.id), f.standin('endcards', s.id)) } : {}),
       title: [s.title, s.title],
       ...(s.ambience ? { ambience: s.ambience } : {}),
+      ...(s.music ? { music: s.music } : {}),
       ...(s.feeds ? { feeds: s.feeds } : {}),
       ...(s.focus ? { focus: s.focus } : {}),
       lines: s.lines.map((l, i) => ({
@@ -799,6 +802,7 @@ function consoleData(st) {
     speakers: Object.fromEntries(Object.entries(d.speakers ?? {}).map(([k, v]) => [k, { name: v.name }])),
     ambience: Object.fromEntries(Object.keys(d.ambience ?? {}).map((cue) => [cue, urlIfMade(f.bed(cue))])),
     sfx: Object.fromEntries(Object.keys(d.sfx ?? {}).map((cue) => [cue, urlIfMade(f.sfx(cue))])),
+    music: Object.fromEntries(Object.keys(d.music ?? {}).map((cue) => [cue, urlIfMade(f.music(cue))])),
     ...(d.unspoken ? { unspoken: d.unspoken } : {}),
     ...(d.stateCap ? { stateCap: d.stateCap } : {}),
     scenes,
@@ -941,6 +945,10 @@ function consoleAssets(st) {
   }
   for (const [cue, text] of Object.entries(d.sfx ?? {})) {
     list.push({ id: `${P}sfx-${cue}`, note: `Sound effect ${cue}${of}.`, steps: [{ tool: 'audio.sfx', params: { text, duration: 2 }, save: 'sfx' }], files: { sfx: f.sfx(cue) } });
+  }
+  // A sting is sparse and short (20 s, no loop): it plays once as its scene opens, under the first line, at -40 LUFS.
+  for (const [cue, text] of Object.entries(d.music ?? {})) {
+    list.push({ id: `${P}music-${cue}`, note: `Music sting ${cue}${of}: plays once as its scenes open, never under a line louder than the bed.`, steps: [{ tool: 'audio.music', params: { prompt: text, lyrics: '[Instrumental]', seconds: 20, bpm: 60 }, save: 'music' }], files: { music: f.music(cue) } });
   }
   for (const s of st.scenes) {
     s.lines.forEach((l, i) => {
