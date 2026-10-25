@@ -30,7 +30,8 @@ import '../js/kit.js';
 // A console story's state rules (flags, meters, conditions, the state explorer): the same code the player runs.
 import '../js/console-rules.js';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+// ILTV_ROOT: build another folder's stories with this script (tools/test-console.mjs builds broken copies).
+const ROOT = process.env.ILTV_ROOT ? path.resolve(process.env.ILTV_ROOT) : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LISTING = 'story/stories.json';
 const CHECK = process.argv.includes('--check');
 // Top-level folders that aren't story pages.
