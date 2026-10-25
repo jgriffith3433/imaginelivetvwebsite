@@ -1655,7 +1655,11 @@ async function creditsRun(t) {
     await checkMark(t, doc, `${p.name} ${p.to}`);
     if (p.name === "blog post") checkRecentPosts(t, doc, p.to);
     doc.querySelectorAll("video").forEach((v) => v.pause());
-    await sleep(1200);
+    // Hold with the credit link in view and the page still open: the footage of this scene is the footer, not
+    // the page it was closed over (What's new runs past the viewport, so the footer sits below the fold).
+    const mark = [...doc.querySelectorAll("a.powered-mark, .powered a")][0];
+    if (mark) mark.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(p.name === "What's new" ? 4000 : 1200);
     t.progress(0.25 + (0.75 * (i + 1)) / pagesToCheck.length);
   }
   closeFrame();
