@@ -1775,6 +1775,7 @@ figure.feed { cursor: default; }
 }
 
 .console-subs {
+  scrollbar-gutter: stable; /* a scrollbar coming and going must not re-wrap the lines (it fed a resize loop) */
   flex: 1 1 auto;
   min-height: 3.2rem;
   padding: 0.3rem 0.4rem;
@@ -1847,7 +1848,8 @@ figure.feed { cursor: default; }
    Log button or the subtitles off the screen; once the lines are heard the subtitles give room to the choices. */
 @media (orientation: landscape) and (max-height: 520px) {
   .console-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
-  .console[data-lines="done"] .console-subs { flex: 0 0 auto; min-height: 2.6rem; max-height: 6rem; }
+  /* The strip takes all the room the choices leave (it was a fixed 6rem box with half the screen empty) and shrinks, to the newest line at least, when the choices need it. */
+  .console[data-lines="done"] .console-subs { flex: 1 1 auto; min-height: 2.6rem; max-height: none; }
   .console .console-endcard { width: auto; max-width: 100%; max-height: 32dvh; }
   /* The end screen (844x390): the card, the ending's name and the line buttons all fit without the column scrolling. */
   .console[data-state="soon"][data-lines="done"] .console-subs { flex: 1 1 0; min-height: 2.6rem; max-height: none; }
@@ -1878,7 +1880,7 @@ figure.feed { cursor: default; }
 @media (max-width: 559px) and (orientation: portrait) {
   .console-body { overflow-y: hidden; }
   .console-panel { min-height: 8rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
-  .console[data-lines="done"] .console-subs { flex: 0 0 auto; min-height: 2.6rem; max-height: 5rem; }
+  .console[data-lines="done"] .console-subs { flex: 1 1 auto; min-height: 2.6rem; max-height: none; }
   .console-choices { padding-bottom: 0.15rem; }
 }
 
