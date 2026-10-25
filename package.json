@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "story": "node tools/build-story.mjs",
-    "stamp": "node tools/stamp-build.mjs"
+    "stamp": "node tools/stamp-build.mjs",
+    "test:console": "node tools/test-console.mjs"
   },
   "devDependencies": {
     "vite": "^5.4.10"

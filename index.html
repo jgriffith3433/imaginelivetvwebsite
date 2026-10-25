@@ -80,6 +80,32 @@
       </div>
       <div id="spark-tree" class="tree-view" hidden></div>
     </section>
+    <section class="console" id="console" data-state="play" data-subs="on" hidden aria-label="Console story">
+      <div class="console-bar">
+        <a class="stories-back" id="console-stories" href="/">&larr; All stories</a>
+        <h1 id="console-title"></h1>
+        <span class="console-time" id="console-time"></span>
+        <span class="console-explored" id="console-explored"></span>
+        <button type="button" class="console-btn" id="console-cc" aria-pressed="true" title="Subtitles">CC</button>
+        <button type="button" class="console-btn" id="console-log-btn" aria-pressed="false">Log</button>
+      </div>
+      <div class="console-body">
+        <div class="console-wall" id="console-wall" role="group" aria-label="Camera wall"></div>
+        <figure class="console-big" id="console-big" hidden></figure>
+        <div class="console-panel">
+          <div class="console-subs" id="console-subs" aria-live="polite"></div>
+          <div class="console-controls">
+            <button type="button" class="console-btn" id="console-replay">Replay line</button>
+            <button type="button" class="console-btn" id="console-skip">Skip line</button>
+          </div>
+          <div class="console-choices" id="console-choices"></div>
+          <p class="console-ending" id="console-ending" hidden></p>
+        </div>
+      </div>
+      <div class="shift-log" id="console-log" hidden aria-label="Shift log">
+        <div class="dar" id="console-log-page"></div>
+      </div>
+    </section>
   </div>
   </div>
   <main>
@@ -208,6 +234,8 @@ Before the roads were carved into earth.</span></p>
   <script src="/js/hawkes-sound.js"></script>
   <script src="/js/story-data.js"></script>
   <script src="/js/kit.js"></script>
+  <script src="/js/console-rules.js"></script>
+  <script src="/js/console.js"></script>
   <script src="/js/game.js"></script>
   <script src="/js/spot.js"></script>
   <script src="/js/hawkes-release.js" data-releases="/releases.json" defer></script>
