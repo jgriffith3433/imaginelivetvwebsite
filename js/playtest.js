@@ -4385,6 +4385,13 @@ async function nightTreatmentRun(options, t) {
   } finally {
     await sleep(300);
     await toLanding(t).catch(() => {});
+    // Leaving a story keeps its progress (the run is cleared at the end by restoreProgress, after this look).
+    const card = cardOf(id);
+    if (card && landingShown() && window.iltvStories) {
+      const unlocks = readJsonCookie(unlocksCookie(st));
+      t.event("badge", `after All stories: ${id} ${card.dataset.progress}, ${(card.querySelector(".story-card-explored")?.textContent || "").trim()}, unlocks cookie ${unlocks ? "kept" : "missing"}`);
+      if (card.dataset.progress === "new" && unlocks) t.problem("bug", `${id}: its unlocks cookie is saved but the card says Not started after All stories`);
+    }
   }
 }
 
