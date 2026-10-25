@@ -1103,6 +1103,9 @@ async function storiesRun(options, t) {
       const promptTitle = (win.hawkesSound?.prompt()?.querySelector(".tap-title")?.textContent || "").trim();
       if (promptTitle !== st.tap.title) t.problem("bug", `/${st.id}/: the Tap to play prompt says "${promptTitle}", not "${st.tap.title}"`);
       if (win.hawkesSound?.state().splashes) t.problem("bug", `/${st.id}/: the title splash showed over the story (it's the landing page's)`);
+      // The link page itself shows the story's card (picture, title, logline) until it forwards, and the story is then
+      // tapped open, so the screen the runner holds on is the story and not a flat dark prompt (gap 43: blank-screen warnings).
+      if (win.hawkesSound?.prompt()) await passPrompt(t, frame.contentDocument, `/${st.id}/`);
     }
     await sleep(800);
     closeFrame();
@@ -2114,6 +2117,72 @@ function consoleExplore(st) {
   return exploreCache.get(st.id);
 }
 
+/* ---------------- frame time per scene (gap 42) and the state explorer before play ---------------- */
+
+/* The page's frames, timed from requestAnimationFrame: for each scene the number of frames, the worst gap between two
+   and how many were over 50 ms, as a `frame-time` event when a scene had a dip (over 50 ms) and in the run's metrics
+   (frameWorstMs, framesOver50, slowestScenes). A gap over 2 s is a hidden tab, not a dip. The state explorer
+   (consoleWarm) runs before anything plays and says how long it blocked the page, so a dip that lines up with it is
+   the explorer's and one in the middle of a scene is the scene's (pictures decoding, audio starting). */
+const probe = { on: false, last: 0, scene: "", n: 0, sum: 0, worst: 0, over: 0, all: [], total: { n: 0, worst: 0, over: 0 } };
+function probeStart() {
+  if (probe.on) return;
+  probe.on = true;
+  const tick = (now) => {
+    if (!probe.on) return;
+    if (probe.last) {
+      const d = now - probe.last;
+      if (d < 2000) {
+        probe.n++;
+        probe.sum += d;
+        if (d > probe.worst) probe.worst = d;
+        if (d > 50) probe.over++;
+      }
+    }
+    probe.last = now;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+function probeFlush(t, next) {
+  if (probe.scene && probe.n) {
+    const mean = probe.sum / probe.n;
+    probe.all.push({ scene: probe.scene, worst: probe.worst, over: probe.over });
+    probe.total.n += probe.n;
+    probe.total.over += probe.over;
+    probe.total.worst = Math.max(probe.total.worst, probe.worst);
+    if (probe.over) t.event("frame-time", `${probe.scene}: ${probe.n} frames, mean ${mean.toFixed(1)} ms, worst ${Math.round(probe.worst)} ms, ${probe.over} over 50 ms`);
+    t.metric("frameWorstMs", Math.round(probe.total.worst));
+    t.metric("framesOver50", probe.total.over);
+    t.metric("slowestScenes", probe.all.slice().sort((a, b) => b.worst - a.worst).slice(0, 5).map((x) => `${x.scene} ${Math.round(x.worst)} ms`).join("; "));
+  }
+  probe.scene = next || "";
+  probe.n = probe.sum = probe.worst = probe.over = 0;
+}
+function probeStop(t) {
+  probeFlush(t, "");
+  probe.on = false;
+}
+
+/** The state explorer (and the lengths of every way) for each console story, worked out before anything plays: it is
+    seconds of work on the page's thread for Night Shift (257,606 states), which would freeze a scene's frames if it
+    ran in the middle of one. Says how long it held the page. */
+async function consoleWarm(t) {
+  for (const st of consoleStories()) {
+    if (exploreCache.has(st.id)) continue;
+    t.note(`${st.title}: working out its states before play`);
+    await sleep(80); // let a frame draw first
+    const t0 = performance.now();
+    const x = consoleExplore(st);
+    if (st.stateCap || x.states > 5000) nightLengths(st);
+    const ms = Math.round(performance.now() - t0);
+    probeFlush(t, `${st.id}: state explorer`);
+    t.event("state-explorer", `${st.id}: ${x.states} states in ${ms} ms on the page's thread, before anything plays (it stalls the page for that long, so it can't be inside a scene)`);
+    t.metric(`explorerMs:${st.id}`, ms);
+    await sleep(200);
+  }
+}
+
 /** Writes a cookie the way the player does (js/game.js writeCookie). */
 function writeJsonCookie(name, value) {
   document.cookie = `${name}=${encodeURIComponent(JSON.stringify(value))}; Max-Age=${60 * 60 * 24 * 365}; Path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
@@ -2425,13 +2494,13 @@ async function consoleLogCheck(t, st, m, doc, where) {
 }
 
 /** Settings apply to the story's audio: Sound off mutes the voice, bed and effects; Volume sets their volume. */
-async function consoleSoundCheck(t, st, where) {
+async function consoleSoundCheck(t, st, where, { names = ["voice", "bed", "sfx"] } = {}) {
   const api = apiOf(document);
   const sound = soundOf();
   const original = localStorage.getItem(SOUND_KEY);
   const audio = () => api.audio();
   const checkAll = (what, { on, volume }) => {
-    for (const name of ["voice", "bed", "sfx"]) {
+    for (const name of names) {
       const a = audio()[name];
       if (!a) {
         t.problem("bug", `${where}: no ${name} audio element`);
@@ -2440,7 +2509,20 @@ async function consoleSoundCheck(t, st, where) {
       if (a.muted === on) t.problem("bug", `${where}: ${what}: the ${name} is ${a.muted ? "muted" : "not muted"}`);
       if (sound.state().volumeWorks && !near(a.volume, volume)) t.problem("bug", `${where}: ${what}: the ${name} volume is ${a.volume.toFixed(2)}, Settings say ${volume}`);
     }
-    t.event("audio-settings", `${where}: ${what}: ${["voice", "bed", "sfx"].map((n) => `${n} ${audio()[n]?.muted ? "muted" : "sound"} ${audio()[n]?.volume.toFixed(2)}`).join(", ")}`);
+    t.event("audio-settings", `${where}: ${what}: ${names.map((n) => `${n} ${audio()[n]?.muted ? "muted" : "sound"} ${audio()[n]?.volume.toFixed(2)}`).join(", ")}`);
+  };
+  // Settings opened while a line is being heard: the line is playing when it opens, and the scene is still the same
+  // one, with no line heard fewer, once Settings are closed.
+  const midLine = async (what, change) => {
+    if (!(await waitFor(() => api.lines().playing >= 0, 6000))) return t.problem("bug", `${where}: ${what}: no line was playing to open Settings in the middle of`);
+    const scene = api.scene();
+    const at = api.lines();
+    await openSettings(t, where);
+    t.event("settings-mid-line", `${where}: ${what}: Settings opened while line ${at.playing + 1} of ${at.total} plays in ${scene}`);
+    await change();
+    await tapAt(t, $("sound-done"), "Done");
+    await sleep(150);
+    if (api.scene() !== scene || api.lines().done < at.done) t.problem("bug", `${where}: ${what}: Settings changed the scene or lost a heard line (${scene}, ${at.done} heard -> ${api.scene()}, ${api.lines().done})`);
   };
   try {
     localStorage.setItem(SOUND_KEY, JSON.stringify({ on: true, music: 1, sfx: 1 }));
@@ -2451,16 +2533,16 @@ async function consoleSoundCheck(t, st, where) {
     const voice = audio().voice;
     if (!/silence\.wav|\.mp3/.test(voice.src) && !st.scenes[st.start].lines.every((l) => !l.file)) t.problem("bug", `${where}: the first line's audio isn't loaded in the voice element (${voice.src.slice(0, 60)})`);
     checkAll("sound on", { on: true, volume: 1 });
-    await openSettings(t, where);
-    await tapAt(t, $("sound-on"), "Sound off");
-    await sleep(200);
-    checkAll("Sound off", { on: false, volume: 1 });
-    slide($("sound-volume"), 40);
-    await sleep(300);
-    await tapAt(t, $("sound-on"), "Sound on");
-    await sleep(200);
-    checkAll("Sound on, volume 40%", { on: true, volume: 0.4 });
-    await tapAt(t, $("sound-done"), "Done");
+    await midLine("the first scene", async () => {
+      await tapAt(t, $("sound-on"), "Sound off");
+      await sleep(200);
+      checkAll("Sound off", { on: false, volume: 1 });
+      slide($("sound-volume"), 40);
+      await sleep(300);
+      await tapAt(t, $("sound-on"), "Sound on");
+      await sleep(200);
+      checkAll("Sound on, volume 40%", { on: true, volume: 0.4 });
+    });
     // The next scene's audio gets the same settings (the elements are the same, or new ones inherit them).
     await consoleHeard(t, document, where);
     const first = openChoices()[0];
@@ -2468,6 +2550,15 @@ async function consoleSoundCheck(t, st, where) {
       await tapAt(t, first, `choice "${first.textContent.trim()}"`);
       await sleep(400);
       checkAll("the next scene, volume 40%", { on: true, volume: 0.4 });
+      // And Settings opened in the middle of that scene's first line: Sound off mutes every element, Sound on brings them back at 40%.
+      await midLine("the next scene", async () => {
+        await tapAt(t, $("sound-on"), "Sound off");
+        await sleep(200);
+        checkAll("the next scene, Sound off", { on: false, volume: 0.4 });
+        await tapAt(t, $("sound-on"), "Sound on");
+        await sleep(200);
+        checkAll("the next scene, Sound on", { on: true, volume: 0.4 });
+      });
     }
     // The tap itself: a press on the prompt unlocks audio.
     const s = sound.state();
@@ -2517,7 +2608,7 @@ async function viewFrameLoad(t, url, w, h, { loadMs = 0 } = {}) {
 
 /** Everything the player needs is on the screen: nothing wider than it (no sideways scroll), the wall, the
     subtitles, the line buttons and every choice inside it, tap targets 44px or more. */
-async function consoleFit(t, doc, where) {
+async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   const win = doc.defaultView;
   const W = win.innerWidth;
   const H = win.innerHeight;
@@ -2541,6 +2632,7 @@ async function consoleFit(t, doc, where) {
   const big = byIdIn(doc, "console-big");
   if (!big.hidden) must.push(big);
   let scrolled = 0;
+  const scrolledNames = [];
   for (const el of must) {
     if (!el || !el.getClientRects().length) {
       bad(`${el?.id || el?.className || "an element"} isn't shown`);
@@ -2549,11 +2641,17 @@ async function consoleFit(t, doc, where) {
     let r = el.getBoundingClientRect();
     if (r.left < -0.5 || r.right > W + 0.5) bad(`${el.id || el.className} runs off the side (${Math.round(r.left)}..${Math.round(r.right)} of ${W})`);
     if (r.top < -0.5 || r.bottom > H + 0.5) {
+      scrolledNames.push(`${el.id || el.className || el.tagName} (${Math.round(r.top)}..${Math.round(r.bottom)} of ${H})`);
       el.scrollIntoView({ block: "nearest", behavior: "instant" });
       scrolled++;
       r = el.getBoundingClientRect();
     }
     if (r.top < -0.5 || r.bottom > H + 0.5) bad(`${el.id || el.className} can't be brought on screen (${Math.round(r.top)}..${Math.round(r.bottom)} of ${H})`);
+    // A choice that has been brought on screen is really there to press: nothing lies over its middle.
+    if (el.matches(".choice")) {
+      const hit = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      if (!hit || !(hit === el || el.contains(hit))) bad(`choice "${el.textContent.trim().slice(0, 40)}" is covered by ${hit ? hit.id || hit.className || hit.tagName : "nothing"} (it can't be pressed)`);
+    }
     if (el.matches("button, a, .choice") && (r.height < 43.5 || (r.width < 43.5))) bad(`${el.id || el.className || el.tagName} is ${Math.round(r.width)}x${Math.round(r.height)} px, under 44x44`);
   }
   // A choice's words are all there (not cut off by the button).
@@ -2565,8 +2663,20 @@ async function consoleFit(t, doc, where) {
     const [bn, b2] = boxes[j];
     if (a.width && b2.width && a.height && b2.height && overlaps(a, b2) && Math.min(a.right, b2.right) - Math.max(a.left, b2.left) > 2 && Math.min(a.bottom, b2.bottom) - Math.max(a.top, b2.top) > 2) bad(`${an} and ${bn} lie over each other`);
   }
-  t.event("fit", `${where}: ${W}x${H}, wall ${doc.querySelectorAll("#console-wall .feed").length} feeds, ${openChoices(doc).length} choices, ${scrolled} needed a scroll, no sideways scroll`);
-  doc.querySelector("#console-body")?.scrollTo?.(0, 0);
+  // What holds the scroll, named with its sizes: the report that says which part of a screen is too tall.
+  const holders = [".console-body", ".console-panel", "#console-subs", "#console-choices", "#console-wall"].map((q) => [q, doc.querySelector(q)]).filter(([, el]) => el);
+  const tall = holders.filter(([, el]) => el.scrollHeight > el.clientHeight + 1).map(([q, el]) => `${q} ${el.scrollHeight} px of ${el.clientHeight}`);
+  const boxOf = (q) => {
+    const b = doc.querySelector(q)?.getBoundingClientRect();
+    return b ? `${q} ${Math.round(b.top)}..${Math.round(b.bottom)}` : "";
+  };
+  const layout = [".console-bar", "#console-wall", ".console-panel", "#console-subs", ".console-controls", "#console-choices:not([hidden])", "#console-ending:not([hidden])"].map(boxOf).filter(Boolean).join(", ");
+  t.event("fit", `${where}: ${W}x${H}, wall ${doc.querySelectorAll("#console-wall .feed").length} feeds, ${openChoices(doc).length} choices, ${scrolled} needed a scroll${scrolledNames.length ? ` (${scrolledNames.join("; ")})` : ""}, no sideways scroll; layout ${layout}${tall.length ? `; taller inside than shown: ${tall.join(", ")}` : ""}`);
+  // The end screen has nothing to choose: the card, the ending's name, the line buttons and the wall all fit with no scroll at all, at any size.
+  const tallEnd = tall.filter((x) => x.startsWith(".console-body") || x.startsWith(".console-panel"));
+  if (endScreen && (scrolled || tallEnd.length)) bad(`the end screen needs a scroll (${scrolledNames.join("; ") || "nothing off screen"}${tallEnd.length ? `; ${tallEnd.join(", ")}` : ""}); layout ${layout}`);
+  doc.querySelector(".console-body")?.scrollTo?.(0, 0);
+  doc.querySelector(".console-panel")?.scrollTo?.(0, 0);
   return scrolled;
 }
 
@@ -2610,7 +2720,7 @@ async function consoleView(t, st, [w, h, name]) {
     for (const i of end.picks) await consoleChoose(t, st, m, i, doc, `${where} end`);
     await consoleHeard(t, doc, `${where} end`);
     if (byIdIn(doc, "console-ending").hidden) t.problem("bug", `${where}: the ending isn't shown`);
-    await consoleFit(t, doc, `${where}, the end screen`);
+    await consoleFit(t, doc, `${where}, the end screen`, { endScreen: true });
     if (!byIdIn(doc, "console-ending").getClientRects().length || byIdIn(doc, "console-ending").getBoundingClientRect().bottom > doc.defaultView.innerHeight + 0.5) {
       byIdIn(doc, "console-ending").scrollIntoView({ block: "nearest", behavior: "instant" });
       const r = byIdIn(doc, "console-ending").getBoundingClientRect();
@@ -2623,7 +2733,7 @@ async function consoleView(t, st, [w, h, name]) {
 
 /** Reload one saved moment: what the player holds now (scene, flags, meters, log, history, lines heard) is compared with
     what a new page load of the story's link (a frame) comes back with. `label` names the moment. */
-async function consoleReloadAt(t, st, label) {
+async function consoleReloadAt(t, st, label, { afterReload } = {}) {
   const n = st.scenes[apiOf().scene()].lines.length;
   const before = { scene: apiOf().scene(), flags: apiOf().flags(), meters: apiOf().meters(), log: apiOf().log(), history: apiOf().history(), lines: apiOf().lines() };
   const saved = apiOf().saved();
@@ -2643,7 +2753,8 @@ async function consoleReloadAt(t, st, label) {
   const ended = !!st.scenes[before.scene].ending;
   if (ended && !(await waitFor(() => !byIdIn(doc, "console-ending").hidden, 20000))) t.problem("bug", `${st.id} (${label}): the reloaded page doesn't show the ending`);
   await consoleHeard(t, doc, `after the reload (${label})`);
-  if (ended) await consoleFit(t, doc, `${label}, reloaded at the ending`);
+  if (ended) await consoleFit(t, doc, `${label}, reloaded at the ending`, { endScreen: true });
+  if (afterReload) await afterReload(doc, api);
   const ok = sameJson(Object.keys(after).map((k) => after[k]), Object.keys(after).map((k) => before[k]));
   t.event("reloaded", `${st.id} (${label}): back at ${after.scene} with flags ${after.flags.join(", ") || "none"}, ${after.log.length} log entries, ${heard} line(s) already heard (${ok ? "same" : "DIFFERENT"})`);
   await sleep(700);
@@ -2778,12 +2889,12 @@ async function consoleLines(t, st) {
 }
 
 /** The wall: each feed a button, one enlarged by a press, and its picture follows the scene's state. */
-async function consoleWall(t, st) {
+async function consoleWall(t, st, { fresh = true } = {}) {
   const where = `${st.id} wall`;
   t.scene(where);
-  await consoleFresh(t, st);
+  if (fresh) await consoleFresh(t, st);
   await consoleHeard(t, document, where);
-  const feeds = rulesOf().feedsOf(st, st.scenes[st.start]);
+  const feeds = rulesOf().feedsOf(st, st.scenes[fresh ? st.start : apiOf().scene()]);
   const tiles = [...document.querySelectorAll("#console-wall .feed")];
   t.metric("feeds", tiles.length);
   const cam = st.cameras.find((c) => feeds[c.id] !== "normal") || st.cameras[0];
@@ -2835,6 +2946,237 @@ async function consoleGates(t, st) {
   }
 }
 
+/* ---------------- the real Night Shift in `console` (gaps 34 to 41): from seeded runs ---------------- */
+
+/** The model of a run that made `picks` from the start. */
+function consoleModelAt(st, picks) {
+  const m = consoleModel(st);
+  for (const i of picks) m.choose(i);
+  return m;
+}
+
+/** Every way to a scene (the explorer's variants), the shortest first. */
+function consoleWays(x) {
+  return Object.entries(x.variants)
+    .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
+    .sort((a, b) => a.picks.length - b.picks.length);
+}
+
+/** A gated choice on the real story: a scene with two different sets of open choices is reached by two ways (seeded
+    runs; setup shortcut), the gated choice is on the page with one and not the other, and it is pressed for real. */
+async function consoleRealGate(t, st, x) {
+  const R = rulesOf();
+  const ways = consoleWays(x);
+  const id = [...new Set(ways.map((w) => w.id))].find((i) => Object.keys(x.variants[i]).length > 1 && !st.scenes[i].ending);
+  if (!id) return t.problem("bug", `${st.id}: no scene has choices gated by a flag or meter (the story has one)`);
+  const openIx = (w) => consoleModelAt(st, w.picks).open().map(([, i]) => i);
+  const mine = ways.filter((w) => w.id === id);
+  const fewest = mine.reduce((a, b) => (openIx(b).length < openIx(a).length ? b : a));
+  const most = mine.reduce((a, b) => (openIx(b).length > openIx(a).length ? b : a));
+  const gated = openIx(most).filter((i) => !openIx(fewest).includes(i));
+  if (!gated.length) return t.problem("bug", `${st.id}/${id}: two ways to it show the same choices (no choice is gated there)`);
+  const label = st.scenes[id].choices[gated[0]][0];
+  let withIt = null;
+  for (const w of [fewest, most]) {
+    const where = `${st.id} gate at ${id}: ${w.path.join(" > ")}`;
+    t.scene(where);
+    const m = await consoleSeedAt(t, st, w.picks, null);
+    await consoleHeard(t, document, where);
+    consoleCheck(t, st, m, document, where, null);
+    const isOpen = openChoices().some((b) => Number(b.dataset.choice) === gated[0]);
+    if (w === fewest && isOpen) t.problem("bug", `${where}: "${label}" (choice ${gated[0]}) is on the page without what it needs (${sayState(m.state) || "a fresh state"})`);
+    if (w === most && !isOpen) t.problem("bug", `${where}: "${label}" (choice ${gated[0]}) isn't on the page though its conditions hold (${sayState(m.state)})`);
+    t.event("gate", `${id} with ${sayState(m.state) || "a fresh state"}: shows ${JSON.stringify(openChoices().map((b) => b.textContent.trim()))}, ${w === fewest ? "without" : "with"} "${label}"`);
+    if (w === most) withIt = m;
+  }
+  // What the gate reads, and the choice that set it earlier on the way (a choice sets a flag a later scene reads).
+  const without = consoleModelAt(st, fewest.picks).state.flags;
+  const walk = consoleModel(st);
+  const setters = [];
+  for (const i of most.picks) {
+    const before = Object.keys(walk.state.flags);
+    const by = `"${st.scenes[walk.scene].choices[i][0]}" in ${walk.scene}`;
+    walk.choose(i);
+    for (const f of Object.keys(walk.state.flags)) if (!before.includes(f) && !without[f]) setters.push(`${f} set by ${by}`);
+  }
+  const ex = R.extraOf(st.scenes[id].choices[gated[0]]);
+  const reads = ex.requires && ex.requires.length ? `needs ${ex.requires.join(", ")}` : ex.forbids && ex.forbids.length ? `needs ${ex.forbids.join(", ")} not set` : "is gated by a meter";
+  t.event("flag-read", `${id}: "${label}" ${reads}; on the way: ${setters.join("; ") || "(a meter, not a flag)"}`);
+  if (withIt) await consoleChoose(t, st, withIt, gated[0], document, `${st.id} gate at ${id}`, null);
+}
+
+/** Settings on all four audio elements (voice, bed, effect, sting), opened in the middle of a line, in the first scene
+    (a sting plays under its first line) and the next. */
+async function consoleRealSound(t, st) {
+  t.scene(`${st.title}: Settings on voice, ambience, effects and sting`);
+  await consoleSoundCheck(t, st, `${st.id} sound`, { names: ["voice", "bed", "sfx", "sting"] });
+}
+
+/** Reload at the 40th scene (a seeded run to the 39th; the move into the 40th is a real press): in the middle of it with
+    only its first line heard, and once all its lines are heard. */
+async function consoleRealReload40(t, st, x) {
+  const target = consoleWays(x).find((w) => w.picks.length === 39 && !st.scenes[w.id].ending);
+  if (!target) return t.problem("warning", `${st.id}: no scene is the 40th of a way (39 choices) to reload at`);
+  t.scene(`${st.title}: reload at the 40th scene (${target.id})`);
+  const m = await consoleSeedAt(t, st, target.picks.slice(0, 38), null);
+  await consoleHeard(t, document, "40th");
+  consoleCheck(t, st, m, document, `${st.id}: the 39th scene (${m.scene})`, null);
+  const pick = target.picks[38];
+  const label = st.scenes[m.scene].choices[pick][0];
+  await tapAt(t, openChoices().find((b) => Number(b.dataset.choice) === pick), `choice "${label}"`);
+  m.choose(pick);
+  if (m.scene !== target.id) t.problem("bug", `${st.id}: expected the 40th scene to be ${target.id}, is ${m.scene}`);
+  if (st.scenes[m.scene].lines.length > 1) await waitFor(() => apiOf().lines().done >= 1 && apiOf().lines().done < st.scenes[m.scene].lines.length, 30000);
+  t.event("reload-at", `${st.id}: the 40th scene is ${m.scene} (${apiOf().history().length} choices made, ${apiOf().log().length} log entries), ${apiOf().lines().done} of ${st.scenes[m.scene].lines.length} lines heard`);
+  await consoleReloadAt(t, st, "the 40th scene, mid-scene");
+  await consoleHeard(t, document, "40th");
+  await consoleReloadAt(t, st, "the 40th scene, all lines heard");
+}
+
+/** The way, nearest the start, to a scene where the shift log holds `entries` or more entries. */
+function consoleLogWay(st, x, entries = 70) {
+  return Object.entries(x.scenes)
+    .filter(([id]) => !st.scenes[id].ending)
+    .sort((a, b) => a[1].picks.length - b[1].picks.length)
+    .map(([id, w]) => ({ id, ...w, m: consoleModelAt(st, w.picks) }))
+    .find((w) => w.m.log.length >= entries);
+}
+
+/** The shift log at 70 entries: a reload with it open, and at 360x640 it opens, scrolls inside itself from the first
+    row to the foot, and closes. */
+async function consoleRealLog(t, st, x) {
+  const way = consoleLogWay(st, x, 70);
+  if (!way) return t.problem("bug", `${st.id}: no way holds 70 shift log entries`);
+  const where = `${st.id} log at ${way.m.log.length} entries (${way.id})`;
+  t.scene(where);
+  const m = await consoleSeedAt(t, st, way.picks, null);
+  await consoleHeard(t, document, where);
+  await tapAt(t, byIdIn(document, "console-log-btn"), `Log (${where})`);
+  await sleep(300);
+  if (byIdIn(document, "console-log").hidden) t.problem("bug", `${where}: the Log button didn't open the shift log`);
+  await consoleReloadAt(t, st, `the Log at ${m.log.length} entries`, {
+    afterReload: async (doc) => {
+      await consoleLogCheck(t, st, m, doc, `${where}, after a reload`);
+    },
+  });
+  consoleSeedWrite(st, way.picks, null);
+  const doc = await viewFrameLoad(t, `/?story=${st.id}`, 360, 640);
+  try {
+    const fit = `${where} at small phone 360x640`;
+    await consolePrompt(t, doc, fit);
+    await consoleHeard(t, doc, fit);
+    const win = doc.defaultView;
+    const log = byIdIn(doc, "console-log");
+    const button = byIdIn(doc, "console-log-btn");
+    await tapAt(t, button, `Log (${fit})`);
+    await sleep(300);
+    if (log.hidden) return t.problem("bug", `${fit}: the Log button didn't open the shift log`);
+    const rows = [...log.querySelectorAll(".dar-row")];
+    const done = rows.filter((r) => !r.classList.contains("is-redacted")).length;
+    if (done !== m.log.length) t.problem("bug", `${fit}: the log lists ${done} entries, the run holds ${m.log.length}`);
+    const inside = (el) => {
+      const a = el.getBoundingClientRect();
+      const b = log.getBoundingClientRect();
+      return a.top >= b.top - 1 && a.bottom <= b.bottom + 1;
+    };
+    if (log.scrollHeight <= log.clientHeight + 1) t.problem("bug", `${fit}: ${rows.length} rows fit with no scroll (${log.scrollHeight} px in ${log.clientHeight}): the Log isn't the panel that scrolls`);
+    if (log.scrollWidth > log.clientWidth + 1 || doc.documentElement.scrollWidth > win.innerWidth + 1) t.problem("bug", `${fit}: the Log scrolls sideways (${log.scrollWidth} px in ${log.clientWidth}, the page ${doc.documentElement.scrollWidth} in ${win.innerWidth})`);
+    const br = button.getBoundingClientRect();
+    if (br.bottom > win.innerHeight + 0.5 || br.top < -0.5 || br.height < 43.5 || br.width < 43.5) t.problem("bug", `${fit}: the Log button can't be pressed to close it (${Math.round(br.width)}x${Math.round(br.height)} at ${Math.round(br.top)}..${Math.round(br.bottom)} of ${win.innerHeight})`);
+    log.scrollTop = 0;
+    await sleep(100);
+    if (!inside(rows[0])) t.problem("bug", `${fit}: the first row isn't in view at the top of the Log`);
+    // A viewer's flick: down most of a screenful at a time to the foot of the page.
+    let last = -1;
+    let steps = 0;
+    while (log.scrollTop + log.clientHeight < log.scrollHeight - 1 && steps++ < 400 && log.scrollTop !== last) {
+      last = log.scrollTop;
+      log.scrollTop = Math.min(log.scrollHeight, log.scrollTop + log.clientHeight * 0.8);
+      await sleep(15);
+    }
+    const foot = log.querySelector(".dar-foot");
+    if (!(log.scrollTop > 0)) t.problem("bug", `${fit}: the Log didn't scroll (${log.scrollTop} of ${log.scrollHeight - log.clientHeight} px)`);
+    if (!foot || !inside(foot)) t.problem("bug", `${fit}: the end of the Log (its foot line) can't be scrolled into view`);
+    t.event("log-scroll", `${fit}: ${done} entries, ${rows.length - done} redacted lines, ${log.scrollHeight} px in ${log.clientHeight} px, scrolled ${Math.round(log.scrollTop)} px to the foot in ${steps} steps, no sideways scroll`);
+    await sleep(600);
+    log.scrollTop = 0;
+    await tapAt(t, button, `Close log (${fit})`);
+    await sleep(200);
+    if (!log.hidden) t.problem("bug", `${fit}: the Log button didn't close the log`);
+    if (!doc.querySelector(".console-body")?.getClientRects().length) t.problem("bug", `${fit}: closing the Log didn't bring the wall and the choices back`);
+    await consoleFit(t, doc, `${fit}, Log closed`);
+  } finally {
+    closeViewFrame();
+  }
+}
+
+/** The worst layouts at the three phone sizes: the scenes with the most choices in the data, in the way that opens the
+    most of them (seeded runs; setup shortcut). Every open choice is reachable (scrolling inside the words column is
+    fine), 44px or more, nothing wider than the screen. The story never shows more than a few at once (they are gated),
+    so the same screen is then filled to the scene's twelve (or eight) with copies of its buttons to prove the layout
+    holds for all the data has. */
+async function consoleRealFit(t, st, x) {
+  const ids = ["okafor-reads-solid", "tour3-test"].filter((id) => st.scenes[id]);
+  if (ids.length < 2) t.problem("bug", `${st.id}: the scenes okafor-reads-solid and tour3-test aren't in the story`);
+  for (const id of ids) {
+    const ways = consoleWays(x).filter((w) => w.id === id);
+    if (!ways.length) {
+      t.problem("bug", `${st.id}/${id}: no state reaches it`);
+      continue;
+    }
+    const open = (w) => consoleModelAt(st, w.picks).open().length;
+    const w = ways.reduce((a, b) => (open(b) > open(a) ? b : a));
+    for (const [width, height, name] of VIEWPORTS) {
+      const where = `${id} at ${name} ${width}x${height}`;
+      t.scene(where);
+      consoleSeedWrite(st, w.picks, null);
+      const doc = await viewFrameLoad(t, `/?story=${st.id}`, width, height);
+      try {
+        await consolePrompt(t, doc, where);
+        await consoleHeard(t, doc, where);
+        consoleCheck(t, st, consoleModelAt(st, w.picks), doc, where, null);
+        const real = openChoices(doc);
+        await consoleFit(t, doc, `${where}, ${real.length} of ${st.scenes[id].choices.length} choices open`);
+        const total = st.scenes[id].choices.length;
+        const holder = byIdIn(doc, "console-choices");
+        for (let i = real.length; i < total; i++) {
+          const c = real[i % real.length].cloneNode(true);
+          c.dataset.stress = "1";
+          holder.appendChild(c);
+        }
+        await consoleFit(t, doc, `${where}, stress: all ${total} choices as buttons (${real.length} real, ${total - real.length} copies)`);
+        holder.querySelectorAll("[data-stress]").forEach((c) => c.remove());
+      } finally {
+        closeViewFrame();
+      }
+    }
+  }
+}
+
+/** Night Shift itself, not its demo: the wall of nine, a gated choice, Settings on voice, ambience, effects and sting
+    (opened in the middle of a line), a reload at the 40th scene, the Log at 70 entries, and the worst layouts at three
+    sizes. Every position past the start is a seeded run (consoleSeedAt: setup shortcut, event seeded-run), then real presses. */
+async function consoleRealLeg(t, st) {
+  const x = consoleExplore(st);
+  const mostOpen = consoleWays(x).reduce((n, w) => Math.max(n, consoleModelAt(st, w.picks).open().length), 0);
+  t.event("real-story", `${st.id}: ${Object.keys(st.scenes).length} scenes, ${st.cameras.length} cameras, ${x.states} states; the most choices open at once is ${mostOpen} (okafor-reads-solid holds ${st.scenes["okafor-reads-solid"]?.choices.length} in the data, tour3-test ${st.scenes["tour3-test"]?.choices.length})`);
+  await consoleFresh(t, st);
+  t.scene(`${st.title}: the wall of nine`);
+  if (st.cameras.length !== 9) t.problem("bug", `${st.id}: ${st.cameras.length} cameras, the wall is nine`);
+  await consoleWall(t, st, { fresh: false });
+  if (document.querySelectorAll("#console-wall .feed").length !== 9) t.problem("bug", `${st.id}: the wall shows ${document.querySelectorAll("#console-wall .feed").length} feeds, not 9`);
+  t.progress(0.1);
+  await consoleRealGate(t, st, x);
+  t.progress(0.25);
+  await consoleRealSound(t, st);
+  t.progress(0.45);
+  await consoleRealReload40(t, st, x);
+  t.progress(0.65);
+  await consoleRealLog(t, st, x);
+  t.progress(0.8);
+  await consoleRealFit(t, st, x);
+}
+
 async function consoleRun(options, t) {
   rememberProgress();
   const originalSounds = localStorage.getItem(SOUND_KEY);
@@ -2844,7 +3186,18 @@ async function consoleRun(options, t) {
   await passPrompt(t);
   clearProgress();
   const st = (options && options.story && sts.find((s) => s.id === options.story)) || sts[0];
+  // The real story (Night Shift) has its own leg after the demo's; {"at":"real"} plays only that leg, {"at":"demo"} only the demo's.
+  const real = sts.find((s) => s.id !== st.id && s.listed && Object.keys(s.scenes).length > 50) || (Object.keys(st.scenes).length > 50 ? st : null);
+  const only = options && options.at;
   try {
+    if (only === "real" || (real === st && only !== "demo")) {
+      if (!real) throw new Error("no real console story (more than 50 scenes) in js/story-data.js");
+      await consoleOpen(t, real, { tap: false });
+      await consolePrompt(t, document, real.id, { real: 2500 });
+      await consoleRealLeg(t, real);
+      t.progress(1);
+      return;
+    }
     // 1. Opens by its link with its own Tap to play, shows the wall, plays the lines in order, shows choices.
     t.scene(`${st.title}: opens`);
     await consoleOpen(t, st, { tap: false });
@@ -2891,7 +3244,12 @@ async function consoleRun(options, t) {
     t.progress(0.88);
     // 7. The screen sizes.
     for (const v of VIEWPORTS) await consoleView(t, st, v);
-    // 8. All stories: the video stories' landing page comes back, the saved place stays.
+    // 8. The real story: Night Shift's wall of nine, a gated choice, Settings on four elements, reload at the 40th scene, the Log at 70 entries, the worst layouts.
+    if (real && real !== st && only !== "demo") {
+      t.progress(0.9);
+      await consoleRealLeg(t, real);
+    }
+    // 9. All stories: the video stories' landing page comes back, the saved place stays.
     await consoleFresh(t, st);
     await toLanding(t);
     if (!$("console").hidden) t.problem("bug", `${st.id}: the console player stays up after All stories`);
@@ -3159,7 +3517,12 @@ async function crawlConsolePages(t, st, done, total) {
 
 /** How long each way through the night is to listen to, on the shared state rules: the shortest, the longest and the
     average (every open choice equally likely). A line is its recording (the build's own `dur`) plus the player's 0.35 s gap before the next (`GAP` in js/console.js). */
+const lengthsCache = new Map();
 function nightLengths(st) {
+  if (!lengthsCache.has(st.id)) lengthsCache.set(st.id, nightLengthsOf(st));
+  return lengthsCache.get(st.id);
+}
+function nightLengthsOf(st) {
   const R = rulesOf();
   const dur = Object.fromEntries(Object.entries(st.scenes).map(([id, sc]) => [id, sc.lines.reduce((a, l) => a + (l.dur || 0) + 0.35, 0)]));
   const memo = new Map();
@@ -3472,6 +3835,7 @@ async function nightSignoffRun(options, t) {
   clearProgress();
   const near = !!options && options.at === "last-choices";
   const back = Math.max(1, Math.min(6, Number(options && options.back) || 2));
+  const runStarted = performance.now();
   if (near) t.event("start-at", `last-choices: each ending from a seeded run ${back} choice(s) before it`);
   try {
     const x = consoleExplore(st);
@@ -3542,7 +3906,7 @@ async function nightSignoffRun(options, t) {
           const shown = byIdIn(doc, "console-ending");
           if (shown.hidden || shown.textContent.trim() !== sc.ending[0]) t.problem("bug", `${label}: the ending isn't shown (it says "${shown.textContent.trim()}")`);
           if (!w && stories().run(st.id) !== "end") t.problem("bug", `${label}: at an ending the run says "${stories().run(st.id)}", not end`);
-          await consoleFit(t, doc, `${label}, the end screen`);
+          await consoleFit(t, doc, `${label}, the end screen`, { endScreen: true });
           t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
           done++;
         } catch (e) {
@@ -3557,6 +3921,10 @@ async function nightSignoffRun(options, t) {
       }
     }
     t.metric("endingsPlayed", done);
+    const minutes = (performance.now() - runStarted) / 60000;
+    t.metric("signoffMinutes", Number(minutes.toFixed(1)));
+    t.event("signoff-time", `${done} plays in ${minutes.toFixed(1)} minutes (${near ? "last-choices: under 10 minutes" : "whole ways: the scenario declares 1500 s, the runner allows twice that"})`);
+    if (near && minutes >= 10) t.problem("bug", `night-shift-signoff at last-choices took ${minutes.toFixed(1)} minutes, over the 10 it has`);
     if (skipped) t.problem("bug", `${skipped} of ${endings.length * sizes.length} sign-off plays stopped before the ending (see the signoff-stopped events)`);
     else t.event("criterion", `${endings.length} endings played to the end at ${sizes.length} sizes (${sizes.map((z) => z[0]).join(", ")}): ${done} plays`);
   } finally {
@@ -3980,6 +4348,9 @@ async function nightCardRun(options, t) {
   t.progress(1);
 }
 
+// The scenarios that use a console story's state explorer: it is worked out before they play (consoleWarm).
+const NEEDS_STATES = ["stories", "branches", "pages", "console", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics"];
+
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
@@ -3987,7 +4358,7 @@ installPlaytest({
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
-      seconds: 240,
+      seconds: 80,
       tags: ["full"],
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Start Over (a Completed card always offers Start Over, the same in all three stories; only an ending sets Completed). Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
     },
@@ -4008,7 +4379,7 @@ installPlaytest({
     {
       id: "night-shift-audio",
       title: "Night Shift's voices and sounds: every line and cue has a recording, each speaker keeps their voice, loudness is even, the bed sits under the voice, the opening is heard, the bed carries from scene to scene without silence and its loop wraps",
-      seconds: 170,
+      seconds: 90,
       tags: ["full"],
       description: "Opens the Night Shift draft by its link under its own Tap to play. Checks every line of every scene has a recording (and every bed and effect a scene uses has its file), that each recording loads and decodes and is not longer than the player waits for (dur + 4 s), that a few lines of each speaker are within 4 dB of each other (RMS, decoded in the page), that every ambience bed sits at least 12 dB under the voice and every effect at least 3 dB under it. Then it plays the opening scene from a new run without skipping: each of the first three lines must play its own recording (the voice element's source is the line's file, not paused or muted, its time advancing) over the scene's ambience bed (looped, playing). Logs the loudness of each speaker, bed and effect. Then, for each ambience bed the story has, it presses the real choice that leads into a scene with that bed (from a seeded run at the parent: setup shortcut, event seeded-run) and times how long the bed is not audible from the press to the first line (never silent between scenes; a warning over 0.5 s, a bug over 1.5 s), checks the same bed carries on without restarting, and seeks the bed to its last half second to see the loop wrap and keep playing. Options: {\"at\":\"between\"} runs only that last part (about 40 s).",
     },
@@ -4017,21 +4388,22 @@ installPlaytest({
     {
       id: "console",
       title: "Console stories (Night Shift): the camera wall, voiced lines in order, gated choices and flags, a saved run that survives a reload, the shift log, Settings on the audio, three screen sizes",
-      seconds: 240,
+      seconds: 200,
       tags: ["full"],
-      description: "Opens the console draft (night-shift-demo, listed: false) by its link under its own Tap to play (under a runner with a real mouse it waits for a real page.mouse.click first, then taps itself; either way it records whether the press was trusted and that audio is running). Subtitles are on by default and the lines play one after the other in the order of the data; CC turns the subtitles off and on; Replay line plays the last line again. The wall shows a feed per camera (6 to 9) in the state the scene says; pressing a feed enlarges it (its description under it), another replaces it, the same again puts it back. Choices gated by a flag are not on the page without it and are with it, and a choice sets a flag a later scene reads. The build's state explorer (js/console-rules.js) gives every way to every scene and ending and every different set of open choices: the bot plays all of them with real presses from a new run and checks, at each scene, the flags, meters, history, shift log, wall, clock and choices against what the data says, the percent explored, and the ending. The Log button opens the shift log at the start, in the middle and at an ending: it lists exactly what was done and seen, a redacted line per way not taken, nothing in it can be pressed, and it gives away no choice that was not taken. Settings Sound off / on and Volume apply to the voice, ambience and effects elements. Reloading mid-scene (a new page load of the story's link in a frame) returns to the same scene with the same flags, meters, log and the lines already heard. At 390x844, 360x640 and 844x390 (a frame of that size) the wall, subtitles, line buttons, choices and the log fit with no sideways scroll and tap targets of 44px or more. Last, All stories brings the landing page back and the audio goes.",
+      starts: ["real", "demo"],
+      description: "Two legs: the demo's, then the real Night Shift's (see the end of this text). Opens the console draft (night-shift-demo, listed: false) by its link under its own Tap to play (under a runner with a real mouse it waits for a real page.mouse.click first, then taps itself; either way it records whether the press was trusted and that audio is running). Subtitles are on by default and the lines play one after the other in the order of the data; CC turns the subtitles off and on; Replay line plays the last line again. The wall shows a feed per camera (6 to 9) in the state the scene says; pressing a feed enlarges it (its description under it), another replaces it, the same again puts it back. Choices gated by a flag are not on the page without it and are with it, and a choice sets a flag a later scene reads. The build's state explorer (js/console-rules.js) gives every way to every scene and ending and every different set of open choices: the bot plays all of them with real presses from a new run and checks, at each scene, the flags, meters, history, shift log, wall, clock and choices against what the data says, the percent explored, and the ending. The Log button opens the shift log at the start, in the middle and at an ending: it lists exactly what was done and seen, a redacted line per way not taken, nothing in it can be pressed, and it gives away no choice that was not taken. Settings Sound off / on and Volume apply to the voice, ambience and effects elements. Reloading mid-scene (a new page load of the story's link in a frame) returns to the same scene with the same flags, meters, log and the lines already heard. At 390x844, 360x640 and 844x390 (a frame of that size) the wall, subtitles, line buttons, choices and the log fit with no sideways scroll and tap targets of 44px or more. Then the real Night Shift (night-shift, 241 scenes, nine cameras), every position past its start a seeded run (setup shortcut, event seeded-run) and then real presses: the wall of nine feeds (one enlarged, another replacing it); a gated choice (a scene reached two ways, the choice on the page with one and not the other, and pressed), with the flag that opens it and the choice that set it; Settings Sound off, Sound on and Volume 40% on the voice, ambience, effects and sting elements, opened in the middle of a line, in the first scene and the next; a reload at the 40th scene (mid-scene and with its lines heard) and with the Log open at 70 entries (the Log read again after the reload); at 360x640 the 70-entry Log opens, scrolls from its first row to its foot inside itself and closes; and okafor-reads-solid (12 choices in the data) and tour3-test (8), in the state that opens the most of them, at 390x844, 360x640 and 844x390: every open choice reachable (scrolling inside the words column is fine), 44px or more, nothing sideways, and the same screen filled to the scene's 12 or 8 buttons with copies (the story never opens more than four at once). Every ending screen must fit with no scroll at any size (the fit event names what scrolls). Frame time is logged per scene (frame-time events for scenes with a dip over 50 ms, metrics frameWorstMs, framesOver50 and slowestScenes) and the state explorer runs before anything plays (event state-explorer). Options: {\"at\":\"real\"} plays only the real story's leg, {\"at\":\"demo\"} only the demo's. Last, All stories brings the landing page back and the audio goes.",
     },
     {
       id: "night-shift",
       title: "Night Shift, the whole night: at least 8 endings, no dead ends, the shortest way through 30 minutes of audio and a typical one about 45, Pierce Hawkes once and briefly, nothing about B3, the vat or the creature",
-      seconds: 480,
+      seconds: 180,
       tags: ["full"],
       description: "Opens Night Shift (night-shift) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45 (a warning outside 40 to 50), and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged. Options: {\"at\":\"numbers\"} runs only the data's checks (about 10 s); {\"at\":\"four-hours\"} (any scene on the way through every layer) opens a seeded run (named setup shortcut, event seeded-run) at that scene and plays the rest of the way, to \"Someone to leave it to\", with real presses, then the last six choices to \"The wedge\" (about 3 minutes).",
     },
     {
       id: "night-shift-gaps",
       title: "Night Shift's gaps audit: the story opened with real presses, then story/night-shift-gaps.md checked: groups a to f numbered, its counts and the shortest and typical minutes against the data, the output of npm run story -- --check and the console, stories and sound playtests",
-      seconds: 40,
+      seconds: 10,
       tags: ["full"],
       starts: ["gaps"],
       description: "Waits for the landing page's splash, opens Night Shift (its card, a real press, then its Tap to play), presses Settings and Done, then reads story/night-shift-gaps.md: each group (a) audio, (b) art, (c) script quality, (d) engine and mobile, (e) landing, (f) docs has numbered gaps; the scenes, lines and endings it states are the data's; the shortest and typical paths in minutes match the clock (words at 150 a minute or the recording, plus the pause); the appendix holds the real output of npm run story -- --check and a report (or, as a warning, an honest 'not run') for the console, stories and sound playtests. Options: {\"at\":\"gaps\"} reads the file without opening the story.",
@@ -4039,7 +4411,7 @@ installPlaytest({
     {
       id: "night-shift-signoff",
       title: "Night Shift sign-off: every ending played to the end with real presses at the desktop size and at 390x844, 360x640 and 844x390, with its minutes of audio, the ending shown and nothing off screen",
-      seconds: 3000,
+      seconds: 1500,
       tags: ["full"],
       starts: ["last-choices"],
       description: "Opens Night Shift by its link under its own Tap to play. For each of its 12 endings it plays the shortest way with real presses (Skip line moves the lines along; every choice is a press checked against the data: the buttons on screen are exactly the choices whose conditions hold), once on the page at its own size and once in a frame at 390x844, 360x640 and 844x390. At each ending it logs the minutes of audio that way holds (from the recordings), checks the ending is shown and that nothing runs off the side, is hidden or is smaller than a 44px target. Without options each way is played whole from a new run (about 50 minutes). {\"at\":\"last-choices\"} (about 8 minutes) starts each play from a seeded run (named setup shortcut, event seeded-run) 2 choices before the ending, then presses those and checks the end screen at the four sizes; {\"back\":4} makes it 4 choices. Other options: {\"sizes\":\"desktop\"} for the page's own size only, {\"only\":\"end-wedge\"} for one ending.",
@@ -4047,11 +4419,11 @@ installPlaytest({
     {
       id: "cctv-art",
       title: "Night Shift's camera wall art: every camera has a picture for every state the script uses, one look and one room per camera; every ending has an end card; the landing card has its image",
-      seconds: 480,
+      seconds: 100,
       tags: ["full"],
       description: "Then plays real presses to scenes that show every camera state and enlarges each one (option {\"at\":\"wall\"} skips that). Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
     },
-    { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
+    { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
       title: "Powered by HAWKES GEN on every kind of page, Hawkes Biomedical on the home page",
@@ -4077,6 +4449,19 @@ installPlaytest({
   isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
   async start(id, options, t) {
     try {
+      probeStart();
+      probe.all = [];
+      probe.total = { n: 0, worst: 0, over: 0 };
+      if (!t.framed) {
+        t.framed = true;
+        const was = t.scene;
+        t.scene = (name) => {
+          probeFlush(t, name);
+          was(name);
+        };
+      }
+      probeFlush(t, "start");
+      if (NEEDS_STATES.includes(id)) await consoleWarm(t);
       if (id === "smoke") await smoke(options, t);
       else if (id === "stories") await storiesRun(options, t);
       else if (id === "branches") await branches(options, t);
@@ -4094,6 +4479,7 @@ installPlaytest({
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
     } finally {
+      probeStop(t);
       stopVideos();
       closeFrame();
       closeViewFrame();
