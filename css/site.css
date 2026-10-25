@@ -1827,9 +1827,16 @@ figure.feed { cursor: default; }
 @media (orientation: portrait) {
   .console[data-state="soon"] .console-endcard { max-height: 16dvh; margin-bottom: 0.2rem; }
   .console[data-state="soon"] .console-ending { padding: 0.2rem; font-size: 1rem; line-height: 1.25; }
-  .console[data-state="soon"][data-lines="done"] .console-subs { min-height: 2.6rem; max-height: 3.2rem; }
+  /* The subtitles take what the end screen leaves (the player also lifts their minimum to the newest line's height), so a whole line always shows. */
+  .console[data-state="soon"][data-lines="done"] .console-subs { flex: 1 1 0; min-height: 2.6rem; max-height: none; }
   .console[data-state="soon"] .console-panel { gap: 0.25rem; }
   .console[data-state="soon"] .console-wall { width: min(100%, 39dvh); justify-self: center; }
+}
+
+/* A short portrait screen (360x640): a slimmer card and enlarged feed on the end screen leave room for a whole subtitle line. */
+@media (orientation: portrait) and (max-height: 700px) {
+  .console[data-state="soon"] .console-endcard { max-height: 8dvh; }
+  .console[data-state="soon"] .big-pic { height: clamp(40px, 9dvh, 60px); }
 }
 
 /* Once the lines are heard, the choices (and the end screen) take what the subtitles need less, on any screen. */
@@ -1843,7 +1850,7 @@ figure.feed { cursor: default; }
   .console[data-lines="done"] .console-subs { flex: 0 0 auto; min-height: 2.6rem; max-height: 6rem; }
   .console .console-endcard { width: auto; max-width: 100%; max-height: 32dvh; }
   /* The end screen (844x390): the card, the ending's name and the line buttons all fit without the column scrolling. */
-  .console[data-state="soon"][data-lines="done"] .console-subs { min-height: 2.6rem; max-height: 3.2rem; }
+  .console[data-state="soon"][data-lines="done"] .console-subs { flex: 1 1 0; min-height: 2.6rem; max-height: none; }
   .console[data-state="soon"] .console-endcard { max-height: 20dvh; margin-bottom: 0.2rem; }
   .console[data-state="soon"] .console-ending { padding: 0.2rem; font-size: 1rem; line-height: 1.25; }
   .console[data-state="soon"] .console-panel { gap: 0.25rem; }

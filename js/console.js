@@ -320,9 +320,19 @@
   }
 
   // When the strip changes height (the end screen shrinks it, the phone turns), it stays on its newest line.
+  // Its minimum height is the newest line's own height, so the strip never cuts that line off (a long line wraps to five rows on a phone).
+  function fitSubs() {
+    var last = els.subs.lastElementChild;
+    if (!last || !subsOn) { els.subs.style.minHeight = ""; return; }
+    var cs = window.getComputedStyle(els.subs);
+    var need = Math.ceil(last.offsetHeight + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom));
+    els.subs.style.minHeight = need + "px";
+  }
+
   if (window.ResizeObserver) {
     var subsH = 0;
     new ResizeObserver(function () {
+      fitSubs();
       var h = els.subs.clientHeight;
       if (h !== subsH) { subsH = h; els.subs.scrollTop = els.subs.scrollHeight; }
     }).observe(els.subs);
@@ -339,6 +349,7 @@
       p.appendChild(document.createTextNode(" " + s.lines[i].text));
       els.subs.appendChild(p);
     }
+    fitSubs();
     els.subs.scrollTop = els.subs.scrollHeight;
   }
 
@@ -520,6 +531,7 @@
     try { localStorage.setItem(SUBS_KEY, on ? "on" : "off"); } catch (e) { /* private mode */ }
     box.dataset.subs = on ? "on" : "off";
     els.cc.setAttribute("aria-pressed", on ? "true" : "false");
+    fitSubs();
   }
 
   els.cc.addEventListener("click", function () { setSubs(!subsOn); });
