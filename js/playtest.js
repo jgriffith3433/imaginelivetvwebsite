@@ -463,6 +463,23 @@ async function badgesAfterLoad(t, want, where) {
   closeFrame();
 }
 
+/** One story's card after a reload of the home page (a frame loading it, as a viewer's refresh does): its progress is read
+    back from the cookies, so it must still say Started or Completed with the percent, never Not started / 0%. */
+async function badgeAfterReload(t, st, want, where) {
+  const doc = await frameLoad(t, (f) => (f.src = "/"));
+  const win = frame && frame.contentWindow;
+  const sel = `#story-list a.story-card[data-story="${st.id}"]`;
+  if (!doc || !(await waitFor(() => win.iltvStories && doc.querySelector(sel + "[data-progress]"), 10000))) {
+    t.problem("bug", `${where}: the home page didn't load in the frame`);
+    closeFrame();
+    return;
+  }
+  await sleep(300);
+  checkBadge(t, doc.querySelector(sel), st, want, where);
+  await sleep(600); // on screen for the footage
+  closeFrame();
+}
+
 /** The shortest way from the start (not through a death) to a scene that passes `test`: the scene ids after the start. */
 function wayTo(st, test) {
   const from = { [st.start]: null };
@@ -1066,7 +1083,10 @@ async function storiesRun(options, t) {
     t.event("start-over", `${st.id}: at ${sceneId()}, ${pct}% explored kept; ${Object.keys(others).length} other cookies untouched`);
     await sleep(600);
     await toLanding(t);
-    checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);
+    // Expected, not a bug (canon): Start Over forgets the run, never what was found, so the card stays Completed with its
+  // percent and a Start Over button. A reviewer should not flag "Completed after Start Over".
+  checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title} (expected: the card stays Completed with its percent and Start Over; only the run restarts)`);
+  await badgeAfterReload(t, st, "completed", `after Start Over and a reload (expected: still Completed, same percent, Start Over)`);
     if (go() !== "Start Over") t.problem("bug", `${st.id}: after Start Over its card's button says "${go()}", not Start Over`);
     await sleep(600);
   }
@@ -2716,6 +2736,22 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   if (!big.hidden) must.push(big);
   let scrolled = 0;
   const scrolledNames = [];
+  // The part of the screen an element can really be seen in: the viewer's screen cut down by every box that scrolls
+  // or clips on the way up (the words column scrolling inside itself hides what is past its edge, whatever the screen).
+  const clipOf = (el) => {
+    let c = { left: 0, top: 0, right: W, bottom: H };
+    for (let p = el.parentElement; p && p !== doc.documentElement; p = p.parentElement) {
+      const o = win.getComputedStyle(p);
+      if (o.overflowX === "visible" && o.overflowY === "visible") continue;
+      const b = p.getBoundingClientRect();
+      c = { left: Math.max(c.left, b.left), top: Math.max(c.top, b.top), right: Math.min(c.right, b.right), bottom: Math.min(c.bottom, b.bottom) };
+    }
+    return c;
+  };
+  const shown = (el, r) => {
+    const c = clipOf(el);
+    return r.top >= c.top - 0.5 && r.bottom <= c.bottom + 0.5 && r.left >= c.left - 0.5 && r.right <= c.right + 0.5;
+  };
   for (const el of must) {
     if (!el || !el.getClientRects().length) {
       bad(`${el?.id || el?.className || "an element"} isn't shown`);
@@ -2723,13 +2759,13 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
     }
     let r = el.getBoundingClientRect();
     if (r.left < -0.5 || r.right > W + 0.5) bad(`${el.id || el.className} runs off the side (${Math.round(r.left)}..${Math.round(r.right)} of ${W})`);
-    if (r.top < -0.5 || r.bottom > H + 0.5) {
+    if (r.top < -0.5 || r.bottom > H + 0.5 || !shown(el, r)) {
       scrolledNames.push(`${el.id || el.className || el.tagName} (${Math.round(r.top)}..${Math.round(r.bottom)} of ${H})`);
       el.scrollIntoView({ block: "nearest", behavior: "instant" });
       scrolled++;
       r = el.getBoundingClientRect();
     }
-    if (r.top < -0.5 || r.bottom > H + 0.5) bad(`${el.id || el.className} can't be brought on screen (${Math.round(r.top)}..${Math.round(r.bottom)} of ${H})`);
+    if (r.top < -0.5 || r.bottom > H + 0.5 || !shown(el, r)) bad(`${el.id || el.className} can't be brought on screen (${Math.round(r.top)}..${Math.round(r.bottom)} of ${H})`);
     // A choice that has been brought on screen is really there to press: nothing lies over its middle.
     if (el.matches(".choice")) {
       const hit = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
@@ -2739,8 +2775,19 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   }
   // A choice's words are all there (not cut off by the button).
   for (const b of openChoices(doc)) if (b.scrollWidth > b.clientWidth + 1) bad(`choice "${b.textContent.trim()}" is cut off at the side`);
-  // Two things never lie over each other.
-  const boxes = [...doc.querySelectorAll("#console-wall, #console-big:not([hidden]), .console-subs, .console-controls, #console-choices:not([hidden])")].map((el) => [el.id || el.className, el.getBoundingClientRect()]);
+  // Two things never lie over each other. The words column was scrolled to bring the last choice up, so it goes back to
+  // its top first, and each box counts only where it can be seen (what the column scrolls past is not over the wall).
+  doc.querySelector(".console-body")?.scrollTo?.(0, 0);
+  doc.querySelector(".console-panel")?.scrollTo?.(0, 0);
+  const boxes = [...doc.querySelectorAll("#console-wall, #console-big:not([hidden]), .console-subs, .console-controls, #console-choices:not([hidden])")].map((el) => {
+    const b = el.getBoundingClientRect();
+    const c = clipOf(el);
+    const left = Math.max(b.left, c.left);
+    const top = Math.max(b.top, c.top);
+    const right = Math.min(b.right, c.right);
+    const bottom = Math.min(b.bottom, c.bottom);
+    return [el.id || el.className, { left, top, right, bottom, width: Math.max(0, right - left), height: Math.max(0, bottom - top) }];
+  });
   for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
     const [an, a] = boxes[i];
     const [bn, b2] = boxes[j];
@@ -3412,6 +3459,7 @@ async function consoleListedEnding(t, st) {
   await sleep(800);
   await toLanding(t);
   checkBadge(t, cardOf(st.id), st, "completed", `after ${st.title}'s ending`);
+  await badgeAfterReload(t, st, "completed", `after ${st.title}'s ending and a reload`);
   await sleep(600);
 }
 
@@ -3448,7 +3496,10 @@ async function consoleListedStartOver(t, st) {
   t.event("start-over", `${st.id}: at ${apiOf().scene()}, ${pct}% explored kept (header "${head}"); ${Object.keys(others).length} other cookies untouched`);
   await sleep(600);
   await toLanding(t);
-  checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);
+  // Expected, not a bug (canon): Start Over forgets the run, never what was found, so the card stays Completed with its
+  // percent and a Start Over button. A reviewer should not flag "Completed after Start Over".
+  checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title} (expected: the card stays Completed with its percent and Start Over; only the run restarts)`);
+  await badgeAfterReload(t, st, "completed", `after Start Over and a reload (expected: still Completed, same percent, Start Over)`);
   if (go() !== "Start Over") t.problem("bug", `${st.id}: after Start Over its card's button says "${go()}", not Start Over`);
   await sleep(600);
 }
@@ -4448,7 +4499,9 @@ async function nightCardRun(options, t) {
 
   // Opening it starts it.
   await consoleListedOpen(t, st);
-  checkBadge(t, cardOf(id), st, "started", `after opening ${st.title}`);
+  await toLanding(t);
+  checkBadge(t, cardOf(id), st, "started", `after opening ${st.title} and All stories`);
+  await badgeAfterReload(t, st, "started", `after opening ${st.title} and a reload`);
   t.progress(0.3);
 
   // An ending completes it: the percent follows the scenes seen, and the button says Start Over.
