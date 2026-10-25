@@ -80,7 +80,7 @@ page), its own rules (`js/console-rules.js`, shared by the player, the build and
 `listed: false`), with the same badge (Not started / Started / Completed), percent explored and Play / Continue /
 Start Over as the video stories, and its own Tap to play title. Completed means any ending was reached; the percent is
 scenes seen out of all its scenes (the build proves every scene reachable), kept as a bit per scene in the unlocks
-cookie. The `stories` playtest opens it from its card, reaches the ending of its shortest way (a seeded run two choices short
+cookie. `night-shift-card` is the short check of just this card (about a minute). The `stories` playtest opens it from its card, reaches the ending of its shortest way (a seeded run two choices short
 of it, then real presses; see AGENTS.md, "Seeded run"), checks Completed and Start Over; `branches` enters every scene
 by a press from a seeded run at its parent, `pages` reads all its pages, `sound`, `credits` and `analytics` open it from
 its card, and `night-shift` and `console` play whole ways.
