@@ -5,6 +5,7 @@
 //   node tools/make-audio.mjs <story> --reuse [<ref>]    after the text was edited (lines moved, cut or added): every asset whose recipe (voice and text)
 //                                                        matches one that had a file at <ref> (default HEAD) gets that file; prints the ones still to make
 //   node tools/make-audio.mjs <story> --seam            close the loop of every ambience bed on disk (see SEAM; --mix does it to new ones)
+//   node tools/make-audio.mjs <story> --beds            level and loop-check every ambience bed on disk (see BEDS; changes only the beds that need it)
 //   node tools/make-audio.mjs <story> --dur              set each line's dur in the story data to its recording's length
 // Music (audio.music, the stingers on endings and key moments) is -40 LUFS: never louder than a bed's neighbour. Voices: silence trimmed, loudness -16 LUFS. Sound effects: -26 LUFS. Ambience beds: -38 LUFS, so a bed always sits
 // well under the voice (the player plays all three at the same volume). The lock entry is the one Studio writes
@@ -44,6 +45,47 @@ function seam(src, out) {
   ff('-i', body, '-i', head, '-filter_complex', `acrossfade=d=${SEAM}:c1=qsin:c2=qsin`, out);
   for (const t of [head, body]) fs.rmSync(t, { force: true });
   return n - SEAM;
+}
+
+// BEDS: the loop is closed already (SEAM), but a bed is not steady: a refrigerator cycling or a tick near the join makes the
+// last quarter second a different level from the first (the audio playtest measures exactly that: 3 dB at most), and some
+// beds came out of loudnorm too loud to sit under a line (12 dB under the voice at least; the voice is about -19 dB RMS).
+// So a bed is turned round (a loop turned round is still a loop) to start where its level is the same before and after the
+// cut, and brought down to BED_MAX_RMS when it is louder.
+const BED_MAX_RMS = -36;
+const BED_GAP_DB = 1;
+const pcm = (f) => { const b = execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-i', f, '-f', 'f32le', '-ac', '1', '-ar', '44100', '-'], { maxBuffer: 1 << 28 }); return new Float32Array(b.buffer.slice(b.byteOffset, b.byteOffset + b.length)); };
+const dbOf = (sq, n) => 10 * Math.log10(sq / Math.max(1, n) + 1e-12);
+function bedFacts(d) {
+  const q = 11025;
+  const cum = new Float64Array(d.length + 1);
+  for (let i = 0; i < d.length; i++) cum[i + 1] = cum[i] + d[i] * d[i];
+  const win = (a, b) => { // energy of d[a..b) taken round the loop
+    let e = 0;
+    for (let i = a; i < b;) { const j = ((i % d.length) + d.length) % d.length, run = Math.min(b - i, d.length - j); e += cum[j + run] - cum[j]; i += run; }
+    return dbOf(e, b - a);
+  };
+  const gapAt = (p) => Math.abs(win(p - q, p) - win(p, p + q)) + Math.abs(win(p - 4 * q, p) - win(p, p + 4 * q)) / 2;
+  return { rms: dbOf(cum[d.length], d.length), gapAt, q };
+}
+function bedFix(a, f) {
+  const d = pcm(f);
+  const { rms, gapAt, q } = bedFacts(d);
+  const own = Math.abs(dbOf(d.slice(0, q).reduce((x, v) => x + v * v, 0), q) - dbOf(d.slice(d.length - q).reduce((x, v) => x + v * v, 0), q));
+  let cut = 0;
+  if (own > BED_GAP_DB) {
+    let best = Infinity;
+    for (let p = q; p < d.length - q; p += 441) { const g = gapAt(p); if (g < best) { best = g; cut = p; } }
+  }
+  const gain = rms > BED_MAX_RMS + 0.15 ? BED_MAX_RMS - rms : 0;
+  if (!cut && !gain) return { changed: false, own, rms };
+  const sec = (cut / 44100).toFixed(4), tmp = f + '.tmp.mp3';
+  const graph = cut
+    ? `[0]atrim=start=${sec},asetpts=PTS-STARTPTS[a];[0]atrim=end=${sec},asetpts=PTS-STARTPTS[b];[a][b]concat=n=2:v=0:a=1,volume=${gain.toFixed(2)}dB`
+    : `[0]volume=${gain.toFixed(2)}dB`;
+  ff('-i', f, '-filter_complex', graph, '-ar', '44100', '-ac', '1', '-codec:a', 'libmp3lame', '-q:a', '4', tmp);
+  fs.renameSync(tmp, f);
+  return { changed: true, own, rms, cut: cut / 44100, gain };
 }
 const TRIM_START = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05';
 const TRIM_END = 'areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.15,areverse';
@@ -149,6 +191,21 @@ if (args.includes('--list')) {
   }
   save();
   console.log(`closed the loop of ${n} beds`);
+} else if (args.includes('--beds')) {
+  let n = 0;
+  for (const a of assets.filter((x) => kindOf(x) === 'bed')) {
+    const rel = relOf(a), f = path.join(ROOT, rel);
+    if (!fs.existsSync(f)) continue;
+    const r = bedFix(a, f);
+    console.log(`${path.basename(rel).padEnd(24)} ${r.rms.toFixed(1)} dB RMS, join ${r.own.toFixed(1)} dB${r.changed ? ` -> cut at ${r.cut.toFixed(2)} s, gain ${r.gain.toFixed(1)} dB` : ' (kept)'}`);
+    if (!r.changed) continue;
+    const h = sha(f);
+    mixed[rel] = h;
+    lock[a.id] = { ...(lock[a.id] ?? {}), recipe: recipeOf(a), made: new Date().toISOString(), files: { [rel]: h } };
+    n++;
+  }
+  save();
+  console.log(`levelled ${n} beds`);
 } else if (args.includes('--mix')) {
   let n = 0;
   for (const a of assets) {

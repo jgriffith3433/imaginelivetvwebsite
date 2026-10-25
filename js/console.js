@@ -161,6 +161,20 @@
     return q && q.then ? q : Promise.resolve();
   }
 
+  /** The story's other beds are fetched a moment after it opens, so a scene that changes the bed finds it in the cache
+      and the bed starts at once (nothing silent between scenes). */
+  var warmed = {};
+  function warmBeds() {
+    setTimeout(function () {
+      Object.keys((story && story.ambience) || {}).forEach(function (k) {
+        var f = story.ambience[k];
+        if (!f || warmed[f]) return;
+        warmed[f] = true;
+        try { fetch(f).catch(function () {}); } catch (e) { /* no fetch */ }
+      });
+    }, 1500);
+  }
+
   function setBed(cue) {
     var file = cue && story.ambience ? story.ambience[cue] : null;
     if (cue === bedCue) return;
@@ -543,6 +557,7 @@
     sfx = makeAudio(false);
     sting = makeAudio(false);
     bedCue = null;
+    warmBeds();
     flow++;
     box.hidden = false;
     toggleLog(false);

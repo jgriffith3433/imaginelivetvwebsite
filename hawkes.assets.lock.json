@@ -427,33 +427,33 @@
   "night-shift-ambience-control-room": {
     "recipe": "ee736179f85df28d",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:13.886Z",
+    "made": "2026-10-25T10:17:57.414Z",
     "files": {
-      "night-shift/media/ambience/control-room.mp3": "4c40db3d64af4feb6c51c6bc6b54daba3eecc3d78f3abdc1a7ed4b60b0402045"
+      "night-shift/media/ambience/control-room.mp3": "e292ce9ffaf8205a285862a3a212d25e20dde9b8e1f3267169dd961da68edee0"
     }
   },
   "night-shift-ambience-control-room-late": {
     "recipe": "e448901c31d1e335",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:14.527Z",
+    "made": "2026-10-25T10:17:57.760Z",
     "files": {
-      "night-shift/media/ambience/control-room-late.mp3": "284933facc125e9bfffcfe113cfbc13ca181740cf118760f6e7fd8abcbe4ad9d"
+      "night-shift/media/ambience/control-room-late.mp3": "8017edd2909555e3b08fdf10c8629229e8af6796fd7bf369b45b38af56ee4018"
     }
   },
   "night-shift-ambience-lobby": {
     "recipe": "f7f502b835499610",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:15.084Z",
+    "made": "2026-10-25T10:17:58.153Z",
     "files": {
-      "night-shift/media/ambience/lobby.mp3": "20048535cb1a5a19ea953e007f9f6929a90ed563ea2b7965d99144369386abd1"
+      "night-shift/media/ambience/lobby.mp3": "79954bf2e9e9fc73ff89de305366229f254bb284d2b8fd1fc7810674ca8ca438"
     }
   },
   "night-shift-ambience-vestibule": {
     "recipe": "704254c879999988",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:15.628Z",
+    "made": "2026-10-25T10:17:58.517Z",
     "files": {
-      "night-shift/media/ambience/vestibule.mp3": "563d2166b7431c282990e7f2e697a43593648f78c38ed9e0f03ea697b026ff8a"
+      "night-shift/media/ambience/vestibule.mp3": "540ce5546d59ce6347a20e4b2c80632c42dbf27a64a77fd3bd60be65c4e5c3cc"
     }
   },
   "night-shift-ambience-dock": {
@@ -467,9 +467,9 @@
   "night-shift-ambience-stairwell": {
     "recipe": "1140c1e37c590baa",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:16.884Z",
+    "made": "2026-10-25T10:17:58.975Z",
     "files": {
-      "night-shift/media/ambience/stairwell.mp3": "44fddca3ec55cf04c3143f67268736d2240e7522133c50a14cba13c90dafa639"
+      "night-shift/media/ambience/stairwell.mp3": "a8d4106df463f12b7dcbaca07f7700896cf8b3fed8bcecbbc524f3cbddcae9e0"
     }
   },
   "night-shift-ambience-corridor": {
@@ -483,25 +483,25 @@
   "night-shift-ambience-elevator": {
     "recipe": "c48da20b4d468a83",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:18.087Z",
+    "made": "2026-10-25T10:17:59.446Z",
     "files": {
-      "night-shift/media/ambience/elevator.mp3": "d050f82af4ce543924d4d187767d6fd8c71ad2cc391a43a93ed36384a17c9cdc"
+      "night-shift/media/ambience/elevator.mp3": "d03ba1db84a994f484378da4aff7487c2375015ce9bcdc16f958ec9bf19a8e10"
     }
   },
   "night-shift-ambience-roof": {
     "recipe": "c2c7c92e1b505e3f",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:18.685Z",
+    "made": "2026-10-25T10:17:59.767Z",
     "files": {
-      "night-shift/media/ambience/roof.mp3": "ac8fe46133d551e72fc11715bdb5a0603c415489097a8f6fe3023b74ed60e184"
+      "night-shift/media/ambience/roof.mp3": "ad5e6816b79e6536b07d46863bdf1a7aa332f5e760268365cf4fe8e4049c6189"
     }
   },
   "night-shift-ambience-morning": {
     "recipe": "0421eee709d0e1d2",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T04:58:19.303Z",
+    "made": "2026-10-25T10:18:00.173Z",
     "files": {
-      "night-shift/media/ambience/morning.mp3": "6d0d20e4282f86c0753ada3721ab33843274cbd80fc3dc8ec905718fe362eb64"
+      "night-shift/media/ambience/morning.mp3": "6602fd188df50d68914d306c2299af70704207679a28e090bf536c4de1195b32"
     }
   },
   "night-shift-sfx-radio-squelch": {

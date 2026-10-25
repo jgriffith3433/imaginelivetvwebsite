@@ -606,3 +606,21 @@ Terrell `idZn18yShmcD0ePsg1A5`, Marisol `Iok0Qd1zNVnFs3DULx6Z`, Dev `zcQcgx11ALP
 `ZyVqOeng5wFOY7UfrjR9`, Pierce Hawkes `ZthjuvLPty3kTMaNKVKb` (PH Origins' Jackson voice, unmodified). The radio, walkie,
 intercom and phone treatments in the descriptions are not applied yet (the recordings are clean).
 All 1,288 lines are recorded and mixed (`node tools/make-audio.mjs night-shift --mix`, `--dur`); the 6 music stings are the only unmade audio.
+
+## Non-voice audio as made (2026-10-25)
+
+- **Ambience:** 10 beds, one for every one of the 228 scenes (`control-room` 93 scenes, `control-room-late` 62, `morning` 18, `lobby` 14,
+  `vestibule` 9, `stairwell` 8, `dock` 8, `elevator` 8, `corridor` 5, `roof` 3). Each is a 28 s loop: the first two seconds of the
+  30 s take are laid over the last two with an equal-power crossfade (`make-audio.mjs --mix`), then `--beds` turns the loop round to
+  start where the level before and after the cut is the same (the `control-room-late` bed jumped 6.4 dB where it looped before) and
+  brings any bed over -36 dB RMS down to it (`roof` was 8.7 dB and `stairwell` 11.5 dB under the voice; every bed is now 18 dB or more
+  under it; the voice is about -17 dB RMS). Beds sit at about -36 to -40 LUFS, a little under the -30 first asked for, on purpose: the
+  audio playtest's bar is 12 dB under the voice and a bed at -30 would fail it.
+- **Effects:** 18 cues, -26 LUFS, 2 s, played before the line that names them (`sfx` on the line), never under it.
+- **Music:** 6 stings (`shift-begins` at `handover`, `fifty-eight` at `pierce-signin`, `the-panel` at the four `trouble-signal-*`
+  scenes, `ending-plain`, `ending-warm`, `ending-cold` on the endings), each played once under a scene's first line at -40 LUFS, never
+  looped, so they can't mask a line. **Not made: they are `audio.music` (GPU).** `hawkesgen_estimate` for the six at 20 s:
+  61 GPU-seconds, about $0.08 ($0.70 with the idle tail). To make them: `hawkesgen_run` each `night-shift-music-*` recipe with
+  `save_to`, `node tools/make-audio.mjs night-shift --ingest <folder>`, then `npm run story`.
+- The loop point and level are checked by `night-shift-audio`; `node tools/make-audio.mjs night-shift --beds` is safe to run again
+  (it changes nothing that already passes).
