@@ -11359,5 +11359,53 @@
     "files": {
       "night-shift/day-officer-let/media/line-3.mp3": "4a797583e76041fc6175c5c500f32a0019cc95e7c105e52fb443fa4ddbde2a5a"
     }
+  },
+  "night-shift-music-shift-begins": {
+    "recipe": "fb36055c030f9a9b",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T16:14:19.045Z",
+    "files": {
+      "night-shift/media/music/shift-begins.mp3": "1cf63380a50b44e32845edf521153f5a4a8d05d9b8442915382e87ab5a0572f7"
+    }
+  },
+  "night-shift-music-the-panel": {
+    "recipe": "8612a9ada8eac90a",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T16:14:21.605Z",
+    "files": {
+      "night-shift/media/music/the-panel.mp3": "adb6cb532e26b4b72fb677afe04fcc9126f9791fd0df3d1153c42118260e524d"
+    }
+  },
+  "night-shift-music-fifty-eight": {
+    "recipe": "f3d29ec45c18bc12",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T16:14:24.225Z",
+    "files": {
+      "night-shift/media/music/fifty-eight.mp3": "7f99cda670b8ae4520ba69c749ad4f397c9ebc89a07e0bcc5ec94f7f10bc8174"
+    }
+  },
+  "night-shift-music-ending-plain": {
+    "recipe": "35d8f6da318c821c",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T16:14:25.991Z",
+    "files": {
+      "night-shift/media/music/ending-plain.mp3": "c6a90aa81feaf5d4f53039a502ee974a13c01810ab3cd990c2d0994501690081"
+    }
+  },
+  "night-shift-music-ending-warm": {
+    "recipe": "431e4fb62b60e3e0",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T16:14:28.216Z",
+    "files": {
+      "night-shift/media/music/ending-warm.mp3": "bec3b6d439090577a5e84933a9ecaa301ecd338d640a1f2c1d42e58ff9b16190"
+    }
+  },
+  "night-shift-music-ending-cold": {
+    "recipe": "a76c1c23c22332b1",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T16:14:30.369Z",
+    "files": {
+      "night-shift/media/music/ending-cold.mp3": "7e6ca4730e95c51bb110800626fff40c464663374b0e1f9a648d7ef944aaf60e"
+    }
   }
 }
