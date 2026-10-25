@@ -4010,6 +4010,8 @@ async function nightSignoffRun(options, t) {
         let cut;
         const heart = setInterval(() => {
           const sec = Math.round((performance.now() - started) / 1000);
+          t.scene(`${label}: ${step} (${sec} s)`); // the job line is scene + progress: it moves at least every 20 s, even inside one long step
+          t.progress(Math.min(0.99, (done + skipped + Math.min(0.95, sec / (limit / 1000))) / (endings.length * sizes.length)));
           t.note(`${label}: ${step}, ${sec} s into this play`);
           t.event("signoff-heartbeat", `${label}: still at "${step}", ${sec} s into this play (limit ${Math.round(limit / 1000)} s)`);
           if (performance.now() - started > limit && cut) cut(new Error(`${label}: over ${Math.round(limit / 1000)} s, stopped at "${step}"`));
