@@ -64,7 +64,8 @@
     "courier": {
       "name": "Courier",
       "voice": "cOJkIUDUojZtwaJSfMzy",
-      "design": "A man in his thirties, neutral New York accent, flat and tired, recorded through a cheap dock intercom, tinny and clipped."
+      "design": "A man in his thirties, neutral New York accent, flat and tired, recorded through a cheap dock intercom, tinny and clipped.",
+      "treatment": "intercom"
     },
     "sleeper": {
       "name": "The man in the vestibule",
@@ -849,7 +850,8 @@
           "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
           "perform": "bright, over the radio",
           "sfx": "radio-squelch",
-          "dur": 5.1
+          "dur": 5.3,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -927,7 +929,8 @@
           "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
           "perform": "bright, over the radio",
           "sfx": "radio-squelch",
-          "dur": 5.1
+          "dur": 5.3,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -1000,7 +1003,8 @@
           "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
           "perform": "bright, over the radio",
           "sfx": "radio-squelch",
-          "dur": 5.1
+          "dur": 5.3,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -2003,13 +2007,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2027,7 +2033,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2092,13 +2099,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2122,7 +2131,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2181,13 +2191,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2205,7 +2217,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2264,13 +2277,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2294,7 +2309,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2365,13 +2381,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2389,7 +2407,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2460,13 +2479,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2490,7 +2511,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2549,7 +2571,8 @@
           "speaker": "marisol",
           "text": "Gracias, mi amor. Bendito. I owe you a plate.",
           "perform": "already moving, the walkie bouncing",
-          "dur": 3.6
+          "dur": 3.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2613,20 +2636,23 @@
           "speaker": "okafor",
           "text": "So. Not on the list. Then he doesn't go in tonight.",
           "perform": "phone-flat, a fork against a plate",
-          "dur": 7.4
+          "dur": 7.4,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "So. Please put it in the log, both times: when you called, and when he answered.",
           "perform": "even",
-          "dur": 5.9
+          "dur": 5.9,
+          "treatment": "phone"
         },
         {
           "speaker": "marisol",
           "text": "Hijo de… *Okay.* Okay. I don't forget this.",
           "perform": "over the walkie, clipped, not warm",
           "sfx": "walkie-squelch",
-          "dur": 3.8
+          "dur": 3.9,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2692,7 +2718,8 @@
           "speaker": "marisol",
           "text": "I told you! Look. Look at it. Paper. He has paper.",
           "perform": "triumphant, loud, on the walkie",
-          "dur": 4.9
+          "dur": 5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -2716,7 +2743,8 @@
           "speaker": "marisol",
           "text": "So you let him wait in the hall. In the hall! Dios mío.",
           "perform": "overlapping, fast",
-          "dur": 4.3
+          "dur": 4.4,
+          "treatment": "walkie"
         },
         {
           "speaker": "narrator",
@@ -3204,7 +3232,8 @@
           "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch",
-          "dur": 3.6
+          "dur": 3.7,
+          "treatment": "radio"
         },
         {
           "speaker": "terrell",
@@ -3293,7 +3322,8 @@
           "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch",
-          "dur": 3.6
+          "dur": 3.7,
+          "treatment": "radio"
         },
         {
           "speaker": "terrell",
@@ -3382,7 +3412,8 @@
           "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch",
-          "dur": 3.6
+          "dur": 3.7,
+          "treatment": "radio"
         },
         {
           "speaker": "terrell",
@@ -3477,7 +3508,8 @@
           "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch",
-          "dur": 3.6
+          "dur": 3.7,
+          "treatment": "radio"
         },
         {
           "speaker": "terrell",
@@ -3563,13 +3595,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -3587,7 +3621,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -3665,13 +3700,15 @@
           "speaker": "marisol",
           "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
           "perform": "fast, warm, breathless",
-          "dur": 5.7
+          "dur": 5.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
           "perform": "talking over her own sentence",
-          "dur": 5.1
+          "dur": 5.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -3695,7 +3732,8 @@
           "speaker": "marisol",
           "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
           "perform": "walkie held too close",
-          "dur": 3.4
+          "dur": 3.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -4743,7 +4781,8 @@
           "speaker": "terrell",
           "text": "He said Tuesday, you know? Tuesday he was fine.",
           "perform": "over the radio, small",
-          "dur": 3.3
+          "dur": 3.4,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -4824,7 +4863,8 @@
           "speaker": "dee",
           "text": "Initial the sheet. Both of you.",
           "perform": "over your radio, quiet",
-          "dur": 2.4
+          "dur": 2.5,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -4963,7 +5003,8 @@
           "text": "Radio check.",
           "perform": "over the radio, flat",
           "sfx": "radio-squelch",
-          "dur": 1.2
+          "dur": 1.3,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -5058,7 +5099,8 @@
           "text": "Radio check.",
           "perform": "over the radio, flat",
           "sfx": "radio-squelch",
-          "dur": 1.2
+          "dur": 1.3,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -5153,7 +5195,8 @@
           "text": "Radio check.",
           "perform": "over the radio, flat",
           "sfx": "radio-squelch",
-          "dur": 1.2
+          "dur": 1.3,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -5261,7 +5304,8 @@
           "text": "Radio check.",
           "perform": "over the radio, flat",
           "sfx": "radio-squelch",
-          "dur": 1.2
+          "dur": 1.3,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -5359,7 +5403,8 @@
           "speaker": "dee",
           "text": "Lobby's clear. Dock's clear. Compactor's ticking.",
           "perform": "over the radio, a breath, almost company",
-          "dur": 4.6
+          "dur": 4.8,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -5428,7 +5473,8 @@
           "speaker": "dee",
           "text": "Side. The side.",
           "perform": "over the radio, dry",
-          "dur": 2.1
+          "dur": 2.3,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -5440,7 +5486,8 @@
           "speaker": "dee",
           "text": "Lobby's clear. Dock's clear. Pay attention to the side.",
           "perform": "over the radio",
-          "dur": 3.9
+          "dur": 4,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -5509,26 +5556,30 @@
           "speaker": "dee",
           "text": "Radio check.",
           "perform": "over the radio, again",
-          "dur": 1.3
+          "dur": 1.4,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Post one. Radio check.",
           "perform": "over the radio, a beat of static",
-          "dur": 3
+          "dur": 3.1,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Answer when I call. Always. I'm not asking for a reason.",
           "perform": "flat, over the radio",
           "sfx": "radio-squelch",
-          "dur": 4.4
+          "dur": 4.5,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Lobby's clear. Dock's clear.",
           "perform": "over the radio, after a moment",
-          "dur": 2.4
+          "dur": 2.6,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -5750,7 +5801,8 @@
           "speaker": "dee",
           "text": "Go. Two minutes. Then back on it.",
           "perform": "over the radio, no pause",
-          "dur": 3
+          "dur": 3.1,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -5899,19 +5951,22 @@
           "speaker": "okafor",
           "text": "So. It's Okafor. Two entries and a tour sheet. They give times, places, and who you told.",
           "perform": "polite, a chair creaking",
-          "dur": 8.7
+          "dur": 8.7,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "That's noted. Are you eating? It's in the handbook, page nine.",
           "perform": "dry",
-          "dur": 4.3
+          "dur": 4.3,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "Is Ms. Reyes there? Put her on. I'll just say good night.",
           "perform": "polite",
-          "dur": 3.5
+          "dur": 3.5,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -5964,13 +6019,15 @@
           "speaker": "okafor",
           "text": "So. It's Okafor. The entry for forty-four. I'd like it to say what happened, in order, without \"seemed\" and without a gap.",
           "perform": "polite, a chair creaking",
-          "dur": 9.5
+          "dur": 9.5,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "\"Seemed.\" How did he seem? Put what he did, in order. Can you do that tonight?",
           "perform": "even",
-          "dur": 6.1
+          "dur": 6.1,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -6058,13 +6115,15 @@
           "speaker": "okafor",
           "text": "So. It's Okafor. I'm reading the entry for forty-four. I'll look at the reader record in the morning.",
           "perform": "polite, a chair creaking, slower",
-          "dur": 8.2
+          "dur": 8.2,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "Let's make sure we're aligned. If anything in it is not exactly right, tell me now and we call it a correction. In the morning it isn't a correction.",
           "perform": "even",
-          "dur": 9.2
+          "dur": 9.2,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -6795,19 +6854,22 @@
           "text": "Stairwell A. Clear. Landing nineteen has a bench.",
           "perform": "over the radio, echo on it",
           "sfx": "footsteps-stairs",
-          "dur": 4.5
+          "dur": 4.6,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Somebody put a bench in a fire stair. I sit on it four seconds.",
           "perform": "over the radio, dry, a little out of breath",
-          "dur": 5
+          "dur": 5.1,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Going up to B. Eyes open. Mm-hm.",
           "perform": "over the radio",
-          "dur": 3.3
+          "dur": 3.4,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -6855,7 +6917,8 @@
           "speaker": "dee",
           "text": "Stairwell B. Clear.",
           "perform": "over the radio, no idea",
-          "dur": 3.3
+          "dur": 3.4,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -6929,7 +6992,8 @@
           "speaker": "dee",
           "text": "Stairwell B. Clear. Heading for the roof side.",
           "perform": "over the radio, no idea",
-          "dur": 3.7
+          "dur": 3.8,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -6981,31 +7045,36 @@
           "speaker": "okafor",
           "text": "So. Where on thirty-one. Is anyone in the stairwell?",
           "perform": "thick with sleep",
-          "dur": 4.8
+          "dur": 4.8,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "Do not go up. Put it in the log. I will tell the building manager at six.",
           "perform": "even, a lamp clicking on",
-          "dur": 5.3
+          "dur": 5.3,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
           "text": "Okafor's line is lit. What did you tell him?",
           "perform": "over the radio, flat",
-          "dur": 3.1
+          "dur": 3.3,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "A wedge. Mm. A wedge. It's the book.",
           "perform": "a long pause on the radio, even",
-          "dur": 4.5
+          "dur": 4.6,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "I'd have gone and said hello. Doesn't matter. You did what it says. Mm. Write it.",
           "perform": "over the radio, quieter, a click",
-          "dur": 6.1
+          "dur": 6.2,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -7068,7 +7137,8 @@
           "text": "Wedge. Thirty-one. I'm going up. Wall.",
           "perform": "over the radio, already moving",
           "sfx": "footsteps-stairs",
-          "dur": 3.8
+          "dur": 3.9,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -7079,7 +7149,8 @@
           "speaker": "dee",
           "text": "Thirty-one. Orange. Rubber. Anand, law firm. He's sorry. He's very sorry.",
           "perform": "over the radio, dry",
-          "dur": 8
+          "dur": 8.1,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -7091,7 +7162,8 @@
           "speaker": "dee",
           "text": "He's got a closing at nine. They all do. I'm coming down. Put the kettle on. It's wrong. Put it on.",
           "perform": "over the radio, tired and not unkind, flat",
-          "dur": 8.6
+          "dur": 8.7,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -7169,7 +7241,8 @@
           "speaker": "dee",
           "text": "Stairwell B. Clear. Heading to the roof side.",
           "perform": "over the radio, away from C",
-          "dur": 3.6
+          "dur": 3.7,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -7242,19 +7315,22 @@
           "speaker": "dee",
           "text": "Thirty-one is open. Wedge. Orange.",
           "perform": "over the radio, flat as a plate",
-          "dur": 3.6
+          "dur": 3.7,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "You were on the wall. Nine tiles. Not four. Anand, law firm. Smoke on the landing. Sorry, he says.",
           "perform": "a breath, over the radio",
-          "dur": 9.8
+          "dur": 9.9,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Door's shut. Say it was me. It was me.",
           "perform": "over the radio, even",
-          "dur": 3.4
+          "dur": 3.6,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -8417,7 +8493,8 @@
           "speaker": "brandt",
           "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
           "perform": "fast, brisk, a speakerphone in a big room",
-          "dur": 7
+          "dur": 7,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -8499,7 +8576,8 @@
           "speaker": "brandt",
           "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
           "perform": "fast, brisk, a speakerphone in a big room",
-          "dur": 7
+          "dur": 7,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -8575,7 +8653,8 @@
           "speaker": "brandt",
           "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
           "perform": "fast, brisk, a speakerphone in a big room",
-          "dur": 7
+          "dur": 7,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -8725,7 +8804,8 @@
           "speaker": "dee",
           "text": "Forty is the floor you can't help. Come on down.",
           "perform": "on the radio, flat",
-          "dur": 3.3
+          "dur": 3.4,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -8824,19 +8904,22 @@
           "text": "Ay! Dios mío! I'm there. I'm there! Don't hang up, mi amor!",
           "perform": "on the walkie, running",
           "sfx": "walkie-squelch",
-          "dur": 4.9
+          "dur": 5,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "Somebody left the hose on in the sink. A hose! Not my girl. Not my girl, never.",
           "perform": "out of breath, then a wet slap",
-          "dur": 7.7
+          "dur": 7.9,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "Off. It's off. It's a lake. It's a little lake. Okay.",
           "perform": "laughing, furious",
-          "dur": 6.1
+          "dur": 6.2,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
@@ -8899,13 +8982,15 @@
           "speaker": "okafor",
           "text": "So. Water where? Is it near anything electrical?",
           "perform": "awake already, flat",
-          "dur": 3.8
+          "dur": 3.8,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "The engineer on call will come at six. Put the time you saw it in the log. And tell Ms. Quintero to stop mopping.",
           "perform": "a pen clicking",
-          "dur": 7.6
+          "dur": 7.6,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -9447,13 +9532,15 @@
           "speaker": "dev",
           "text": "Hi, sorry, hi, I think the elevator, it, it stopped? Sorry.",
           "perform": "nasal, rushed, apologizing",
-          "dur": 5.1
+          "dur": 5.1,
+          "treatment": "intercom"
         },
         {
           "speaker": "dev",
           "text": "No, no, it's fine. It's fine. It's a little close in here.",
           "perform": "fast, too bright",
-          "dur": 3.6
+          "dur": 3.6,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -9523,13 +9610,15 @@
           "speaker": "dev",
           "text": "Hi, it's Dev. Anand. From the, the landing? Sorry. Not the door. The elevator. It stopped.",
           "perform": "nasal, rushed, mortified",
-          "dur": 7.3
+          "dur": 7.3,
+          "treatment": "intercom"
         },
         {
           "speaker": "dev",
           "text": "No, no, it's fine. It's fine. It's a little close in here.",
           "perform": "fast, too bright",
-          "dur": 3.6
+          "dur": 3.6,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -9593,7 +9682,8 @@
           "speaker": "dev",
           "text": "I have a closing at nine. Sorry. That's not your problem.",
           "perform": "over the intercom, tinny, rushing",
-          "dur": 3.3
+          "dur": 3.3,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -9605,13 +9695,15 @@
           "text": "Radio check.",
           "perform": "over the radio, thick with echo",
           "sfx": "radio-squelch",
-          "dur": 1.3
+          "dur": 1.4,
+          "treatment": "radio"
         },
         {
           "speaker": "dev",
           "text": "It's — is it — it's getting a little —",
           "perform": "over the intercom, quieter, breaking off",
-          "dur": 2.7
+          "dur": 2.7,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -9666,13 +9758,15 @@
           "speaker": "dee",
           "text": "Mm. Go. Tell him the company's twenty minutes. Tell him he can stand up or sit down.",
           "perform": "over the radio, no questions, thick, then plain",
-          "dur": 7.3
+          "dur": 7.4,
+          "treatment": "radio"
         },
         {
           "speaker": "dev",
           "text": "Okay. Okay. Sorry. You don't have to — okay.",
           "perform": "over the intercom, steadier",
-          "dur": 4.1
+          "dur": 4.1,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -9683,7 +9777,8 @@
           "speaker": "dee",
           "text": "Roof. Cold.",
           "perform": "over the radio, thick, then plain, not an explanation",
-          "dur": 2.1
+          "dur": 2.2,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -9740,13 +9835,15 @@
           "speaker": "dev",
           "text": "It's fine. I'm fine. Thank you. Sorry. Thank you.",
           "perform": "over the intercom, a little steadier",
-          "dur": 4.6
+          "dur": 4.6,
+          "treatment": "intercom"
         },
         {
           "speaker": "dee",
           "text": "Post one. Mm.",
           "perform": "over the radio, flat, final, a long click",
-          "dur": 2.8
+          "dur": 3,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -9804,7 +9901,8 @@
           "speaker": "dev",
           "text": "Twenty? Twenty minutes? Sorry. No. That's fine. That's fine.",
           "perform": "over the intercom, rushing",
-          "dur": 4.1
+          "dur": 4.1,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -9816,7 +9914,8 @@
           "text": "Radio check.",
           "perform": "over the radio, thick, an echo behind it",
           "sfx": "radio-squelch",
-          "dur": 2.3
+          "dur": 2.5,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -9877,7 +9976,8 @@
           "speaker": "dev",
           "text": "Did you — did you call the fire department? Sorry. I'm fine. Really.",
           "perform": "over the intercom, horrified",
-          "dur": 5.6
+          "dur": 5.6,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -9888,7 +9988,8 @@
           "speaker": "dee",
           "text": "Who called them? Mm. Never mind.",
           "perform": "over the radio, quiet, thick, a long breath",
-          "dur": 4.2
+          "dur": 4.3,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -9935,7 +10036,8 @@
           "text": "On the stairs. Coming. Keep him on the line.",
           "perform": "over the radio, hoarse, short",
           "sfx": "footsteps-stairs",
-          "dur": 3.3
+          "dur": 3.4,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -9952,7 +10054,8 @@
           "speaker": "dev",
           "text": "Okay. Okay. Sorry. Thank you.",
           "perform": "over the intercom, steadier at once",
-          "dur": 3.1
+          "dur": 3.1,
+          "treatment": "intercom"
         },
         {
           "speaker": "dee",
@@ -10935,13 +11038,15 @@
           "speaker": "okafor",
           "text": "So. Did you silence it? Good. Do not touch it. Read me the display.",
           "perform": "awake, even",
-          "dur": 5.6
+          "dur": 5.6,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "That is a fire panel. It belongs to Ms. Adler. Call her. I will call the building manager at six.",
           "perform": "a pen clicking",
-          "dur": 7.7
+          "dur": 7.7,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -10976,13 +11081,15 @@
           "speaker": "adler",
           "text": "Read me the display. Exactly. Do not paraphrase.",
           "perform": "formal, a pen already moving",
-          "dur": 4.5
+          "dur": 4.5,
+          "treatment": "phone"
         },
         {
           "speaker": "adler",
           "text": "Word for word, please. Take your time.",
           "perform": "crisp",
-          "dur": 2.7
+          "dur": 2.7,
+          "treatment": "phone"
         }
       ],
       "choices": [
@@ -11022,13 +11129,15 @@
           "speaker": "adler",
           "text": "Thank you. That is the correct answer. Please put it in the log in the same words.",
           "perform": "crisp",
-          "dur": 5.7
+          "dur": 5.7,
+          "treatment": "phone"
         },
         {
           "speaker": "adler",
           "text": "Do not silence it. Do not reset it. I will be at the panel at ten past four.",
           "perform": "formal, one idea at a time",
-          "dur": 6.2
+          "dur": 6.2,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -11087,7 +11196,8 @@
           "speaker": "adler",
           "text": "That is not what it says. Again. Exactly.",
           "perform": "crisp, no heat in it",
-          "dur": 4.1
+          "dur": 4.1,
+          "treatment": "phone"
         },
         {
           "speaker": "narrator",
@@ -11098,7 +11208,8 @@
           "speaker": "adler",
           "text": "Thank you. Do not silence it. Do not reset it. I will be there at ten past four.",
           "perform": "formal",
-          "dur": 6.9
+          "dur": 6.9,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -11415,13 +11526,15 @@
           "speaker": "courier",
           "text": "Package for fifty-eight.",
           "perform": "flat, tinny, tired",
-          "dur": 1.6
+          "dur": 1.6,
+          "treatment": "intercom"
         },
         {
           "speaker": "courier",
           "text": "It says someone's expecting it.",
           "perform": "flat",
-          "dur": 1.8
+          "dur": 1.8,
+          "treatment": "intercom"
         },
         {
           "speaker": "dee",
@@ -11505,7 +11618,8 @@
           "speaker": "courier",
           "text": "Sender's blank. Says Chairman's office, by five. I don't make the labels, man.",
           "perform": "flat, tinny",
-          "dur": 5.2
+          "dur": 5.2,
+          "treatment": "intercom"
         },
         {
           "speaker": "dee",
@@ -11558,7 +11672,8 @@
           "speaker": "courier",
           "text": "I just need a signature, man.",
           "perform": "flat, tired",
-          "dur": 2.3
+          "dur": 2.3,
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -11570,7 +11685,8 @@
           "text": "Yeah. Have a night.",
           "perform": "flat, the van door sliding",
           "sfx": "intercom",
-          "dur": 2.9
+          "dur": 2.9,
+          "treatment": "none"
         },
         {
           "speaker": "dee",
@@ -11683,13 +11799,15 @@
           "speaker": "okafor",
           "text": "So. Fifty-eight. Whose? Not on the list? Then you do not accept it.",
           "perform": "slow, awake by the second sentence",
-          "dur": 6.9
+          "dur": 6.9,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "Log the courier's name if he gives it. The mailroom opens at seven. That's noted.",
           "perform": "a throat cleared, even",
-          "dur": 5.9
+          "dur": 5.9,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -12214,7 +12332,8 @@
           "text": "Twenty minutes.",
           "perform": "over your radio, quick, a warning with no weight in it",
           "sfx": "radio-squelch",
-          "dur": 2.2
+          "dur": 2.4,
+          "treatment": "radio"
         }
       ],
       "choices": [
@@ -12263,7 +12382,8 @@
           "speaker": "dee",
           "text": "Mm. Twenty minutes. Six. Fine.",
           "perform": "over your radio, a breath of a laugh, flat, a woman making an exception, the same word again",
-          "dur": 7
+          "dur": 7.1,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -12375,13 +12495,15 @@
           "speaker": "okafor",
           "text": "So. Is the individual breathing? Then he is not an emergency. He may stay inside the outer door until six if he is not a danger to himself.",
           "perform": "even, careful, a man who once had this exact call",
-          "dur": 13
+          "dur": 13,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "Log the temperature. Not \"homeless.\" \"Individual.\"",
           "perform": "correcting himself before you can",
-          "dur": 3.8
+          "dur": 3.8,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -12841,32 +12963,37 @@
           "text": "Mi amor, we're out. Forty-four is dry. Bendito.",
           "perform": "on the walkie, tired and warm, the cart rattling",
           "sfx": "walkie-squelch",
-          "dur": 4.6
+          "dur": 4.7,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
           "text": "Mm. Go home, Marisol.",
           "perform": "on the walkie, short",
-          "dur": 2.3
+          "dur": 2.5,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "Dolores! There's a plate for you on the shelf by the freezer. Rice. Don't say no.",
           "perform": "on the walkie, bright, the cart rattling",
-          "dur": 6.2
+          "dur": 6.4,
+          "treatment": "walkie"
         },
         {
           "speaker": "dee",
           "text": "I didn't say anything.",
           "perform": "on the walkie, dry",
-          "dur": 1.7
+          "dur": 1.9,
+          "treatment": "walkie"
         },
         {
           "speaker": "marisol",
           "text": "Your face said no, mi amor! It always says no. Eat it!",
           "perform": "on the walkie, laughing, then off",
           "sfx": "walkie-squelch",
-          "dur": 6.6
+          "dur": 6.8,
+          "treatment": "walkie"
         },
         {
           "speaker": "narrator",
@@ -12877,7 +13004,8 @@
           "speaker": "dee",
           "text": "Mm. Rice. By the freezer.",
           "perform": "to the wall, flat",
-          "dur": 3.1
+          "dur": 3.3,
+          "treatment": "walkie"
         },
         {
           "speaker": "narrator",
@@ -13272,13 +13400,15 @@
           "speaker": "okafor",
           "text": "So. It is ten to six. The wedge was at ten to two. That is four hours.",
           "perform": "flat, awake, careful",
-          "dur": 10.7
+          "dur": 10.7,
+          "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "Let's make sure we're aligned. You will tell me that now, not at the handover. I would like it looked at.",
           "perform": "even",
-          "dur": 6.3
+          "dur": 6.3,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -13350,19 +13480,22 @@
           "speaker": "adler",
           "text": "How long has the panel been silent? How long.",
           "perform": "formal, ice at the edges of a polite voice",
-          "dur": 3.6
+          "dur": 3.6,
+          "treatment": "phone"
         },
         {
           "speaker": "adler",
           "text": "I will be there at ten past six. Do not touch it again.",
           "perform": "one idea at a time",
-          "dur": 4.3
+          "dur": 4.3,
+          "treatment": "phone"
         },
         {
           "speaker": "adler",
           "text": "Please put the time you silenced it in the log. In the same words.",
           "perform": "formal",
-          "dur": 4.4
+          "dur": 4.4,
+          "treatment": "phone"
         },
         {
           "speaker": "dee",
@@ -15872,7 +16005,8 @@
           "text": "Power.",
           "perform": "on the radio, flat, a little out of breath",
           "sfx": "radio-squelch",
-          "dur": 1
+          "dur": 1.1,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -15934,7 +16068,8 @@
           "speaker": "dee",
           "text": "Say what you see.",
           "perform": "on the radio, between breaths",
-          "dur": 2.2
+          "dur": 2.3,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -15981,7 +16116,8 @@
           "speaker": "dee",
           "text": "Panel?",
           "perform": "on the radio, short",
-          "dur": 0.7
+          "dur": 0.8,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
@@ -16034,7 +16170,8 @@
           "speaker": "dee",
           "text": "Wall.",
           "perform": "on the radio, level",
-          "dur": 0.9
+          "dur": 1,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
@@ -16491,13 +16628,15 @@
           "speaker": "dee",
           "text": "Zurich. Mm. Take the number. Don't read them the list.",
           "perform": "over the radio, a little out of breath",
-          "dur": 4.6
+          "dur": 4.8,
+          "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Nobody calls and gets told who's up there. Number. Name. Okafor at seven.",
           "perform": "over the radio, flat",
-          "dur": 6.3
+          "dur": 6.4,
+          "treatment": "radio"
         },
         {
           "speaker": "narrator",
