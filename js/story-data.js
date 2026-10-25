@@ -2068,38 +2068,38 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath.",
        "file": "/night-shift/handover/media/line-1.mp3",
-       "dur": 1
+       "dur": 9.9
       },
       {
        "speaker": "okafor",
        "text": "So. Let's walk through the log. I have a train.",
        "sfx": "tablet-tap",
        "file": "/night-shift/handover/media/line-2.mp3",
-       "dur": 0.9
+       "dur": 3
       },
       {
        "speaker": "okafor",
        "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
        "file": "/night-shift/handover/media/line-3.mp3",
-       "dur": 1.7
+       "dur": 6.9
       },
       {
        "speaker": "okafor",
        "text": "Forty-four. Water in the closet. Monitored.",
        "file": "/night-shift/handover/media/line-4.mp3",
-       "dur": 1.1
+       "dur": 3.4
       },
       {
        "speaker": "okafor",
        "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
        "file": "/night-shift/handover/media/line-5.mp3",
-       "dur": 3.3
+       "dur": 5.5
       },
       {
        "speaker": "okafor",
        "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
        "file": "/night-shift/handover/media/line-6.mp3",
-       "dur": 2.2
+       "dur": 6.2
       },
       {
        "speaker": "dee",
@@ -2112,13 +2112,13 @@ window.ILTV_STORIES = {
        "speaker": "okafor",
        "text": "Dolores. You can say hello.",
        "file": "/night-shift/handover/media/line-8.mp3",
-       "dur": 0.3
+       "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Hello. Sit anywhere that isn't mine.",
        "file": "/night-shift/handover/media/line-9.mp3",
-       "dur": 0.8
+       "dur": 3.1
       },
       {
        "speaker": "dee",
@@ -2131,13 +2131,13 @@ window.ILTV_STORIES = {
        "speaker": "okafor",
        "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
        "file": "/night-shift/handover/media/line-11.mp3",
-       "dur": 1.9
+       "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Extinguisher. Mm-hm. Your train, Okafor.",
        "file": "/night-shift/handover/media/line-12.mp3",
-       "dur": 1.4
+       "dur": 4.1
       }
      ],
      "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer.",
@@ -13600,19 +13600,19 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Three twenty-eight. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one.",
        "file": "/night-shift/coat-lobby/media/line-1.mp3",
-       "dur": 1.1
+       "dur": 9.9
       },
       {
        "speaker": "narrator",
        "text": "On tile one a man in a long dark coat comes through with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again.",
        "file": "/night-shift/coat-lobby/media/line-2.mp3",
-       "dur": 1.3
+       "dur": 11.3
       },
       {
        "speaker": "pierce",
        "text": "Evening. Don't get up.",
        "file": "/night-shift/coat-lobby/media/line-3.mp3",
-       "dur": 0.8
+       "dur": 1.7
       }
      ],
      "log": "0328 hrs. Lobby. Chairman P. Hawkes arrived by the revolving door, proceeding to the elevators.",
@@ -13723,20 +13723,20 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You stand. \"Sir. After hours, I need you to sign in.\" He stops. For a second he looks at you the way you look at a tile.",
        "file": "/night-shift/pierce-signin/media/line-1.mp3",
-       "dur": 0.5
+       "dur": 9.4
       },
       {
        "speaker": "pierce",
        "text": "Fair. Fifty-eight. I own it. Put that in your log.",
        "file": "/night-shift/pierce-signin/media/line-2.mp3",
-       "dur": 0.5
+       "dur": 5.5
       },
       {
        "speaker": "narrator",
        "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0330. In. He does not write the Out column.",
        "sfx": "pencil",
        "file": "/night-shift/pierce-signin/media/line-3.mp3",
-       "dur": 0.8
+       "dur": 10.9
       }
      ],
      "log": "0330 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception.",
