@@ -1830,23 +1830,23 @@ window.ILTV_STORIES = {
       },
       "desk-visitor": {
        "desc": "The lobby desk: a young officer leaning over it, and a man in a hi-vis vest with a clipboard on the other side.",
-       "image": "/night-shift/media/standin/feeds/c1-desk-visitor.svg"
+       "image": "/night-shift/media/feeds/c1-desk-visitor.png"
       },
       "laptop": {
        "desc": "The bench by the window with a closed laptop and a lanyard left on it, nobody near.",
-       "image": "/night-shift/media/standin/feeds/c1-laptop.svg"
+       "image": "/night-shift/media/feeds/c1-laptop.png"
       },
       "coat": {
        "desc": "A man in a long dark coat crossing the lobby toward the elevators, phone in hand, not looking at the camera.",
-       "image": "/night-shift/media/standin/feeds/c1-coat.svg"
+       "image": "/night-shift/media/feeds/c1-coat.png"
       },
       "box": {
        "desc": "A cardboard box on the lobby desk, a courier's hand just leaving the frame.",
-       "image": "/night-shift/media/standin/feeds/c1-box.svg"
+       "image": "/night-shift/media/feeds/c1-box.png"
       },
       "dawn": {
        "desc": "The lobby in grey early light at the revolving door, the first shapes of the day staff beyond the glass.",
-       "image": "/night-shift/media/standin/feeds/c1-dawn.svg"
+       "image": "/night-shift/media/feeds/c1-dawn.png"
       }
      }
     },
@@ -1860,11 +1860,11 @@ window.ILTV_STORIES = {
       },
       "sleeper": {
        "desc": "The vestibule ledge with a man lying along it under a worn coat, his shoes together, frost at the corners of the glass.",
-       "image": "/night-shift/media/standin/feeds/c2-sleeper.svg"
+       "image": "/night-shift/media/feeds/c2-sleeper.png"
       },
       "empty-cold": {
        "desc": "The vestibule with a folded coat's worth of damp on the ledge and the outer door still swinging shut.",
-       "image": "/night-shift/media/standin/feeds/c2-empty-cold.svg"
+       "image": "/night-shift/media/feeds/c2-empty-cold.png"
       }
      }
     },
@@ -1878,7 +1878,7 @@ window.ILTV_STORIES = {
       },
       "van": {
        "desc": "The rollup door half raised, a white van's lights beyond it, a man in a cap standing at the intercom with a box.",
-       "image": "/night-shift/media/standin/feeds/c3-van.svg"
+       "image": "/night-shift/media/feeds/c3-van.png"
       }
      }
     },
@@ -1892,7 +1892,7 @@ window.ILTV_STORIES = {
       },
       "wedge": {
        "desc": "The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge.",
-       "image": "/night-shift/media/standin/feeds/c4-wedge.svg"
+       "image": "/night-shift/media/feeds/c4-wedge.png"
       }
      }
     },
@@ -1906,11 +1906,11 @@ window.ILTV_STORIES = {
       },
       "stuck": {
        "desc": "The four elevators; the indicator over one car frozen between 30 and 31, its doors closed, the call light lit.",
-       "image": "/night-shift/media/standin/feeds/c5-stuck.svg"
+       "image": "/night-shift/media/feeds/c5-stuck.png"
       },
       "cart": {
        "desc": "The four elevators with a cleaning cart parked in front of them, bags tied on the rail.",
-       "image": "/night-shift/media/standin/feeds/c5-cart.svg"
+       "image": "/night-shift/media/feeds/c5-cart.png"
       }
      }
     },
@@ -1924,15 +1924,15 @@ window.ILTV_STORIES = {
       },
       "reader": {
        "desc": "A woman in a cleaner's smock and a younger man holding a mop bucket stand at a badge reader beside a door.",
-       "image": "/night-shift/media/standin/feeds/c6-reader.svg"
+       "image": "/night-shift/media/feeds/c6-reader.png"
       },
       "leak": {
        "desc": "The janitor's closet door at the end of the corridor with a dark stain spreading across the carpet from its sill.",
-       "image": "/night-shift/media/standin/feeds/c6-leak.svg"
+       "image": "/night-shift/media/feeds/c6-leak.png"
       },
       "papers": {
        "desc": "A woman holding a sheet of paper up toward the camera, the young man behind her with the bucket.",
-       "image": "/night-shift/media/standin/feeds/c6-papers.svg"
+       "image": "/night-shift/media/feeds/c6-papers.png"
       }
      }
     },
@@ -1946,7 +1946,7 @@ window.ILTV_STORIES = {
       },
       "coat": {
        "desc": "The reception lit, a man in a long dark coat crossing it toward the glass doors, phone in hand.",
-       "image": "/night-shift/media/standin/feeds/c7-coat.svg"
+       "image": "/night-shift/media/feeds/c7-coat.png"
       }
      }
     },
@@ -1970,11 +1970,11 @@ window.ILTV_STORIES = {
       },
       "frozen": {
        "desc": "The same alcove, the picture caught with a faint horizontal tear across it as if the signal has stopped.",
-       "image": "/night-shift/media/standin/feeds/c9-frozen.svg"
+       "image": "/night-shift/media/feeds/c9-frozen.png"
       },
       "trouble": {
        "desc": "The alcove with the repeater showing a steady amber light.",
-       "image": "/night-shift/media/standin/feeds/c9-trouble.svg"
+       "image": "/night-shift/media/feeds/c9-trouble.png"
       }
      }
     }
@@ -20270,7 +20270,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-under-review.png",
      "title": [
       "Under review",
       "Under review"
