@@ -3975,8 +3975,8 @@ async function nightSignoffRun(options, t) {
     t.scene("signoff: ways found");
     t.event("signoff-prepared", "ways to every ending found");
     const endings = Object.entries(st.scenes).filter(([id, sc]) => sc.ending && (!(options && options.only) || options.only === id));
-    const want = String((options && options.sizes) || "all"); // "all", "desktop", or part of a phone size's name ("portrait", "small", "landscape") to play just that frame
-    const sizes = want === "desktop" ? [["the desktop size", 0, 0]] : want === "all" ? [["the desktop size", 0, 0], ...VIEWPORTS.map(([w, h, name]) => [`${name} ${w}x${h}`, w, h])] : VIEWPORTS.filter(([, , name]) => name.includes(want)).map(([w, h, name]) => [`${name} ${w}x${h}`, w, h]);
+    const want = String((options && options.sizes) || "all").split(","); // "all", "desktop", or names ("desktop,portrait"; part of a phone size's name: portrait, small, landscape) to play just those
+    const sizes = [["the desktop size", 0, 0], ...VIEWPORTS.map(([w, h, name]) => [`${name} ${w}x${h}`, w, h])].filter(([name]) => want.includes("all") || (name === "the desktop size" ? want.includes("desktop") : want.some((x) => name.includes(x))));
     t.scene(`signoff: ${endings.length} endings at ${sizes.length} sizes, first play next`);
     t.metric("endings", endings.length);
     t.metric("sizes", sizes.length);

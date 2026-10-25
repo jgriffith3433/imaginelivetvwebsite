@@ -1823,6 +1823,15 @@ figure.feed { cursor: default; }
   .console-panel { align-self: stretch; }
 }
 
+/* The end screen on a portrait phone fits with no scroll: a smaller card, a tighter name and subtitles, and a wall as wide as the height allows. */
+@media (orientation: portrait) {
+  .console[data-state="soon"] .console-endcard { max-height: 16dvh; margin-bottom: 0.2rem; }
+  .console[data-state="soon"] .console-ending { padding: 0.2rem; font-size: 1rem; line-height: 1.25; }
+  .console[data-state="soon"][data-lines="done"] .console-subs { min-height: 2.6rem; max-height: 3.2rem; }
+  .console[data-state="soon"] .console-panel { gap: 0.25rem; }
+  .console[data-state="soon"] .console-wall { width: min(100%, 35dvh); justify-self: center; }
+}
+
 /* Once the lines are heard, the choices (and the end screen) take what the subtitles need less, on any screen. */
 .console[data-lines="done"] .console-subs { max-height: 40dvh; }
 .console-endcard { max-height: 40dvh; }
