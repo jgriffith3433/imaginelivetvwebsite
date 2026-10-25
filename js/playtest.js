@@ -1336,7 +1336,73 @@ async function cctvArt(options, t) {
   if (tiles.length !== st.cameras.length) t.problem("bug", `the wall shows ${tiles.length} tiles for ${st.cameras.length} cameras`);
   else if (loaded.length !== tiles.length) t.problem("bug", `${tiles.length - loaded.length} of ${tiles.length} wall tiles show no picture`);
   else t.event("wall", `all ${tiles.length} tiles show their picture`);
+  // Then every state as a viewer sees it: play to scenes that show each (camera, state) and enlarge that feed.
+  if (options.at !== "wall") await cctvStates(t, st, used);
   await toLanding(t);
+}
+
+/** Plays the fewest ways (real presses) that reach a scene for every camera state the script uses; at each scene
+    presses every feed whose state hasn't been shown yet and checks the enlarged picture is that state's own, loaded. */
+async function cctvStates(t, st, used) {
+  const R = rulesOf();
+  const x = R.explore(st, { cap: st.stateCap || 50000 });
+  const ways = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })));
+  const pairsOf = (way) => new Set(way.path.flatMap((id) => Object.entries(R.feedsOf(st, st.scenes[id])).map(([c, s]) => `${c}/${s}`)));
+  const want = new Set(st.cameras.flatMap((c) => [...new Set(["normal", ...(used[c.id] || [])])].map((s) => `${c.id}/${s}`)));
+  const plan = [];
+  const covered = new Set();
+  const scored = ways.map((w) => ({ w, pairs: pairsOf(w) }));
+  while ([...want].some((p) => !covered.has(p))) {
+    let best = null, gain = 0;
+    for (const c of scored) {
+      const g = [...c.pairs].filter((p) => want.has(p) && !covered.has(p)).length;
+      if (g > gain || (g === gain && g && best && c.w.picks.length < best.w.picks.length)) { best = c; gain = g; }
+    }
+    if (!best) break;
+    plan.push(best.w);
+    best.pairs.forEach((p) => covered.add(p));
+  }
+  for (const p of want) if (!covered.has(p)) t.problem("bug", `${st.id}: no way through the story shows ${p}`);
+  t.note(`${st.title}: ${want.size} camera states, ${plan.length} ways played to show them`);
+  const shownPairs = new Set();
+  const showScene = async (m, where) => {
+    const feeds = R.feedsOf(st, st.scenes[m.scene]);
+    for (const cam of st.cameras) {
+      const state = feeds[cam.id], key = `${cam.id}/${state}`;
+      if (shownPairs.has(key) || !want.has(key)) continue;
+      const tile = document.querySelector(`#console-wall .feed[data-camera="${cam.id}"]`);
+      if (!tile) { t.problem("bug", `${where}: no tile for ${cam.id}`); continue; }
+      if (window.iltvConsole.selected()) await tapAt(t, document.querySelector(`#console-wall .feed[data-camera="${window.iltvConsole.selected()}"]`), "shrink the enlarged feed");
+      await tapAt(t, document.querySelector(`#console-wall .feed[data-camera="${cam.id}"]`), `feed ${cam.id} (${state})`);
+      await sleep(250);
+      const big = $("console-big");
+      const img = big.querySelector("img");
+      const want_ = (cam.states[state] || {}).image;
+      if (big.hidden || big.dataset.camera !== cam.id || big.dataset.state !== state) t.problem("bug", `${where}: pressing ${cam.id} didn't enlarge its ${state} feed`);
+      else if (!img || !want_ || !img.src.endsWith(want_.replace(/^\.?\//, "")) || !(await waitFor(() => img.complete && img.naturalWidth > 0, 3000))) t.problem("bug", `${where}: the enlarged ${cam.id} ${state} feed shows no picture of its own`);
+      else {
+        shownPairs.add(key);
+        t.event("camera-state", `${cam.id} ${cam.name} ${state}: ${img.naturalWidth}x${img.naturalHeight} ${want_}`);
+        await sleep(400);
+      }
+    }
+    if (window.iltvConsole.selected()) await tapAt(t, document.querySelector(`#console-wall .feed[data-camera="${window.iltvConsole.selected()}"]`), "shrink the enlarged feed");
+  };
+  let n = 0;
+  for (const way of plan) {
+    await consoleFresh(t, st);
+    const m = consoleModel(st);
+    const where = `${st.id}: ${way.path.join(" > ")}`;
+    t.scene(where);
+    await consoleHeard(t, document, where);
+    await showScene(m, where);
+    for (const i of way.picks) {
+      await consoleChoose(t, st, m, i, document, where, new Set());
+      await showScene(m, where);
+    }
+    t.progress(++n / plan.length);
+  }
+  t.event("camera-states", `${shownPairs.size} of ${want.size} camera states shown enlarged, each from its own picture`);
 }
 
 /* ---------------- credits: "Powered by HAWKES GEN" on every page, the parent company on the home page ---------------- */
@@ -3269,9 +3335,9 @@ installPlaytest({
     {
       id: "cctv-art",
       title: "Night Shift's camera wall art: every camera has a picture for every state the script uses, one look and one room per camera; every ending has an end card; the landing card has its image",
-      seconds: 30,
+      seconds: 480,
       tags: ["full"],
-      description: "Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
+      description: "Then plays real presses to scenes that show every camera state and enlarges each one (option {\"at\":\"wall\"} skips that). Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
     },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {
