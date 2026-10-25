@@ -2751,10 +2751,10 @@ async function crawlConsolePages(t, st, done, total) {
 /* ---------------- Night Shift: the whole night (story/night-shift.json), by its numbers and by real presses ---------------- */
 
 /** How long each way through the night is to listen to, on the shared state rules: the shortest, the longest and the
-    average (every open choice equally likely). A line is its words at 150 a minute plus a pause (the build's own `dur`). */
+    average (every open choice equally likely). A line is its recording (the build's own `dur`) plus the player's 0.35 s gap before the next (`GAP` in js/console.js). */
 function nightLengths(st) {
   const R = rulesOf();
-  const dur = Object.fromEntries(Object.entries(st.scenes).map(([id, sc]) => [id, sc.lines.reduce((a, l) => a + (l.dur || 0), 0)]));
+  const dur = Object.fromEntries(Object.entries(st.scenes).map(([id, sc]) => [id, sc.lines.reduce((a, l) => a + (l.dur || 0) + 0.35, 0)]));
   const memo = new Map();
   const go = (id, state) => {
     const key = `${id}#${R.stateKey(state)}`;
