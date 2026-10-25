@@ -64,7 +64,7 @@ const KEYWORDS = new Set('if for while switch catch function return typeof await
 const GLOBALS = new Set(`Array Object String Number Boolean Math JSON Date RegExp Error TypeError RangeError Promise Map Set WeakMap WeakSet Symbol
   parseInt parseFloat isNaN isFinite encodeURIComponent decodeURIComponent encodeURI decodeURI setTimeout clearTimeout setInterval clearInterval
   requestAnimationFrame cancelAnimationFrame fetch atob btoa structuredClone queueMicrotask URL URLSearchParams Blob Image Audio AudioContext
-  OfflineAudioContext Event CustomEvent MouseEvent PointerEvent KeyboardEvent TouchEvent DOMParser PopStateEvent HashChangeEvent InputEvent FocusEvent Promise getComputedStyle matchMedia alert
+  OfflineAudioContext Event CustomEvent MouseEvent PointerEvent KeyboardEvent TouchEvent DOMParser Response PopStateEvent HashChangeEvent InputEvent FocusEvent Promise getComputedStyle matchMedia alert
   MutationObserver IntersectionObserver ResizeObserver XMLHttpRequest Uint8Array Float32Array Int16Array ArrayBuffer DataView Intl BigInt Proxy Reflect`.split(/\s+/));
 
 const src = fs.readFileSync(path.join(ROOT, 'js/playtest.js'), 'utf8');
