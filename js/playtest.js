@@ -3856,8 +3856,8 @@ async function nightGapsRun(options, t) {
     page's own size and in a frame at 390x844, 360x640 and 844x390. At each ending: the minutes of audio the way holds
     (from the recordings), the ending shown, nothing running off the side or hidden (consoleFit), and at every scene the
     choices on screen are exactly the ones whose conditions hold (consoleCheck).
-    Without `at` each way is played whole from a new run (about 50 minutes for all 48 plays: the T4's sign-off run).
-    `{"at":"last-choices"}` starts each play nearer (about 8 minutes): a SEEDED RUN (setup shortcut, event seeded-run) at
+    `{"at":"whole"}` plays each way whole from a new run (about 50 minutes for all 48 plays: the T4's sign-off run).
+    The default, like `{"at":"last-choices"}`, starts each play nearer (about 8 minutes): a SEEDED RUN (setup shortcut, event seeded-run) at
     the scene `back` choices (default 2) before the ending, then real presses of those choices and the ending's screen,
     at all four sizes. Options: {"story":"<id>","sizes":"desktop"|"all","only":"<ending scene>","at":"last-choices","back":2}. */
 const PLAY_LIMIT_FULL = 8 * 60 * 1000; // one ending from a new run (the longest shortest way holds ~400 lines, skipped)
@@ -3869,13 +3869,16 @@ async function nightSignoffRun(options, t) {
   if (!st) throw new Error("no console story night-shift in js/story-data.js");
   await passPrompt(t);
   clearProgress();
-  const near = !!options && options.at === "last-choices";
+  // The quick version is the default (under 10 minutes); the whole unseeded walk is {"at":"whole"}.
+  const near = !(options && options.at === "whole");
   const back = Math.max(1, Math.min(6, Number(options && options.back) || 2));
   const runStarted = performance.now();
-  if (near) t.event("start-at", `last-choices: each ending from a seeded run ${back} choice(s) before it`);
+  t.event("start-at", near ? `last-choices: each ending from a seeded run ${back} choice(s) before it` : "whole: every way pressed from a new run (about 50 minutes)");
   try {
+    t.event("signoff-prepare", "working out the state explorer's ways to every ending");
     const x = consoleExplore(st);
     const lengths = nightLengths(st);
+    t.event("signoff-prepared", "ways to every ending found");
     const endings = Object.entries(st.scenes).filter(([id, sc]) => sc.ending && (!(options && options.only) || options.only === id));
     const sizes = [["the desktop size", 0, 0], ...((options && options.sizes) === "desktop" ? [] : VIEWPORTS.map(([w, h, name]) => [`${name} ${w}x${h}`, w, h]))];
     t.metric("endings", endings.length);
@@ -3899,6 +3902,7 @@ async function nightSignoffRun(options, t) {
         const at = (what) => {
           step = what;
           t.note(`night-shift-signoff: ${label}: ${what}`);
+          t.event("signoff-step", `${label}: ${what}`); // an event is progress for the stuck detector; a note is not
           if (performance.now() - started > limit) throw new Error(`${label}: over ${Math.round(limit / 1000)} s, stopped at "${what}"`);
         };
         t.event("signoff-start", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices${seedLen ? `, ${seedLen} seeded` : ""} (play ${done + skipped + 1} of ${endings.length * sizes.length})`);
@@ -3959,7 +3963,7 @@ async function nightSignoffRun(options, t) {
     t.metric("endingsPlayed", done);
     const minutes = (performance.now() - runStarted) / 60000;
     t.metric("signoffMinutes", Number(minutes.toFixed(1)));
-    t.event("signoff-time", `${done} plays in ${minutes.toFixed(1)} minutes (${near ? "last-choices: under 10 minutes" : "whole ways: the scenario declares 1500 s, the runner allows twice that"})`);
+    t.event("signoff-time", `${done} plays in ${minutes.toFixed(1)} minutes (${near ? "last-choices: under 10 minutes" : "whole ways: about 50 minutes, an explicit option"})`);
     if (near && minutes >= 10) t.problem("bug", `night-shift-signoff at last-choices took ${minutes.toFixed(1)} minutes, over the 10 it has`);
     if (skipped) t.problem("bug", `${skipped} of ${endings.length * sizes.length} sign-off plays stopped before the ending (see the signoff-stopped events)`);
     else t.event("criterion", `${endings.length} endings played to the end at ${sizes.length} sizes (${sizes.map((z) => z[0]).join(", ")}): ${done} plays`);
@@ -4447,10 +4451,10 @@ installPlaytest({
     {
       id: "night-shift-signoff",
       title: "Night Shift sign-off: every ending played to the end with real presses at the desktop size and at 390x844, 360x640 and 844x390, with its minutes of audio, the ending shown and nothing off screen",
-      seconds: 1500,
+      seconds: 480,
       tags: ["full"],
-      starts: ["last-choices"],
-      description: "Opens Night Shift by its link under its own Tap to play. For each of its 12 endings it plays the shortest way with real presses (Skip line moves the lines along; every choice is a press checked against the data: the buttons on screen are exactly the choices whose conditions hold), once on the page at its own size and once in a frame at 390x844, 360x640 and 844x390. At each ending it logs the minutes of audio that way holds (from the recordings), checks the ending is shown and that nothing runs off the side, is hidden or is smaller than a 44px target. Without options each way is played whole from a new run (about 50 minutes). {\"at\":\"last-choices\"} (about 8 minutes) starts each play from a seeded run (named setup shortcut, event seeded-run) 2 choices before the ending, then presses those and checks the end screen at the four sizes; {\"back\":4} makes it 4 choices. Other options: {\"sizes\":\"desktop\"} for the page's own size only, {\"only\":\"end-wedge\"} for one ending.",
+      starts: ["last-choices", "whole"],
+      description: "Opens Night Shift by its link under its own Tap to play. For each of its 12 endings it plays the shortest way with real presses (Skip line moves the lines along; every choice is a press checked against the data: the buttons on screen are exactly the choices whose conditions hold), once on the page at its own size and once in a frame at 390x844, 360x640 and 844x390. At each ending it logs the minutes of audio that way holds (from the recordings), checks the ending is shown and that nothing runs off the side, is hidden or is smaller than a 44px target. By default (and with {\"at\":\"last-choices\"}, about 8 minutes) each play starts from a seeded run (named setup shortcut, event seeded-run) 2 choices before the ending, then presses those and checks the end screen at the four sizes; {\"back\":4} makes it 4 choices. {\"at\":\"whole\"} plays each way whole from a new run (about 50 minutes, the T4's full sign-off). Other options: {\"sizes\":\"desktop\"} for the page's own size only, {\"only\":\"end-wedge\"} for one ending.",
     },
     {
       id: "cctv-art",
