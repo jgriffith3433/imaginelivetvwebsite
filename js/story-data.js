@@ -7334,7 +7334,7 @@ window.ILTV_STORIES = {
       [
        "Do as she says",
        "Do as she says",
-       "terrell-goodbye",
+       "desk-tailgate",
        {
         "add": {
          "trainer_warmth": 1
@@ -7407,9 +7407,9 @@ window.ILTV_STORIES = {
      "log": "2224 hrs. Lobby. Contractor refused, no authorization for 40. Left the building.",
      "choices": [
       [
-       "Say goodnight to Terrell",
-       "Say goodnight to Terrell",
-       "terrell-goodbye",
+       "Back to the wall",
+       "Back to the wall",
+       "desk-tailgate",
        {
         "add": {
          "trainer_trust": 1
@@ -7489,7 +7489,7 @@ window.ILTV_STORIES = {
       [
        "Walk back to the wall",
        "Walk back to the wall",
-       "terrell-goodbye",
+       "desk-tailgate",
        {
         "log": "Returned to the control room after the contractor was signed in."
        }
@@ -8094,7 +8094,7 @@ window.ILTV_STORIES = {
       [
        "Take your seat",
        "Take your seat",
-       "okafor-call",
+       "cover-wall",
        {
         "log": "Took your seat at the wall."
        }
@@ -8462,7 +8462,7 @@ window.ILTV_STORIES = {
       [
        "Take your seat",
        "Take your seat",
-       "okafor-call",
+       "cover-wall",
        {
         "log": "Returned the page to the drawer and took your seat."
        }
@@ -8529,7 +8529,7 @@ window.ILTV_STORIES = {
       [
        "Say it back to her",
        "Say it back to her",
-       "okafor-call",
+       "cover-wall",
        {
         "add": {
          "trainer_warmth": 1
@@ -8643,7 +8643,7 @@ window.ILTV_STORIES = {
       [
        "Take your seat",
        "Take your seat",
-       "okafor-call",
+       "cover-wall",
        {
         "log": "Took your seat at the wall."
        }
@@ -8698,7 +8698,7 @@ window.ILTV_STORIES = {
       [
        "Take your seat",
        "Take your seat",
-       "okafor-call",
+       "cover-wall",
        {
         "log": "Took your seat at the wall."
        }
@@ -13032,28 +13032,8 @@ window.ILTV_STORIES = {
       [
        "Let her go",
        "Let her go",
-       "dev-stuck",
+       "flicker",
        {
-        "forbids": [
-         "met_dev"
-        ],
-        "add": {
-         "trainer_trust": 1
-        },
-        "log": "Let D. Reyes go up alone, as she asked."
-       }
-      ],
-      [
-       "Let her go",
-       "Let her go",
-       "dev-stuck-met",
-       {
-        "requires": [
-         "met_dev"
-        ],
-        "clear": [
-         "met_dev"
-        ],
         "add": {
          "trainer_trust": 1
         },
@@ -13114,28 +13094,8 @@ window.ILTV_STORIES = {
       [
        "Take the wall",
        "Take the wall",
-       "dev-stuck",
+       "flicker",
        {
-        "forbids": [
-         "met_dev"
-        ],
-        "add": {
-         "trainer_trust": 1
-        },
-        "log": "Took the wall."
-       }
-      ],
-      [
-       "Take the wall",
-       "Take the wall",
-       "dev-stuck-met",
-       {
-        "requires": [
-         "met_dev"
-        ],
-        "clear": [
-         "met_dev"
-        ],
         "add": {
          "trainer_trust": 1
         },
@@ -14952,7 +14912,7 @@ window.ILTV_STORIES = {
       [
        "Look at the wall",
        "Look at the wall",
-       "courier-intercom",
+       "dev-signout",
        {
         "log": "Looked at the wall."
        }
@@ -15299,7 +15259,7 @@ window.ILTV_STORIES = {
       [
        "Initial the log beside hers",
        "Initial the log beside hers",
-       "courier-intercom",
+       "dev-signout",
        {
         "add": {
          "trainer_trust": 1
@@ -15368,7 +15328,7 @@ window.ILTV_STORIES = {
       [
        "Initial the log beside hers",
        "Initial the log beside hers",
-       "courier-intercom",
+       "dev-signout",
        {
         "add": {
          "trainer_trust": 1
@@ -15437,7 +15397,7 @@ window.ILTV_STORIES = {
       [
        "Initial the log beside hers",
        "Initial the log beside hers",
-       "courier-intercom",
+       "dev-signout",
        {
         "add": {
          "trainer_trust": 1
@@ -15506,7 +15466,7 @@ window.ILTV_STORIES = {
       [
        "Correct the entry now",
        "Correct the entry now",
-       "courier-intercom",
+       "dev-signout",
        {
         "clear": [
          "lied"
@@ -15520,7 +15480,7 @@ window.ILTV_STORIES = {
       [
        "Initial the log beside hers",
        "Initial the log beside hers",
-       "courier-intercom",
+       "dev-signout",
        {
         "add": {
          "trainer_trust": 1
@@ -17369,37 +17329,11 @@ window.ILTV_STORIES = {
      "log": "0530 hrs. Cleaning crew off floors. Dawn. Shift log opened for review.",
      "choices": [
       [
-       "Open the log",
-       "Open the log",
-       "write-up-clean",
+       "Look at the plate",
+       "Look at the plate",
+       "the-rice",
        {
-        "forbids": [
-         "lied",
-         "opined"
-        ]
-       }
-      ],
-      [
-       "Open the log",
-       "Open the log",
-       "write-up-sloppy",
-       {
-        "requires": [
-         "opined"
-        ],
-        "forbids": [
-         "lied"
-        ]
-       }
-      ],
-      [
-       "Open the log",
-       "Open the log",
-       "write-up-lied",
-       {
-        "requires": [
-         "lied"
-        ]
+        "log": "Looked at the plate on the shelf."
        }
       ]
      ]
@@ -20359,6 +20293,1148 @@ window.ILTV_STORIES = {
       "Under review."
      ],
      "choices": []
+    },
+    "desk-tailgate": {
+     "folder": "night-shift/desk-tailgate",
+     "lang": "en",
+     "dir": "",
+     "time": "22:38",
+     "title": [
+      "One badge",
+      "One badge"
+     ],
+     "ambience": "lobby",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "22:38. On tile one a woman in a grey coat taps her badge at the turnstile and the glass arms open. A man in a puffer jacket steps through close behind her, the way you step through for someone holding a door.",
+       "sfx": "door-buzz",
+       "file": null,
+       "dur": 17.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "Hey, hey, evening! Cold one, huh? Cold out, you know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "One badge. Two people.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "The woman keeps walking. The man looks at the desk, at the elevators, at nothing. The arms close behind him.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Your wall.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "2238 hrs. Lobby turnstile. One badge, two people.",
+     "choices": [
+      [
+       "Radio Terrell: second badge",
+       "Radio Terrell: second badge",
+       "tailgate-radio",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Radioed Terrell Banks that a second person had entered on one badge."
+       }
+      ],
+      [
+       "Follow him on the wall",
+       "Follow him on the wall",
+       "tailgate-watch",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Followed the unbadged man on the wall."
+       }
+      ],
+      [
+       "Say nothing, write it later",
+       "Say nothing, write it later",
+       "tailgate-quiet",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Let a second person pass the turnstile without a word."
+       }
+      ]
+     ]
+    },
+    "tailgate-radio": {
+     "folder": "night-shift/tailgate-radio",
+     "lang": "en",
+     "dir": "",
+     "time": "22:40",
+     "title": [
+      "Floor, please",
+      "Floor, please"
+     ],
+     "ambience": "lobby",
+     "lines": [
+      {
+       "speaker": "terrell",
+       "text": "Post one, hey. The guy behind her? I figured he was hers. You know?",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile one Terrell comes round the desk and stops the man at the elevators with two fingers raised, like a man asking for a light. The man takes out a card. A visitor pass, dated Tuesday.",
+       "file": null,
+       "dur": 15.8
+      },
+      {
+       "speaker": "terrell",
+       "text": "Okay. Okay! Thirty-four? Who for? Let me see what I can do.",
+       "sfx": "phone-ring",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Terrell walks him back to the sheet and turns it round for him. It is the first time all week you have seen him hold the pen himself.",
+       "file": null,
+       "dur": 12.2
+      }
+     ],
+     "log": "2240 hrs. Lobby. T. Banks stopped the second person at the elevators; visitor pass dated Tuesday.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "terrell-goodbye",
+       {
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "tailgate-watch": {
+     "folder": "night-shift/tailgate-watch",
+     "lang": "en",
+     "dir": "",
+     "time": "22:40",
+     "title": [
+      "Thirty-four",
+      "Thirty-four"
+     ],
+     "ambience": "lobby",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You keep your eyes on him. He rides car one. The numbers over the door go up, one at a time, and stop on thirty-four.",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "narrator",
+       "text": "You write the time on your hand because the tablet is across the room: 22:38, thirty-four, grey coat, puffer jacket.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Thirty-four is insurance. Marsh works late.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Next time he gets a name on the sheet before he gets an elevator.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "She slides the tablet across the desk to you. The incident field is empty. It will be your hand in it, not hers.",
+       "file": null,
+       "dur": 10.2
+      }
+     ],
+     "log": "2240 hrs. Control room. Second person rode car one to floor 34.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "terrell-goodbye",
+       {
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "tailgate-quiet": {
+     "folder": "night-shift/tailgate-quiet",
+     "lang": "en",
+     "dir": "",
+     "time": "22:40",
+     "title": [
+      "Nothing",
+      "Nothing"
+     ],
+     "ambience": "lobby",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You say nothing. The man gets his elevator.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Dolores writes nothing either. She looks at the turnstile, at the clock, at you. The clock says 22:41. It is 22:39.",
+       "sfx": "clock-tick",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Thirty-four. I saw.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "2240 hrs. Control room. No action taken on the second person.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "terrell-goodbye",
+       {
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "cover-wall": {
+     "folder": "night-shift/cover-wall",
+     "lang": "en",
+     "dir": "",
+     "time": "23:56",
+     "title": [
+      "Tile five",
+      "Tile five"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "23:56. Dolores gets up, takes the folded newspaper from the shelf, and lays it flat against the glass of tile five. It covers the whole picture.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Five. Don't look. What was on it?",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "You saw tile five an hour ago. Elevators, a plant, a call panel, a light. Dolores holds the paper where it is and waits.",
+       "file": null,
+       "dur": 10.6
+      }
+     ],
+     "log": "2356 hrs. Control room. Tile five covered for a memory check.",
+     "choices": [
+      [
+       "Four cars and a plant",
+       "Four cars and a plant",
+       "cover-right",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Described tile five from memory: four cars, a plant."
+       }
+      ],
+      [
+       "Some elevators",
+       "Some elevators",
+       "cover-vague",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Described tile five from memory as \"some elevators\"."
+       }
+      ],
+      [
+       "Ask for a hint",
+       "Ask for a hint",
+       "cover-hint",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Reyes for a hint about tile five."
+       }
+      ]
+     ]
+    },
+    "cover-right": {
+     "folder": "night-shift/cover-right",
+     "lang": "en",
+     "dir": "",
+     "time": "23:58",
+     "title": [
+      "The leaf",
+      "The leaf"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Four cars. A plant.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Left side, the plant has a dead leaf. You didn't see the leaf.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "She lifts the paper. The leaf is there, brown, low on the left. It has been there all night.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Tomorrow you'll see the leaf.",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "2358 hrs. Control room. Tile five described correctly.",
+     "choices": [
+      [
+       "Take your seat",
+       "Take your seat",
+       "okafor-call",
+       {
+        "log": "Take your seat."
+       }
+      ]
+     ]
+    },
+    "cover-vague": {
+     "folder": "night-shift/cover-vague",
+     "lang": "en",
+     "dir": "",
+     "time": "23:58",
+     "title": [
+      "Some elevators",
+      "Some elevators"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Elevators.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "How many? What colour is the light?",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "You don't know. She holds the paper against the glass longer than she needs to and lets you not know it.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. That is what the log would say. \"Some elevators.\"",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "2358 hrs. Control room. Tile five could not be described.",
+     "choices": [
+      [
+       "Take your seat",
+       "Take your seat",
+       "okafor-call",
+       {
+        "log": "Take your seat."
+       }
+      ]
+     ]
+    },
+    "cover-hint": {
+     "folder": "night-shift/cover-hint",
+     "lang": "en",
+     "dir": "",
+     "time": "23:58",
+     "title": [
+      "No hints",
+      "No hints"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "A hint.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "At four in the morning there is no hint, Officer. There is the wall.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "She takes the paper down. Four cars. A plant with one brown leaf on the left. A light on the call panel, green.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Now you have a hint.",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "2358 hrs. Control room. Asked for a hint about tile five; shown the tile.",
+     "choices": [
+      [
+       "Take your seat",
+       "Take your seat",
+       "okafor-call",
+       {
+        "log": "Take your seat."
+       }
+      ]
+     ]
+    },
+    "flicker": {
+     "folder": "night-shift/flicker",
+     "lang": "en",
+     "dir": "",
+     "time": "03:01",
+     "title": [
+      "Lights",
+      "Lights"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:01. The lights drop and come back. All nine tiles go to snow together and settle again.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Power.",
+       "sfx": "radio-squelch",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I'm not riding anything tonight. Stairs. You stay on the wall.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "Tile five: four cars and a plant. All four numbers are lit. Then three of them are.",
+       "file": null,
+       "dur": 7.8
+      }
+     ],
+     "log": "0301 hrs. Control room. Power dip, all feeds.",
+     "choices": [
+      [
+       "Keep your eyes on five",
+       "Keep your eyes on five",
+       "flicker-look",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Kept watch on tile five after the lights dipped."
+       }
+      ],
+      [
+       "Check the fire panel",
+       "Check the fire panel",
+       "flicker-panel",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked the fire panel after the lights dipped."
+       }
+      ],
+      [
+       "Ask her to come down",
+       "Ask her to come down",
+       "flicker-ask",
+       {
+        "add": {
+         "trainer_warmth": 1,
+         "trainer_trust": -1
+        },
+        "log": "Asked D. Reyes to come down from the roof tour."
+       }
+      ]
+     ]
+    },
+    "flicker-look": {
+     "folder": "night-shift/flicker-look",
+     "lang": "en",
+     "dir": "",
+     "time": "03:01",
+     "title": [
+      "Car three",
+      "Car three"
+     ],
+     "ambience": "control-room-late",
+     "feeds": {
+      "c5": "stuck"
+     },
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You put your eyes on tile five and keep them there. Car three goes dark between thirty and thirty-one. It lights again. It stays on a number that is not a floor.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Say what you see.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "You say it. Car three, between thirty and thirty-one, 03:01. She says Mm and does not say anything else, which is how you know it is right.",
+       "file": null,
+       "dur": 11.8
+      }
+     ],
+     "log": "0301 hrs. Tile five. Car three stopped between 30 and 31.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "dev-stuck",
+       {
+        "forbids": [
+         "met_dev"
+        ],
+        "log": "Back to the wall."
+       }
+      ],
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "dev-stuck-met",
+       {
+        "requires": [
+         "met_dev"
+        ],
+        "clear": [
+         "met_dev"
+        ],
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "flicker-panel": {
+     "folder": "night-shift/flicker-panel",
+     "lang": "en",
+     "dir": "",
+     "time": "03:01",
+     "title": [
+      "All green",
+      "All green"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You turn to the fire panel beside the binder. Every light on it is green. It does not make a sound.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Panel?",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "You read her the lights, left to right. She lets you finish.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Then it's the building. Buildings do that.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile five, behind you, one of the four numbers has stopped changing.",
+       "file": null,
+       "dur": 6.2
+      }
+     ],
+     "log": "0301 hrs. Fire panel: all lights green.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "dev-stuck",
+       {
+        "forbids": [
+         "met_dev"
+        ],
+        "log": "Back to the wall."
+       }
+      ],
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "dev-stuck-met",
+       {
+        "requires": [
+         "met_dev"
+        ],
+        "clear": [
+         "met_dev"
+        ],
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "flicker-ask": {
+     "folder": "night-shift/flicker-ask",
+     "lang": "en",
+     "dir": "",
+     "time": "03:01",
+     "title": [
+      "Stairs",
+      "Stairs"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Wall.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I said. Wall.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The radio goes quiet. The stairwell carries her steps up from somewhere, one flight at a time. They don't speed up. They don't slow down.",
+       "sfx": "footsteps-stairs",
+       "file": null,
+       "dur": 11
+      }
+     ],
+     "log": "0301 hrs. D. Reyes continued the roof tour.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "dev-stuck",
+       {
+        "forbids": [
+         "met_dev"
+        ],
+        "log": "Back to the wall."
+       }
+      ],
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "dev-stuck-met",
+       {
+        "requires": [
+         "met_dev"
+        ],
+        "clear": [
+         "met_dev"
+        ],
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "dev-signout": {
+     "folder": "night-shift/dev-signout",
+     "lang": "en",
+     "dir": "",
+     "time": "04:18",
+     "title": [
+      "The sheet",
+      "The sheet"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "04:18. Someone knocks twice on the control-room door. It is Dev Anand, with his coat over his arm and his bag held against his chest.",
+       "file": null,
+       "dur": 11
+      },
+      {
+       "speaker": "dev",
+       "text": "Hi, sorry, it's Anand, from thirty-one, the elevator? I'm going home for two hours. Do I sign something?",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "He badged in at six. He didn't badge out.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0418 hrs. Control room. D. Anand at the door to sign out.",
+     "choices": [
+      [
+       "Sign him out",
+       "Sign him out",
+       "dev-out-sign",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Signed D. Anand out on the after-hours sheet."
+       }
+      ],
+      [
+       "Ask if he is all right",
+       "Ask if he is all right",
+       "dev-out-ask",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Asked D. Anand if he was all right."
+       }
+      ]
+     ]
+    },
+    "dev-out-sign": {
+     "folder": "night-shift/dev-out-sign",
+     "lang": "en",
+     "dir": "",
+     "time": "04:19",
+     "title": [
+      "Out 04:19",
+      "Out 04:19"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You find the line on the after-hours sheet. ANAND, D. 31. IN 18:02. You write the out time, 04:19, and turn the sheet for him to initial.",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "dev",
+       "text": "Sorry. Is that, I put it in the wrong box. Sorry.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "It's a box.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "He goes out through the revolving door into the cold, and it carries him round and out. One line on the sheet is closed that was open for ten hours and seventeen minutes.",
+       "file": null,
+       "dur": 14.2
+      }
+     ],
+     "log": "0419 hrs. D. Anand signed out, floor 31. In 1802, out 0419.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "courier-intercom",
+       {
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "dev-out-ask": {
+     "folder": "night-shift/dev-out-ask",
+     "lang": "en",
+     "dir": "",
+     "time": "04:19",
+     "title": [
+      "A little close",
+      "A little close"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You ask if he is all right. He opens his mouth to say fine, and doesn't.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dev",
+       "text": "It was a little close in there. Sorry. It's fine. Thank you. For staying on.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "Go home, Anand. Sleep two hours. Eat something.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "At the door he turns back to say something else. He says sorry instead, and the revolving door takes him.",
+       "file": null,
+       "dur": 9
+      }
+     ],
+     "log": "0419 hrs. D. Anand left the building. Asked if all right.",
+     "choices": [
+      [
+       "Back to the wall",
+       "Back to the wall",
+       "courier-intercom",
+       {
+        "log": "Back to the wall."
+       }
+      ]
+     ]
+    },
+    "the-rice": {
+     "folder": "night-shift/the-rice",
+     "lang": "en",
+     "dir": "",
+     "time": "05:34",
+     "title": [
+      "And the new one",
+      "And the new one"
+     ],
+     "ambience": "morning",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "05:34. The plate is on the shelf by the freezer, under foil. A sticky note is folded over the edge in Marisol's hand: DOLORES. EAT. Under it, smaller: and the new one.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "dee",
+       "text": "She wrote \"and.\"",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Eleven years, she never wrote \"and.\"",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "0534 hrs. Control room. Plate left on the shelf by M. Quintero.",
+     "choices": [
+      [
+       "Split it with her",
+       "Split it with her",
+       "rice-split",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Shared the plate Marisol Quintero left on the shelf."
+       }
+      ],
+      [
+       "Tell her it is hers",
+       "Tell her it is hers",
+       "rice-hers",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Left the plate for D. Reyes."
+       }
+      ],
+      [
+       "Log first, eat after",
+       "Log first, eat after",
+       "rice-log",
+       {
+        "add": {
+         "trainer_warmth": -1
+        },
+        "log": "Left the plate on the shelf until the log was written."
+       }
+      ]
+     ]
+    },
+    "rice-split": {
+     "folder": "night-shift/rice-split",
+     "lang": "en",
+     "dir": "",
+     "time": "05:36",
+     "title": [
+      "Two forks",
+      "Two forks"
+     ],
+     "ambience": "morning",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You take two forks from the drawer. She looks at them, and at you, and at the plate.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Don't tell Marisol.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The rice is cold and it is very good. She eats the way she does everything, to the edge, and leaves the last forkful where you can reach it.",
+       "file": null,
+       "dur": 12.6
+      }
+     ],
+     "log": "0536 hrs. Control room. Ate with D. Reyes.",
+     "choices": [
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-clean",
+       {
+        "forbids": [
+         "lied",
+         "opined"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "forbids": [
+         "lied"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-lied",
+       {
+        "requires": [
+         "lied"
+        ]
+       }
+      ]
+     ]
+    },
+    "rice-hers": {
+     "folder": "night-shift/rice-hers",
+     "lang": "en",
+     "dir": "",
+     "time": "05:36",
+     "title": [
+      "Hers",
+      "Hers"
+     ],
+     "ambience": "morning",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "It says two names.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "You tell her it is hers and you will eat later. She takes the plate down and stands there holding it, as though the weight were something she had to read.",
+       "file": null,
+       "dur": 13.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Later. I'll leave the foil.",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "0536 hrs. Control room. Plate left for D. Reyes.",
+     "choices": [
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-clean",
+       {
+        "forbids": [
+         "lied",
+         "opined"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "forbids": [
+         "lied"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-lied",
+       {
+        "requires": [
+         "lied"
+        ]
+       }
+      ]
+     ]
+    },
+    "rice-log": {
+     "folder": "night-shift/rice-log",
+     "lang": "en",
+     "dir": "",
+     "time": "05:36",
+     "title": [
+      "Later",
+      "Later"
+     ],
+     "ambience": "morning",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Log first.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The plate stays under its foil. The note stays folded over the edge. You can feel it there while you work, like a clock you are not allowed to look at.",
+       "file": null,
+       "dur": 13.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. It keeps.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "0536 hrs. Control room. Went to the log before the plate.",
+     "choices": [
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-clean",
+       {
+        "forbids": [
+         "lied",
+         "opined"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-sloppy",
+       {
+        "requires": [
+         "opined"
+        ],
+        "forbids": [
+         "lied"
+        ]
+       }
+      ],
+      [
+       "Open the log",
+       "Open the log",
+       "write-up-lied",
+       {
+        "requires": [
+         "lied"
+        ]
+       }
+      ]
+     ]
     }
    }
   }
