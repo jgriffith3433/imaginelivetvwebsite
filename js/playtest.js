@@ -1823,6 +1823,7 @@ async function analyticsRun(options, t) {
 /* ---------------- console stories (js/console.js): a wall of cameras, voiced lines, a state, a shift log ---------------- */
 
 const isConsole = (st) => !!st && st.type === "console";
+const consoleStories = () => allStories().filter(isConsole);
 const rulesOf = () => window.iltvConsoleRules;
 const RUN_KEY = "iltv.run.";
 const SUBS_KEY = "iltv.subtitles";
