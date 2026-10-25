@@ -341,11 +341,15 @@ function checkKit(t, st, chain, where, doc = document) {
 const unlocksCookie = (st) => `${st.cookie}Unlocked`;
 const cookiesOf = (st) => [st.cookie, unlocksCookie(st)];
 let savedCookie = null; // { name: "name=value" or "" }
+let savedRuns = null; // a console story's saved run (localStorage "iltv.run.<cookie>"): { key: text or null }
 function rememberProgress() {
+  savedRuns = Object.fromEntries(allStories().filter((st) => st.type === "console").map((st) => [`iltv.run.${st.cookie}`, localStorage.getItem(`iltv.run.${st.cookie}`)]));
   const jar = document.cookie.split(";").map((s) => s.trim());
   savedCookie = Object.fromEntries(allStories().flatMap(cookiesOf).map((name) => [name, jar.find((c) => c.startsWith(name + "=")) ?? ""]));
 }
 function restoreProgress() {
+  for (const [key, value] of Object.entries(savedRuns || {})) value == null ? localStorage.removeItem(key) : localStorage.setItem(key, value);
+  savedRuns = null;
   if (savedCookie == null) return;
   for (const [name, value] of Object.entries(savedCookie)) {
     document.cookie = value ? `${value}; Max-Age=${30 * 86400}; Path=/; SameSite=Lax` : `${name}=; Max-Age=0; Path=/`;
@@ -364,6 +368,7 @@ const GO = { start: "Play", mid: "Continue", end: "Start Over" };
 /** A fresh browser: every story's run and unlocks forgotten. */
 function clearProgress() {
   for (const name of allStories().flatMap(cookiesOf)) document.cookie = `${name}=; Max-Age=0; Path=/`;
+  for (const st of allStories()) if (st.type === "console") localStorage.removeItem(`iltv.run.${st.cookie}`);
 }
 
 /** What a story's unlocks cookie holds ({ seen, completed }), or null. */
@@ -513,7 +518,7 @@ async function openStory(t, id, { tap = true } = {}) {
 /** Back to the landing page with the player's "All stories" link. */
 async function toLanding(t) {
   if (landingShown()) return;
-  await tapAt(t, $("spark-stories"), "All stories");
+  await tapAt(t, $("console") && !$("console").hidden ? $("console-stories") : $("spark-stories"), "All stories");
   await sleep(300);
   if (!landingShown()) throw new Error("All stories didn't bring the landing page back");
   if (document.querySelector("#spark-video video")) t.problem("bug", "the story's video is still on the page after All stories");
@@ -708,6 +713,13 @@ async function branches(options, t) {
   t.metric("scenes", total);
   for (const st of list) {
     t.scene(st.title);
+    if (isConsole(st)) {
+      // A console story: the state explorer's ways, played (see consoleWalk).
+      await consoleOpen(t, st);
+      await consoleWalk(t, st, sums);
+      await toLanding(t);
+      continue;
+    }
     await openStory(t, st.id);
     checkHitTargets(t, document, st.title);
     await walkStory(t, st, sums, total);
@@ -977,6 +989,10 @@ async function storiesRun(options, t) {
   // saved place (a few choices in, then All stories and back) comes back with the same scene and counts.
   for (const st of allStories().filter((s) => !s.listed)) {
     t.scene(`${st.title}: draft, by its link`);
+    if (isConsole(st)) {
+      await consoleDraft(t, st);
+      continue;
+    }
     await openStory(t, st.id);
     if ($("spark-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("spark-title").textContent}"`);
     await toStart(t);
@@ -1127,7 +1143,7 @@ async function pages(options, t) {
   const list = allStories();
   const total = list.reduce((n, st) => n + Object.keys(st.scenes).length, 0);
   const done = new Set();
-  for (const st of list) await crawlPages(t, st, done, total);
+  for (const st of list) await (isConsole(st) ? crawlConsolePages : crawlPages)(t, st, done, total);
   t.metric("pages", done.size);
   closeFrame();
   t.progress(1);
@@ -1528,6 +1544,14 @@ async function sound(options, t) {
     await passPrompt(t, doc, path);
     await checkSound(t, doc.querySelector("video"), path, { on: true, volume: 0.4 });
     closeFrame();
+    // A console story's audio (voice, ambience, effects) follows the same Settings.
+    const cs = consoleStories()[0];
+    if (cs) {
+      t.scene(`${cs.title} (sound)`);
+      await consoleOpen(t, cs);
+      await consoleSoundCheck(t, cs, `${cs.id} sound`);
+      await toLanding(t);
+    }
     t.progress(1);
   } finally {
     if (carried.original == null) localStorage.removeItem(SOUND_KEY);
@@ -1725,6 +1749,747 @@ async function analyticsRun(options, t) {
   }
 }
 
+/* ---------------- console stories (js/console.js): a wall of cameras, voiced lines, a state, a shift log ---------------- */
+
+const isConsole = (st) => !!st && st.type === "console";
+const rulesOf = () => window.iltvConsoleRules;
+const RUN_KEY = "iltv.run.";
+const SUBS_KEY = "iltv.subtitles";
+const apiOf = (doc = document) => doc.defaultView.iltvConsole;
+const byIdIn = (doc, id) => doc.getElementById(id);
+const openChoices = (doc = document) => [...doc.querySelectorAll("#console-choices .choice")];
+const sameJson = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+/** What the data says a run holds, worked out here with the shared rules (js/console-rules.js) on its own: the
+    state, the way there and the shift log, step by step as a viewer chooses. */
+function consoleModel(st) {
+  const R = rulesOf();
+  const m = { scene: st.start, state: R.fresh(st), history: [], log: [] };
+  const enter = () => {
+    const s = st.scenes[m.scene];
+    if (s.log) m.log.push({ k: "s", t: s.time, text: s.log });
+  };
+  enter();
+  m.open = () => st.scenes[m.scene].choices.map((c, i) => [c, i]).filter(([c]) => R.usable(c, m.state));
+  m.choose = (i) => {
+    const s = st.scenes[m.scene];
+    const c = s.choices[i];
+    m.log.push({ k: "c", t: s.time, text: R.extraOf(c).log || c[0], o: s.choices.length - 1 });
+    m.state = R.apply(st, m.state, c);
+    m.history.push(m.scene);
+    m.scene = c[2];
+    enter();
+  };
+  return m;
+}
+
+/** The Tap to play prompt in `doc`: under a runner with a real mouse (Playwright, navigator.webdriver) it waits a
+    moment for a real page.mouse.click, then taps it itself; either way the tap is recorded (trusted or not). */
+async function consolePrompt(t, doc, where, { real = 0 } = {}) {
+  const sound = soundOf(doc);
+  if (!sound.prompt()) return sound.unlocked();
+  if (real && navigator.webdriver) {
+    t.event("real-click-wait", `${where}: waiting up to ${real} ms for a real mouse click on Tap to play`);
+    await waitFor(() => !sound.prompt(), real);
+  }
+  if (sound.prompt()) await passPrompt(t, doc, where);
+  const s = sound.state();
+  t.event("sound-unlocked", `${where}: ${s.trusted ? "a real click" : "a synthetic press"}, audio ${s.audio}`);
+  t.metric("realClick", s.trusted ? 1 : 0);
+  if (!s.unlocked) t.problem("bug", `${where}: the tap didn't unlock sound`);
+  return s.unlocked;
+}
+
+/** Waits for the scene's lines to finish (Skip line taps move them along), then the choices or the ending are there. */
+async function consoleHeard(t, doc, where, { skip = true } = {}) {
+  const api = apiOf(doc);
+  const done = () => {
+    const l = api.lines();
+    return l && l.done >= l.total && l.playing < 0 && doc.getElementById("console").dataset.lines === "done";
+  };
+  const t0 = performance.now();
+  while (!done() && performance.now() - t0 < 30000) {
+    if (skip && !done()) await tapAt(t, byIdIn(doc, "console-skip"), `Skip line (${where})`).catch(() => {});
+    await sleep(skip ? 150 : 250);
+  }
+  if (!done()) t.problem("bug", `${where}: the lines never finished (${JSON.stringify(api.lines())})`);
+  await sleep(80);
+}
+
+/** The scene on screen matches what the data gives for the way the bot came: the state, the log, the wall, the choices. */
+function consoleCheck(t, st, m, doc, where, seen) {
+  const R = rulesOf();
+  const api = apiOf(doc);
+  const s = st.scenes[m.scene];
+  if (api.scene() !== m.scene) return t.problem("bug", `${where}: the player is at ${api.scene()}, the data says ${m.scene}`);
+  if (!sameJson(api.flags(), Object.keys(m.state.flags).sort())) t.problem("bug", `${where}: flags ${JSON.stringify(api.flags())}, the data gives ${JSON.stringify(Object.keys(m.state.flags).sort())}`);
+  if (!sameJson(Object.entries(api.meters()).sort(), Object.entries(m.state.meters).sort())) t.problem("bug", `${where}: meters ${JSON.stringify(api.meters())}, the data gives ${JSON.stringify(m.state.meters)}`);
+  if (!sameJson(api.history(), m.history)) t.problem("bug", `${where}: history ${api.history().join(" > ")}, the data gives ${m.history.join(" > ")}`);
+  const plain = (log) => log.map(({ k, t: time, text, o }) => ({ k, t: time, text, ...(o != null ? { o } : {}) }));
+  if (!sameJson(plain(api.log()), plain(m.log))) t.problem("bug", `${where}: the shift log holds ${JSON.stringify(api.log().map((e) => e.text))}, the data gives ${JSON.stringify(m.log.map((e) => e.text))}`);
+  // The wall: a tile per camera, each showing the state the scene says.
+  const feeds = R.feedsOf(st, s);
+  const tiles = [...doc.querySelectorAll("#console-wall .feed")];
+  if (tiles.length !== st.cameras.length || tiles.length < 6 || tiles.length > 9) t.problem("bug", `${where}: the wall has ${tiles.length} feeds, the story has ${st.cameras.length} cameras (6 to 9)`);
+  for (const tile of tiles) if (tile.dataset.state !== feeds[tile.dataset.camera]) t.problem("bug", `${where}: camera ${tile.dataset.camera} shows "${tile.dataset.state}", the scene says "${feeds[tile.dataset.camera]}"`);
+  if ((byIdIn(doc, "console-time").textContent || "").trim() !== s.time) t.problem("bug", `${where}: the clock says "${byIdIn(doc, "console-time").textContent}", the scene's time is ${s.time}`);
+  // The lines heard are in order in the subtitles; the choices are the open ones (a gated choice is not on the page).
+  const subs = [...doc.querySelectorAll("#console-subs .sub")].map((p) => p.textContent.trim());
+  s.lines.forEach((l, i) => {
+    if (subs[i] && !subs[i].endsWith(l.text)) t.problem("bug", `${where}: subtitle ${i + 1} is "${subs[i]}", line ${i + 1} is "${l.text}"`);
+  });
+  if (doc.getElementById("console").dataset.lines === "done") {
+    if (subs.length !== s.lines.length) t.problem("bug", `${where}: ${subs.length} subtitles for ${s.lines.length} lines`);
+    const shown = openChoices(doc).map((b) => b.textContent.trim());
+    const want = s.ending ? [] : m.open().map(([c]) => c[0]);
+    if (!sameJson(shown, want)) t.problem("bug", `${where}: the choices on screen are ${JSON.stringify(shown)}, the open ones in this state are ${JSON.stringify(want)}`);
+    const gated = s.choices.filter((c) => !R.usable(c, m.state)).map((c) => c[0]);
+    for (const g of gated) if (shown.includes(g)) t.problem("bug", `${where}: "${g}" shows although its conditions fail (${sayState(m.state)})`);
+    if (s.ending) {
+      const end = byIdIn(doc, "console-ending");
+      if (end.hidden || end.textContent.trim() !== s.ending[0]) t.problem("bug", `${where}: the ending text is "${end.textContent}", not "${s.ending[0]}"`);
+      if (doc.getElementById("console").dataset.state !== "soon") t.problem("bug", `${where}: an ending isn't marked as one`);
+    }
+  }
+  if (seen) {
+    seen.add(m.scene);
+    const want = Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
+    const text = (byIdIn(doc, "console-explored").textContent || "").trim();
+    if (text !== `${want}% explored`) t.problem("bug", `${where}: the player says "${text}", the scenes reached give ${want}%`);
+  }
+}
+
+const sayState = (state) => [...Object.keys(state.flags).sort(), ...Object.entries(state.meters).map(([k, v]) => `${k} ${v}`)].join(", ");
+
+/** Taps the choice the model picks (a real press on its button), waits for the lines, checks the new scene. */
+async function consoleChoose(t, st, m, i, doc, where, seen) {
+  const label = st.scenes[m.scene].choices[i][0];
+  const button = openChoices(doc).find((b) => b.textContent.trim() === label);
+  if (!button) throw new Error(`${where}: no choice "${label}" on screen at ${m.scene} (${JSON.stringify(openChoices(doc).map((b) => b.textContent.trim()))})`);
+  await tapAt(t, button, `choice "${label}"`);
+  m.choose(i);
+  if (!(await waitFor(() => apiOf(doc).scene() === m.scene, 3000))) throw new Error(`${where}: "${label}" didn't open ${m.scene} (on ${apiOf(doc).scene()})`);
+  t.add("choicesClicked");
+  await consoleHeard(t, doc, `${where} > ${m.scene}`);
+  consoleCheck(t, st, m, doc, `${where} > ${m.scene}`, seen);
+}
+
+/** A new run of the story, like Start Over: the run cookie and the saved run go (the unlocks stay), and the story
+    opens again by its link at its first scene. */
+async function consoleFresh(t, st) {
+  document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
+  localStorage.removeItem(RUN_KEY + st.cookie);
+  openByLink(t, st.id);
+  await waitFor(() => window.iltvConsole && window.iltvConsole.story() === st.id && window.iltvConsole.scene() === st.start, 3000);
+  if (soundOf().prompt()) await consolePrompt(t, document, st.id);
+  if (window.iltvConsole.scene() !== st.start || window.iltvConsole.history().length) throw new Error(`${st.id}: a new run opened ${window.iltvConsole.scene()}, not ${st.start}`);
+}
+
+/** Opens a console story (a draft, by its link; a listed one from its card), checks it is the console player. */
+async function consoleOpen(t, st, { tap = true, real = 0 } = {}) {
+  if (!landingShown() && !(stories().current() === st.id)) await toLanding(t);
+  if (stories().current() !== st.id) {
+    const card = cardOf(st.id);
+    if (card) await tapAt(t, card.querySelector("h2") || card, `the ${st.title} card`);
+    else {
+      openByLink(t, st.id);
+      t.log(`open ${st.id} by its link (a draft: no card)`);
+    }
+    await sleep(300);
+  }
+  if (stories().current() !== st.id) throw new Error(`${st.id}: didn't open (open: ${stories().current()})`);
+  if ($("console").hidden) t.problem("bug", `${st.id}: opened but the console player is hidden`);
+  if (!$("spark").hidden) t.problem("bug", `${st.id}: the video player is showing over a console story`);
+  if (new URL(location.href).searchParams.get("story") !== st.id) t.problem("bug", `${st.id}: the address doesn't say ?story=${st.id}`);
+  if (document.documentElement.dataset.type !== "console") t.problem("bug", `${st.id}: <html data-type> isn't "console"`);
+  const bar = document.querySelector(".inventory");
+  if (shown(bar) || shown(document.getElementById("torch"))) t.problem("bug", `${st.id}: an inventory bar shows over a console story`);
+  t.event("story-open", `${st.id} (${st.title}, console)`);
+  const sound = soundOf();
+  if (sound.prompt()) {
+    const promptTitle = (sound.prompt().querySelector(".tap-title")?.textContent || "").trim();
+    if (promptTitle !== st.tap.title) t.problem("bug", `${st.id}: the Tap to play prompt says "${promptTitle}", not "${st.tap.title}"`);
+    if (tap) await consolePrompt(t, document, st.id, { real });
+  } else if (!sound.unlocked()) t.problem("bug", `${st.id}: opened without its Tap to play prompt (sound is locked)`);
+}
+
+/** Every scene and ending: the build's state explorer (js/console-rules.js explore) says how to reach each scene
+    and each different set of open choices; the bot plays every one of those from a new run with real presses. */
+async function consoleWalk(t, st, sums = { scenes: 0, endings: 0 }) {
+  const R = rulesOf();
+  const x = R.explore(st, { cap: 50000 });
+  const total = Object.keys(st.scenes).length;
+  const targets = Object.entries(x.variants)
+    .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
+    .sort((a, b) => a.picks.length - b.picks.length);
+  t.note(`${st.title}: ${x.states} states, ${targets.length} ways to play`);
+  t.event("explored", `${st.id}: ${x.states} states, ${Object.keys(x.scenes).length}/${total} scenes reachable, ${targets.length} different sets of choices`);
+  Object.keys(st.scenes).filter((id) => !x.scenes[id]).forEach((id) => t.problem("bug", `${st.id}/${id}: no state reaches this scene`));
+  x.stuck.forEach((s) => t.problem("bug", `${st.id}/${s.scene}: no usable choice when ${sayState(s.state)}`));
+  // A fresh browser for the percent: the unlocks go too, so it follows the scenes this walk reaches.
+  document.cookie = `${unlocksCookie(st)}=; Max-Age=0; Path=/`;
+  await consoleFresh(t, st);
+  const seen = new Set();
+  let ways = 0;
+  for (const target of targets) {
+    if (ways++) await consoleFresh(t, st);
+    const m = consoleModel(st);
+    const where = `${st.id}: ${target.path.join(" > ")}`;
+    t.scene(where);
+    await consoleHeard(t, document, where);
+    consoleCheck(t, st, m, document, where, seen);
+    for (const i of target.picks) await consoleChoose(t, st, m, i, document, where, seen);
+    t.progress(((sums.scenes || 0) + seen.size) / Math.max(1, total));
+    const end = st.scenes[m.scene].ending;
+    if (end) {
+      t.event("ending", `${st.id}/${m.scene}: ${end[0]}`);
+      if (stories().run(st.id) !== "end") t.problem("bug", `${st.id}: at an ending the run says "${stories().run(st.id)}", not end`);
+    }
+    if (m.scene !== target.id) t.problem("bug", `${where}: expected to end at ${target.id}`);
+    if (document.cookie.length > 3800) t.problem("bug", `${st.id}: the cookies are ${document.cookie.length} bytes, near the 4 KB limit`);
+  }
+  sums.scenes = (sums.scenes || 0) + seen.size;
+  sums.endings = (sums.endings || 0) + Object.values(st.scenes).filter((s) => s.ending).length;
+  const hasEnd = Object.values(st.scenes).some((s) => s.ending);
+  if (seen.size === total) {
+    const text = (byIdIn(document, "console-explored").textContent || "").trim();
+    if (text !== "100% explored") t.problem("bug", `${st.id}: every scene reached but the player says "${text}"`);
+  } else t.problem("bug", `${st.id}: the bot reached ${seen.size} of ${total} scenes`);
+  if (hasEnd && stories().progress(st.id) !== "completed") t.problem("bug", `${st.id}: an ending reached but its progress is ${stories().progress(st.id)}`);
+  if (stories().explored(st.id) !== 100) t.problem("bug", `${st.id}: explored(${st.id}) is ${stories().explored(st.id)}, not 100`);
+  return seen;
+}
+
+/** The shift log (the Log button): it lists what was done and seen, a redacted line per way not taken, and has nothing
+    to press. `m` is the model of the run so far. */
+async function consoleLogCheck(t, st, m, doc, where) {
+  const log = byIdIn(doc, "console-log");
+  const button = byIdIn(doc, "console-log-btn");
+  await tapAt(t, button, `Log (${where})`);
+  await sleep(200);
+  if (log.hidden) return t.problem("bug", `${where}: the Log button didn't open the shift log`);
+  const rows = [...log.querySelectorAll(".dar-row")];
+  const done = rows.filter((r) => !r.classList.contains("is-redacted")).map((r) => ({ time: r.querySelector(".dar-time").textContent.trim(), text: r.querySelector(".dar-text").textContent.trim() }));
+  const want = m.log.map((e) => ({ time: e.t, text: e.text }));
+  if (!sameJson(done, want)) t.problem("bug", `${where}: the log lists ${JSON.stringify(done.map((r) => r.text))}, what was done and seen is ${JSON.stringify(want.map((r) => r.text))}`);
+  const redacted = log.querySelectorAll(".dar-redacted").length;
+  const s = st.scenes[m.scene];
+  const wantRedacted = m.log.filter((e) => e.k === "c").reduce((n, e) => n + e.o, 0) + (s.ending ? 0 : s.choices.length);
+  if (redacted !== wantRedacted) t.problem("bug", `${where}: ${redacted} redacted lines, ${wantRedacted} ways not taken`);
+  // Redacted means nothing of the way is readable: no choice that wasn't taken is written in the log.
+  const text = log.textContent;
+  const taken = new Set(m.log.map((e) => e.text));
+  for (const sc of Object.values(st.scenes)) for (const c of sc.choices) {
+    const x = rulesOf().extraOf(c);
+    for (const words of [c[0], x.log].filter(Boolean)) if (!taken.has(words) && text.includes(words)) t.problem("bug", `${where}: the log gives away a way not taken: "${words}"`);
+  }
+  if (log.querySelector("button, a[href], input, select, textarea, [tabindex], [onclick], [role=button]")) t.problem("bug", `${where}: the shift log has something to press`);
+  const row = rows.find((r) => !r.classList.contains("is-redacted"));
+  if (row) {
+    const before = apiOf(doc).scene();
+    row.click();
+    await sleep(100);
+    if (apiOf(doc).scene() !== before || log.hidden) t.problem("bug", `${where}: pressing a log line changed the scene or closed the log`);
+  }
+  const paper = getComputedStyle(log.querySelector(".dar"));
+  if (!paper.backgroundColor || paper.backgroundColor === "rgba(0, 0, 0, 0)") t.problem("warning", `${where}: the log has no paper background`);
+  t.event("shift-log", `${where}: ${done.length} entries, ${redacted} redacted lines`);
+  await sleep(700); // on screen for the footage
+  await tapAt(t, button, `Close log (${where})`);
+  await sleep(150);
+  if (!log.hidden) t.problem("bug", `${where}: the Log button didn't close the log`);
+}
+
+/** Settings apply to the story's audio: Sound off mutes the voice, bed and effects; Volume sets their volume. */
+async function consoleSoundCheck(t, st, where) {
+  const api = apiOf(document);
+  const sound = soundOf();
+  const original = localStorage.getItem(SOUND_KEY);
+  const audio = () => api.audio();
+  const checkAll = (what, { on, volume }) => {
+    for (const name of ["voice", "bed", "sfx"]) {
+      const a = audio()[name];
+      if (!a) {
+        t.problem("bug", `${where}: no ${name} audio element`);
+        continue;
+      }
+      if (a.muted === on) t.problem("bug", `${where}: ${what}: the ${name} is ${a.muted ? "muted" : "not muted"}`);
+      if (sound.state().volumeWorks && !near(a.volume, volume)) t.problem("bug", `${where}: ${what}: the ${name} volume is ${a.volume.toFixed(2)}, Settings say ${volume}`);
+    }
+    t.event("audio-settings", `${where}: ${what}: ${["voice", "bed", "sfx"].map((n) => `${n} ${audio()[n]?.muted ? "muted" : "sound"} ${audio()[n]?.volume.toFixed(2)}`).join(", ")}`);
+  };
+  try {
+    localStorage.setItem(SOUND_KEY, JSON.stringify({ on: true, music: 1, sfx: 1 }));
+    sound.set({ on: true, music: 1, sfx: 1 });
+    await consoleFresh(t, st);
+    // A line is playing while Settings change.
+    await waitFor(() => api.lines().playing >= 0, 4000);
+    const voice = audio().voice;
+    if (!/silence\.wav|\.mp3/.test(voice.src) && !st.scenes[st.start].lines.every((l) => !l.file)) t.problem("bug", `${where}: the first line's audio isn't loaded in the voice element (${voice.src.slice(0, 60)})`);
+    checkAll("sound on", { on: true, volume: 1 });
+    await openSettings(t, where);
+    await tapAt(t, $("sound-on"), "Sound off");
+    await sleep(200);
+    checkAll("Sound off", { on: false, volume: 1 });
+    slide($("sound-volume"), 40);
+    await sleep(300);
+    await tapAt(t, $("sound-on"), "Sound on");
+    await sleep(200);
+    checkAll("Sound on, volume 40%", { on: true, volume: 0.4 });
+    await tapAt(t, $("sound-done"), "Done");
+    // The next scene's audio gets the same settings (the elements are the same, or new ones inherit them).
+    await consoleHeard(t, document, where);
+    const first = openChoices()[0];
+    if (first) {
+      await tapAt(t, first, `choice "${first.textContent.trim()}"`);
+      await sleep(400);
+      checkAll("the next scene, volume 40%", { on: true, volume: 0.4 });
+    }
+    // The tap itself: a press on the prompt unlocks audio.
+    const s = sound.state();
+    t.metric("audioContext", s.audio === "running" ? 1 : 0);
+    if (s.audio !== "running" && s.audio !== "none") t.problem("bug", `${where}: the AudioContext is ${s.audio}`);
+  } finally {
+    if (original == null) localStorage.removeItem(SOUND_KEY);
+    else localStorage.setItem(SOUND_KEY, original);
+    sound.set(original ? JSON.parse(original) : { on: true, music: 1, sfx: 1 });
+    if (sound.state().settingsOpen) await tapAt(t, $("sound-done"), "Done");
+  }
+}
+
+/* A phone, a small phone and a phone on its side: the console in a frame of that size (the frame's own viewport, so
+   the page's media queries answer to it). It is scaled down to fit the footage; the layout is not. */
+const VIEWPORTS = [
+  [390, 844, "portrait phone"],
+  [360, 640, "small phone"],
+  [844, 390, "landscape phone"],
+];
+let viewFrame = null;
+function closeViewFrame() {
+  if (viewFrame) viewFrame.remove();
+  viewFrame = null;
+}
+
+async function viewFrameLoad(t, url, w, h) {
+  closeViewFrame();
+  viewFrame = document.createElement("iframe");
+  viewFrame.title = `Playtest ${w}x${h}`;
+  const scale = Math.min(1, innerWidth / w, innerHeight / h);
+  viewFrame.style.cssText = `position:fixed;left:0;top:0;width:${w}px;height:${h}px;border:0;z-index:2147483647;background:#070807;transform:scale(${scale});transform-origin:0 0`;
+  document.body.appendChild(viewFrame);
+  await new Promise((resolve) => {
+    viewFrame.addEventListener("load", resolve, { once: true });
+    viewFrame.src = url;
+  });
+  const win = viewFrame.contentWindow;
+  await waitFor(() => win.iltvConsole && win.iltvStories && win.hawkesSound, 10000);
+  return viewFrame.contentDocument;
+}
+
+/** Everything the player needs is on the screen: nothing wider than it (no sideways scroll), the wall, the
+    subtitles, the line buttons and every choice inside it, tap targets 44px or more. */
+async function consoleFit(t, doc, where) {
+  const win = doc.defaultView;
+  const W = win.innerWidth;
+  const H = win.innerHeight;
+  const bad = (msg) => t.problem("bug", `${where}: ${msg}`);
+  const root = doc.documentElement;
+  if (root.scrollWidth > W + 1 || doc.body.scrollWidth > W + 1) bad(`the page scrolls sideways (${Math.max(root.scrollWidth, doc.body.scrollWidth)} px wide in ${W})`);
+  for (const id of ["console", "console-body", "console-panel"]) {
+    const el = id === "console-panel" ? doc.querySelector(".console-panel") : byIdIn(doc, id);
+    if (el && el.scrollWidth > el.clientWidth + 1) bad(`#${id} is wider inside (${el.scrollWidth}) than on screen (${el.clientWidth})`);
+  }
+  const must = [
+    ...doc.querySelectorAll("#console-wall .feed"),
+    byIdIn(doc, "console-subs"),
+    byIdIn(doc, "console-replay"),
+    byIdIn(doc, "console-skip"),
+    byIdIn(doc, "console-cc"),
+    byIdIn(doc, "console-log-btn"),
+    byIdIn(doc, "console-stories"),
+    ...openChoices(doc),
+  ];
+  const big = byIdIn(doc, "console-big");
+  if (!big.hidden) must.push(big);
+  let scrolled = 0;
+  for (const el of must) {
+    if (!el || !el.getClientRects().length) {
+      bad(`${el?.id || el?.className || "an element"} isn't shown`);
+      continue;
+    }
+    let r = el.getBoundingClientRect();
+    if (r.left < -0.5 || r.right > W + 0.5) bad(`${el.id || el.className} runs off the side (${Math.round(r.left)}..${Math.round(r.right)} of ${W})`);
+    if (r.top < -0.5 || r.bottom > H + 0.5) {
+      el.scrollIntoView({ block: "nearest", behavior: "instant" });
+      scrolled++;
+      r = el.getBoundingClientRect();
+    }
+    if (r.top < -0.5 || r.bottom > H + 0.5) bad(`${el.id || el.className} can't be brought on screen (${Math.round(r.top)}..${Math.round(r.bottom)} of ${H})`);
+    if (el.matches("button, a, .choice") && (r.height < 43.5 || (r.width < 43.5))) bad(`${el.id || el.className || el.tagName} is ${Math.round(r.width)}x${Math.round(r.height)} px, under 44x44`);
+  }
+  // A choice's words are all there (not cut off by the button).
+  for (const b of openChoices(doc)) if (b.scrollWidth > b.clientWidth + 1) bad(`choice "${b.textContent.trim()}" is cut off at the side`);
+  // Two things never lie over each other.
+  const boxes = [...doc.querySelectorAll("#console-wall, #console-big:not([hidden]), .console-subs, .console-controls, #console-choices:not([hidden])")].map((el) => [el.id || el.className, el.getBoundingClientRect()]);
+  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+    const [an, a] = boxes[i];
+    const [bn, b2] = boxes[j];
+    if (a.width && b2.width && a.height && b2.height && overlaps(a, b2) && Math.min(a.right, b2.right) - Math.max(a.left, b2.left) > 2 && Math.min(a.bottom, b2.bottom) - Math.max(a.top, b2.top) > 2) bad(`${an} and ${bn} lie over each other`);
+  }
+  t.event("fit", `${where}: ${W}x${H}, wall ${doc.querySelectorAll("#console-wall .feed").length} feeds, ${openChoices(doc).length} choices, ${scrolled} needed a scroll, no sideways scroll`);
+  doc.querySelector("#console-body")?.scrollTo?.(0, 0);
+  return scrolled;
+}
+
+/** The console at one screen size: the wall, subtitles while a line plays, a feed enlarged, the choices. */
+async function consoleView(t, st, [w, h, name]) {
+  const where = `${name} ${w}x${h}`;
+  t.scene(where);
+  await consoleFresh(t, st); // a new run, so the frame loads the first scene
+  const doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h);
+  const api = apiOf(doc);
+  if (!api) return t.problem("bug", `${where}: the console player didn't start in the frame`);
+  await consolePrompt(t, doc, where);
+  await waitFor(() => api.lines() && api.lines().playing >= 0, 4000);
+  await consoleFit(t, doc, `${where}, a line playing`);
+  // Enlarge a feed with a press on its tile.
+  const cam = st.scenes[api.scene()].focus || st.cameras[st.cameras.length > 3 ? 3 : 0].id;
+  const tile = doc.querySelector(`#console-wall .feed[data-camera="${cam}"]`);
+  await tapAt(t, tile, `feed ${cam} (${where})`);
+  await sleep(150);
+  const big = byIdIn(doc, "console-big");
+  if (big.hidden || big.dataset.camera !== cam || api.selected() !== cam) t.problem("bug", `${where}: pressing feed ${cam} didn't enlarge it`);
+  await consoleHeard(t, doc, where);
+  await consoleFit(t, doc, `${where}, a feed enlarged, the choices shown`);
+  await sleep(500);
+  await tapAt(t, doc.querySelector("#console-big .big-close"), `Shrink (${where})`);
+  if (!byIdIn(doc, "console-big").hidden) t.problem("bug", `${where}: Shrink didn't put the feed back`);
+  // The shift log fits too.
+  await tapAt(t, byIdIn(doc, "console-log-btn"), `Log (${where})`);
+  await sleep(200);
+  const log = byIdIn(doc, "console-log");
+  const lr = log.getBoundingClientRect();
+  if (lr.left < -0.5 || lr.right > doc.defaultView.innerWidth + 0.5 || log.scrollWidth > log.clientWidth + 1) t.problem("bug", `${where}: the shift log runs off the side`);
+  if (doc.documentElement.scrollWidth > doc.defaultView.innerWidth + 1) t.problem("bug", `${where}: the log scrolls the page sideways`);
+  await sleep(500);
+  closeViewFrame();
+}
+
+/** Reload mid-story: a new page load (a frame) of the story's link returns to the same scene with the same state,
+    flags, meters, log and the lines already heard. */
+async function consoleReload(t, st) {
+  const R = rulesOf();
+  t.scene("Reload mid-story");
+  await consoleFresh(t, st);
+  const m = consoleModel(st);
+  // The way to the first scene with a choice that depends on a flag and one that sets it: the explorer's longest variant.
+  const x = R.explore(st);
+  const target = Object.entries(x.variants)
+    .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
+    .filter((v) => v.picks.length && !st.scenes[v.id].ending)
+    .sort((a, b) => b.picks.length - a.picks.length)[0];
+  if (!target) return t.problem("warning", `${st.id}: no scene in the middle to reload at`);
+  await consoleHeard(t, document, "reload");
+  for (const i of target.picks) await consoleChoose(t, st, m, i, document, "reload");
+  // Mid-scene: the first line heard, the second not.
+  await consoleFresh(t, st);
+  const m2 = consoleModel(st);
+  await consoleHeard(t, document, "reload");
+  for (const i of target.picks) await consoleChoose(t, st, m2, i, document, "reload");
+  const n = st.scenes[m2.scene].lines.length;
+  const midway = n > 1;
+  if (midway) await waitFor(() => apiOf().lines().done >= 1, 6000);
+  const before = { scene: apiOf().scene(), flags: apiOf().flags(), meters: apiOf().meters(), log: apiOf().log(), history: apiOf().history(), lines: apiOf().lines() };
+  const saved = apiOf().saved();
+  if (!saved || saved.scene !== before.scene) t.problem("bug", `${st.id}: nothing saved for the run in localStorage ("${RUN_KEY}${st.cookie}")`);
+  else t.event("run-saved", `${st.id}: ${saved.scene}, flags ${saved.flags.join(", ") || "none"}, ${saved.log.length} log entries, ${saved.done} line(s) heard, ${JSON.stringify(saved).length} bytes`);
+  const doc = await viewFrameLoad(t, `/?story=${st.id}`, 390, 844);
+  const api = apiOf(doc);
+  if (!api) return t.problem("bug", `${st.id}: the reloaded page has no console player`);
+  const prompt = soundOf(doc).prompt();
+  if (!prompt && !soundOf(doc).unlocked()) t.problem("bug", `${st.id}: the reloaded page has no Tap to play prompt`);
+  await consolePrompt(t, doc, "after the reload");
+  await sleep(300);
+  const after = { scene: api.scene(), flags: api.flags(), meters: api.meters(), log: api.log(), history: api.history() };
+  for (const k of Object.keys(after)) if (!sameJson(after[k], before[k])) t.problem("bug", `${st.id}: after a reload ${k} is ${JSON.stringify(after[k])}, it was ${JSON.stringify(before[k])}`);
+  const heard = [...doc.querySelectorAll("#console-subs .sub")].length;
+  if (midway && heard < Math.min(before.lines.done, n)) t.problem("bug", `${st.id}: after a reload ${heard} subtitle(s), ${before.lines.done} line(s) had been heard`);
+  await consoleHeard(t, doc, "after the reload");
+  const ok = sameJson(Object.keys(after).map((k) => after[k]), Object.keys(after).map((k) => before[k]));
+  t.event("reloaded", `${st.id}: back at ${after.scene} with flags ${after.flags.join(", ") || "none"}, ${after.log.length} log entries, ${heard} line(s) already heard (${ok ? "same" : "DIFFERENT"})`);
+  // The log in the reloaded page lists the same entries.
+  await sleep(700);
+  closeViewFrame();
+}
+
+/** The story's own subtitles (on by default), the replay button and the line audio. */
+async function consoleLines(t, st) {
+  const where = `${st.id} lines`;
+  t.scene(where);
+  const original = localStorage.getItem(SUBS_KEY);
+  localStorage.removeItem(SUBS_KEY);
+  try {
+    await consoleFresh(t, st);
+    const api = apiOf();
+    const first = st.scenes[st.start];
+    if (!api.subtitles() || $("console-cc").getAttribute("aria-pressed") !== "true") t.problem("bug", `${where}: subtitles aren't on by default`);
+    // Lines come one after the other by themselves, in the order of the data.
+    const order = [];
+    const t0 = performance.now();
+    while (performance.now() - t0 < 25000 && !(api.lines().done >= first.lines.length && api.lines().playing < 0)) {
+      const l = api.lines();
+      if (l.playing >= 0 && order[order.length - 1] !== l.playing) order.push(l.playing);
+      await sleep(40);
+    }
+    if (!sameJson(order, first.lines.map((_, i) => i))) t.problem("bug", `${where}: the lines played in the order ${JSON.stringify(order)}, the data has ${JSON.stringify(first.lines.map((_, i) => i))}`);
+    else t.event("lines-in-order", `${st.id}/${st.start}: ${first.lines.map((l) => `${l.speaker}: ${l.text}`).join(" | ")}`);
+    const subs = [...document.querySelectorAll("#console-subs .sub")].map((p) => p.textContent.trim());
+    if (subs.length !== first.lines.length || !shown($("console-subs"))) t.problem("bug", `${where}: ${subs.length} subtitles shown for ${first.lines.length} lines`);
+    // CC off hides the subtitles (they stay for screen readers); on brings them back.
+    await tapAt(t, $("console-cc"), "CC off");
+    await sleep(100);
+    const r = $("console-subs").getBoundingClientRect();
+    if (r.width > 2 && r.height > 2) t.problem("bug", `${where}: CC off but the subtitles still show (${Math.round(r.width)}x${Math.round(r.height)})`);
+    if (localStorage.getItem(SUBS_KEY) !== "off") t.problem("bug", `${where}: CC off wasn't saved`);
+    await tapAt(t, $("console-cc"), "CC on");
+    await sleep(100);
+    if (!shown($("console-subs")) || $("console-subs").getBoundingClientRect().height < 10) t.problem("bug", `${where}: CC on but the subtitles don't show`);
+    // Replay the current line: it plays again, then the choices are back.
+    await consoleHeard(t, document, where, { skip: false });
+    await tapAt(t, $("console-replay"), "Replay line");
+    const again = await waitFor(() => api.lines().playing >= 0, 1500);
+    if (!again) t.problem("bug", `${where}: Replay line didn't play a line again`);
+    await consoleHeard(t, document, `${where} (after replay)`, { skip: false });
+    if (!openChoices().length) t.problem("bug", `${where}: the choices didn't come back after a replay`);
+    else t.event("replay", `${st.id}/${st.start}: the last line again, choices back`);
+    if (!$("console-replay").offsetHeight || !$("console-skip").offsetHeight) t.problem("bug", `${where}: no Replay/Skip controls`);
+  } finally {
+    if (original == null) localStorage.removeItem(SUBS_KEY);
+    else localStorage.setItem(SUBS_KEY, original);
+  }
+}
+
+/** The wall: each feed a button, one enlarged by a press, and its picture follows the scene's state. */
+async function consoleWall(t, st) {
+  const where = `${st.id} wall`;
+  t.scene(where);
+  await consoleFresh(t, st);
+  await consoleHeard(t, document, where);
+  const feeds = rulesOf().feedsOf(st, st.scenes[st.start]);
+  const tiles = [...document.querySelectorAll("#console-wall .feed")];
+  t.metric("feeds", tiles.length);
+  const cam = st.cameras.find((c) => feeds[c.id] !== "normal") || st.cameras[0];
+  const tile = tiles.find((x) => x.dataset.camera === cam.id);
+  await tapAt(t, tile, `feed ${cam.id}`);
+  await sleep(200);
+  const big = $("console-big");
+  const desc = (cam.states[feeds[cam.id]] || cam.states.normal).desc;
+  if (big.hidden) t.problem("bug", `${where}: pressing feed ${cam.id} didn't enlarge it`);
+  else {
+    if (big.dataset.camera !== cam.id || big.dataset.state !== feeds[cam.id]) t.problem("bug", `${where}: the enlarged feed is ${big.dataset.camera}/${big.dataset.state}, not ${cam.id}/${feeds[cam.id]}`);
+    if (!big.textContent.includes(desc)) t.problem("bug", `${where}: the enlarged feed doesn't say what it shows ("${desc}")`);
+    const br = big.getBoundingClientRect();
+    const tr = tile.getBoundingClientRect();
+    if (br.width * br.height <= tr.width * tr.height) t.problem("bug", `${where}: the enlarged feed (${Math.round(br.width)}x${Math.round(br.height)}) isn't bigger than its tile (${Math.round(tr.width)}x${Math.round(tr.height)})`);
+    if (document.querySelector(`#console-wall .feed[data-camera="${cam.id}"]`).getAttribute("aria-pressed") !== "true") t.problem("bug", `${where}: the pressed tile isn't marked`);
+    t.event("feed-enlarged", `${st.id}: ${cam.id} (${feeds[cam.id]}): "${desc.slice(0, 60)}"`);
+  }
+  // Another feed replaces it; the same one again puts it back.
+  const other = tiles.find((x) => x.dataset.camera !== cam.id);
+  await tapAt(t, other, `feed ${other.dataset.camera}`);
+  if (apiOf().selected() !== other.dataset.camera) t.problem("bug", `${where}: a second feed didn't replace the first`);
+  await tapAt(t, tiles.find((x) => x.dataset.camera === other.dataset.camera), `feed ${other.dataset.camera} again`);
+  if (!$("console-big").hidden) t.problem("bug", `${where}: the same feed again didn't put it back`);
+  await sleep(500);
+}
+
+/** The gating criterion in the open: a choice that needs a flag isn't there without it and is with it, and a choice
+    sets the flag a later scene reads. */
+async function consoleGates(t, st) {
+  const R = rulesOf();
+  const x = R.explore(st);
+  // A scene with two different sets of open choices, and the choice that makes the difference.
+  const pair = Object.entries(x.variants).map(([id, vs]) => [id, Object.values(vs)]).find(([, vs]) => vs.length > 1);
+  if (!pair) return t.problem("bug", `${st.id}: no choice is gated by a flag or meter (the story has to have one)`);
+  const [id, vs] = pair;
+  for (const v of vs.slice(0, 2)) {
+    await consoleFresh(t, st);
+    const m = consoleModel(st);
+    const where = `${st.id} gate at ${id}: ${v.path.join(" > ")}`;
+    t.scene(where);
+    await consoleHeard(t, document, where);
+    for (const i of v.picks) await consoleChoose(t, st, m, i, document, where);
+    const shownNow = openChoices().map((b) => b.textContent.trim());
+    const all = st.scenes[id].choices.map((c) => c[0]);
+    const hidden = all.filter((c) => !shownNow.includes(c));
+    t.event("gate", `${id} with ${sayState(m.state) || "a fresh state"}: shows ${JSON.stringify(shownNow)}, hides ${JSON.stringify(hidden)}`);
+  }
+}
+
+async function consoleRun(options, t) {
+  rememberProgress();
+  const originalSounds = localStorage.getItem(SOUND_KEY);
+  const sts = consoleStories();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  if (!sts.length) throw new Error("no console story in js/story-data.js");
+  await passPrompt(t);
+  clearProgress();
+  const st = (options && options.story && sts.find((s) => s.id === options.story)) || sts[0];
+  try {
+    // 1. Opens by its link with its own Tap to play, shows the wall, plays the lines in order, shows choices.
+    t.scene(`${st.title}: opens`);
+    await consoleOpen(t, st, { tap: false });
+    await sleep(900);
+    if (!soundOf().prompt()) t.problem("bug", `${st.id}: no Tap to play prompt`);
+    else checkNote(t, document, st.id);
+    await consolePrompt(t, document, st.id, { real: 2500 });
+    t.progress(0.05);
+    await consoleLines(t, st);
+    t.progress(0.12);
+    await consoleWall(t, st);
+    t.progress(0.2);
+    // 2. Gated choices and a flag a later scene reads.
+    await consoleGates(t, st);
+    t.progress(0.3);
+    // 3. Every scene and ending, played from the build's state explorer.
+    await consoleWalk(t, st);
+    t.progress(0.55);
+    // 4. The shift log, mid-story and at the end.
+    await consoleFresh(t, st);
+    const m = consoleModel(st);
+    const R = rulesOf();
+    const x = R.explore(st);
+    const mid = Object.entries(x.scenes).filter(([id]) => !st.scenes[id].ending).sort((a, b) => b[1].picks.length - a[1].picks.length)[0];
+    await consoleHeard(t, document, "log");
+    await consoleLogCheck(t, st, m, document, `${st.id} log at the start`);
+    for (const i of mid[1].picks) await consoleChoose(t, st, m, i, document, "log");
+    await consoleLogCheck(t, st, m, document, `${st.id} log at ${m.scene}`);
+    const ending = Object.entries(x.scenes).find(([id]) => st.scenes[id].ending);
+    if (ending) {
+      await consoleFresh(t, st);
+      const m3 = consoleModel(st);
+      await consoleHeard(t, document, "log");
+      for (const i of ending[1].picks) await consoleChoose(t, st, m3, i, document, "log end");
+      await consoleLogCheck(t, st, m3, document, `${st.id} log at the ending ${m3.scene}`);
+    }
+    t.progress(0.7);
+    // 5. Settings apply to the audio.
+    await consoleSoundCheck(t, st, `${st.id} sound`);
+    t.progress(0.8);
+    // 6. Reload mid-story.
+    await consoleReload(t, st);
+    t.progress(0.88);
+    // 7. The screen sizes.
+    for (const v of VIEWPORTS) await consoleView(t, st, v);
+    // 8. All stories: the video stories' landing page comes back, the saved place stays.
+    await consoleFresh(t, st);
+    await toLanding(t);
+    if (!$("console").hidden) t.problem("bug", `${st.id}: the console player stays up after All stories`);
+    if (document.querySelector("#console audio, body > audio")) t.problem("bug", `${st.id}: its audio elements are still on the page after All stories`);
+    t.progress(1);
+  } finally {
+    closeViewFrame();
+    if (originalSounds == null) localStorage.removeItem(SOUND_KEY);
+    else localStorage.setItem(SOUND_KEY, originalSounds);
+  }
+}
+
+/** A console story's draft, opened by its link (the `stories` run): its title, wall, first lines and choices, and its
+    saved place coming back after All stories. */
+async function consoleDraft(t, st) {
+  await consoleOpen(t, st);
+  await consoleFresh(t, st);
+  if ($("console-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("console-title").textContent}"`);
+  await consoleHeard(t, document, st.id);
+  const m = consoleModel(st);
+  consoleCheck(t, st, m, document, `${st.id}: ${st.start}`);
+  if (!openChoices().length) t.problem("bug", `${st.id}: no choices on the first scene`);
+  const open = m.open();
+  await consoleChoose(t, st, m, open[0][1], document, st.id);
+  const where = m.scene;
+  await toLanding(t);
+  checkInventory(t, "landing page, after a console draft");
+  await consoleOpen(t, st);
+  await waitFor(() => apiOf().scene() === where, 2000);
+  if (apiOf().scene() !== where) t.problem("bug", `${st.id}: the saved place was ${where}, it opened at ${apiOf().scene()}`);
+  else {
+    await consoleHeard(t, document, `${st.id} (saved place)`);
+    consoleCheck(t, st, m, document, `${st.id}: ${where} (saved place)`);
+    t.event("saved-place", `${st.id}: ${where} (${sayState(m.state)})`);
+  }
+  await sleep(500);
+  await toLanding(t);
+}
+
+/** A console story's branch pages: its wall, its lines (with their audio), the canonical state marked, the choices as
+    links (locked ones shown locked), every link a page that exists. */
+async function crawlConsolePages(t, st, done, total) {
+  const R = rulesOf();
+  const x = R.explore(st);
+  const pageOf = (id) => `/${st.scenes[id].folder}/`;
+  const sceneAt = new Map(Object.keys(st.scenes).map((id) => [pageOf(id), id]));
+  const first = pageOf(st.start);
+  const parent = new Map([[first, null]]);
+  const queue = [first];
+  const mine = new Set();
+  while (queue.length) {
+    const path = queue.shift();
+    if (mine.has(path)) continue;
+    mine.add(path);
+    done.add(path);
+    t.scene(path);
+    t.progress(done.size / total);
+    if ((await status(path)) !== 200) {
+      t.problem("bug", `${path}: page missing (from ${parent.get(path) || "the home page"})`);
+      continue;
+    }
+    const doc = await openByClick(t, parent.get(path), path);
+    if (isMissingPage(doc)) {
+      t.problem("bug", `${path}: opened the not-found page`);
+      continue;
+    }
+    t.add("pagesOpened");
+    const id = sceneAt.get(path);
+    const s = st.scenes[id];
+    t.note(doc.querySelector("h1")?.textContent || path);
+    await waitFor(() => soundOf(doc), 3000);
+    await passPrompt(t, doc, path);
+    const canon = x.scenes[id];
+    const wall = [...doc.querySelectorAll("[data-wall] .feed")];
+    const feeds = R.feedsOf(st, s);
+    if (wall.length !== st.cameras.length) t.problem("bug", `${path}: ${wall.length} feeds on the page, ${st.cameras.length} cameras`);
+    for (const f of wall) if (f.dataset.state !== feeds[f.dataset.camera]) t.problem("bug", `${path}: camera ${f.dataset.camera} shows "${f.dataset.state}", the scene says "${feeds[f.dataset.camera]}"`);
+    const marked = doc.querySelector("[data-canon]");
+    if (!marked) t.problem("bug", `${path}: the canonical state isn't marked on the page`);
+    else {
+      const flags = (marked.querySelector(".canon-flags")?.textContent || "").replace(/^Flags:\s*/, "");
+      const want = Object.keys(canon.state.flags).sort().join(", ") || "none";
+      if (flags !== want) t.problem("bug", `${path}: the marked state has flags "${flags}", the shortest way gives "${want}"`);
+    }
+    const lines = [...doc.querySelectorAll(".passage-lines li")].map((li) => li.textContent);
+    if (lines.length !== s.lines.length) t.problem("bug", `${path}: ${lines.length} lines on the page, the scene has ${s.lines.length}`);
+    for (const a of doc.querySelectorAll(".passage-lines audio")) {
+      if (!(await waitFor(() => a.readyState >= 1 || a.error, 8000)) || a.error) t.problem("bug", `${path}: a line's audio didn't load (${a.src})`);
+    }
+    const links = [...doc.querySelectorAll(".spark-choices a.choice")].map((a) => ({ label: a.textContent.trim(), to: pathOf(a.getAttribute("href"), doc.baseURI) }));
+    const locked = [...doc.querySelectorAll(".spark-choices .choice.is-locked")];
+    const open = s.choices.filter((c) => R.usable(c, canon.state)).length;
+    if (links.length !== open || links.length + locked.length !== s.choices.length) t.problem("bug", `${path}: ${links.length} links and ${locked.length} locked choices, the scene has ${s.choices.length} (${open} open in the marked state)`);
+    t.event("page", `${path}: ${links.length} choices, ${locked.length} locked`);
+    if (!links.length && !s.ending) t.problem("warning", `${path}: no open choice in its marked state`);
+    for (const l of links) {
+      if ((await status(l.to)) !== 200) {
+        t.problem("bug", `${path}: choice "${l.label}" links to ${l.to}, which doesn't exist`);
+        continue;
+      }
+      if (!parent.has(l.to)) parent.set(l.to, path);
+      queue.push(l.to);
+    }
+  }
+  Object.keys(st.scenes).map(pageOf).filter((p) => !mine.has(p)).forEach((p) => t.problem("warning", `${p}: no open choice in a marked state links here (orphan page)`));
+  if ((await status(`/${st.id}/`)) !== 200) t.problem("bug", `/${st.id}/ (${st.title}'s link) is missing`);
+}
+
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
@@ -1737,7 +2502,14 @@ installPlaytest({
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
     },
     { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts, the percent explored rising scene by scene to 100% only at the last, the Tree locked until found (no Back: after each choice it walks again from the start, a new run)", seconds: 330, tags: ["full"] },
-    { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts", seconds: 90, tags: ["full"] },
+    { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts; a console story's wall, lines, marked state and open or locked choices", seconds: 100, tags: ["full"] },
+    {
+      id: "console",
+      title: "Console stories (Night Shift): the camera wall, voiced lines in order, gated choices and flags, a saved run that survives a reload, the shift log, Settings on the audio, three screen sizes",
+      seconds: 240,
+      tags: ["full"],
+      description: "Opens the console draft (night-shift-demo, listed: false) by its link under its own Tap to play (under a runner with a real mouse it waits for a real page.mouse.click first, then taps itself; either way it records whether the press was trusted and that audio is running). Subtitles are on by default and the lines play one after the other in the order of the data; CC turns the subtitles off and on; Replay line plays the last line again. The wall shows a feed per camera (6 to 9) in the state the scene says; pressing a feed enlarges it (its description under it), another replaces it, the same again puts it back. Choices gated by a flag are not on the page without it and are with it, and a choice sets a flag a later scene reads. The build's state explorer (js/console-rules.js) gives every way to every scene and ending and every different set of open choices: the bot plays all of them with real presses from a new run and checks, at each scene, the flags, meters, history, shift log, wall, clock and choices against what the data says, the percent explored, and the ending. The Log button opens the shift log at the start, in the middle and at an ending: it lists exactly what was done and seen, a redacted line per way not taken, nothing in it can be pressed, and it gives away no choice that was not taken. Settings Sound off / on and Volume apply to the voice, ambience and effects elements. Reloading mid-scene (a new page load of the story's link in a frame) returns to the same scene with the same flags, meters, log and the lines already heard. At 390x844, 360x640 and 844x390 (a frame of that size) the wall, subtitles, line buttons, choices and the log fit with no sideways scroll and tap targets of 44px or more. Last, All stories brings the landing page back and the audio goes.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {
       id: "credits",
@@ -1768,6 +2540,7 @@ installPlaytest({
       else if (id === "stories") await storiesRun(options, t);
       else if (id === "branches") await branches(options, t);
       else if (id === "pages") await pages(options, t);
+      else if (id === "console") await consoleRun(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
@@ -1775,12 +2548,14 @@ installPlaytest({
     } finally {
       stopVideos();
       closeFrame();
+      closeViewFrame();
       restoreProgress();
     }
   },
   stop() {
     stopVideos();
     closeFrame();
+    closeViewFrame();
     restoreProgress();
   },
 });

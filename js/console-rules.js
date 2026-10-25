@@ -92,7 +92,8 @@
 
   /** Every state the story can be in, breadth first from the start (so the first state found at a scene is on its
       shortest way). Returns
-        scenes: { id: { state, path: [scene ids], choices: [indexes usable in that first state] } }
+        scenes:   { id: { state, path: [scene ids], picks: [choice indexes] } }   the shortest way to each scene
+        variants: { id: { "open choices": { state, path, picks, open } } }       one way per different set of open choices
         stuck:  [{ scene, state, path }]       non-ending scenes where, in some reachable state, no choice is usable
         used:   { "scene#i": { usable, changes, branch } }   what each choice does across all reachable states
         cosmetic: [{ scene, path }]            a path with more than `maxCosmetic` cosmetic choices
@@ -101,11 +102,11 @@
     opts = opts || {};
     var cap = opts.cap || 50000;
     var maxCosmetic = opts.maxCosmetic == null ? 2 : opts.maxCosmetic;
-    var out = { scenes: {}, stuck: [], used: {}, cosmetic: [], capped: false, states: 0 };
+    var out = { scenes: {}, variants: {}, stuck: [], used: {}, cosmetic: [], capped: false, states: 0 };
     var start = story.start;
     var first = fresh(story);
     var seen = {};
-    var queue = [{ id: start, state: first, path: [start], cos: 0 }];
+    var queue = [{ id: start, state: first, path: [start], picks: [], cos: 0 }];
     seen[start + "#" + stateKey(first) + "#0"] = true;
     var stuckSeen = {};
     var cosSeen = {};
@@ -115,11 +116,13 @@
       var scene = story.scenes[at.id];
       if (!scene) continue;
       if (!out.scenes[at.id]) {
-        out.scenes[at.id] = { state: at.state, path: at.path, choices: [] };
-        scene.choices.forEach(function (c, i) { if (usable(c, at.state)) out.scenes[at.id].choices.push(i); });
+        out.scenes[at.id] = { state: at.state, path: at.path, picks: at.picks };
       }
       var open = [];
       scene.choices.forEach(function (c, i) { if (usable(c, at.state)) open.push(i); });
+      // One way to each different set of open choices (a gated choice shows in one and not in another).
+      var vs = out.variants[at.id] || (out.variants[at.id] = {});
+      if (!vs[open.join()]) vs[open.join()] = { state: at.state, path: at.path, picks: at.picks, open: open };
       if (!scene.ending && !open.length && !stuckSeen[at.id + stateKey(at.state)]) {
         stuckSeen[at.id + stateKey(at.state)] = true;
         out.stuck.push({ scene: at.id, state: at.state, path: at.path });
@@ -145,7 +148,7 @@
           return;
         }
         seen[k] = true;
-        queue.push({ id: c[2], state: after, path: at.path.concat(c[2]), cos: cos });
+        queue.push({ id: c[2], state: after, path: at.path.concat(c[2]), picks: at.picks.concat(i), cos: cos });
       });
     }
     return out;
