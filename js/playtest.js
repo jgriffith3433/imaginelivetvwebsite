@@ -2475,6 +2475,8 @@ async function consoleOpen(t, st, { tap = true, real = 0 } = {}) {
     and each different set of open choices; the bot plays every one of those from a new run with real presses. */
 async function consoleWalk(t, st, sums = { scenes: 0, endings: 0 }) {
   const R = rulesOf();
+  // Normally already warmed before the run; if not, work it out sliced (Night Shift's 275k states in one go froze the page for a minute).
+  await consoleWarm(t);
   const x = consoleExplore(st);
   const total = Object.keys(st.scenes).length;
   const targets = Object.entries(x.variants)
