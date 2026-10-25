@@ -4030,6 +4030,8 @@ async function nightSignoffRun(options, t) {
               m = consoleModel(st);
             }
           } else {
+            // The desktop play left the story open on this page; two copies of the player (this page and the frame) stalled the tab, so the page goes back to the landing first.
+            if (!landingShown()) { at("back to the landing page before the frame"); await toLanding(t); }
             at("preparing the saved run");
             if (near) consoleSeedWrite(st, way.picks.slice(0, seedLen), null);
             else {

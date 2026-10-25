@@ -1829,7 +1829,7 @@ figure.feed { cursor: default; }
   .console[data-state="soon"] .console-ending { padding: 0.2rem; font-size: 1rem; line-height: 1.25; }
   .console[data-state="soon"][data-lines="done"] .console-subs { min-height: 2.6rem; max-height: 3.2rem; }
   .console[data-state="soon"] .console-panel { gap: 0.25rem; }
-  .console[data-state="soon"] .console-wall { width: min(100%, 35dvh); justify-self: center; }
+  .console[data-state="soon"] .console-wall { width: min(100%, 39dvh); justify-self: center; }
 }
 
 /* Once the lines are heard, the choices (and the end screen) take what the subtitles need less, on any screen. */
