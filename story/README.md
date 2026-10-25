@@ -197,6 +197,9 @@ except the camera stills (`image.generate`, `image.edit`); the voices and sounds
 
 ### Playtests
 
+> **The console scenarios.** `console` plays the draft demo `night-shift-demo` first and then the real Night Shift (`{"at":"real"}` only the real one); it is not the demo alone any more. `night-shift` (~2.5 min) plays four whole ways, `night-shift-signoff` every ending
+> at four sizes (~23 min; `{"at":"last-choices"}` seeds the run 2 choices short, under 10 min), `night-shift-audio` checks every line and bed. Night Shift today: 256 scenes, 1,376 lines, 12 endings, shortest way 39.3 minutes, average 45.6, longest 54.5.
+
 The `console` scenario plays the demo (or `{"story":"<id>"}`): opens it by its link under its own Tap to play, subtitles
 and lines in order, Replay, the wall and the enlarged feed, gated choices, every scene and ending from the state explorer
 (real presses), the Log (at the start, in the middle and at an ending), Settings on the audio, a reload mid-scene, and three

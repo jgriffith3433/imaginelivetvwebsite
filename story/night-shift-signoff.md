@@ -2,7 +2,7 @@
 
 Written 2026-10-25 (third attempt, on top of beta at `22c5b65`). **Verdict: not proven clean.** What a server with no browser can
 run is clean (listed with its output below). What needs a browser (the four screen sizes, listening, the playtests) was **not
-run here**, and this file says so wherever it applies. Nothing below claims a result that no command named next to it produced.
+run here**, and this file says so wherever it applies. (Since then the T4 has played all 12 endings at the four sizes: 48 plays, 0 console errors, the ending shown each time; see `story/night-shift-gaps.md`, item 57. The "not run" cells in the table below are the state of this attempt.) Nothing below claims a result that no command named next to it produced.
 
 ## What this attempt found and changed
 
@@ -21,23 +21,23 @@ Played by `npm run test:endings` (the way the playtest presses: the fewest choic
 recording plus the player's 0.35 s gap, from the data, not timed on a clock), and the shortest and longest way to each ending
 from `node tools/ending-times.mjs --md` (240,000-plus states).
 
-| Ending | Scene | Way pressed: choices | Way pressed: min | Shortest way (min) | Longest way (min) |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Clean report. | `end-clean` | 79 | 42.7 | 40.0 | 52.7 |
-| Someone to leave it to. | `end-someone` | 79 | 42.7 | 40.2 | 52.6 |
-| She knew. | `end-she-knew` | 79 | 42.8 | 40.2 | 52.6 |
-| Eat something. | `end-eat-something` | 79 | 42.7 | 40.0 | 52.8 |
-| By the book, alone. | `end-by-the-book` | 81 | 43.7 | 41.3 | 51.4 |
-| The friendly one. | `end-friendly` | 79 | 43.0 | 39.5 | 53.3 |
-| Opinions. | `end-opinions` | 79 | 42.8 | 39.3 | 53.1 |
-| Four minutes. | `end-four-hours` | 78 | 41.9 | 38.6 | 52.5 |
-| Written up. | `end-written-up` | 77 | 42.3 | 38.8 | 53.1 |
-| The wedge. | `end-wedge` | 77 | 42.1 | 38.6 | 52.2 |
-| Noted. | `end-noted` | 79 | 42.8 | 39.4 | 52.7 |
-| Under review. | `end-under-review` | 79 | 42.8 | 40.3 | 52.6 |
+| Ending | Scene | Shortest way (min) | Longest way (min) | Choices on the shortest way |
+| --- | --- | ---: | ---: | ---: |
+| Four minutes. | `end-four-hours` | 39.3 | 53.7 | 81 |
+| The wedge. | `end-wedge` | 39.4 | 53.4 | 81 |
+| Written up. | `end-written-up` | 39.6 | 54.3 | 81 |
+| Opinions. | `end-opinions` | 40.1 | 54.3 | 83 |
+| Noted. | `end-noted` | 40.1 | 53.9 | 83 |
+| The friendly one. | `end-friendly` | 40.3 | 54.5 | 83 |
+| Clean report. | `end-clean` | 40.7 | 53.9 | 83 |
+| Eat something. | `end-eat-something` | 40.8 | 54.0 | 83 |
+| Someone to leave it to. | `end-someone` | 40.9 | 53.8 | 82 |
+| She knew. | `end-she-knew` | 41.0 | 53.8 | 82 |
+| Under review. | `end-under-review` | 41.1 | 53.8 | 82 |
+| By the book, alone. | `end-by-the-book` | 42.1 | 52.6 | 86 |
 
-Whole night: shortest 38.6, average 44.7 (every open choice equally likely), median 44.7 (3,000 random plays: 10% 43.3, 90% 46.2),
-longest 53.3 minutes (`node tools/check-night-shift.mjs`; 241 scenes, 1,330 lines, 12 endings, 123.4 minutes of recordings in all).
+Whole night (2026-10-25, after the echo scenes): shortest 39.3, average 45.6 (every open choice equally likely), median 45.6 (3,000 random plays: 10% 44.1, 90% 47.1),
+longest 54.5 minutes (`node tools/check-night-shift.mjs`; 256 scenes, 1,376 lines, 658 choices, 12 endings). The table above is from `node tools/ending-times.mjs --md`; "way pressed" minutes were last measured before the echo scenes (they add about 40 seconds to the ways that pass them).
 
 ## Walk of every ending
 
@@ -57,15 +57,15 @@ a wrong speaker image (the wall shows cameras, not speakers; each scene's `focus
 
 ## What the data says, from commands that were run
 
-- **Missing or stale media:** none. `node tools/make-audio.mjs night-shift --list`: 6 of 1,364 have no file, the 6 music stings (below).
-  `npm run story -- --check`: `ok 4 stories, 289 scenes, everything generated is up to date`. All 1,330 `line-*.mp3` decode with a
+- **Missing or stale media:** none. `node tools/make-audio.mjs night-shift --list`: 46 of 1,410 have no file: the 46 lines of the 15 echo scenes (the stings were made in #51).
+  `npm run story -- --check`: `ok 4 stories, 304 scenes, everything generated is up to date`. 1,330 of 1,376 `line-*.mp3` decode with a
   length within 0.6 s of the line's `dur` and under `dur` + 4 s (the player's give-up timer). The 10 beds and 18 effects exist.
 - **Stand-in images:** none. `night-shift/media/standin` is gone; the 26 camera pictures and 12 end cards are real generated stills (looked at on
   contact sheets: control-room and building cameras; nothing shows B3, a vat or a creature; the one caption is removed, above).
 - **Loudness (ffmpeg `ebur128`):** voices median -16.6 LUFS, 5th percentile -18.4, 95th -15.5, after the fix none outside -19.1 to
   -14.6, loudest sample peak -1.4 dBFS. Beds -37 to -48 LUFS (roof -48.1, stairwell -43.9, vestibule -41.8, elevator -41.7 read low
   in LUFS; their RMS was set to -36 dB by `--beds` in #47, 18 dB or more under the voice), effects -25.5 to -27.7 (about 10 dB under).
-- **A choice that did nothing, a dead end:** 0 decisions that change nothing, no stuck state, 12 endings, all 241 scenes reachable
+- **A choice that did nothing, a dead end:** 0 decisions that change nothing, no stuck state, 12 endings, all 256 scenes reachable
   (`npm run story`, `node tools/check-night-shift.mjs`, `npm run test:endings`).
 - **The trainer's reveal layers:** all four reachable: the pencil (`sign-why`, `sign-why-44`) after 12 choices, the spring
   (`drawer-notice`) 22, the four hours (`four-hours`) 44, twelve (`twelve`) 65; one way meets all four (83 choices).
@@ -99,15 +99,10 @@ J or Talk can ask for the rest on the T4.
 
 ## Left unfixed
 
-1. **Six music stings are not made** (`shift-begins`, `the-panel`, `fifty-eight`, `ending-plain`, `ending-warm`, `ending-cold`; recipes
-   `night-shift-music-*`, 20 s each). They play on `handover`, `pierce-signin`, the four `trouble-signal-*` scenes and all 12 endings, so
-   each ending plays without the sting it was designed with (the player copes: the cue is empty). `audio.music` is a GPU tool
-   and this task has no GPU budget. `hawkesgen_estimate` (6 clips): 66 GPU-seconds on one ACE-Step server, **$0.09**, or **$0.71**
-   counting the 20-minute idle tail if the server isn't stopped at once. Needs J's OK; then
-   `node tools/make-audio.mjs night-shift --ingest <folder>` and `npm run story`.
+1. **46 lines are unrecorded.** The 15 echo scenes (`out-counted`, `out-asked`, `held-tomorrow`, `held-dee`, `entry-*`, `lobby-*`, `adler-corrected`, `adler-initialed`) have no recordings: ElevenLabs refused every call (401, failed payment on the account). Estimate 1.2 dollars; when it is paid, `node tools/make-audio.mjs night-shift --reuse`, `hawkesgen_run audio.voice` per line, `--ingest`, `--mix`, `--dur`, `npm run story`. Until then they play on a timer and `night-shift-audio` fails on the unmade count. (The six music stings were made in #51.)
 2. **The four-size walk and every playtest are unproven** (above). The 844x390 end screen fix and the end-card crop are unseen. (Update, c_c4ffb03144e4: `consoleFit` now names what needs a scroll on an end screen and an end screen that needs one is a bug; `console` measures the worst scenes and the 70-entry Log; still unseen until a beta run.)
 3. **No listen.** Nobody has heard the voices in playback: whether a `perform` tag was read aloud, a voice drifts, two speakers sound alike.
 4. **The "14 shows although" report is not explained.** The player is right in jsdom; the check was made stricter and clearer (above).
    If beta reports it again, the message now says which choice and state.
-5. **Speaker treatments are not applied** (radio, walkie, intercom and phone lines are clean recordings): needs an ffmpeg step per speaker in `tools/make-audio.mjs`.
-6. `story/night-shift.md` ("228 scenes") and `story/night-shift-gaps.md` still carry counts from before the script polish (now 241 scenes, 1,330 lines).
+5. Speaker treatments were applied in #53 (139 lines carry one).
+6. Counts in `story/night-shift.md`, `-gaps.md` and this file were brought to 256 scenes, 1,376 lines, 658 choices on 2026-10-25.

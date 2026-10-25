@@ -657,7 +657,7 @@
       "choices": [
         {
           "say": "Count them with her",
-          "next": "the-chairs",
+          "next": "out-counted",
           "add": {
             "trainer_trust": 1
           },
@@ -665,7 +665,7 @@
         },
         {
           "say": "Ask what she's counting",
-          "next": "the-chairs",
+          "next": "out-asked",
           "add": {
             "trainer_warmth": 1
           },
@@ -2681,7 +2681,7 @@
       "choices": [
         {
           "say": "Tell Marisol: tomorrow",
-          "next": "log-held",
+          "next": "held-tomorrow",
           "add": {
             "trainer_warmth": 1
           },
@@ -2689,7 +2689,7 @@
         },
         {
           "say": "Ask Dee to talk to her",
-          "next": "log-held",
+          "next": "held-dee",
           "add": {
             "trainer_trust": -1
           },
@@ -9790,7 +9790,7 @@
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "coat-lobby",
+          "next": "entry-exact",
           "add": {
             "trainer_trust": 1
           },
@@ -9798,7 +9798,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "coat-lobby",
+          "next": "entry-thought",
           "set": [
             "opined"
           ],
@@ -9806,7 +9806,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "coat-lobby",
+          "next": "entry-blank",
           "set": [
             "opined"
           ],
@@ -9855,7 +9855,7 @@
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "coat-lobby",
+          "next": "entry-exact",
           "add": {
             "trainer_trust": 1
           },
@@ -9863,7 +9863,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "coat-lobby",
+          "next": "entry-thought",
           "set": [
             "opined"
           ],
@@ -9871,7 +9871,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "coat-lobby",
+          "next": "entry-blank",
           "set": [
             "opined"
           ],
@@ -9931,7 +9931,7 @@
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "coat-lobby",
+          "next": "entry-exact",
           "add": {
             "trainer_trust": 1
           },
@@ -9939,7 +9939,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "coat-lobby",
+          "next": "entry-thought",
           "set": [
             "opined"
           ],
@@ -9947,7 +9947,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "coat-lobby",
+          "next": "entry-blank",
           "set": [
             "opined"
           ],
@@ -9995,7 +9995,7 @@
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "coat-lobby",
+          "next": "entry-exact",
           "add": {
             "trainer_trust": 1
           },
@@ -10003,7 +10003,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "coat-lobby",
+          "next": "entry-thought",
           "set": [
             "opined"
           ],
@@ -10011,7 +10011,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "coat-lobby",
+          "next": "entry-blank",
           "set": [
             "opined"
           ],
@@ -10083,7 +10083,7 @@
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "coat-lobby",
+          "next": "entry-exact",
           "add": {
             "trainer_trust": 1
           },
@@ -10091,7 +10091,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "coat-lobby",
+          "next": "entry-thought",
           "set": [
             "opined"
           ],
@@ -10099,7 +10099,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "coat-lobby",
+          "next": "entry-blank",
           "set": [
             "opined"
           ],
@@ -10182,7 +10182,7 @@
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "dee-back-waved",
+          "next": "lobby-exact-w",
           "add": {
             "trainer_trust": 1
           },
@@ -10190,7 +10190,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "dee-back-waved",
+          "next": "lobby-thought-w",
           "set": [
             "opined"
           ],
@@ -10198,7 +10198,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "dee-back-waved",
+          "next": "lobby-blank-w",
           "set": [
             "opined"
           ],
@@ -10239,7 +10239,7 @@
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "dee-back-signed",
+          "next": "lobby-exact-s",
           "add": {
             "trainer_trust": 1
           },
@@ -10247,7 +10247,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "dee-back-signed",
+          "next": "lobby-thought-s",
           "set": [
             "opined"
           ],
@@ -10255,7 +10255,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "dee-back-signed",
+          "next": "lobby-blank-s",
           "set": [
             "opined"
           ],
@@ -10330,7 +10330,7 @@
     {
       "id": "dee-back-waved",
       "folder": "dee-back-waved",
-      "time": "03:30",
+      "time": "03:34",
       "title": "Back",
       "ambience": "control-room-late",
       "lines": [
@@ -10403,7 +10403,7 @@
     {
       "id": "dee-back-signed",
       "folder": "dee-back-signed",
-      "time": "03:30",
+      "time": "03:34",
       "title": "Back",
       "ambience": "control-room-late",
       "lines": [
@@ -11488,7 +11488,7 @@
       "choices": [
         {
           "say": "Correct the entry now",
-          "next": "dev-signout",
+          "next": "adler-corrected",
           "clear": [
             "lied"
           ],
@@ -11499,7 +11499,7 @@
         },
         {
           "say": "Initial the log beside hers",
-          "next": "dev-signout",
+          "next": "adler-initialed",
           "add": {
             "trainer_trust": 1
           },
@@ -17064,6 +17064,505 @@
         }
       ],
       "log": "0534 hrs. Day officer admitted on sight, list not checked."
+    },
+    {
+      "id": "out-counted",
+      "folder": "out-counted",
+      "time": "18:59",
+      "title": "Four of four",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You count them with her. One, two, three, four, a green light each. She watches your finger, not the radios.",
+          "dur": 7.7
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. You count with your finger.",
+          "dur": 2.3,
+          "perform": "dry"
+        },
+        {
+          "speaker": "dee",
+          "text": "Good. Do it again at six.",
+          "dur": 2.3,
+          "perform": "flat"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "the-chairs"
+        }
+      ],
+      "log": "1859 hrs. Radios counted aloud with D. Reyes."
+    },
+    {
+      "id": "out-asked",
+      "folder": "out-asked",
+      "time": "18:59",
+      "title": "What she counts",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "She says it to the charger, not to you.",
+          "dur": 3.5
+        },
+        {
+          "speaker": "dee",
+          "text": "Radios.",
+          "dur": 2,
+          "perform": "dry, not unkind"
+        },
+        {
+          "speaker": "dee",
+          "text": "If it is three, that is a log. If it is four, that is a night.",
+          "dur": 6.2,
+          "perform": "low"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "the-chairs"
+        }
+      ],
+      "log": "1859 hrs. D. Reyes asked what she counts at the charger. Answer: radios."
+    },
+    {
+      "id": "held-tomorrow",
+      "folder": "held-tomorrow",
+      "time": "21:38",
+      "title": "Tomorrow",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "On tile six Marisol listens to you with her arms folded. Then she takes the walkie from her belt.",
+          "dur": 7.3
+        },
+        {
+          "speaker": "marisol",
+          "text": "Tomorrow. Okay. I hold you to tomorrow, mi amor.",
+          "treatment": "walkie",
+          "dur": 3.5,
+          "perform": "over the walkie, clipped, warm underneath"
+        },
+        {
+          "speaker": "dee",
+          "text": "She will.",
+          "dur": 2,
+          "perform": "dry"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "log-held"
+        }
+      ],
+      "log": "2138 hrs. M. Quintero told the supervisor would speak to her tomorrow."
+    },
+    {
+      "id": "held-dee",
+      "folder": "held-dee",
+      "time": "21:38",
+      "title": "Her floor",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You ask Dolores to be the one. She looks at the walkie on the shelf for a while.",
+          "dur": 6.9
+        },
+        {
+          "speaker": "dee",
+          "text": "Mine to say?",
+          "dur": 2,
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "It was yours to say. Mm. I will say it.",
+          "dur": 3.8,
+          "perform": "dry, not unkind"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She keys the walkie once, and keeps her thumb on it before she speaks.",
+          "dur": 5.4
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "log-held"
+        }
+      ],
+      "log": "2138 hrs. D. Reyes asked to speak to M. Quintero at the officer's request."
+    },
+    {
+      "id": "entry-exact",
+      "folder": "entry-exact",
+      "time": "03:26",
+      "title": "The field, full",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:26. The incident field for car three has times in it, a floor, a name. Nothing else. Dolores reads it upside down from her chair.",
+          "dur": 9.6
+        },
+        {
+          "speaker": "dee",
+          "text": "Times. Floor. Name.",
+          "dur": 2,
+          "perform": "low"
+        },
+        {
+          "speaker": "dee",
+          "text": "That is all he can ask you about.",
+          "dur": 3.1,
+          "perform": "dry"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "coat-lobby"
+        }
+      ],
+      "log": "0326 hrs. Incident field for car 3 completed."
+    },
+    {
+      "id": "entry-thought",
+      "folder": "entry-thought",
+      "time": "03:26",
+      "title": "A word that is not a time",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:26. The incident field for car three has a word in it that is not a time. Dolores reads it upside down from her chair.",
+          "dur": 9.6
+        },
+        {
+          "speaker": "dee",
+          "text": "\"Seemed.\"",
+          "dur": 2,
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. He will circle that.",
+          "dur": 2,
+          "perform": "dry, not unkind"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "coat-lobby"
+        }
+      ],
+      "log": "0326 hrs. Incident field for car 3 completed with the officer's impression."
+    },
+    {
+      "id": "entry-blank",
+      "folder": "entry-blank",
+      "time": "03:26",
+      "title": "The field, empty",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:26. The incident field for car three is empty. The cursor blinks in it. Dolores looks at it, then at you.",
+          "dur": 8.1
+        },
+        {
+          "speaker": "dee",
+          "text": "Blank.",
+          "dur": 2,
+          "perform": "low"
+        },
+        {
+          "speaker": "dee",
+          "text": "Blank is a line too. He reads those first.",
+          "dur": 3.5,
+          "perform": "dry"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "coat-lobby"
+        }
+      ],
+      "log": "0326 hrs. Incident field for car 3 left blank."
+    },
+    {
+      "id": "lobby-exact-w",
+      "folder": "lobby-exact-w",
+      "time": "03:31",
+      "title": "The field, full",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
+          "dur": 8.5
+        },
+        {
+          "speaker": "dee",
+          "text": "Not signed in. You wrote it.",
+          "dur": 2.3,
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. Four words. That is a log.",
+          "dur": 2.7,
+          "perform": "dry, not unkind"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dee-back-waved"
+        }
+      ],
+      "log": "0331 hrs. Incident field for the lobby completed."
+    },
+    {
+      "id": "lobby-thought-w",
+      "folder": "lobby-thought-w",
+      "time": "03:31",
+      "title": "A word that is not a time",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
+          "dur": 8.5
+        },
+        {
+          "speaker": "dee",
+          "text": "\"Hurry.\"",
+          "dur": 2,
+          "perform": "low"
+        },
+        {
+          "speaker": "dee",
+          "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+          "dur": 6.2,
+          "perform": "dry"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dee-back-waved"
+        }
+      ],
+      "log": "0331 hrs. Incident field for the lobby completed with the officer's impression."
+    },
+    {
+      "id": "lobby-blank-w",
+      "folder": "lobby-blank-w",
+      "time": "03:31",
+      "title": "The field, empty",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
+          "dur": 7.3
+        },
+        {
+          "speaker": "dee",
+          "text": "The Chairman went up. There is a camera that says so.",
+          "dur": 4.2,
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
+          "dur": 5,
+          "perform": "dry, not unkind"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dee-back-waved"
+        }
+      ],
+      "log": "0331 hrs. Incident field for the lobby left blank."
+    },
+    {
+      "id": "lobby-exact-s",
+      "folder": "lobby-exact-s",
+      "time": "03:31",
+      "title": "The field, full",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
+          "dur": 8.5
+        },
+        {
+          "speaker": "dee",
+          "text": "Signed, in only. You wrote that.",
+          "dur": 2.3,
+          "perform": "low"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. Four words. That is a log.",
+          "dur": 2.7,
+          "perform": "dry"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dee-back-signed"
+        }
+      ],
+      "log": "0331 hrs. Incident field for the lobby completed."
+    },
+    {
+      "id": "lobby-thought-s",
+      "folder": "lobby-thought-s",
+      "time": "03:31",
+      "title": "A word that is not a time",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
+          "dur": 8.5
+        },
+        {
+          "speaker": "dee",
+          "text": "\"Hurry.\"",
+          "dur": 2,
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+          "dur": 6.2,
+          "perform": "dry, not unkind"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dee-back-signed"
+        }
+      ],
+      "log": "0331 hrs. Incident field for the lobby completed with the officer's impression."
+    },
+    {
+      "id": "lobby-blank-s",
+      "folder": "lobby-blank-s",
+      "time": "03:31",
+      "title": "The field, empty",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
+          "dur": 7.3
+        },
+        {
+          "speaker": "dee",
+          "text": "The Chairman went up. There is a camera that says so.",
+          "dur": 4.2,
+          "perform": "low"
+        },
+        {
+          "speaker": "dee",
+          "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
+          "dur": 5,
+          "perform": "dry"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dee-back-signed"
+        }
+      ],
+      "log": "0331 hrs. Incident field for the lobby left blank."
+    },
+    {
+      "id": "adler-corrected",
+      "folder": "adler-corrected",
+      "time": "04:14",
+      "title": "The right entry",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You change the entry while she watches. Her pen waits beside the log until the field says what the panel says.",
+          "dur": 8.1
+        },
+        {
+          "speaker": "adler",
+          "text": "Thank you. That is the entry.",
+          "dur": 2.3,
+          "perform": "formal"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She initials beneath it. Dolores keeps her eyes on the wall.",
+          "dur": 4.2
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dev-signout"
+        }
+      ],
+      "log": "0414 hrs. False panel entry corrected at the panel, F.S.D. H. Adler present."
+    },
+    {
+      "id": "adler-initialed",
+      "folder": "adler-initialed",
+      "time": "04:14",
+      "title": "Beside hers",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You initial the log beside hers. Above it, in your name, the line about the panel is still there.",
+          "dur": 7.3
+        },
+        {
+          "speaker": "adler",
+          "text": "That is my entry. Yours is above it. I did not read yours.",
+          "dur": 5,
+          "perform": "formal"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She caps her pen. Dolores does not look up.",
+          "dur": 3.5
+        }
+      ],
+      "choices": [
+        {
+          "say": "Go on",
+          "next": "dev-signout"
+        }
+      ],
+      "log": "0414 hrs. Log initialed beside F.S.D. H. Adler; officer's own entry left standing."
     }
   ],
   "music": {

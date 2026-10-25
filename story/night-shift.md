@@ -3,8 +3,8 @@
 **Listed on the landing page** (since #35; J's open questions are under "Waiting for J" at the end). The whole night is built as a
 console story in `story/night-shift.json` (see "The built night" below): it plays at `/?story=night-shift`, its pages are under
 `/night-shift/`. **The script is final** (2026-10-25: the text pass, then the script pass that fixed the gap audit's group (c), see
-`story/night-shift-gaps.md`). All 1,330 lines are recorded in the locked voices, the beds and effects are made, the camera pictures and
-end cards are real; only the 6 music stings are not made yet. A text change costs a new recording for each changed line (about 2.5 cents):
+`story/night-shift-gaps.md`). 1,330 of the 1,376 lines are recorded in the locked voices (the 46 lines of the 15 echo scenes, below, wait for the ElevenLabs account to be paid), the beds, effects and 6 stings are made, the camera pictures and
+end cards are real. A text change costs a new recording for each changed line (about 2.5 cents):
 edit `story/night-shift.json`, run `npm run story`, then `node tools/make-audio.mjs night-shift --reuse` (every line whose voice and text
 already have a recording keeps it, even when it moved) and make only the lines it lists.
 
@@ -510,11 +510,16 @@ the axes (C, T, B) and the ending table in section 5 still describe what each en
 
 ## The built night
 
-`story/night-shift.json`: 241 scenes, 1,330 spoken lines, 12 endings. The first act (18:45 to 22:05) is the slice
+`story/night-shift.json`: 256 scenes, 1,376 spoken lines, 658 choices, 12 endings. The first act (18:45 to 22:05) is the slice
 (`story/night-shift-slice-notes.md`, kept as history), moved into the engine's format: the engine has no conditional lines, so a line
 that read a flag now sits in a short scene that follows the choice. Playing time (words at 150 a minute plus a pause per line, the
 build's own `dur`; the voices will move it, usually longer): `node tools/check-night-shift.mjs` prints the shortest, the average (every
-open choice equally likely) and the longest. Now (from the recordings): shortest 38.6 minutes, average 44.7, longest 53.3.
+open choice equally likely) and the longest. Now: shortest 39.3 minutes, average 45.6, longest 54.5 (from the recordings, with the 46 unrecorded lines at their `dur`).
+
+**Echo scenes (2026-10-25).** Ten scenes sent every button to the same next scene and told the player nothing of the choice but a shift-log line.
+Each button now goes to a short scene of its own (2 to 4 lines, a narrator line and Dee, Marisol or Adler answering what the player just did),
+and then on to the old next scene; the old flags, meters and log lines are unchanged. 15 scenes, 46 lines, 1.2 dollars of voice. The table is in
+`story/night-shift-gaps.md`, item 25.
 
 **Acts.** 1: handover, the wall, the first tour, the sign-in, Marisol and the badge, the first log entry (to 22:05). 2: Terrell's last
 hour, a man behind a badge, the first time alone on the wall, Dee covering tile five, the night-line call, the sandwich and the index
@@ -545,7 +550,7 @@ player is told by Mr. Okafor). Short-lived: `asked_44`, `asked_sandwich`, `met_d
 Three kinds of button do not look like decisions and are not meant to be:
 
 - **A press to go on** ("Back to the wall", "Take your seat", "Say nothing"): the only choice the scene has. It writes a shift-log line and opens
-  the next scene. 46 of 241 scenes are like this, and each follows a scene that ended on an object or a silence.
+  the next scene. 61 of 256 scenes are like this, and each follows a scene that ended on an object or a silence.
 - **A gated variant** (the same words four or seven times, "Hand him the tablet", "Answer the phone"): the state picks which one is on the page, so
   the player sees one button. It stands for something the player already decided (what they logged, whether they left the wall); the decision was
   made at the log entry, and the reading scene it opens says only what every way to it has in its log.
@@ -604,14 +609,14 @@ of line, candidate 1 of 3 kept; picked by the description, not by ear, so J may 
 Terrell `idZn18yShmcD0ePsg1A5`, Marisol `Iok0Qd1zNVnFs3DULx6Z`, Dev `zcQcgx11ALPbj0o2PFsw`, Ms. Adler
 `QJ9eYeuXwMsC2KElXT1P`, the courier `cOJkIUDUojZtwaJSfMzy`, the man in the vestibule `YSWR6wrmdI2sOa3gtoye`, Mr. Brandt
 `ZyVqOeng5wFOY7UfrjR9`, Pierce Hawkes `ZthjuvLPty3kTMaNKVKb` (PH Origins' Jackson voice, unmodified). The radio, walkie,
-intercom and phone treatments in the descriptions are applied after the fact (2026-10-25): 137 lines carry a `treatment`
-(52 radio, 37 walkie, 33 phone, 15 intercom; `story/README.md`, "Treated lines"), made from the clean recordings in `night-shift/media/clean/`.
-All 1,288 lines are recorded and mixed (`node tools/make-audio.mjs night-shift --mix`, `--dur`); the 6 music stings are the only unmade audio.
+intercom and phone treatments in the descriptions are applied after the fact (2026-10-25): 139 lines carry a `treatment`
+(see `story/README.md`; `story/README.md`, "Treated lines"), made from the clean recordings in `night-shift/media/clean/`.
+1,330 lines are recorded and mixed (`node tools/make-audio.mjs night-shift --mix`, `--dur`); the 46 lines of the echo scenes and nothing else are unmade (`--list`).
 
 ## Non-voice audio as made (2026-10-25)
 
-- **Ambience:** 10 beds, one for every one of the 228 scenes (`control-room` 93 scenes, `control-room-late` 62, `morning` 18, `lobby` 14,
-  `vestibule` 9, `stairwell` 8, `dock` 8, `elevator` 8, `corridor` 5, `roof` 3). Each is a 28 s loop: the first two seconds of the
+- **Ambience:** 10 beds, one for every one of the 256 scenes (`control-room` 116 scenes, `control-room-late` 64, `morning` 18, `lobby` 14,
+  `vestibule` 12, `stairwell` 8, `dock` 8, `elevator` 8, `corridor` 5, `roof` 3). Each is a 28 s loop: the first two seconds of the
   30 s take are laid over the last two with an equal-power crossfade (`make-audio.mjs --mix`), then `--beds` turns the loop round to
   start where the level before and after the cut is the same (the `control-room-late` bed jumped 6.4 dB where it looped before) and
   brings any bed over -36 dB RMS down to it (`roof` was 8.7 dB and `stairwell` 11.5 dB under the voice; every bed is now 18 dB or more

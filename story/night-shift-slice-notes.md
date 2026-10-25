@@ -1,3 +1,5 @@
+> **History, not a spec.** Kept for the record of how the first act was written; the numbers and scene names below are the slice's, not the story's (now 256 scenes, 1,376 lines, 12 endings).
+>
 > **Superseded.** This slice is now the first act of the whole night, in the engine's format (conditional lines became short
 > scenes that follow the choice; flags `mocked_habit`, `asked_game`, `told_commute` and others were dropped to keep the state small).
 > Dee's lines below are unchanged. See `story/night-shift.md`, "The built night", and run `node tools/check-night-shift.mjs`.
