@@ -8066,15 +8066,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He's the best at it. Not the best at anything else. Mm.",
+       "text": "He's the best at it. Not the best at anything else.",
        "file": null,
-       "dur": 5.8
+       "dur": 5.4
       },
       {
        "speaker": "dee",
-       "text": "Don't copy him. Mm. Read what he leaves out.",
+       "text": "Don't copy him. Read what he leaves out.",
        "file": null,
-       "dur": 4.6
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -8327,9 +8327,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Lobby's clear. Dock's clear. Mm.",
+       "text": "Lobby's clear. Dock's clear.",
        "file": null,
-       "dur": 3
+       "dur": 2.6
       },
       {
        "speaker": "narrator",
@@ -9540,7 +9540,7 @@ window.ILTV_STORIES = {
        "late-read",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Read the after-hours list for floor 58."
        }
@@ -9631,7 +9631,7 @@ window.ILTV_STORIES = {
        "late-read",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Read the after-hours list for floor 58."
        }
@@ -9698,7 +9698,7 @@ window.ILTV_STORIES = {
        "late-read",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Read the after-hours list for floor 58."
        }
@@ -9838,9 +9838,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Somebody's awake up there. Mm.",
+       "text": "Somebody's awake up there.",
        "file": null,
-       "dur": 3
+       "dur": 2.6
       },
       {
        "speaker": "dee",
@@ -9901,9 +9901,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Somebody put a bench in a fire stair. I sit on it four seconds. Mm.",
+       "text": "Somebody put a bench in a fire stair. I sit on it four seconds.",
        "file": null,
-       "dur": 7
+       "dur": 6.6
       },
       {
        "speaker": "dee",
@@ -10030,7 +10030,7 @@ window.ILTV_STORIES = {
        "wedge-seen-badge",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Looked up the access record for floor 31."
        }
@@ -10235,10 +10235,10 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Wedge. Thirty-one. Mm. I'm going up. Wall.",
+       "text": "Wedge. Thirty-one. I'm going up. Wall.",
        "sfx": "footsteps-stairs",
        "file": null,
-       "dur": 3.8
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -10944,7 +10944,7 @@ window.ILTV_STORIES = {
          "lobby_clear"
         ],
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Looked up the lanyard's badge on the access terminal."
        }
@@ -11050,7 +11050,7 @@ window.ILTV_STORIES = {
          "lobby_clear"
         ],
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Looked up the lanyard's badge on the access terminal."
        }
@@ -11380,7 +11380,7 @@ window.ILTV_STORIES = {
        "awake-bank",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Asked D. Reyes what happened at the bank."
        }
@@ -11453,7 +11453,7 @@ window.ILTV_STORIES = {
        "awake-bank",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Asked D. Reyes what happened at the bank."
        }
@@ -11526,7 +11526,7 @@ window.ILTV_STORIES = {
        "awake-bank",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Asked D. Reyes what happened at the bank."
        }
@@ -11618,7 +11618,7 @@ window.ILTV_STORIES = {
        "marisol-dee",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked M. Quintero about D. Reyes."
        }
@@ -11710,7 +11710,7 @@ window.ILTV_STORIES = {
        "marisol-dee",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked M. Quintero about D. Reyes."
        }
@@ -11802,7 +11802,7 @@ window.ILTV_STORIES = {
        "marisol-dee",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked M. Quintero about D. Reyes."
        }
@@ -12184,9 +12184,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Don't promise what we haven't got. Mm. He'll be at the desk at seven asking where they are.",
+       "text": "Don't promise what we haven't got. He'll be at the desk at seven asking where they are.",
        "file": null,
-       "dur": 8.2
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -12246,9 +12246,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Forty is the floor you can't help. Come on down. Mm.",
+       "text": "Forty is the floor you can't help. Come on down.",
        "file": null,
-       "dur": 5.4
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -12304,10 +12304,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Old pipe. Mm.",
+       "text": "Old pipe.",
        "sfx": "clock-tick",
        "file": null,
-       "dur": 2.2
+       "dur": 1.8
       },
       {
        "speaker": "narrator",
@@ -13170,7 +13170,7 @@ window.ILTV_STORIES = {
        "dev-company",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": -1
         },
         "log": "Called the elevator contractor's night line."
        }
@@ -13192,8 +13192,7 @@ window.ILTV_STORIES = {
        "dev-dee",
        {
         "add": {
-         "trainer_trust": 1,
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Radioed D. Reyes: elevator stopped with a person inside."
        }
@@ -13266,7 +13265,7 @@ window.ILTV_STORIES = {
        "dev-company",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": -1
         },
         "log": "Called the elevator contractor's night line."
        }
@@ -13288,8 +13287,7 @@ window.ILTV_STORIES = {
        "dev-dee",
        {
         "add": {
-         "trainer_trust": 1,
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Radioed D. Reyes: elevator stopped with a person inside."
        }
@@ -13743,9 +13741,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Anand. Dolores. We met. Sit on the floor. It's a small thing. A box that stopped.",
+       "text": "Anand. Dolores. Sit on the floor. It's a small thing. A box that stopped.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.6
       },
       {
        "speaker": "dev",
@@ -15563,7 +15561,7 @@ window.ILTV_STORIES = {
        "courier-refused",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": -1
         },
         "log": "Refused the delivery for floor 58, no authorization."
        }
@@ -15627,9 +15625,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Chairman's office is on the second floor of nobody's list at four in the morning.",
+       "text": "Chairman's office isn't on anybody's list at four in the morning.",
        "file": null,
-       "dur": 7
+       "dur": 5.4
       }
      ],
      "log": "0427 hrs. Courier states sender blank, label reads Chairman's office.",
@@ -15640,7 +15638,7 @@ window.ILTV_STORIES = {
        "courier-refused",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": -1
         },
         "log": "Refused the delivery for floor 58, no authorization."
        }
@@ -15850,9 +15848,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "That's what the book says. Mm.",
+       "text": "That's what the book says.",
        "file": null,
-       "dur": 3.4
+       "dur": 3
       }
      ],
      "log": "0432 hrs. Supervisor notified of delivery for floor 58. Instructed not to accept. Courier left 0433.",
@@ -15952,7 +15950,7 @@ window.ILTV_STORIES = {
        "hum-ask",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes what she was humming."
        }
@@ -16019,7 +16017,7 @@ window.ILTV_STORIES = {
        "hum-ask",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes what she was humming."
        }
@@ -16086,7 +16084,7 @@ window.ILTV_STORIES = {
        "hum-ask",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes what she was humming."
        }
@@ -16140,9 +16138,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
+       "text": "Book says trespass. Book doesn't say fourteen degrees.",
        "file": null,
-       "dur": 4.6
+       "dur": 4.2
       }
      ],
      "log": "0445 hrs. Camera 2, vestibule. Individual asleep on the ledge. Outside temperature 14 degrees.",
@@ -16849,9 +16847,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Fourteen degrees. In the log. Mm.",
+       "text": "Fourteen degrees. In the log.",
        "file": null,
-       "dur": 3.4
+       "dur": 3
       },
       {
        "speaker": "narrator",
@@ -16967,9 +16965,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "He was there. Whether you write it or not, he was there. Mm.",
+       "text": "He was there. Whether you write it or not.",
        "file": null,
-       "dur": 6.2
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -17075,9 +17073,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Six o'clock, the sky does a thing. Over the river. Can't see the river. Mm.",
+       "text": "Six o'clock, the sky does a thing. Over the river. Can't see the river.",
        "file": null,
-       "dur": 7
+       "dur": 6.6
       },
       {
        "speaker": "narrator",
@@ -17370,9 +17368,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Way it was. Mm.",
+       "text": "Way it was.",
        "file": null,
-       "dur": 2.6
+       "dur": 2.2
       },
       {
        "speaker": "dee",
@@ -17494,9 +17492,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He wasn't here. The page is all he gets. Mm.",
+       "text": "He wasn't here. The page is all he gets.",
        "file": null,
-       "dur": 5
+       "dur": 4.6
       }
      ],
      "log": "0540 hrs. Shift log reviewed with D. Reyes.",
@@ -17599,9 +17597,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Officer. Which of these is not the way it was.",
+       "text": "Officer. Which of these isn't the way it was?",
        "file": null,
-       "dur": 5
+       "dur": 4.6
       },
       {
        "speaker": "dee",
@@ -17799,9 +17797,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "I'll go. Stay on the wall. Mm.",
+       "text": "I'll go. Stay on the wall.",
        "file": null,
-       "dur": 3.8
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -17972,15 +17970,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Time. Radios. What the night was. Whatever you put there, it's the one he reads first.",
+       "text": "Time. Radios. What the night was, in one line.",
        "file": null,
-       "dur": 7.4
+       "dur": 4.6
       },
       {
        "speaker": "dee",
-       "text": "He reads that first. Then he checks the rest. Mm.",
+       "text": "That's the one he reads first. Then he checks the rest.",
        "file": null,
-       "dur": 5
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
@@ -18090,9 +18088,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Then the log. Then Okafor. Then home. Mm.",
+       "text": "Then the log. Then Okafor. Then home.",
        "file": null,
-       "dur": 4.2
+       "dur": 3.8
       }
      ],
      "log": "0610 hrs. Handover checklist run with D. Reyes.",
@@ -18125,7 +18123,7 @@ window.ILTV_STORIES = {
        "six-thirty",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Checked that the shelf drawer was shut."
        }
@@ -18217,7 +18215,7 @@ window.ILTV_STORIES = {
        "six-thirty",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Checked that the shelf drawer was shut."
        }
@@ -18237,9 +18235,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "A blank is a line too. It says: didn't know what to say.",
+       "text": "That's blank. He'll ask why. Mm.",
        "file": null,
-       "dur": 6.2
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -18309,7 +18307,7 @@ window.ILTV_STORIES = {
        "six-thirty",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Checked that the shelf drawer was shut."
        }
@@ -18407,7 +18405,7 @@ window.ILTV_STORIES = {
        "six-thirty",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Checked that the shelf drawer was shut."
        }
@@ -20083,9 +20081,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Ten minutes. That is all it is.",
+       "text": "Ten minutes. That's all it is.",
        "file": null,
-       "dur": 3.8
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -20183,9 +20181,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "That is the first line. Everything else hangs off it.",
+       "text": "That's the first line. The rest hangs off it.",
        "file": null,
-       "dur": 5
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -20220,7 +20218,7 @@ window.ILTV_STORIES = {
          "lobby_clear"
         ],
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Looked up the lanyard's badge on the access terminal."
        }
@@ -20680,9 +20678,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. That is what the log would say. \"Some elevators.\"",
+       "text": "Mm. That's what the log would say. \"Some elevators.\"",
        "file": null,
-       "dur": 5
+       "dur": 4.6
       }
      ],
      "log": "2358 hrs. Control room. Tile five could not be described.",
@@ -20716,9 +20714,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "At four in the morning there is no hint, Officer. There is the wall.",
+       "text": "No hints at three in the morning. There's the wall.",
        "file": null,
-       "dur": 6.6
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -20790,7 +20788,7 @@ window.ILTV_STORIES = {
        "flicker-look",
        {
         "add": {
-         "trainer_trust": 1
+         "building_known": 1
         },
         "log": "Kept watch on tile five after the lights dipped."
        }
@@ -20801,7 +20799,7 @@ window.ILTV_STORIES = {
        "flicker-panel",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Checked the fire panel after the lights dipped."
        }
@@ -21190,7 +21188,7 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Eleven years, she never wrote \"and.\"",
+       "text": "Twenty-six years, she never wrote \"and.\"",
        "file": null,
        "dur": 3.4
       }

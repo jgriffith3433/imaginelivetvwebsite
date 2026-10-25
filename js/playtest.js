@@ -2595,6 +2595,29 @@ function nightLengths(st) {
   return { dur, shortest: top.min, longest: top.max, mean: top.mean, shortestWay: wayOf("lo"), longestWay: wayOf("hi"), states: memo.size };
 }
 
+/** One way through every reveal layer of the trainer (stages in the order they come in the night) that ends on "Someone to leave it to":
+    every (scene, state) found at one layer is a source for the next, so a route that is shortest to a layer can't block the next one. */
+function nightLayerWay(st, R, stages) {
+  let sources = [{ id: st.start, state: R.fresh(st), parent: null, pick: null }];
+  for (const targets of [...stages, ["end-someone"]]) {
+    const seen = new Set();
+    const found = new Map();
+    for (let q = 0; q < sources.length; q++) {
+      const at = sources[q];
+      const key = `${at.id}#${R.stateKey(at.state)}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      if (targets.includes(at.id)) { if (!found.has(key)) found.set(key, at); continue; }
+      st.scenes[at.id].choices.forEach((c, i) => { if (R.usable(c, at.state)) sources.push({ id: c[2], state: R.apply(st, at.state, c), parent: at, pick: i }); });
+    }
+    sources = [...found.values()];
+    if (!sources.length) return null;
+  }
+  const picks = [];
+  for (let a = sources[0]; a.parent; a = a.parent) picks.unshift(a.pick);
+  return picks;
+}
+
 /** A way through the night, played with real presses from a new run; the minutes of audio it holds are the data's. */
 async function nightPlay(t, st, lengths, label, picks) {
   const where = `${st.id}: ${label}`;
@@ -2646,6 +2669,28 @@ async function nightShiftRun(options, t) {
     }
     if (endings.length < 8) t.problem("bug", `${st.id}: ${endings.length} endings, the night needs at least 8`);
     else t.event("criterion", `${endings.length} distinct endings, every one reached by a different mix of choices`);
+    // Every choice does something: the build proves it (a flag, a meter, a scene of its own or a log line); count the ones whose only change is a scene.
+    let quiet = 0;
+    let silent = 0;
+    for (const [id, sc] of Object.entries(st.scenes)) sc.choices.forEach((c, i) => {
+      const u = x.used[`${id}#${i}`];
+      if (!u || u.changes) return;
+      if (!u.branch && !(c[3] && c[3].log)) silent++;
+      else if (!(st.scenes[c[2]] && st.scenes[c[2]].ending)) quiet++;
+    });
+    t.metric("choicesThatChangeNothing", silent);
+    t.event("criterion", `${silent} choices change nothing (no flag, meter, scene of their own or log line); ${quiet} more only open a scene of their own, never ending the story, and are the build's routing buttons`);
+    if (silent) t.problem("bug", `${st.id}: ${silent} choices change nothing`);
+    // The trainer's reveal layers: each has a scene a way reaches, and one way meets them all and ends on the spring.
+    const LAYERS = [["the pencil", ["sign-why", "sign-why-44"]], ["the spring", ["drawer-notice"]], ["the four hours", ["four-hours"]], ["twelve", ["twelve"]]];
+    for (const [name, ids] of LAYERS) {
+      const own = ids.filter((id) => x.scenes[id]).sort((a, b) => x.scenes[a].picks.length - x.scenes[b].picks.length)[0];
+      if (!own) t.problem("bug", `${st.id}: the trainer's layer "${name}" (${ids.join(" or ")}) can't be reached`);
+      else t.event("reveal-layer", `${name}: ${own} is ${x.scenes[own].picks.length} choices from the start`);
+    }
+    const layerPicks = nightLayerWay(st, R, LAYERS.map(([, ids]) => ids));
+    if (!layerPicks) t.problem("bug", `${st.id}: no one way meets every layer of the trainer and ends on "Someone to leave it to"`);
+    else t.event("criterion", `one way (${layerPicks.length} choices) meets every layer of the trainer (the pencil, the spring, the four hours, twelve) and ends on "Someone to leave it to"`);
     t.progress(0.1);
 
     const lengths = nightLengths(st);
@@ -2674,7 +2719,9 @@ async function nightShiftRun(options, t) {
     // 2. Real presses: the shortest way, the longest way, and two different endings, from a new run each.
     await consoleOpen(t, st);
     const plays = [["the shortest way", lengths.shortestWay], ["the longest way", lengths.longestWay]];
-    for (const id of ["end-someone", "end-wedge"]) if (x.scenes[id]) plays.push([`the way to "${st.scenes[id].ending[0]}"`, x.scenes[id].picks]);
+    if (layerPicks) plays.push(['the way through every layer of the trainer, to "Someone to leave it to"', layerPicks]);
+    else if (x.scenes["end-someone"]) plays.push([`the way to "${st.scenes["end-someone"].ending[0]}"`, x.scenes["end-someone"].picks]);
+    if (x.scenes["end-wedge"]) plays.push([`the way to "${st.scenes["end-wedge"].ending[0]}"`, x.scenes["end-wedge"].picks]);
     const results = [];
     for (const [label, picks] of plays) {
       results.push(await nightPlay(t, st, lengths, label, picks));
