@@ -1,8 +1,21 @@
 {
   "product": "imaginelivetv",
   "name": "Imagine Live TV",
-  "current": "1.5.1",
+  "current": "1.6.0",
   "releases": [
+    {
+      "version": "1.6.0",
+      "date": "2026-10-25",
+      "build": "13f2efd",
+      "title": "The Final Spark is here",
+      "notes": [
+        "You wake in a sewer, get found by a rat, and choose your way through The Final Spark, a story told in short videos.",
+        "Each choice opens a new page with its own video, and your choices lead to many different endings.",
+        "The story now has its full set of voices, ambience, sound effects and music.",
+        "Security camera feeds show the building in every state the story calls for.",
+        "Your progress is saved, so you can pick up The Final Spark right where you left off, on a computer or a phone."
+      ]
+    },
     {
       "version": "1.5.1",
       "date": "2026-10-21",
