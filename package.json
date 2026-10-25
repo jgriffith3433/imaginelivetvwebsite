@@ -9,7 +9,8 @@
     "stamp": "node tools/stamp-build.mjs",
     "test:console": "node tools/test-console.mjs",
     "test:playtest": "node tools/test-playtest.mjs",
-    "test:player": "node tools/test-console-player.mjs"
+    "test:player": "node tools/test-console-player.mjs",
+    "test:endings": "node tools/test-endings.mjs"
   },
   "devDependencies": {
     "vite": "^5.4.10"
