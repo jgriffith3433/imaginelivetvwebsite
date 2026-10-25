@@ -12,6 +12,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
 | --- | --- | --- | --- |
 | **The Final Spark** | `story/final-spark.json` | the site root, as they always were: `/the-sewer/`, `/you-turned-right/`, … | this file, below |
 | **The Water Road** (approved by J 2026-10-18, on the landing page) | `story/water-road.json` | `/water-road/the-water-road/`, … | `story/water-road.md` |
+| **Night Shift** (draft; its demo, `night-shift-demo`, is the placeholder the console playtests use) | `story/night-shift-demo.json` (the real story: `story/night-shift.json`) | `/night-shift-demo/radio-check/`, … | `story/night-shift.md` |
 
 ## Adding a story (a data job, no code)
 
@@ -65,6 +66,113 @@ follows the current **run**: **Play** (no run, or at the first page) or **Contin
 Start Over forgets that story's run only, its run cookie (the other stories keep theirs), and opens it at its first
 page with an empty history; its unlocked scenes, its percent and Completed stay. The `stories` playtest checks the
 badges, the percent, the buttons and Start Over.
+
+## Console stories
+
+A second kind of story (J, 2026-10-24): `"type": "console"` in `story/<id>.json`. It is *heard* before it is seen: a
+night in a control room. Each scene is a few voiced lines that follow one another by themselves over an ambience
+bed, while a **wall** of camera feeds shows what the scene says is on the cameras. When the lines are done the
+choices appear. The story remembers **flags and meters**; a choice can need them and can change them. The graph is
+braided (many choices lead to the same later scene); the state is what makes the same scene different. The video
+stories are untouched: a console story has its own player (`js/console.js`, `<section id="console">` on the home
+page), its own rules (`js/console-rules.js`, shared by the player, the build and the playtest) and its own pages.
+Its demo, `night-shift-demo` (5 scenes, `listed: false`, silent placeholder audio), is what the `console` playtest plays.
+
+### The data (`story/<id>.json`, `"type": "console"`)
+
+Top level: `title`, `tagline`, `doc`, `cookie`, `tap`, `start` (as in "Adding a story"), plus
+
+- `state`: `flags` (every flag name the story uses) and `meters` (`{ name: { min, max, start } }`, whole numbers).
+- `cameras`: the **wall**, 6 to 9 of them: `{ id, name, states: { normal: "what it sees", <state>: "what it sees now" } }`.
+  Every camera has a `normal` state. The wall is always three columns (2x3 for six cameras, 3x3 for nine).
+- `speakers`: `{ id: { name, voice (an ElevenLabs voice id, once the voice is made), design (the voice design) } }`.
+- `ambience` and `sfx`: `{ cue: "prompt for audio.sfx" }`, the beds (looped) and the one-shot effects.
+- `style`, `negative`, `avoid`: the look of the camera stills; `narrator.model` (default `eleven_v4`); `unspoken`
+  (words no page may say); `stateCap` (states the build explores, default 50000).
+
+A **scene**: `id`, `folder`, `time` ("HH:MM", the shift log's timestamp and the clock on screen), `title`, `ambience`
+(a cue), `feeds` (`{ camera: state }`; a camera not named shows `normal`), `focus` (a camera enlarged when the scene
+opens), `lines`, `log`, `choices`, or `ending` (a string, no choices; reaching one completes the story).
+
+- `lines`: in order, each `{ speaker, text, perform, sfx, dur, file }`. `text` is what is said and what the
+  subtitles show; `perform` is the performance tags for `eleven_v4` ("flat, dry" is sent as `[flat][dry] text`); `sfx`
+  is a cue played just before the line; `dur` (seconds) is how long the line takes when it has no recording; `file`
+  is a recording to use (the demo's silent placeholder). Without `file`, the player uses
+  `<id>/<folder>/media/line-<n>.mp3` once it is made, and until then reads the line on a timer.
+- `log`: the line this scene writes in the shift log when the player reaches it.
+- a **choice**: `say` (the words on the button), `next`, and any of `requires` (flags that must be set), `forbids`
+  (flags that must not be), `meters` (`{ name: { min, max } }` ranges the meters must be in), `set` / `clear` (flags),
+  `add` (`{ meter: n }`, kept inside its range), `log` (the shift log line for having done it; without one the log
+  shows the choice's words) and `cosmetic` (a reason: this choice does nothing on purpose; at most two on one run).
+  A choice whose conditions fail is **not on the page**.
+
+### What the player does
+
+Audio first: `js/console.js` plays each line's recording through three `<audio>` elements (voice, ambience bed,
+effects) that `js/hawkes-sound.js` owns like it owns the videos: they are marked `data-sound-start`, so the **Tap to
+play** press starts them (and unlocks them on iOS); Settings (Sound on/off, Volume) applies to all three. Lines start
+only once sound is unlocked, then follow each other. **Replay line** plays the current (or last) line again, **Skip
+line** moves on. **Subtitles are on by default** (CC in the bar turns them off, kept in `localStorage["iltv.subtitles"]`;
+off, they stay for screen readers). Tapping a **feed** enlarges it (its description under it); another replaces it, the
+same again, or Shrink, puts it back.
+
+**Saving.** The whole run is in `localStorage["iltv.run.<cookie>"]`: the scene, the way there, the flags and meters, the
+log and how many lines were heard, so a returning player resumes in the same scene with the same state. The two
+cookies of every story stay (the card's badge and percent explored work as for every story; Start Over on the card
+clears the run cookie and the saved run, and keeps the unlocks): the run cookie is `{ scene, history: [] }`, and the
+unlocks cookie keeps a bit per scene (`{ ix, completed }`, in the order of `scenes`, so **new scenes go at the end**) to stay
+well under 4 KB.
+
+**The Log** (the Tree of this type) is a **Daily Activity Report**: ruled paper, a time and an entry for everything the
+player has done (the choice's `log`) and seen (the scene's `log`), and a redacted bar for every way not taken (every
+other choice of a scene they decided at, and all the choices of the scene they are in). Nothing in it can be pressed. The
+Log button in the bar opens and closes it at any time.
+
+**Layout.** Mobile first: in portrait the wall (3 columns) is on top, then the enlarged feed, the subtitles, the
+line buttons and the choices; every tap target is 44 px or more, safe-area insets are respected, nothing scrolls
+sideways (works at 360x640); in landscape (640 px and wider) the wall and the enlarged feed are on the left and the words on the right.
+
+### The build (`npm run story`)
+
+Beyond the usual (folders, language, unspoken words) it **explores the state space** (`explore()` in
+`js/console-rules.js`, up to `stateCap` states, in order from the start) and fails when:
+
+- a `next` doesn't exist, or a scene can't be reached under any state, or an ending is never reached;
+- **a state has no usable choice**: a scene that isn't an ending where, in some reachable state, every choice's conditions fail;
+- **a choice has no visible effect**: it changes no flag or meter in any state it can be made in, has no `log` line of its
+  own, and goes where another choice open in the same state also goes (or back to its own scene), unless it is `cosmetic`
+  with a reason (and a run has at most two);
+- a choice can never be made, uses a flag or meter the story doesn't declare, or reads a flag nothing sets (a flag that is
+  set and never read is a warning);
+- the wall isn't 6 to 9 cameras, a camera has no `normal` state, or a scene names a camera or state that isn't there.
+
+`node tools/test-console.mjs` (`npm run test:console`) builds broken copies of the demo and checks the build refuses each.
+
+It writes, for a console story, `js/story-data.js` (with `type: "console"`), the `/<id>/` link and a **branch page** per
+scene (`/<id>/<folder>/`: the wall, every line with its audio, the scene's log line, and the choices; the
+**canonical state** is marked in a dashed box: the flags and meters you have on the *shortest way* there, and a
+choice that state doesn't open is shown locked with what it needs), and the media recipes in `hawkes.assets.json`:
+
+| Asset | Chain | Files |
+| --- | --- | --- |
+| `<id>-feed-<camera>-normal` | `image.generate`, 3 candidates, Claude picks | `<id>/media/feeds/<camera>-normal.png` |
+| `<id>-feed-<camera>-<state>` | `image.edit` of the normal picture (only the change) | `<id>/media/feeds/<camera>-<state>.png` |
+| `<id>-ambience-<cue>` | `audio.sfx`, 30 s, looped | `<id>/media/ambience/<cue>.mp3` |
+| `<id>-sfx-<cue>` | `audio.sfx`, 2 s | `<id>/media/sfx/<cue>.mp3` |
+| `<id>-<scene>-line-<n>` | `audio.voice`, `eleven_v4`, the line's `perform` tags in front (needs the speaker's `voice`) | `<id>/<folder>/media/line-<n>.mp3` |
+
+Pictures that aren't made yet are drawn as placeholder tiles (a dark scanned frame with the camera's name and state), lines
+without a recording are read on a timer: a console story is playable from the first draft. Nothing here uses the GPU
+except the camera stills (`image.generate`, `image.edit`); the voices and sounds are cents each.
+
+### Playtests
+
+The `console` scenario plays the demo (or `{"story":"<id>"}`): opens it by its link under its own Tap to play, subtitles
+and lines in order, Replay, the wall and the enlarged feed, gated choices, every scene and ending from the state explorer
+(real presses), the Log (at the start, in the middle and at an ending), Settings on the audio, a reload mid-scene, and three
+screen sizes (a frame of 390x844, 360x640 and 844x390). The `stories`, `branches`, `pages` and `sound` scenarios cover
+console stories next to the video ones (a console draft opens by its link and keeps its saved place; `branches` walks it;
+`pages` crawls its branch pages; `sound` checks its audio under Settings).
 
 ## Unlocked scenes
 

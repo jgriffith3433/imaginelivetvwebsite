@@ -2280,6 +2280,7 @@ async function consoleWall(t, st) {
   t.metric("feeds", tiles.length);
   const cam = st.cameras.find((c) => feeds[c.id] !== "normal") || st.cameras[0];
   const tile = tiles.find((x) => x.dataset.camera === cam.id);
+  const tr = tile.getBoundingClientRect();
   await tapAt(t, tile, `feed ${cam.id}`);
   await sleep(200);
   const big = $("console-big");
@@ -2289,16 +2290,16 @@ async function consoleWall(t, st) {
     if (big.dataset.camera !== cam.id || big.dataset.state !== feeds[cam.id]) t.problem("bug", `${where}: the enlarged feed is ${big.dataset.camera}/${big.dataset.state}, not ${cam.id}/${feeds[cam.id]}`);
     if (!big.textContent.includes(desc)) t.problem("bug", `${where}: the enlarged feed doesn't say what it shows ("${desc}")`);
     const br = big.getBoundingClientRect();
-    const tr = tile.getBoundingClientRect();
     if (br.width * br.height <= tr.width * tr.height) t.problem("bug", `${where}: the enlarged feed (${Math.round(br.width)}x${Math.round(br.height)}) isn't bigger than its tile (${Math.round(tr.width)}x${Math.round(tr.height)})`);
     if (document.querySelector(`#console-wall .feed[data-camera="${cam.id}"]`).getAttribute("aria-pressed") !== "true") t.problem("bug", `${where}: the pressed tile isn't marked`);
     t.event("feed-enlarged", `${st.id}: ${cam.id} (${feeds[cam.id]}): "${desc.slice(0, 60)}"`);
   }
   // Another feed replaces it; the same one again puts it back.
-  const other = tiles.find((x) => x.dataset.camera !== cam.id);
-  await tapAt(t, other, `feed ${other.dataset.camera}`);
-  if (apiOf().selected() !== other.dataset.camera) t.problem("bug", `${where}: a second feed didn't replace the first`);
-  await tapAt(t, tiles.find((x) => x.dataset.camera === other.dataset.camera), `feed ${other.dataset.camera} again`);
+  const tileOf = (id) => document.querySelector(`#console-wall .feed[data-camera="${id}"]`); // the wall is drawn again on each press
+  const other = tiles.find((x) => x.dataset.camera !== cam.id).dataset.camera;
+  await tapAt(t, tileOf(other), `feed ${other}`);
+  if (apiOf().selected() !== other) t.problem("bug", `${where}: a second feed didn't replace the first`);
+  await tapAt(t, tileOf(other), `feed ${other} again`);
   if (!$("console-big").hidden) t.problem("bug", `${where}: the same feed again didn't put it back`);
   await sleep(500);
 }

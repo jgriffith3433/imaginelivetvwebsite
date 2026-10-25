@@ -5,7 +5,7 @@ it is sold as *live medical education*. It is a home for choose-your-path video 
 landing page (a card per story, from `story/stories.json`), and choosing one opens its player on the same page
 (`/?story=<id>`). The first is **The Final Spark**: you wake in a sewer, found by a rat, and each choice is a page
 with a video (one folder per branch at the site root, e.g. `you-turned-right/`; other stories' pages go under
-`/<id>/`). Plus a blog. Planning notes and the decision tree are in `C:\Projects\TheFinalSpark`.
+`/<id>/`). Plus a blog. A second kind of story, the **console story** (`"type": "console"`: a camera wall, voiced lines, flags and meters, a shift log; story doc `story/README.md`, "Console stories"), has its own player. Planning notes and the decision tree are in `C:\Projects\TheFinalSpark`.
 Local dev: `auto-start.bat` (http://localhost:8090). Publishing is pushing to `main`: ask J first.
 
 ## Generative AI: Hawkes Gen
@@ -42,6 +42,7 @@ progress cookie is put back.
 | `sound` (~45 s) | Every prompt's line ("Sound on."/"Sound off.") is checked against the saved setting (`tap-note` events, in every scenario). The studio's standard sound setup (`js/hawkes-sound.js`): the landing page's title splash fades with no prompt, The Final Spark's card opens it under its Tap to play prompt, which covers the screen, a hit-tested press on it unlocks sound and the video plays unmuted (and the next scene's after a choice); Settings (header gear) Sound off + Volume 40% are saved in `localStorage["hawkes.sound"]`, the page reloads (the run carries on through `?playtest=sound`) straight back into The Final Spark (`?story=final-spark`, its prompt title), the choice is back and applied, then a branch page's prompt and video. |
 | `blog` (~5 s) | Opens every post card from the home page: the page exists, its images load, its videos play, its local links resolve. |
 | `credits` (~14 s) | Every page's footer says "Powered by HAWKES GEN" linking to https://hawkesgen.com, and the home page's links to the parent company, https://hawkesbiomedical.com (each visible and hit-tested). Checks the home page (landing, then with The Final Spark open), a blog post, the start's branch page and What's new, and that nothing lies over the story video. Before tapping The Final Spark's prompt it turns Sound off from the prompt's own Settings button, so the prompt's line must say "Sound off.", and so must the branch page's prompt (loaded with Off saved); the viewer's setting is put back. The footer is in `tools/build-story.mjs` for branch pages and hand-written in every other page. |
+| `console` (~240 s) | Console stories (`story/README.md`, "Console stories"): the draft demo `night-shift-demo` (or `{"story":"<id>"}`) opens by its link under its own Tap to play (under Playwright it waits for a real `page.mouse.click`, then taps itself, and records whether the press was trusted); subtitles on by default, lines in order, Replay, CC; the camera wall (6 to 9 feeds in the scene's states) and a feed enlarged by a press; flag-gated choices appear only with their flag and a choice sets a flag a later scene reads; every scene and ending from the build's state explorer (`explore()` in `js/console-rules.js`) with real presses, checking flags, meters, history, log, wall and choices at each scene; the Log (shift log) at the start, midway and at an ending: exactly what was done and seen, a redacted line per way not taken, nothing pressable; Settings Sound off/on and Volume on the voice, ambience and effects; a reload mid-scene (a frame loading the story's link) returns to the same scene, flags, meters, log and heard lines; the wall, subtitles, choices and log fit at 390x844, 360x640 and 844x390 (a frame of that size) with no sideways scroll and 44px targets. `stories`, `branches`, `pages` and `sound` also cover console stories (draft by its link and saved place; the state explorer's walk; its branch pages with the marked canonical state; its audio under Settings). |
 | `analytics` (~75 s) | Hawkes Analytics (section "Analytics"): the SDK with product `imaginelivetv`, a build with its commit and, on beta, env `beta`; every event the page sends goes on the timeline as its batch goes out. With fresh progress and question history it opens The Final Spark from its card and taps choices: Go back, the dead end's go back, the sludge (a death), Try again, so the thumbs question shows and is answered; then the shortest way to Destroy the town, where "How was this ending?" (stars, above the inventory bar) shows and is answered. Checks screen, video (play, skip with seconds watched), choice (with node, depth and path), run_start, death, back, restart, run_end with the ending, both answers and game_ready went out. |
 
 The player has no Back button (story doc "No going back"): a choice stands; a death's Try again or the card's Start
@@ -149,6 +150,14 @@ cookies stay on the device) and has a switch to turn statistics off in that brow
 events on the timeline. Open any page once with `?hawkes-internal=1` to mark J's own browser.
 
 ## Making content (agents)
+
+**Console stories** (type `console`) are a second kind of story with their own player (`js/console.js`, rules shared in
+`js/console-rules.js`), data format, build checks (`npm run story` explores the state space and fails on a choice with no
+effect or a state with no usable choice; `npm run test:console` proves it) and playtest (`console`). The format, the
+saved run (`localStorage["iltv.run.<cookie>"]`, with the two cookies kept for the badges) and the assets are in
+`story/README.md`, "Console stories". `js/hawkes-sound.js` also owns `<audio data-sound-start>` elements. New scenes of a
+console story go at the end of `scenes` (the unlocks cookie is a bit per scene, in that order). The demo is
+`story/night-shift-demo.json`; the real story's world is `story/night-shift.md`.
 
 Stories are data. `story/stories.json` lists them (id, logline, card image, `listed`), each one's scenes are in
 `story/<id>.json`, and `npm run story` builds every story: `js/story-data.js`, the landing cards in `index.html`

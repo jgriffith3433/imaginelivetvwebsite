@@ -1,7 +1,7 @@
 /* The build these pages are, for Hawkes Analytics (AGENTS.md "Analytics"). Loaded right before
    js/hawkes-analytics.js on every page people see. The HAWKES_BUILD line is written by `npm run stamp`
    (tools/stamp-build.mjs): don't edit it by hand. */
-window.HAWKES_BUILD = {"version":"1.5.0","commit":"351a06838c","date":"2026-10-21T12:30:40Z"};
+window.HAWKES_BUILD = {"version":"1.5.1","commit":"3358087cb0","date":"2026-10-25T00:08:58Z"};
 
 (function () {
   var framed = false;
