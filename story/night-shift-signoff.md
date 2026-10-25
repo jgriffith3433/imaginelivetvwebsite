@@ -1,148 +1,113 @@
 # Night Shift: sign-off
 
-Written 2026-10-25 (second attempt, on beta at `48f2577`). The first attempt's text is kept below where it still holds; what this attempt
-ran, measured and changed is marked **(attempt 2)**.
+Written 2026-10-25 (third attempt, on top of beta at `22c5b65`). **Verdict: not proven clean.** What a server with no browser can
+run is clean (listed with its output below). What needs a browser (the four screen sizes, listening, the playtests) was **not
+run here**, and this file says so wherever it applies. Nothing below claims a result that no command named next to it produced.
 
-**Verdict: not proven clean, and this file says why.** The script, the voices, the beds and effects, the camera pictures and the end
-cards are all made; the loudness of the voices is now measured and level. Two things the brief asked for are **still not done**,
-because this server never starts a browser (it starved Studio and Gen of memory): nobody has walked the endings at the four sizes,
-and none of the browser playtests were run here. One asset is still missing (6 music stings, GPU). "Left unfixed" lists all of it.
-Nothing below claims a result that was not produced by a command named next to it.
-
-**Why the first attempt's playtest failed on beta (attempt 2):** `night-shift-signoff` ended `ReferenceError: consoleStories is not
-defined`. That was attempt 1's scenario running against a `js/playtest.js` that did not yet have the helper; `consoleStories` is
-defined now (`js/playtest.js`, in the console-stories block) and `npm run test:playtest` (`tools/test-playtest.mjs`) proves every
-helper `js/playtest.js` calls is declared (540 names, all defined). The scenario itself has still not run in a browser.
-
-## What was found
-
-The log of the voice batch (`#32`, "Voice every line of the story") says every line is voiced. It was not: **1,160 of 1,322 audio
-assets had no file** (1,154 voice lines, 6 music stings). Only 134 lines were voiced. Every other line fell back to the
-player's timer (a 404 per line and silence), so the "clock" numbers earlier agents read (shortest 37.5, average 43.8 minutes) were
-word counts, not recordings. The nine camera feeds, the 12 end cards, the 10 ambience beds and the 18 effects were all present.
-
-## What was fixed
+## What this attempt found and changed
 
 | Problem | Fix | How it was checked |
 | --- | --- | --- |
-| 1,154 voice lines (1,288 total, 89%) had no recording | Made all of them through Hawkes Gen, `audio.voice` (ElevenLabs `eleven_v4`), in the 10 locked voices of `story/night-shift.json`, with each line's `perform` tag. 851 distinct texts were generated once and shared between the scenes that repeat them (Dee's "Mm.", the radio checks). Ingested with `node tools/make-audio.mjs night-shift --ingest`, which trims silence and sets loudness to -16 LUFS | `node tools/make-audio.mjs night-shift --list`: only the 6 music stings are left. `ffprobe` on all 1,288 `line-*.mp3`: all decode, 0.65 s to 16.3 s, none under 0.4 s or over 22 s, 118.4 minutes in all |
-| Every line's `dur` was a guess | `node tools/make-audio.mjs night-shift --dur` set it to the recording's length on 1,154 lines (the player gives up on a recording after `dur` + 4 s) | rebuilt with `npm run story` |
-| Scene pages stale after the recordings | `npm run story` (211 files regenerated) | `npm run story -- --check` ends "everything generated is up to date" |
-| The clock ignored the player's 0.35 s gap between two lines (`GAP` in `js/console.js`), so with real recordings the average was 39.8 min, under the 40 the `night-shift` playtest warns on | The clock now counts a line as its recording plus the gap: `tools/check-night-shift.mjs`, `nightLengths` in `js/playtest.js`, and the new `tools/ending-times.mjs` | `node tools/check-night-shift.mjs` ends "ok night-shift" (average 42.2 min, inside its 42 to 48 bar) |
-| No way to see the per-ending numbers and no scenario for this task | `tools/ending-times.mjs` (the table below) and the playtest scenario `night-shift-signoff` (`js/playtest.js`, named in `.hawkes/scenario.txt`, listed in `AGENTS.md`) | `node --check js/playtest.js` only. **The scenario has not been run** |
-
-Spend: the voice lines cost about $21 of ElevenLabs through Gen (851 calls at roughly $0.025 each, from the per-job costs Gen returned;
-a sum I did not total exactly). No GPU job was started.
+| Beta ran `night-shift-signoff` for 22 min 50 s (budget 10 min) | The scenario takes a start point, `{"at":"last-choices"}` (listed in its `starts`): each ending from a **seeded run** (the setup shortcut the other Night Shift scenarios use, event `seeded-run`) 2 choices before it (`{"back":4}` for more), then real presses and the end screen, at all four sizes. `.hawkes/scenario.txt` names it. No `at` still plays every way whole from a new run (the full sign-off, about 50 min) | `node --check`, `npm run test:playtest` (569 helpers defined). **Not run in a browser**, so its time is an estimate: 48 plays of 3 scenes each, about 8 minutes |
+| Beta reported 14 "shows although its conditions fail" bugs per size | I could **not reproduce it**: the real player (`js/console.js`) driven by presses in jsdom, on the fewest-choices way to all 12 endings, shows exactly the choices whose conditions hold at all 957 scenes entered (`npm run test:endings`). What I did change is the check and the press: both now go by the choice's index (`data-choice`), not its label (43 scenes hold choices sharing a label, "Wait for him" up to four times, so label matching could press or count the wrong one). The message now names the choice, its index and the state, and a missing button is reported too | `npm run test:endings`, `npm run test:playtest`. If beta still reports it, the message now says which choice and state, which is what the next attempt needs |
+| 844x390 end screen needed a scroll | In a short landscape screen at an ending the subtitles are capped at 3.2 rem, the end card at 24% of the height and the ending's name is smaller (`css/site.css`, console block). By arithmetic that gives back about 60 px; **not seen in a browser** | none possible here |
+| `end-under-review` end card had "Under review:" baked into the picture | Cropped the bottom 16% off the 1024x576 still and scaled back to 16:9 (no generation); the other eleven cards had no caption | looked at the new picture |
+| 5 voice lines from the script polish were off level (`day-officer-let` line 2 at -13.8 LUFS, `day-officer` 3 -20.4, `end-friendly` 3 -19.8, `hours-ink` 2 -22.8, `hours-refused` 1 -20.6) | Gain and a limiter on those five files | ffmpeg `ebur128` on all 1,330 lines: before: -22.8 to -13.8 (only these five were outside -19.5 to -14); after: **-19.1 to -14.6**; `--dur` sets 0 lines; `npm run story -- --check` up to date |
+| No way to walk every ending without a browser | `tools/test-endings.mjs` (`npm run test:endings`, needs jsdom): plays each ending through the real player by button presses and checks, at every scene, the scene reached, the exact buttons, the subtitles in order, every recording, bed, camera picture and end card on disk, and the ending shown | all 12 ok (below) |
 
 ## Play time, per ending
 
-These are the minutes of audio on the **shortest and longest way to each ending**, computed from the recordings' real lengths plus
-the player's 0.35 s gap per line, on the build's own state rules (`node tools/ending-times.mjs --md`, 240,254 states). They are **not
-timed from a played walk**: nobody played these endings in a browser here.
+Played by `npm run test:endings` (the way the playtest presses: the fewest choices to the ending; minutes are each line's
+recording plus the player's 0.35 s gap, from the data, not timed on a clock), and the shortest and longest way to each ending
+from `node tools/ending-times.mjs --md` (240,000-plus states).
 
-| Ending | Scene | Shortest way (min) | Longest way (min) | Choices on the shortest way |
-| --- | --- | ---: | ---: | ---: |
-| Four minutes. | `end-four-hours` | 36.4 | 49.6 | 72 |
-| The wedge. | `end-wedge` | 36.5 | 49.3 | 72 |
-| Written up. | `end-written-up` | 36.6 | 50.1 | 72 |
-| Opinions. | `end-opinions` | 37.3 | 50.2 | 74 |
-| Noted. | `end-noted` | 37.4 | 49.9 | 74 |
-| The friendly one. | `end-friendly` | 37.5 | 50.4 | 74 |
-| Clean report. | `end-clean` | 38.0 | 50.0 | 74 |
-| Eat something. | `end-eat-something` | 38.0 | 50.1 | 74 |
-| She knew. | `end-she-knew` | 38.0 | 49.7 | 73 |
-| Under review. | `end-under-review` | 38.1 | 49.7 | 73 |
-| Someone to leave it to. | `end-someone` | 38.2 | 49.8 | 73 |
-| By the book, alone. | `end-by-the-book` | 38.7 | 48.8 | 76 |
+| Ending | Scene | Way pressed: choices | Way pressed: min | Shortest way (min) | Longest way (min) |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Clean report. | `end-clean` | 79 | 42.7 | 40.0 | 52.7 |
+| Someone to leave it to. | `end-someone` | 79 | 42.7 | 40.2 | 52.6 |
+| She knew. | `end-she-knew` | 79 | 42.8 | 40.2 | 52.6 |
+| Eat something. | `end-eat-something` | 79 | 42.7 | 40.0 | 52.8 |
+| By the book, alone. | `end-by-the-book` | 81 | 43.7 | 41.3 | 51.4 |
+| The friendly one. | `end-friendly` | 79 | 43.0 | 39.5 | 53.3 |
+| Opinions. | `end-opinions` | 79 | 42.8 | 39.3 | 53.1 |
+| Four minutes. | `end-four-hours` | 78 | 41.9 | 38.6 | 52.5 |
+| Written up. | `end-written-up` | 77 | 42.3 | 38.8 | 53.1 |
+| The wedge. | `end-wedge` | 77 | 42.1 | 38.6 | 52.2 |
+| Noted. | `end-noted` | 79 | 42.8 | 39.4 | 52.7 |
+| Under review. | `end-under-review` | 79 | 42.8 | 40.3 | 52.6 |
 
-Whole night: shortest 36.4, average 42.2 (every open choice equally likely), median 42.2 (3,000 random plays: 10% 40.9, 90% 43.6),
-longest 50.4 minutes.
+Whole night: shortest 38.6, average 44.7 (every open choice equally likely), median 44.7 (3,000 random plays: 10% 43.3, 90% 46.2),
+longest 53.3 minutes (`node tools/check-night-shift.mjs`; 241 scenes, 1,330 lines, 12 endings, 123.4 minutes of recordings in all).
 
-## Walk of every ending at desktop, 390x844, 360x640 and 844x390: NOT DONE
+## Walk of every ending
 
-| Ending | Desktop | 390x844 | 360x640 | 844x390 |
-| --- | --- | --- | --- | --- |
-| all 12 | not walked | not walked | not walked | not walked |
+| Ending | Real player, presses (jsdom) | Desktop | 390x844 | 360x640 | 844x390 |
+| --- | --- | --- | --- | --- | --- |
+| all 12 | **ok, 0 problems** | not run | not run | not run | not run |
 
-The brief asks for a walk with sound unlocked by a real click, noting a missing or mismatched voice or sound, wrong speaker image,
-clipped or overlapping lines, loudness jumps, subtitles out of sync, a stand-in image, a choice that did nothing, a dead end,
-overflow and hidden controls. This server may not start a browser (it starved Studio and Gen of memory), so none of that was seen or
-heard. The scenario `night-shift-signoff` plays each ending's shortest way with real presses at all four sizes, logs a
-`signoff-ending` event per play with its minutes, and checks the ending is shown and nothing is wide, hidden or under 44 px
-(`consoleFit`). It needs the T4 (about 50 minutes). It does not listen: loudness jumps, clipped lines, overlap, a voice that sounds
-wrong and subtitle sync still need a person or `night-shift-audio` (which is not a substitute for a listen).
+The jsdom walk is the real `js/console.js` and `js/console-rules.js` pressed button by button, with the lines ended at once. It
+proves the logic: no dead end, no choice that does nothing, no wrong or missing button, subtitles are the lines in order, every
+recording, bed, camera picture and end card exists, every ending is shown. It cannot see a layout, hear a voice, or tell sound from
+silence. **The four-size walk with a real click and sound has not been done**: this server may not start a browser (it starved
+Studio and Gen of memory). `night-shift-signoff` does it on the T4 (`{"at":"last-choices"}` about 8 minutes; without options each
+ending whole, about 50 minutes), so "clean at desktop and the three phone sizes" stays **unproven** until it runs.
 
-What the data does say about those items, from commands that were run:
+Not checked by anyone yet: loudness jumps in real playback, clipped or overlapping lines, subtitle sync, a wrong-sounding voice,
+a wrong speaker image (the wall shows cameras, not speakers; each scene's `focus` camera was not looked at one by one).
 
-- **A missing recording or sound:** none. Every line has a file; every ambience bed (10) and effect (18) a scene uses exists
-  (script check of `story/night-shift.json` against `night-shift/media/`).
-- **A stand-in image:** none. `night-shift/media/standin` is gone and nothing refers to it; the 22 camera states the scenes use
-  all have a picture in `night-shift/media/feeds/` (26 files), all 12 endings have an end card in `media/endcards/`, and the landing
-  card is `assets/images/night-shift.png`. Whether the pictures look right (wrong room, wrong person) was not looked at.
-- **A choice that did nothing, a dead end:** `npm run story` (the state explorer) and `node tools/check-night-shift.mjs` report 0
-  decisions that change nothing, no stuck state, all 12 endings reachable, 228 scenes all reachable.
-- **Loudness (attempt 2, measured):** all 1,288 voice files measured with ffmpeg `ebur128` (integrated LUFS and sample peak).
-  Before: median -16.6 LUFS, but 38 lines were outside -19 to -14.5 (Dee's one-word "Mm." and "Helen." down to -26.9, one at -13.6, "It's
-  wrong. I said not to say." three times; Okafor's handover line -19.8) and two peaked at -0.4 dBFS. That is an audible jump on a
-  voice with no cause. Fixed by a gain and a limiter on those 38 files (a murmur stays a little under, at -18; the loud ones to
-  -16.2). After: every line between **-19.1 and -14.6 LUFS**, loudest peak **-0.7 dBFS**, 0 peaks above -0.5. `dur` unchanged
-  (`--dur` sets 0 lines). Beds measure -38.3 to -39.5 LUFS (about 22 dB under the voice), effects about -26 (about 9 dB under).
-- **Pictures (attempt 2, looked at):** contact sheets of the 12 end cards and the 26 camera feeds. All are real generated stills of a
-  control room and its cameras; none is a stand-in or a grid placeholder, and nothing in them shows B3, a vat or a creature. Left
-  as is: the `end-under-review` card has the caption "Under review:" baked into its picture (the other eleven have none).
+## What the data says, from commands that were run
 
-## The trainer and Pierce
+- **Missing or stale media:** none. `node tools/make-audio.mjs night-shift --list`: 6 of 1,364 have no file, the 6 music stings (below).
+  `npm run story -- --check`: `ok 4 stories, 289 scenes, everything generated is up to date`. All 1,330 `line-*.mp3` decode with a
+  length within 0.6 s of the line's `dur` and under `dur` + 4 s (the player's give-up timer). The 10 beds and 18 effects exist.
+- **Stand-in images:** none. `night-shift/media/standin` is gone; the 26 camera pictures and 12 end cards are real generated stills (looked at on
+  contact sheets: control-room and building cameras; nothing shows B3, a vat or a creature; the one caption is removed, above).
+- **Loudness (ffmpeg `ebur128`):** voices median -16.6 LUFS, 5th percentile -18.4, 95th -15.5, after the fix none outside -19.1 to
+  -14.6, loudest sample peak -1.4 dBFS. Beds -37 to -48 LUFS (roof -48.1, stairwell -43.9, vestibule -41.8, elevator -41.7 read low
+  in LUFS; their RMS was set to -36 dB by `--beds` in #47, 18 dB or more under the voice), effects -25.5 to -27.7 (about 10 dB under).
+- **A choice that did nothing, a dead end:** 0 decisions that change nothing, no stuck state, 12 endings, all 241 scenes reachable
+  (`npm run story`, `node tools/check-night-shift.mjs`, `npm run test:endings`).
+- **The trainer's reveal layers:** all four reachable: the pencil (`sign-why`, `sign-why-44`) after 12 choices, the spring
+  (`drawer-notice`) 22, the four hours (`four-hours`) 44, twelve (`twelve`) 65; one way meets all four (83 choices).
+- **Pierce Hawkes:** two lines in two cameo scenes only: `coat-lobby` "Evening. Don't get up." (*to the guard, not stopping, mild*) and
+  `pierce-signin` "Fair. Fifty-eight. I own it. Put that in your log." (*a pause, an actual smile*), voice ZthjuvLPty3kTMaNKVKb
+  (PH Origins' Jackson voice). Short, assured, no speech: in character on the page. Not heard.
+- **B3, the vat, the creature:** none. A scan of every string in `story/night-shift.json` (scene titles, lines, `perform` notes, choices,
+  logs, endings) and the 1,417 Night Shift recipes in `hawkes.assets.json` (voice texts, image and sound prompts) for the story's
+  whole `unspoken` list (restricted, chimera, creature, experiment, b3, vat, specimen, laboratory) found 0 hits outside the `unspoken` list
+  itself. `story/night-shift.md` has them only in the sentence that forbids them. Images were looked at, not read.
 
-From `node tools/check-night-shift.mjs` and the data:
+## Checks that were run (2026-10-25)
 
-- **Reveal layers:** all four are reachable. The pencil (`sign-why`, `sign-why-44`) 12 choices in, the spring (`drawer-notice`) 22, the four
-  hours (`four-hours`) 43, twelve (`twelve`) 64. One way meets all four layers (77 choices).
-- **Pierce Hawkes:** two lines in two scenes, both in the cameo (`coat-lobby`: "Evening. Don't get up." *to the guard, not stopping,
-  mild*; `pierce-signin`: "Fair. Fifty-eight. I own it. Put that in your log." *a pause, an actual smile*), the voice ZthjuvLPty3kTMaNKVKb
-  (PH Origins' Jackson voice). He has at most two lines and speaks nowhere else. Short, assured, no speech: in character on the page.
-  Hearing him was not done.
-- **B3, the vat, the creature:** none in `story/night-shift.json` (scene titles, lines, `perform` notes, choices, logs, endings; the
-  `unspoken` word list is the only place the words appear, by design), in the 1,375 Night Shift recipes of `hawkes.assets.json` (voice
-  texts, image and sound prompts), or in `story/night-shift.md` apart from the sentence that forbids them. Images were not looked at
-  one by one; they are generated from those prompts.
-
-## Checks that were run
-
-| Command | Result (attempt 2, 2026-10-25) |
+| Command | Result |
 | --- | --- |
-| `npm run story -- --check` | `ok 4 stories, 276 scenes, everything generated is up to date` |
-| `node tools/check-night-shift.mjs` | `ok night-shift`: 228 scenes, 1,288 lines, 12 endings, 0 decisions that change nothing, shortest 36.4, average 42.2, longest 50.4 min, Pierce speaks in `coat-lobby` and `pierce-signin` only, all four reveal layers reachable (one way meets all: 77 choices) |
+| `npm run story -- --check` | `ok 4 stories, 289 scenes, everything generated is up to date` |
+| `node tools/check-night-shift.mjs` | `ok night-shift` (numbers above) |
 | `npm run test:console` | all ok |
-| `npm run test:playtest` | `ok js/playtest.js: every called helper is defined (540 names declared)` |
-| `npm run test:player` with jsdom installed in a scratch folder | all ok (reload at the start, mid-scene, after a choice and at an ending; Skip, Replay, Log, storage blocked). Layout and real taps are not covered; that is the browser |
-| `node tools/make-audio.mjs night-shift --list` | 6 of 1,322 without a file: the 6 music stings |
-| `node tools/ending-times.mjs --md` | the table above |
-| text scan of every file except Water Road for `B3`, `vat`, `creature` | only the build's own `unspoken` list, the checkers that forbid them, this brief and Final Spark's own shadow-creature scene (another story). None in Night Shift's scenes, lines, choices, logs or recipes |
-| ffmpeg `ebur128` on 1,288 lines, 10 beds, 18 effects | see Loudness |
+| `npm run test:playtest` | `ok js/playtest.js: every called helper is defined (569 names declared)` |
+| `npm run test:player` (jsdom in a scratch folder) | all ok |
+| `npm run test:endings` (jsdom) | all ok: 12 endings played by real presses |
+| `node tools/make-audio.mjs night-shift --list` | 6 of 1,364 without a file: the music stings |
+| ffmpeg `ebur128` on 1,330 lines, 10 beds, 18 effects; ffprobe on every line | see above |
 
 ## Playtests: NOT RUN
 
 `smoke`, `stories`, `branches`, `pages`, `sound`, `blog`, `credits`, `analytics`, `console`, `night-shift`, `night-shift-audio`,
-`cctv-art` and `night-shift-signoff` all need a browser. None was run here, for any of the three stories, so there is no output of
-them in this file. Ask for a playtest on the T4; `.hawkes/scenario.txt` names `night-shift-signoff`. `night-shift` and
-`night-shift-audio` are the ones this change affects most (the recordings now exist, and the clock includes the gap).
+`cctv-art` and `night-shift-signoff` need a browser. None was run here, for any of the three stories (The Final Spark, The Water
+Road, Night Shift), so this file has no output of them. Beta's playtest runs `night-shift-signoff` with `{"at":"last-choices"}`;
+J or Talk can ask for the rest on the T4.
 
 ## Left unfixed
 
 1. **Six music stings are not made** (`shift-begins`, `the-panel`, `fifty-eight`, `ending-plain`, `ending-warm`, `ending-cold`; recipes
-   `night-shift-music-*` in `hawkes.assets.json`, 20 seconds each). They are used by `handover`, `pierce-signin`, the four
-   `trouble-signal-*` scenes and all 12 endings, so every ending plays no sting where one is designed. `audio.music` is a GPU tool and
-   the brief gives no GPU budget. `hawkesgen_estimate`: 6 clips, 61 GPU seconds on one ACE-Step server, about **$0.08** of GPU, or
-   **$0.70** counting the 20-minute idle tail if the server is not stopped at once. This needs J's OK; then
-   `node tools/make-audio.mjs night-shift --ingest <folder>` and `npm run story`. The `night-shift-audio` scenario already reports
-   these as a warning.
-2. **The four-size walk of every ending and all playtests** (above). Until they run on the T4, "clean at desktop and the three phone
-   sizes" is **unproven**, not proven clean.
-3. **No listen.** Loudness is measured now, but nobody has heard the 1,154 new lines: whether a `perform` tag was read aloud instead of acted, a voice drifts, a line
-   clips or two speakers sound alike. `eleven_v4` was used as the earlier batches did; the first 134 lines were not remade.
-4. **The speaker treatments are still not applied** (`story/night-shift.md`, "Voices as made"): the radio, walkie, intercom and phone
-   lines (Okafor on the night line, Marisol on the walkie, Dev on the intercom, Adler on the phone, the courier, Pierce across the
-   lobby) are clean recordings. Nobody asked for it in this task; it needs an ffmpeg filter step per speaker in `tools/make-audio.mjs`.
-5. The `end-under-review` card has "Under review:" baked into the picture (cosmetic; the other eleven cards have no caption).
-6. `story/night-shift-gaps.md` (the audit from before this change) is out of date: its voice, art and ambience gaps are closed by
-   `#32` to `#35` and this change. It is kept as the record of what was found then.
+   `night-shift-music-*`, 20 s each). They play on `handover`, `pierce-signin`, the four `trouble-signal-*` scenes and all 12 endings, so
+   each ending plays without the sting it was designed with (the player copes: the cue is empty). `audio.music` is a GPU tool
+   and this task has no GPU budget. `hawkesgen_estimate` (6 clips): 66 GPU-seconds on one ACE-Step server, **$0.09**, or **$0.71**
+   counting the 20-minute idle tail if the server isn't stopped at once. Needs J's OK; then
+   `node tools/make-audio.mjs night-shift --ingest <folder>` and `npm run story`.
+2. **The four-size walk and every playtest are unproven** (above). The 844x390 end screen fix and the end-card crop are unseen.
+3. **No listen.** Nobody has heard the voices in playback: whether a `perform` tag was read aloud, a voice drifts, two speakers sound alike.
+4. **The "14 shows although" report is not explained.** The player is right in jsdom; the check was made stricter and clearer (above).
+   If beta reports it again, the message now says which choice and state.
+5. **Speaker treatments are not applied** (radio, walkie, intercom and phone lines are clean recordings): needs an ffmpeg step per speaker in `tools/make-audio.mjs`.
+6. `story/night-shift.md` ("228 scenes") and `story/night-shift-gaps.md` still carry counts from before the script polish (now 241 scenes, 1,330 lines).

@@ -1819,6 +1819,10 @@ figure.feed { cursor: default; }
   .console-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
   .console[data-lines="done"] .console-subs { flex: 0 0 auto; min-height: 2.6rem; max-height: 6rem; }
   .console .console-endcard { width: auto; max-width: 100%; max-height: 32dvh; }
+  /* The end screen (844x390): the card, the ending's name and the line buttons all fit without the column scrolling. */
+  .console[data-state="soon"][data-lines="done"] .console-subs { min-height: 2.6rem; max-height: 3.2rem; }
+  .console[data-state="soon"] .console-endcard { max-height: 24dvh; margin-bottom: 0.2rem; }
+  .console[data-state="soon"] .console-ending { padding: 0.25rem; font-size: 1rem; }
 }
 
 @media (min-width: 1000px) and (min-height: 700px) {

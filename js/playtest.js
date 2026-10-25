@@ -2024,6 +2024,20 @@ function writeJsonCookie(name, value) {
     Completed kept as it was). The story is closed first (it saves its run when it closes), then opened by its link,
     so the player itself resumes it. What follows from there is real presses. Returns the model of that run. */
 async function consoleSeedAt(t, st, picks, seen) {
+  const m = consoleSeedWrite(st, picks, seen);
+  openByLink(t, st.id);
+  if (!(await waitFor(() => window.iltvConsole.story() === st.id && window.iltvConsole.scene() === m.scene, 4000))) {
+    throw new Error(`${st.id}: the seeded run didn't open at ${m.scene} (it is at ${window.iltvConsole.scene()})`);
+  }
+  if (soundOf().prompt()) await consolePrompt(t, document, st.id);
+  t.event("seeded-run", `${st.id}: resumed at ${m.scene} after ${picks.length} choice(s) (setup shortcut: ${m.history.length} scene(s) of the way unlocked, this one's lines heard)`);
+  return m;
+}
+
+/** The saving half of consoleSeedAt: closes the open story and leaves the saved run and the two cookies as a viewer
+    who had listened to `picks` would have left them. The story is opened afterwards by whoever called (the page by its
+    link, or a frame loading the same link). Returns the model of that run. */
+function consoleSeedWrite(st, picks, seen) {
   const m = consoleModel(st);
   for (const i of picks) m.choose(i);
   const api = window.iltvConsole;
@@ -2039,12 +2053,6 @@ async function consoleSeedAt(t, st, picks, seen) {
   let ix = "";
   for (let i = 0; i < ids.length; i += 4) ix += [0, 1, 2, 3].reduce((n, j) => (ids[i + j] && unlocked.has(ids[i + j]) ? n | (1 << j) : n), 0).toString(16);
   writeJsonCookie(unlocksCookie(st), { ix, completed: was.completed === true });
-  openByLink(t, st.id);
-  if (!(await waitFor(() => window.iltvConsole.story() === st.id && window.iltvConsole.scene() === m.scene, 4000))) {
-    throw new Error(`${st.id}: the seeded run didn't open at ${m.scene} (it is at ${window.iltvConsole.scene()})`);
-  }
-  if (soundOf().prompt()) await consolePrompt(t, document, st.id);
-  t.event("seeded-run", `${st.id}: resumed at ${m.scene} after ${picks.length} choice(s) (setup shortcut: ${m.history.length} scene(s) of the way unlocked, this one's lines heard)`);
   return m;
 }
 
@@ -2111,11 +2119,12 @@ function consoleCheck(t, st, m, doc, where, seen) {
     const shown = openChoices(doc).map((b) => b.textContent.trim());
     const want = s.ending ? [] : m.open().map(([c]) => c[0]);
     if (!sameJson(shown, want)) t.problem("bug", `${where}: the choices on screen are ${JSON.stringify(shown)}, the open ones in this state are ${JSON.stringify(want)}`);
-    // Choices may share a label and differ in conditions ("Wait for him" to four endings): compare how many of each
-    // label show with how many are usable, not whether the label shows.
-    const usableCount = (label) => s.choices.filter((c) => c[0] === label && R.usable(c, m.state)).length;
-    const gated = s.choices.filter((c) => !R.usable(c, m.state)).map((c) => c[0]);
-    for (const g of new Set(gated)) if (shown.filter((x) => x === g).length > usableCount(g)) t.problem("bug", `${where}: "${g}" shows although its conditions fail (${sayState(m.state)})`);
+    // By choice, not by label (several choices share one: "Wait for him" to four endings): the buttons on screen are
+    // exactly the choices whose conditions hold, and none of the others.
+    const onScreen = openChoices(doc).map((b) => Number(b.dataset.choice));
+    const usableIx = s.ending ? [] : m.open().map(([, i]) => i);
+    for (const i of onScreen) if (!usableIx.includes(i)) t.problem("bug", `${where}: "${s.choices[i][0]}" (choice ${i}) shows although its conditions fail (${sayState(m.state)})`);
+    for (const i of usableIx) if (!onScreen.includes(i)) t.problem("bug", `${where}: "${s.choices[i][0]}" (choice ${i}) is missing although its conditions hold (${sayState(m.state)})`);
     if (s.ending) {
       const end = byIdIn(doc, "console-ending");
       if (end.hidden || end.textContent.trim() !== s.ending[0]) t.problem("bug", `${where}: the ending text is "${end.textContent}", not "${s.ending[0]}"`);
@@ -2135,8 +2144,8 @@ const sayState = (state) => [...Object.keys(state.flags).sort(), ...Object.entri
 /** Taps the choice the model picks (a real press on its button), waits for the lines, checks the new scene. */
 async function consoleChoose(t, st, m, i, doc, where, seen, { hear = true } = {}) {
   const label = st.scenes[m.scene].choices[i][0];
-  const button = openChoices(doc).find((b) => b.textContent.trim() === label);
-  if (!button) throw new Error(`${where}: no choice "${label}" on screen at ${m.scene} (${JSON.stringify(openChoices(doc).map((b) => b.textContent.trim()))})`);
+  const button = openChoices(doc).find((b) => Number(b.dataset.choice) === i);
+  if (!button) throw new Error(`${where}: no choice "${label}" (choice ${i}) on screen at ${m.scene} (${JSON.stringify(openChoices(doc).map((b) => b.textContent.trim()))})`);
   await tapAt(t, button, `choice "${label}"`, { quick: true });
   t.log(`tap choice "${label}"`);
   m.choose(i);
@@ -3337,9 +3346,14 @@ async function nightGapsRun(options, t) {
 
 /* ---------------- Night Shift sign-off: every ending, played to the end with real presses, at the desktop size and at three phone sizes ---------------- */
 
-/** Every ending of the night, by its shortest way, from a new run, played with real presses (Skip line moves the lines along)
-    at the page's own size and in a frame at 390x844, 360x640 and 844x390. At each ending: the minutes of audio the way held,
-    the ending shown, nothing running off the side or hidden (consoleFit). Options: {"story":"<id>","sizes":"desktop"|"all","only":"<ending scene>"}. */
+/** Every ending of the night, by its shortest way, played with real presses (Skip line moves the lines along) at the
+    page's own size and in a frame at 390x844, 360x640 and 844x390. At each ending: the minutes of audio the way holds
+    (from the recordings), the ending shown, nothing running off the side or hidden (consoleFit), and at every scene the
+    choices on screen are exactly the ones whose conditions hold (consoleCheck).
+    Without `at` each way is played whole from a new run (about 50 minutes for all 48 plays: the T4's sign-off run).
+    `{"at":"last-choices"}` starts each play nearer (about 8 minutes): a SEEDED RUN (setup shortcut, event seeded-run) at
+    the scene `back` choices (default 2) before the ending, then real presses of those choices and the ending's screen,
+    at all four sizes. Options: {"story":"<id>","sizes":"desktop"|"all","only":"<ending scene>","at":"last-choices","back":2}. */
 async function nightSignoffRun(options, t) {
   rememberProgress();
   const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
@@ -3347,7 +3361,9 @@ async function nightSignoffRun(options, t) {
   if (!st) throw new Error("no console story night-shift in js/story-data.js");
   await passPrompt(t);
   clearProgress();
-  const R = rulesOf();
+  const near = !!options && options.at === "last-choices";
+  const back = Math.max(1, Math.min(6, Number(options && options.back) || 2));
+  if (near) t.event("start-at", `last-choices: each ending from a seeded run ${back} choice(s) before it`);
   try {
     const x = consoleExplore(st);
     const lengths = nightLengths(st);
@@ -3356,40 +3372,46 @@ async function nightSignoffRun(options, t) {
     t.metric("endings", endings.length);
     t.metric("sizes", sizes.length);
     let done = 0;
-    const table = [];
     for (const [id, sc] of endings) {
       const way = x.scenes[id];
       if (!way) { t.problem("bug", `${st.id}: the ending ${sc.ending[0]} (${id}) can't be reached`); continue; }
+      // The minutes of audio on this way, from the recordings (the lines' dur plus the player's gap): the same for any size.
+      const mm = consoleModel(st);
+      let seconds = lengths.dur[mm.scene];
+      for (const i of way.picks) { mm.choose(i); seconds += lengths.dur[mm.scene]; }
+      const seedLen = near ? Math.max(0, way.picks.length - back) : 0;
       for (const [sizeName, w, h] of sizes) {
         const label = `${sc.ending[0]} at ${sizeName}`;
-        let seconds = 0;
+        let doc = document;
+        let m;
         if (!w) {
-          const r = await nightPlay(t, st, lengths, label, way.picks);
-          seconds = r.seconds;
-          if (r.ending !== sc.ending[0]) t.problem("bug", `${label}: the way ended at "${r.ending}"`);
-          await consoleHeard(t, document, label);
-          if ($("console-ending").hidden) t.problem("bug", `${label}: the ending isn't shown`);
-          await consoleFit(t, document, `${label}, the end screen`);
-        } else {
-          document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
-          localStorage.removeItem(RUN_KEY + st.cookie);
-          const doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h);
-          await consolePrompt(t, doc, label);
-          const m = consoleModel(st);
-          await consoleHeard(t, doc, label);
-          seconds = lengths.dur[m.scene];
-          for (const i of way.picks) {
-            await consoleChoose(t, st, m, i, doc, label);
-            seconds += lengths.dur[m.scene];
+          if (near) m = await consoleSeedAt(t, st, way.picks.slice(0, seedLen), null);
+          else {
+            await consoleFresh(t, st);
+            m = consoleModel(st);
           }
-          await consoleHeard(t, doc, label);
-          if (m.scene !== id) t.problem("bug", `${label}: the way ended at ${m.scene}, not ${id}`);
-          if (byIdIn(doc, "console-ending").hidden) t.problem("bug", `${label}: the ending isn't shown`);
-          await consoleFit(t, doc, `${label}, the end screen`);
-          closeViewFrame();
+        } else {
+          if (near) consoleSeedWrite(st, way.picks.slice(0, seedLen), null);
+          else {
+            document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
+            localStorage.removeItem(RUN_KEY + st.cookie);
+          }
+          doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h);
+          await consolePrompt(t, doc, label);
+          m = consoleModel(st);
+          for (const i of way.picks.slice(0, seedLen)) m.choose(i);
         }
-        t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio, ending shown`);
-        table.push({ id, sizeName, minutes: Math.round(seconds / 6) / 10 });
+        await consoleHeard(t, doc, label);
+        consoleCheck(t, st, m, doc, label);
+        for (const i of way.picks.slice(seedLen)) await consoleChoose(t, st, m, i, doc, label);
+        await consoleHeard(t, doc, label);
+        if (m.scene !== id) t.problem("bug", `${label}: the way ended at ${m.scene}, not ${id}`);
+        const shown = byIdIn(doc, "console-ending");
+        if (shown.hidden || shown.textContent.trim() !== sc.ending[0]) t.problem("bug", `${label}: the ending isn't shown (it says "${shown.textContent.trim()}")`);
+        if (!w && stories().run(st.id) !== "end") t.problem("bug", `${label}: at an ending the run says "${stories().run(st.id)}", not end`);
+        await consoleFit(t, doc, `${label}, the end screen`);
+        if (w) closeViewFrame();
+        t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
         done++;
         t.progress(done / (endings.length * sizes.length));
       }
@@ -3757,7 +3779,8 @@ installPlaytest({
       title: "Night Shift sign-off: every ending played to the end with real presses at the desktop size and at 390x844, 360x640 and 844x390, with its minutes of audio, the ending shown and nothing off screen",
       seconds: 3000,
       tags: ["full"],
-      description: "Opens the Night Shift draft by its link under its own Tap to play. For each of its endings it plays the shortest way from a new run with real presses (Skip line moves the lines along, every choice is a press checked against the data), once on the page at its own size and once in a frame at 390x844, 360x640 and 844x390. At each ending it logs the minutes of audio that way held, checks the ending is shown and that nothing runs off the side, is hidden or is smaller than a 44px target. Options: {\"sizes\":\"desktop\"} for the page's own size only, {\"only\":\"end-wedge\"} for one ending.",
+      starts: ["last-choices"],
+      description: "Opens Night Shift by its link under its own Tap to play. For each of its 12 endings it plays the shortest way with real presses (Skip line moves the lines along; every choice is a press checked against the data: the buttons on screen are exactly the choices whose conditions hold), once on the page at its own size and once in a frame at 390x844, 360x640 and 844x390. At each ending it logs the minutes of audio that way holds (from the recordings), checks the ending is shown and that nothing runs off the side, is hidden or is smaller than a 44px target. Without options each way is played whole from a new run (about 50 minutes). {\"at\":\"last-choices\"} (about 8 minutes) starts each play from a seeded run (named setup shortcut, event seeded-run) 2 choices before the ending, then presses those and checks the end screen at the four sizes; {\"back\":4} makes it 4 choices. Other options: {\"sizes\":\"desktop\"} for the page's own size only, {\"only\":\"end-wedge\"} for one ending.",
     },
     {
       id: "cctv-art",
