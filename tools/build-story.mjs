@@ -744,8 +744,12 @@ const consoleFiles = (st) => ({
   bed: (cue) => `${st.base}media/ambience/${cue}.mp3`,
   sfx: (cue) => `${st.base}media/sfx/${cue}.mp3`,
   feed: (cam, state) => `${st.base}media/feeds/${cam}-${state}.png`,
+  endcard: (scene) => `${st.base}media/endcards/${scene}.png`,
+  // Stand-in art (tools/make-standins.mjs), shown only until the real picture is made.
+  standin: (kind, name) => `${st.base}media/standin/${kind}/${name}.svg`,
 });
 const urlIfMade = (rel) => (exists(rel) ? '/' + rel : null);
+const urlOrStandin = (rel, standin) => urlIfMade(rel) ?? urlIfMade(standin);
 
 function consoleData(st) {
   const d = st.data;
@@ -757,6 +761,7 @@ function consoleData(st) {
       lang: 'en',
       dir: '',
       time: s.time,
+      ...(s.ending ? { endcard: urlOrStandin(f.endcard(s.id), f.standin('endcards', s.id)) } : {}),
       title: [s.title, s.title],
       ...(s.ambience ? { ambience: s.ambience } : {}),
       ...(s.feeds ? { feeds: s.feeds } : {}),
@@ -789,7 +794,7 @@ function consoleData(st) {
     cameras: d.cameras.map((c) => ({
       id: c.id,
       name: c.name,
-      states: Object.fromEntries(Object.entries(c.states).map(([state, desc]) => [state, { desc, image: urlIfMade(f.feed(c.id, state)) }])),
+      states: Object.fromEntries(Object.entries(c.states).map(([state, desc]) => [state, { desc, image: urlOrStandin(f.feed(c.id, state), f.standin('feeds', `${c.id}-${state}`)) }])),
     })),
     speakers: Object.fromEntries(Object.entries(d.speakers ?? {}).map(([k, v]) => [k, { name: v.name }])),
     ambience: Object.fromEntries(Object.keys(d.ambience ?? {}).map((cue) => [cue, urlIfMade(f.bed(cue))])),
@@ -912,6 +917,24 @@ function consoleAssets(st) {
         });
       }
     }
+  }
+  list.push({
+    id: `${P}card`,
+    note: `The landing card's key image${of}: nine camera tiles on a dark wall, one of them frozen.`,
+    steps: [{ tool: 'image.generate', params: { prompt: positive(d, `A vertical poster-like frame, 9:16: a wall of nine security monitors in a dark control room, eight showing quiet empty rooms and one frozen. ${d.style}`), width: 720, height: 1280 }, save: 'image' }],
+    candidates: 3,
+    pick: 'nine camera tiles, a dark control room, a security-camera look; no readable text',
+    files: { image: 'assets/images/night-shift.jpg' },
+  });
+  for (const s of st.scenes.filter((x) => x.ending)) {
+    list.push({
+      id: `${P}endcard-${s.id}`,
+      note: `End card for the ending "${s.ending}" (${s.title})${of}: the control room at the end of the shift.`,
+      steps: [{ tool: 'image.generate', params: { prompt: positive(d, `${d.endcardStyle ?? still('the control room wall at the end of the shift')} The ending is called "${s.ending}": ${s.endcard ?? s.title}. ${d.style}`), width: 1024, height: 576 }, save: 'image' }],
+      candidates: 3,
+      pick: `an end card for "${s.ending}" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text`,
+      files: { image: f.endcard(s.id) },
+    });
   }
   for (const [cue, text] of Object.entries(d.ambience ?? {})) {
     list.push({ id: `${P}ambience-${cue}`, note: `Ambience bed ${cue}${of}: a loop under the scenes that use it.`, steps: [{ tool: 'audio.sfx', params: { text, duration: 30, loop: true }, save: 'bed' }], files: { bed: f.bed(cue) } });

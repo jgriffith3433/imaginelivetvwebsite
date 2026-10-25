@@ -3360,6 +3360,66 @@
       }
     },
     {
+      "id": "night-shift-demo-card",
+      "note": "The landing card's key image (Night Shift (demo)): nine camera tiles on a dark wall, one of them frozen.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A vertical poster-like frame, 9:16: a wall of nine security monitors in a dark control room, eight showing quiet empty rooms and one frozen. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 720,
+            "height": 1280
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "nine camera tiles, a dark control room, a security-camera look; no readable text",
+      "files": {
+        "image": "assets/images/night-shift.jpg"
+      }
+    },
+    {
+      "id": "night-shift-demo-endcard-clean-report",
+      "note": "End card for the ending \"Clean report.\" (Clean report) (Night Shift (demo)): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Clean report.\": Clean report. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Clean report.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift-demo/media/endcards/clean-report.png"
+      }
+    },
+    {
+      "id": "night-shift-demo-endcard-quiet-report",
+      "note": "End card for the ending \"All quiet.\" (All quiet) (Night Shift (demo)): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"All quiet.\": All quiet. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"All quiet.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift-demo/media/endcards/quiet-report.png"
+      }
+    },
+    {
       "id": "night-shift-demo-ambience-control-room",
       "note": "Ambience bed control-room (Night Shift (demo)): a loop under the scenes that use it.",
       "steps": [
@@ -3436,7 +3496,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The lobby: the long desk, the turnstiles, the revolving door and the bench by the window, all empty under flat light. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The lobby: the long desk, the turnstiles, the revolving door and the bench by the window, all empty under flat light. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -3459,7 +3519,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The lobby desk: a young officer leaning over it, and a man in a hi-vis vest with a clipboard on the other side. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The lobby desk: a young officer leaning over it, and a man in a hi-vis vest with a clipboard on the other side. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3488,7 +3548,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The bench by the window with a closed laptop and a lanyard left on it, nobody near. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The bench by the window with a closed laptop and a lanyard left on it, nobody near. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3517,7 +3577,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A man in a long dark coat crossing the lobby toward the elevators, phone in hand, not looking at the camera. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A man in a long dark coat crossing the lobby toward the elevators, phone in hand, not looking at the camera. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3546,7 +3606,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A cardboard box on the lobby desk, a courier's hand just leaving the frame. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A cardboard box on the lobby desk, a courier's hand just leaving the frame. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3575,7 +3635,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The lobby in grey early light at the revolving door, the first shapes of the day staff beyond the glass. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The lobby in grey early light at the revolving door, the first shapes of the day staff beyond the glass. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3601,7 +3661,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The glass airlock between Madison Avenue and the lobby, a ledge along one wall, the street light cold on the floor. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The glass airlock between Madison Avenue and the lobby, a ledge along one wall, the street light cold on the floor. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -3624,7 +3684,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The vestibule ledge with a man lying along it under a worn coat, his shoes together, frost at the corners of the glass. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The vestibule ledge with a man lying along it under a worn coat, his shoes together, frost at the corners of the glass. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3653,7 +3713,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The vestibule with a folded coat's worth of damp on the ledge and the outer door still swinging shut. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The vestibule with a folded coat's worth of damp on the ledge and the outer door still swinging shut. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3679,7 +3739,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The rollup door, the dock office window and a trash compactor under a single caged bulb. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The rollup door, the dock office window and a trash compactor under a single caged bulb. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -3702,7 +3762,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The rollup door half raised, a white van's lights beyond it, a man in a cap standing at the intercom with a box. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The rollup door half raised, a white van's lights beyond it, a man in a cap standing at the intercom with a box. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3728,7 +3788,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A fire door on a concrete landing with a painted number 31, closed. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A fire door on a concrete landing with a painted number 31, closed. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -3751,7 +3811,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3777,7 +3837,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: Four elevator cars, a call panel and a plant, the floor shining. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: Four elevator cars, a call panel and a plant, the floor shining. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -3800,7 +3860,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The four elevators; the indicator over one car frozen between 30 and 31, its doors closed, the call light lit. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The four elevators; the indicator over one car frozen between 30 and 31, its doors closed, the call light lit. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3829,7 +3889,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The four elevators with a cleaning cart parked in front of them, bags tied on the rail. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The four elevators with a cleaning cart parked in front of them, bags tied on the rail. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3855,7 +3915,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A long carpeted corridor and a janitor's closet door at the far end. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A long carpeted corridor and a janitor's closet door at the far end. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -3878,7 +3938,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A woman in a cleaner's smock and a younger man holding a mop bucket stand at a badge reader beside a door. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A woman in a cleaner's smock and a younger man holding a mop bucket stand at a badge reader beside a door. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3907,7 +3967,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The janitor's closet door at the end of the corridor with a dark stain spreading across the carpet from its sill. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The janitor's closet door at the end of the corridor with a dark stain spreading across the carpet from its sill. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3936,7 +3996,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A woman holding a sheet of paper up toward the camera, the young man behind her with the bucket. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A woman holding a sheet of paper up toward the camera, the young man behind her with the bucket. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -3962,7 +4022,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A reception with tall glass doors, a low desk nobody sits at and one lamp left on. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A reception with tall glass doors, a low desk nobody sits at and one lamp left on. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -3985,7 +4045,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The reception lit, a man in a long dark coat crossing it toward the glass doors, phone in hand. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The reception lit, a man in a long dark coat crossing it toward the glass doors, phone in hand. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -4011,7 +4071,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A steel door with a push bar, a sign and a single light above it, closed. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A steel door with a push bar, a sign and a single light above it, closed. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -4031,7 +4091,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: A small alcove with a grey cabinet and the fire panel's repeater, one steady green light. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: A small alcove with a grey cabinet and the fire panel's repeater, one steady green light. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -4054,7 +4114,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The same alcove, the picture caught with a faint horizontal tear across it as if the signal has stopped. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The same alcove, the picture caught with a faint horizontal tear across it as if the signal has stopped. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -4083,7 +4143,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: The alcove with the repeater showing a steady amber light. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: The alcove with the repeater showing a steady amber light. Keep the camera angle, the lens, the lighting and everything else in the picture exactly as it is; change only what the description says. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
             "width": 1024,
             "height": 576
@@ -4100,6 +4160,246 @@
       "pick": "the same camera view as the normal picture with only this change: The alcove with the repeater showing a steady amber light.; no text",
       "files": {
         "image": "night-shift/media/feeds/c9-trouble.png"
+      }
+    },
+    {
+      "id": "night-shift-card",
+      "note": "The landing card's key image (Night Shift): nine camera tiles on a dark wall, one of them frozen.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A vertical poster-like frame, 9:16: a wall of nine security monitors in a dark control room, eight showing quiet empty rooms and one frozen. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 720,
+            "height": 1280
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "nine camera tiles, a dark control room, a security-camera look; no readable text",
+      "files": {
+        "image": "assets/images/night-shift.jpg"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-clean",
+      "note": "End card for the ending \"Clean report.\" (Clean report) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Clean report.\": Clean report. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Clean report.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-clean.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-someone",
+      "note": "End card for the ending \"Someone to leave it to.\" (Someone to leave it to) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Someone to leave it to.\": Someone to leave it to. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Someone to leave it to.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-someone.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-she-knew",
+      "note": "End card for the ending \"She knew.\" (She knew) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"She knew.\": She knew. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"She knew.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-she-knew.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-eat-something",
+      "note": "End card for the ending \"Eat something.\" (Eat something) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Eat something.\": Eat something. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Eat something.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-eat-something.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-by-the-book",
+      "note": "End card for the ending \"By the book, alone.\" (By the book, alone) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"By the book, alone.\": By the book, alone. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"By the book, alone.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-by-the-book.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-friendly",
+      "note": "End card for the ending \"The friendly one.\" (The friendly one) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"The friendly one.\": The friendly one. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"The friendly one.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-friendly.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-opinions",
+      "note": "End card for the ending \"Opinions.\" (Opinions) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Opinions.\": Opinions. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Opinions.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-opinions.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-four-hours",
+      "note": "End card for the ending \"The four hours.\" (The four hours) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"The four hours.\": The four hours. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"The four hours.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-four-hours.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-written-up",
+      "note": "End card for the ending \"Written up.\" (Written up) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Written up.\": Written up. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Written up.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-written-up.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-wedge",
+      "note": "End card for the ending \"The wedge.\" (The wedge) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"The wedge.\": The wedge. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"The wedge.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-wedge.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-noted",
+      "note": "End card for the ending \"Noted.\" (Noted) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Noted.\": Noted. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Noted.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-noted.png"
       }
     },
     {

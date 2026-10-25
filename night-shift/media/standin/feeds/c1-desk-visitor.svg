@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 576" width="1024" height="576" role="img" aria-label="The lobby desk: a young officer leaning over it, and a man in a hi-vis vest with a clipboard on the other side.">
+<title>C1 1 Lobby: desk-visitor (stand-in)</title>
+<defs><radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="55%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.75"/></radialGradient>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="2" seed="49"/><feColorMatrix type="saturate" values="0"/></filter>
+<pattern id="s" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="2" fill="#000" opacity="0.18"/></pattern></defs>
+<rect width="1024" height="576" fill="#1b2221"/><rect x="0" y="380" width="1024" height="196" fill="#3a4140"/><rect x="120" y="250" width="380" height="40" fill="#566160"/><rect x="140" y="290" width="340" height="90" fill="#2b3231"/><rect x="620" y="200" width="60" height="180" fill="#667170"/><rect x="720" y="200" width="60" height="180" fill="#667170"/><rect x="820" y="120" width="160" height="260" fill="#1d2423"/><rect x="60" y="330" width="200" height="30" fill="#4a5352"/><g transform="translate(440 330) scale(1)"><ellipse cx="0" cy="-70" rx="22" ry="26" fill="#0c0f0f"/><rect x="-34" y="-46" width="68" height="130" rx="16" fill="#0c0f0f"/></g><g transform="translate(560 330) scale(1.05)"><ellipse cx="0" cy="-70" rx="22" ry="26" fill="#0c0f0f"/><rect x="-34" y="-46" width="68" height="130" rx="16" fill="#0c0f0f"/></g>
+<rect width="1024" height="576" filter="url(#n)" opacity="0.12"/><rect width="1024" height="576" fill="url(#s)"/><rect width="1024" height="576" fill="url(#v)"/>
+<g font-family="monospace" font-size="26" fill="#d8ded6" opacity="0.85"><text x="28" y="48">C1  LOBBY</text><text x="28" y="548">2026-10-24  02:13:44</text></g>
+</svg>
