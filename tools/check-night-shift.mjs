@@ -63,11 +63,23 @@ for (const s of data.scenes) {
     if (n < 2 || n > 6) bad(`${s.id} choice ${i + 1}: "${c.say}" is ${n} words (2 to 6)`);
     for (const re of BANNED) if (re.test(c.say)) bad(`${s.id} choice ${i + 1}: banned pattern ${re}`);
   }
+  // A page is six or seven lines, up to twelve where it is one whole exchange, and about 170 words at the most.
+  if (s.lines.length > 12) bad(`${s.id}: ${s.lines.length} lines on a page (max 12)`);
+  const pageWords = s.lines.reduce((a, l) => a + words(l.text), 0);
+  if (pageWords > 170) bad(`${s.id}: ${pageWords} words on a page (max about 170)`);
+  // The titles, shift-log entries and ending names are said and read too: they get the same banned patterns and stated feelings as the lines.
+  for (const [what, text] of [['title', s.title], ['log', s.log], ['ending', s.ending], ...s.choices.map((c, i) => [`choice ${i + 1} log`, c.log])]) {
+    if (!text) continue;
+    for (const re of BANNED) if (re.test(text)) bad(`${s.id} ${what}: banned pattern ${re}`);
+    if (FEELINGS.test(text)) bad(`${s.id} ${what}: states a feeling`);
+  }
   const everything = [s.title, s.log ?? '', s.ending ?? '', ...s.lines.map((l) => l.text), ...s.choices.map((c) => `${c.say} ${c.log ?? ''}`)].join(' ');
   for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w}`, 'i').test(everything)) bad(`${s.id}: unspoken word "${w}"`);
   if (BOARD_FIRST_NAME.test(everything)) bad(`${s.id}: a Board member has a first name`);
   if (/\bb3\b|\bthe vat\b|creature/i.test(everything)) bad(`${s.id}: mentions B3, the vat or the creature`);
 }
+
+for (const re of BANNED) if (re.test(data.tagline ?? '')) bad(`the tagline: banned pattern ${re}`);
 
 // Pierce: one scene on any way through, and the lines he has are short.
 const pierceTotal = data.scenes.filter((s) => s.lines.some((l) => l.speaker === 'pierce')).length;

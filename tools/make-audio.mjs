@@ -2,6 +2,8 @@
 //   node tools/make-audio.mjs <story> --mix              every file on disk not yet mixed (what Studio's asset make wrote)
 //   node tools/make-audio.mjs <story> --ingest <folder>  <folder>/<asset id>/*.mp3 straight from Hawkes Gen (hawkesgen_run save_to)
 //   node tools/make-audio.mjs <story> --list             the assets with no file yet (add --only <text in the id>)
+//   node tools/make-audio.mjs <story> --reuse [<ref>]    after the text was edited (lines moved, cut or added): every asset whose recipe (voice and text)
+//                                                        matches one that had a file at <ref> (default HEAD) gets that file; prints the ones still to make
 //   node tools/make-audio.mjs <story> --seam            close the loop of every ambience bed on disk (see SEAM; --mix does it to new ones)
 //   node tools/make-audio.mjs <story> --dur              set each line's dur in the story data to its recording's length
 // Music (audio.music, the stingers on endings and key moments) is -40 LUFS: never louder than a bed's neighbour. Voices: silence trimmed, loudness -16 LUFS. Sound effects: -26 LUFS. Ambience beds: -38 LUFS, so a bed always sits
@@ -90,6 +92,36 @@ if (args.includes('--list')) {
   const missing = assets.filter((a) => !fs.existsSync(path.join(ROOT, relOf(a))));
   console.log(`${missing.length} of ${assets.length} have no file`);
   for (const a of missing) console.log(a.id);
+} else if (args.includes('--reuse')) {
+  const ref = args[args.indexOf('--reuse') + 1]?.startsWith('--') || !args[args.indexOf('--reuse') + 1] ? 'HEAD' : args[args.indexOf('--reuse') + 1];
+  const git = (...a) => execFileSync('git', a, { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 });
+  const before = JSON.parse(git('show', `${ref}:hawkes.assets.json`).toString());
+  const had = new Map();
+  for (const a of before.assets.filter(mine)) {
+    const rel = relOf(a);
+    try { execFileSync('git', ['cat-file', '-e', `${ref}:${rel}`], { cwd: ROOT, stdio: 'ignore' }); } catch { continue; }
+    if (!had.has(recipeOf(a))) had.set(recipeOf(a), rel);
+  }
+  const current = (a) => fs.existsSync(path.join(ROOT, relOf(a))) && lock[a.id]?.recipe === recipeOf(a);
+  const todo = [];
+  let n = 0;
+  for (const a of assets) {
+    if (current(a)) continue;
+    const src = had.get(recipeOf(a));
+    if (!src) { todo.push(a.id); continue; }
+    const dest = path.join(ROOT, relOf(a));
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(dest, git('show', `${ref}:${src}`));
+    const h = sha(dest);
+    mixed[relOf(a)] = h;
+    lock[a.id] = { recipe: recipeOf(a), job: lock[a.id]?.job ?? 'hawkesgen_run', made: new Date().toISOString(), files: { [relOf(a)]: h } };
+    n++;
+  }
+  // A file left over from a line that no longer has this text would play the old words: remove the ones nothing current points at.
+  for (const a of assets) if (todo.includes(a.id)) fs.rmSync(path.join(ROOT, relOf(a)), { force: true });
+  save();
+  console.log(`reused ${n}; ${todo.length} to make`);
+  for (const id of todo) console.log(id);
 } else if (args.includes('--ingest')) {
   const dir = opt('ingest');
   let n = 0;

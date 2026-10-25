@@ -1047,12 +1047,6 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "Mm.",
-          "perform": "the small one, the good one",
-          "dur": 3.5
-        },
-        {
-          "speaker": "dee",
           "text": "Mm. Every time. Half hour, hour.",
           "perform": "flat",
           "dur": 4
@@ -2178,12 +2172,6 @@
       "focus": "c6",
       "lines": [
         {
-          "speaker": "dee",
-          "text": "Mm.",
-          "perform": "putting the pencil behind her ear",
-          "dur": 2.1
-        },
-        {
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
@@ -2266,12 +2254,6 @@
       "ambience": "control-room",
       "focus": "c6",
       "lines": [
-        {
-          "speaker": "dee",
-          "text": "Mm.",
-          "perform": "putting the pencil behind her ear",
-          "dur": 2.1
-        },
         {
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
@@ -5044,12 +5026,6 @@
           "dur": 5.3
         },
         {
-          "speaker": "dee",
-          "text": "Mm.",
-          "perform": "from her chair",
-          "dur": 3.3
-        },
-        {
           "speaker": "narrator",
           "text": "His shape on tile one shrinks across the lobby, and the revolving door takes him in a long slow arc into Madison Avenue.",
           "dur": 8.1
@@ -5379,12 +5355,6 @@
       "title": "Loud and clear",
       "ambience": "control-room",
       "lines": [
-        {
-          "speaker": "dee",
-          "text": "Mm.",
-          "perform": "over the radio, the small one",
-          "dur": 1
-        },
         {
           "speaker": "dee",
           "text": "Lobby's clear. Dock's clear. Compactor's ticking.",
@@ -6298,12 +6268,6 @@
           "dur": 11.7
         },
         {
-          "speaker": "dee",
-          "text": "Mm.",
-          "perform": "the whole sentence, to the wall",
-          "dur": 1.2
-        },
-        {
           "speaker": "narrator",
           "text": "She finishes first. She folds the foil in four and puts it in the bin by the door, where it makes no noise at all.",
           "dur": 7.3
@@ -6590,12 +6554,6 @@
           "dur": 10.4
         },
         {
-          "speaker": "dee",
-          "text": "Mm.",
-          "perform": "the whole sentence",
-          "dur": 2.6
-        },
-        {
           "speaker": "narrator",
           "text": "She puts the drawer back with her foot and does not tell you whose card it was.",
           "dur": 4.5
@@ -6713,12 +6671,6 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "Mm.",
-          "perform": "the small one",
-          "dur": 3
-        },
-        {
-          "speaker": "dee",
           "text": "Tour. Stairwells A and B. Thirty minutes. You're the wall.",
           "perform": "at the door, the keys in her hand",
           "sfx": "keys",
@@ -6733,7 +6685,7 @@
       "choices": [
         {
           "say": "Settle in at the wall",
-          "next": "wedge-watch",
+          "next": "zurich-call",
           "log": "Took the wall."
         }
       ],
@@ -6773,7 +6725,7 @@
       "choices": [
         {
           "say": "Settle in at the wall",
-          "next": "wedge-watch",
+          "next": "zurich-call",
           "log": "Took the wall."
         }
       ],
@@ -6814,7 +6766,7 @@
       "choices": [
         {
           "say": "Settle in at the wall",
-          "next": "wedge-watch",
+          "next": "zurich-call",
           "log": "Took the wall."
         }
       ],
@@ -8076,9 +8028,9 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "Probably on his way back. He's asleep, Officer. Write where it was.",
+          "text": "Probably on his way back? He's in bed, Officer. Write where it was.",
           "perform": "reading, flat",
-          "dur": 4.8
+          "dur": 5
         },
         {
           "speaker": "narrator",
@@ -11479,9 +11431,9 @@
         },
         {
           "speaker": "dee",
-          "text": "Sign for it. Tag it. It sits on the shelf till seven. We don't send things back into the cold.",
+          "text": "Sign for it. Tag it. It sits on the shelf till seven.",
           "perform": "flat, a woman who has done this a thousand times",
-          "dur": 6.4
+          "dur": 3.9
         },
         {
           "speaker": "narrator",
@@ -12935,9 +12887,9 @@
       ],
       "choices": [
         {
-          "say": "Look at the plate",
-          "next": "the-rice",
-          "log": "Looked at the plate on the shelf."
+          "say": "Look at the vestibule",
+          "next": "day-officer",
+          "log": "Looked at the vestibule tile at 0532."
         }
       ],
       "feeds": {
@@ -12967,9 +12919,9 @@
         },
         {
           "speaker": "dee",
-          "text": "Every one has a time. Every one has a place. Nobody's lazy, nobody's nervous, nobody seemed.",
+          "text": "Every one has a time and a place. Nobody's lazy. Nobody seemed.",
           "perform": "dry",
-          "dur": 7.7
+          "dur": 5.3
         },
         {
           "speaker": "dee",
@@ -13009,7 +12961,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "requires": [
             "wedge_open"
@@ -13020,7 +12972,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "requires": [
             "trouble_open"
@@ -13034,7 +12986,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "forbids": [
             "wedge_open",
@@ -13108,7 +13060,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "requires": [
             "wedge_open"
@@ -13119,7 +13071,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "requires": [
             "trouble_open"
@@ -13133,7 +13085,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "forbids": [
             "wedge_open",
@@ -13208,7 +13160,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "requires": [
             "wedge_open"
@@ -13219,7 +13171,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "requires": [
             "trouble_open"
@@ -13233,7 +13185,7 @@
         },
         {
           "say": "Write the closing line",
-          "next": "closing-line",
+          "next": "hours-sheet",
           "log": "Opened the closing line of the shift log.",
           "forbids": [
             "wedge_open",
@@ -13582,7 +13534,7 @@
       "choices": [
         {
           "say": "Rinse her cup",
-          "next": "six-thirty",
+          "next": "prep-cup",
           "add": {
             "trainer_warmth": 1
           },
@@ -13590,7 +13542,7 @@
         },
         {
           "say": "Count the radios again",
-          "next": "six-thirty",
+          "next": "prep-radios",
           "add": {
             "trainer_trust": 1
           },
@@ -13598,11 +13550,25 @@
         },
         {
           "say": "Check the drawer",
-          "next": "six-thirty",
+          "next": "prep-drawer",
           "add": {
             "trainer_trust": 1
           },
-          "log": "Checked that the shelf drawer was shut."
+          "log": "Checked that the shelf drawer was shut.",
+          "forbids": [
+            "noticed_notice"
+          ]
+        },
+        {
+          "say": "Check the drawer",
+          "next": "prep-drawer-knew",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Checked that the shelf drawer was shut.",
+          "requires": [
+            "noticed_notice"
+          ]
         }
       ],
       "log": "0610 hrs. Handover checklist run with D. Reyes."
@@ -13660,7 +13626,7 @@
       "choices": [
         {
           "say": "Rinse her cup",
-          "next": "six-thirty",
+          "next": "prep-cup",
           "add": {
             "trainer_warmth": 1
           },
@@ -13668,7 +13634,7 @@
         },
         {
           "say": "Count the radios again",
-          "next": "six-thirty",
+          "next": "prep-radios",
           "add": {
             "trainer_trust": 1
           },
@@ -13676,11 +13642,25 @@
         },
         {
           "say": "Check the drawer",
-          "next": "six-thirty",
+          "next": "prep-drawer",
           "add": {
             "trainer_trust": 1
           },
-          "log": "Checked that the shelf drawer was shut."
+          "log": "Checked that the shelf drawer was shut.",
+          "forbids": [
+            "noticed_notice"
+          ]
+        },
+        {
+          "say": "Check the drawer",
+          "next": "prep-drawer-knew",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Checked that the shelf drawer was shut.",
+          "requires": [
+            "noticed_notice"
+          ]
         }
       ],
       "log": "0610 hrs. Handover checklist run with D. Reyes."
@@ -13738,7 +13718,7 @@
       "choices": [
         {
           "say": "Rinse her cup",
-          "next": "six-thirty",
+          "next": "prep-cup",
           "add": {
             "trainer_warmth": 1
           },
@@ -13746,7 +13726,7 @@
         },
         {
           "say": "Count the radios again",
-          "next": "six-thirty",
+          "next": "prep-radios",
           "add": {
             "trainer_trust": 1
           },
@@ -13754,11 +13734,25 @@
         },
         {
           "say": "Check the drawer",
-          "next": "six-thirty",
+          "next": "prep-drawer",
           "add": {
             "trainer_trust": 1
           },
-          "log": "Checked that the shelf drawer was shut."
+          "log": "Checked that the shelf drawer was shut.",
+          "forbids": [
+            "noticed_notice"
+          ]
+        },
+        {
+          "say": "Check the drawer",
+          "next": "prep-drawer-knew",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Checked that the shelf drawer was shut.",
+          "requires": [
+            "noticed_notice"
+          ]
         }
       ],
       "log": "0610 hrs. Handover checklist run with D. Reyes."
@@ -13822,7 +13816,7 @@
       "choices": [
         {
           "say": "Rinse her cup",
-          "next": "six-thirty",
+          "next": "prep-cup",
           "add": {
             "trainer_warmth": 1
           },
@@ -13830,7 +13824,7 @@
         },
         {
           "say": "Count the radios again",
-          "next": "six-thirty",
+          "next": "prep-radios",
           "add": {
             "trainer_trust": 1
           },
@@ -13838,11 +13832,25 @@
         },
         {
           "say": "Check the drawer",
-          "next": "six-thirty",
+          "next": "prep-drawer",
           "add": {
             "trainer_trust": 1
           },
-          "log": "Checked that the shelf drawer was shut."
+          "log": "Checked that the shelf drawer was shut.",
+          "forbids": [
+            "noticed_notice"
+          ]
+        },
+        {
+          "say": "Check the drawer",
+          "next": "prep-drawer-knew",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Checked that the shelf drawer was shut.",
+          "requires": [
+            "noticed_notice"
+          ]
         }
       ],
       "log": "0610 hrs. Handover checklist run with D. Reyes."
@@ -14248,15 +14256,15 @@
         },
         {
           "speaker": "okafor",
-          "text": "\"Seemed harmless.\" How did he seem harmless?",
+          "text": "So. Some of these say what someone seemed to be. Some say nothing at all.",
           "perform": "reading, flat, polite",
-          "dur": 3.4
+          "dur": 5.5
         },
         {
           "speaker": "okafor",
-          "text": "\"Probably fine.\" Probably what? Fine to whom? \"Quiet night.\" What does that mean to someone who wasn't here?",
+          "text": "How did he seem? Probably what? Fine to whom? What does that mean to someone who wasn't here?",
           "perform": "the thumb moves, even",
-          "dur": 8
+          "dur": 6.3
         },
         {
           "speaker": "okafor",
@@ -14354,15 +14362,9 @@
         },
         {
           "speaker": "okafor",
-          "text": "A contractor on forty with no authorization on the sheet. A box signed for at the dock.",
-          "perform": "flat, each item set down",
-          "dur": 5.7
-        },
-        {
-          "speaker": "okafor",
-          "text": "A call to nine-one-one for a man asleep. A radio check, late.",
-          "perform": "flat",
-          "dur": 4.6
+          "text": "I can see where the binder said one thing and the night said another. I have marked them.",
+          "perform": "flat, each one set down",
+          "dur": 5
         },
         {
           "speaker": "okafor",
@@ -14763,9 +14765,9 @@
         },
         {
           "speaker": "dee",
-          "text": "I put it where you'd find it. Not him. Mm. You didn't ask. That's why.",
+          "text": "I put it where you'd find it. Not him. Mm. You didn't ask.",
           "perform": "a breath that is nearly a smile",
-          "dur": 7.9
+          "dur": 6.8
         },
         {
           "speaker": "dee",
@@ -14801,6 +14803,11 @@
       "ambience": "morning",
       "focus": "c1",
       "lines": [
+        {
+          "speaker": "narrator",
+          "text": "07:02. Mr. Okafor has not gone upstairs yet. He has the tablet in one hand and a pen in the other, and he is writing something down.",
+          "dur": 9.5
+        },
         {
           "speaker": "okafor",
           "text": "Thank you for telling me. That's noted. I will raise it with the contractor.",
@@ -14915,6 +14922,11 @@
       "focus": "c1",
       "lines": [
         {
+          "speaker": "narrator",
+          "text": "07:02. The day officer is at the desk. Mr. Okafor reads the last page of the log standing at the charger, the tablet held out from his body.",
+          "dur": 10.7
+        },
+        {
           "speaker": "okafor",
           "text": "So. There is nothing in this log I would change. Ms. Reyes's evaluation is one line. \"Competent.\"",
           "perform": "the thumb stops, reading, flat",
@@ -14938,8 +14950,8 @@
         },
         {
           "speaker": "narrator",
-          "text": "The clock on the wall says 06:52. It is 06:50. Nobody has touched it.",
-          "dur": 6.7
+          "text": "The clock on the wall says 07:04. It is 07:02. Nobody has touched it.",
+          "dur": 6.6
         }
       ],
       "choices": [],
@@ -14959,16 +14971,21 @@
       "focus": "c1",
       "lines": [
         {
+          "speaker": "narrator",
+          "text": "07:02. The day officer is at the desk. Mr. Okafor turns the tablet to the light from the revolving door and reads the margins first.",
+          "dur": 9.4
+        },
+        {
           "speaker": "okafor",
-          "text": "So. Two entries in Dolores's hand that aren't hers. And an initial on a visitor line at 2224.",
+          "text": "So. Corrections in Dolores's hand, on entries that are not hers.",
           "perform": "reading, flat, polite",
-          "dur": 7.4
+          "dur": 4.9
         },
         {
           "speaker": "dee",
-          "text": "Mine. I initialed it.",
+          "text": "Mine. I made them.",
           "perform": "from the charger, flat, no excuse offered",
-          "dur": 2.3
+          "dur": 2.1
         },
         {
           "speaker": "okafor",
@@ -15016,10 +15033,15 @@
       "focus": "c1",
       "lines": [
         {
+          "speaker": "narrator",
+          "text": "07:02. Mr. Okafor sits in the good chair, which nobody has done all night. The red stylus is already out.",
+          "dur": 8.4
+        },
+        {
           "speaker": "okafor",
-          "text": "So. \"He seemed nervous.\" How did he seem nervous? \"Probably.\" Probably.",
+          "text": "So. \"Seemed.\" How did it seem? \"Probably.\" Probably.",
           "perform": "reading, flat, patient, the red stylus",
-          "dur": 6.8
+          "dur": 5.6
         },
         {
           "speaker": "okafor",
@@ -15061,6 +15083,11 @@
       "ambience": "morning",
       "focus": "c1",
       "lines": [
+        {
+          "speaker": "narrator",
+          "text": "07:02. The sun is on the revolving door. Mr. Okafor stands in the control-room doorway with the tablet, and does not come in.",
+          "dur": 9.2
+        },
         {
           "speaker": "okafor",
           "text": "I'll write it as it stands. Four minutes. It's the rule, Dolores.",
@@ -15119,6 +15146,11 @@
       "focus": "c1",
       "lines": [
         {
+          "speaker": "narrator",
+          "text": "07:02. The lobby is filling with people holding coffee. In the control room Mr. Okafor shuts the door, which nobody has done all night.",
+          "dur": 9.8
+        },
+        {
           "speaker": "okafor",
           "text": "I'll walk you through what happens now. The building manager reads this at nine. The company decides at the end of the ninety days.",
           "perform": "even, polite, final",
@@ -15170,6 +15202,11 @@
       "focus": "c1",
       "lines": [
         {
+          "speaker": "narrator",
+          "text": "07:02. Mr. Okafor has the binder off the shelf before he has his coat off. The extinguisher beside it catches the light.",
+          "dur": 8.3
+        },
+        {
           "speaker": "okafor",
           "text": "Life safety. A door, a panel. Either one, left.",
           "perform": "opening the binder to a page",
@@ -15183,9 +15220,9 @@
         },
         {
           "speaker": "okafor",
-          "text": "Page eleven, Officer. The order of calls. You know it. You read it the first night. I watched you read it.",
+          "text": "Page eleven, Officer. The order of calls. It is two pages.",
           "perform": "a pause, not an accusation",
-          "dur": 6.9
+          "dur": 4.7
         },
         {
           "speaker": "dee",
@@ -15215,6 +15252,11 @@
       "ambience": "morning",
       "focus": "c1",
       "lines": [
+        {
+          "speaker": "narrator",
+          "text": "07:02. The day officer is at the desk. Mr. Okafor reads the log standing, one thumb on the glass, with all four radios on the charger behind him.",
+          "dur": 11
+        },
         {
           "speaker": "okafor",
           "text": "So. Not wrong. Not right. Next to the binder. Noted.",
@@ -15407,16 +15449,21 @@
       "ending": "Under review.",
       "lines": [
         {
-          "speaker": "okafor",
-          "text": "Thank you for telling me. That is noted. I will raise it with the contractor.",
-          "perform": "flat, a pen finishing a line",
-          "dur": 6.5
+          "speaker": "narrator",
+          "text": "07:02. Mr. Okafor stands in the doorway with his coat still on. Behind him the day officer is at the desk, pretending not to listen.",
+          "dur": 9.8
         },
         {
           "speaker": "okafor",
-          "text": "Ms. Reyes. Your post is under review. I did not know.",
+          "text": "So. A notice, in a drawer, with a stamp. I will ask the contractor for a copy today.",
+          "perform": "flat, a pen finishing a line",
+          "dur": 7.7
+        },
+        {
+          "speaker": "okafor",
+          "text": "Ms. Reyes. April the first. Nobody gave you that in writing?",
           "perform": "turning to her, courteous, careful",
-          "dur": 4.3
+          "dur": 4.4
         },
         {
           "speaker": "dee",
@@ -16232,7 +16279,8 @@
           "forbids": [
             "lied",
             "opined"
-          ]
+          ],
+          "log": "Opened the shift log after sharing the plate."
         },
         {
           "say": "Open the log",
@@ -16242,14 +16290,16 @@
           ],
           "requires": [
             "opined"
-          ]
+          ],
+          "log": "Opened the shift log after sharing the plate."
         },
         {
           "say": "Open the log",
           "next": "write-up-lied",
           "requires": [
             "lied"
-          ]
+          ],
+          "log": "Opened the shift log after sharing the plate."
         }
       ],
       "log": "0536 hrs. Control room. Ate with D. Reyes."
@@ -16286,7 +16336,8 @@
           "forbids": [
             "lied",
             "opined"
-          ]
+          ],
+          "log": "Opened the shift log, the plate left for D. Reyes."
         },
         {
           "say": "Open the log",
@@ -16296,14 +16347,16 @@
           ],
           "requires": [
             "opined"
-          ]
+          ],
+          "log": "Opened the shift log, the plate left for D. Reyes."
         },
         {
           "say": "Open the log",
           "next": "write-up-lied",
           "requires": [
             "lied"
-          ]
+          ],
+          "log": "Opened the shift log, the plate left for D. Reyes."
         }
       ],
       "log": "0536 hrs. Control room. Plate left for D. Reyes."
@@ -16340,7 +16393,8 @@
           "forbids": [
             "lied",
             "opined"
-          ]
+          ],
+          "log": "Opened the shift log before the plate."
         },
         {
           "say": "Open the log",
@@ -16350,17 +16404,527 @@
           ],
           "requires": [
             "opined"
-          ]
+          ],
+          "log": "Opened the shift log before the plate."
         },
         {
           "say": "Open the log",
           "next": "write-up-lied",
           "requires": [
             "lied"
-          ]
+          ],
+          "log": "Opened the shift log before the plate."
         }
       ],
       "log": "0536 hrs. Control room. Went to the log before the plate."
+    },
+    {
+      "id": "zurich-call",
+      "folder": "zurich-call",
+      "time": "01:42",
+      "title": "Zurich",
+      "ambience": "control-room-late",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "01:42. The outside line rings on the desk. Dolores is on stairwell A, and the radio on the shelf is quiet.",
+          "sfx": "phone-ring",
+          "dur": 8.9
+        },
+        {
+          "speaker": "narrator",
+          "text": "A woman's voice, a long way off, careful English. She says Zurich first, like a name. She asks for Director Hale's office. Then for Mr. Lang. Then, again, for Director Hale.",
+          "dur": 14.5
+        },
+        {
+          "speaker": "narrator",
+          "text": "She says it is urgent. She says it the way people say good evening.",
+          "dur": 4.9
+        },
+        {
+          "speaker": "narrator",
+          "text": "The after-hours list says fifty-eight is open until four. It does not say who may be told so. On tile seven the glass doors are lit and nobody is behind them.",
+          "dur": 10.9
+        }
+      ],
+      "choices": [
+        {
+          "say": "Take her name and number",
+          "next": "wedge-watch",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Took a name and number from the Zurich caller and confirmed nothing."
+        },
+        {
+          "say": "Read her the list",
+          "next": "wedge-watch",
+          "add": {
+            "slips": 1
+          },
+          "log": "Read the Zurich caller the after-hours list for floor 58."
+        },
+        {
+          "say": "Radio Dee about it",
+          "next": "zurich-radio",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Radioed D. Reyes about the Zurich caller."
+        }
+      ],
+      "log": "0142 hrs. Outside line: caller from Zurich asking for floor 58."
+    },
+    {
+      "id": "zurich-radio",
+      "folder": "zurich-radio",
+      "time": "01:44",
+      "title": "Number and name",
+      "ambience": "control-room-late",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You key the radio and tell her. A pause, and the sound of a stairwell door on its closer.",
+          "dur": 6.4
+        },
+        {
+          "speaker": "dee",
+          "text": "Zurich. Mm. Take the number. Don't read them the list.",
+          "perform": "over the radio, a little out of breath",
+          "dur": 4.6
+        },
+        {
+          "speaker": "dee",
+          "text": "Nobody calls and gets told who's up there. Number. Name. Okafor at seven.",
+          "perform": "over the radio, flat",
+          "dur": 6.3
+        },
+        {
+          "speaker": "narrator",
+          "text": "You do. The woman thanks you in the same careful voice and is gone before you have read the number back.",
+          "dur": 6.7
+        }
+      ],
+      "choices": [
+        {
+          "say": "Back to the wall",
+          "next": "wedge-watch",
+          "log": "Took the Zurich caller's number on D. Reyes's word."
+        }
+      ],
+      "log": "0144 hrs. D. Reyes advised by radio: number and name only."
+    },
+    {
+      "id": "prep-cup",
+      "folder": "prep-cup",
+      "time": "06:12",
+      "title": "The cup",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You run it hot at the sink in the corner. The ring inside the cup does not come out. She watches you try.",
+          "dur": 6.7
+        },
+        {
+          "speaker": "dee",
+          "text": "It doesn't. Don't.",
+          "perform": "flat",
+          "dur": 2
+        },
+        {
+          "speaker": "narrator",
+          "text": "She dries it on her sleeve and sets it on the shelf, handle out, on the old ring.",
+          "dur": 5.6
+        }
+      ],
+      "choices": [
+        {
+          "say": "Wait for Mr. Okafor",
+          "next": "six-thirty",
+          "log": "Waited for the day supervisor."
+        }
+      ],
+      "log": "0612 hrs. D. Reyes's cup rinsed and shelved."
+    },
+    {
+      "id": "prep-radios",
+      "folder": "prep-radios",
+      "time": "06:12",
+      "title": "Four",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You count them with a finger, left to right, the way she does. Four green lights.",
+          "dur": 5.8
+        },
+        {
+          "speaker": "dee",
+          "text": "Four.",
+          "perform": "flat",
+          "dur": 1
+        },
+        {
+          "speaker": "dee",
+          "text": "First week you say it. After that it says itself.",
+          "perform": "flat, to the charger",
+          "dur": 3.8
+        },
+        {
+          "speaker": "narrator",
+          "text": "The fourth radio is the only one that clicks when it settles.",
+          "dur": 3.8
+        }
+      ],
+      "choices": [
+        {
+          "say": "Wait for Mr. Okafor",
+          "next": "six-thirty",
+          "log": "Waited for the day supervisor."
+        }
+      ],
+      "log": "0612 hrs. Radios counted a second time, 4 of 4."
+    },
+    {
+      "id": "prep-drawer",
+      "folder": "prep-drawer",
+      "time": "06:12",
+      "title": "The drawer",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "The shelf drawer is open a finger's width. You push it with the heel of your hand and it shuts.",
+          "dur": 5.9
+        },
+        {
+          "speaker": "dee",
+          "text": "Sticks, doesn't it.",
+          "perform": "flat, at the charger, not looking",
+          "dur": 2.9
+        },
+        {
+          "speaker": "narrator",
+          "text": "Under the binder there is nothing but the binder.",
+          "dur": 3.3
+        }
+      ],
+      "choices": [
+        {
+          "say": "Wait for Mr. Okafor",
+          "next": "six-thirty",
+          "log": "Waited for the day supervisor."
+        }
+      ],
+      "log": "0612 hrs. Shelf drawer checked shut."
+    },
+    {
+      "id": "prep-drawer-knew",
+      "folder": "prep-drawer-knew",
+      "time": "06:12",
+      "title": "The drawer",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "The shelf drawer is open a finger's width. You push it, and it catches on the folded page you put back under the binder. You push again.",
+          "dur": 8.4
+        },
+        {
+          "speaker": "dee",
+          "text": "Harder. It takes two.",
+          "perform": "at the charger, not looking at the shelf, not looking at you",
+          "dur": 7.6
+        },
+        {
+          "speaker": "narrator",
+          "text": "It shuts. She is counting radios she has already counted.",
+          "dur": 4.3
+        }
+      ],
+      "choices": [
+        {
+          "say": "Wait for Mr. Okafor",
+          "next": "six-thirty",
+          "log": "Waited for the day supervisor."
+        }
+      ],
+      "log": "0612 hrs. Shelf drawer checked shut."
+    },
+    {
+      "id": "hours-sheet",
+      "folder": "hours-sheet",
+      "time": "05:56",
+      "title": "Hours",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "05:56. Dolores takes the training sheet out of the binder. One box on it is empty: Trainer's initials, night one.",
+          "dur": 9
+        },
+        {
+          "speaker": "dee",
+          "text": "Hours.",
+          "perform": "flat",
+          "dur": 1
+        },
+        {
+          "speaker": "dee",
+          "text": "Pen. Pencil. Same as nine o'clock. I sign how I'm handed it.",
+          "perform": "flat, holding out her hand for either",
+          "dur": 8.8
+        }
+      ],
+      "choices": [
+        {
+          "say": "Hand her the pen",
+          "next": "hours-ink",
+          "meters": {
+            "trainer_trust": {
+              "min": 2
+            }
+          },
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Handed D. Reyes the pen for the training sheet."
+        },
+        {
+          "say": "Hand her the pen",
+          "next": "hours-refused",
+          "meters": {
+            "trainer_trust": {
+              "max": 1
+            }
+          },
+          "add": {
+            "trainer_warmth": -1
+          },
+          "log": "Handed D. Reyes the pen for the training sheet."
+        },
+        {
+          "say": "Hand her the pencil",
+          "next": "hours-pencil",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Handed D. Reyes the pencil for the training sheet."
+        }
+      ],
+      "log": "0556 hrs. Training sheet out of the binder for D. Reyes's initials."
+    },
+    {
+      "id": "hours-ink",
+      "folder": "hours-ink",
+      "time": "05:58",
+      "title": "Ink",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "She takes the pen. She writes D.R. in the box and presses until the nib squeaks.",
+          "dur": 6.2
+        },
+        {
+          "speaker": "dee",
+          "text": "Ink.",
+          "perform": "flat",
+          "dur": 0.9
+        },
+        {
+          "speaker": "narrator",
+          "text": "She blows on it, which you have never seen her do for anything, and puts the sheet back in the binder at page eleven.",
+          "dur": 6.9
+        }
+      ],
+      "choices": [
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log."
+        }
+      ],
+      "log": "0558 hrs. Training sheet initialed in ink by D. Reyes."
+    },
+    {
+      "id": "hours-pencil",
+      "folder": "hours-pencil",
+      "time": "05:58",
+      "title": "Pencil",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "She takes the pencil from behind her ear, not yours, and writes D.R. small, in the corner of the box.",
+          "dur": 8.1
+        },
+        {
+          "speaker": "dee",
+          "text": "Pencil's open till Friday. Mm. Friday.",
+          "perform": "flat",
+          "dur": 3.7
+        },
+        {
+          "speaker": "narrator",
+          "text": "The rubber on the end of it is worn down to the metal. She puts it back behind her ear.",
+          "dur": 5.3
+        }
+      ],
+      "choices": [
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log."
+        }
+      ],
+      "log": "0558 hrs. Training sheet initialed in pencil by D. Reyes."
+    },
+    {
+      "id": "hours-refused",
+      "folder": "hours-refused",
+      "time": "05:58",
+      "title": "Not that one",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Not that one.",
+          "perform": "flat, not taking it",
+          "dur": 3
+        },
+        {
+          "speaker": "narrator",
+          "text": "She takes the pencil from behind her ear and writes D.R. in the box, small enough that it could be anyone's. The pen stays in your hand.",
+          "dur": 9.3
+        }
+      ],
+      "choices": [
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log."
+        }
+      ],
+      "log": "0558 hrs. Training sheet initialed in pencil by D. Reyes. Pen declined."
+    },
+    {
+      "id": "day-officer",
+      "folder": "day-officer",
+      "time": "05:32",
+      "title": "The reader",
+      "ambience": "vestibule",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "05:32. On tile two the day officer is at the glass of the vestibule. He taps the reader with his badge. The reader beeps red. He taps it again.",
+          "dur": 11.5
+        },
+        {
+          "speaker": "narrator",
+          "text": "It is colder at the reader than anywhere in the building. Readers do that. He has worked here eleven years, and you have never seen his face.",
+          "dur": 9
+        },
+        {
+          "speaker": "dee",
+          "text": "Badge.",
+          "perform": "flat, not looking up",
+          "dur": 3.1
+        },
+        {
+          "speaker": "dee",
+          "text": "He'll say it's the cold. It is the cold. Mm. What does the list say?",
+          "perform": "dry",
+          "dur": 5.5
+        }
+      ],
+      "choices": [
+        {
+          "say": "Check him on the list",
+          "next": "day-officer-list",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Checked the day officer against the list before releasing the vestibule door."
+        },
+        {
+          "say": "Let him in, it's cold",
+          "next": "day-officer-let",
+          "add": {
+            "slips": 1
+          },
+          "log": "Released the vestibule door for the day officer without checking the list."
+        }
+      ],
+      "log": "0532 hrs. Vestibule. Day officer's badge failed at the reader."
+    },
+    {
+      "id": "day-officer-list",
+      "folder": "day-officer-list",
+      "time": "05:34",
+      "title": "The reader",
+      "ambience": "vestibule",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "He is on the list: day post, 0545. The reader is wrong and the list is right. You release the door.",
+          "dur": 8.3
+        },
+        {
+          "speaker": "dee",
+          "text": "List first. Then the door.",
+          "perform": "flat",
+          "dur": 2.7
+        },
+        {
+          "speaker": "narrator",
+          "text": "He comes through with the cold on his coat and says good morning to the room. The room says it back, a little late.",
+          "dur": 6.9
+        }
+      ],
+      "choices": [
+        {
+          "say": "Look at the plate",
+          "next": "the-rice",
+          "log": "Looked at the plate on the shelf."
+        }
+      ],
+      "log": "0534 hrs. Day officer on the list, door released."
+    },
+    {
+      "id": "day-officer-let",
+      "folder": "day-officer-let",
+      "time": "05:34",
+      "title": "The reader",
+      "ambience": "vestibule",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You press the release before the second beep. He comes through with the cold on his coat and says good morning to the room.",
+          "dur": 6.8
+        },
+        {
+          "speaker": "dee",
+          "text": "He's on the list.",
+          "perform": "flat, after a moment, to the wall",
+          "dur": 4.2
+        },
+        {
+          "speaker": "dee",
+          "text": "You didn't look. Mm. He's on the list.",
+          "perform": "flat",
+          "dur": 3.3
+        }
+      ],
+      "choices": [
+        {
+          "say": "Look at the plate",
+          "next": "the-rice",
+          "log": "Looked at the plate on the shelf."
+        }
+      ],
+      "log": "0534 hrs. Day officer admitted on sight, list not checked."
     }
   ],
   "music": {
