@@ -27,6 +27,8 @@ const FEELINGS = /\b(i feel|feeling|sad|lonely|grief|heartbroken)\b/i;
 const BOARD_FIRST_NAME = /\b(?!Director\b)[A-Z][a-z]+ (Hale|Voss|Lang)\b/;
 const CAMEO = new Set(['coat-lobby', 'pierce-signin']);
 
+// The player waits GAP between two lines (js/console.js), so a line costs its recording plus that.
+const GAP = 0.35;
 const scenes = new Map(data.scenes.map((s) => [s.id, s]));
 const speakers = data.speakers ?? {};
 const dur = {};
@@ -41,7 +43,7 @@ for (const s of data.scenes) {
     lineCount++;
     if (!speakers[l.speaker]) bad(`${at}: unknown speaker`);
     const n = words(l.text);
-    dur[s.id] += l.dur ?? Math.round((n / 2.5 + 1) * 10) / 10;
+    dur[s.id] += (l.dur ?? Math.round((n / 2.5 + 1) * 10) / 10) + GAP;
     if (l.speaker === 'narrator') {
       if (n > 42) bad(`${at}: narration is ${n} words (max 42)`);
     } else {

@@ -2751,10 +2751,10 @@ async function crawlConsolePages(t, st, done, total) {
 /* ---------------- Night Shift: the whole night (story/night-shift.json), by its numbers and by real presses ---------------- */
 
 /** How long each way through the night is to listen to, on the shared state rules: the shortest, the longest and the
-    average (every open choice equally likely). A line is its words at 150 a minute plus a pause (the build's own `dur`). */
+    average (every open choice equally likely). A line is its recording (the build's own `dur`) plus the player's 0.35 s gap before the next (`GAP` in js/console.js). */
 function nightLengths(st) {
   const R = rulesOf();
-  const dur = Object.fromEntries(Object.entries(st.scenes).map(([id, sc]) => [id, sc.lines.reduce((a, l) => a + (l.dur || 0), 0)]));
+  const dur = Object.fromEntries(Object.entries(st.scenes).map(([id, sc]) => [id, sc.lines.reduce((a, l) => a + (l.dur || 0) + 0.35, 0)]));
   const memo = new Map();
   const go = (id, state) => {
     const key = `${id}#${R.stateKey(state)}`;
@@ -2925,6 +2925,74 @@ async function nightShiftRun(options, t) {
     t.event("criterion", `played ${results.length} different ways to ${endsMet.size} different endings: ${results.map((r) => `${r.visited} scenes / ${(r.seconds / 60).toFixed(1)} min`).join(", ")}`);
     if (endsMet.size < results.length) t.problem("bug", `${st.id}: the played ways ended at only ${endsMet.size} different endings`);
   } finally {
+    await sleep(300);
+    await toLanding(t).catch(() => {});
+  }
+}
+
+/* ---------------- Night Shift sign-off: every ending, played to the end with real presses, at the desktop size and at three phone sizes ---------------- */
+
+/** Every ending of the night, by its shortest way, from a new run, played with real presses (Skip line moves the lines along)
+    at the page's own size and in a frame at 390x844, 360x640 and 844x390. At each ending: the minutes of audio the way held,
+    the ending shown, nothing running off the side or hidden (consoleFit). Options: {"story":"<id>","sizes":"desktop"|"all","only":"<ending scene>"}. */
+async function nightSignoffRun(options, t) {
+  rememberProgress();
+  const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  if (!st) throw new Error("no console story night-shift in js/story-data.js");
+  await passPrompt(t);
+  clearProgress();
+  const R = rulesOf();
+  try {
+    const x = R.explore(st, { cap: st.stateCap || 50000 });
+    const lengths = nightLengths(st);
+    const endings = Object.entries(st.scenes).filter(([id, sc]) => sc.ending && (!(options && options.only) || options.only === id));
+    const sizes = [["the desktop size", 0, 0], ...((options && options.sizes) === "desktop" ? [] : VIEWPORTS.map(([w, h, name]) => [`${name} ${w}x${h}`, w, h]))];
+    t.metric("endings", endings.length);
+    t.metric("sizes", sizes.length);
+    let done = 0;
+    const table = [];
+    for (const [id, sc] of endings) {
+      const way = x.scenes[id];
+      if (!way) { t.problem("bug", `${st.id}: the ending ${sc.ending[0]} (${id}) can't be reached`); continue; }
+      for (const [sizeName, w, h] of sizes) {
+        const label = `${sc.ending[0]} at ${sizeName}`;
+        let seconds = 0;
+        if (!w) {
+          const r = await nightPlay(t, st, lengths, label, way.picks);
+          seconds = r.seconds;
+          if (r.ending !== sc.ending[0]) t.problem("bug", `${label}: the way ended at "${r.ending}"`);
+          await consoleHeard(t, document, label);
+          if ($("console-ending").hidden) t.problem("bug", `${label}: the ending isn't shown`);
+          await consoleFit(t, document, `${label}, the end screen`);
+        } else {
+          document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
+          localStorage.removeItem(RUN_KEY + st.cookie);
+          const doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h);
+          await consolePrompt(t, doc, label);
+          const m = consoleModel(st);
+          await consoleHeard(t, doc, label);
+          seconds = lengths.dur[m.scene];
+          for (const i of way.picks) {
+            await consoleChoose(t, st, m, i, doc, label);
+            seconds += lengths.dur[m.scene];
+          }
+          await consoleHeard(t, doc, label);
+          if (m.scene !== id) t.problem("bug", `${label}: the way ended at ${m.scene}, not ${id}`);
+          if (byIdIn(doc, "console-ending").hidden) t.problem("bug", `${label}: the ending isn't shown`);
+          await consoleFit(t, doc, `${label}, the end screen`);
+          closeViewFrame();
+        }
+        t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio, ending shown`);
+        table.push({ id, sizeName, minutes: Math.round(seconds / 6) / 10 });
+        done++;
+        t.progress(done / (endings.length * sizes.length));
+      }
+    }
+    t.metric("endingsPlayed", done);
+    t.event("criterion", `${endings.length} endings played to the end at ${sizes.length} sizes (${sizes.map((z) => z[0]).join(", ")}): ${done} plays`);
+  } finally {
+    closeViewFrame();
     await sleep(300);
     await toLanding(t).catch(() => {});
   }
@@ -3109,6 +3177,13 @@ installPlaytest({
       description: "Opens the Night Shift draft (night-shift, listed: false) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45, and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged.",
     },
     {
+      id: "night-shift-signoff",
+      title: "Night Shift sign-off: every ending played to the end with real presses at the desktop size and at 390x844, 360x640 and 844x390, with its minutes of audio, the ending shown and nothing off screen",
+      seconds: 3000,
+      tags: ["full"],
+      description: "Opens the Night Shift draft by its link under its own Tap to play. For each of its endings it plays the shortest way from a new run with real presses (Skip line moves the lines along, every choice is a press checked against the data), once on the page at its own size and once in a frame at 390x844, 360x640 and 844x390. At each ending it logs the minutes of audio that way held, checks the ending is shown and that nothing runs off the side, is hidden or is smaller than a 44px target. Options: {\"sizes\":\"desktop\"} for the page's own size only, {\"only\":\"end-wedge\"} for one ending.",
+    },
+    {
       id: "cctv-art",
       title: "Night Shift's camera wall art: every camera has a picture for every state the script uses, one look and one room per camera; every ending has an end card; the landing card has its image",
       seconds: 30,
@@ -3148,6 +3223,7 @@ installPlaytest({
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
+      else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
