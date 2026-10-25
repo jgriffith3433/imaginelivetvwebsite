@@ -616,3 +616,13 @@ Nothing in the night says B3, the vat or the creature (`unspoken` in the data; t
 - The media budget (see the GPU estimate in the PR/summary).
 
 Everything here stays a draft until J approves it. No media was made.
+
+## Voices as made (2026-10-25)
+
+Designed with ElevenLabs voice design from the descriptions above (previews of about 30 s of each character's own kind
+of line, candidate 1 of 3 kept; picked by the description, not by ear, so J may swap any), saved and locked in
+`story/night-shift.json`: narrator `IFbrwI7VRvX2VkoD4Y3K`, Dee `qhe779QaY6YuY9d3VGab`, Okafor `Xxe1qCvSvBHFD7OTAz9I`,
+Terrell `idZn18yShmcD0ePsg1A5`, Marisol `Iok0Qd1zNVnFs3DULx6Z`, Dev `zcQcgx11ALPbj0o2PFsw`, Ms. Adler
+`QJ9eYeuXwMsC2KElXT1P`, the courier `cOJkIUDUojZtwaJSfMzy`, the man in the vestibule `YSWR6wrmdI2sOa3gtoye`, Mr. Brandt
+`ZyVqOeng5wFOY7UfrjR9`, Pierce Hawkes `ZthjuvLPty3kTMaNKVKb` (PH Origins' Jackson voice, unmodified). The radio, walkie,
+intercom and phone treatments in the descriptions are not applied yet (the recordings are clean).
