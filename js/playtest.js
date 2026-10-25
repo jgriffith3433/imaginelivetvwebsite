@@ -1520,10 +1520,16 @@ async function checkLink(t, doc, find, url, label, where) {
     t.problem("bug", `${where}: no "${label}" link to ${url}`);
     return null;
   }
-  link.scrollIntoView({ block: "center", behavior: "instant" });
-  await sleep(500);
-  const r = link.getBoundingClientRect();
+  // A page can grow after it loads (What's new fills its entries from releases.json), pushing the link
+  // off screen after the first scroll: scroll again until it stays in view.
   const win = doc.defaultView;
+  let r;
+  for (let i = 0; i < 6; i++) {
+    link.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(500);
+    r = link.getBoundingClientRect();
+    if (r.top >= 0 && r.bottom <= win.innerHeight) break;
+  }
   const style = win.getComputedStyle(link);
   if (!r.width || !r.height || style.visibility === "hidden" || Number(style.opacity) === 0) {
     t.problem("bug", `${where}: the "${label}" link is not visible`);
