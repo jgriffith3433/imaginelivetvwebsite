@@ -18,6 +18,11 @@
       "id": "night-shift-demo",
       "logline": "A placeholder night in a Manhattan tower: a radio check, a door on camera four, and a report with your name on it.",
       "listed": false
+    },
+    {
+      "id": "night-shift",
+      "logline": "Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who knows every door, and a report with your name on it.",
+      "listed": false
     }
   ]
 }

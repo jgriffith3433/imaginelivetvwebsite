@@ -1,14 +1,17 @@
-// Checks story/night-shift.json (the text-only slice) against the style guide and the slice's acceptance
-// criteria in story/night-shift.md / story/night-shift-slice-notes.md. Not wired into build-story.mjs.
-//   node tools/check-night-shift.mjs
+// Checks story/night-shift.json (the whole night, the console format) against the style guide in story/night-shift.md and the
+// acceptance bar: no banned patterns, speeches short, Dee never says what she never says, Pierce only in the cameo, nothing
+// about the restricted work, and how long the night is to listen to (words at 150 wpm plus a pause per line).
+// `npm run story` does the structural checks (dead ends, unreachable endings, choices with no effect); this does the voice
+// and the clock.   node tools/check-night-shift.mjs [--quiet]
 import fs from 'node:fs';
+import '../js/console-rules.js';
 
+const rules = globalThis.iltvConsoleRules;
 const data = JSON.parse(fs.readFileSync(new URL('../story/night-shift.json', import.meta.url), 'utf8'));
 const problems = [];
 const bad = (m) => problems.push(m);
-const scenes = new Map(data.scenes.map((s) => [s.id, s]));
 const words = (t) => t.trim().split(/\s+/).filter(Boolean).length;
-// a sentence of four words or more counts; fragments ("One. Lobby.") are free, but a line stays under 32 words
+// A sentence of four words or more counts toward the three-sentence limit; fragments ("One. Lobby.") are free.
 const sentences = (t) => t.split(/(?<=[.!?…])\s+/).filter((x) => words(x) >= 4);
 
 const BANNED = [
@@ -17,78 +20,123 @@ const BANNED = [
   /\bboundar(y|ies)\b/i, /\bclosure\b/i, /\bprocess(ing)? (this|that|your)\b/i, /observe and report/i,
   /\b(hack|decode|defuse|tackle)\b/i, /stay here,? i['’]ll handle/i,
 ];
-const DEE_NEVER = [/\bkid\b/i, /\brookie\b/i];
-const FIRST_NAMES = /\b(hale|voss|lang)\b/i;
+const DEE_NEVER = [/\bkid\b/i, /\brookie\b/i, /\bretire/i, /\bi['’]m sorry\b/i];
+const OKAFOR_NEVER = [/good job/i, /unacceptable/i, /disappointed/i];
+const TERRELL_NEVER = [/^no[.,!]?\s/i];
+const FEELINGS = /\b(i feel|feeling|sad|lonely|grief|heartbroken)\b/i;
+const BOARD_FIRST_NAME = /\b(?!Director\b)[A-Z][a-z]+ (Hale|Voss|Lang)\b/;
+const CAMEO = new Set(['coat-lobby', 'pierce-signin']);
 
-const flagsSet = new Set(), flagsRead = new Set();
-const readsIn = (expr) => { if (expr) for (const m of String(expr).matchAll(/!?([a-z_0-9]+)(?:==|>=|<=)?/g)) flagsRead.add(m[1]); };
-let deeTotal = 0;
+const scenes = new Map(data.scenes.map((s) => [s.id, s]));
+const speakers = data.speakers ?? {};
+const dur = {};
+let lineCount = 0;
+let deeLines = 0;
+const pierceScenes = [];
 
 for (const s of data.scenes) {
-  if (words(s.text) > 40) bad(`${s.id}: text is ${words(s.text)} words (max 40)`);
-  if (s.text.split('\n').length > 1) bad(`${s.id}: text is more than one paragraph`);
-  for (const k of ['time', 'ambience', 'wall']) if (!s[k]) bad(`${s.id}: no ${k}`);
-  for (let i = 1; i <= 9; i++) if (!s.wall?.[`C${i}`]) bad(`${s.id}: wall feed C${i} missing`);
-  if (!s.slice_end && !s.choices?.length) bad(`${s.id}: no choices`);
-  if (s.enter) { for (const f of Object.keys(s.enter.set || {})) flagsSet.add(f); }
-  for (const [i, l] of (s.lines || []).entries()) {
-    const at = `${s.id} line ${i + 1} (${l.who})`;
-    if (!data.characters[l.who]) bad(`${at}: unknown speaker`);
-    if (!l.dir) bad(`${at}: no performance direction`);
-    if (sentences(l.text).length > 3 || words(l.text) > 32) bad(`${at}: a speech (over three sentences or 32 words)`);
-    if (l.who === 'pierce') bad(`${at}: Pierce speaks outside the cameo`);
+  dur[s.id] = 0;
+  for (const [i, l] of s.lines.entries()) {
+    const at = `${s.id} line ${i + 1} (${l.speaker})`;
+    lineCount++;
+    if (!speakers[l.speaker]) bad(`${at}: unknown speaker`);
+    const n = words(l.text);
+    dur[s.id] += l.dur ?? Math.round((n / 2.5 + 1) * 10) / 10;
+    if (l.speaker === 'narrator') {
+      if (n > 42) bad(`${at}: narration is ${n} words (max 42)`);
+    } else {
+      if (sentences(l.text).length > 3 || n > 32) bad(`${at}: a speech (over three sentences or 32 words): "${l.text}"`);
+      if (!l.perform) bad(`${at}: no performance direction`);
+    }
     for (const re of BANNED) if (re.test(l.text)) bad(`${at}: banned pattern ${re}`);
-    if (l.who === 'dee') for (const re of DEE_NEVER) if (re.test(l.text)) bad(`${at}: Dee never says that`);
-    if (/\b(i feel|feeling|sad|lonely|grief|heartbroken)\b/i.test(l.text)) bad(`${at}: states a feeling`);
-    readsIn(l.if);
-    if (l.who === 'dee') deeTotal++;
+    if (FEELINGS.test(l.text)) bad(`${at}: states a feeling`);
+    if (BOARD_FIRST_NAME.test(l.text)) bad(`${at}: a Board member has a first name`);
+    if (l.speaker === 'dee') { deeLines++; for (const re of DEE_NEVER) if (re.test(l.text)) bad(`${at}: Dee never says that`); }
+    if (l.speaker === 'okafor') for (const re of OKAFOR_NEVER) if (re.test(l.text)) bad(`${at}: Okafor never says that`);
+    if (l.speaker === 'terrell') for (const re of TERRELL_NEVER) if (re.test(l.text)) bad(`${at}: Terrell never says "No"`);
+    if (l.speaker === 'pierce') { pierceScenes.push(s.id); if (!CAMEO.has(s.id)) bad(`${at}: Pierce speaks outside the cameo`); if (n > 25) bad(`${at}: Pierce goes on`); }
   }
-  for (const re of BANNED) if (re.test(s.text)) bad(`${s.id}: text hits banned pattern ${re}`);
-  if (FIRST_NAMES.test(JSON.stringify(s))) bad(`${s.id}: a Board name appears`);
-  for (const w of data.unspoken) if (new RegExp(`\\b${w}`, 'i').test(JSON.stringify(s))) bad(`${s.id}: unspoken word "${w}"`);
-  for (const [i, c] of (s.choices || []).entries()) {
-    const at = `${s.id} choice ${i + 1}`;
-    const n = words(c.text);
-    if (n < 2 || n > 6) bad(`${at}: "${c.text}" is ${n} words (2 to 6)`);
-    if (!scenes.has(c.to)) bad(`${at}: goes to unknown scene ${c.to}`);
-    const e = c.effects || {};
-    const changes = Object.keys(e.set || {}).length + Object.values(e.add || {}).filter((v) => v).length + (e.log ? 1 : 0);
-    const next = scenes.get(c.to);
-    if (!changes && !c.cosmetic) bad(`${at}: "${c.text}" changes nothing`);
-    for (const f of Object.keys(e.set || {})) flagsSet.add(f);
-    for (const m of Object.keys(e.add || {})) if (!data.state.meters[m]) bad(`${at}: unknown meter ${m}`);
-    readsIn(c.requires);
-    if (e.log && words(e.log) > 60) bad(`${at}: log line too long`);
-    void next;
+  for (const [i, c] of s.choices.entries()) {
+    const n = words(c.say);
+    if (n < 2 || n > 6) bad(`${s.id} choice ${i + 1}: "${c.say}" is ${n} words (2 to 6)`);
+    for (const re of BANNED) if (re.test(c.say)) bad(`${s.id} choice ${i + 1}: banned pattern ${re}`);
   }
-  readsIn(s.requires);
+  const everything = [s.title, s.log ?? '', s.ending ?? '', ...s.lines.map((l) => l.text), ...s.choices.map((c) => `${c.say} ${c.log ?? ''}`)].join(' ');
+  for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w}`, 'i').test(everything)) bad(`${s.id}: unspoken word "${w}"`);
+  if (BOARD_FIRST_NAME.test(everything)) bad(`${s.id}: a Board member has a first name`);
+  if (/\bb3\b|\bthe vat\b|creature/i.test(everything)) bad(`${s.id}: mentions B3, the vat or the creature`);
 }
 
-// reachability and Dee's lines on the shortest path (unconditional ones) and on the longest
-const seen = new Set([data.start]); const q = [data.start];
-while (q.length) for (const c of scenes.get(q.shift()).choices || []) if (!seen.has(c.to)) { seen.add(c.to); q.push(c.to); }
-for (const id of scenes.keys()) if (!seen.has(id)) bad(`${id}: unreachable`);
-const memo = new Map();
-const best = (id, fn) => {
-  const key = id + fn.name; if (memo.has(key)) return memo.get(key);
-  const s = scenes.get(id);
-  const own = (s.lines || []).filter((l) => l.who === 'dee' && !l.if).length;
-  const next = (s.choices || []).map((c) => best(c.to, fn));
-  const v = own + (next.length ? fn(...next) : 0);
-  memo.set(key, v); return v;
+// Pierce: one scene on any way through, and the lines he has are short.
+const pierceTotal = data.scenes.filter((s) => s.lines.some((l) => l.speaker === 'pierce')).length;
+if (pierceTotal < 1) bad('Pierce Hawkes never appears (the cameo)');
+const pierceLines = data.scenes.flatMap((s) => s.lines.filter((l) => l.speaker === 'pierce').map((l) => l.text));
+if (pierceLines.length > 2) bad(`Pierce has ${pierceLines.length} lines in the whole story (the cameo is two)`);
+
+// The clock: every way through, worked out on the build's own state rules.
+const consoleChoice = (c) => {
+  const e = {};
+  for (const k of ['requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic']) if (c[k] != null && !(Array.isArray(c[k]) && !c[k].length)) e[k] = c[k];
+  return Object.keys(e).length ? [c.say, c.say, c.next, e] : [c.say, c.say, c.next];
 };
-function lo(...a) { return Math.min(...a); }
-const deeMin = best(data.start, lo);
-if (deeMin < 40) bad(`Dee has only ${deeMin} unconditional lines on the shortest path (need 40)`);
-
-const declared = data.state.flags;
-for (const f of flagsSet) { if (!declared[f] && !data.state.logs?.[f]) bad(`flag ${f} is set but not declared`); }
-for (const [f, kind] of Object.entries(declared)) {
-  if (kind === 'slice' && !flagsRead.has(f) && !data.state.flags_read_later.includes(f)) bad(`flag ${f} is never read`);
-  if (!flagsSet.has(f)) bad(`flag ${f} is declared but never set`);
+const shape = {
+  start: data.start,
+  state: data.state,
+  cameras: data.cameras,
+  scenes: Object.fromEntries(data.scenes.map((s) => [s.id, { ending: s.ending ? [s.ending, s.ending] : undefined, feeds: s.feeds, choices: s.choices.map(consoleChoice) }])),
+};
+const memo = new Map();
+function walk(id, st) {
+  const k = `${id}#${rules.stateKey(st)}`;
+  if (memo.has(k)) return memo.get(k);
+  const open = shape.scenes[id].choices.filter((c) => rules.usable(c, st));
+  let r;
+  if (!open.length) r = { min: dur[id], max: dur[id], mean: dur[id], dee: 0 };
+  else {
+    const next = open.map((c) => walk(c[2], rules.apply(shape, st, c)));
+    r = { min: dur[id] + Math.min(...next.map((x) => x.min)), max: dur[id] + Math.max(...next.map((x) => x.max)), mean: dur[id] + next.reduce((a, x) => a + x.mean, 0) / next.length };
+  }
+  memo.set(k, r);
+  return r;
 }
-const sceneMin = data.scenes.length;
+const t = walk(data.start, rules.fresh(shape));
+// Random plays too: the median and the spread, with the policy "every open choice is equally likely".
+function play(rng) {
+  let id = data.start;
+  let st = rules.fresh(shape);
+  let total = 0;
+  let steps = 0;
+  const ends = [];
+  for (;;) {
+    total += dur[id];
+    steps++;
+    const open = shape.scenes[id].choices.filter((c) => rules.usable(c, st));
+    if (!open.length) { ends.push(id); return { total, steps, end: id }; }
+    const c = open[Math.floor(rng() * open.length)];
+    st = rules.apply(shape, st, c);
+    id = c[2];
+  }
+}
+let seed = 12345;
+const rng = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+const plays = Array.from({ length: 3000 }, () => play(rng)).sort((a, b) => a.total - b.total);
+const pct = (p) => (plays[Math.floor((plays.length - 1) * p)].total / 60).toFixed(1);
+const endings = new Set(plays.map((p) => p.end));
+const allEndings = data.scenes.filter((s) => s.ending).length;
 
-console.log(`${sceneMin} scenes, Dee: ${deeTotal} lines in total, ${deeMin} on the shortest way (unconditional)`);
-if (problems.length) { for (const p of problems) console.error('problem  ' + p); process.exit(1); }
-console.log('ok       night-shift slice');
+const x = rules.explore(shape, { cap: data.stateCap ?? 50000 });
+if (t.min / 60 < 30) bad(`the shortest way through is ${(t.min / 60).toFixed(1)} minutes (needs 30)`);
+if (allEndings < 8) bad(`${allEndings} endings (needs 8)`);
+if (deeLines < 40) bad(`Dee has ${deeLines} lines`);
+
+if (!process.argv.includes('--quiet')) {
+  console.log(`${data.scenes.length} scenes, ${lineCount} lines (${deeLines} Dee), ${allEndings} endings, ${x.states} states explored${x.capped ? ' (CAPPED)' : ''}`);
+  console.log(`playing time: shortest ${(t.min / 60).toFixed(1)} min | average ${(t.mean / 60).toFixed(1)} min (every open choice equally likely) | median ${pct(0.5)} (3000 random plays: 10% ${pct(0.1)}, 90% ${pct(0.9)}) | longest ${(t.max / 60).toFixed(1)} min`);
+  console.log(`endings met in 3000 random plays: ${endings.size} of ${allEndings}; Pierce speaks in: ${pierceScenes.join(', ') || 'nowhere'}`);
+}
+if (problems.length) {
+  for (const p of problems) console.error('problem  ' + p);
+  console.error(`${problems.length} problem(s)`);
+  process.exit(1);
+}
+console.log('ok       night-shift');
