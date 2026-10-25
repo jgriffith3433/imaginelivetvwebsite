@@ -1,7 +1,7 @@
 {
   "type": "console",
   "title": "Night Shift",
-  "tagline": "Observe and report.",
+  "tagline": "Say what you see.",
   "doc": "story/night-shift.md",
   "cookie": "nightShiftProgress",
   "tap": {
@@ -1204,7 +1204,7 @@
         },
         {
           "speaker": "dee",
-          "text": "Thirty-six minutes. Door to door. You'll learn the seven by smell.",
+          "text": "Thirty-six minutes. Door to door. The seven smells like pennies.",
           "perform": "flat, a small, dry kindness"
         },
         {
@@ -6584,7 +6584,7 @@
       "folder": "laptop-watch-f",
       "time": "02:12",
       "title": "Tile one, tile two",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -6640,7 +6640,7 @@
       "folder": "laptop-watch-o",
       "time": "02:12",
       "title": "Tile one, tile two",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -6701,7 +6701,7 @@
       "folder": "laptop-watch-m",
       "time": "02:12",
       "title": "Tile one, tile two",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -6762,7 +6762,7 @@
       "folder": "laptop-watch-l",
       "time": "02:12",
       "title": "Tile one, tile two",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -6949,7 +6949,7 @@
       "folder": "laptop-got",
       "time": "02:20",
       "title": "In the control room",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c1",
       "lines": [
         {
@@ -7009,7 +7009,7 @@
       "folder": "laptop-badge",
       "time": "02:20",
       "title": "The badge",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c1",
       "lines": [
         {
@@ -7064,7 +7064,7 @@
       "folder": "laptop-opened",
       "time": "02:20",
       "title": "Not yours",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c1",
       "lines": [
         {
@@ -7129,7 +7129,7 @@
       "folder": "awake-0225-f",
       "time": "02:25",
       "title": "The hour",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -7184,7 +7184,7 @@
       "folder": "awake-0225-o",
       "time": "02:25",
       "title": "The hour",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -7239,7 +7239,7 @@
       "folder": "awake-0225-m",
       "time": "02:25",
       "title": "The hour",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -7294,7 +7294,7 @@
       "folder": "awake-stand",
       "time": "02:35",
       "title": "The tiles",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -7360,7 +7360,7 @@
       "folder": "awake-bank",
       "time": "02:35",
       "title": "The bank",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -7427,7 +7427,7 @@
       "folder": "awake-coffee",
       "time": "02:35",
       "title": "Two coffees",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -7493,7 +7493,7 @@
       "folder": "marisol-thanks",
       "time": "02:40",
       "title": "The broker's pot",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "marisol",
@@ -7569,7 +7569,7 @@
       "folder": "marisol-dee",
       "time": "02:40",
       "title": "About Dolores",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "marisol",
@@ -7640,7 +7640,7 @@
       "folder": "marisol-floors",
       "time": "02:40",
       "title": "The floors",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "marisol",
@@ -7706,7 +7706,7 @@
       "folder": "tenant-log",
       "time": "02:48",
       "title": "Name and floor",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -7741,7 +7741,7 @@
       "folder": "tenant-promise",
       "time": "02:48",
       "title": "Someone",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "brandt",
@@ -8089,7 +8089,7 @@
       "folder": "leak-quiet-f",
       "time": "02:55",
       "title": "The cup",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -8153,7 +8153,7 @@
       "folder": "leak-quiet-o",
       "time": "02:55",
       "title": "The cup",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -8217,7 +8217,7 @@
       "folder": "leak-quiet-m",
       "time": "02:55",
       "title": "The cup",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -8281,7 +8281,7 @@
       "folder": "four-hours",
       "time": "02:58",
       "title": "Four hours",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -8324,7 +8324,7 @@
       "folder": "dee-shut",
       "time": "02:58",
       "title": "Don't",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -8355,7 +8355,7 @@
       "folder": "three-oclock",
       "time": "03:00",
       "title": "Roof door",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -8363,7 +8363,7 @@
         },
         {
           "speaker": "dee",
-          "text": "Nothing happens at three o'clock. That's why we're here. Mm.",
+          "text": "Three o'clock. Mm. Nothing happens.",
           "perform": "at the door, flat"
         },
         {
@@ -8425,7 +8425,7 @@
       "folder": "three-no",
       "time": "03:00",
       "title": "Alone",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -9162,7 +9162,7 @@
       "folder": "chairman-talk",
       "time": "03:36",
       "title": "The Chairman",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -9214,7 +9214,7 @@
       "folder": "dee-back-waved",
       "time": "03:30",
       "title": "Back",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -9279,7 +9279,7 @@
       "folder": "dee-back-signed",
       "time": "03:30",
       "title": "Back",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -9344,7 +9344,7 @@
       "folder": "cam9-seen",
       "time": "03:43",
       "title": "Nine",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c9",
       "lines": [
         {
@@ -9415,7 +9415,7 @@
       "folder": "cam9-missed",
       "time": "03:55",
       "title": "Fourteen minutes",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c9",
       "lines": [
         {
@@ -9484,7 +9484,7 @@
       "folder": "trouble-signal-f",
       "time": "03:58",
       "title": "The panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c9",
       "lines": [
         {
@@ -9549,7 +9549,7 @@
       "folder": "trouble-signal-o",
       "time": "03:58",
       "title": "The panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c9",
       "lines": [
         {
@@ -9614,7 +9614,7 @@
       "folder": "trouble-signal-m",
       "time": "03:58",
       "title": "The panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c9",
       "lines": [
         {
@@ -9679,7 +9679,7 @@
       "folder": "trouble-signal-l",
       "time": "03:58",
       "title": "The panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c9",
       "lines": [
         {
@@ -9749,7 +9749,7 @@
       "folder": "trouble-silenced",
       "time": "04:00",
       "title": "Silence",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -9780,7 +9780,7 @@
       "folder": "okafor-trouble",
       "time": "04:03",
       "title": "The night line",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -9817,7 +9817,7 @@
       "folder": "adler-call",
       "time": "04:05",
       "title": "Ms. Adler",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -9831,7 +9831,7 @@
         },
         {
           "speaker": "adler",
-          "text": "Nineteen years. The panel says what it means. Read it exactly.",
+          "text": "Word for word, please. Take your time.",
           "perform": "crisp"
         }
       ],
@@ -9861,7 +9861,7 @@
       "folder": "adler-exact",
       "time": "04:07",
       "title": "The correct answer",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -9927,7 +9927,7 @@
       "folder": "adler-short",
       "time": "04:07",
       "title": "Again",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "adler",
@@ -9993,7 +9993,7 @@
       "folder": "adler-arrives-f",
       "time": "04:12",
       "title": "At the panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -10041,7 +10041,7 @@
       "folder": "adler-arrives-o",
       "time": "04:12",
       "title": "At the panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -10094,7 +10094,7 @@
       "folder": "adler-arrives-m",
       "time": "04:12",
       "title": "At the panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -10147,7 +10147,7 @@
       "folder": "adler-arrives-l",
       "time": "04:12",
       "title": "At the panel",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -10510,7 +10510,7 @@
       "folder": "hum-0435-f",
       "time": "04:35",
       "title": "A sound she makes",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -10559,7 +10559,7 @@
       "folder": "hum-0435-o",
       "time": "04:35",
       "title": "A sound she makes",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -10608,7 +10608,7 @@
       "folder": "hum-0435-m",
       "time": "04:35",
       "title": "A sound she makes",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -11209,7 +11209,7 @@
       "folder": "dawn-tablet-f",
       "time": "05:15",
       "title": "Her page",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -11253,7 +11253,7 @@
       "folder": "dawn-tablet-o",
       "time": "05:15",
       "title": "Her page",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -11297,7 +11297,7 @@
       "folder": "dawn-tablet-m",
       "time": "05:15",
       "title": "Her page",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -11341,7 +11341,7 @@
       "folder": "twelve-check",
       "time": "05:17",
       "title": "The sensor",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "focus": "c8",
       "lines": [
         {
@@ -11367,7 +11367,7 @@
       "folder": "dee-back-0520",
       "time": "05:20",
       "title": "Back from the restroom",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "narrator",
@@ -11442,7 +11442,7 @@
       "folder": "twelve",
       "time": "05:24",
       "title": "Twelve",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -11494,7 +11494,7 @@
       "folder": "twelve-shut",
       "time": "05:24",
       "title": "Pencil",
-      "ambience": "control-room",
+      "ambience": "control-room-late",
       "lines": [
         {
           "speaker": "dee",
@@ -13204,7 +13204,7 @@
         },
         {
           "speaker": "dee",
-          "text": "Tuesday. You'll want to sleep. Don't, till you've eaten.",
+          "text": "Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.",
           "perform": "putting her coat on, short, flat"
         },
         {
@@ -13316,13 +13316,17 @@
         },
         {
           "speaker": "narrator",
-          "text": "Thursday. The charger. She counts four, and then she holds the fourth one out to you.",
-          "perform": "her hand shakes once, the width of a pencil"
+          "text": "Thursday night. The charger. She counts four.",
+          "sfx": "radio-charger"
         },
         {
           "speaker": "dee",
-          "text": "I'd have told him in April. Mm. It's the book. Clip it on.",
+          "text": "I'd have told him in April. Mm. It's the book.",
           "perform": "low"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She holds the fourth radio out to you. You clip it on."
         }
       ],
       "choices": [],
@@ -13355,12 +13359,12 @@
         },
         {
           "speaker": "dee",
-          "text": "Tuesday. You know where I sit. Mm.",
+          "text": "Quarter to seven. You know where I sit. Mm.",
           "perform": "folding the foil in four"
         },
         {
           "speaker": "dee",
-          "text": "You stayed on the wall. Mm. Tuesday.",
+          "text": "You stayed on the wall. Mm. Go home.",
           "perform": "to the wall"
         },
         {
@@ -13548,7 +13552,7 @@
       "feeds": {
         "c1": "dawn"
       },
-      "ending": "The four hours.",
+      "ending": "Four minutes.",
       "log": "0702 hrs. Shift ended. Log signed."
     },
     {
@@ -13650,7 +13654,7 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. Tuesday. Read the whole binder. Page eleven, twice.",
+          "text": "Mm. Quarter to seven. Read the whole binder. Page eleven, twice.",
           "perform": "putting on her coat, to you, dry"
         },
         {

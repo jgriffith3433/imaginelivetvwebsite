@@ -1764,7 +1764,7 @@ window.ILTV_STORIES = {
    "id": "night-shift",
    "type": "console",
    "title": "Night Shift",
-   "tagline": "Observe and report.",
+   "tagline": "Say what you see.",
    "logline": "Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who knows every door, and a report with your name on it.",
    "image": "/assets/images/night-shift.svg",
    "listed": false,
@@ -3302,9 +3302,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Thirty-six minutes. Door to door. You'll learn the seven by smell.",
+       "text": "Thirty-six minutes. Door to door. The seven smells like pennies.",
        "file": null,
-       "dur": 5.4
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -10358,7 +10358,7 @@ window.ILTV_STORIES = {
       "Tile one, tile two",
       "Tile one, tile two"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -10435,7 +10435,7 @@ window.ILTV_STORIES = {
       "Tile one, tile two",
       "Tile one, tile two"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -10518,7 +10518,7 @@ window.ILTV_STORIES = {
       "Tile one, tile two",
       "Tile one, tile two"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -10601,7 +10601,7 @@ window.ILTV_STORIES = {
       "Tile one, tile two",
       "Tile one, tile two"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -10850,7 +10850,7 @@ window.ILTV_STORIES = {
       "In the control room",
       "In the control room"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "focus": "c1",
      "lines": [
       {
@@ -10930,7 +10930,7 @@ window.ILTV_STORIES = {
       "The badge",
       "The badge"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "focus": "c1",
      "lines": [
       {
@@ -11004,7 +11004,7 @@ window.ILTV_STORIES = {
       "Not yours",
       "Not yours"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "focus": "c1",
      "lines": [
       {
@@ -11090,7 +11090,7 @@ window.ILTV_STORIES = {
       "The hour",
       "The hour"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -11163,7 +11163,7 @@ window.ILTV_STORIES = {
       "The hour",
       "The hour"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -11236,7 +11236,7 @@ window.ILTV_STORIES = {
       "The hour",
       "The hour"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -11309,7 +11309,7 @@ window.ILTV_STORIES = {
       "The tiles",
       "The tiles"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -11398,7 +11398,7 @@ window.ILTV_STORIES = {
       "The bank",
       "The bank"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -11487,7 +11487,7 @@ window.ILTV_STORIES = {
       "Two coffees",
       "Two coffees"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -11576,7 +11576,7 @@ window.ILTV_STORIES = {
       "The broker's pot",
       "The broker's pot"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "marisol",
@@ -11676,7 +11676,7 @@ window.ILTV_STORIES = {
       "About Dolores",
       "About Dolores"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "marisol",
@@ -11770,7 +11770,7 @@ window.ILTV_STORIES = {
       "The floors",
       "The floors"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "marisol",
@@ -11858,7 +11858,7 @@ window.ILTV_STORIES = {
       "Name and floor",
       "Name and floor"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -11906,7 +11906,7 @@ window.ILTV_STORIES = {
       "Someone",
       "Someone"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "brandt",
@@ -12369,7 +12369,7 @@ window.ILTV_STORIES = {
       "The cup",
       "The cup"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -12454,7 +12454,7 @@ window.ILTV_STORIES = {
       "The cup",
       "The cup"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -12539,7 +12539,7 @@ window.ILTV_STORIES = {
       "The cup",
       "The cup"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -12624,7 +12624,7 @@ window.ILTV_STORIES = {
       "Four hours",
       "Four hours"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -12682,7 +12682,7 @@ window.ILTV_STORIES = {
       "Don't",
       "Don't"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -12724,7 +12724,7 @@ window.ILTV_STORIES = {
       "Roof door",
       "Roof door"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -12734,9 +12734,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Nothing happens at three o'clock. That's why we're here. Mm.",
+       "text": "Three o'clock. Mm. Nothing happens.",
        "file": null,
-       "dur": 5
+       "dur": 3
       },
       {
        "speaker": "dee",
@@ -12816,7 +12816,7 @@ window.ILTV_STORIES = {
       "Alone",
       "Alone"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -13787,7 +13787,7 @@ window.ILTV_STORIES = {
       "The Chairman",
       "The Chairman"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -13857,7 +13857,7 @@ window.ILTV_STORIES = {
       "Back",
       "Back"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -13945,7 +13945,7 @@ window.ILTV_STORIES = {
       "Back",
       "Back"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -14033,7 +14033,7 @@ window.ILTV_STORIES = {
       "Nine",
       "Nine"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "feeds": {
       "c9": "frozen"
      },
@@ -14124,7 +14124,7 @@ window.ILTV_STORIES = {
       "Fourteen minutes",
       "Fourteen minutes"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "feeds": {
       "c9": "frozen"
      },
@@ -14215,7 +14215,7 @@ window.ILTV_STORIES = {
       "The panel",
       "The panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "feeds": {
       "c9": "frozen"
      },
@@ -14302,7 +14302,7 @@ window.ILTV_STORIES = {
       "The panel",
       "The panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "feeds": {
       "c9": "frozen"
      },
@@ -14389,7 +14389,7 @@ window.ILTV_STORIES = {
       "The panel",
       "The panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "feeds": {
       "c9": "frozen"
      },
@@ -14476,7 +14476,7 @@ window.ILTV_STORIES = {
       "The panel",
       "The panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "feeds": {
       "c9": "frozen"
      },
@@ -14569,7 +14569,7 @@ window.ILTV_STORIES = {
       "Silence",
       "Silence"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -14612,7 +14612,7 @@ window.ILTV_STORIES = {
       "The night line",
       "The night line"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -14661,7 +14661,7 @@ window.ILTV_STORIES = {
       "Ms. Adler",
       "Ms. Adler"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -14678,9 +14678,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "adler",
-       "text": "Nineteen years. The panel says what it means. Read it exactly.",
+       "text": "Word for word, please. Take your time.",
        "file": null,
-       "dur": 5.4
+       "dur": 3.8
       }
      ],
      "log": "0405 hrs. Fire safety director on the phone. Display being read.",
@@ -14719,7 +14719,7 @@ window.ILTV_STORIES = {
       "The correct answer",
       "The correct answer"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -14806,7 +14806,7 @@ window.ILTV_STORIES = {
       "Again",
       "Again"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "adler",
@@ -14893,7 +14893,7 @@ window.ILTV_STORIES = {
       "At the panel",
       "At the panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -14956,7 +14956,7 @@ window.ILTV_STORIES = {
       "At the panel",
       "At the panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -15025,7 +15025,7 @@ window.ILTV_STORIES = {
       "At the panel",
       "At the panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -15094,7 +15094,7 @@ window.ILTV_STORIES = {
       "At the panel",
       "At the panel"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -15570,7 +15570,7 @@ window.ILTV_STORIES = {
       "A sound she makes",
       "A sound she makes"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -15637,7 +15637,7 @@ window.ILTV_STORIES = {
       "A sound she makes",
       "A sound she makes"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -15704,7 +15704,7 @@ window.ILTV_STORIES = {
       "A sound she makes",
       "A sound she makes"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -16505,7 +16505,7 @@ window.ILTV_STORIES = {
       "Her page",
       "Her page"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -16564,7 +16564,7 @@ window.ILTV_STORIES = {
       "Her page",
       "Her page"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -16623,7 +16623,7 @@ window.ILTV_STORIES = {
       "Her page",
       "Her page"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -16682,7 +16682,7 @@ window.ILTV_STORIES = {
       "The sensor",
       "The sensor"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "focus": "c8",
      "lines": [
       {
@@ -16719,7 +16719,7 @@ window.ILTV_STORIES = {
       "Back from the restroom",
       "Back from the restroom"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "narrator",
@@ -16813,7 +16813,7 @@ window.ILTV_STORIES = {
       "Twelve",
       "Twelve"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -16881,7 +16881,7 @@ window.ILTV_STORIES = {
       "Pencil",
       "Pencil"
      ],
-     "ambience": "control-room",
+     "ambience": "control-room-late",
      "lines": [
       {
        "speaker": "dee",
@@ -19047,9 +19047,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Tuesday. You'll want to sleep. Don't, till you've eaten.",
+       "text": "Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.",
        "file": null,
-       "dur": 4.6
+       "dur": 5.8
       },
       {
        "speaker": "dee",
@@ -19197,15 +19197,22 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Thursday. The charger. She counts four, and then she holds the fourth one out to you.",
+       "text": "Thursday night. The charger. She counts four.",
+       "sfx": "radio-charger",
        "file": null,
-       "dur": 7.4
+       "dur": 3.8
       },
       {
        "speaker": "dee",
-       "text": "I'd have told him in April. Mm. It's the book. Clip it on.",
+       "text": "I'd have told him in April. Mm. It's the book.",
        "file": null,
-       "dur": 6.2
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "She holds the fourth radio out to you. You clip it on.",
+       "file": null,
+       "dur": 5.8
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -19251,15 +19258,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Tuesday. You know where I sit. Mm.",
+       "text": "Quarter to seven. You know where I sit. Mm.",
        "file": null,
-       "dur": 3.8
+       "dur": 4.6
       },
       {
        "speaker": "dee",
-       "text": "You stayed on the wall. Mm. Tuesday.",
+       "text": "You stayed on the wall. Mm. Go home.",
        "file": null,
-       "dur": 3.8
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -19510,8 +19517,8 @@ window.ILTV_STORIES = {
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
      "ending": [
-      "The four hours.",
-      "The four hours."
+      "Four minutes.",
+      "Four minutes."
      ],
      "choices": []
     },
@@ -19653,9 +19660,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. Tuesday. Read the whole binder. Page eleven, twice.",
+       "text": "Mm. Quarter to seven. Read the whole binder. Page eleven, twice.",
        "file": null,
-       "dur": 4.6
+       "dur": 5.4
       },
       {
        "speaker": "okafor",

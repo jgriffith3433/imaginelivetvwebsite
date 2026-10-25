@@ -4324,12 +4324,12 @@
     },
     {
       "id": "night-shift-endcard-end-four-hours",
-      "note": "End card for the ending \"The four hours.\" (The four hours) (Night Shift): the control room at the end of the shift.",
+      "note": "End card for the ending \"Four minutes.\" (The four hours) (Night Shift): the control room at the end of the shift.",
       "steps": [
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"The four hours.\": The four hours. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Four minutes.\": The four hours. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -4337,7 +4337,7 @@
         }
       ],
       "candidates": 3,
-      "pick": "an end card for \"The four hours.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "pick": "an end card for \"Four minutes.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
       "files": {
         "image": "night-shift/media/endcards/end-four-hours.png"
       }
@@ -6780,12 +6780,12 @@
     },
     {
       "id": "night-shift-talk-commute-line-3",
-      "note": "The seven (Night Shift): Dee says \"Thirty-six minutes. Door to door. You'll learn the seven by smell.\".",
+      "note": "The seven (Night Shift): Dee says \"Thirty-six minutes. Door to door. The seven smells like pennies.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat][a small][dry kindness] Thirty-six minutes. Door to door. You'll learn the seven by smell.",
+            "text": "[flat][a small][dry kindness] Thirty-six minutes. Door to door. The seven smells like pennies.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -18750,12 +18750,12 @@
     },
     {
       "id": "night-shift-three-oclock-line-2",
-      "note": "Roof door (Night Shift): Dee says \"Nothing happens at three o'clock. That's why we're here. Mm.\".",
+      "note": "Roof door (Night Shift): Dee says \"Three o'clock. Mm. Nothing happens.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[at the door][flat] Nothing happens at three o'clock. That's why we're here. Mm.",
+            "text": "[at the door][flat] Three o'clock. Mm. Nothing happens.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -20856,12 +20856,12 @@
     },
     {
       "id": "night-shift-adler-call-line-3",
-      "note": "Ms. Adler (Night Shift): Ms. Adler says \"Nineteen years. The panel says what it means. Read it exactly.\".",
+      "note": "Ms. Adler (Night Shift): Ms. Adler says \"Word for word, please. Take your time.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[crisp] Nineteen years. The panel says what it means. Read it exactly.",
+            "text": "[crisp] Word for word, please. Take your time.",
             "voice": "QJ9eYeuXwMsC2KElXT1P",
             "model": "eleven_v4"
           },
@@ -25320,12 +25320,12 @@
     },
     {
       "id": "night-shift-end-clean-line-2",
-      "note": "Clean report (Night Shift): Dee says \"Tuesday. You'll want to sleep. Don't, till you've eaten.\".",
+      "note": "Clean report (Night Shift): Dee says \"Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[putting her coat on][short][flat] Tuesday. You'll want to sleep. Don't, till you've eaten.",
+            "text": "[putting her coat on][short][flat] Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -25626,12 +25626,12 @@
     },
     {
       "id": "night-shift-end-she-knew-line-6",
-      "note": "She knew (Night Shift): Narrator says \"Thursday. The charger. She counts four, and then she holds the fourth one out to you.\".",
+      "note": "She knew (Night Shift): Narrator says \"Thursday night. The charger. She counts four.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[her hand shakes once][the width of a pencil] Thursday. The charger. She counts four, and then she holds the fourth one out to you.",
+            "text": "Thursday night. The charger. She counts four.",
             "voice": "IFbrwI7VRvX2VkoD4Y3K",
             "model": "eleven_v4"
           },
@@ -25644,12 +25644,12 @@
     },
     {
       "id": "night-shift-end-she-knew-line-7",
-      "note": "She knew (Night Shift): Dee says \"I'd have told him in April. Mm. It's the book. Clip it on.\".",
+      "note": "She knew (Night Shift): Dee says \"I'd have told him in April. Mm. It's the book.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[low] I'd have told him in April. Mm. It's the book. Clip it on.",
+            "text": "[low] I'd have told him in April. Mm. It's the book.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -25658,6 +25658,24 @@
       ],
       "files": {
         "line": "night-shift/end-she-knew/media/line-7.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-she-knew-line-8",
+      "note": "She knew (Night Shift): Narrator says \"She holds the fourth radio out to you. You clip it on.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She holds the fourth radio out to you. You clip it on.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-she-knew/media/line-8.mp3"
       }
     },
     {
@@ -25716,12 +25734,12 @@
     },
     {
       "id": "night-shift-end-eat-something-line-4",
-      "note": "Eat something (Night Shift): Dee says \"Tuesday. You know where I sit. Mm.\".",
+      "note": "Eat something (Night Shift): Dee says \"Quarter to seven. You know where I sit. Mm.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[folding the foil in four] Tuesday. You know where I sit. Mm.",
+            "text": "[folding the foil in four] Quarter to seven. You know where I sit. Mm.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -25734,12 +25752,12 @@
     },
     {
       "id": "night-shift-end-eat-something-line-5",
-      "note": "Eat something (Night Shift): Dee says \"You stayed on the wall. Mm. Tuesday.\".",
+      "note": "Eat something (Night Shift): Dee says \"You stayed on the wall. Mm. Go home.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[to the wall] You stayed on the wall. Mm. Tuesday.",
+            "text": "[to the wall] You stayed on the wall. Mm. Go home.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -26418,12 +26436,12 @@
     },
     {
       "id": "night-shift-end-noted-line-2",
-      "note": "Noted (Night Shift): Dee says \"Mm. Tuesday. Read the whole binder. Page eleven, twice.\".",
+      "note": "Noted (Night Shift): Dee says \"Mm. Quarter to seven. Read the whole binder. Page eleven, twice.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[putting on her coat][to you][dry] Mm. Tuesday. Read the whole binder. Page eleven, twice.",
+            "text": "[putting on her coat][to you][dry] Mm. Quarter to seven. Read the whole binder. Page eleven, twice.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
