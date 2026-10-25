@@ -2234,55 +2234,134 @@ async function consoleView(t, st, [w, h, name]) {
   const lr = log.getBoundingClientRect();
   if (lr.left < -0.5 || lr.right > doc.defaultView.innerWidth + 0.5 || log.scrollWidth > log.clientWidth + 1) t.problem("bug", `${where}: the shift log runs off the side`);
   if (doc.documentElement.scrollWidth > doc.defaultView.innerWidth + 1) t.problem("bug", `${where}: the log scrolls the page sideways`);
+  await tapAt(t, byIdIn(doc, "console-log-btn"), `Close log (${where})`);
+  // The end screen: the shortest way to an ending, played in the frame, then the ending, the Log button and the way out fit.
+  const x = rulesOf().explore(st, { cap: st.stateCap || 50000 });
+  const end = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v }))).filter((v) => st.scenes[v.id].ending).sort((a, b) => a.picks.length - b.picks.length)[0];
+  if (end) {
+    const m = consoleModel(st);
+    await consoleHeard(t, doc, where);
+    for (const i of end.picks) await consoleChoose(t, st, m, i, doc, `${where} end`);
+    await consoleHeard(t, doc, `${where} end`);
+    if (byIdIn(doc, "console-ending").hidden) t.problem("bug", `${where}: the ending isn't shown`);
+    await consoleFit(t, doc, `${where}, the end screen`);
+    if (!byIdIn(doc, "console-ending").getClientRects().length || byIdIn(doc, "console-ending").getBoundingClientRect().bottom > doc.defaultView.innerHeight + 0.5) {
+      byIdIn(doc, "console-ending").scrollIntoView({ block: "nearest", behavior: "instant" });
+      const r = byIdIn(doc, "console-ending").getBoundingClientRect();
+      if (r.bottom > doc.defaultView.innerHeight + 0.5 || r.top < -0.5) t.problem("bug", `${where}: the ending text can't be brought on screen`);
+    }
+  }
   await sleep(500);
   closeViewFrame();
 }
 
-/** Reload mid-story: a new page load (a frame) of the story's link returns to the same scene with the same state,
-    flags, meters, log and the lines already heard. */
+/** Reload one saved moment: what the player holds now (scene, flags, meters, log, history, lines heard) is compared with
+    what a new page load of the story's link (a frame) comes back with. `label` names the moment. */
+async function consoleReloadAt(t, st, label) {
+  const n = st.scenes[apiOf().scene()].lines.length;
+  const before = { scene: apiOf().scene(), flags: apiOf().flags(), meters: apiOf().meters(), log: apiOf().log(), history: apiOf().history(), lines: apiOf().lines() };
+  const saved = apiOf().saved();
+  if (!saved || saved.scene !== before.scene) t.problem("bug", `${st.id} (${label}): nothing saved for the run in localStorage ("${RUN_KEY}${st.cookie}")`);
+  else t.event("run-saved", `${st.id} (${label}): ${saved.scene}, flags ${saved.flags.join(", ") || "none"}, ${saved.log.length} log entries, ${saved.done} line(s) heard, ${JSON.stringify(saved).length} bytes`);
+  const doc = await viewFrameLoad(t, `/?story=${st.id}`, 390, 844);
+  const api = apiOf(doc);
+  if (!api) return t.problem("bug", `${st.id} (${label}): the reloaded page has no console player`);
+  const prompt = soundOf(doc).prompt();
+  if (!prompt && !soundOf(doc).unlocked()) t.problem("bug", `${st.id} (${label}): the reloaded page has no Tap to play prompt`);
+  await consolePrompt(t, doc, `after the reload (${label})`);
+  await sleep(300);
+  const after = { scene: api.scene(), flags: api.flags(), meters: api.meters(), log: api.log(), history: api.history() };
+  for (const k of Object.keys(after)) if (!sameJson(after[k], before[k])) t.problem("bug", `${st.id} (${label}): after a reload ${k} is ${JSON.stringify(after[k])}, it was ${JSON.stringify(before[k])}`);
+  const heard = [...doc.querySelectorAll("#console-subs .sub")].length;
+  if (before.lines.done > 0 && heard < Math.min(before.lines.done, n)) t.problem("bug", `${st.id} (${label}): after a reload ${heard} subtitle(s), ${before.lines.done} line(s) had been heard`);
+  const ended = !!st.scenes[before.scene].ending;
+  if (ended && !(await waitFor(() => !byIdIn(doc, "console-ending").hidden, 20000))) t.problem("bug", `${st.id} (${label}): the reloaded page doesn't show the ending`);
+  await consoleHeard(t, doc, `after the reload (${label})`);
+  if (ended) await consoleFit(t, doc, `${label}, reloaded at the ending`);
+  const ok = sameJson(Object.keys(after).map((k) => after[k]), Object.keys(after).map((k) => before[k]));
+  t.event("reloaded", `${st.id} (${label}): back at ${after.scene} with flags ${after.flags.join(", ") || "none"}, ${after.log.length} log entries, ${heard} line(s) already heard (${ok ? "same" : "DIFFERENT"})`);
+  await sleep(700);
+  closeViewFrame();
+}
+
+/** Reload at four moments: the start (nothing done), mid-scene (some lines heard), right after a choice, and at an
+    ending. Each must come back to the same scene, flags, meters, log and heard lines. */
 async function consoleReload(t, st) {
   const R = rulesOf();
-  t.scene("Reload mid-story");
-  await consoleFresh(t, st);
-  const m = consoleModel(st);
-  // The way to the first scene with a choice that depends on a flag and one that sets it: the explorer's longest variant.
+  t.scene("Reload: start, mid-scene, after a choice, at an ending");
   const x = R.explore(st, { cap: st.stateCap || 50000 });
-  const target = Object.entries(x.variants)
-    .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
-    .filter((v) => v.picks.length && !st.scenes[v.id].ending)
-    .sort((a, b) => b.picks.length - a.picks.length)[0];
+  const all = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })));
+  // The way to the scene with the most choices behind it that is not an ending: the explorer's longest variant.
+  const target = all.filter((v) => v.picks.length && !st.scenes[v.id].ending).sort((a, b) => b.picks.length - a.picks.length)[0];
+  const ending = all.filter((v) => st.scenes[v.id].ending).sort((a, b) => a.picks.length - b.picks.length)[0];
   if (!target) return t.problem("warning", `${st.id}: no scene in the middle to reload at`);
+
+  // 1. The start: a new run, the first line not yet heard.
+  await consoleFresh(t, st);
+  await consoleReloadAt(t, st, "start");
+
+  // 2. Right after a choice: the first choice of the way, the new scene just entered.
+  await consoleFresh(t, st);
+  const mc = consoleModel(st);
   await consoleHeard(t, document, "reload");
-  for (const i of target.picks) await consoleChoose(t, st, m, i, document, "reload");
-  // Mid-scene: the first line heard, the second not.
+  await consoleChoose(t, st, mc, target.picks[0], document, "reload");
+  await consoleReloadAt(t, st, "after a choice");
+
+  // 3. Mid-scene: the first line heard, the second not.
   await consoleFresh(t, st);
   const m2 = consoleModel(st);
   await consoleHeard(t, document, "reload");
-  for (const i of target.picks) await consoleChoose(t, st, m2, i, document, "reload");
-  const n = st.scenes[m2.scene].lines.length;
-  const midway = n > 1;
-  if (midway) await waitFor(() => apiOf().lines().done >= 1, 6000);
-  const before = { scene: apiOf().scene(), flags: apiOf().flags(), meters: apiOf().meters(), log: apiOf().log(), history: apiOf().history(), lines: apiOf().lines() };
-  const saved = apiOf().saved();
-  if (!saved || saved.scene !== before.scene) t.problem("bug", `${st.id}: nothing saved for the run in localStorage ("${RUN_KEY}${st.cookie}")`);
-  else t.event("run-saved", `${st.id}: ${saved.scene}, flags ${saved.flags.join(", ") || "none"}, ${saved.log.length} log entries, ${saved.done} line(s) heard, ${JSON.stringify(saved).length} bytes`);
+  for (const i of target.picks.slice(0, -1)) await consoleChoose(t, st, m2, i, document, "reload");
+  // The last choice by hand, its lines not skipped: the first is heard, the rest are still to come.
+  const lastPick = target.picks[target.picks.length - 1];
+  const lastLabel = st.scenes[m2.scene].choices[lastPick][0];
+  await tapAt(t, openChoices(document).find((b) => b.textContent.trim() === lastLabel), `choice "${lastLabel}"`);
+  m2.choose(lastPick);
+  if (st.scenes[m2.scene].lines.length > 1) await waitFor(() => apiOf().lines().done >= 1 && apiOf().lines().done < st.scenes[m2.scene].lines.length, 20000);
+  await consoleReloadAt(t, st, "mid-scene");
+
+  // 4. At an ending (the shortest way there, its lines heard).
+  if (ending) {
+    await consoleFresh(t, st);
+    const m3 = consoleModel(st);
+    await consoleHeard(t, document, "reload");
+    for (const i of ending.picks) await consoleChoose(t, st, m3, i, document, "reload");
+    await consoleHeard(t, document, "reload");
+    await consoleReloadAt(t, st, "at an ending");
+  } else t.problem("warning", `${st.id}: no ending to reload at`);
+}
+
+/** Progress storage degrades safely: with localStorage refusing every read and write (a private window) the story
+    still opens, plays a choice and shows its log; nothing throws. */
+async function consoleBlockedStorage(t, st) {
+  t.scene("Storage blocked");
+  await consoleFresh(t, st);
   const doc = await viewFrameLoad(t, `/?story=${st.id}`, 390, 844);
+  const win = doc.defaultView;
+  const errors = [];
+  win.addEventListener("error", (e) => errors.push(e.message));
   const api = apiOf(doc);
-  if (!api) return t.problem("bug", `${st.id}: the reloaded page has no console player`);
-  const prompt = soundOf(doc).prompt();
-  if (!prompt && !soundOf(doc).unlocked()) t.problem("bug", `${st.id}: the reloaded page has no Tap to play prompt`);
-  await consolePrompt(t, doc, "after the reload");
-  await sleep(300);
-  const after = { scene: api.scene(), flags: api.flags(), meters: api.meters(), log: api.log(), history: api.history() };
-  for (const k of Object.keys(after)) if (!sameJson(after[k], before[k])) t.problem("bug", `${st.id}: after a reload ${k} is ${JSON.stringify(after[k])}, it was ${JSON.stringify(before[k])}`);
-  const heard = [...doc.querySelectorAll("#console-subs .sub")].length;
-  if (midway && heard < Math.min(before.lines.done, n)) t.problem("bug", `${st.id}: after a reload ${heard} subtitle(s), ${before.lines.done} line(s) had been heard`);
-  await consoleHeard(t, doc, "after the reload");
-  const ok = sameJson(Object.keys(after).map((k) => after[k]), Object.keys(after).map((k) => before[k]));
-  t.event("reloaded", `${st.id}: back at ${after.scene} with flags ${after.flags.join(", ") || "none"}, ${after.log.length} log entries, ${heard} line(s) already heard (${ok ? "same" : "DIFFERENT"})`);
-  // The log in the reloaded page lists the same entries.
-  await sleep(700);
-  closeViewFrame();
+  await consolePrompt(t, doc, "storage blocked");
+  const start = api.scene();
+  // From here every localStorage call in the frame throws, as in a browser that blocks storage.
+  const broken = () => { throw new win.DOMException("blocked", "SecurityError"); };
+  for (const m of ["getItem", "setItem", "removeItem"]) win.Storage.prototype[m] = broken;
+  try {
+    await consoleHeard(t, doc, "storage blocked");
+    const open = openChoices(doc)[0];
+    if (!open) return t.problem("bug", `${st.id}: no choice to press with storage blocked`);
+    await tapAt(t, open, "a choice (storage blocked)");
+    await sleep(300);
+    if (api.scene() === start) t.problem("bug", `${st.id}: with storage blocked the choice did nothing`);
+    await tapAt(t, byIdIn(doc, "console-log-btn"), "Log (storage blocked)");
+    if (byIdIn(doc, "console-log").hidden) t.problem("bug", `${st.id}: with storage blocked the Log doesn't open`);
+    await tapAt(t, byIdIn(doc, "console-cc"), "CC (storage blocked)");
+    if (errors.length) t.problem("bug", `${st.id}: with storage blocked the page threw: ${errors[0]}`);
+    else t.event("storage-blocked", `${st.id}: with localStorage refusing, the story played a choice, opened the Log and toggled CC with no error`);
+  } finally {
+    await sleep(300);
+    closeViewFrame();
+  }
 }
 
 /** The story's own subtitles (on by default), the replay button and the line audio. */
@@ -2442,6 +2521,7 @@ async function consoleRun(options, t) {
     t.progress(0.8);
     // 6. Reload mid-story.
     await consoleReload(t, st);
+    await consoleBlockedStorage(t, st);
     t.progress(0.88);
     // 7. The screen sizes.
     for (const v of VIEWPORTS) await consoleView(t, st, v);
