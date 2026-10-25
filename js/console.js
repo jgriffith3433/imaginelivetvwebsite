@@ -64,10 +64,21 @@
 
   function runKey() { return RUN_KEY + story.cookie; }
 
+  // With localStorage blocked (a private window) the run is kept here, so All stories and back, and the Log, still work
+  // within the page; a reload then starts the story over.
+  var memory = {};
+
+  function stored() {
+    try {
+      return localStorage.getItem(runKey());
+    } catch (e) {
+      return memory[runKey()];
+    }
+  }
+
   function save() {
     if (!story || !run) return;
-    try {
-      localStorage.setItem(runKey(), JSON.stringify({
+    var text = JSON.stringify({
         v: 1,
         scene: run.scene,
         history: run.history,
@@ -76,7 +87,10 @@
         log: run.log,
         done: run.done,
         sel: run.sel,
-      }));
+      });
+    memory[runKey()] = text;
+    try {
+      localStorage.setItem(runKey(), text);
     } catch (e) { /* private mode: the run holds for this page */ }
   }
 
@@ -88,7 +102,7 @@
   function load(cookieScene) {
     if (!cookieScene) return null;
     try {
-      var saved = JSON.parse(localStorage.getItem(runKey()));
+      var saved = JSON.parse(stored());
       if (!saved || saved.v !== 1 || saved.scene !== cookieScene || !story.scenes[saved.scene]) return null;
       var st = rules.fresh(story);
       (saved.flags || []).forEach(function (f) { if (story.state.flags.indexOf(f) >= 0) st.flags[f] = true; });
@@ -531,6 +545,7 @@
 
   /** Start Over / a card's reset: forgets the saved run (the cookies are game.js's). */
   function forget(def) {
+    delete memory[RUN_KEY + def.cookie];
     try { localStorage.removeItem(RUN_KEY + def.cookie); } catch (e) { /* nothing saved */ }
   }
 
@@ -554,7 +569,7 @@
     subtitles: function () { return subsOn; },
     audio: function () { return { voice: audioView(voice), bed: audioView(bed), sfx: audioView(sfx), bedCue: bedCue }; },
     saved: function () {
-      try { return story ? JSON.parse(localStorage.getItem(runKey())) : null; } catch (e) { return null; }
+      try { return story ? JSON.parse(stored()) : null; } catch (e) { return null; }
     },
   };
 })();
