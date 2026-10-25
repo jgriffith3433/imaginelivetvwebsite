@@ -244,10 +244,20 @@
       A.feature("restart", { via: e.detail.via, story: e.detail.story });
     }));
     document.addEventListener("click", safe(function (e) {
-      if (e.target && e.target.closest && e.target.closest("#spark-stories")) nav = "all_stories";
+      if (e.target && e.target.closest && e.target.closest("#spark-stories, #console-stories")) nav = "all_stories";
       if (e.target && e.target.closest && e.target.closest("#tab-tree") && cur) A.feature("tree", { story: cur.story, explored: cur.explored });
     }), true);
     window.addEventListener("popstate", function () { nav = "browser"; }, true);
+
+    // A console story's own moments (js/console.js): a camera enlarged (feed) and the shift log opened (log).
+    document.addEventListener("iltv:feature", safe(function (e) {
+      var d = e.detail;
+      if (!d || !d.feature || !storyOf(d.story)) return;
+      var props = { story: d.story };
+      if (d.camera != null) props.camera = d.camera;
+      if (d.entries != null) props.entries = d.entries;
+      A.feature(d.feature, props);
+    }));
 
     document.addEventListener("iltv:open", safe(function (e) {
       var d = e.detail;
@@ -288,7 +298,8 @@
       var back = null;
       if (prev && choice) {
         if (prev.dead) back = "try_again";
-        else if (depthOf(st, d.scene) < depthOf(st, prev.scene)) back = "choice";
+        // (A console story's graph is braided: a choice to a scene nearer the start is a way round, not a step back.)
+        else if (st.type !== "console" && depthOf(st, d.scene) < depthOf(st, prev.scene)) back = "choice";
         if (s.dead) A.death(node, { story: d.story, where: prev.node });
         leaveScene(s.dead ? "death" : prev.dead ? "restart" : "complete", "choice", { option: choice.option });
         if (back === "try_again") A.feature("restart", { via: "try_again", story: d.story, from: prev.node });
