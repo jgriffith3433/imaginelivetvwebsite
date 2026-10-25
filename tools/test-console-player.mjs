@@ -37,7 +37,7 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 /** A page: the console markup, the rules and the player, with timers 100x faster and audio that ends at once.
     `blocked`: localStorage and the cookie jar refuse every call. */
-function page({ store, blocked } = {}) {
+function page({ store, blocked, fakeRO } = {}) {
   const dom = new JSDOM(`<!doctype html><body>${section}</body>`, { runScripts: 'outside-only', pretendToBeVisual: true, url: 'https://example.test/' });
   const w = dom.window;
   const realSet = w.setTimeout.bind(w);
@@ -57,6 +57,7 @@ function page({ store, blocked } = {}) {
   } else if (store) {
     for (const [k, v] of Object.entries(store)) w.localStorage.setItem(k, v);
   }
+  if (fakeRO) w.ResizeObserver = fakeRO;
   w.eval(rulesSrc);
   w.eval(playerSrc);
   const hooks = {
@@ -172,6 +173,29 @@ async function main() {
   q.$('console-log-btn').click();
   check('the Log at the ending says the shift is signed', /Signed/.test(q.$('console-log').textContent) && q.$('console-log').querySelectorAll('tr.is-redacted').length === end.log.reduce((n, e) => n + (e.k === 'c' ? e.o : 0), 0));
   q.c.close();
+
+
+  // --- fitSubs against a ResizeObserver that re-fires on every style write to the strip (the layout loop)
+  for (const [name, grow, max] of [['a stable layout settles', false, 3], ['a layout that grows with every write is capped', true, 5]]) {
+    const observers = [];
+    class FakeRO { constructor(cb) { this.cb = cb; observers.push(this); } observe() {} disconnect() {} }
+    const l = page({ fakeRO: FakeRO });
+    l.c.open(story, l.hooks, null);
+    await until(() => heard(l), 'the scene heard');
+    const subs = l.$('console-subs');
+    let writes = 0, h = 40, inline = '';
+    const fire = () => observers.forEach((o) => o.cb([]));
+    Object.defineProperty(subs.style, 'minHeight', {
+      get: () => inline,
+      set: (v) => { inline = v; writes++; if (grow) h += 10; fire(); },
+    });
+    Object.defineProperty(l.w.HTMLElement.prototype, 'offsetHeight', { get: () => h, configurable: true });
+    l.w.getComputedStyle = () => ({ paddingTop: '4px', paddingBottom: '4px' });
+    fire();
+    await sleep(120);
+    check(`fitSubs: ${name} in at most ${max} writes (${writes})`, writes >= 1 && writes <= max, writes);
+    l.c.close();
+  }
 
   // --- storage refusing every call
   let errors = [];
