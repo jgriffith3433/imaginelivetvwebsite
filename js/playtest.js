@@ -2196,17 +2196,34 @@ function probeStop(t) {
 async function consoleWarm(t) {
   for (const st of consoleStories()) {
     if (exploreCache.has(st.id)) continue;
+    t.scene(`setup: working out ${st.id}'s states`); // the page is blocked while the explorer runs: say so first
     t.note(`${st.title}: working out its states before play`);
-    await sleep(80); // let a frame draw first
+    t.progress(0.01);
+    await boxed(t, `${st.id}: letting a frame draw`, sleep(80)); // let a frame draw first
     const t0 = performance.now();
     const x = consoleExplore(st);
+    t.scene(`setup: ${st.id}'s ways worked out`);
     if (st.stateCap || x.states > 5000) nightLengths(st);
     const ms = Math.round(performance.now() - t0);
     probeFlush(t, `${st.id}: state explorer`);
     t.event("state-explorer", `${st.id}: ${x.states} states in ${ms} ms on the page's thread, before anything plays (it stalls the page for that long, so it can't be inside a scene)`);
     t.metric(`explorerMs:${st.id}`, ms);
-    await sleep(200);
+    await boxed(t, `${st.id}: after the explorer`, sleep(200));
   }
+}
+
+/** A setup await with a 60 s box: it rejects with a bug that names the step (a wait that never resolves is a finding
+    named by step, not a 10-minute stall). Synchronous work can't be boxed: say the step with t.scene before it. */
+const SETUP_LIMIT = 60 * 1000;
+function boxed(t, what, promise, ms = SETUP_LIMIT) {
+  let timer;
+  const box = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      t.problem("bug", `setup step "${what}" took over ${Math.round(ms / 1000)} s and was stopped`);
+      reject(new Error(`setup step "${what}" took over ${Math.round(ms / 1000)} s`));
+    }, ms);
+  });
+  return Promise.race([promise, box]).finally(() => clearTimeout(timer));
 }
 
 /** Writes a cookie the way the player does (js/game.js writeCookie). */
@@ -3863,11 +3880,16 @@ async function nightGapsRun(options, t) {
 const PLAY_LIMIT_FULL = 8 * 60 * 1000; // one ending from a new run (the longest shortest way holds ~400 lines, skipped)
 const PLAY_LIMIT_NEAR = 90 * 1000; // one ending from a seeded run, a few choices
 async function nightSignoffRun(options, t) {
+  t.scene("signoff: starting");
+  t.progress(0.01);
+  t.scene("signoff: remembering the viewer's progress");
   rememberProgress();
   const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
   if (!st) throw new Error("no console story night-shift in js/story-data.js");
-  await passPrompt(t);
+  t.scene("signoff: waiting for the landing page's splash");
+  await boxed(t, "the landing page's splash", passPrompt(t));
+  t.scene("signoff: splash passed, clearing progress");
   clearProgress();
   // The quick version is the default (under 10 minutes); the whole unseeded walk is {"at":"whole"}.
   const near = !(options && options.at === "whole");
@@ -3875,13 +3897,17 @@ async function nightSignoffRun(options, t) {
   const runStarted = performance.now();
   t.event("start-at", near ? `last-choices: each ending from a seeded run ${back} choice(s) before it` : "whole: every way pressed from a new run (about 50 minutes)");
   try {
-    t.scene("night-shift-signoff: preparing");
+    t.scene("signoff: working out the ways to every ending");
+    t.progress(0.02);
     t.event("signoff-prepare", "working out the state explorer's ways to every ending");
-    const x = consoleExplore(st);
+    const x = consoleExplore(st); // cached by consoleWarm; only synchronous if it wasn't
+    t.scene("signoff: working out how long each way is");
     const lengths = nightLengths(st);
+    t.scene("signoff: ways found");
     t.event("signoff-prepared", "ways to every ending found");
     const endings = Object.entries(st.scenes).filter(([id, sc]) => sc.ending && (!(options && options.only) || options.only === id));
     const sizes = [["the desktop size", 0, 0], ...((options && options.sizes) === "desktop" ? [] : VIEWPORTS.map(([w, h, name]) => [`${name} ${w}x${h}`, w, h]))];
+    t.scene(`signoff: ${endings.length} endings at ${sizes.length} sizes, first play next`);
     t.metric("endings", endings.length);
     t.metric("sizes", sizes.length);
     let done = 0;
@@ -4521,7 +4547,10 @@ installPlaytest({
         };
       }
       probeFlush(t, "start");
+      t.scene(`${id}: starting`); // the first scene, so the runner's line never reads empty
+      t.progress(0.005);
       if (NEEDS_STATES.includes(id)) await consoleWarm(t);
+      t.scene(`${id}: setup done`);
       if (id === "smoke") await smoke(options, t);
       else if (id === "stories") await storiesRun(options, t);
       else if (id === "branches") await branches(options, t);
