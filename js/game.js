@@ -59,6 +59,8 @@
   const titleBox = document.getElementById("spark-title");
   const taglineBox = document.getElementById("spark-tagline");
   const storiesLink = document.getElementById("spark-stories");
+  const consoleBox = document.getElementById("console");
+  const consoleLink = document.getElementById("console-stories");
 
   if (!root || !videoBox || !storyBox || !questionBox || !choicesBox || !endingBox || !landing) {
     return;
@@ -133,6 +135,7 @@
     const add = function (id) { if (typeof id === "string" && story.scenes[id]) seen[id] = true; };
     if (saved) {
       (Array.isArray(saved.seen) ? saved.seen : []).forEach(add);
+      if (typeof saved.ix === "string") unpackSeen(story, saved.ix).forEach(add);
       done = saved.completed === true;
     } else {
       const old = readCookie(story.cookie);
@@ -143,6 +146,25 @@
       }
     }
     return { seen: seen, completed: done };
+  }
+
+  // A console story can have a hundred scenes or more, too many ids for a 4 KB cookie: its unlocks are kept as a bit
+  // per scene, in the order of its data (new scenes go at the end of `scenes`, so nobody's bits move).
+  function packSeen(story, seen) {
+    const ids = Object.keys(story.scenes);
+    let hex = "";
+    for (let i = 0; i < ids.length; i += 4) {
+      let n = 0;
+      for (let j = 0; j < 4; j++) if (ids[i + j] && seen[ids[i + j]]) n |= 1 << j;
+      hex += n.toString(16);
+    }
+    return hex;
+  }
+
+  function unpackSeen(story, hex) {
+    return Object.keys(story.scenes).filter(function (id, i) {
+      return (parseInt(hex.charAt(Math.floor(i / 4)) || "0", 16) & (1 << (i % 4))) !== 0;
+    });
   }
 
   /** How much of a story has been explored: unlocked scenes / all its scenes, in whole percent, rounded down (so
@@ -157,6 +179,7 @@
 
   /** Start Over: forgets one story's current run (its run cookie only; its unlocks and the other stories stay). */
   function clearProgress(story) {
+    if (story.type === "console" && window.iltvConsole) window.iltvConsole.forget(story);
     try {
       document.cookie = story.cookie + "=; Max-Age=0; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
     } catch (error) {
@@ -165,6 +188,13 @@
   }
 
   function saveProgress() {
+    if (STORY.type === "console") {
+      // The run itself (the state, the log, the lines heard) is in localStorage (js/console.js); the cookies keep the
+      // card's badge, the place and the unlocks, small.
+      writeCookie(STORY.cookie, { scene: currentScene, history: [] });
+      writeCookie(unlocksCookie(STORY), { ix: packSeen(STORY, unlocked), completed: completed });
+      return;
+    }
     writeCookie(STORY.cookie, { scene: currentScene, history: history });
     writeCookie(unlocksCookie(STORY), { seen: Object.keys(unlocked), completed: completed });
   }
@@ -703,10 +733,56 @@
     });
   }
 
+  /** A console story (js/console.js) has its own player, not the video one. */
+  function closeConsole() {
+    if (window.iltvConsole) window.iltvConsole.close();
+    if (consoleBox) consoleBox.hidden = true;
+    delete document.documentElement.dataset.type;
+  }
+
+  const consoleHooks = {
+    visit: function (sceneId) {
+      currentScene = sceneId;
+      unlocked[sceneId] = true;
+      if (STORY.scenes[sceneId].ending) completed = true;
+      saveProgress();
+      return exploredOf(STORY, unlocked);
+    },
+    history: function (ids) { history = ids.slice(); },
+    tell: tell
+  };
+
+  function openConsole(story) {
+    stopVideo();
+    STORY = story;
+    SCENES = story.scenes;
+    document.title = story.title + " · " + SITE_TITLE;
+    prompt(story.tap);
+    sound("ask");
+    markSplashed();
+    landing.hidden = true;
+    root.hidden = true;
+    if (firstScreen) firstScreen.classList.remove("is-landing");
+    document.documentElement.dataset.view = "story";
+    document.documentElement.dataset.type = "console";
+    delete document.documentElement.dataset.kit;
+    showKit();
+    window.scrollTo(0, 0);
+    const saved = readProgress(story, story.scenes);
+    const unlocks = readUnlocks(story);
+    history = [];
+    unlocked = unlocks.seen;
+    completed = unlocks.completed;
+    tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
+    window.iltvConsole.open(story, consoleHooks, saved ? saved.scene : null);
+  }
+
   function openStory(storyId, push) {
     const story = STORIES[storyId];
     if (!story) return showLanding(false);
     if (push) window.history.pushState({ story: storyId }, "", urlFor(storyId));
+    closeConsole();
+    if (story.type === "console" && window.iltvConsole) return openConsole(story);
     if (STORY !== story) {
       stopVideo();
       STORY = story;
@@ -743,6 +819,7 @@
 
   function showLanding(push) {
     tell("landing", { story: STORY ? STORY.id : null, scene: currentScene });
+    closeConsole();
     if (push) window.history.pushState({}, "", urlFor(null));
     else if (new URL(location.href).searchParams.has("story")) window.history.replaceState({}, "", urlFor(null));
     stopVideo();
@@ -787,6 +864,14 @@
 
   if (storiesLink) {
     storiesLink.addEventListener("click", function (event) {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
+      event.preventDefault();
+      showLanding(true);
+    });
+  }
+
+  if (consoleLink) {
+    consoleLink.addEventListener("click", function (event) {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
       event.preventDefault();
       showLanding(true);

@@ -14,7 +14,7 @@
    3. Sound comes back when the tab returns, the page is restored from the back/forward cache, or iOS
       interrupts the AudioContext. If the browser refuses to resume, the prompt shows again.
    4. Settings (the button in the header): Sound on/off and Volume, saved in localStorage "hawkes.sound" as
-      { on, music, sfx } (0-1) and applied to every video on the page. A scene's video carries its narration and
+      { on, music, sfx } (0-1) and applied to every video (and, for console stories, audio) on the page. A scene's video carries its narration and
       music together, so the one Volume slider sets both music and sfx. iOS ignores video.volume, so there the
       video is routed through a gain node instead.
 
@@ -132,7 +132,7 @@
   }
 
   function applyAll() {
-    var videos = document.querySelectorAll("video");
+    var videos = document.querySelectorAll("video, audio");
     for (var i = 0; i < videos.length; i++) apply(videos[i]);
   }
 
@@ -149,7 +149,7 @@
 
   // Any video that starts gets the saved sound (the player's next scenes, a video started from its controls).
   document.addEventListener("play", function (event) {
-    if (event.target && event.target.tagName === "VIDEO") apply(event.target);
+    if (event.target && (event.target.tagName === "VIDEO" || event.target.tagName === "AUDIO")) apply(event.target);
   }, true);
 
   // ─── The unlock (inside the tap) ───────────────────────────────
@@ -183,7 +183,7 @@
       } catch (e) { /* the resume may still have worked */ }
     }
     unlocked = true;
-    var waiting = document.querySelectorAll("video[data-sound-start]");
+    var waiting = document.querySelectorAll("video[data-sound-start], audio[data-sound-start]");
     for (var i = 0; i < waiting.length; i++) play(waiting[i]);
     applyAll();
   }
@@ -350,7 +350,7 @@
 
   function onHidden() {
     wasPlaying = [];
-    var videos = document.querySelectorAll("video");
+    var videos = document.querySelectorAll("video, audio");
     for (var i = 0; i < videos.length; i++) {
       if (!videos[i].paused && !videos[i].ended) wasPlaying.push(videos[i]);
     }

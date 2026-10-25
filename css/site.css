@@ -1559,3 +1559,315 @@ html.is-tap-waiting, html.is-tap-waiting body { overflow: hidden; }
   .tap-match { animation: none; }
   .tap-to-play, .sound-switch-knob, .sound-switch-knob::after { transition: none; }
 }
+
+/* ---------------- console stories (js/console.js; story doc: story/README.md, "Console stories") ----------------
+   One screen: the bar, the wall of camera feeds (three columns: 2x3 for six cameras, 3x3 for nine), the enlarged feed,
+   then the subtitles, the line controls and the choices. Wide landscape screens put the wall on the left and the
+   words on the right. Nothing may be wider than the screen; what doesn't fit scrolls up and down inside. */
+html[data-type="console"] { --inventory-h: 0px; }
+html[data-type="console"] .inventory,
+html[data-type="console"] .torch,
+html[data-type="console"] .torch-beam { display: none; }
+
+.console[hidden] { display: none; }
+
+.console {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 0.25rem max(0.5rem, env(safe-area-inset-right)) max(0.35rem, env(safe-area-inset-bottom)) max(0.5rem, env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.console-bar {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.4rem;
+  min-height: 44px;
+}
+
+.console-bar .stories-back { min-height: 44px; display: inline-flex; align-items: center; }
+
+.console-bar h1 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--green);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.console-time {
+  color: #d9c58a;
+  font: 700 0.95rem var(--mono);
+  letter-spacing: 0.06em;
+}
+
+.console-explored { color: var(--muted); font-size: 0.66rem; white-space: nowrap; }
+
+.console-btn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.7rem;
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: #f4f2ee;
+  background: var(--green-deep);
+  border: 1px solid #5a5e64;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.console-btn:disabled { opacity: 0.45; cursor: default; }
+.console-btn[aria-pressed="true"] { background: #3a3e44; border-color: #d9c58a; }
+.console-btn:focus-visible, .feed:focus-visible { outline: 2px solid #d9c58a; outline-offset: 2px; }
+
+.console-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-areas: "wall" "big" "panel";
+  gap: 0.35rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.console.is-log .console-body { display: none; }
+
+.console-wall, .wall {
+  grid-area: wall;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.feed {
+  position: relative;
+  display: block;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font: inherit;
+  color: #cfd8d2;
+  background: #000;
+  border: 1px solid #3a3d42;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+figure.feed { cursor: default; }
+.feed[data-state]:not([data-state="normal"]) { border-color: #c99a3a; }
+.feed.is-selected { border-color: #d9c58a; box-shadow: 0 0 0 2px #d9c58a; }
+
+.feed-pic, .big-pic { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.feed-pic img, .big-pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.feed-blank {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 40%, #2a3a33, #0d1210 78%);
+  color: #6f8f7f;
+}
+
+.feed-blank i { font: 700 1.15rem var(--mono); font-style: normal; letter-spacing: 0.08em; }
+.feed-blank u { position: absolute; right: 4px; top: 3px; color: #e0b45a; font-size: 0.58rem; text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; }
+
+.feed-cap, .feed figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 4px 1px;
+  overflow: hidden;
+  font-size: 0.6rem;
+  line-height: 1.2;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+}
+
+.feed-cap b, .feed figcaption b { color: #d9c58a; }
+
+.console-big {
+  grid-area: big;
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+}
+
+.console-big[hidden] { display: none; }
+.big-pic { width: auto; max-width: 100%; height: clamp(70px, 18dvh, 200px); border: 1px solid #d9c58a; border-radius: 4px; overflow: hidden; }
+
+.big-cap {
+  margin: 0;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #b9b5ae;
+  font-size: 0.7rem;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.big-cap b { color: #d9c58a; }
+
+.big-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 44px;
+  min-height: 44px;
+  font: inherit;
+  font-size: 0.7rem;
+  color: #f4f2ee;
+  background: rgba(0, 0, 0, 0.6);
+  border: 0;
+  border-radius: 0 4px 0 8px;
+  cursor: pointer;
+}
+
+.console-panel {
+  grid-area: panel;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.console-subs {
+  flex: 1 1 auto;
+  min-height: 3.2rem;
+  padding: 0.3rem 0.4rem;
+  overflow-y: auto;
+  text-align: left;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+
+.sub { margin: 0 0 0.25rem; color: #8d8a84; }
+.sub.is-now { color: var(--green-soft); }
+.sub b { margin-right: 0.3rem; color: #d9c58a; font-size: 0.72em; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.console[data-subs="off"] .console-subs { position: absolute; width: 1px; height: 1px; min-height: 0; padding: 0; overflow: hidden; clip: rect(0 0 0 0); }
+
+.console-controls { flex: none; display: flex; gap: 0.4rem; }
+.console-controls .console-btn { flex: 1; }
+
+.console-choices { flex: none; display: flex; flex-direction: column; gap: 0.35rem; }
+.console-choices[hidden], .console-ending[hidden] { display: none; }
+.console-choices .choice { min-height: 44px; overflow-wrap: anywhere; }
+
+.console-ending {
+  flex: none;
+  margin: 0;
+  padding: 0.5rem;
+  color: var(--green-soft);
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (orientation: landscape) and (min-width: 640px) {
+  .console-body {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas: "wall panel" "big panel";
+    align-items: start;
+    gap: 0.35rem 0.6rem;
+  }
+  .console-panel { align-self: stretch; }
+}
+
+@media (min-width: 1000px) and (min-height: 700px) {
+  .console-bar h1 { font-size: 0.95rem; }
+  .big-pic { height: clamp(120px, 30dvh, 340px); }
+  .big-cap { font-size: 0.85rem; }
+  .feed-cap { font-size: 0.74rem; }
+  .console-subs { font-size: 1.12rem; }
+}
+
+@media (max-width: 559px) {
+  .console-bar h1 { display: none; }
+  .console-bar .stories-back { flex: 1; font-size: 0.66rem; letter-spacing: 0.1em; }
+}
+
+/* The shift log: a Daily Activity Report on ruled paper. Nothing in it can be pressed. */
+.shift-log[hidden] { display: none; }
+
+.shift-log {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dar {
+  width: min(640px, 100%);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 0.8rem 0.9rem 1rem;
+  color: #1c1b18;
+  background: #e8e1c8;
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.dar-head { border-bottom: 3px double #1c1b18; margin-bottom: 0.4rem; padding-bottom: 0.3rem; }
+.dar-head h2 { margin: 0; font-family: var(--serif); font-size: 1.15rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.dar-head p { margin: 0; font: 0.72rem var(--mono); letter-spacing: 0.05em; text-transform: uppercase; }
+
+.dar-sheet { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.dar-cols th { padding: 0.15rem 0.3rem; font: 700 0.68rem var(--mono); letter-spacing: 0.1em; text-align: left; text-transform: uppercase; border-bottom: 1px solid #1c1b18; }
+.dar-cols th:first-child, .dar-time { width: 3.6rem; }
+.dar-row td { height: 2.1rem; padding: 0.1rem 0.3rem; vertical-align: bottom; border-bottom: 1px solid rgba(40, 70, 120, 0.4); }
+.dar-time { font: 0.78rem var(--mono); color: #5a4a2a; }
+.dar-text { font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive; font-size: 0.92rem; line-height: 1.2; overflow-wrap: anywhere; }
+.dar-row.is-done .dar-text { font-weight: 700; }
+.dar-redacted { display: block; width: 70%; height: 0.95em; background: #111; border-radius: 1px; }
+.dar-row.is-redacted:nth-child(3n) .dar-redacted { width: 52%; }
+.dar-row.is-redacted:nth-child(3n + 1) .dar-redacted { width: 84%; }
+.dar-foot { margin: 0.8rem 0 0; font: 0.74rem var(--mono); letter-spacing: 0.05em; }
+
+/* A console scene's branch page (tools/build-story.mjs). */
+.console-passage .wall { max-width: 640px; margin: 0.6rem auto; }
+.console-passage .canon { display: grid; gap: 0.15rem; max-width: 640px; margin: 0.6rem auto; padding: 0.6rem 0.8rem; font-size: 0.82rem; border: 2px dashed #d9c58a; border-radius: 6px; background: rgba(217, 197, 138, 0.08); }
+.console-passage .canon strong { color: #d9c58a; letter-spacing: 0.08em; text-transform: uppercase; }
+.console-passage .canon-note { color: var(--muted); font-size: 0.74rem; }
+.console-passage .passage-lines { max-width: 640px; margin: 0.6rem auto; padding-left: 1.3rem; }
+.console-passage .line-who { color: #d9c58a; font-size: 0.78em; letter-spacing: 0.1em; text-transform: uppercase; }
+.console-passage audio { display: block; width: 100%; max-width: 360px; margin: 0.2rem 0 0.4rem; }
+.console-passage .choice.is-locked { opacity: 0.5; cursor: default; }
+.console-passage .choice.is-locked small { color: var(--muted); }
+.console-passage .spark-choices { max-width: 640px; margin: 0.6rem auto; }

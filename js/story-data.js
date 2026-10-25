@@ -1526,7 +1526,7 @@ window.ILTV_STORIES = {
        "dur": 1.2
       }
      ],
-     "log": "Radio check with D. Reyes. Wall: nine tiles.",
+     "log": "Radio check with D. Reyes. Six tiles on the wall.",
      "choices": [
       [
        "Answer the radio check",
@@ -1586,7 +1586,7 @@ window.ILTV_STORIES = {
        "dur": 1.2
       }
      ],
-     "log": "02:10. Wall quiet. Camera 4 stairwell door, 31st floor.",
+     "log": "Wall quiet. Camera 4 stairwell door, 31st floor.",
      "choices": [
       [
        "Point at camera 4",
@@ -1655,7 +1655,7 @@ window.ILTV_STORIES = {
        "dur": 1.5
       }
      ],
-     "log": "05:30. Writing up the shift.",
+     "log": "Writing up the shift.",
      "choices": [
       [
        "Log the wedge, exactly",
@@ -1721,7 +1721,7 @@ window.ILTV_STORIES = {
        "dur": 1.2
       }
      ],
-     "log": "06:30. Log read and signed.",
+     "log": "Log read and signed.",
      "ending": [
       "Clean report.",
       "Clean report."
@@ -1749,7 +1749,7 @@ window.ILTV_STORIES = {
        "dur": 1
       }
      ],
-     "log": "06:30. Log read. Camera 4 not mentioned.",
+     "log": "Log read. Camera 4 not mentioned.",
      "ending": [
       "All quiet.",
       "All quiet."
