@@ -795,6 +795,7 @@ function consoleData(st) {
     ambience: Object.fromEntries(Object.keys(d.ambience ?? {}).map((cue) => [cue, urlIfMade(f.bed(cue))])),
     sfx: Object.fromEntries(Object.keys(d.sfx ?? {}).map((cue) => [cue, urlIfMade(f.sfx(cue))])),
     ...(d.unspoken ? { unspoken: d.unspoken } : {}),
+    ...(d.stateCap ? { stateCap: d.stateCap } : {}),
     scenes,
   };
 }

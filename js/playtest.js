@@ -1917,12 +1917,24 @@ async function consoleOpen(t, st, { tap = true, real = 0 } = {}) {
     and each different set of open choices; the bot plays every one of those from a new run with real presses. */
 async function consoleWalk(t, st, sums = { scenes: 0, endings: 0 }) {
   const R = rulesOf();
-  const x = R.explore(st, { cap: 50000 });
+  const x = R.explore(st, { cap: st.stateCap || 50000 });
   const total = Object.keys(st.scenes).length;
   const targets = Object.entries(x.variants)
     .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
     .sort((a, b) => a.picks.length - b.picks.length);
-  t.note(`${st.title}: ${x.states} states, ${targets.length} ways to play`);
+  // A big story has hundreds of ways (every different set of open choices): play the fewest ways that reach every scene.
+  let plan = targets;
+  if (targets.length > 60) {
+    const covered = new Set();
+    plan = [];
+    for (const w of [...targets].sort((p, q) => q.path.length - p.path.length)) {
+      if (!w.path.some((id) => !covered.has(id))) continue;
+      plan.push(w);
+      w.path.forEach((id) => covered.add(id));
+    }
+    plan.sort((p, q) => p.picks.length - q.picks.length);
+  }
+  t.note(`${st.title}: ${x.states} states, ${targets.length} ways to play${plan.length < targets.length ? `, ${plan.length} played (every scene reached)` : ""}`);
   t.event("explored", `${st.id}: ${x.states} states, ${Object.keys(x.scenes).length}/${total} scenes reachable, ${targets.length} different sets of choices`);
   Object.keys(st.scenes).filter((id) => !x.scenes[id]).forEach((id) => t.problem("bug", `${st.id}/${id}: no state reaches this scene`));
   x.stuck.forEach((s) => t.problem("bug", `${st.id}/${s.scene}: no usable choice when ${sayState(s.state)}`));
@@ -1931,7 +1943,7 @@ async function consoleWalk(t, st, sums = { scenes: 0, endings: 0 }) {
   await consoleFresh(t, st);
   const seen = new Set();
   let ways = 0;
-  for (const target of targets) {
+  for (const target of plan) {
     if (ways++) await consoleFresh(t, st);
     const m = consoleModel(st);
     const where = `${st.id}: ${target.path.join(" > ")}`;
@@ -2183,7 +2195,7 @@ async function consoleReload(t, st) {
   await consoleFresh(t, st);
   const m = consoleModel(st);
   // The way to the first scene with a choice that depends on a flag and one that sets it: the explorer's longest variant.
-  const x = R.explore(st);
+  const x = R.explore(st, { cap: st.stateCap || 50000 });
   const target = Object.entries(x.variants)
     .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
     .filter((v) => v.picks.length && !st.scenes[v.id].ending)
@@ -2308,7 +2320,7 @@ async function consoleWall(t, st) {
     sets the flag a later scene reads. */
 async function consoleGates(t, st) {
   const R = rulesOf();
-  const x = R.explore(st);
+  const x = R.explore(st, { cap: st.stateCap || 50000 });
   // A scene with two different sets of open choices, and the choice that makes the difference.
   const pair = Object.entries(x.variants).map(([id, vs]) => [id, Object.values(vs)]).find(([, vs]) => vs.length > 1);
   if (!pair) return t.problem("bug", `${st.id}: no choice is gated by a flag or meter (the story has to have one)`);
@@ -2359,7 +2371,7 @@ async function consoleRun(options, t) {
     await consoleFresh(t, st);
     const m = consoleModel(st);
     const R = rulesOf();
-    const x = R.explore(st);
+    const x = R.explore(st, { cap: st.stateCap || 50000 });
     const mid = Object.entries(x.scenes).filter(([id]) => !st.scenes[id].ending).sort((a, b) => b[1].picks.length - a[1].picks.length)[0];
     await consoleHeard(t, document, "log");
     await consoleLogCheck(t, st, m, document, `${st.id} log at the start`);
@@ -2426,7 +2438,7 @@ async function consoleDraft(t, st) {
     links (locked ones shown locked), every link a page that exists. */
 async function crawlConsolePages(t, st, done, total) {
   const R = rulesOf();
-  const x = R.explore(st);
+  const x = R.explore(st, { cap: st.stateCap || 50000 });
   const pageOf = (id) => `/${st.scenes[id].folder}/`;
   const sceneAt = new Map(Object.keys(st.scenes).map((id) => [pageOf(id), id]));
   const first = pageOf(st.start);
@@ -2491,6 +2503,141 @@ async function crawlConsolePages(t, st, done, total) {
   if ((await status(`/${st.id}/`)) !== 200) t.problem("bug", `/${st.id}/ (${st.title}'s link) is missing`);
 }
 
+/* ---------------- Night Shift: the whole night (story/night-shift.json), by its numbers and by real presses ---------------- */
+
+/** How long each way through the night is to listen to, on the shared state rules: the shortest, the longest and the
+    average (every open choice equally likely). A line is its words at 150 a minute plus a pause (the build's own `dur`). */
+function nightLengths(st) {
+  const R = rulesOf();
+  const dur = Object.fromEntries(Object.entries(st.scenes).map(([id, sc]) => [id, sc.lines.reduce((a, l) => a + (l.dur || 0), 0)]));
+  const memo = new Map();
+  const go = (id, state) => {
+    const key = `${id}#${R.stateKey(state)}`;
+    if (memo.has(key)) return memo.get(key);
+    const open = st.scenes[id].choices.map((c, i) => [c, i]).filter(([c]) => R.usable(c, state));
+    let r;
+    if (!open.length) r = { min: dur[id], max: dur[id], mean: dur[id] };
+    else {
+      const next = open.map(([c, i]) => ({ i, ...go(c[2], R.apply(st, state, c)) }));
+      const lo = next.reduce((a, b) => (b.min < a.min ? b : a));
+      const hi = next.reduce((a, b) => (b.max > a.max ? b : a));
+      r = { min: dur[id] + lo.min, max: dur[id] + hi.max, mean: dur[id] + next.reduce((a, b) => a + b.mean, 0) / next.length, lo: lo.i, hi: hi.i };
+    }
+    memo.set(key, r);
+    return r;
+  };
+  const wayOf = (which) => {
+    let id = st.start;
+    let state = R.fresh(st);
+    const picks = [];
+    for (;;) {
+      const r = go(id, state);
+      const i = which === "lo" ? r.lo : r.hi;
+      if (i == null) return picks;
+      picks.push(i);
+      const c = st.scenes[id].choices[i];
+      state = R.apply(st, state, c);
+      id = c[2];
+    }
+  };
+  const top = go(st.start, R.fresh(st));
+  return { dur, shortest: top.min, longest: top.max, mean: top.mean, shortestWay: wayOf("lo"), longestWay: wayOf("hi"), states: memo.size };
+}
+
+/** A way through the night, played with real presses from a new run; the minutes of audio it holds are the data's. */
+async function nightPlay(t, st, lengths, label, picks) {
+  const where = `${st.id}: ${label}`;
+  await consoleFresh(t, st);
+  const m = consoleModel(st);
+  t.scene(where);
+  await consoleHeard(t, document, where);
+  consoleCheck(t, st, m, document, where);
+  let seconds = lengths.dur[m.scene];
+  let visited = 1;
+  for (const i of picks) {
+    await consoleChoose(t, st, m, i, document, where);
+    seconds += lengths.dur[m.scene];
+    visited++;
+  }
+  const end = st.scenes[m.scene].ending;
+  if (!end) t.problem("bug", `${where}: the way ended at ${m.scene}, which is not an ending`);
+  else {
+    t.event("night-path", `${label}: ${visited} scenes, ${(seconds / 60).toFixed(1)} minutes of audio, ends at "${end[0]}" (${m.scene})`);
+    if (stories().run(st.id) !== "end") t.problem("bug", `${where}: at an ending the run says "${stories().run(st.id)}", not end`);
+  }
+  return { seconds, visited, ending: end && end[0] };
+}
+
+async function nightShiftRun(options, t) {
+  rememberProgress();
+  const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  if (!st) throw new Error("no console story night-shift in js/story-data.js");
+  await passPrompt(t);
+  clearProgress();
+  const R = rulesOf();
+  try {
+    // 1. The numbers, from the data: endings, no dead ends, how long the night is, who speaks, what is never said.
+    t.scene(`${st.title}: the night in numbers`);
+    const x = R.explore(st, { cap: st.stateCap || 50000 });
+    const ids = Object.keys(st.scenes);
+    const endings = Object.entries(st.scenes).filter(([, sc]) => sc.ending);
+    t.metric("scenes", ids.length);
+    t.metric("endings", endings.length);
+    t.event("explored", `${st.id}: ${x.states} states${x.capped ? " (stopped at the cap)" : ""}, ${Object.keys(x.scenes).length}/${ids.length} scenes reachable`);
+    if (x.capped) t.problem("bug", `${st.id}: more than ${st.stateCap || 50000} states, so the state check below is incomplete`);
+    ids.filter((id) => !x.scenes[id]).forEach((id) => t.problem("bug", `${st.id}/${id}: no state reaches this scene`));
+    x.stuck.forEach((b) => t.problem("bug", `${st.id}/${b.scene}: no usable choice when ${sayState(b.state)}`));
+    for (const [id, sc] of endings) {
+      const way = x.scenes[id];
+      if (!way) t.problem("bug", `${st.id}: the ending ${sc.ending[0]} (${id}) can't be reached`);
+      else t.event("ending-reachable", `${sc.ending[0]} (${id}): ${way.picks.length} choices on its shortest way`);
+    }
+    if (endings.length < 8) t.problem("bug", `${st.id}: ${endings.length} endings, the night needs at least 8`);
+    else t.event("criterion", `${endings.length} distinct endings, every one reached by a different mix of choices`);
+    t.progress(0.1);
+
+    const lengths = nightLengths(st);
+    const minutes = (s) => Math.round((s / 60) * 10) / 10;
+    t.metric("shortestMinutes", minutes(lengths.shortest));
+    t.metric("averageMinutes", minutes(lengths.mean));
+    t.metric("longestMinutes", minutes(lengths.longest));
+    t.event("criterion", `playing time: shortest ${minutes(lengths.shortest)} min, average ${minutes(lengths.mean)} min (every open choice equally likely), longest ${minutes(lengths.longest)} min (words at 150 a minute plus a pause per line)`);
+    if (lengths.shortest < 30 * 60) t.problem("bug", `${st.id}: the shortest way through is ${minutes(lengths.shortest)} minutes, not 30`);
+    if (lengths.mean < 40 * 60 || lengths.mean > 50 * 60) t.problem("warning", `${st.id}: the average way through is ${minutes(lengths.mean)} minutes, not about 45`);
+
+    // Pierce Hawkes once, briefly; nothing about B3, the vat or the creature.
+    const spoken = Object.entries(st.scenes).flatMap(([id, sc]) => sc.lines.map((l) => ({ id, ...l })));
+    const pierce = spoken.filter((l) => l.speaker === "pierce");
+    const pierceScenes = [...new Set(pierce.map((l) => l.id))];
+    t.event("criterion", `Pierce Hawkes speaks ${pierce.length} line(s), in ${pierceScenes.join(" and ") || "no scene"}: ${pierce.map((l) => `"${l.text}"`).join(" / ")}`);
+    if (!pierce.length) t.problem("bug", `${st.id}: Pierce Hawkes never appears`);
+    if (pierce.length > 2) t.problem("bug", `${st.id}: Pierce Hawkes has ${pierce.length} lines, the cameo is two`);
+    for (const id of ids) {
+      const sc = st.scenes[id];
+      const everything = [sc.title[0], sc.log, sc.ending && sc.ending[0], ...sc.lines.map((l) => l.text), ...sc.choices.map((c) => `${c[0]} ${(c[3] && c[3].log) || ""}`)].filter(Boolean).join(" ");
+      if (/\bb3\b|\bvat\b|creature|chimera|specimen|laboratory|experiment|restricted/i.test(everything)) t.problem("bug", `${st.id}/${id}: mentions the restricted work (B3, the vat, the creature...)`);
+    }
+    t.event("criterion", "no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work");
+
+    // 2. Real presses: the shortest way, the longest way, and two different endings, from a new run each.
+    await consoleOpen(t, st);
+    const plays = [["the shortest way", lengths.shortestWay], ["the longest way", lengths.longestWay]];
+    for (const id of ["end-someone", "end-wedge"]) if (x.scenes[id]) plays.push([`the way to "${st.scenes[id].ending[0]}"`, x.scenes[id].picks]);
+    const results = [];
+    for (const [label, picks] of plays) {
+      results.push(await nightPlay(t, st, lengths, label, picks));
+      t.progress(0.1 + (0.85 * results.length) / plays.length);
+    }
+    const endsMet = new Set(results.map((r) => r.ending).filter(Boolean));
+    t.event("criterion", `played ${results.length} different ways to ${endsMet.size} different endings: ${results.map((r) => `${r.visited} scenes / ${(r.seconds / 60).toFixed(1)} min`).join(", ")}`);
+    if (endsMet.size < results.length) t.problem("bug", `${st.id}: the played ways ended at only ${endsMet.size} different endings`);
+  } finally {
+    await sleep(300);
+    await toLanding(t).catch(() => {});
+  }
+}
+
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
@@ -2510,6 +2657,13 @@ installPlaytest({
       seconds: 240,
       tags: ["full"],
       description: "Opens the console draft (night-shift-demo, listed: false) by its link under its own Tap to play (under a runner with a real mouse it waits for a real page.mouse.click first, then taps itself; either way it records whether the press was trusted and that audio is running). Subtitles are on by default and the lines play one after the other in the order of the data; CC turns the subtitles off and on; Replay line plays the last line again. The wall shows a feed per camera (6 to 9) in the state the scene says; pressing a feed enlarges it (its description under it), another replaces it, the same again puts it back. Choices gated by a flag are not on the page without it and are with it, and a choice sets a flag a later scene reads. The build's state explorer (js/console-rules.js) gives every way to every scene and ending and every different set of open choices: the bot plays all of them with real presses from a new run and checks, at each scene, the flags, meters, history, shift log, wall, clock and choices against what the data says, the percent explored, and the ending. The Log button opens the shift log at the start, in the middle and at an ending: it lists exactly what was done and seen, a redacted line per way not taken, nothing in it can be pressed, and it gives away no choice that was not taken. Settings Sound off / on and Volume apply to the voice, ambience and effects elements. Reloading mid-scene (a new page load of the story's link in a frame) returns to the same scene with the same flags, meters, log and the lines already heard. At 390x844, 360x640 and 844x390 (a frame of that size) the wall, subtitles, line buttons, choices and the log fit with no sideways scroll and tap targets of 44px or more. Last, All stories brings the landing page back and the audio goes.",
+    },
+    {
+      id: "night-shift",
+      title: "Night Shift, the whole night: at least 8 endings, no dead ends, the shortest way through 30 minutes of audio and a typical one about 45, Pierce Hawkes once and briefly, nothing about B3, the vat or the creature",
+      seconds: 480,
+      tags: ["full"],
+      description: "Opens the Night Shift draft (night-shift, listed: false) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45, and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged.",
     },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {
@@ -2542,6 +2696,7 @@ installPlaytest({
       else if (id === "branches") await branches(options, t);
       else if (id === "pages") await pages(options, t);
       else if (id === "console") await consoleRun(options, t);
+      else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);

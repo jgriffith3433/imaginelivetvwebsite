@@ -2048,6 +2048,7 @@ window.ILTV_STORIES = {
     "specimen",
     "laboratory"
    ],
+   "stateCap": 150000,
    "scenes": {
     "handover": {
      "folder": "night-shift/handover",
@@ -2741,9 +2742,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The good chair has a back that remembers somebody's spine. It isn't yours. It will do.",
+       "text": "The good chair has a real back. You sit.",
        "file": null,
-       "dur": 7.4
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -2828,9 +2829,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The cushion is flatter than you thought, and warm in a way that no cushion should be at seven in the evening. You sit in the shape of someone else.",
+       "text": "The cushion is flat, and warm. You sit in the shape of someone else.",
        "file": null,
-       "dur": 13
+       "dur": 6.6
       },
       {
        "speaker": "dee",
@@ -2927,12 +2928,6 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The clock on the wall ticks in a slightly different place from where your pulse says it should.",
-       "file": null,
-       "dur": 8.2
-      },
-      {
-       "speaker": "narrator",
        "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
        "file": null,
        "dur": 8.6
@@ -3008,9 +3003,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Now you've done one. Do it every time. Half hour and hour. Never skip a check. A missed check is a hole.",
+       "text": "Now you've done one. Do it every time, half hour and hour.",
        "file": null,
-       "dur": 9.8
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Never skip a check. A missed check is a hole.",
+       "file": null,
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -3106,9 +3107,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The radio goes quiet. She doesn't look pleased and she doesn't look cross. She looks like a woman writing down a fact.",
+       "text": "The radio goes quiet. She writes the time down.",
        "file": null,
-       "dur": 9.8
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -3204,9 +3205,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The radio goes quiet. She puts the pencil down very precisely, on the right of the tablet, as if to give her hands somewhere to be.",
+       "text": "The radio goes quiet. She puts the pencil down on the right of the tablet.",
        "file": null,
-       "dur": 11.4
+       "dur": 7
       },
       {
        "speaker": "narrator",
@@ -3388,9 +3389,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She eats half, then folds the foil back over the rest and puts it on the shelf. It is, you think, half past seven. She is saving it.",
+       "text": "She eats half, then folds the foil back over the rest and puts it on the shelf. She is saving it.",
        "file": null,
-       "dur": 12.2
+       "dur": 9.4
       },
       {
        "speaker": "narrator",
@@ -3474,9 +3475,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Terrell's voice carries from the lobby for another ten seconds, then a revolving door cuts it off. Dolores lets out a breath that is almost a laugh and is not.",
+       "text": "Terrell's voice carries from the lobby for another ten seconds, then a revolving door cuts it off. Dolores lets out a breath.",
        "file": null,
-       "dur": 13
+       "dur": 9.8
       },
       {
        "speaker": "narrator",
@@ -3554,9 +3555,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "You give her the tiles one by one, and she nods at each as if you were handing her cards she had expected to be there.",
+       "text": "You give her the tiles one by one. She nods at each.",
        "file": null,
-       "dur": 11.4
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
@@ -3736,9 +3737,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She doesn't correct you. She taps the glass over tile two, where nothing moves, and lets the silence correct you for her.",
+       "text": "She doesn't correct you. She taps the glass over tile two, where nothing moves.",
        "file": null,
-       "dur": 9.8
+       "dur": 6.6
       },
       {
        "speaker": "narrator",
@@ -3866,8 +3867,8 @@ window.ILTV_STORIES = {
        }
       ],
       [
-       "Ask what she does when she finds one",
-       "Ask what she does when she finds one",
+       "Ask what she does",
+       "Ask what she does",
        "tour1-wedge",
        {
         "add": {
@@ -3953,8 +3954,8 @@ window.ILTV_STORIES = {
        }
       ],
       [
-       "Ask what she does when she finds one",
-       "Ask what she does when she finds one",
+       "Ask what she does",
+       "Ask what she does",
        "tour1-wedge",
        {
         "add": {
@@ -4040,8 +4041,8 @@ window.ILTV_STORIES = {
        }
       ],
       [
-       "Ask what she does when she finds one",
-       "Ask what she does when she finds one",
+       "Ask what she does",
+       "Ask what she does",
        "tour1-wedge",
        {
         "add": {
@@ -4735,9 +4736,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "On tile six the young man is already pushing the bucket down the corridor. The door behind him swings shut on its closer. It is a very ordinary sound, and you have just made it happen.",
+       "text": "On tile six the young man is already pushing the bucket down the corridor. The door behind him swings shut on its closer.",
        "file": null,
-       "dur": 15.4
+       "dur": 10.2
       }
      ],
      "log": "2136 hrs. Floor 44. Crew member admitted by door release.",
@@ -4827,9 +4828,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "On tile six the young man sits down on the bucket, turned over. Marisol stands beside him with her arms folded. They look like a statue of two people waiting for a bus.",
+       "text": "On tile six the young man sits down on the bucket, turned over. Marisol stands beside him with her arms folded.",
        "file": null,
-       "dur": 14.2
+       "dur": 9.4
       }
      ],
      "log": "2136 hrs. Floor 44. Supervisor's night line called. Entry refused on his instruction.",
@@ -4911,9 +4912,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The photocopy is a name and a date, with a stamp too faint to read at this size. You are not sure what you are looking at. You are sure that you are the one looking.",
+       "text": "The photocopy is a name and a date, with a stamp too faint to read at this size.",
        "file": null,
-       "dur": 15.4
+       "dur": 8.2
       }
      ],
      "log": "2136 hrs. Floor 44. Photocopy of paperwork shown to camera. Name not read on the list.",
@@ -4959,9 +4960,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "She says it flatly and does not move her hand from the pencil. It is the longest sentence you have heard her say to you without a pause.",
+       "text": "She says it flatly and does not move her hand from the pencil.",
        "file": null,
-       "dur": 12.2
+       "dur": 6.2
       },
       {
        "speaker": "narrator",
@@ -5063,9 +5064,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Tile six holds its picture: a corridor, a closet door, a dark line along the sill. You have watched it so long it has started to look like a painting.",
+       "text": "Tile six holds its picture: a corridor, a closet door, a dark line along the sill.",
        "file": null,
-       "dur": 13
+       "dur": 7.4
       },
       {
        "speaker": "narrator",
@@ -5204,9 +5205,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The cursor blinks in the field. The field has a label: INCIDENT. It is the first word on the tablet that has ever looked at you.",
+       "text": "The cursor blinks in the field. The field has a label: INCIDENT.",
        "file": null,
-       "dur": 11.4
+       "dur": 5.8
       }
      ],
      "log": "2155 hrs. Incident field for 44 opened on the tablet.",
@@ -5277,9 +5278,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Beside the tablet, the photocopy has begun to curl at one corner. It is the kind of paper that does not want to be evidence.",
+       "text": "Beside the tablet, the photocopy has begun to curl at one corner.",
        "file": null,
-       "dur": 11
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
@@ -5474,9 +5475,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided.",
+       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "file": null,
-       "dur": 12.6
+       "dur": 8.2
       },
       {
        "speaker": "dee",
@@ -5492,10 +5493,16 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "file": null,
-       "dur": 12.2
+       "dur": 7
+      },
+      {
+       "speaker": "terrell",
+       "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "file": null,
+       "dur": 6.2
       },
       {
        "speaker": "dee",
@@ -5505,9 +5512,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer.",
+       "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       }
      ],
      "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
@@ -5570,9 +5577,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided.",
+       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "file": null,
-       "dur": 12.6
+       "dur": 8.2
       },
       {
        "speaker": "dee",
@@ -5588,10 +5595,16 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "file": null,
-       "dur": 12.2
+       "dur": 7
+      },
+      {
+       "speaker": "terrell",
+       "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "file": null,
+       "dur": 6.2
       },
       {
        "speaker": "dee",
@@ -5601,9 +5614,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer.",
+       "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       }
      ],
      "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
@@ -5666,9 +5679,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided.",
+       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "file": null,
-       "dur": 12.6
+       "dur": 8.2
       },
       {
        "speaker": "dee",
@@ -5684,10 +5697,16 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "file": null,
-       "dur": 12.2
+       "dur": 7
+      },
+      {
+       "speaker": "terrell",
+       "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "file": null,
+       "dur": 6.2
       },
       {
        "speaker": "dee",
@@ -5697,9 +5716,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer.",
+       "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       }
      ],
      "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
@@ -5768,9 +5787,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided.",
+       "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "file": null,
-       "dur": 12.6
+       "dur": 8.2
       },
       {
        "speaker": "dee",
@@ -5786,10 +5805,16 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+       "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "file": null,
-       "dur": 12.2
+       "dur": 7
+      },
+      {
+       "speaker": "terrell",
+       "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "file": null,
+       "dur": 6.2
       },
       {
        "speaker": "dee",
@@ -5799,9 +5824,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer.",
+       "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       }
      ],
      "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet.",
@@ -5852,15 +5877,15 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Hear that? {the door closing, the latch finding itself} That's it shut.",
+       "text": "Hear that? That's it shut.",
        "file": null,
-       "dur": 5.8
+       "dur": 3
       },
       {
        "speaker": "dee",
-       "text": "If you don't hear that, it's open. It can be closed and open at once. {almost a smile} Mm. Stairs.",
+       "text": "If you don't hear that, it's open. It can be closed and open at once. Mm. Stairs.",
        "file": null,
-       "dur": 9
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -5878,9 +5903,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
+       "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
        "file": null,
-       "dur": 9.4
+       "dur": 9
       }
      ],
      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark.",
@@ -5931,9 +5956,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it. {a beat on the rail} Mm. You do the book.",
+       "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it.",
        "file": null,
-       "dur": 11
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. You do the book.",
+       "file": null,
+       "dur": 3
       },
       {
        "speaker": "narrator",
@@ -5951,9 +5982,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
+       "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
        "file": null,
-       "dur": 9.4
+       "dur": 9
       }
      ],
      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark.",
@@ -6024,9 +6055,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
+       "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
        "file": null,
-       "dur": 9.4
+       "dur": 9
       }
      ],
      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark.",
@@ -6071,21 +6102,21 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Fruit. Linen. A crate for the design agency on thirty-seven. {even, listing} Once a box for fifty-eight, at four, with nobody's name on it.",
+       "text": "Fruit. Linen. A crate for the design agency on thirty-seven. Once a box for fifty-eight, at four, with nobody's name on it.",
        "file": null,
-       "dur": 10.6
+       "dur": 9.8
       },
       {
        "speaker": "dee",
-       "text": "Sign for it? Not unless the list says. Mm. {flat} Not unless.",
+       "text": "Sign for it? Not unless the list says. Mm. Not unless.",
        "file": null,
-       "dur": 5.8
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
-       "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it like a rumor.",
+       "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it.",
        "file": null,
-       "dur": 14.6
+       "dur": 13.4
       },
       {
        "speaker": "dee",
@@ -6095,9 +6126,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone.",
+       "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
        "file": null,
-       "dur": 9.8
+       "dur": 6.2
       }
      ],
      "log": "2040 hrs. Tour: roof door, exterior light on. No incident.",
@@ -6154,9 +6185,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it like a rumor.",
+       "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it.",
        "file": null,
-       "dur": 14.6
+       "dur": 13.4
       },
       {
        "speaker": "dee",
@@ -6166,9 +6197,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone.",
+       "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
        "file": null,
-       "dur": 9.8
+       "dur": 6.2
       }
      ],
      "log": "2040 hrs. Tour: roof door, exterior light on. No incident.",
@@ -6220,15 +6251,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "There. You heard it. {pleased, not saying so} Now you know what quiet sounds like here.",
+       "text": "There. You heard it. Now you know what quiet sounds like here.",
        "file": null,
-       "dur": 7.4
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
-       "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it like a rumor.",
+       "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it.",
        "file": null,
-       "dur": 14.6
+       "dur": 13.4
       },
       {
        "speaker": "dee",
@@ -6238,9 +6269,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone.",
+       "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
        "file": null,
-       "dur": 9.8
+       "dur": 6.2
       }
      ],
      "log": "2040 hrs. Tour: roof door, exterior light on. No incident.",
@@ -6285,9 +6316,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "It gives. It gives and it holds. {her hand beside yours on the bar} That's all a door is.",
+       "text": "It gives. It gives and it holds. That's all a door is.",
        "file": null,
-       "dur": 8.6
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
@@ -6441,9 +6472,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Because I always have. {flat, no more} Because it's quiet.",
+       "text": "Because I always have. Because it's quiet.",
        "file": null,
-       "dur": 5
+       "dur": 3.8
       },
       {
        "speaker": "dee",
@@ -6609,9 +6640,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. Don't read the walls. {flat, already on the stairs} They'll tell you everything.",
+       "text": "Mm. Don't read the walls. They'll tell you everything.",
        "file": null,
-       "dur": 6.6
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -6786,12 +6817,6 @@ window.ILTV_STORIES = {
        "dur": 1.4
       },
       {
-       "speaker": "narrator",
-       "text": "She does not say what she saw. She looks at tile one for a while, the way you look at a stove you have just turned off.",
-       "file": null,
-       "dur": 11.8
-      },
-      {
        "speaker": "dee",
        "text": "Stay on the wall.",
        "file": null,
@@ -6812,9 +6837,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "On tile one the vest is a small bright shape in a brown elevator, rising. Terrell goes back to his phone. The sheet lies on the desk where Dolores left it, in her hand.",
+       "text": "On tile one the vest is a small bright shape in an elevator, rising. Terrell goes back to his phone. The sheet lies on the desk where Dolores left it, in her hand.",
        "file": null,
-       "dur": 14.6
+       "dur": 14.2
       }
      ],
      "log": "2222 hrs. Lobby. Contractor signed the visitor sheet and went up to 40. D. Reyes at the desk 2224.",
@@ -6881,9 +6906,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Tuesday he had a yes. Today he doesn't. The list doesn't remember Tuesday. {flat, to the wall} Good.",
+       "text": "Tuesday he had a yes. Today he doesn't. The list doesn't remember Tuesday. Good.",
        "file": null,
-       "dur": 8.2
+       "dur": 6.6
       },
       {
        "speaker": "narrator",
@@ -6997,9 +7022,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "It is five to eleven. The lobby tile shows the long marble floor with the lights on the eastern half already dimmed by the timer, as if the building were taking off its shoes.",
+       "text": "It is five to eleven. The lobby tile shows the long marble floor with the lights on the eastern half already dimmed by the timer.",
        "file": null,
-       "dur": 14.6
+       "dur": 11
       },
       {
        "speaker": "narrator",
@@ -7413,21 +7438,27 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "My uncle ran a corner store in Bed-Stuy. Learned names, not rules, you know? Everybody owed him. Nobody wrote anything down. {a grin} It worked. Till it didn't.",
+       "text": "My uncle ran a corner store in Bed-Stuy. Learned names, not rules, you know? Everybody owed him. Nobody wrote anything down. It worked. Till it didn't.",
        "file": null,
-       "dur": 12.2
+       "dur": 11.4
       },
       {
        "speaker": "terrell",
-       "text": "Then I got here and it's all paper. Sign the sheet. Check the list. {a laugh, quieter} I'm bad at it. I like it, though. I like that it's the same every night.",
+       "text": "Then I got here and it's all paper. Sign the sheet. Check the list.",
        "file": null,
-       "dur": 14.2
+       "dur": 6.6
+      },
+      {
+       "speaker": "terrell",
+       "text": "I'm bad at it. I like it, though. I like that it's the same every night.",
+       "file": null,
+       "dur": 7.4
       },
       {
        "speaker": "dee",
-       "text": "The same every night is the point. {flat, from her chair} Go to school, Terrell. Door.",
+       "text": "The same every night is the point. Go to school, Terrell. Door.",
        "file": null,
-       "dur": 7.4
+       "dur": 5.8
       },
       {
        "speaker": "terrell",
@@ -7543,15 +7574,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He's the best at it. {from the doorway, taking off her coat, not asking what you are reading} Not the best at anything else. Mm.",
+       "text": "He's the best at it. Not the best at anything else. Mm.",
        "file": null,
-       "dur": 11
+       "dur": 5.8
       },
       {
        "speaker": "dee",
-       "text": "Don't copy him. Copy what he doesn't write. {flat} What he doesn't write is where the night is.",
+       "text": "Don't copy him. Copy what he doesn't write. What he doesn't write is where the night is.",
        "file": null,
-       "dur": 8.2
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -7597,15 +7628,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Lobby's clear. Dock's clear. {over the radio} Compactor's ticking.",
+       "text": "Lobby's clear. Dock's clear. Compactor's ticking.",
        "file": null,
-       "dur": 4.6
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
-       "text": "You put the radio back on the shelf where it was. The hum of the room is now the sound of your own responsibility, and it is not as loud as you expected.",
+       "text": "You put the radio back on the shelf where it was.",
        "file": null,
-       "dur": 14.2
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
@@ -7700,9 +7731,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Your thumb finds the button on the side the way it should have the first time. It is a good button. It has been there the whole time.",
+       "text": "Your thumb finds the button on the side.",
        "file": null,
-       "dur": 12.2
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -7798,15 +7829,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Lobby's clear. Dock's clear. {over the radio, after a moment} Mm.",
+       "text": "Lobby's clear. Dock's clear. Mm.",
        "file": null,
-       "dur": 5.4
+       "dur": 3
       },
       {
        "speaker": "narrator",
-       "text": "The radio sits in your hand like something you were handed at a funeral. You put it on the shelf. You pick it up again. You keep it by your hand.",
+       "text": "You put the radio on the shelf. You pick it up again. You keep it by your hand.",
        "file": null,
-       "dur": 13.4
+       "dur": 8.2
       },
       {
        "speaker": "narrator",
@@ -7902,9 +7933,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "You sit and look at tile one for a long time, and it looks at you back without the slightest interest, and you are grateful for that.",
+       "text": "You sit and look at tile one for a while.",
        "file": null,
-       "dur": 11.8
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -8187,9 +8218,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "That's him. {not looking up} He reads the portal at midnight. A habit. Pick it up.",
+       "text": "That's him. He reads the portal at midnight. A habit. Pick it up.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       }
      ],
      "log": "0010 hrs. Supervisor's night line ringing.",
@@ -8252,15 +8283,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "That's noted. I don't say it twice. {dry} Is Ms. Reyes there? Put her on. I'll just say good night.",
+       "text": "That's noted. I don't say it twice. Is Ms. Reyes there? Put her on. I'll just say good night.",
        "file": null,
-       "dur": 9
+       "dur": 8.6
       },
       {
        "speaker": "dee",
-       "text": "Okafor. {taking the phone} Mm. It's quiet. Yes. Good night.",
+       "text": "Okafor. Mm. It's quiet. Yes. Good night.",
        "file": null,
-       "dur": 5
+       "dur": 3.8
       },
       {
        "speaker": "narrator",
@@ -8270,9 +8301,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The line goes dead. Somewhere in a kitchen in Queens a screen turns itself off. The wall clock says 00:14, which is 00:12, which means he was early.",
+       "text": "The line goes dead. The wall clock says 00:14. It is 00:12.",
        "file": null,
-       "dur": 12.2
+       "dur": 5.8
       }
      ],
      "log": "0013 hrs. Supervisor spot-checked the log by phone. No corrections.",
@@ -8341,9 +8372,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The incident field is open. Your own words are in it, in grey. They looked all right the first time. They look like somebody else's now.",
+       "text": "The incident field is open. Your own words are in it, in grey.",
        "file": null,
-       "dur": 11.4
+       "dur": 6.2
       }
      ],
      "log": "0013 hrs. Supervisor asked for the 2134 entry to be rewritten as fact.",
@@ -8453,9 +8484,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The incident field is open. You read the line you wrote. It is one sentence long. It reads like a door someone has painted shut.",
+       "text": "The incident field is open. You read the line you wrote. It is one sentence long.",
        "file": null,
-       "dur": 11
+       "dur": 7.4
       }
      ],
      "log": "0013 hrs. Supervisor asked whether the 2134 entry is exact.",
@@ -8695,10 +8726,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+       "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
        "sfx": "drawer",
        "file": null,
-       "dur": 18.6
+       "dur": 17.4
       },
       {
        "speaker": "dee",
@@ -8781,16 +8812,16 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She has said, in four sentences, a quarter of a century. She shakes the crumbs from the foil into her palm and eats them. It is not a performance. It is a habit.",
+       "text": "She shakes the crumbs from the foil into her palm and eats them.",
        "file": null,
-       "dur": 14.2
+       "dur": 6.2
       },
       {
        "speaker": "narrator",
-       "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+       "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
        "sfx": "drawer",
        "file": null,
-       "dur": 18.6
+       "dur": 17.4
       },
       {
        "speaker": "dee",
@@ -8879,10 +8910,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+       "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
        "sfx": "drawer",
        "file": null,
-       "dur": 18.6
+       "dur": 17.4
       },
       {
        "speaker": "dee",
@@ -9050,9 +9081,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The drawer is a small museum. You think of asking. You think of what she would say. You decide to be a person who did not look.",
+       "text": "You think of asking. You don't.",
        "file": null,
-       "dur": 11.8
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -9425,9 +9456,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Your hand is on the phone, or on the radio, or on the mouse. All three are within reach. Nobody is hurrying you. A door that is open is only a door that is open until someone decides what to call it.",
+       "text": "The phone, the radio and the mouse are all within reach. Nobody is hurrying you.",
        "file": null,
-       "dur": 17.8
+       "dur": 7
       }
      ],
      "log": "0152 hrs. Camera 4, stairwell C, 31st floor landing. Fire door held open by a rubber wedge.",
@@ -9510,12 +9541,6 @@ window.ILTV_STORIES = {
        "text": "Stairwell B. Clear. Heading for the roof side.",
        "file": null,
        "dur": 4.2
-      },
-      {
-       "speaker": "narrator",
-       "text": "You know now who the wedge is for. You do not know his face. It is a different kind of knowing than the tile gives you, and a slower one.",
-       "file": null,
-       "dur": 13
       }
      ],
      "log": "0154 hrs. Access terminal: floor 31, one badge in without exit (Anand, D., 1802). Camera 4: fire door held open by wedge.",
@@ -9597,21 +9622,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "A wedge. Mm. A wedge. {a long pause on the radio} It's the book.",
+       "text": "A wedge. Mm. A wedge. It's the book.",
        "file": null,
-       "dur": 6.6
+       "dur": 4.2
       },
       {
        "speaker": "dee",
-       "text": "I'd have gone and said hello. {over the radio, quieter} Doesn't matter. You did what it says. Mm. Write it.",
+       "text": "I'd have gone and said hello. Doesn't matter. You did what it says. Mm. Write it.",
        "file": null,
-       "dur": 9
+       "dur": 7.4
       },
       {
        "speaker": "narrator",
-       "text": "On tile four the wedge sits in the doorway like a dropped word. The supervisor's instruction was clear: don't go up. It is a good instruction. It is also, you notice, a way of not going.",
+       "text": "On tile four the wedge sits in the doorway. The supervisor's instruction was clear: don't go up.",
        "file": null,
-       "dur": 15.4
+       "dur": 7.8
       }
      ],
      "log": "0156 hrs. Supervisor notified of wedge, stairwell C, 31.",
@@ -9701,21 +9726,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Door's shut. He knows. {a pause} You said. Good.",
+       "text": "Door's shut. He knows. You said. Good.",
        "file": null,
-       "dur": 4.6
+       "dur": 3.8
       },
       {
        "speaker": "dee",
-       "text": "He's got a closing at nine. They all do. {over the radio, tired and not unkind} I'm coming down. Put the kettle on. It's wrong. Put it on.",
+       "text": "He's got a closing at nine. They all do. I'm coming down. Put the kettle on. It's wrong. Put it on.",
        "file": null,
-       "dur": 12.2
+       "dur": 9.4
       },
       {
        "speaker": "narrator",
-       "text": "Four minutes ago you were a person who had seen a wedge. Now Dolores has the wedge in her hand and you are a person who said so. It is a small difference. It is, you suspect, most of the job.",
+       "text": "Four minutes ago you had seen a wedge. Now Dolores has it in her hand and you are the one who said so.",
        "file": null,
-       "dur": 17.4
+       "dur": 10.2
       }
      ],
      "log": "0159 hrs. Stairwell C, 31. Wedge removed by D. Reyes. Tenant (Anand, 31) advised.",
@@ -9816,9 +9841,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The tablet is on your knee. The incident field is blank and bright. You could write what you saw. You could write what you did. They are not the same sentence.",
+       "text": "The tablet is on your knee. The incident field is blank. You could write what you saw. You could write what you did.",
        "file": null,
-       "dur": 13.4
+       "dur": 10.2
       }
      ],
      "log": "0158 hrs. Camera 4. Tenant on the landing, 31. Wedge still in place.",
@@ -9902,9 +9927,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "You were on the wall. Nine tiles. Not four. {a breath} Anand, law firm. Smoke on the landing. Sorry, he says.",
+       "text": "You were on the wall. Nine tiles. Not four. Anand, law firm. Smoke on the landing. Sorry, he says.",
        "file": null,
-       "dur": 9.4
+       "dur": 8.6
       },
       {
        "speaker": "dee",
@@ -9920,9 +9945,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "You look at tile four and it is ordinary: a door, a landing, a painted number. There is no wedge in the picture now. There was one. You were looking at something else.",
+       "text": "Tile four is ordinary now: a door, a landing, a painted number. There was a wedge in it. You were looking at something else.",
        "file": null,
-       "dur": 14.2
+       "dur": 10.6
       }
      ],
      "log": "0202 hrs. Stairwell C, 31. Wedge found and removed by D. Reyes. Tenant (Anand, 31) advised.",
@@ -10076,9 +10101,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She says nothing more. The pencil goes back behind her ear. You have been given something, and you cannot tell what.",
+       "text": "She says nothing more. The pencil goes back behind her ear.",
        "file": null,
-       "dur": 9.4
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
@@ -10159,9 +10184,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "You look. The bench is the bench. A shape on it is a shape you should have named. She doesn't say so. She waits long enough for you to say it for her.",
+       "text": "You look. There is a shape on the bench you should have named. She doesn't say so. She waits.",
        "file": null,
-       "dur": 14.2
+       "dur": 8.6
       },
       {
        "speaker": "narrator",
@@ -10245,15 +10270,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Somebody's whole life is in that machine. A dog. A will. Something they typed at two in the morning. {tapping the shelf, dry} We hold it. We don't read it. That's the deal. Mm.",
+       "text": "Somebody's whole life is in that machine. A dog. A will. Something they typed at two in the morning. We hold it. We don't read it. That's the deal. Mm.",
        "file": null,
-       "dur": 14.6
+       "dur": 13
       },
       {
        "speaker": "narrator",
-       "text": "The laptop is closed on its own reflection. The lanyard has a photo of a man who looks like he has been told to smile. You stand there a moment, holding someone else's night.",
+       "text": "The lanyard has a photo of a man who looks like he has been told to smile. You stand there a moment, holding his laptop.",
        "file": null,
-       "dur": 14.6
+       "dur": 11
       }
      ],
      "log": "0220 hrs. Laptop and lanyard (T. Marsh, 34) secured in control room.",
@@ -10319,15 +10344,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Don't call him. You'll call him at seven. {flat} Go get it. Tag it.",
+       "text": "Don't call him. You'll call him at seven. Go get it. Tag it.",
        "file": null,
-       "dur": 6.6
+       "dur": 6.2
       },
       {
        "speaker": "narrator",
-       "text": "On the terminal the badge is a row of numbers and a green icon. The terminal knows when T. Marsh left and nothing else about him. It is a very clean way to know a person.",
+       "text": "On the terminal the badge is a row of numbers and a green icon. The terminal knows when T. Marsh left and nothing else about him.",
        "file": null,
-       "dur": 15.4
+       "dur": 11.4
       }
      ],
      "log": "0220 hrs. Access terminal: badge T. Marsh, 34. Last read 2312, exit.",
@@ -10393,9 +10418,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "One thing in this room nobody opens: what isn't theirs. {low} Close it.",
+       "text": "One thing in this room nobody opens: what isn't theirs. Close it.",
        "file": null,
-       "dur": 6.2
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
@@ -10478,9 +10503,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "A guard at the bank on Fordham Road. Two in the morning, head on the desk. Nothing happened. {a beat} Nothing happened for forty minutes. Then something did.",
+       "text": "A guard at the bank on Fordham Road. Two in the morning, head on the desk. Nothing happened. Nothing happened for forty minutes. Then something did.",
        "file": null,
-       "dur": 12.2
+       "dur": 11.4
       }
      ],
      "log": "0225 hrs. Control room. D. Reyes standing at the wall.",
@@ -10545,9 +10570,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Your voice sounds small in the room and then, at the ninth tile, ordinary. That is what the job is: making your voice ordinary in a room that wants it to be small.",
+       "text": "Your voice sounds small in the room and then, at the ninth tile, ordinary.",
        "file": null,
-       "dur": 14.2
+       "dur": 6.6
       },
       {
        "speaker": "narrator",
@@ -10570,9 +10595,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
        "file": null,
-       "dur": 11.8
+       "dur": 11.4
       }
      ],
      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry.",
@@ -10628,9 +10653,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Teller found him. Mm. Nobody was watching. {a sip} Nobody. It was a Tuesday.",
+       "text": "Teller found him. Mm. Nobody was watching. Nobody. It was a Tuesday.",
        "file": null,
-       "dur": 6.6
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
@@ -10659,9 +10684,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
        "file": null,
-       "dur": 11.8
+       "dur": 11.4
       }
      ],
      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry.",
@@ -10711,9 +10736,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "It's wrong. {taking it anyway} Mm.",
+       "text": "It's wrong. Mm.",
        "file": null,
-       "dur": 3.4
+       "dur": 2.2
       },
       {
        "speaker": "narrator",
@@ -10723,9 +10748,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The machine makes its noise. Dolores drinks without comment, as if an exchange had been made and recorded. It has.",
+       "text": "The machine makes its noise. Dolores drinks without comment.",
        "file": null,
-       "dur": 9
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -10748,9 +10773,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
        "file": null,
-       "dur": 11.8
+       "dur": 11.4
       }
      ],
      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry.",
@@ -10800,9 +10825,15 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "marisol",
-       "text": "Ay, de nada, mi amor. You say thank you. Nobody says thank you. Twenty years I bring the coffee, I hear thank you from the dentist and from God.",
+       "text": "Ay, de nada, mi amor. You say thank you. Nobody says thank you.",
        "file": null,
-       "dur": 12.6
+       "dur": 6.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Twenty years I bring the coffee, I hear thank you from the dentist and from God.",
+       "file": null,
+       "dur": 7.4
       },
       {
        "speaker": "dee",
@@ -10818,9 +10849,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. {to the wall, after the door} Thirty years she's said that.",
+       "text": "Mm. Thirty years she's said that.",
        "file": null,
-       "dur": 5.8
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -10866,9 +10897,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "I tell her every Christmas: Dolores, go home. She says: who watches the door. {a laugh that stops itself} She never goes home.",
+       "text": "I tell her every Christmas: Dolores, go home. She says: who watches the door. She never goes home.",
        "file": null,
-       "dur": 10.2
+       "dur": 8.2
       },
       {
        "speaker": "dee",
@@ -10884,9 +10915,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Dolores is looking at the wall. She is not looking at the door Marisol went through. She is looking at it harder than she is looking at the door.",
+       "text": "Dolores is looking at the wall. She does not look at the door Marisol went through.",
        "file": null,
-       "dur": 12.6
+       "dur": 7.4
       },
       {
        "speaker": "narrator",
@@ -10926,21 +10957,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. {a shrug in the voice} It's a life. Bendito.",
+       "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. It's a life. Bendito.",
        "file": null,
-       "dur": 9.4
+       "dur": 7.4
       },
       {
        "speaker": "dee",
-       "text": "She's always on time. {flat, after she goes} Five-thirty. You could set the clock by her. Mine. The right one.",
+       "text": "She's always on time. Five-thirty. You could set the clock by her. Mine. The right one.",
        "file": null,
-       "dur": 9
+       "dur": 7.4
       },
       {
        "speaker": "narrator",
-       "text": "You try to picture it: six people, fifteen floors, one night, nobody writing anything down. It sounds like a different kind of log.",
+       "text": "You try to picture it: six people, fifteen floors, one night, nobody writing anything down.",
        "file": null,
-       "dur": 10.2
+       "dur": 7
       },
       {
        "speaker": "narrator",
@@ -11066,9 +11097,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "Off. It's off. It's a lake. It's a little lake. {laughing, furious} Okay.",
+       "text": "Off. It's off. It's a lake. It's a little lake. Okay.",
        "file": null,
-       "dur": 6.2
+       "dur": 5.4
       },
       {
        "speaker": "dee",
@@ -11156,15 +11187,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He'd have said that for a puddle. {to the wall} Mm. It's a lake.",
+       "text": "He'd have said that for a puddle. Mm. It's a lake.",
        "file": null,
-       "dur": 6.6
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
-       "text": "The line clicks. Somewhere a television goes off. The supervisor's voice was the voice of someone who has done this call before and will do it again, and for whom it is not a story. It is a form.",
+       "text": "The line clicks. Somewhere a television goes off.",
        "file": null,
-       "dur": 16.6
+       "dur": 4.2
       }
      ],
      "log": "0240 hrs. Supervisor notified of water on 44. Engineer on call to attend at 0600.",
@@ -11227,10 +11258,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Take Marisol. Radio every floor you pass. {a breath} Go.",
+       "text": "Take Marisol. Radio every floor you pass. Go.",
        "sfx": "radio-squelch",
        "file": null,
-       "dur": 5
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -11252,9 +11283,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "In the elevator back down, you press thirty-one and then remember it isn't yours. You press one. Marisol is still talking. You nod. It is the loudest quiet of the night.",
+       "text": "In the elevator back down, you press thirty-one and then remember it isn't yours. You press one. Marisol is still talking. You nod.",
        "file": null,
-       "dur": 13.4
+       "dur": 10.2
       }
      ],
      "log": "0250 hrs. Floor 44 janitor's closet. Sink hose found running, valve closed by post one and M. Quintero. Leak stopped.",
@@ -11325,9 +11356,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "On tile six the floor is dry now, a dark shape on dry carpet and then a dark shape that is only a shadow. The building has gone back to sleep, and it was never awake.",
+       "text": "On tile six the carpet is drying, a dark shape and then a shadow.",
        "file": null,
-       "dur": 15.4
+       "dur": 6.6
       }
      ],
      "log": "0255 hrs. Control room. Wall quiet.",
@@ -11492,9 +11523,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Nothing happens at three o'clock. {at the door, flat} That's why we're here. Nothing is the job. {a beat} Mm.",
+       "text": "Nothing happens at three o'clock. That's why we're here. Nothing is the job. Mm.",
        "file": null,
-       "dur": 9
+       "dur": 6.6
       },
       {
        "speaker": "dee",
@@ -11517,9 +11548,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The room is very quiet without her. The wall is yours; the wall has always been yours; tonight, for the first time, you can hear that.",
+       "text": "The room is very quiet without her. The wall is yours.",
        "file": null,
-       "dur": 11.4
+       "dur": 5.4
       }
      ],
      "log": "0258 hrs. D. Reyes on roof-door tour. Post one on the wall.",
@@ -11596,9 +11627,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The room is very quiet without her. The wall is yours. You had not noticed until now how much of the quiet is her.",
+       "text": "The room is very quiet without her. The wall is yours.",
        "file": null,
-       "dur": 10.6
+       "dur": 5.4
       }
      ],
      "log": "0300 hrs. D. Reyes on roof-door tour, alone.",
@@ -11926,9 +11957,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. Go. {over the radio, no questions} Tell him the company's forty minutes. Tell him he can stand up or sit down.",
+       "text": "Mm. Go. Tell him the company's twenty minutes. Tell him he can stand up or sit down.",
        "file": null,
-       "dur": 9.8
+       "dur": 7.8
       },
       {
        "speaker": "dev",
@@ -11938,15 +11969,22 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "You tell him he is not a problem. You tell him the company is coming. You tell him what the wall looks like from here: a plant, four cars, a light on his. He laughs once, a short wet sound, like a man surfacing.",
+       "text": "You tell him he is not a problem. You tell him the company is coming. You tell him what the wall looks like from here: a plant, four cars, a light on his. He laughs once, like a man surfacing.",
        "file": null,
-       "dur": 18.6
+       "dur": 17
       },
       {
        "speaker": "dee",
-       "text": "Dolores, from the stairs, in two words: Roof. Cold.",
+       "text": "Roof. Cold.",
        "file": null,
-       "dur": 4.6
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 03:24 the car opens at thirty-one. Dev steps out with his bag held to his chest. He does not look at the camera.",
+       "sfx": "elevator-chime",
+       "file": null,
+       "dur": 10.6
       }
      ],
      "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
@@ -11959,7 +11997,7 @@ window.ILTV_STORIES = {
         "add": {
          "trainer_trust": 1
         },
-        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. Intercom contact maintained. Radio check answered 0314. Contractor ETA 40 min."
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. Intercom contact maintained. Radio check answered 0314. Contractor ETA 20 min."
        }
       ],
       [
@@ -12015,15 +12053,16 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Post one. {over the radio, flat, final} Mm.",
+       "text": "Post one. Mm.",
        "file": null,
-       "dur": 4.2
+       "dur": 2.2
       },
       {
        "speaker": "narrator",
-       "text": "You stay with him. You tell him how long you have been awake. He tells you how long he has. It is a contest that neither of you is winning, and for four minutes it is exactly the right conversation.",
+       "text": "You stay with him. You tell him how long you have been awake. He tells you how long he has. At 03:24 the car opens at thirty-one and he steps out with his bag held to his chest.",
+       "sfx": "elevator-chime",
        "file": null,
-       "dur": 17
+       "dur": 16.2
       }
      ],
      "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
@@ -12080,14 +12119,14 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "The contractor's night line puts you on hold with a recorded voice, then a man named Gus who says forty minutes.",
+       "text": "The contractor's night line puts you on hold with a recorded voice, then a man named Gus who says twenty minutes.",
        "sfx": "phone-ring",
        "file": null,
        "dur": 9.4
       },
       {
        "speaker": "dev",
-       "text": "Forty? Forty minutes? Sorry. No. That's fine. That's fine.",
+       "text": "Twenty? Twenty minutes? Sorry. No. That's fine. That's fine.",
        "file": null,
        "dur": 4.6
       },
@@ -12112,7 +12151,7 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Gus calls back at 03:21 to say he is in the lobby, with a bar and a key you have never seen. At 03:34 the car opens at thirty-one and a man steps out with his bag held against his chest.",
+       "text": "Gus calls back at 03:17 to say he is in the lobby, with a bar and a key you have never seen. At 03:24 the car opens at thirty-one and a man steps out with his bag held against his chest.",
        "file": null,
        "dur": 17.4
       }
@@ -12127,7 +12166,7 @@ window.ILTV_STORIES = {
         "add": {
          "trainer_trust": 1
         },
-        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. Elevator contractor notified 0306, ETA 0346. Radio check answered 0315."
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury. Elevator contractor notified 0306, ETA 0326. Radio check answered 0315."
        }
       ],
       [
@@ -12183,15 +12222,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "At 03:19 two firefighters come into the lobby with a bar and a bag. At 03:26 the car opens at thirty-one and Dev walks out with his laptop bag held to his chest.",
+       "text": "At 03:15 two firefighters come into the lobby with a bar and a bag. At 03:22 the car opens at thirty-one and Dev walks out with his laptop bag held to his chest.",
        "file": null,
        "dur": 14.2
       },
       {
        "speaker": "dee",
-       "text": "Who called them? {over the radio, quiet, thick} Mm. Never mind.",
+       "text": "Who called them? Mm. Never mind.",
        "file": null,
-       "dur": 5.4
+       "dur": 3.4
       }
      ],
      "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
@@ -12204,7 +12243,7 @@ window.ILTV_STORIES = {
         "add": {
          "trainer_trust": 1
         },
-        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury reported. 911 called 0308. FDNY on site 0319, car released 0326. Supervisor not notified."
+        "log": "0302 hrs. Elevator car 3 stopped between 30 and 31, occupant Mr. Anand, floor 31, no injury reported. 911 called 0308. FDNY on site 0315, car released 0322. Supervisor not notified."
        }
       ],
       [
@@ -12273,21 +12312,27 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "The company's forty minutes. I'll stay here. You talk.",
+       "text": "The company's twenty minutes. I'll stay till there's a man in the lobby. You talk.",
        "file": null,
-       "dur": 4.6
+       "dur": 7
       },
       {
        "speaker": "narrator",
-       "text": "She tells him about the building: how old the cables are, how many times she has heard the car stop and start again. It is not true that nothing happens. It is true that nothing happens to him.",
+       "text": "She tells him about the building: how old the cables are, how many times she has heard a car stop and start again.",
        "file": null,
-       "dur": 16.2
+       "dur": 10.2
       },
       {
        "speaker": "narrator",
-       "text": "At 03:34 the doors open at thirty-one. Dev steps out. Dolores watches him on tile five until the plant hides him.",
+       "text": "At 03:17 the contractor's man crosses the lobby with a bar. At 03:24 the doors open at thirty-one. Dev steps out. Dolores watches him on tile five until the plant hides him.",
        "file": null,
-       "dur": 9.4
+       "dur": 13.8
+      },
+      {
+       "speaker": "dee",
+       "text": "I didn't finish. Ten minutes. Radio, Officer.",
+       "file": null,
+       "dur": 3.8
       }
      ],
      "log": "0305 hrs. Elevator car 3, between 30 and 31. Occupant: Mr. Anand, floor 31, no injury reported.",
@@ -12331,7 +12376,7 @@ window.ILTV_STORIES = {
      "folder": "night-shift/coat-lobby",
      "lang": "en",
      "dir": "",
-     "time": "03:20",
+     "time": "03:28",
      "title": [
       "A man in a coat",
       "A man in a coat"
@@ -12344,9 +12389,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Three-twenty. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one.",
+       "text": "Three twenty-eight. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one.",
        "file": null,
-       "dur": 11.4
+       "dur": 11.8
       },
       {
        "speaker": "narrator",
@@ -12361,7 +12406,7 @@ window.ILTV_STORIES = {
        "dur": 5
       }
      ],
-     "log": "0320 hrs. Lobby. Chairman P. Hawkes arrived by the revolving door, proceeding to the elevators.",
+     "log": "0328 hrs. Lobby. Chairman P. Hawkes arrived by the revolving door, proceeding to the elevators.",
      "choices": [
       [
        "Stay in your seat",
@@ -12375,8 +12420,8 @@ window.ILTV_STORIES = {
        }
       ],
       [
-       "Stand and ask him to sign in",
-       "Stand and ask him to sign in",
+       "Ask him to sign in",
+       "Ask him to sign in",
        "pierce-signin",
        {
         "log": "Stood and asked the Chairman to sign in."
@@ -12388,7 +12433,7 @@ window.ILTV_STORIES = {
      "folder": "night-shift/pierce-waved",
      "lang": "en",
      "dir": "",
-     "time": "03:21",
+     "time": "03:29",
      "title": [
       "Waved through",
       "Waved through"
@@ -12407,7 +12452,7 @@ window.ILTV_STORIES = {
        "dur": 15.4
       }
      ],
-     "log": "0322 hrs. Camera 7, 58 reception. Chairman crossed reception, no further contact.",
+     "log": "0330 hrs. Camera 7, 58 reception. Chairman crossed reception, no further contact.",
      "choices": [
       [
        "Log it exactly",
@@ -12417,7 +12462,7 @@ window.ILTV_STORIES = {
         "add": {
          "trainer_trust": 1
         },
-        "log": "0320 hrs. Lobby. Chairman P. Hawkes arrived, proceeded to floor 58 by elevator. Not signed in. Post one did not stop him. Camera 7 shows him crossing 58 reception 0322."
+        "log": "0328 hrs. Lobby. Chairman P. Hawkes arrived, proceeded to floor 58 by elevator. Not signed in. Post one did not stop him. Camera 7 shows him crossing 58 reception 0330."
        }
       ],
       [
@@ -12428,7 +12473,7 @@ window.ILTV_STORIES = {
         "set": [
          "opined"
         ],
-        "log": "0320 hrs. Lobby. Chairman seemed to be in a hurry, probably working late on 58. Didn't sign in."
+        "log": "0328 hrs. Lobby. Chairman seemed to be in a hurry, probably working late on 58. Didn't sign in."
        }
       ],
       [
@@ -12448,7 +12493,7 @@ window.ILTV_STORIES = {
      "folder": "night-shift/pierce-signin",
      "lang": "en",
      "dir": "",
-     "time": "03:21",
+     "time": "03:29",
      "title": [
       "Fifty-eight",
       "Fifty-eight"
@@ -12473,13 +12518,13 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0322. In. He does not write the Out column.",
+       "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0330. In. He does not write the Out column.",
        "sfx": "pencil",
        "file": null,
        "dur": 10.2
       }
      ],
-     "log": "0322 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception.",
+     "log": "0330 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception.",
      "choices": [
       [
        "Log it exactly",
@@ -12489,7 +12534,7 @@ window.ILTV_STORIES = {
         "add": {
          "trainer_trust": 1
         },
-        "log": "0320 hrs. Lobby. Chairman P. Hawkes arrived, proceeded to floor 58. Signed the visitor sheet at officer's request 0322, in only. Camera 7 shows him crossing 58 reception 0323."
+        "log": "0328 hrs. Lobby. Chairman P. Hawkes arrived, proceeded to floor 58. Signed the visitor sheet at officer's request 0330, in only. Camera 7 shows him crossing 58 reception 0331."
        }
       ],
       [
@@ -12500,7 +12545,7 @@ window.ILTV_STORIES = {
         "set": [
          "opined"
         ],
-        "log": "0320 hrs. Lobby. Chairman seemed fine about signing in, probably in a hurry. Went up."
+        "log": "0328 hrs. Lobby. Chairman seemed fine about signing in, probably in a hurry. Went up."
        }
       ],
       [
@@ -12529,21 +12574,21 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera. {to the wall, flat} I don't know if that's a compliment.",
+       "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera. I don't know if that's a compliment.",
        "file": null,
-       "dur": 10.6
+       "dur": 9
       },
       {
        "speaker": "dee",
-       "text": "He walks it every night he's in town. Never signs. Never stops. {dry} Gets out at fifty-eight, stands at the glass, goes home. Mm. Nobody's ever asked him why.",
+       "text": "He walks it every night he's in town. Never signs. Never stops. Gets out at fifty-eight, stands at the glass, goes home. Mm. Nobody's ever asked him why.",
        "file": null,
-       "dur": 12.6
+       "dur": 12.2
       },
       {
        "speaker": "dee",
-       "text": "You don't ask. You write what he does. {flat} That's all anyone's ever got on him. A log.",
+       "text": "You don't ask. You write what he does. That's all anyone's ever got on him. A log.",
        "file": null,
-       "dur": 8.2
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -12599,10 +12644,10 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "03:26. The radio on the charger is the fourth one. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
+       "text": "03:34. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
        "sfx": "door-heavy",
        "file": null,
-       "dur": 11.4
+       "dur": 7.8
       },
       {
        "speaker": "dee",
@@ -12621,13 +12666,6 @@ window.ILTV_STORIES = {
        "text": "Mm. Write it the way it was.",
        "file": null,
        "dur": 3.8
-      },
-      {
-       "speaker": "narrator",
-       "text": "On tile five the indicator over car three drops to thirty-one. The doors open on Dev. He holds his bag to his chest. He does not look at the camera.",
-       "sfx": "elevator-chime",
-       "file": null,
-       "dur": 13
       },
       {
        "speaker": "narrator",
@@ -12694,10 +12732,10 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "03:26. The radio on the charger is the fourth one. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
+       "text": "03:34. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
        "sfx": "door-heavy",
        "file": null,
-       "dur": 11.4
+       "dur": 7.8
       },
       {
        "speaker": "dee",
@@ -12713,16 +12751,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He wrote the time. He never writes the time. {a sip} I'd have waved.",
+       "text": "He wrote the time. He never writes the time. I'd have waved.",
        "file": null,
-       "dur": 6.6
-      },
-      {
-       "speaker": "narrator",
-       "text": "On tile five the indicator over car three drops to thirty-one. The doors open on Dev. He holds his bag to his chest. He does not look at the camera.",
-       "sfx": "elevator-chime",
-       "file": null,
-       "dur": 13
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
@@ -12805,9 +12836,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. {low, looking toward the shelf} Say it first. Then we'll see.",
+       "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. Say it first. Then we'll see.",
        "file": null,
-       "dur": 11.8
+       "dur": 9.8
       }
      ],
      "log": "0343 hrs. Camera 9 feed frozen since 0341.",
@@ -12884,9 +12915,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "You were looking right at it. Mm. Looking is not seeing. {a breath} Say it now. Exactly.",
+       "text": "You were looking right at it. Mm. Looking is not seeing. Say it now. Exactly.",
        "file": null,
-       "dur": 7.8
+       "dur": 7
       },
       {
        "speaker": "narrator",
@@ -12976,15 +13007,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "That's the thirty-one detector. It does that. {flat, not turning} Press the silence. It stops. It always stops.",
+       "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
        "file": null,
-       "dur": 8.2
+       "dur": 7
       },
       {
        "speaker": "dee",
-       "text": "Thirty years on this panel, it's cried wolf nine hundred times. Mm. {to the shelf} I don't say it's right. I say it's what I do.",
+       "text": "Thirty years on this panel, it's cried wolf nine hundred times. Mm. I don't say it's right. I say it's what I do.",
        "file": null,
-       "dur": 11.4
+       "dur": 10.2
       },
       {
        "speaker": "narrator",
@@ -13046,9 +13077,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "There. {a nod, almost kind} See.",
+       "text": "There. See.",
        "file": null,
-       "dur": 3.4
+       "dur": 1.8
       },
       {
        "speaker": "narrator",
@@ -13456,9 +13487,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "The book says no. The book says no, and I've said yes forty times, and nobody's died. Mm. {dry} You decide which of those is the point.",
+       "text": "The book says no. The book says no, and I've said yes forty times, and nobody's died. Mm. You decide which of those is the point.",
        "file": null,
-       "dur": 11.8
+       "dur": 11.4
       }
      ],
      "log": "0425 hrs. Loading dock. Courier at the intercom with a box for floor 58. No authorization on the list.",
@@ -13600,9 +13631,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm-hm. {low} The box will be at the mailroom at seven. It'll be fine.",
+       "text": "Mm-hm. The box will be at the mailroom at seven. It'll be fine.",
        "file": null,
-       "dur": 6.6
+       "dur": 6.2
       }
      ],
      "log": "0430 hrs. Courier refused at the dock. Left the building 0431.",
@@ -13741,15 +13772,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "Log the courier's name if he gives it. The mailroom opens at seven. {a throat cleared} That's noted.",
+       "text": "Log the courier's name if he gives it. The mailroom opens at seven. That's noted.",
        "file": null,
-       "dur": 8.2
+       "dur": 7
       },
       {
        "speaker": "dee",
-       "text": "That's what the book says. {to the wall} Mm.",
+       "text": "That's what the book says. Mm.",
        "file": null,
-       "dur": 4.6
+       "dur": 3.4
       }
      ],
      "log": "0432 hrs. Supervisor notified of delivery for floor 58. Instructed not to accept. Courier left 0433.",
@@ -13818,15 +13849,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Twenty minutes. {to the wall, flat} We let him stay twenty minutes. Then I call.",
+       "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
        "file": null,
-       "dur": 7
+       "dur": 5.4
       },
       {
        "speaker": "dee",
-       "text": "Book says trespass. Book says the owner's property. Book doesn't say fourteen degrees. {low} Mm. That's why there's me.",
+       "text": "Book says trespass. Book says the owner's property. Book doesn't say fourteen degrees. Mm. That's why there's me.",
        "file": null,
-       "dur": 8.6
+       "dur": 8.2
       }
      ],
      "log": "0445 hrs. Camera 2, vestibule. Individual asleep on the ledge. Outside temperature 14 degrees.",
@@ -13910,9 +13941,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "He's got a place at six. A shelter on Fifty-second. I told him. {back at the wall, dry} Don't tell Okafor I gave away the coffee.",
+       "text": "He's got a place at six. A shelter on Fifty-second. I told him. Don't tell Okafor I gave away the coffee.",
        "file": null,
-       "dur": 11.4
+       "dur": 9.4
       }
      ],
      "log": "0505 hrs. Vestibule. D. Reyes made contact with the individual, who left 0510 for a shelter.",
@@ -14039,9 +14070,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. {over your radio, a breath of a laugh} Twenty minutes. {flat, a woman making an exception} Six. Fine.",
+       "text": "Mm. Twenty minutes. Six. Fine.",
        "file": null,
-       "dur": 8.6
+       "dur": 3
       },
       {
        "speaker": "narrator",
@@ -14107,9 +14138,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. {the whole sentence, to the wall} She watches tile two until he is out of the frame and for a while after.",
+       "text": "Mm. She watches tile two until he is out of the frame and for a while after.",
        "file": null,
-       "dur": 10.2
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -14269,9 +14300,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. They'll feed him. That's something. {to the wall} Ask me first, next time.",
+       "text": "Mm. They'll feed him. That's something. Ask me first, next time.",
        "file": null,
-       "dur": 6.6
+       "dur": 5.4
       }
      ],
      "log": "0458 hrs. EMS on site at the vestibule. Individual taken by ambulance 0504.",
@@ -14324,9 +14355,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "05:15. The sky has not changed yet. It is the last of the dark hours, the ones people mean when they say night shift, and the wall has gone as quiet as it will get.",
+       "text": "05:15. The sky has not changed yet. The wall has gone as quiet as it will get.",
        "file": null,
-       "dur": 15
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -14502,9 +14533,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "It's a dentist now. There was a room. A bench. A kettle. {flat, the pencil still} They took it out. Nine years ago. {a beat} I stand where the door was.",
+       "text": "It's a dentist now. There was a room. A bench. A kettle.",
        "file": null,
-       "dur": 13.4
+       "dur": 5.8
+      },
+      {
+       "speaker": "dee",
+       "text": "They took it out. Nine years ago. I stand where the door was.",
+       "file": null,
+       "dur": 6.2
       },
       {
        "speaker": "dee",
@@ -14564,9 +14601,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Facts only. Isn't that what I said. {flat, picking the pencil up} A sensor reads a door. It doesn't read a person.",
+       "text": "Facts only. Isn't that what I said. A sensor reads a door. It doesn't read a person.",
        "file": null,
-       "dur": 9.8
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -14623,15 +14660,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The elevator lobby on thirty-one is lit by an actual sun at the window, a pink bar on the carpet. On tile one the day officer's cap is a shape in the vestibule, waiting for the door.",
+       "text": "On tile five a bar of pink light lies across the carpet at the window. On tile one the day officer's cap is a shape in the vestibule, waiting for the door.",
        "file": null,
-       "dur": 15.8
+       "dur": 13.8
       },
       {
        "speaker": "dee",
-       "text": "Seven hours is a long time to be careful. {to the wall, flat} Nobody's ever said it. Mm. Somebody should have.",
+       "text": "Seven hours is a long time to be careful. Nobody's ever said it. Mm. Somebody should have.",
        "file": null,
-       "dur": 9.4
+       "dur": 7.8
       },
       {
        "speaker": "narrator",
@@ -14740,11 +14777,11 @@ window.ILTV_STORIES = {
        }
       ],
       [
-       "Sign the log as it stands",
-       "Sign the log as it stands",
-       "six-thirty",
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
        {
-        "log": "Signed the shift log."
+        "log": "Opened the closing line of the shift log."
        }
       ]
      ]
@@ -14811,11 +14848,11 @@ window.ILTV_STORIES = {
        }
       ],
       [
-       "Sign the log as it stands",
-       "Sign the log as it stands",
-       "six-thirty",
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
        {
-        "log": "Signed the shift log."
+        "log": "Opened the closing line of the shift log."
        }
       ]
      ]
@@ -14889,11 +14926,11 @@ window.ILTV_STORIES = {
        }
       ],
       [
-       "Sign the log as it stands",
-       "Sign the log as it stands",
-       "six-thirty",
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
        {
-        "log": "Signed the shift log."
+        "log": "Opened the closing line of the shift log."
        }
       ]
      ]
@@ -14917,15 +14954,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. {the whole of it} Once it's ink.",
+       "text": "Mm. Once it's ink.",
        "file": null,
-       "dur": 4.2
+       "dur": 2.6
       },
       {
        "speaker": "dee",
-       "text": "It was a small lie. Small ones are the ones that get you. {flat} Leave it. It's true now.",
+       "text": "It was a small lie. Small ones are the ones that get you. Leave it. It's true now.",
        "file": null,
-       "dur": 8.6
+       "dur": 8.2
       }
      ],
      "log": "0550 hrs. Entry corrected by post one. Corrected entry replaces the previous entry.",
@@ -14998,9 +15035,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "I'll go. {to the wall, getting up} Stay on the wall. Mm.",
+       "text": "I'll go. Stay on the wall. Mm.",
        "file": null,
-       "dur": 5.8
+       "dur": 3.8
       },
       {
        "speaker": "narrator",
@@ -15085,9 +15122,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "adler",
-       "text": "I will be there at ten past six. Do not touch it again. Please put the time you silenced it in the log. In the same words.",
+       "text": "I will be there at ten past six. Do not touch it again.",
        "file": null,
-       "dur": 11.8
+       "dur": 6.2
+      },
+      {
+       "speaker": "adler",
+       "text": "Please put the time you silenced it in the log. In the same words.",
+       "file": null,
+       "dur": 6.6
       },
       {
        "speaker": "dee",
@@ -15146,6 +15189,93 @@ window.ILTV_STORIES = {
       ]
      ]
     },
+    "closing-line": {
+     "folder": "night-shift/closing-line",
+     "lang": "en",
+     "dir": "",
+     "time": "06:00",
+     "title": [
+      "The closing line",
+      "The closing line"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "Six o'clock. The last field on the report is one line long. It has a label, END OF SHIFT, and a cursor that has been waiting all night.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Time. Radios. What the night was. Whatever you put there, it's the one he reads first.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Before the rest. Before the times. He reads that line, and then he reads the rest to see if it's true. Mm.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Outside, the sky over Madison Avenue has gone the color of the inside of a shell. On tile one the lobby has its first shadow.",
+       "file": null,
+       "dur": 11
+      }
+     ],
+     "log": "0600 hrs. End-of-shift line open on the tablet.",
+     "choices": [
+      [
+       "Log it exactly",
+       "Log it exactly",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "0600 hrs. End of shift. Eleven items logged on this report. Radios 4 of 4 on charger. Report handed to day supervisor at 0630."
+       }
+      ],
+      [
+       "Add what you thought",
+       "Add what you thought",
+       "six-thirty",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "0600 hrs. End of shift. Quiet night, nothing serious. Everything seemed fine, probably."
+       }
+      ],
+      [
+       "Leave it blank",
+       "Leave it blank",
+       "six-thirty",
+       {
+        "set": [
+         "opined"
+        ],
+        "log": "Left the end-of-shift line blank."
+       }
+      ],
+      [
+       "Write: No incidents",
+       "Write: No incidents",
+       "six-thirty",
+       {
+        "set": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "0600 hrs. End of shift. No incidents. Radios 4 of 4."
+       }
+      ]
+     ]
+    },
     "six-thirty": {
      "folder": "night-shift/six-thirty",
      "lang": "en",
@@ -15163,9 +15293,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "06:30. The lobby has a day in it: the first tenants, a courier with flowers, the hum of the escalator being switched on. The seven o'clock sun lies across the marble like a dropped sheet.",
+       "text": "06:30. The lobby has a day in it: the first tenants, a courier with flowers, the hum of the escalator being switched on.",
        "file": null,
-       "dur": 15
+       "dur": 10.2
       },
       {
        "speaker": "narrator",
@@ -15182,9 +15312,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "It's all in there. {at the charger, not turning} Four.",
+       "text": "It's all in there. Four.",
        "file": null,
-       "dur": 5
+       "dur": 3
+      },
+      {
+       "speaker": "okafor",
+       "text": "Good morning, Officer. Good morning, Dolores.",
+       "file": null,
+       "dur": 3.4
       }
      ],
      "log": "0630 hrs. Day supervisor on post. Shift log handed over.",
@@ -15317,15 +15453,27 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "file": null,
-       "dur": 8.6
+       "dur": 11.8
       },
       {
        "speaker": "okafor",
        "text": "So. Forty-four. The stairwell on thirty-one. The bench. Car three. Camera nine. The panel. The dock. The vestibule.",
        "file": null,
        "dur": 8.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "The stairwell. I can see the landing. You gave me the floor, the door, the thing in the door, and what was done.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "The panel I can read word for word. I don't always get that.",
+       "file": null,
+       "dur": 6.2
       },
       {
        "speaker": "okafor",
@@ -15344,6 +15492,12 @@ window.ILTV_STORIES = {
        "text": "Mm.",
        "file": null,
        "dur": 1.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "Ms. Reyes. Before I go up. Is there anything in there I should hear from you and not from the page?",
+       "file": null,
+       "dur": 9.4
       }
      ],
      "log": "0635 hrs. Day supervisor read the shift log. No corrections.",
@@ -15635,9 +15789,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "file": null,
-       "dur": 8.6
+       "dur": 11.8
       },
       {
        "speaker": "okafor",
@@ -15653,9 +15807,27 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "\"Probably fine.\" Probably what? Fine to whom? {the thumb moves} Not \"guy.\" \"Individual.\"",
+       "text": "\"Probably fine.\" Probably what? Fine to whom? \"Quiet night.\" What does that mean to someone who wasn't here?",
        "file": null,
-       "dur": 6.2
+       "dur": 8.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "Not \"guy.\" \"Individual.\"",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "A log is read later by people who weren't there. Sometimes by a lawyer. They have nothing but your words.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "okafor",
+       "text": "It's not that anything is wrong. It's that I can't tell.",
+       "file": null,
+       "dur": 5.4
       },
       {
        "speaker": "dee",
@@ -15740,9 +15912,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "file": null,
-       "dur": 8.6
+       "dur": 11.8
       },
       {
        "speaker": "okafor",
@@ -15752,15 +15924,33 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "A contractor on forty with no authorization on the sheet. A box signed for at the dock. A call to nine-one-one for a man asleep.",
+       "text": "A contractor on forty with no authorization on the sheet. A box signed for at the dock.",
        "file": null,
-       "dur": 11
+       "dur": 7.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "A call to nine-one-one for a man asleep. A radio check, late.",
+       "file": null,
+       "dur": 5.8
       },
       {
        "speaker": "okafor",
        "text": "Let's make sure we're aligned. I'm not saying anyone was wrong. I'm saying they're in the log.",
        "file": null,
        "dur": 7.8
+      },
+      {
+       "speaker": "okafor",
+       "text": "In your hand, with the time. That's the only reason this is a conversation.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Next time, the binder first. And if the binder says no, you say no, and you write that you said it.",
+       "file": null,
+       "dur": 9.4
       },
       {
        "speaker": "dee",
@@ -15845,9 +16035,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "file": null,
-       "dur": 8.6
+       "dur": 11.8
       },
       {
        "speaker": "okafor",
@@ -15863,6 +16053,12 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
+       "text": "It is the right thing to have written. I want you to hear me say that. It is also the thing I have to act on.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "okafor",
        "text": "Dolores. You know the rule. Eleven years.",
        "file": null,
        "dur": 3.8
@@ -15872,6 +16068,12 @@ window.ILTV_STORIES = {
        "text": "I know the rule.",
        "file": null,
        "dur": 2.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Nothing happened in those four minutes. Nothing happened. That is not what the rule is about.",
+       "file": null,
+       "dur": 7.4
       }
      ],
      "log": "0635 hrs. Day supervisor read the shift log. Wall unattended 2330 to 2334 noted.",
@@ -15950,9 +16152,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "file": null,
-       "dur": 8.6
+       "dur": 11.8
       },
       {
        "speaker": "okafor",
@@ -15968,9 +16170,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\"",
+       "text": "The fire panel belongs to Ms. Adler. The door belongs to the building. We are the people who tell them.",
        "file": null,
-       "dur": 8.2
+       "dur": 9
+      },
+      {
+       "speaker": "okafor",
+       "text": "That is the whole job. That is all it ever was.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\" It is true and it is not a defense.",
+       "file": null,
+       "dur": 11.8
       },
       {
        "speaker": "dee",
@@ -16055,9 +16269,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass.",
+       "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "file": null,
-       "dur": 8.6
+       "dur": 11.8
       },
       {
        "speaker": "okafor",
@@ -16067,15 +16281,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "This entry says an event happened a certain way. The access terminal says it did not.",
+       "text": "There is a line in this log that does not match the record. The terminal, or the rest of the log. One of them is wrong.",
        "file": null,
-       "dur": 7.4
+       "dur": 11.4
       },
       {
        "speaker": "okafor",
-       "text": "I will not ask you why. The building manager will. {a breath} Dolores.",
+       "text": "I will not ask you why. The building manager will, and he is not a patient man, and he will not have slept either.",
        "file": null,
-       "dur": 6.2
+       "dur": 10.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Dolores.",
+       "file": null,
+       "dur": 1.4
       },
       {
        "speaker": "dee",
@@ -16084,7 +16304,7 @@ window.ILTV_STORIES = {
        "dur": 1.4
       }
      ],
-     "log": "0635 hrs. Day supervisor read the shift log. Entry disagrees with access terminal record.",
+     "log": "0635 hrs. Day supervisor read the shift log. Entry disagrees with the record.",
      "choices": [
       [
        "Say nothing",
@@ -16113,13 +16333,19 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "07:02. The day officer is at the desk. The sun is a rumor on the revolving door. Mr. Okafor has gone upstairs with the tablet under his arm.",
+       "text": "07:02. The day officer is at the desk. The sun is on the revolving door. Mr. Okafor has gone upstairs with the tablet under his arm.",
        "file": null,
-       "dur": 12.2
+       "dur": 11.4
       },
       {
        "speaker": "dee",
-       "text": "Tuesday. {putting her coat on, short} You'll want to sleep. Don't, till you've eaten.",
+       "text": "Tuesday. You'll want to sleep. Don't, till you've eaten.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "The seven stops under Queensboro. Walk it. Don't wait. I've timed it. It's faster.",
        "file": null,
        "dur": 6.6
       },
@@ -16131,9 +16357,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She goes. You hand your radio to the day officer. It clicks into the charger. Four.",
+       "text": "The day officer asks how the night was. You tell him what happened, in order. He writes it down in the hand of a man who is learning to.",
        "file": null,
-       "dur": 7.4
+       "dur": 12.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Radio.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "You hand it over. It clicks into the charger. Four.",
+       "file": null,
+       "dur": 5
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16166,21 +16404,27 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "April first. {to the charger} I know you read it. The drawer sticks. It didn't stick.",
+       "text": "April first. I know you read it. The drawer sticks. It didn't stick.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       },
       {
        "speaker": "dee",
-       "text": "I put it where you'd find it. Not him. Mm.",
+       "text": "I put it where you'd find it. Not him. Mm. You didn't ask. That's why.",
        "file": null,
-       "dur": 5
+       "dur": 7
       },
       {
        "speaker": "dee",
-       "text": "Pencil. {holding it out, the one from behind her ear} Write it plain. Somebody should, when they stop.",
+       "text": "They tell me it's a camera and a woman in New Jersey. A woman in New Jersey who has never stood on twelve at three in the morning. Mm. Doesn't matter.",
        "file": null,
-       "dur": 8.2
+       "dur": 13.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Pencil. Write it plain. Somebody should, when they stop.",
+       "file": null,
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -16218,10 +16462,22 @@ window.ILTV_STORIES = {
        "dur": 6.6
       },
       {
-       "speaker": "dee",
-       "text": "You told him. {at the charger, flat, no weight on it} Officer.",
+       "speaker": "okafor",
+       "text": "Ms. Reyes's post is under review. I did not know.",
        "file": null,
-       "dur": 5.8
+       "dur": 5
+      },
+      {
+       "speaker": "okafor",
+       "text": "I should have known. That is also noted.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "You told him. Officer.",
+       "file": null,
+       "dur": 2.6
       },
       {
        "speaker": "narrator",
@@ -16237,9 +16493,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. It's the book. {low} Clip it on.",
+       "text": "Mm. It's the book. Clip it on.",
        "file": null,
-       "dur": 4.2
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "I'd have told him in April. You were right. Don't let it go to your head.",
+       "file": null,
+       "dur": 7.4
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16272,9 +16534,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Eat something. {holding out half a sandwich} Not the corner. {quick, dry} The corner's mine.",
+       "text": "Eat something. Not the corner. The corner's mine.",
        "file": null,
-       "dur": 7
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -16284,9 +16546,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm.",
+       "text": "Tuesday. You know where I sit. Mm.",
        "file": null,
-       "dur": 1.4
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody's said it to you tonight so I'll say it plain. You didn't leave. Mm. That's all it ever is.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "narrator",
+       "text": "She puts the foil in the bin by the door. It makes no noise at all.",
+       "file": null,
+       "dur": 7.4
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16313,21 +16587,33 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "okafor",
-       "text": "So. Perfect. There is nothing in this log I would change. {the thumb stops} Ms. Reyes's evaluation is one line. \"Competent.\"",
+       "text": "So. Perfect. There is nothing in this log I would change. Ms. Reyes's evaluation is one line. \"Competent.\"",
        "file": null,
-       "dur": 9.4
+       "dur": 8.2
       },
       {
        "speaker": "okafor",
-       "text": "That's the whole of it. It's noted. {a pause, almost an apology} Thank you.",
+       "text": "That's the whole of it. It's noted. Thank you.",
        "file": null,
-       "dur": 6.6
+       "dur": 4.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "I will say, for myself: this is the log I wish I had written, my first week. I did not write it. Good morning.",
+       "file": null,
+       "dur": 10.6
       },
       {
        "speaker": "narrator",
-       "text": "Dolores's coat is not on the hook. The foil is on the shelf, folded in four. She has not taken it.",
+       "text": "Dolores's coat is not on the hook. She left at 06:45, by the dock, so as not to pass the desk.",
        "file": null,
        "dur": 9.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The foil is on the shelf, folded in four. She has not taken it.",
+       "file": null,
+       "dur": 6.6
       },
       {
        "speaker": "narrator",
@@ -16372,21 +16658,33 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "Dolores, a word. Not now.",
+       "text": "Dolores, a word. Not now. That's twice this year.",
        "file": null,
-       "dur": 3
+       "dur": 4.6
       },
       {
        "speaker": "dee",
-       "text": "He's new. I'm the one who counts. {quietly, once} Four.",
+       "text": "He's new. I'm the one who counts. Four.",
        "file": null,
-       "dur": 5
+       "dur": 4.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "Next time, you say, and I decide. That is what the chain is for.",
+       "file": null,
+       "dur": 6.6
       },
       {
        "speaker": "narrator",
        "text": "In the margin of the log there is a word crossed out in pencil and the right word written beside it. The hand is hers. The word was yours.",
        "file": null,
        "dur": 12.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "She has done it in four places. You count them. You did not see her do any of it.",
+       "file": null,
+       "dur": 8.6
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16413,9 +16711,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "okafor",
-       "text": "So. \"He seemed nervous.\" How did he seem nervous? {reading, flat, patient} \"Probably.\" Probably.",
+       "text": "So. \"He seemed nervous.\" How did he seem nervous? \"Probably.\" Probably.",
        "file": null,
-       "dur": 6.6
+       "dur": 5.4
       },
       {
        "speaker": "okafor",
@@ -16428,6 +16726,12 @@ window.ILTV_STORIES = {
        "text": "Mm.",
        "file": null,
        "dur": 1.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "It's a good first week. It is not a clean one. Those are different.",
+       "file": null,
+       "dur": 6.6
       },
       {
        "speaker": "narrator",
@@ -16460,13 +16764,25 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "okafor",
-       "text": "I'll write it as it stands. {quietly, not looking at either of you} Four minutes. {the stylus} It's the rule, Dolores.",
+       "text": "I'll write it as it stands. Four minutes. It's the rule, Dolores.",
        "file": null,
-       "dur": 9.4
+       "dur": 5.8
       },
       {
        "speaker": "dee",
        "text": "I know the rule.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "Ms. Reyes. If you want to say something, say it.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "No. Thank you, Okafor.",
        "file": null,
        "dur": 2.6
       },
@@ -16519,9 +16835,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "I'm not unfair. I want you to know that I'm not. {the thumb on the glass} That's noted.",
+       "text": "I'm not unfair. I want you to know that I'm not. That's noted.",
        "file": null,
-       "dur": 8.2
+       "dur": 6.2
+      },
+      {
+       "speaker": "okafor",
+       "text": "Hand me your badge at the end of the week, not today. You've still got a shift to work. That is also in the book.",
+       "file": null,
+       "dur": 11
       },
       {
        "speaker": "dee",
@@ -16534,6 +16856,12 @@ window.ILTV_STORIES = {
        "text": "You set your radio on the charger the way she showed you. It clicks. Four. Nobody says it.",
        "file": null,
        "dur": 8.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The badge on your lanyard says your name and a number and a photograph of someone younger. It does not say Night.",
+       "file": null,
+       "dur": 9.8
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16566,9 +16894,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "Nobody was hurt. It goes in the report, those words, because they are true. {his hand flat on the page} And they are not a defense.",
+       "text": "Nobody was hurt. It goes in the report, those words, because they are true. And they are not a defense.",
        "file": null,
-       "dur": 11.4
+       "dur": 9
+      },
+      {
+       "speaker": "okafor",
+       "text": "Page eleven, Officer. The order of calls. You know it. You read it the first night. I watched you read it.",
+       "file": null,
+       "dur": 9.4
       },
       {
        "speaker": "dee",
@@ -16607,15 +16941,21 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "okafor",
-       "text": "So. Not wrong. Not right. Next to the binder. {reading, flat} Noted.",
+       "text": "So. Not wrong. Not right. Next to the binder. Noted.",
        "file": null,
-       "dur": 5.8
+       "dur": 5
       },
       {
        "speaker": "dee",
-       "text": "Mm. Tuesday. {putting on her coat} Read the whole binder.",
+       "text": "Mm. Tuesday. Read the whole binder. Page eleven, twice.",
        "file": null,
-       "dur": 5
+       "dur": 4.6
+      },
+      {
+       "speaker": "okafor",
+       "text": "A first night is a first night. Eat something. Go home.",
+       "file": null,
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
