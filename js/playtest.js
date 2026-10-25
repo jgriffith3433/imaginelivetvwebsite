@@ -2392,20 +2392,25 @@ function closeViewFrame() {
   viewFrame = null;
 }
 
-async function viewFrameLoad(t, url, w, h) {
+async function viewFrameLoad(t, url, w, h, { loadMs = 0 } = {}) {
   closeViewFrame();
   viewFrame = document.createElement("iframe");
   viewFrame.title = `Playtest ${w}x${h}`;
   const scale = Math.min(1, innerWidth / w, innerHeight / h);
   viewFrame.style.cssText = `position:fixed;left:0;top:0;width:${w}px;height:${h}px;border:0;z-index:2147483647;background:#070807;transform:scale(${scale});transform-origin:0 0`;
   document.body.appendChild(viewFrame);
-  await new Promise((resolve) => {
-    viewFrame.addEventListener("load", resolve, { once: true });
-    viewFrame.src = url;
+  const frame = viewFrame;
+  const loaded = await new Promise((resolve) => {
+    frame.addEventListener("load", () => resolve(true), { once: true });
+    // loadMs: a frame that never fires "load" gives up (the sign-off names the step) instead of waiting forever.
+    if (loadMs) setTimeout(() => resolve(false), loadMs);
+    frame.src = url;
   });
-  const win = viewFrame.contentWindow;
-  await waitFor(() => win.iltvConsole && win.iltvStories && win.hawkesSound, 10000);
-  return viewFrame.contentDocument;
+  if (!loaded) throw new Error(`the frame ${w}x${h} never finished loading ${url} (${loadMs} ms)`);
+  const win = frame.contentWindow;
+  const ready = await waitFor(() => win.iltvConsole && win.iltvStories && win.hawkesSound, 10000);
+  if (loadMs && !ready) throw new Error(`the frame ${w}x${h} loaded ${url} but the player never started (10 s)`);
+  return frame.contentDocument;
 }
 
 /** Everything the player needs is on the screen: nothing wider than it (no sideways scroll), the wall, the
@@ -3354,6 +3359,8 @@ async function nightGapsRun(options, t) {
     `{"at":"last-choices"}` starts each play nearer (about 8 minutes): a SEEDED RUN (setup shortcut, event seeded-run) at
     the scene `back` choices (default 2) before the ending, then real presses of those choices and the ending's screen,
     at all four sizes. Options: {"story":"<id>","sizes":"desktop"|"all","only":"<ending scene>","at":"last-choices","back":2}. */
+const PLAY_LIMIT_FULL = 8 * 60 * 1000; // one ending from a new run (the longest shortest way holds ~400 lines, skipped)
+const PLAY_LIMIT_NEAR = 90 * 1000; // one ending from a seeded run, a few choices
 async function nightSignoffRun(options, t) {
   rememberProgress();
   const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
@@ -3372,6 +3379,7 @@ async function nightSignoffRun(options, t) {
     t.metric("endings", endings.length);
     t.metric("sizes", sizes.length);
     let done = 0;
+    let skipped = 0;
     for (const [id, sc] of endings) {
       const way = x.scenes[id];
       if (!way) { t.problem("bug", `${st.id}: the ending ${sc.ending[0]} (${id}) can't be reached`); continue; }
@@ -3382,42 +3390,73 @@ async function nightSignoffRun(options, t) {
       const seedLen = near ? Math.max(0, way.picks.length - back) : 0;
       for (const [sizeName, w, h] of sizes) {
         const label = `${sc.ending[0]} at ${sizeName}`;
-        let doc = document;
-        let m;
-        if (!w) {
-          if (near) m = await consoleSeedAt(t, st, way.picks.slice(0, seedLen), null);
-          else {
-            await consoleFresh(t, st);
+        // Every play has a deadline and says where it is: a stall names the ending, the size and the step.
+        const started = performance.now();
+        const limit = near ? PLAY_LIMIT_NEAR : PLAY_LIMIT_FULL;
+        let step = "starting";
+        const at = (what) => {
+          step = what;
+          t.note(`night-shift-signoff: ${label}: ${what}`);
+          if (performance.now() - started > limit) throw new Error(`${label}: over ${Math.round(limit / 1000)} s, stopped at "${what}"`);
+        };
+        t.event("signoff-start", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices${seedLen ? `, ${seedLen} seeded` : ""} (play ${done + skipped + 1} of ${endings.length * sizes.length})`);
+        try {
+          let doc = document;
+          let m;
+          if (!w) {
+            at(near ? "seeding the run" : "opening a new run");
+            if (near) m = await consoleSeedAt(t, st, way.picks.slice(0, seedLen), null);
+            else {
+              await consoleFresh(t, st);
+              m = consoleModel(st);
+            }
+          } else {
+            at("preparing the saved run");
+            if (near) consoleSeedWrite(st, way.picks.slice(0, seedLen), null);
+            else {
+              document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
+              localStorage.removeItem(RUN_KEY + st.cookie);
+            }
+            at(`loading the ${w}x${h} frame`);
+            doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h, { loadMs: 20000 });
+            at("Tap to play in the frame");
+            await consolePrompt(t, doc, label);
             m = consoleModel(st);
+            for (const i of way.picks.slice(0, seedLen)) m.choose(i);
           }
-        } else {
-          if (near) consoleSeedWrite(st, way.picks.slice(0, seedLen), null);
-          else {
-            document.cookie = `${st.cookie}=; Max-Age=0; Path=/`;
-            localStorage.removeItem(RUN_KEY + st.cookie);
+          at("hearing the first scene");
+          await consoleHeard(t, doc, label);
+          consoleCheck(t, st, m, doc, label);
+          let pressed = 0;
+          for (const i of way.picks.slice(seedLen)) {
+            at(`choice ${seedLen + pressed + 1} of ${way.picks.length} at ${m.scene}`);
+            await consoleChoose(t, st, m, i, doc, label);
+            pressed++;
           }
-          doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h);
-          await consolePrompt(t, doc, label);
-          m = consoleModel(st);
-          for (const i of way.picks.slice(0, seedLen)) m.choose(i);
+          at("hearing the last scene");
+          await consoleHeard(t, doc, label);
+          if (m.scene !== id) t.problem("bug", `${label}: the way ended at ${m.scene}, not ${id}`);
+          at("checking the ending screen");
+          const shown = byIdIn(doc, "console-ending");
+          if (shown.hidden || shown.textContent.trim() !== sc.ending[0]) t.problem("bug", `${label}: the ending isn't shown (it says "${shown.textContent.trim()}")`);
+          if (!w && stories().run(st.id) !== "end") t.problem("bug", `${label}: at an ending the run says "${stories().run(st.id)}", not end`);
+          await consoleFit(t, doc, `${label}, the end screen`);
+          t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
+          done++;
+        } catch (e) {
+          // One play that stalls or fails is a finding named by ending, size and step; the next play still runs.
+          skipped++;
+          t.problem("bug", `${label}: the play stopped at "${step}": ${e && e.message ? e.message : e}`);
+          t.event("signoff-stopped", `${sc.ending[0]} (${id}) at ${sizeName}: at "${step}" after ${Math.round((performance.now() - started) / 1000)} s`);
+        } finally {
+          if (w) closeViewFrame();
         }
-        await consoleHeard(t, doc, label);
-        consoleCheck(t, st, m, doc, label);
-        for (const i of way.picks.slice(seedLen)) await consoleChoose(t, st, m, i, doc, label);
-        await consoleHeard(t, doc, label);
-        if (m.scene !== id) t.problem("bug", `${label}: the way ended at ${m.scene}, not ${id}`);
-        const shown = byIdIn(doc, "console-ending");
-        if (shown.hidden || shown.textContent.trim() !== sc.ending[0]) t.problem("bug", `${label}: the ending isn't shown (it says "${shown.textContent.trim()}")`);
-        if (!w && stories().run(st.id) !== "end") t.problem("bug", `${label}: at an ending the run says "${stories().run(st.id)}", not end`);
-        await consoleFit(t, doc, `${label}, the end screen`);
-        if (w) closeViewFrame();
-        t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
-        done++;
-        t.progress(done / (endings.length * sizes.length));
+        t.progress((done + skipped) / (endings.length * sizes.length));
       }
     }
     t.metric("endingsPlayed", done);
-    t.event("criterion", `${endings.length} endings played to the end at ${sizes.length} sizes (${sizes.map((z) => z[0]).join(", ")}): ${done} plays`);
+    if (skipped) t.problem("bug", `${skipped} of ${endings.length * sizes.length} sign-off plays stopped before the ending (see the signoff-stopped events)`);
+    else t.event("criterion", `${endings.length} endings played to the end at ${sizes.length} sizes (${sizes.map((z) => z[0]).join(", ")}): ${done} plays`);
   } finally {
     closeViewFrame();
     await sleep(300);
