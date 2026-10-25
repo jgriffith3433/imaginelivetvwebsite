@@ -11819,31 +11819,375 @@
       "night-shift/media/music/ending-cold.mp3": "7e6ca4730e95c51bb110800626fff40c464663374b0e1f9a648d7ef944aaf60e"
     }
   },
+  "night-shift-out-counted-line-1": {
+    "recipe": "aec5331e0751f22d",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:13.850Z",
+    "files": {
+      "night-shift/out-counted/media/line-1.mp3": "7aade16c93f80eeaeea0625920e4de3db1d12dbd63f6ab149681bece84434801"
+    }
+  },
+  "night-shift-out-counted-line-2": {
+    "recipe": "a60a38776972ddde",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:14.047Z",
+    "files": {
+      "night-shift/out-counted/media/line-2.mp3": "3b4aaa49e61d60fb23acf7fc71dd1a6c12c116daf2d567b57b373d0c0d0a23c4"
+    }
+  },
+  "night-shift-out-counted-line-3": {
+    "recipe": "e6481a6f2d1948d1",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:14.220Z",
+    "files": {
+      "night-shift/out-counted/media/line-3.mp3": "f710f2a0bde7269d32c426f9fad70b38d355ba7568a3b8dd855221066a28d488"
+    }
+  },
+  "night-shift-out-asked-line-1": {
+    "recipe": "a2b698f36476606f",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:14.423Z",
+    "files": {
+      "night-shift/out-asked/media/line-1.mp3": "11898285b8a88e7b39176b7d1bb6e96f3f137034685e275a1868b0bcfdbbe773"
+    }
+  },
+  "night-shift-out-asked-line-2": {
+    "recipe": "bcdb0a10526d3343",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:14.582Z",
+    "files": {
+      "night-shift/out-asked/media/line-2.mp3": "a50872ecd3baa52378e89c8815a9434833fa8a3f636bf0b7f2e3267befdada54"
+    }
+  },
+  "night-shift-out-asked-line-3": {
+    "recipe": "611e8d91df4db3cf",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:14.809Z",
+    "files": {
+      "night-shift/out-asked/media/line-3.mp3": "2f14dd26b58d90ef21449bae557f55af772ce6faabb1bfa1b69cb864b44214ea"
+    }
+  },
   "night-shift-held-tomorrow-line-1": {
     "recipe": "aad0357ccfdd785e",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T20:05:19.249Z",
+    "made": "2026-10-25T20:03:15.056Z",
     "files": {
-      "night-shift/held-tomorrow/media/line-1.mp3": "0e220321f1ebf43f5e746f72991c6345339851fe475f8172df9dd88ee8c7fb7c"
+      "night-shift/held-tomorrow/media/line-1.mp3": "b15d1de06e02ae6bec57b46ace9ce3fb6fcaecdda503763f5a196f9a08dcbf71"
     }
   },
   "night-shift-held-tomorrow-line-2": {
     "recipe": "bd4ed742a732ab1e",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T20:05:19.498Z",
+    "made": "2026-10-25T20:03:15.269Z",
     "files": {
-      "night-shift/held-tomorrow/media/line-2.mp3": "bae7fadabb798cb30a6e626be678d34fc8bd29e09ec56e633c84ec2e3dca5d99"
+      "night-shift/held-tomorrow/media/line-2.mp3": "5291a57b788fa9f5859c348d6f28813d23eec629bc0d776718673e9026da41f6"
     },
     "treatment": "walkie",
-    "clean": "90d3a171caaec8f181b56392137ded736afd12862bafd52f76c62863896764e3",
+    "clean": "ef3ea2a1f0b27dfe03dd421d36fbd11f875041ee41f7693f4795b488c44517bd",
     "rev": 3
   },
   "night-shift-held-tomorrow-line-3": {
     "recipe": "2fddf4f0d22a5d0b",
     "job": "hawkesgen_run",
-    "made": "2026-10-25T20:05:19.666Z",
+    "made": "2026-10-25T20:03:15.407Z",
     "files": {
-      "night-shift/held-tomorrow/media/line-3.mp3": "ed7631df2c741137a261669bce688fc9c46e7dbd39b8660d44d0a7993a465f78"
+      "night-shift/held-tomorrow/media/line-3.mp3": "f91d1880c74df8d724e52b08fed0e03e3dbbb62bd446ada514332d547f0d6f74"
+    }
+  },
+  "night-shift-held-dee-line-1": {
+    "recipe": "68eed5c77f6da8fc",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:15.625Z",
+    "files": {
+      "night-shift/held-dee/media/line-1.mp3": "044162a3867d79b5b5c5089626c282b5b790803f27f22cf8cd8c3c5856c4eb90"
+    }
+  },
+  "night-shift-held-dee-line-2": {
+    "recipe": "05517294c5f5c00c",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:15.788Z",
+    "files": {
+      "night-shift/held-dee/media/line-2.mp3": "6aef3292677f4e0653eca1997bad6e63f0aaa58ee94c9279dd146f9cc09cac9e"
+    }
+  },
+  "night-shift-held-dee-line-3": {
+    "recipe": "e917a66973b6d110",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:15.993Z",
+    "files": {
+      "night-shift/held-dee/media/line-3.mp3": "c171a4fb0fb22e2d0b750c4664d7122360562e4f05b1ea25c61f7e4d30d10352"
+    }
+  },
+  "night-shift-held-dee-line-4": {
+    "recipe": "2d2ce35d5c091b84",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:16.206Z",
+    "files": {
+      "night-shift/held-dee/media/line-4.mp3": "a8277eee784678db38dcc0520d4f40c48f2f935b49ad9fbfb29389a23c972a14"
+    }
+  },
+  "night-shift-entry-exact-line-1": {
+    "recipe": "6ec33a3f56b85411",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:16.582Z",
+    "files": {
+      "night-shift/entry-exact/media/line-1.mp3": "bfba14bf51186c08b769aa352e7ca8200ebfaef2764d897191485685b8241602"
+    }
+  },
+  "night-shift-entry-exact-line-2": {
+    "recipe": "4d18fdf8f2ce9acb",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:16.816Z",
+    "files": {
+      "night-shift/entry-exact/media/line-2.mp3": "b9049ab3d7729c90d861b06cb11ed44f15c0ca440dee1a7f3f45e0f27808d127"
+    }
+  },
+  "night-shift-entry-exact-line-3": {
+    "recipe": "22a7ca12359cee4e",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:17.004Z",
+    "files": {
+      "night-shift/entry-exact/media/line-3.mp3": "89e84e12dc41930e4cbfc72d29864def687428ca9fa508ca8780c9485943fc4f"
+    }
+  },
+  "night-shift-entry-thought-line-1": {
+    "recipe": "66fbacbddf5bd497",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:17.297Z",
+    "files": {
+      "night-shift/entry-thought/media/line-1.mp3": "c757084d5c8764a5806f0c10608435de26e8a80b0c411950408ec2114ed26dc1"
+    }
+  },
+  "night-shift-entry-thought-line-2": {
+    "recipe": "8fb151be9b7013e1",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:17.455Z",
+    "files": {
+      "night-shift/entry-thought/media/line-2.mp3": "9035eb54b8a9cc109b13f31e151c40113a76ec03f040929e56ce7cc8c8e37c44"
+    }
+  },
+  "night-shift-entry-thought-line-3": {
+    "recipe": "653363a17d841273",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:17.661Z",
+    "files": {
+      "night-shift/entry-thought/media/line-3.mp3": "cd928615daffd29af39278443c79db42c083771927bac2b81586e57384490ecb"
+    }
+  },
+  "night-shift-entry-blank-line-1": {
+    "recipe": "24dd79b4ca024381",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:17.935Z",
+    "files": {
+      "night-shift/entry-blank/media/line-1.mp3": "0d9c7f60a96a2aaf0530fbb1a7b0410a7c5452f6c9bd24184fac939bd624a600"
+    }
+  },
+  "night-shift-entry-blank-line-2": {
+    "recipe": "1f2d3b8bd252ff43",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:18.084Z",
+    "files": {
+      "night-shift/entry-blank/media/line-2.mp3": "65c5f6fd3447ee1a131dd9e57955f26d34e3684e1289bdb26f6ea5e789969f3d"
+    }
+  },
+  "night-shift-entry-blank-line-3": {
+    "recipe": "3b21eb092a226dfc",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:18.288Z",
+    "files": {
+      "night-shift/entry-blank/media/line-3.mp3": "7a340c90bc9a39616d6d8cb2946430c8bf4ee8606f995192e4134638f09d64aa"
+    }
+  },
+  "night-shift-lobby-exact-w-line-1": {
+    "recipe": "4cb9ffc1ff034aec",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:18.578Z",
+    "files": {
+      "night-shift/lobby-exact-w/media/line-1.mp3": "335125a446957deeb1792e3604a1232b2a56f6f394dea44cc2315dd2d50e7b38"
+    }
+  },
+  "night-shift-lobby-exact-w-line-2": {
+    "recipe": "cf1f552250c9455c",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:18.760Z",
+    "files": {
+      "night-shift/lobby-exact-w/media/line-2.mp3": "0d391e994c9416d2750f596991fc6dc24c451d3a0547ab828f1636e68ff93927"
+    }
+  },
+  "night-shift-lobby-exact-w-line-3": {
+    "recipe": "edb53fd792a7e0b0",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:18.971Z",
+    "files": {
+      "night-shift/lobby-exact-w/media/line-3.mp3": "2c16c1eb1982d285f39071c4994e04b06fe3a60b93c627d8888c85695364ba7e"
+    }
+  },
+  "night-shift-lobby-thought-w-line-1": {
+    "recipe": "c680a69a16a4a464",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:19.280Z",
+    "files": {
+      "night-shift/lobby-thought-w/media/line-1.mp3": "3d54061da7a1ae8602d978f0bf75b39028913207ffbf6eb076f39bc44a2f9efb"
+    }
+  },
+  "night-shift-lobby-thought-w-line-2": {
+    "recipe": "c56c86ee0daddfb5",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:19.483Z",
+    "files": {
+      "night-shift/lobby-thought-w/media/line-2.mp3": "124953bf7fabcf988ad53f077fc29ab4c0afac5ceeabf556e520eb7b768bbf7b"
+    }
+  },
+  "night-shift-lobby-thought-w-line-3": {
+    "recipe": "6f4ab3ddaf9b85f1",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:19.748Z",
+    "files": {
+      "night-shift/lobby-thought-w/media/line-3.mp3": "79aca159f1fc383aa6755e29f063313fc081ee7da54ff8442acb803368216933"
+    }
+  },
+  "night-shift-lobby-blank-w-line-1": {
+    "recipe": "39f8d3fd89ef3a75",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:20.007Z",
+    "files": {
+      "night-shift/lobby-blank-w/media/line-1.mp3": "f3645c6acff274b372b8e2a63bc3ab8c887284058ca44d9bf442eea277120249"
+    }
+  },
+  "night-shift-lobby-blank-w-line-2": {
+    "recipe": "15090de84fe7cf6f",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:20.234Z",
+    "files": {
+      "night-shift/lobby-blank-w/media/line-2.mp3": "e29eedc5d6b4b0a3717f4ac9a88fa27616e7fb49506db9c12b8239835507e89e"
+    }
+  },
+  "night-shift-lobby-blank-w-line-3": {
+    "recipe": "1342c3f6565c342f",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:20.470Z",
+    "files": {
+      "night-shift/lobby-blank-w/media/line-3.mp3": "137bf5f947bbe548b3ad16db8c9abfdc4c055e97566c5d11a054eeaacfb7a5a7"
+    }
+  },
+  "night-shift-lobby-exact-s-line-1": {
+    "recipe": "4cb9ffc1ff034aec",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:20.765Z",
+    "files": {
+      "night-shift/lobby-exact-s/media/line-1.mp3": "b684f766fc4a9883b1cccf2f7ba4db6bb566ffdbb1afb6cabb81c9bfb011b487"
+    }
+  },
+  "night-shift-lobby-exact-s-line-2": {
+    "recipe": "d3a10dfb2df51846",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:21.005Z",
+    "files": {
+      "night-shift/lobby-exact-s/media/line-2.mp3": "1c3633e16284cf4b0ea557d00d503ff83deb54312345b0e10ca1c6ea86a84cbb"
+    }
+  },
+  "night-shift-lobby-exact-s-line-3": {
+    "recipe": "c4a40a7441e06a9d",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:21.273Z",
+    "files": {
+      "night-shift/lobby-exact-s/media/line-3.mp3": "9a742dc4cf5091f260c8495aa288d900acc7689795925910e3f4bd010dfbc30e"
+    }
+  },
+  "night-shift-lobby-thought-s-line-1": {
+    "recipe": "c680a69a16a4a464",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:21.664Z",
+    "files": {
+      "night-shift/lobby-thought-s/media/line-1.mp3": "be20bdd9344c90922701ae677e5b2cec4746c627e25068a59a0d13820c4e0fbf"
+    }
+  },
+  "night-shift-lobby-thought-s-line-2": {
+    "recipe": "11c115ad5942e502",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:21.833Z",
+    "files": {
+      "night-shift/lobby-thought-s/media/line-2.mp3": "a91f0da88b95b42fa02cff3e6bc9a230e67a26cb4fb9ec7da1b237fff353d49c"
+    }
+  },
+  "night-shift-lobby-thought-s-line-3": {
+    "recipe": "a53a64b289528ed7",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:22.202Z",
+    "files": {
+      "night-shift/lobby-thought-s/media/line-3.mp3": "6cba721db8b782c2e11c307d0b2af26d09caff042812ddf449b04932a2d4ca19"
+    }
+  },
+  "night-shift-lobby-blank-s-line-1": {
+    "recipe": "39f8d3fd89ef3a75",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:22.538Z",
+    "files": {
+      "night-shift/lobby-blank-s/media/line-1.mp3": "09290ad7d42312e91af18d8894e48ab6973a4000c97f7ff4921a694052b584ff"
+    }
+  },
+  "night-shift-lobby-blank-s-line-2": {
+    "recipe": "a5b60448da572ae4",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:22.791Z",
+    "files": {
+      "night-shift/lobby-blank-s/media/line-2.mp3": "5f6a00b6e8e4c0963c9f858f7cadf974ba90644588bccd24b17adf1a4ecb0bab"
+    }
+  },
+  "night-shift-lobby-blank-s-line-3": {
+    "recipe": "15bdd14840d8fe01",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:23.032Z",
+    "files": {
+      "night-shift/lobby-blank-s/media/line-3.mp3": "f61403d0992350bb496ec79b45216107236c9a11f72ffc250b1e7996250c2c29"
+    }
+  },
+  "night-shift-adler-corrected-line-1": {
+    "recipe": "ee6594c6c58bc80d",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:23.284Z",
+    "files": {
+      "night-shift/adler-corrected/media/line-1.mp3": "22f3876ce61d7e4fb4ea367884ef33f51da950db92e87a8372e51cc9a1a07b19"
+    }
+  },
+  "night-shift-adler-corrected-line-2": {
+    "recipe": "aaed3807f686304f",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:23.473Z",
+    "files": {
+      "night-shift/adler-corrected/media/line-2.mp3": "4877fa272c2e8aa5a104aec03f2f22a426e3f9e9ee08ac7673f625ec28bf8937"
+    }
+  },
+  "night-shift-adler-corrected-line-3": {
+    "recipe": "2c9f6244bee71f35",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:23.698Z",
+    "files": {
+      "night-shift/adler-corrected/media/line-3.mp3": "247de5dea403663877d6b6cb7e10e611fbbe5bec1bcc1ede5dfbed3c861d5553"
+    }
+  },
+  "night-shift-adler-initialed-line-1": {
+    "recipe": "43e292a7c1ae9e31",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:23.979Z",
+    "files": {
+      "night-shift/adler-initialed/media/line-1.mp3": "26038d91396dc8ab5be4b55034dc4bed4a482cf6c827eb176d67ff15db130fd0"
+    }
+  },
+  "night-shift-adler-initialed-line-2": {
+    "recipe": "8a70789467b2fdda",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:24.213Z",
+    "files": {
+      "night-shift/adler-initialed/media/line-2.mp3": "ae2051397a3e5e2d7944609c19a82b703c465baa922ce20d8d2f7f9abd21da5c"
+    }
+  },
+  "night-shift-adler-initialed-line-3": {
+    "recipe": "71bd4b2555e7d1ac",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T20:03:24.426Z",
+    "files": {
+      "night-shift/adler-initialed/media/line-3.mp3": "c9454321161a47b2c1d7c6e2f3a9b21f5719b83b70bce3a36a0a6868133f2cf7"
     }
   }
 }

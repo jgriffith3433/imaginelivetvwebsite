@@ -253,7 +253,7 @@
           "text": "So. Let's walk through the log. I have a train.",
           "perform": "polite, hurried",
           "sfx": "tablet-tap",
-          "dur": 3
+          "dur": 2.9
         },
         {
           "speaker": "okafor",
@@ -284,7 +284,7 @@
           "text": "Four.",
           "perform": "flat",
           "sfx": "radio-charger",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "okafor",
@@ -296,14 +296,14 @@
           "speaker": "dee",
           "text": "Hello. Sit anywhere that isn't mine.",
           "perform": "dry",
-          "dur": 3.1
+          "dur": 3
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "low",
           "sfx": "radio-charger",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "okafor",
@@ -315,7 +315,7 @@
           "speaker": "dee",
           "text": "Extinguisher. Mm-hm. Your train, Okafor.",
           "perform": "dry, not unkind",
-          "dur": 4.1
+          "dur": 4
         }
       ],
       "choices": [
@@ -348,7 +348,7 @@
           "speaker": "okafor",
           "text": "Forty-four is the third line. Water was dry by four.",
           "perform": "answering, glad to",
-          "dur": 3.9
+          "dur": 3.8
         },
         {
           "speaker": "narrator",
@@ -366,7 +366,7 @@
           "speaker": "okafor",
           "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
           "perform": "correcting himself",
-          "dur": 5
+          "dur": 4.9
         },
         {
           "speaker": "okafor",
@@ -396,7 +396,7 @@
           "speaker": "dee",
           "text": "Then it's two minutes.",
           "perform": "flat",
-          "dur": 1.7
+          "dur": 1.6
         },
         {
           "speaker": "dee",
@@ -454,7 +454,7 @@
           "speaker": "okafor",
           "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
           "perform": "correcting himself",
-          "dur": 5
+          "dur": 4.9
         },
         {
           "speaker": "okafor",
@@ -484,7 +484,7 @@
           "speaker": "dee",
           "text": "Then it's two minutes.",
           "perform": "flat",
-          "dur": 1.7
+          "dur": 1.6
         },
         {
           "speaker": "dee",
@@ -547,7 +547,7 @@
           "speaker": "dee",
           "text": "Doesn't matter why.",
           "perform": "quick",
-          "dur": 1.3
+          "dur": 1.2
         },
         {
           "speaker": "dee",
@@ -608,19 +608,19 @@
           "speaker": "narrator",
           "text": "Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
           "sfx": "door-heavy",
-          "dur": 10.5
+          "dur": 10.4
         },
         {
           "speaker": "okafor",
           "text": "It's customary to read it first.",
           "perform": "from the door, tired",
-          "dur": 2.7
+          "dur": 2.6
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "less than a word",
-          "dur": 1.6
+          "dur": 1.5
         },
         {
           "speaker": "dee",
@@ -632,7 +632,7 @@
           "speaker": "dee",
           "text": "Doesn't matter why.",
           "perform": "quick",
-          "dur": 1.3
+          "dur": 1.2
         },
         {
           "speaker": "dee",
@@ -684,12 +684,12 @@
         {
           "speaker": "narrator",
           "text": "The control room is smaller than the wall makes it look. A shelf, a binder, an extinguisher, a charger with four green lights, a coffee machine that has been wrong for a long time.",
-          "dur": 12.1
+          "dur": 12
         },
         {
           "speaker": "narrator",
           "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person.",
-          "dur": 7.2
+          "dur": 7.1
         },
         {
           "speaker": "dee",
@@ -757,17 +757,17 @@
           "speaker": "dee",
           "text": "Knocking on it again, are we.",
           "perform": "to the wall, not to you",
-          "dur": 2.3
+          "dur": 2.2
         },
         {
           "speaker": "narrator",
           "text": "The control room is smaller than the wall makes it look. A shelf, a binder, an extinguisher, a charger with four green lights, a coffee machine that has been wrong for a long time.",
-          "dur": 12.1
+          "dur": 12
         },
         {
           "speaker": "narrator",
           "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person.",
-          "dur": 7.2
+          "dur": 7.1
         },
         {
           "speaker": "dee",
@@ -827,13 +827,13 @@
           "speaker": "dee",
           "text": "Back's all right? It's the only thing in here that is.",
           "perform": "a dry look at the chair",
-          "dur": 4.4
+          "dur": 4.3
         },
         {
           "speaker": "dee",
           "text": "It's been in here since before Terrell. Since before the carpet. Nobody's sure how it got in.",
           "perform": "dry, to the wall",
-          "dur": 6.3
+          "dur": 6.2
         },
         {
           "speaker": "narrator",
@@ -850,7 +850,7 @@
           "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
           "perform": "bright, over the radio",
           "sfx": "radio-squelch",
-          "dur": 5.3,
+          "dur": 5.2,
           "treatment": "radio"
         },
         {
@@ -900,7 +900,7 @@
           "speaker": "dee",
           "text": "You're in my chair, Officer. Go on, I'll live.",
           "perform": "deadpan, not moving",
-          "dur": 4.1
+          "dur": 4
         },
         {
           "speaker": "dee",
@@ -917,7 +917,7 @@
           "speaker": "dee",
           "text": "Don't get used to it.",
           "perform": "flat, from the good chair, the one she has never once sat in",
-          "dur": 1.9
+          "dur": 1.8
         },
         {
           "speaker": "narrator",
@@ -929,7 +929,7 @@
           "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
           "perform": "bright, over the radio",
           "sfx": "radio-squelch",
-          "dur": 5.3,
+          "dur": 5.2,
           "treatment": "radio"
         },
         {
@@ -979,13 +979,13 @@
           "speaker": "dee",
           "text": "So I'm never late for myself.",
           "perform": "short, a shrug in it",
-          "dur": 2.6
+          "dur": 2.5
         },
         {
           "speaker": "dee",
           "text": "Leave it.",
           "perform": "flat",
-          "dur": 1.1
+          "dur": 1
         },
         {
           "speaker": "dee",
@@ -1003,7 +1003,7 @@
           "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
           "perform": "bright, over the radio",
           "sfx": "radio-squelch",
-          "dur": 5.3,
+          "dur": 5.2,
           "treatment": "radio"
         },
         {
@@ -1128,7 +1128,7 @@
           "speaker": "dee",
           "text": "Button's on the side. Side. The…",
           "perform": "cut off by her own sigh",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "dee",
@@ -1214,7 +1214,7 @@
           "speaker": "dee",
           "text": "It's not mine. Press the side.",
           "perform": "flat, not taking it",
-          "dur": 2.6
+          "dur": 2.5
         },
         {
           "speaker": "dee",
@@ -1312,7 +1312,7 @@
           "speaker": "dee",
           "text": "Thirty-six minutes. Door to door. The seven smells like pennies.",
           "perform": "flat, a small, dry kindness",
-          "dur": 5
+          "dur": 4.9
         },
         {
           "speaker": "narrator",
@@ -1324,13 +1324,13 @@
           "text": "One. Lobby. Two. Vestibule. Three, dock.",
           "perform": "pencil moving, no hurry",
           "sfx": "pencil",
-          "dur": 7.3
+          "dur": 7.2
         },
         {
           "speaker": "dee",
           "text": "Say what you see. Not what it is.",
           "perform": "short",
-          "dur": 2.7
+          "dur": 2.6
         }
       ],
       "choices": [
@@ -1378,7 +1378,7 @@
           "speaker": "dee",
           "text": "Ray used to… Forget it. Drink the coffee.",
           "perform": "trails off, picks up the cup",
-          "dur": 3.9
+          "dur": 3.8
         },
         {
           "speaker": "dee",
@@ -1401,13 +1401,13 @@
           "text": "One. Lobby. Two. Vestibule. Three, dock.",
           "perform": "pencil moving, no hurry",
           "sfx": "pencil",
-          "dur": 7.3
+          "dur": 7.2
         },
         {
           "speaker": "dee",
           "text": "Say what you see. Not what it is.",
           "perform": "short",
-          "dur": 2.7
+          "dur": 2.6
         }
       ],
       "choices": [
@@ -1455,7 +1455,7 @@
           "speaker": "dee",
           "text": "Terrell.",
           "perform": "one word",
-          "dur": 0.9
+          "dur": 0.8
         },
         {
           "speaker": "dee",
@@ -1478,13 +1478,13 @@
           "text": "One. Lobby. Two. Vestibule. Three, dock.",
           "perform": "pencil moving, no hurry",
           "sfx": "pencil",
-          "dur": 7.3
+          "dur": 7.2
         },
         {
           "speaker": "dee",
           "text": "Say what you see. Not what it is.",
           "perform": "short",
-          "dur": 2.7
+          "dur": 2.6
         }
       ],
       "choices": [
@@ -1560,7 +1560,7 @@
           "speaker": "dee",
           "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
           "perform": "the pencil stops",
-          "dur": 6.6
+          "dur": 6.5
         }
       ],
       "choices": [
@@ -1602,7 +1602,7 @@
           "speaker": "dee",
           "text": "Nothing's normal. Same lobby all night. That's normal.",
           "perform": "a small shrug in the voice",
-          "dur": 4.7
+          "dur": 4.6
         },
         {
           "speaker": "dee",
@@ -1614,7 +1614,7 @@
           "speaker": "dee",
           "text": "Eight hours. Nine tiles. Same lobby.",
           "perform": "flat",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "narrator",
@@ -1637,7 +1637,7 @@
           "speaker": "dee",
           "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
           "perform": "the pencil stops",
-          "dur": 6.6
+          "dur": 6.5
         }
       ],
       "choices": [
@@ -1719,7 +1719,7 @@
           "speaker": "dee",
           "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
           "perform": "the pencil stops",
-          "dur": 6.6
+          "dur": 6.5
         }
       ],
       "choices": [
@@ -1761,13 +1761,13 @@
           "speaker": "dee",
           "text": "Nine never moves. If it moves, say.",
           "perform": "slower, close to a rule",
-          "dur": 4.4
+          "dur": 4.3
         },
         {
           "speaker": "dee",
           "text": "That's the wall. You've seen it. Now you've seen it.",
           "perform": "pencil behind her ear",
-          "dur": 3.8
+          "dur": 3.7
         },
         {
           "speaker": "narrator",
@@ -1791,7 +1791,7 @@
         {
           "speaker": "narrator",
           "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular.",
-          "dur": 8.6
+          "dur": 8.5
         },
         {
           "speaker": "dee",
@@ -1839,13 +1839,13 @@
           "speaker": "dee",
           "text": "Roof door. Eight. I do that one at three. Alone.",
           "perform": "too quickly, then back to the wall",
-          "dur": 3.9
+          "dur": 3.8
         },
         {
           "speaker": "dee",
           "text": "That's the wall. You've seen it. Now you've seen it.",
           "perform": "pencil behind her ear",
-          "dur": 3.8
+          "dur": 3.7
         },
         {
           "speaker": "narrator",
@@ -1869,7 +1869,7 @@
         {
           "speaker": "narrator",
           "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular.",
-          "dur": 8.6
+          "dur": 8.5
         },
         {
           "speaker": "dee",
@@ -1917,12 +1917,12 @@
           "speaker": "dee",
           "text": "That's the wall. You've seen it. Now you've seen it.",
           "perform": "pencil behind her ear",
-          "dur": 3.8
+          "dur": 3.7
         },
         {
           "speaker": "narrator",
           "text": "On tile seven the glass doors of fifty-eight are lit and nobody is behind them.",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
@@ -1946,7 +1946,7 @@
         {
           "speaker": "narrator",
           "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular.",
-          "dur": 8.6
+          "dur": 8.5
         },
         {
           "speaker": "dee",
@@ -2001,7 +2001,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -2027,7 +2027,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -2093,7 +2093,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -2125,7 +2125,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -2185,7 +2185,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -2211,7 +2211,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -2271,7 +2271,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -2303,7 +2303,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -2375,7 +2375,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -2401,7 +2401,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -2473,7 +2473,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -2505,7 +2505,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -2571,14 +2571,14 @@
           "speaker": "marisol",
           "text": "Gracias, mi amor. Bendito. I owe you a plate.",
           "perform": "already moving, the walkie bouncing",
-          "dur": 3.8,
+          "dur": 3.7,
           "treatment": "walkie"
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "the whole sentence",
-          "dur": 2.6
+          "dur": 2.5
         },
         {
           "speaker": "dee",
@@ -2630,7 +2630,7 @@
           "speaker": "narrator",
           "text": "Mr. Okafor's night line rings four times. His voice is flatter on the phone, and there is a television somewhere behind it.",
           "sfx": "phone-ring",
-          "dur": 7.7
+          "dur": 7.6
         },
         {
           "speaker": "okafor",
@@ -2643,7 +2643,7 @@
           "speaker": "okafor",
           "text": "So. Please put it in the log, both times: when you called, and when he answered.",
           "perform": "even",
-          "dur": 5.9,
+          "dur": 5.8,
           "treatment": "phone"
         },
         {
@@ -2658,13 +2658,13 @@
           "speaker": "dee",
           "text": "She'll be fine by Thursday.",
           "perform": "to the wall",
-          "dur": 2.4
+          "dur": 2.3
         },
         {
           "speaker": "dee",
           "text": "You called it. Fine. It's the book.",
           "perform": "a nod, grudging, not cold",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "dee",
@@ -2749,7 +2749,7 @@
         {
           "speaker": "narrator",
           "text": "The photocopy is a name and a date, with a stamp too faint to read at this size.",
-          "dur": 5.5
+          "dur": 5.4
         }
       ],
       "choices": [
@@ -2786,7 +2786,7 @@
         {
           "speaker": "narrator",
           "text": "She says it flatly and does not move her hand from the pencil.",
-          "dur": 3.8
+          "dur": 3.7
         },
         {
           "speaker": "narrator",
@@ -2798,7 +2798,7 @@
           "speaker": "dee",
           "text": "Say what you did.",
           "perform": "plain",
-          "dur": 1.4
+          "dur": 1.3
         },
         {
           "speaker": "dee",
@@ -2872,7 +2872,7 @@
         {
           "speaker": "narrator",
           "text": "Tile six holds its picture: a corridor, a closet door, a dark line along the sill.",
-          "dur": 7.2
+          "dur": 7.1
         },
         {
           "speaker": "narrator",
@@ -2884,13 +2884,13 @@
           "speaker": "dee",
           "text": "Say what you did.",
           "perform": "plain",
-          "dur": 1.4
+          "dur": 1.3
         },
         {
           "speaker": "dee",
           "text": "Water. Under the closet. You were watching.",
           "perform": "a nod at tile six",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "dee",
@@ -2965,13 +2965,13 @@
           "speaker": "dee",
           "text": "Say what you did.",
           "perform": "plain",
-          "dur": 1.4
+          "dur": 1.3
         },
         {
           "speaker": "dee",
           "text": "I'd have done it differently. That doesn't go in.",
           "perform": "dry, to the tablet",
-          "dur": 3.3
+          "dur": 3.2
         },
         {
           "speaker": "dee",
@@ -2983,18 +2983,18 @@
           "speaker": "dee",
           "text": "Time. Place. What you saw. Who you told.",
           "perform": "short",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "dee",
           "text": "Mm. Slow. You'll want to hurry. Don't.",
           "perform": "while you reach for the tablet",
-          "dur": 4.4
+          "dur": 4.3
         },
         {
           "speaker": "narrator",
           "text": "The cursor blinks in the field. The field has a label: INCIDENT.",
-          "dur": 5
+          "dur": 4.9
         }
       ],
       "choices": [
@@ -3050,24 +3050,24 @@
         {
           "speaker": "narrator",
           "text": "Beside the tablet, the photocopy has begun to curl at one corner.",
-          "dur": 4.4
+          "dur": 4.3
         },
         {
           "speaker": "narrator",
           "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six.",
-          "dur": 10.6
+          "dur": 10.5
         },
         {
           "speaker": "dee",
           "text": "Say what happened. The paper's not a yes.",
           "perform": "plain, flat on the second sentence",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "dee",
           "text": "You read the name. Good. That's the first line.",
           "perform": "a nod at the page",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "dee",
@@ -3129,19 +3129,19 @@
         {
           "speaker": "narrator",
           "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six.",
-          "dur": 10.6
+          "dur": 10.5
         },
         {
           "speaker": "dee",
           "text": "Say what happened. The paper's not a yes.",
           "perform": "plain, flat on the second sentence",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "dee",
           "text": "You handed it to me. It goes in your log, not mine.",
           "perform": "pushing the pencil an inch toward you",
-          "dur": 8
+          "dur": 7.9
         },
         {
           "speaker": "dee",
@@ -3203,18 +3203,18 @@
           "speaker": "narrator",
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
-          "dur": 7.3
+          "dur": 7.2
         },
         {
           "speaker": "dee",
           "text": "Keep that one.",
           "perform": "reading it twice, not out loud",
-          "dur": 1.1
+          "dur": 1
         },
         {
           "speaker": "narrator",
           "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
-          "dur": 7
+          "dur": 6.9
         },
         {
           "speaker": "dee",
@@ -3245,7 +3245,7 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat",
-          "dur": 1.6
+          "dur": 1.5
         },
         {
           "speaker": "dee",
@@ -3293,18 +3293,18 @@
           "speaker": "narrator",
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
-          "dur": 7.3
+          "dur": 7.2
         },
         {
           "speaker": "dee",
           "text": "Facts only. What did you see?",
           "perform": "reaching for the rubber on the end of the pencil",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "narrator",
           "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
-          "dur": 7
+          "dur": 6.9
         },
         {
           "speaker": "dee",
@@ -3335,7 +3335,7 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat",
-          "dur": 1.6
+          "dur": 1.5
         },
         {
           "speaker": "dee",
@@ -3383,18 +3383,18 @@
           "speaker": "narrator",
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
-          "dur": 7.3
+          "dur": 7.2
         },
         {
           "speaker": "dee",
           "text": "Where's forty-four?",
           "perform": "the tablet turned toward you",
-          "dur": 3.6
+          "dur": 3.5
         },
         {
           "speaker": "narrator",
           "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
-          "dur": 7
+          "dur": 6.9
         },
         {
           "speaker": "dee",
@@ -3425,7 +3425,7 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat",
-          "dur": 1.6
+          "dur": 1.5
         },
         {
           "speaker": "dee",
@@ -3473,13 +3473,13 @@
           "speaker": "narrator",
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
-          "dur": 7.3
+          "dur": 7.2
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "the tablet slowly turned face down",
-          "dur": 6.3
+          "dur": 6.2
         },
         {
           "speaker": "dee",
@@ -3490,7 +3490,7 @@
         {
           "speaker": "narrator",
           "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
-          "dur": 7
+          "dur": 6.9
         },
         {
           "speaker": "dee",
@@ -3521,7 +3521,7 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat",
-          "dur": 1.6
+          "dur": 1.5
         },
         {
           "speaker": "dee",
@@ -3577,7 +3577,7 @@
           "speaker": "dee",
           "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
           "perform": "tapping each column",
-          "dur": 9.8
+          "dur": 9.7
         },
         {
           "speaker": "dee",
@@ -3589,7 +3589,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -3615,7 +3615,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -3682,7 +3682,7 @@
           "speaker": "dee",
           "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
           "perform": "tapping each column",
-          "dur": 9.8
+          "dur": 9.7
         },
         {
           "speaker": "dee",
@@ -3694,7 +3694,7 @@
           "speaker": "narrator",
           "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
           "sfx": "walkie-squelch",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "marisol",
@@ -3726,7 +3726,7 @@
           "speaker": "dee",
           "text": "Mm-hm. I know. I know what the book says.",
           "perform": "cutting you off before the rule",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "marisol",
@@ -3798,7 +3798,7 @@
           "speaker": "narrator",
           "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
           "sfx": "door-heavy",
-          "dur": 12
+          "dur": 11.9
         },
         {
           "speaker": "dee",
@@ -3854,25 +3854,25 @@
           "speaker": "dee",
           "text": "I pull it. I go and find the smoker. I say hello.",
           "perform": "flat, quiet, going down",
-          "dur": 6.1
+          "dur": 6
         },
         {
           "speaker": "dee",
           "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it.",
           "perform": "flat",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "dee",
           "text": "Mm. You do the book.",
           "perform": "a beat on the rail, even",
-          "dur": 2.2
+          "dur": 2.1
         },
         {
           "speaker": "narrator",
           "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
           "sfx": "door-heavy",
-          "dur": 12
+          "dur": 11.9
         },
         {
           "speaker": "dee",
@@ -3940,7 +3940,7 @@
           "speaker": "narrator",
           "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
           "sfx": "door-heavy",
-          "dur": 12
+          "dur": 11.9
         },
         {
           "speaker": "dee",
@@ -4002,7 +4002,7 @@
           "speaker": "dee",
           "text": "Sign for it? Not unless the list says. Mm. Not unless.",
           "perform": "flat, a half second slower the second time",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "narrator",
@@ -4068,7 +4068,7 @@
           "speaker": "dee",
           "text": "Nobody checks that one. So it's the one.",
           "perform": "flat",
-          "dur": 3.4
+          "dur": 3.3
         },
         {
           "speaker": "narrator",
@@ -4194,7 +4194,7 @@
           "speaker": "dee",
           "text": "It gives. It holds. Good.",
           "perform": "her hand beside yours on the bar, flat",
-          "dur": 7.8
+          "dur": 7.7
         },
         {
           "speaker": "narrator",
@@ -4205,7 +4205,7 @@
           "speaker": "dee",
           "text": "Name. Company. Who they're seeing. Floor. In. Out.",
           "perform": "tapping each column",
-          "dur": 6.8
+          "dur": 6.7
         },
         {
           "speaker": "dee",
@@ -4217,7 +4217,7 @@
           "speaker": "dee",
           "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
           "perform": "like a recipe she has said a thousand times",
-          "dur": 6.8
+          "dur": 6.7
         },
         {
           "speaker": "dee",
@@ -4229,7 +4229,7 @@
           "speaker": "dee",
           "text": "Pen's for the sheet. Pencil's for… Pick one.",
           "perform": "holding both out",
-          "dur": 4.1
+          "dur": 4
         }
       ],
       "choices": [
@@ -4358,7 +4358,7 @@
           "speaker": "dee",
           "text": "Because I always have.",
           "perform": "flat, no more",
-          "dur": 1.8
+          "dur": 1.7
         },
         {
           "speaker": "dee",
@@ -4375,7 +4375,7 @@
           "speaker": "dee",
           "text": "Name. Company. Who they're seeing. Floor. In. Out.",
           "perform": "tapping each column",
-          "dur": 6.8
+          "dur": 6.7
         },
         {
           "speaker": "dee",
@@ -4387,7 +4387,7 @@
           "speaker": "dee",
           "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
           "perform": "like a recipe she has said a thousand times",
-          "dur": 6.8
+          "dur": 6.7
         },
         {
           "speaker": "dee",
@@ -4399,7 +4399,7 @@
           "speaker": "dee",
           "text": "Pen's for the sheet. Pencil's for… Pick one.",
           "perform": "holding both out",
-          "dur": 4.1
+          "dur": 4
         }
       ],
       "choices": [
@@ -4533,7 +4533,7 @@
           "speaker": "dee",
           "text": "Mm. Don't read the walls.",
           "perform": "flat, already on the stairs",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "narrator",
@@ -4544,7 +4544,7 @@
           "speaker": "dee",
           "text": "Name. Company. Who they're seeing. Floor. In. Out.",
           "perform": "tapping each column",
-          "dur": 6.8
+          "dur": 6.7
         },
         {
           "speaker": "dee",
@@ -4556,7 +4556,7 @@
           "speaker": "dee",
           "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
           "perform": "like a recipe she has said a thousand times",
-          "dur": 6.8
+          "dur": 6.7
         },
         {
           "speaker": "dee",
@@ -4568,7 +4568,7 @@
           "speaker": "dee",
           "text": "Pen's for the sheet. Pencil's for… Pick one.",
           "perform": "holding both out",
-          "dur": 4.1
+          "dur": 4
         }
       ],
       "choices": [
@@ -4697,7 +4697,7 @@
           "speaker": "narrator",
           "text": "On tile one, Terrell pushes the sheet across and the man writes on it without looking up. Then the elevator doors close on the vest.",
           "sfx": "elevator-chime",
-          "dur": 8.9
+          "dur": 8.8
         },
         {
           "speaker": "terrell",
@@ -4709,13 +4709,13 @@
           "speaker": "dee",
           "text": "Mm.",
           "perform": "low",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "dee",
           "text": "Stay on the wall.",
           "perform": "getting up, the pencil from behind her ear",
-          "dur": 5.2
+          "dur": 5.1
         },
         {
           "speaker": "narrator",
@@ -4763,7 +4763,7 @@
           "text": "Let me see what I can do.",
           "perform": "a beat of keyboard",
           "sfx": "radio-squelch",
-          "dur": 2.2
+          "dur": 2.1
         },
         {
           "speaker": "terrell",
@@ -4775,7 +4775,7 @@
           "speaker": "narrator",
           "text": "The man in the vest shrugs, takes his clipboard and goes out through the revolving door.",
           "sfx": "elevator-chime",
-          "dur": 5.4
+          "dur": 5.3
         },
         {
           "speaker": "terrell",
@@ -4794,7 +4794,7 @@
           "speaker": "dee",
           "text": "Tuesday he had a yes. Today he doesn't.",
           "perform": "flat, to the wall",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "narrator",
@@ -4829,7 +4829,7 @@
           "speaker": "dee",
           "text": "Go. I have the wall.",
           "perform": "not turning",
-          "dur": 2.2
+          "dur": 2.1
         },
         {
           "speaker": "narrator",
@@ -4852,7 +4852,7 @@
           "speaker": "terrell",
           "text": "See? See, I said.",
           "perform": "to nobody, delighted",
-          "dur": 2.6
+          "dur": 2.5
         },
         {
           "speaker": "narrator",
@@ -4863,7 +4863,7 @@
           "speaker": "dee",
           "text": "Initial the sheet. Both of you.",
           "perform": "over your radio, quiet",
-          "dur": 2.5,
+          "dur": 2.4,
           "treatment": "radio"
         },
         {
@@ -4899,7 +4899,7 @@
         {
           "speaker": "narrator",
           "text": "Terrell's bag is on his shoulder. He stands in the control-room doorway, bag on his shoulder.",
-          "dur": 5.9
+          "dur": 5.8
         },
         {
           "speaker": "terrell",
@@ -4996,7 +4996,7 @@
         {
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
-          "dur": 8.3
+          "dur": 8.2
         },
         {
           "speaker": "dee",
@@ -5058,13 +5058,13 @@
           "speaker": "terrell",
           "text": "Okay. Okay! Radios, you know? Watch the radios. She counts them in her sleep.",
           "perform": "backing into the cold",
-          "dur": 6.1
+          "dur": 6
         },
         {
           "speaker": "narrator",
           "text": "The door turns once and stops. You go back through the lobby to the control room.",
           "sfx": "door-heavy",
-          "dur": 5.3
+          "dur": 5.2
         },
         {
           "speaker": "narrator",
@@ -5092,7 +5092,7 @@
         {
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
-          "dur": 8.3
+          "dur": 8.2
         },
         {
           "speaker": "dee",
@@ -5143,13 +5143,13 @@
           "speaker": "terrell",
           "text": "Eleven years? Twelve? She hasn't missed a night. Not one. Somebody told me that, I didn't ask.",
           "perform": "fast, to you",
-          "dur": 6.1
+          "dur": 6
         },
         {
           "speaker": "dee",
           "text": "Terrell. Door.",
           "perform": "a knife of a word",
-          "dur": 2.2
+          "dur": 2.1
         },
         {
           "speaker": "terrell",
@@ -5160,7 +5160,7 @@
         {
           "speaker": "narrator",
           "text": "Dolores looks at the wall. She does not look at you. The pencil goes behind her ear.",
-          "dur": 6
+          "dur": 5.9
         },
         {
           "speaker": "narrator",
@@ -5188,7 +5188,7 @@
         {
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
-          "dur": 8.3
+          "dur": 8.2
         },
         {
           "speaker": "dee",
@@ -5239,7 +5239,7 @@
           "speaker": "terrell",
           "text": "Criminal justice. Night classes, Tuesdays, Thursdays. Three years, I'm, like, a year and a half from done.",
           "perform": "fast, pleased to be asked",
-          "dur": 6.2
+          "dur": 6.1
         },
         {
           "speaker": "terrell",
@@ -5257,7 +5257,7 @@
           "speaker": "terrell",
           "text": "I'm bad at it. The sheet's the same every night, so, you know?",
           "perform": "warm",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "dee",
@@ -5269,12 +5269,12 @@
           "speaker": "terrell",
           "text": "Going. I'm going! Night, you two.",
           "perform": "over his shoulder, warm",
-          "dur": 3
+          "dur": 2.9
         },
         {
           "speaker": "narrator",
           "text": "His shape crosses tile one, shrinking, and the revolving door takes him out into Madison Avenue in a long slow arc.",
-          "dur": 8.5
+          "dur": 8.4
         },
         {
           "speaker": "narrator",
@@ -5297,7 +5297,7 @@
         {
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
-          "dur": 8.3
+          "dur": 8.2
         },
         {
           "speaker": "dee",
@@ -5363,7 +5363,7 @@
           "speaker": "dee",
           "text": "He's the best at it. Not the best at anything else.",
           "perform": "from the doorway, taking off her coat, not asking what you are reading",
-          "dur": 8.8
+          "dur": 8.7
         },
         {
           "speaker": "dee",
@@ -5380,7 +5380,7 @@
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger",
-          "dur": 1
+          "dur": 0.9
         }
       ],
       "choices": [
@@ -5403,7 +5403,7 @@
           "speaker": "dee",
           "text": "Lobby's clear. Dock's clear. Compactor's ticking.",
           "perform": "over the radio, a breath, almost company",
-          "dur": 4.8,
+          "dur": 4.7,
           "treatment": "radio"
         },
         {
@@ -5420,7 +5420,7 @@
         {
           "speaker": "narrator",
           "text": "The coffee is wrong. The monitors hum. You look.",
-          "dur": 4.2
+          "dur": 4.1
         }
       ],
       "choices": [
@@ -5473,7 +5473,7 @@
           "speaker": "dee",
           "text": "Side. The side.",
           "perform": "over the radio, dry",
-          "dur": 2.3,
+          "dur": 2.2,
           "treatment": "radio"
         },
         {
@@ -5486,7 +5486,7 @@
           "speaker": "dee",
           "text": "Lobby's clear. Dock's clear. Pay attention to the side.",
           "perform": "over the radio",
-          "dur": 4,
+          "dur": 3.9,
           "treatment": "radio"
         },
         {
@@ -5503,7 +5503,7 @@
         {
           "speaker": "narrator",
           "text": "The coffee is wrong. The monitors hum. You look.",
-          "dur": 4.2
+          "dur": 4.1
         }
       ],
       "choices": [
@@ -5556,7 +5556,7 @@
           "speaker": "dee",
           "text": "Radio check.",
           "perform": "over the radio, again",
-          "dur": 1.4,
+          "dur": 1.3,
           "treatment": "radio"
         },
         {
@@ -5578,7 +5578,7 @@
           "speaker": "dee",
           "text": "Lobby's clear. Dock's clear.",
           "perform": "over the radio, after a moment",
-          "dur": 2.6,
+          "dur": 2.5,
           "treatment": "radio"
         },
         {
@@ -5595,7 +5595,7 @@
         {
           "speaker": "narrator",
           "text": "The coffee is wrong. The monitors hum. You look.",
-          "dur": 4.2
+          "dur": 4.1
         }
       ],
       "choices": [
@@ -5663,7 +5663,7 @@
         {
           "speaker": "narrator",
           "text": "You sit and look at tile one for a while.",
-          "dur": 2.9
+          "dur": 2.8
         },
         {
           "speaker": "narrator",
@@ -5674,7 +5674,7 @@
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "dee",
@@ -5713,7 +5713,7 @@
         {
           "speaker": "narrator",
           "text": "At 23:44 the lobby tile shows the revolving door turning once with nobody in it. You write it down.",
-          "dur": 7.7
+          "dur": 7.6
         },
         {
           "speaker": "narrator",
@@ -5724,7 +5724,7 @@
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "dee",
@@ -5824,7 +5824,7 @@
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "dee",
@@ -5870,7 +5870,7 @@
           "speaker": "dee",
           "text": "Next time you say. Mm. Next time.",
           "perform": "taking off her coat, her back to you",
-          "dur": 4.1
+          "dur": 4
         },
         {
           "speaker": "narrator",
@@ -5958,7 +5958,7 @@
           "speaker": "okafor",
           "text": "That's noted. Are you eating? It's in the handbook, page nine.",
           "perform": "dry",
-          "dur": 4.3,
+          "dur": 4.2,
           "treatment": "phone"
         },
         {
@@ -5972,17 +5972,17 @@
           "speaker": "dee",
           "text": "Okafor. Mm. It's quiet. Yes. Good night.",
           "perform": "taking the phone, hanging up, putting the phone down like an egg",
-          "dur": 6.1
+          "dur": 6
         },
         {
           "speaker": "narrator",
           "text": "She looks at the phone a moment longer than she needs to.",
-          "dur": 3.4
+          "dur": 3.3
         },
         {
           "speaker": "narrator",
           "text": "The line goes dead. The wall clock says 00:14. It is 00:12.",
-          "dur": 7
+          "dur": 6.9
         }
       ],
       "choices": [
@@ -6019,21 +6019,21 @@
           "speaker": "okafor",
           "text": "So. It's Okafor. The entry for forty-four. I'd like it to say what happened, in order, without \"seemed\" and without a gap.",
           "perform": "polite, a chair creaking",
-          "dur": 9.5,
+          "dur": 9.4,
           "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "\"Seemed.\" How did he seem? Put what he did, in order. Can you do that tonight?",
           "perform": "even",
-          "dur": 6.1,
+          "dur": 6,
           "treatment": "phone"
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "a pencil tapping the shelf",
-          "dur": 3.1
+          "dur": 3
         },
         {
           "speaker": "narrator",
@@ -6043,7 +6043,7 @@
         {
           "speaker": "narrator",
           "text": "The incident field is open. Your own words are in it, in grey.",
-          "dur": 4.8
+          "dur": 4.7
         }
       ],
       "choices": [
@@ -6134,7 +6134,7 @@
         {
           "speaker": "narrator",
           "text": "The phone is warm against your ear. Dolores has stopped moving the pencil.",
-          "dur": 4.9
+          "dur": 4.8
         },
         {
           "speaker": "narrator",
@@ -6217,13 +6217,13 @@
           "speaker": "dee",
           "text": "Pepper and egg.",
           "perform": "to the wall",
-          "dur": 1.9
+          "dur": 1.8
         },
         {
           "speaker": "dee",
           "text": "Peppers raw. Egg fried hard. The deli on Seventy-seventh has it wrapped before I'm through the door.",
           "perform": "flat",
-          "dur": 7
+          "dur": 6.9
         }
       ],
       "choices": [
@@ -6277,7 +6277,7 @@
           "speaker": "dee",
           "text": "Ray used to take the corner. Said that's where the egg was.",
           "perform": "low, quick, a pause after it",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "dee",
@@ -6324,7 +6324,7 @@
         {
           "speaker": "narrator",
           "text": "You eat. She eats. The foil makes the only noise in the room, and then it makes none. On tile one the revolving door turns once with nobody in it.",
-          "dur": 11.7
+          "dur": 11.6
         },
         {
           "speaker": "narrator",
@@ -6341,7 +6341,7 @@
           "speaker": "dee",
           "text": "Nothing. Admin.",
           "perform": "flat, before you ask",
-          "dur": 2.1
+          "dur": 2
         }
       ],
       "choices": [
@@ -6417,7 +6417,7 @@
           "speaker": "dee",
           "text": "Nothing. Admin.",
           "perform": "flat, before you ask",
-          "dur": 2.1
+          "dur": 2
         }
       ],
       "choices": [
@@ -6465,23 +6465,23 @@
           "speaker": "dee",
           "text": "Mm. Give it here.",
           "perform": "taking it anyway",
-          "dur": 1.9
+          "dur": 1.8
         },
         {
           "speaker": "narrator",
           "text": "She drinks half of it standing at the wall, and puts it down on the shelf, away from the sandwich.",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "dee",
           "text": "Don't tell Terrell.",
           "perform": "flat",
-          "dur": 1.6
+          "dur": 1.5
         },
         {
           "speaker": "narrator",
           "text": "You taste what is left in your own cup. It is wrong. It is, with some effort, drinkable.",
-          "dur": 7.1
+          "dur": 7
         },
         {
           "speaker": "narrator",
@@ -6493,7 +6493,7 @@
           "speaker": "dee",
           "text": "Nothing. Admin.",
           "perform": "flat, before you ask",
-          "dur": 2.1
+          "dur": 2
         }
       ],
       "choices": [
@@ -6547,7 +6547,7 @@
           "speaker": "dee",
           "text": "I don't care about the tenants. Mm. Hand me the pencil.",
           "perform": "dry",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "narrator",
@@ -6563,7 +6563,7 @@
           "speaker": "dee",
           "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
           "perform": "flat, reading",
-          "dur": 4.9
+          "dur": 4.8
         },
         {
           "speaker": "dee",
@@ -6631,7 +6631,7 @@
           "speaker": "dee",
           "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
           "perform": "flat, reading",
-          "dur": 4.9
+          "dur": 4.8
         },
         {
           "speaker": "dee",
@@ -6684,7 +6684,7 @@
           "speaker": "dee",
           "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
           "perform": "flat, reading",
-          "dur": 4.9
+          "dur": 4.8
         },
         {
           "speaker": "dee",
@@ -6923,7 +6923,7 @@
         {
           "speaker": "narrator",
           "text": "She is two stairwells away and four floors down. She doesn't know.",
-          "dur": 4.8
+          "dur": 4.7
         },
         {
           "speaker": "narrator",
@@ -6981,7 +6981,7 @@
         {
           "speaker": "narrator",
           "text": "The access terminal lists the floor: five badges swiped in after six, one still unswiped out. A law firm's name, a time, a single entry. Anand, D. In at 18:02.",
-          "dur": 14.6
+          "dur": 14.5
         },
         {
           "speaker": "narrator",
@@ -7059,14 +7059,14 @@
           "speaker": "dee",
           "text": "Okafor's line is lit. What did you tell him?",
           "perform": "over the radio, flat",
-          "dur": 3.3,
+          "dur": 3.2,
           "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "A wedge. Mm. A wedge. It's the book.",
           "perform": "a long pause on the radio, even",
-          "dur": 4.6,
+          "dur": 4.5,
           "treatment": "radio"
         },
         {
@@ -7079,7 +7079,7 @@
         {
           "speaker": "narrator",
           "text": "On tile four the wedge sits in the doorway.",
-          "dur": 3.3
+          "dur": 3.2
         }
       ],
       "choices": [
@@ -7137,26 +7137,26 @@
           "text": "Wedge. Thirty-one. I'm going up. Wall.",
           "perform": "over the radio, already moving",
           "sfx": "footsteps-stairs",
-          "dur": 3.9,
+          "dur": 3.8,
           "treatment": "radio"
         },
         {
           "speaker": "narrator",
           "text": "On tile four the door stays open. Two minutes. Then Dolores on the landing, her back to the lens, and a younger man in shirtsleeves holding a cigarette he did not light.",
-          "dur": 12.1
+          "dur": 12
         },
         {
           "speaker": "dee",
           "text": "Thirty-one. Orange. Rubber. Anand, law firm. He's sorry. He's very sorry.",
           "perform": "over the radio, dry",
-          "dur": 8.1,
+          "dur": 8,
           "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Door's shut. He knows. You said. Good.",
           "perform": "a pause, the second part quieter",
-          "dur": 5.7
+          "dur": 5.6
         },
         {
           "speaker": "dee",
@@ -7230,7 +7230,7 @@
         {
           "speaker": "narrator",
           "text": "You log it and keep watching. For six minutes nothing on tile four changes. At 01:58 a man in shirtsleeves steps onto the landing, looks at the wedge, and goes back through the door to the floor.",
-          "dur": 13.8
+          "dur": 13.7
         },
         {
           "speaker": "narrator",
@@ -7241,18 +7241,18 @@
           "speaker": "dee",
           "text": "Stairwell B. Clear. Heading to the roof side.",
           "perform": "over the radio, away from C",
-          "dur": 3.7,
+          "dur": 3.6,
           "treatment": "radio"
         },
         {
           "speaker": "narrator",
           "text": "Four minutes later the radio says the same thing again, from another landing. Nobody on the radio says the word thirty-one. Nobody on the wall does either.",
-          "dur": 10.3
+          "dur": 10.2
         },
         {
           "speaker": "narrator",
           "text": "The tablet is on your knee. The incident field is blank. You could write what you saw. You could write what you did.",
-          "dur": 7.4
+          "dur": 7.3
         }
       ],
       "choices": [
@@ -7315,21 +7315,21 @@
           "speaker": "dee",
           "text": "Thirty-one is open. Wedge. Orange.",
           "perform": "over the radio, flat as a plate",
-          "dur": 3.7,
+          "dur": 3.6,
           "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "You were on the wall. Nine tiles. Not four. Anand, law firm. Smoke on the landing. Sorry, he says.",
           "perform": "a breath, over the radio",
-          "dur": 9.9,
+          "dur": 9.8,
           "treatment": "radio"
         },
         {
           "speaker": "dee",
           "text": "Door's shut. Say it was me. It was me.",
           "perform": "over the radio, even",
-          "dur": 3.6,
+          "dur": 3.5,
           "treatment": "radio"
         },
         {
@@ -7425,7 +7425,7 @@
           "speaker": "narrator",
           "text": "She does this twice a night.",
           "sfx": "pencil",
-          "dur": 2
+          "dur": 1.9
         }
       ],
       "choices": [
@@ -7478,7 +7478,7 @@
           "speaker": "dee",
           "text": "Nobody's lazy at two in the morning. They're tired. Write the door.",
           "perform": "the pencil held out",
-          "dur": 5.1
+          "dur": 5
         },
         {
           "speaker": "narrator",
@@ -7495,7 +7495,7 @@
           "speaker": "narrator",
           "text": "She does this twice a night.",
           "sfx": "pencil",
-          "dur": 2
+          "dur": 1.9
         }
       ],
       "choices": [
@@ -7536,13 +7536,13 @@
         {
           "speaker": "narrator",
           "text": "02:10. Dolores comes back down and looks for the wedge entry. There isn't one.",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "dee",
           "text": "Where's thirty-one?",
           "perform": "the tablet turned toward you",
-          "dur": 3.6
+          "dur": 3.5
         },
         {
           "speaker": "dee",
@@ -7565,7 +7565,7 @@
           "speaker": "narrator",
           "text": "She does this twice a night.",
           "sfx": "pencil",
-          "dur": 2
+          "dur": 1.9
         }
       ],
       "choices": [
@@ -7635,7 +7635,7 @@
           "speaker": "narrator",
           "text": "She does this twice a night.",
           "sfx": "pencil",
-          "dur": 2
+          "dur": 1.9
         }
       ],
       "choices": [
@@ -7678,7 +7678,7 @@
           "speaker": "dee",
           "text": "Bench.",
           "perform": "a nod, pencil already moving off the glass",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "dee",
@@ -7689,7 +7689,7 @@
         {
           "speaker": "narrator",
           "text": "She says nothing more. The pencil goes back behind her ear.",
-          "dur": 4.1
+          "dur": 4
         },
         {
           "speaker": "narrator",
@@ -7772,12 +7772,12 @@
           "speaker": "dee",
           "text": "Nobody sat there tonight. Nobody.",
           "perform": "pointing, not unkind",
-          "dur": 3.1
+          "dur": 3
         },
         {
           "speaker": "narrator",
           "text": "You look. There is a shape on the bench you should have named. She doesn't say so. She waits.",
-          "dur": 6.6
+          "dur": 6.5
         },
         {
           "speaker": "narrator",
@@ -7865,18 +7865,18 @@
           "speaker": "dee",
           "text": "Not \"found.\" \"Found on the lobby bench at.\" Exact.",
           "perform": "flat",
-          "dur": 4.8
+          "dur": 4.7
         },
         {
           "speaker": "dee",
           "text": "Don't read it. Tag it. Time, where, who touched it.",
           "perform": "tapping the shelf, dry",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "narrator",
           "text": "The lanyard has a photo of a man who looks like he has been told to smile. You stand there a moment, holding his laptop.",
-          "dur": 7.6
+          "dur": 7.5
         }
       ],
       "choices": [
@@ -7924,7 +7924,7 @@
           "speaker": "dee",
           "text": "Out at 23:12. He's home. He's in bed and his laptop isn't.",
           "perform": "dry, a little pleased",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "dee",
@@ -7935,7 +7935,7 @@
         {
           "speaker": "narrator",
           "text": "On the terminal the badge is a row of numbers and a green icon. The terminal knows when T. Marsh left and nothing else about him.",
-          "dur": 8.2
+          "dur": 8.1
         }
       ],
       "choices": [
@@ -7983,7 +7983,7 @@
           "speaker": "dee",
           "text": "Not yours. Close it.",
           "perform": "sharp, for her",
-          "dur": 2
+          "dur": 1.9
         },
         {
           "speaker": "dee",
@@ -7994,7 +7994,7 @@
         {
           "speaker": "narrator",
           "text": "The screen goes dark. The dog goes with it.",
-          "dur": 3.3
+          "dur": 3.2
         },
         {
           "speaker": "narrator",
@@ -8047,7 +8047,7 @@
           "speaker": "dee",
           "text": "Tagged. Timed. Whose. Good.",
           "perform": "reading, flat",
-          "dur": 3.8
+          "dur": 3.7
         },
         {
           "speaker": "narrator",
@@ -8229,24 +8229,24 @@
         {
           "speaker": "narrator",
           "text": "You say them standing: lobby, vestibule, dock, stairwell, elevator, corridor, reception, roof, alcove. By the ninth you are awake. She nods once, at the wall.",
-          "dur": 15.4
+          "dur": 15.3
         },
         {
           "speaker": "narrator",
           "text": "Your voice sounds small in the room and then, at the ninth tile, ordinary.",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
-          "dur": 9.2
+          "dur": 9.1
         },
         {
           "speaker": "marisol",
           "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
           "perform": "fast, warm, everything at once",
-          "dur": 7.8
+          "dur": 7.7
         },
         {
           "speaker": "dee",
@@ -8300,7 +8300,7 @@
           "speaker": "dee",
           "text": "A man at the counter. A heart. The guard was on his phone.",
           "perform": "even, to the cup",
-          "dur": 4.7
+          "dur": 4.6
         },
         {
           "speaker": "dee",
@@ -8317,13 +8317,13 @@
           "speaker": "narrator",
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
-          "dur": 9.2
+          "dur": 9.1
         },
         {
           "speaker": "marisol",
           "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
           "perform": "fast, warm, everything at once",
-          "dur": 7.8
+          "dur": 7.7
         },
         {
           "speaker": "dee",
@@ -8393,13 +8393,13 @@
           "speaker": "narrator",
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
-          "dur": 9.2
+          "dur": 9.1
         },
         {
           "speaker": "marisol",
           "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
           "perform": "fast, warm, everything at once",
-          "dur": 7.8
+          "dur": 7.7
         },
         {
           "speaker": "dee",
@@ -8465,13 +8465,13 @@
           "speaker": "dee",
           "text": "Marisol.",
           "perform": "flat",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "marisol",
           "text": "I'm going, I'm going. Floors don't mop themselves. They should. I'd retire.",
           "perform": "out the door, the cart rattling",
-          "dur": 7.9
+          "dur": 7.8
         },
         {
           "speaker": "dee",
@@ -8565,7 +8565,7 @@
         {
           "speaker": "narrator",
           "text": "Dolores is looking at the wall. She does not look at the door Marisol went through.",
-          "dur": 5
+          "dur": 4.9
         },
         {
           "speaker": "narrator",
@@ -8631,7 +8631,7 @@
           "speaker": "marisol",
           "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. Bendito.",
           "perform": "a shrug in the voice",
-          "dur": 6.5
+          "dur": 6.4
         },
         {
           "speaker": "dee",
@@ -8701,19 +8701,19 @@
         {
           "speaker": "narrator",
           "text": "You write: Brandt, forty, cold, 0246. He hangs up before you have said you will pass it on.",
-          "dur": 8.4
+          "dur": 8.3
         },
         {
           "speaker": "dee",
           "text": "Good. Don't promise warm.",
           "perform": "dry, to the wall",
-          "dur": 2.7
+          "dur": 2.6
         },
         {
           "speaker": "dee",
           "text": "Day facilities gets it at seven. They'll say it's the thermostat. It's never the thermostat.",
           "perform": "flat",
-          "dur": 6.6
+          "dur": 6.5
         },
         {
           "speaker": "narrator",
@@ -8787,13 +8787,13 @@
         {
           "speaker": "narrator",
           "text": "Forty is one long room with fourteen screens, a man in a hoodie and a plastic cover over the thermostat. He looks up as if you were a delivery.",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "brandt",
           "text": "Oh. Hi. It's cold.",
           "perform": "surprised, polite, a bag of pretzels in his hand",
-          "dur": 2.7
+          "dur": 2.6
         },
         {
           "speaker": "narrator",
@@ -8833,13 +8833,13 @@
         {
           "speaker": "narrator",
           "text": "On tile six a dark edge is spreading across the carpet from the janitor's closet.",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "dee",
           "text": "That's the closet.",
           "perform": "to the wall, flat",
-          "dur": 1.6
+          "dur": 1.5
         },
         {
           "speaker": "dee",
@@ -8852,7 +8852,7 @@
           "text": "Old pipe.",
           "perform": "flat",
           "sfx": "clock-tick",
-          "dur": 1.4
+          "dur": 1.3
         },
         {
           "speaker": "narrator",
@@ -8911,7 +8911,7 @@
           "speaker": "marisol",
           "text": "Somebody left the hose on in the sink. A hose! Not my girl. Not my girl, never.",
           "perform": "out of breath, then a wet slap",
-          "dur": 7.9,
+          "dur": 7.8,
           "treatment": "walkie"
         },
         {
@@ -8982,14 +8982,14 @@
           "speaker": "okafor",
           "text": "So. Water where? Is it near anything electrical?",
           "perform": "awake already, flat",
-          "dur": 3.8,
+          "dur": 3.7,
           "treatment": "phone"
         },
         {
           "speaker": "okafor",
           "text": "The engineer on call will come at six. Put the time you saw it in the log. And tell Ms. Quintero to stop mopping.",
           "perform": "a pen clicking",
-          "dur": 7.6,
+          "dur": 7.5,
           "treatment": "phone"
         },
         {
@@ -9065,7 +9065,7 @@
           "speaker": "marisol",
           "text": "Look, look. A hose. In the sink. You see it? You see?",
           "perform": "delighted and furious",
-          "dur": 4.9
+          "dur": 4.8
         },
         {
           "speaker": "narrator",
@@ -9131,7 +9131,7 @@
           "speaker": "dee",
           "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
           "perform": "to the cup",
-          "dur": 5.7
+          "dur": 5.6
         },
         {
           "speaker": "narrator",
@@ -9203,7 +9203,7 @@
           "speaker": "dee",
           "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
           "perform": "to the cup",
-          "dur": 5.7
+          "dur": 5.6
         },
         {
           "speaker": "narrator",
@@ -9275,7 +9275,7 @@
           "speaker": "dee",
           "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
           "perform": "to the cup",
-          "dur": 5.7
+          "dur": 5.6
         },
         {
           "speaker": "narrator",
@@ -9341,7 +9341,7 @@
           "speaker": "dee",
           "text": "Four hours.",
           "perform": "to the wall",
-          "dur": 1.8
+          "dur": 1.7
         },
         {
           "speaker": "narrator",
@@ -9358,7 +9358,7 @@
         {
           "speaker": "narrator",
           "text": "You do not ask whose. She does not say.",
-          "dur": 3.2
+          "dur": 3.1
         }
       ],
       "choices": [
@@ -9390,12 +9390,12 @@
           "speaker": "dee",
           "text": "Mm. Coffee.",
           "perform": "getting up, the cup in her hand, away from you",
-          "dur": 7.1
+          "dur": 7
         },
         {
           "speaker": "narrator",
           "text": "She stands at the machine with her back to the room for a long time. It makes its sound and nothing comes out.",
-          "dur": 7.4
+          "dur": 7.3
         }
       ],
       "choices": [
@@ -9444,12 +9444,12 @@
         {
           "speaker": "narrator",
           "text": "She goes. The door swings shut behind her and the room is very quiet.",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
           "text": "The room is very quiet without her. The wall is yours.",
-          "dur": 4.5
+          "dur": 4.4
         }
       ],
       "choices": [
@@ -9494,12 +9494,12 @@
         {
           "speaker": "narrator",
           "text": "The door swings shut. The elevator chime rings once, far off.",
-          "dur": 5.1
+          "dur": 5
         },
         {
           "speaker": "narrator",
           "text": "The room is very quiet without her. The wall is yours.",
-          "dur": 4.5
+          "dur": 4.4
         }
       ],
       "choices": [
@@ -9526,7 +9526,7 @@
           "speaker": "narrator",
           "text": "At 03:02 the call light comes on over tile five. Car three has stopped between thirty and thirty-one. The intercom on the wall hisses, then a voice.",
           "sfx": "intercom",
-          "dur": 11
+          "dur": 10.9
         },
         {
           "speaker": "dev",
@@ -9539,13 +9539,13 @@
           "speaker": "dev",
           "text": "No, no, it's fine. It's fine. It's a little close in here.",
           "perform": "fast, too bright",
-          "dur": 3.6,
+          "dur": 3.5,
           "treatment": "intercom"
         },
         {
           "speaker": "narrator",
           "text": "Tile five shows four cars and a plant. Three of the cars are where they should be. The fourth is a lit number between two floors, and under the number a thin line of light at the seam of the doors.",
-          "dur": 13.2
+          "dur": 13.1
         },
         {
           "speaker": "narrator",
@@ -9604,7 +9604,7 @@
           "speaker": "narrator",
           "text": "At 03:02 the call light comes on over tile five. Car three has stopped between thirty and thirty-one. The intercom on the wall hisses, then a voice.",
           "sfx": "intercom",
-          "dur": 11
+          "dur": 10.9
         },
         {
           "speaker": "dev",
@@ -9617,13 +9617,13 @@
           "speaker": "dev",
           "text": "No, no, it's fine. It's fine. It's a little close in here.",
           "perform": "fast, too bright",
-          "dur": 3.6,
+          "dur": 3.5,
           "treatment": "intercom"
         },
         {
           "speaker": "narrator",
           "text": "Tile five shows four cars and a plant. Three of the cars are where they should be. The fourth is a lit number between two floors, and under the number a thin line of light at the seam of the doors.",
-          "dur": 13.2
+          "dur": 13.1
         },
         {
           "speaker": "narrator",
@@ -9752,13 +9752,13 @@
           "speaker": "narrator",
           "text": "You key the radio with one hand and hold the intercom with the other.",
           "sfx": "radio-squelch",
-          "dur": 4
+          "dur": 3.9
         },
         {
           "speaker": "dee",
           "text": "Mm. Go. Tell him the company's twenty minutes. Tell him he can stand up or sit down.",
           "perform": "over the radio, no questions, thick, then plain",
-          "dur": 7.4,
+          "dur": 7.3,
           "treatment": "radio"
         },
         {
@@ -9777,14 +9777,14 @@
           "speaker": "dee",
           "text": "Roof. Cold.",
           "perform": "over the radio, thick, then plain, not an explanation",
-          "dur": 2.2,
+          "dur": 2.1,
           "treatment": "radio"
         },
         {
           "speaker": "narrator",
           "text": "At 03:24 the car opens at thirty-one. Dev steps out with his bag held to his chest. He does not look at the camera.",
           "sfx": "elevator-chime",
-          "dur": 8.6
+          "dur": 8.5
         }
       ],
       "choices": [
@@ -9829,7 +9829,7 @@
         {
           "speaker": "narrator",
           "text": "The radio calls again. You stay on the intercom. Dev's breath comes through it, then slows.",
-          "dur": 6.7
+          "dur": 6.6
         },
         {
           "speaker": "dev",
@@ -9842,7 +9842,7 @@
           "speaker": "dee",
           "text": "Post one. Mm.",
           "perform": "over the radio, flat, final, a long click",
-          "dur": 3,
+          "dur": 2.9,
           "treatment": "radio"
         },
         {
@@ -9901,7 +9901,7 @@
           "speaker": "dev",
           "text": "Twenty? Twenty minutes? Sorry. No. That's fine. That's fine.",
           "perform": "over the intercom, rushing",
-          "dur": 4.1,
+          "dur": 4,
           "treatment": "intercom"
         },
         {
@@ -9914,18 +9914,18 @@
           "text": "Radio check.",
           "perform": "over the radio, thick, an echo behind it",
           "sfx": "radio-squelch",
-          "dur": 2.5,
+          "dur": 2.4,
           "treatment": "radio"
         },
         {
           "speaker": "narrator",
           "text": "You key the radio. \"Post one. Loud and clear.\" Dolores says Mm. That is all she says.",
-          "dur": 7.7
+          "dur": 7.6
         },
         {
           "speaker": "narrator",
           "text": "Gus calls back at 03:17 to say he is in the lobby, with a bar and a key you have never seen. At 03:24 the car opens at thirty-one and a man steps out with his bag held against his chest.",
-          "dur": 13.5
+          "dur": 13.4
         }
       ],
       "choices": [
@@ -9982,13 +9982,13 @@
         {
           "speaker": "narrator",
           "text": "At 03:15 two firefighters come into the lobby with a bar and a bag. At 03:22 the car opens at thirty-one and Dev walks out with his laptop bag held to his chest.",
-          "dur": 12.4
+          "dur": 12.3
         },
         {
           "speaker": "dee",
           "text": "Who called them? Mm. Never mind.",
           "perform": "over the radio, quiet, thick, a long breath",
-          "dur": 4.3,
+          "dur": 4.2,
           "treatment": "radio"
         }
       ],
@@ -10042,7 +10042,7 @@
         {
           "speaker": "narrator",
           "text": "Her voice is rough. When she comes in at 03:12, her hands are cold, and she goes to the intercom before she takes off her coat.",
-          "dur": 8.5
+          "dur": 8.4
         },
         {
           "speaker": "dee",
@@ -10054,7 +10054,7 @@
           "speaker": "dev",
           "text": "Okay. Okay. Sorry. Thank you.",
           "perform": "over the intercom, steadier at once",
-          "dur": 3.1,
+          "dur": 3,
           "treatment": "intercom"
         },
         {
@@ -10071,7 +10071,7 @@
         {
           "speaker": "narrator",
           "text": "At 03:17 the contractor's man crosses the lobby with a bar. At 03:24 the doors open at thirty-one. Dev steps out. Dolores watches him on tile five until the plant hides him.",
-          "dur": 13.8
+          "dur": 13.7
         },
         {
           "speaker": "dee",
@@ -10133,7 +10133,7 @@
           "speaker": "pierce",
           "text": "Evening. Don't get up.",
           "perform": "to the guard, not stopping, mild",
-          "dur": 1.7
+          "dur": 1.6
         }
       ],
       "choices": [
@@ -10176,7 +10176,7 @@
           "speaker": "narrator",
           "text": "He does not sit. He does not turn on a light. He stands at the glass for most of a minute, looking at the dark, the phone down at his side.",
           "sfx": "elevator-chime",
-          "dur": 9.5
+          "dur": 9.4
         }
       ],
       "choices": [
@@ -10227,7 +10227,7 @@
           "speaker": "pierce",
           "text": "Fair. Fifty-eight. I own it. Put that in your log.",
           "perform": "a pause, an actual smile",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
@@ -10285,7 +10285,7 @@
           "speaker": "dee",
           "text": "He walks it every night he's in town. Never signs. Never stops.",
           "perform": "dry",
-          "dur": 5.2
+          "dur": 5.1
         },
         {
           "speaker": "dee",
@@ -10338,19 +10338,19 @@
           "speaker": "narrator",
           "text": "03:34. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
           "sfx": "door-heavy",
-          "dur": 7.2
+          "dur": 7.1
         },
         {
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "dee",
           "text": "He walks past everyone.",
           "perform": "to the wall, flat",
-          "dur": 2.4
+          "dur": 2.3
         },
         {
           "speaker": "dee",
@@ -10411,13 +10411,13 @@
           "speaker": "narrator",
           "text": "03:34. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
           "sfx": "door-heavy",
-          "dur": 7.2
+          "dur": 7.1
         },
         {
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "dee",
@@ -10491,7 +10491,7 @@
           "speaker": "dee",
           "text": "Camera, time, what it did. Not \"something's wrong.\"",
           "perform": "even",
-          "dur": 5.2
+          "dur": 5.1
         },
         {
           "speaker": "dee",
@@ -10576,7 +10576,7 @@
         {
           "speaker": "narrator",
           "text": "The picture on tile nine is the same cabinet, the same light, the same tear across the same place.",
-          "dur": 7
+          "dur": 6.9
         }
       ],
       "choices": [
@@ -10639,7 +10639,7 @@
           "speaker": "narrator",
           "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
           "sfx": "panel-buzzer",
-          "dur": 14.2
+          "dur": 14.1
         },
         {
           "speaker": "narrator",
@@ -10656,12 +10656,12 @@
           "speaker": "dee",
           "text": "Nine hundred times it's done that. Mm. Press the silence.",
           "perform": "to the shelf",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
           "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-          "dur": 5.5
+          "dur": 5.4
         }
       ],
       "choices": [
@@ -10729,7 +10729,7 @@
           "speaker": "narrator",
           "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
           "sfx": "panel-buzzer",
-          "dur": 14.2
+          "dur": 14.1
         },
         {
           "speaker": "narrator",
@@ -10746,12 +10746,12 @@
           "speaker": "dee",
           "text": "Nine hundred times it's done that. Mm. Press the silence.",
           "perform": "to the shelf",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
           "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-          "dur": 5.5
+          "dur": 5.4
         }
       ],
       "choices": [
@@ -10813,13 +10813,13 @@
           "speaker": "dee",
           "text": "Nine stopped. If you don't write it, nine didn't stop. Mm. It stopped.",
           "perform": "flat",
-          "dur": 6.2
+          "dur": 6.1
         },
         {
           "speaker": "narrator",
           "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
           "sfx": "panel-buzzer",
-          "dur": 14.2
+          "dur": 14.1
         },
         {
           "speaker": "narrator",
@@ -10836,12 +10836,12 @@
           "speaker": "dee",
           "text": "Nine hundred times it's done that. Mm. Press the silence.",
           "perform": "to the shelf",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
           "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-          "dur": 5.5
+          "dur": 5.4
         }
       ],
       "choices": [
@@ -10915,7 +10915,7 @@
           "speaker": "narrator",
           "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
           "sfx": "panel-buzzer",
-          "dur": 14.2
+          "dur": 14.1
         },
         {
           "speaker": "narrator",
@@ -10932,12 +10932,12 @@
           "speaker": "dee",
           "text": "Nine hundred times it's done that. Mm. Press the silence.",
           "perform": "to the shelf",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
           "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-          "dur": 5.5
+          "dur": 5.4
         }
       ],
       "choices": [
@@ -11003,7 +11003,7 @@
           "speaker": "dee",
           "text": "There. See.",
           "perform": "a nod, almost kind, to the wall",
-          "dur": 3.2
+          "dur": 3.1
         },
         {
           "speaker": "narrator",
@@ -11045,7 +11045,7 @@
           "speaker": "okafor",
           "text": "That is a fire panel. It belongs to Ms. Adler. Call her. I will call the building manager at six.",
           "perform": "a pen clicking",
-          "dur": 7.7,
+          "dur": 7.6,
           "treatment": "phone"
         },
         {
@@ -11081,7 +11081,7 @@
           "speaker": "adler",
           "text": "Read me the display. Exactly. Do not paraphrase.",
           "perform": "formal, a pen already moving",
-          "dur": 4.5,
+          "dur": 4.4,
           "treatment": "phone"
         },
         {
@@ -11123,7 +11123,7 @@
         {
           "speaker": "narrator",
           "text": "You read it. TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT. There is a pause while a pen finishes.",
-          "dur": 9
+          "dur": 8.9
         },
         {
           "speaker": "adler",
@@ -11208,7 +11208,7 @@
           "speaker": "adler",
           "text": "Thank you. Do not silence it. Do not reset it. I will be there at ten past four.",
           "perform": "formal",
-          "dur": 6.9,
+          "dur": 6.8,
           "treatment": "phone"
         },
         {
@@ -11273,7 +11273,7 @@
         {
           "speaker": "narrator",
           "text": "She reads your entry on the tablet before she reads the panel.",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "narrator",
@@ -11284,7 +11284,7 @@
           "speaker": "adler",
           "text": "Dolores.",
           "perform": "a nod",
-          "dur": 1.2
+          "dur": 1.1
         },
         {
           "speaker": "dee",
@@ -11327,13 +11327,13 @@
         {
           "speaker": "narrator",
           "text": "She reads your entry on the tablet before she reads the panel.",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "adler",
           "text": "That word is not on the display. Please cross it out and write what the display said.",
           "perform": "formal, a pen stopping",
-          "dur": 5.6
+          "dur": 5.5
         },
         {
           "speaker": "narrator",
@@ -11344,7 +11344,7 @@
           "speaker": "adler",
           "text": "Dolores.",
           "perform": "a nod",
-          "dur": 1.2
+          "dur": 1.1
         },
         {
           "speaker": "dee",
@@ -11387,13 +11387,13 @@
         {
           "speaker": "narrator",
           "text": "She looks for your entry on the tablet. There isn't one.",
-          "dur": 3.6
+          "dur": 3.5
         },
         {
           "speaker": "adler",
           "text": "I will wait. Please write it now, in the same words.",
           "perform": "formal, patient as a stone",
-          "dur": 4.1
+          "dur": 4
         },
         {
           "speaker": "narrator",
@@ -11404,7 +11404,7 @@
           "speaker": "adler",
           "text": "Dolores.",
           "perform": "a nod",
-          "dur": 1.2
+          "dur": 1.1
         },
         {
           "speaker": "dee",
@@ -11464,7 +11464,7 @@
           "speaker": "adler",
           "text": "Dolores.",
           "perform": "a nod",
-          "dur": 1.2
+          "dur": 1.1
         },
         {
           "speaker": "dee",
@@ -11551,7 +11551,7 @@
         {
           "speaker": "narrator",
           "text": "On tile three the man shifts the box from one arm to the other. The van's engine runs. He has been up since yesterday too, and it is in the way he stands.",
-          "dur": 10.7
+          "dur": 10.6
         },
         {
           "speaker": "dee",
@@ -11563,7 +11563,7 @@
           "speaker": "dee",
           "text": "Whoever you tell, you write who.",
           "perform": "flat",
-          "dur": 2.6
+          "dur": 2.5
         }
       ],
       "choices": [
@@ -11625,7 +11625,7 @@
           "speaker": "dee",
           "text": "Chairman's office isn't on anybody's list at four in the morning.",
           "perform": "dry",
-          "dur": 4.2
+          "dur": 4.1
         }
       ],
       "choices": [
@@ -11672,13 +11672,13 @@
           "speaker": "courier",
           "text": "I just need a signature, man.",
           "perform": "flat, tired",
-          "dur": 2.3,
+          "dur": 2.2,
           "treatment": "intercom"
         },
         {
           "speaker": "narrator",
           "text": "You tell him there is no authorization on the list. You tell him the mailroom opens at seven. He says that is not his problem. He says it is in his log that he came.",
-          "dur": 10.4
+          "dur": 10.3
         },
         {
           "speaker": "courier",
@@ -11692,7 +11692,7 @@
           "speaker": "dee",
           "text": "Mm-hm. The box will be at the mailroom at seven. It'll be fine.",
           "perform": "low, to the wall",
-          "dur": 4.4
+          "dur": 4.3
         }
       ],
       "choices": [
@@ -11734,7 +11734,7 @@
         {
           "speaker": "narrator",
           "text": "You go out to the dock door and sign on a screen that doesn't record your name. The box is lighter than it looks. You set it on the shelf under the binder.",
-          "dur": 9.3
+          "dur": 9.2
         },
         {
           "speaker": "dee",
@@ -11799,7 +11799,7 @@
           "speaker": "okafor",
           "text": "So. Fifty-eight. Whose? Not on the list? Then you do not accept it.",
           "perform": "slow, awake by the second sentence",
-          "dur": 6.9,
+          "dur": 6.8,
           "treatment": "phone"
         },
         {
@@ -11813,7 +11813,7 @@
           "speaker": "dee",
           "text": "That's what the book says.",
           "perform": "to the wall, flat",
-          "dur": 1.8
+          "dur": 1.7
         }
       ],
       "choices": [
@@ -11855,7 +11855,7 @@
           "speaker": "dee",
           "text": "Box, dock, who, when. Fine.",
           "perform": "reading, flat",
-          "dur": 3.9
+          "dur": 3.8
         },
         {
           "speaker": "narrator",
@@ -11907,7 +11907,7 @@
           "speaker": "dee",
           "text": "Probably expected. By whom? Write the label.",
           "perform": "reading, dry",
-          "dur": 4.1
+          "dur": 4
         },
         {
           "speaker": "narrator",
@@ -12012,13 +12012,13 @@
           "speaker": "dee",
           "text": "That's not the key.",
           "perform": "flat, one eyebrow, mid-bar",
-          "dur": 1.7
+          "dur": 1.6
         },
         {
           "speaker": "dee",
           "text": "Mm. Fine. Go on. Quieter. You'll wake the monitors.",
           "perform": "a beat later, the corner of her mouth moving",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "narrator",
@@ -12028,13 +12028,13 @@
         {
           "speaker": "narrator",
           "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
-          "dur": 10.9
+          "dur": 10.8
         },
         {
           "speaker": "dee",
           "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
           "perform": "to the wall, flat, quick",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "dee",
@@ -12109,13 +12109,13 @@
         {
           "speaker": "narrator",
           "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
-          "dur": 10.9
+          "dur": 10.8
         },
         {
           "speaker": "dee",
           "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
           "perform": "to the wall, flat, quick",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "dee",
@@ -12191,13 +12191,13 @@
         {
           "speaker": "narrator",
           "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
-          "dur": 10.9
+          "dur": 10.8
         },
         {
           "speaker": "dee",
           "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
           "perform": "to the wall, flat, quick",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "dee",
@@ -12332,7 +12332,7 @@
           "text": "Twenty minutes.",
           "perform": "over your radio, quick, a warning with no weight in it",
           "sfx": "radio-squelch",
-          "dur": 2.4,
+          "dur": 2.3,
           "treatment": "radio"
         }
       ],
@@ -12388,7 +12388,7 @@
         {
           "speaker": "narrator",
           "text": "When you come back, the cup from the shelf is gone. You don't ask where.",
-          "dur": 4.7
+          "dur": 4.6
         }
       ],
       "choices": [
@@ -12446,7 +12446,7 @@
         {
           "speaker": "narrator",
           "text": "On tile two the ledge is empty, the glass white at the corners.",
-          "dur": 5
+          "dur": 4.9
         }
       ],
       "choices": [
@@ -12489,7 +12489,7 @@
           "speaker": "narrator",
           "text": "Four rings. Mr. Okafor is awake in the way of someone who has been told he is awake.",
           "sfx": "phone-ring",
-          "dur": 6.5
+          "dur": 6.4
         },
         {
           "speaker": "okafor",
@@ -12560,7 +12560,7 @@
           "speaker": "narrator",
           "text": "Two medics wake him. He gets up slowly. He says it again to them.",
           "sfx": "door-buzz",
-          "dur": 5.1
+          "dur": 5
         },
         {
           "speaker": "sleeper",
@@ -12664,7 +12664,7 @@
           "speaker": "dee",
           "text": "Homeless. Okafor says individual. Not for him. For the lawyer.",
           "perform": "reading, flat",
-          "dur": 5.6
+          "dur": 5.5
         },
         {
           "speaker": "narrator",
@@ -12785,7 +12785,7 @@
         {
           "speaker": "narrator",
           "text": "Dolores comes back with her face washed and her sleeves wet. She sits. She does not look at the tablet and she does not look at you.",
-          "dur": 9
+          "dur": 8.9
         },
         {
           "speaker": "dee",
@@ -12797,12 +12797,12 @@
           "speaker": "dee",
           "text": "Six o'clock, the sky does a thing. Over the river. Can't see the river.",
           "perform": "flat",
-          "dur": 5.8
+          "dur": 5.7
         },
         {
           "speaker": "narrator",
           "text": "Tile one shows the long bench, the long desk, the long floor, all of it a color between grey and nothing.",
-          "dur": 8.1
+          "dur": 8
         }
       ],
       "choices": [
@@ -12888,7 +12888,7 @@
         {
           "speaker": "narrator",
           "text": "She does not say whose room. The clock says 05:26. It is 05:24.",
-          "dur": 7.1
+          "dur": 7
         }
       ],
       "choices": [
@@ -12956,7 +12956,7 @@
         {
           "speaker": "narrator",
           "text": "05:30. The windows of the lobby turn from black to grey. On tile five the cleaning cart rolls toward the elevator, and Marisol's crew leave their floors one by one.",
-          "dur": 11.8
+          "dur": 11.7
         },
         {
           "speaker": "marisol",
@@ -12970,7 +12970,7 @@
           "speaker": "dee",
           "text": "Mm. Go home, Marisol.",
           "perform": "on the walkie, short",
-          "dur": 2.5,
+          "dur": 2.4,
           "treatment": "walkie"
         },
         {
@@ -12984,7 +12984,7 @@
           "speaker": "dee",
           "text": "I didn't say anything.",
           "perform": "on the walkie, dry",
-          "dur": 1.9,
+          "dur": 1.8,
           "treatment": "walkie"
         },
         {
@@ -12992,19 +12992,19 @@
           "text": "Your face said no, mi amor! It always says no. Eat it!",
           "perform": "on the walkie, laughing, then off",
           "sfx": "walkie-squelch",
-          "dur": 6.8,
+          "dur": 6.7,
           "treatment": "walkie"
         },
         {
           "speaker": "narrator",
           "text": "On tile five a bar of pink light lies across the carpet at the window. On tile one the day officer's cap is a shape in the vestibule, waiting for the door.",
-          "dur": 10.7
+          "dur": 10.6
         },
         {
           "speaker": "dee",
           "text": "Mm. Rice. By the freezer.",
           "perform": "to the wall, flat",
-          "dur": 3.3,
+          "dur": 3.2,
           "treatment": "walkie"
         },
         {
@@ -13036,20 +13036,20 @@
           "speaker": "dee",
           "text": "Pencil first.",
           "perform": "the pencil, held out",
-          "dur": 1.4
+          "dur": 1.3
         },
         {
           "speaker": "dee",
           "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
           "perform": "reading the headings, her finger going down the page",
           "sfx": "pencil",
-          "dur": 6.9
+          "dur": 6.8
         },
         {
           "speaker": "dee",
           "text": "Every one has a time and a place. Nobody's lazy. Nobody seemed.",
           "perform": "dry",
-          "dur": 5.3
+          "dur": 5.2
         },
         {
           "speaker": "dee",
@@ -13135,20 +13135,20 @@
           "speaker": "dee",
           "text": "Pencil first.",
           "perform": "the pencil, held out",
-          "dur": 1.4
+          "dur": 1.3
         },
         {
           "speaker": "dee",
           "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
           "perform": "reading the headings, her finger going down the page",
           "sfx": "pencil",
-          "dur": 6.9
+          "dur": 6.8
         },
         {
           "speaker": "dee",
           "text": "Seemed. Probably. Seemed.",
           "perform": "tapping each word with the point of the pencil",
-          "dur": 7
+          "dur": 6.9
         },
         {
           "speaker": "dee",
@@ -13160,7 +13160,7 @@
           "speaker": "dee",
           "text": "He wasn't here. The page is all he gets.",
           "perform": "flat",
-          "dur": 3.1
+          "dur": 3
         }
       ],
       "choices": [
@@ -13252,7 +13252,7 @@
           "speaker": "dee",
           "text": "Once it's ink, it's true. Pencil's open till six.",
           "perform": "the pencil laid down between you, not offered",
-          "dur": 7.7
+          "dur": 7.6
         }
       ],
       "choices": [
@@ -13336,7 +13336,7 @@
         {
           "speaker": "narrator",
           "text": "You take the pencil. You take out the line. You write the other one, the true one, in the same place. It takes a long time.",
-          "dur": 8.9
+          "dur": 8.8
         },
         {
           "speaker": "dee",
@@ -13348,7 +13348,7 @@
           "speaker": "dee",
           "text": "Small one. Leave it. It's ink.",
           "perform": "flat, low",
-          "dur": 3.1
+          "dur": 3
         }
       ],
       "choices": [
@@ -13400,7 +13400,7 @@
           "speaker": "okafor",
           "text": "So. It is ten to six. The wedge was at ten to two. That is four hours.",
           "perform": "flat, awake, careful",
-          "dur": 10.7,
+          "dur": 10.6,
           "treatment": "phone"
         },
         {
@@ -13419,7 +13419,7 @@
         {
           "speaker": "narrator",
           "text": "When she comes back the wedge is in her pocket. She puts it on the shelf beside the binder.",
-          "dur": 5.6
+          "dur": 5.5
         }
       ],
       "choices": [
@@ -13487,14 +13487,14 @@
           "speaker": "adler",
           "text": "I will be there at ten past six. Do not touch it again.",
           "perform": "one idea at a time",
-          "dur": 4.3,
+          "dur": 4.2,
           "treatment": "phone"
         },
         {
           "speaker": "adler",
           "text": "Please put the time you silenced it in the log. In the same words.",
           "perform": "formal",
-          "dur": 4.4,
+          "dur": 4.3,
           "treatment": "phone"
         },
         {
@@ -13561,13 +13561,13 @@
           "speaker": "dee",
           "text": "Time. Radios. What the night was, in one line.",
           "perform": "flat, the pencil on the shelf, not offered",
-          "dur": 8.2
+          "dur": 8.1
         },
         {
           "speaker": "dee",
           "text": "That's the one he reads first. Then he checks the rest.",
           "perform": "even",
-          "dur": 4.3
+          "dur": 4.2
         },
         {
           "speaker": "narrator",
@@ -13637,7 +13637,7 @@
           "text": "Radios. Four.",
           "perform": "at the charger, one finger on each",
           "sfx": "radio-charger",
-          "dur": 2.3
+          "dur": 2.2
         },
         {
           "speaker": "dee",
@@ -13729,7 +13729,7 @@
           "text": "Radios. Four.",
           "perform": "at the charger, one finger on each",
           "sfx": "radio-charger",
-          "dur": 2.3
+          "dur": 2.2
         },
         {
           "speaker": "dee",
@@ -13809,7 +13809,7 @@
           "speaker": "dee",
           "text": "That's blank. He'll ask why. Mm.",
           "perform": "flat",
-          "dur": 3.5
+          "dur": 3.4
         },
         {
           "speaker": "narrator",
@@ -13821,7 +13821,7 @@
           "text": "Radios. Four.",
           "perform": "at the charger, one finger on each",
           "sfx": "radio-charger",
-          "dur": 2.3
+          "dur": 2.2
         },
         {
           "speaker": "dee",
@@ -13907,7 +13907,7 @@
           "speaker": "dee",
           "text": "Eleven. Mm.",
           "perform": "the tablet turned face down",
-          "dur": 4.8
+          "dur": 4.7
         },
         {
           "speaker": "narrator",
@@ -13919,7 +13919,7 @@
           "text": "Radios. Four.",
           "perform": "at the charger, one finger on each",
           "sfx": "radio-charger",
-          "dur": 2.3
+          "dur": 2.2
         },
         {
           "speaker": "dee",
@@ -14011,7 +14011,7 @@
           "speaker": "okafor",
           "text": "So. Let's walk through the log. I have a nine o'clock.",
           "perform": "polite, one hand already out",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "dee",
@@ -14023,7 +14023,7 @@
           "speaker": "okafor",
           "text": "Good morning, Officer. Good morning, Dolores.",
           "perform": "a glance at the clock, then at the wall, then at the log",
-          "dur": 5.3
+          "dur": 5.2
         }
       ],
       "choices": [
@@ -14141,7 +14141,7 @@
           "speaker": "okafor",
           "text": "So. Forty-four. The stairwell on thirty-one. The bench. Car three. Camera nine. The panel. The dock. The vestibule.",
           "perform": "reading the headings, flat",
-          "dur": 10.6
+          "dur": 10.5
         },
         {
           "speaker": "okafor",
@@ -14153,7 +14153,7 @@
           "speaker": "okafor",
           "text": "The panel I can read word for word. I don't always get that.",
           "perform": "flat",
-          "dur": 3.8
+          "dur": 3.7
         },
         {
           "speaker": "okafor",
@@ -14391,7 +14391,7 @@
           "speaker": "okafor",
           "text": "So. Some of these say what someone seemed to be. Some say nothing at all.",
           "perform": "reading, flat, polite",
-          "dur": 5.5
+          "dur": 5.4
         },
         {
           "speaker": "okafor",
@@ -14403,7 +14403,7 @@
           "speaker": "okafor",
           "text": "Not \"guy.\" \"Individual.\"",
           "perform": "correcting himself, then you",
-          "dur": 2.6
+          "dur": 2.5
         },
         {
           "speaker": "okafor",
@@ -14415,7 +14415,7 @@
           "speaker": "okafor",
           "text": "I can't tell what happened.",
           "perform": "even",
-          "dur": 1.9
+          "dur": 1.8
         },
         {
           "speaker": "dee",
@@ -14497,7 +14497,7 @@
           "speaker": "okafor",
           "text": "I can see where the binder said one thing and the night said another. I have marked them.",
           "perform": "flat, each one set down",
-          "dur": 5
+          "dur": 4.9
         },
         {
           "speaker": "okafor",
@@ -14591,7 +14591,7 @@
           "speaker": "okafor",
           "text": "So. Twenty-three thirty. \"Left the control room, wall unattended.\" Four minutes.",
           "perform": "reading, flat, quiet",
-          "dur": 6.3
+          "dur": 6.2
         },
         {
           "speaker": "okafor",
@@ -14603,7 +14603,7 @@
           "speaker": "okafor",
           "text": "That's noted. It is also the thing I have to act on.",
           "perform": "even",
-          "dur": 4
+          "dur": 3.9
         },
         {
           "speaker": "okafor",
@@ -14715,7 +14715,7 @@
           "speaker": "dee",
           "text": "Mm.",
           "perform": "from the charger, very low",
-          "dur": 2.4
+          "dur": 2.3
         }
       ],
       "choices": [
@@ -14791,7 +14791,7 @@
           "speaker": "okafor",
           "text": "There is a line in this log that does not match the record. The terminal, or the rest of the log. One of them is wrong.",
           "perform": "even, polite, the worst voice he has",
-          "dur": 7.2
+          "dur": 7.1
         },
         {
           "speaker": "okafor",
@@ -14844,7 +14844,7 @@
           "speaker": "dee",
           "text": "The seven stops under Queensboro. Walk it. Don't wait. I've timed it. It's faster.",
           "perform": "dry",
-          "dur": 6.2
+          "dur": 6.1
         },
         {
           "speaker": "dee",
@@ -14861,7 +14861,7 @@
           "speaker": "dee",
           "text": "Radio.",
           "perform": "from the doorway, one word, not a suggestion",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "narrator",
@@ -14888,19 +14888,19 @@
         {
           "speaker": "narrator",
           "text": "07:02. Mr. Okafor has gone upstairs with the tablet. The day officer is at the desk. Dolores stands by the charger with her coat over her arm.",
-          "dur": 10.4
+          "dur": 10.3
         },
         {
           "speaker": "dee",
           "text": "April first. I know you read it. The drawer sticks. It didn't stick.",
           "perform": "to the charger, dry",
-          "dur": 5.9
+          "dur": 5.8
         },
         {
           "speaker": "dee",
           "text": "I put it where you'd find it. Not him. Mm. You didn't ask.",
           "perform": "a breath that is nearly a smile",
-          "dur": 6.8
+          "dur": 6.7
         },
         {
           "speaker": "dee",
@@ -14951,13 +14951,13 @@
           "speaker": "okafor",
           "text": "Ms. Reyes's post is under review. I did not know.",
           "perform": "a pause",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "okafor",
           "text": "I should have known. That is also noted.",
           "perform": "even",
-          "dur": 3.1
+          "dur": 3
         },
         {
           "speaker": "dee",
@@ -14968,7 +14968,7 @@
         {
           "speaker": "narrator",
           "text": "She says it again, \"Officer,\" and puts on her coat.",
-          "dur": 3.9
+          "dur": 3.8
         },
         {
           "speaker": "narrator",
@@ -14980,7 +14980,7 @@
           "speaker": "dee",
           "text": "I'd have told him in April. Mm. It's the book.",
           "perform": "low",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "narrator",
@@ -15018,7 +15018,7 @@
         {
           "speaker": "narrator",
           "text": "It is pepper and egg. It is cold. You eat it standing up at the wall while the day officer pretends not to watch.",
-          "dur": 7.8
+          "dur": 7.7
         },
         {
           "speaker": "dee",
@@ -15057,7 +15057,7 @@
         {
           "speaker": "narrator",
           "text": "07:02. The day officer is at the desk. Mr. Okafor reads the last page of the log standing at the charger, the tablet held out from his body.",
-          "dur": 10.7
+          "dur": 10.6
         },
         {
           "speaker": "okafor",
@@ -15106,7 +15106,7 @@
         {
           "speaker": "narrator",
           "text": "07:02. The day officer is at the desk. Mr. Okafor turns the tablet to the light from the revolving door and reads the margins first.",
-          "dur": 9.4
+          "dur": 9.3
         },
         {
           "speaker": "okafor",
@@ -15146,7 +15146,7 @@
         {
           "speaker": "narrator",
           "text": "She has done it in four places. You count them. You did not see her do any of it.",
-          "dur": 5.6
+          "dur": 5.5
         }
       ],
       "choices": [],
@@ -15180,7 +15180,7 @@
           "speaker": "okafor",
           "text": "Next time: what he did. Not what he seemed. That's noted.",
           "perform": "a nod, not unkind",
-          "dur": 5.4
+          "dur": 5.3
         },
         {
           "speaker": "dee",
@@ -15254,12 +15254,12 @@
           "speaker": "dee",
           "text": "Four.",
           "perform": "counting",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "narrator",
           "text": "She counts them again. Four. She counts them again.",
-          "dur": 4.2
+          "dur": 4.1
         }
       ],
       "choices": [],
@@ -15281,7 +15281,7 @@
         {
           "speaker": "narrator",
           "text": "07:02. The lobby is filling with people holding coffee. In the control room Mr. Okafor shuts the door, which nobody has done all night.",
-          "dur": 9.8
+          "dur": 9.7
         },
         {
           "speaker": "okafor",
@@ -15315,7 +15315,7 @@
         {
           "speaker": "narrator",
           "text": "The badge on your lanyard says your name and a number and a photograph of someone younger. It does not say Night.",
-          "dur": 7.6
+          "dur": 7.5
         }
       ],
       "choices": [],
@@ -15349,7 +15349,7 @@
           "speaker": "okafor",
           "text": "Nobody was hurt. That goes in the report. It is not a defense.",
           "perform": "his hand flat on the page, even, even",
-          "dur": 4.7
+          "dur": 4.6
         },
         {
           "speaker": "okafor",
@@ -15361,12 +15361,12 @@
           "speaker": "dee",
           "text": "Mm.",
           "perform": "from the charger, very low",
-          "dur": 2.4
+          "dur": 2.3
         },
         {
           "speaker": "narrator",
           "text": "He closes the binder. He puts it back on the shelf, next to the extinguisher, exactly where it was.",
-          "dur": 6.8
+          "dur": 6.7
         }
       ],
       "choices": [],
@@ -15388,19 +15388,19 @@
         {
           "speaker": "narrator",
           "text": "07:02. The day officer is at the desk. Mr. Okafor reads the log standing, one thumb on the glass, with all four radios on the charger behind him.",
-          "dur": 11
+          "dur": 10.9
         },
         {
           "speaker": "okafor",
           "text": "So. Not wrong. Not right. Next to the binder. Noted.",
           "perform": "reading, flat, the stylus, one small check",
-          "dur": 5.1
+          "dur": 5
         },
         {
           "speaker": "dee",
           "text": "Mm. Quarter to seven. Read the whole binder. Page eleven, twice.",
           "perform": "putting on her coat, to you, dry",
-          "dur": 6
+          "dur": 5.9
         },
         {
           "speaker": "okafor",
@@ -15443,7 +15443,7 @@
           "speaker": "dee",
           "text": "Ten minutes. That's all it is.",
           "perform": "flat, to the wall",
-          "dur": 2.5
+          "dur": 2.4
         },
         {
           "speaker": "narrator",
@@ -15487,7 +15487,7 @@
         {
           "speaker": "narrator",
           "text": "It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing.",
-          "dur": 8.1
+          "dur": 8
         }
       ],
       "choices": [
@@ -15512,7 +15512,7 @@
         {
           "speaker": "narrator",
           "text": "You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving.",
-          "dur": 7.1
+          "dur": 7
         },
         {
           "speaker": "dee",
@@ -15584,7 +15584,7 @@
         {
           "speaker": "narrator",
           "text": "07:02. Mr. Okafor stands in the doorway with his coat still on. Behind him the day officer is at the desk, pretending not to listen.",
-          "dur": 9.8
+          "dur": 9.7
         },
         {
           "speaker": "okafor",
@@ -15596,7 +15596,7 @@
           "speaker": "okafor",
           "text": "Ms. Reyes. April the first. Nobody gave you that in writing?",
           "perform": "turning to her, courteous, careful",
-          "dur": 4.4
+          "dur": 4.3
         },
         {
           "speaker": "dee",
@@ -15637,7 +15637,7 @@
           "text": "Hey, hey, evening! Cold one, huh? Cold out, you know?",
           "perform": "bright, already waving, from the desk",
           "sfx": "radio-squelch",
-          "dur": 4.3
+          "dur": 4.2
         },
         {
           "speaker": "dee",
@@ -15702,7 +15702,7 @@
         {
           "speaker": "narrator",
           "text": "On tile one Terrell comes round the desk and stops the man at the elevators with two fingers raised, like a man asking for a light. The man takes out a card. A visitor pass, dated Tuesday.",
-          "dur": 13.1
+          "dur": 13
         },
         {
           "speaker": "terrell",
@@ -15715,7 +15715,7 @@
           "speaker": "dee",
           "text": "Mm-hm.",
           "perform": "dry; she is watching Terrell, not the man",
-          "dur": 2.9
+          "dur": 2.8
         },
         {
           "speaker": "narrator",
@@ -15742,24 +15742,24 @@
         {
           "speaker": "narrator",
           "text": "You keep your eyes on him. He rides car one. The numbers over the door go up, one at a time, and stop on thirty-four.",
-          "dur": 8.2
+          "dur": 8.1
         },
         {
           "speaker": "narrator",
           "text": "You write the time on your hand because the tablet is across the room: 22:38, thirty-four, grey coat, puffer jacket.",
-          "dur": 9.2
+          "dur": 9.1
         },
         {
           "speaker": "dee",
           "text": "Thirty-four is insurance. Marsh works late.",
           "perform": "flat, to the wall",
-          "dur": 3.7
+          "dur": 3.6
         },
         {
           "speaker": "dee",
           "text": "Next time he gets a name on the sheet before he gets an elevator.",
           "perform": "no heat in it",
-          "dur": 4
+          "dur": 3.9
         },
         {
           "speaker": "narrator",
@@ -15786,19 +15786,19 @@
         {
           "speaker": "narrator",
           "text": "You say nothing. The man gets his elevator.",
-          "dur": 3.3
+          "dur": 3.2
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "the long one",
-          "dur": 3.1
+          "dur": 3
         },
         {
           "speaker": "narrator",
           "text": "Dolores writes nothing either. She looks at the turnstile, at the clock, at you. The clock says 22:41. It is 22:39.",
           "sfx": "clock-tick",
-          "dur": 10.7
+          "dur": 10.6
         },
         {
           "speaker": "dee",
@@ -15826,7 +15826,7 @@
         {
           "speaker": "narrator",
           "text": "23:56. Dolores gets up, takes the folded newspaper from the shelf, and lays it flat against the glass of tile five. It covers the whole picture.",
-          "dur": 11.3
+          "dur": 11.2
         },
         {
           "speaker": "dee",
@@ -15879,13 +15879,13 @@
           "speaker": "dee",
           "text": "Four cars. A plant.",
           "perform": "flat",
-          "dur": 2.4
+          "dur": 2.3
         },
         {
           "speaker": "dee",
           "text": "Left side, the plant has a dead leaf. You didn't see the leaf.",
           "perform": "dry, almost warm",
-          "dur": 4.9
+          "dur": 4.8
         },
         {
           "speaker": "narrator",
@@ -15896,7 +15896,7 @@
           "speaker": "dee",
           "text": "Mm. Tomorrow you'll see the leaf.",
           "perform": "to the glass, not to you",
-          "dur": 3.5
+          "dur": 3.4
         }
       ],
       "choices": [
@@ -15925,18 +15925,18 @@
           "speaker": "dee",
           "text": "How many? What colour is the light?",
           "perform": "flat, no unkindness in it",
-          "dur": 2.7
+          "dur": 2.6
         },
         {
           "speaker": "narrator",
           "text": "You don't know. She holds the paper against the glass longer than she needs to and lets you not know it.",
-          "dur": 6.6
+          "dur": 6.5
         },
         {
           "speaker": "dee",
           "text": "Mm. That's what the log would say. \"Some elevators.\"",
           "perform": "quiet, taking the paper down",
-          "dur": 4.5
+          "dur": 4.4
         }
       ],
       "choices": [
@@ -15959,7 +15959,7 @@
           "speaker": "dee",
           "text": "A hint.",
           "perform": "flat, turning it over",
-          "dur": 1.1
+          "dur": 1
         },
         {
           "speaker": "dee",
@@ -15970,13 +15970,13 @@
         {
           "speaker": "narrator",
           "text": "She takes the paper down. Four cars. A plant with one brown leaf on the left. A light on the call panel, green.",
-          "dur": 8.5
+          "dur": 8.4
         },
         {
           "speaker": "dee",
           "text": "Mm. Now you have a hint.",
           "perform": "dry, folding the newspaper in four",
-          "dur": 2.8
+          "dur": 2.7
         }
       ],
       "choices": [
@@ -15998,7 +15998,7 @@
         {
           "speaker": "narrator",
           "text": "03:01. The lights drop and come back. All nine tiles go to snow together and settle again.",
-          "dur": 7.9
+          "dur": 7.8
         },
         {
           "speaker": "dee",
@@ -16017,7 +16017,7 @@
         {
           "speaker": "narrator",
           "text": "Tile five: four cars and a plant. All four numbers are lit. Then three of them are.",
-          "dur": 7.1
+          "dur": 7
         }
       ],
       "choices": [
@@ -16062,13 +16062,13 @@
         {
           "speaker": "narrator",
           "text": "You put your eyes on tile five and keep them there. Car three goes dark between thirty and thirty-one. It lights again. It stays on a number that is not a floor.",
-          "dur": 11
+          "dur": 10.9
         },
         {
           "speaker": "dee",
           "text": "Say what you see.",
           "perform": "on the radio, between breaths",
-          "dur": 2.3,
+          "dur": 2.2,
           "treatment": "radio"
         },
         {
@@ -16110,7 +16110,7 @@
         {
           "speaker": "narrator",
           "text": "You turn to the fire panel beside the binder. Every light on it is green. It does not make a sound.",
-          "dur": 6.9
+          "dur": 6.8
         },
         {
           "speaker": "dee",
@@ -16183,7 +16183,7 @@
           "speaker": "narrator",
           "text": "The radio goes quiet. The stairwell carries her steps up from somewhere, one flight at a time. They don't speed up. They don't slow down.",
           "sfx": "footsteps-stairs",
-          "dur": 9.8
+          "dur": 9.7
         }
       ],
       "choices": [
@@ -16315,7 +16315,7 @@
           "speaker": "dee",
           "text": "Go home, Anand. Sleep two hours. Eat something.",
           "perform": "gruff, kind underneath",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "narrator",
@@ -16342,7 +16342,7 @@
         {
           "speaker": "narrator",
           "text": "05:34. The plate is on the shelf by the freezer, under foil. A sticky note is folded over the edge in Marisol's hand: DOLORES. EAT. Under it, smaller: and the new one.",
-          "dur": 14.1
+          "dur": 14
         },
         {
           "speaker": "dee",
@@ -16401,7 +16401,7 @@
           "speaker": "dee",
           "text": "Don't tell Marisol.",
           "perform": "low, taking the first one",
-          "dur": 2.2
+          "dur": 2.1
         },
         {
           "speaker": "narrator",
@@ -16509,12 +16509,12 @@
           "speaker": "dee",
           "text": "Log first.",
           "perform": "level; it could be approval or the other thing",
-          "dur": 4.6
+          "dur": 4.5
         },
         {
           "speaker": "narrator",
           "text": "The plate stays under its foil. The note stays folded over the edge. You can feel it there while you work, like a clock you are not allowed to look at.",
-          "dur": 9.6
+          "dur": 9.5
         },
         {
           "speaker": "dee",
@@ -16576,12 +16576,12 @@
         {
           "speaker": "narrator",
           "text": "She says it is urgent. She says it the way people say good evening.",
-          "dur": 4.9
+          "dur": 4.8
         },
         {
           "speaker": "narrator",
           "text": "The after-hours list says fifty-eight is open until four. It does not say who may be told so. On tile seven the glass doors are lit and nobody is behind them.",
-          "dur": 10.9
+          "dur": 10.8
         }
       ],
       "choices": [
@@ -16628,7 +16628,7 @@
           "speaker": "dee",
           "text": "Zurich. Mm. Take the number. Don't read them the list.",
           "perform": "over the radio, a little out of breath",
-          "dur": 4.8,
+          "dur": 4.7,
           "treatment": "radio"
         },
         {
@@ -16641,7 +16641,7 @@
         {
           "speaker": "narrator",
           "text": "You do. The woman thanks you in the same careful voice and is gone before you have read the number back.",
-          "dur": 6.7
+          "dur": 6.6
         }
       ],
       "choices": [
@@ -16669,12 +16669,12 @@
           "speaker": "dee",
           "text": "It doesn't. Don't.",
           "perform": "flat",
-          "dur": 2
+          "dur": 1.9
         },
         {
           "speaker": "narrator",
           "text": "She dries it on her sleeve and sets it on the shelf, handle out, on the old ring.",
-          "dur": 5.6
+          "dur": 5.5
         }
       ],
       "choices": [
@@ -16702,18 +16702,18 @@
           "speaker": "dee",
           "text": "Four.",
           "perform": "flat",
-          "dur": 1
+          "dur": 0.9
         },
         {
           "speaker": "dee",
           "text": "First week you say it. After that it says itself.",
           "perform": "flat, to the charger",
-          "dur": 3.8
+          "dur": 3.7
         },
         {
           "speaker": "narrator",
           "text": "The fourth radio is the only one that clicks when it settles.",
-          "dur": 3.8
+          "dur": 3.7
         }
       ],
       "choices": [
@@ -16746,7 +16746,7 @@
         {
           "speaker": "narrator",
           "text": "Under the binder there is nothing but the binder.",
-          "dur": 3.3
+          "dur": 3.2
         }
       ],
       "choices": [
@@ -16768,7 +16768,7 @@
         {
           "speaker": "narrator",
           "text": "The shelf drawer is open a finger's width. You push it, and it catches on the folded page you put back under the binder. You push again.",
-          "dur": 8.4
+          "dur": 8.3
         },
         {
           "speaker": "dee",
@@ -16779,7 +16779,7 @@
         {
           "speaker": "narrator",
           "text": "It shuts. She is counting radios she has already counted.",
-          "dur": 4.3
+          "dur": 4.2
         }
       ],
       "choices": [
@@ -16801,7 +16801,7 @@
         {
           "speaker": "narrator",
           "text": "05:56. Dolores takes the training sheet out of the binder. One box on it is empty: Trainer's initials, night one.",
-          "dur": 9
+          "dur": 8.9
         },
         {
           "speaker": "dee",
@@ -16813,7 +16813,7 @@
           "speaker": "dee",
           "text": "Pen. Pencil. Same as nine o'clock. I sign how I'm handed it.",
           "perform": "flat, holding out her hand for either",
-          "dur": 8.8
+          "dur": 8.7
         }
       ],
       "choices": [
@@ -16870,7 +16870,7 @@
           "speaker": "dee",
           "text": "Ink.",
           "perform": "flat",
-          "dur": 0.9
+          "dur": 0.8
         },
         {
           "speaker": "narrator",
@@ -16908,7 +16908,7 @@
         {
           "speaker": "narrator",
           "text": "The rubber on the end of it is worn down to the metal. She puts it back behind her ear.",
-          "dur": 5.3
+          "dur": 5.2
         }
       ],
       "choices": [
@@ -16958,24 +16958,24 @@
         {
           "speaker": "narrator",
           "text": "05:32. On tile two the day officer is at the glass of the vestibule. He taps the reader with his badge. The reader beeps red. He taps it again.",
-          "dur": 11.5
+          "dur": 11.4
         },
         {
           "speaker": "narrator",
           "text": "It is colder at the reader than anywhere in the building. Readers do that. He has worked here eleven years, and you have never seen his face.",
-          "dur": 9
+          "dur": 8.9
         },
         {
           "speaker": "dee",
           "text": "Badge.",
           "perform": "flat, not looking up",
-          "dur": 3.1
+          "dur": 3
         },
         {
           "speaker": "dee",
           "text": "He'll say it's the cold. It is the cold. Mm. What does the list say?",
           "perform": "dry",
-          "dur": 5.5
+          "dur": 5.4
         }
       ],
       "choices": [
@@ -17008,18 +17008,18 @@
         {
           "speaker": "narrator",
           "text": "He is on the list: day post, 0545. The reader is wrong and the list is right. You release the door.",
-          "dur": 8.3
+          "dur": 8.2
         },
         {
           "speaker": "dee",
           "text": "List first. Then the door.",
           "perform": "flat",
-          "dur": 2.7
+          "dur": 2.6
         },
         {
           "speaker": "narrator",
           "text": "He comes through with the cold on his coat and says good morning to the room. The room says it back, a little late.",
-          "dur": 6.9
+          "dur": 6.8
         }
       ],
       "choices": [
@@ -17047,7 +17047,7 @@
           "speaker": "dee",
           "text": "He's on the list.",
           "perform": "flat, after a moment, to the wall",
-          "dur": 4.2
+          "dur": 4.1
         },
         {
           "speaker": "dee",
@@ -17075,18 +17075,18 @@
         {
           "speaker": "narrator",
           "text": "You count them with her. One, two, three, four, a green light each. She watches your finger, not the radios.",
-          "dur": 7.7
+          "dur": 0.7
         },
         {
           "speaker": "dee",
           "text": "Mm. You count with your finger.",
-          "dur": 2.3,
+          "dur": 2.7,
           "perform": "dry"
         },
         {
           "speaker": "dee",
           "text": "Good. Do it again at six.",
-          "dur": 2.3,
+          "dur": 2.4,
           "perform": "flat"
         }
       ],
@@ -17108,18 +17108,18 @@
         {
           "speaker": "narrator",
           "text": "She says it to the charger, not to you.",
-          "dur": 3.5
+          "dur": 2.7
         },
         {
           "speaker": "dee",
           "text": "Radios.",
-          "dur": 2,
+          "dur": 1.2,
           "perform": "dry, not unkind"
         },
         {
           "speaker": "dee",
           "text": "If it is three, that is a log. If it is four, that is a night.",
-          "dur": 6.2,
+          "dur": 5.4,
           "perform": "low"
         }
       ],
@@ -17147,7 +17147,7 @@
           "speaker": "marisol",
           "text": "Tomorrow. Okay. I hold you to tomorrow, mi amor.",
           "treatment": "walkie",
-          "dur": 3.6,
+          "dur": 3.5,
           "perform": "over the walkie, clipped, warm underneath"
         },
         {
@@ -17175,24 +17175,24 @@
         {
           "speaker": "narrator",
           "text": "You ask Dolores to be the one. She looks at the walkie on the shelf for a while.",
-          "dur": 6.9
+          "dur": 5
         },
         {
           "speaker": "dee",
           "text": "Mine to say?",
-          "dur": 2,
+          "dur": 1.2,
           "perform": "flat"
         },
         {
           "speaker": "dee",
           "text": "It was yours to say. Mm. I will say it.",
-          "dur": 3.8,
+          "dur": 3.9,
           "perform": "dry, not unkind"
         },
         {
           "speaker": "narrator",
           "text": "She keys the walkie once, and keeps her thumb on it before she speaks.",
-          "dur": 5.4
+          "dur": 4.2
         }
       ],
       "choices": [
@@ -17213,18 +17213,18 @@
         {
           "speaker": "narrator",
           "text": "03:26. The incident field for car three has times in it, a floor, a name. Nothing else. Dolores reads it upside down from her chair.",
-          "dur": 9.6
+          "dur": 11.1
         },
         {
           "speaker": "dee",
           "text": "Times. Floor. Name.",
-          "dur": 2,
+          "dur": 3.2,
           "perform": "low"
         },
         {
           "speaker": "dee",
           "text": "That is all he can ask you about.",
-          "dur": 3.1,
+          "dur": 2.5,
           "perform": "dry"
         }
       ],
@@ -17246,18 +17246,18 @@
         {
           "speaker": "narrator",
           "text": "03:26. The incident field for car three has a word in it that is not a time. Dolores reads it upside down from her chair.",
-          "dur": 9.6
+          "dur": 9.3
         },
         {
           "speaker": "dee",
           "text": "\"Seemed.\"",
-          "dur": 2,
+          "dur": 1,
           "perform": "flat"
         },
         {
           "speaker": "dee",
           "text": "Mm. He will circle that.",
-          "dur": 2,
+          "dur": 2.5,
           "perform": "dry, not unkind"
         }
       ],
@@ -17279,18 +17279,18 @@
         {
           "speaker": "narrator",
           "text": "03:26. The incident field for car three is empty. The cursor blinks in it. Dolores looks at it, then at you.",
-          "dur": 8.1
+          "dur": 9
         },
         {
           "speaker": "dee",
           "text": "Blank.",
-          "dur": 2,
+          "dur": 1,
           "perform": "low"
         },
         {
           "speaker": "dee",
           "text": "Blank is a line too. He reads those first.",
-          "dur": 3.5,
+          "dur": 3.9,
           "perform": "dry"
         }
       ],
@@ -17312,18 +17312,18 @@
         {
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
-          "dur": 8.5
+          "dur": 10.1
         },
         {
           "speaker": "dee",
           "text": "Not signed in. You wrote it.",
-          "dur": 2.3,
+          "dur": 2.4,
           "perform": "flat"
         },
         {
           "speaker": "dee",
           "text": "Mm. Four words. That is a log.",
-          "dur": 2.7,
+          "dur": 3.7,
           "perform": "dry, not unkind"
         }
       ],
@@ -17345,18 +17345,18 @@
         {
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
-          "dur": 8.5
+          "dur": 8.2
         },
         {
           "speaker": "dee",
           "text": "\"Hurry.\"",
-          "dur": 2,
+          "dur": 1.1,
           "perform": "low"
         },
         {
           "speaker": "dee",
           "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
-          "dur": 6.2,
+          "dur": 6.4,
           "perform": "dry"
         }
       ],
@@ -17378,12 +17378,12 @@
         {
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
-          "dur": 7.3
+          "dur": 8.4
         },
         {
           "speaker": "dee",
           "text": "The Chairman went up. There is a camera that says so.",
-          "dur": 4.2,
+          "dur": 3.4,
           "perform": "flat"
         },
         {
@@ -17411,18 +17411,18 @@
         {
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
-          "dur": 8.5
+          "dur": 9.8
         },
         {
           "speaker": "dee",
           "text": "Signed, in only. You wrote that.",
-          "dur": 2.3,
+          "dur": 3.6,
           "perform": "low"
         },
         {
           "speaker": "dee",
           "text": "Mm. Four words. That is a log.",
-          "dur": 2.7,
+          "dur": 4.3,
           "perform": "dry"
         }
       ],
@@ -17444,12 +17444,12 @@
         {
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
-          "dur": 8.5
+          "dur": 8.4
         },
         {
           "speaker": "dee",
           "text": "\"Hurry.\"",
-          "dur": 2,
+          "dur": 0.9,
           "perform": "flat"
         },
         {
@@ -17477,18 +17477,18 @@
         {
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
-          "dur": 7.3
+          "dur": 8.4
         },
         {
           "speaker": "dee",
           "text": "The Chairman went up. There is a camera that says so.",
-          "dur": 4.2,
+          "dur": 3.8,
           "perform": "low"
         },
         {
           "speaker": "dee",
           "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
-          "dur": 5,
+          "dur": 5.1,
           "perform": "dry"
         }
       ],
@@ -17510,18 +17510,18 @@
         {
           "speaker": "narrator",
           "text": "You change the entry while she watches. Her pen waits beside the log until the field says what the panel says.",
-          "dur": 8.1
+          "dur": 7
         },
         {
           "speaker": "adler",
           "text": "Thank you. That is the entry.",
-          "dur": 2.3,
+          "dur": 2.6,
           "perform": "formal"
         },
         {
           "speaker": "narrator",
           "text": "She initials beneath it. Dolores keeps her eyes on the wall.",
-          "dur": 4.2
+          "dur": 4.1
         }
       ],
       "choices": [
@@ -17542,12 +17542,12 @@
         {
           "speaker": "narrator",
           "text": "You initial the log beside hers. Above it, in your name, the line about the panel is still there.",
-          "dur": 7.3
+          "dur": 6.6
         },
         {
           "speaker": "adler",
           "text": "That is my entry. Yours is above it. I did not read yours.",
-          "dur": 5,
+          "dur": 4.8,
           "perform": "formal"
         },
         {
