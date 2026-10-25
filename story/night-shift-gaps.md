@@ -4,13 +4,13 @@ Audit of Night Shift as it is on beta at `d3408c0` (#43), 2026-10-25. **The numb
 the headline says what each script finding (group c and the text items of the other groups) became.** It replaces the two earlier audits of this file, which were written
 before the voices, the camera art, the listing and the engine fixes (#29 to #43) and were partly out of date (their repairs were pasted under
 a "Status" section; those items are now folded in or withdrawn). **Nothing was fixed in the audit itself**: it is a list. File names are
-repo-relative. Counts are from `story/night-shift.json` as audited (228 scenes, 1,288 lines, 621 choices, 12 endings; now 241 scenes, 1,330 lines, 643 choices, 12 endings), `hawkes.assets.json` (1,375
+repo-relative. Counts are from `story/night-shift.json` as audited (228 scenes, 1,288 lines, 621 choices, 12 endings; now 256 scenes, 1,376 lines, 658 choices, 12 endings), `hawkes.assets.json` (1,375
 Night Shift assets) and the files on disk, by scripts named in the text.
 
-**Headline (after the script pass).** Shortest way through: **38.6 minutes**. Typical way (average, equal to the median): **44.7 minutes**. Longest: 53.3 minutes
+**Headline (after the second script pass, 2026-10-25).** Shortest way through: **39.3 minutes**. Typical way (average, equal to the median): **45.6 minutes**. Longest: 54.5 minutes
 (each line's recording plus the player's 0.35 s gap; `node tools/check-night-shift.mjs`). By the brief's other clock, words at 150 a minute plus
-one second of pause per line, the ways are 40.6 (shortest), 47.4 (typical) and 56.4 minutes (item 17: before the pass they were 38.2, 44.6 and 53.2). All 1,330 lines are recorded, all 10
-beds, 18 effects, 26 camera pictures, 12 end cards and the landing card exist. **Made nothing: the 6 music stings** (the only unmade assets).
+one second of pause per line, the ways are 40.6 (shortest), 47.4 (typical) and 56.4 minutes (item 17: before the pass they were 38.2, 44.6 and 53.2). 1,330 of 1,376 lines are recorded, all 10
+beds, 18 effects, 6 stings (made in #51), 26 camera pictures, 12 end cards and the landing card exist. **Unmade: the 46 lines of the 15 echo scenes** (ElevenLabs refused the calls: failed payment on the account).
 What is open is mostly *proof*: the browser playtests that did run on beta's T4 (job ids in the appendix) show the story plays, and also
 show that **most of their red flags are the bot's own mistakes** (items 51 and 52), that `console` plays only the 5-scene demo, and that
 `sound`, `branches`, `pages`, `analytics`, `credits` and `blog` have no T4 run at all.
@@ -43,6 +43,42 @@ New recordings: 64 lines (about $2), every other line kept its file (`node tools
 | 56 `story/night-shift.md` stale | Fixed: section 6 is a pointer, "Waiting for J" no longer asks about money already spent, the new scenes and the three kinds of button are written down. |
 | 10 camera pictures no scene shows | Left (art): `c9:trouble` would contradict the frozen tile nine in the same scenes. |
 | 8, 9 effects, copies, 1 to 7 audio, (b) art, (d) engine, (e) landing, 53 to 55, 57 to 60 | Left: not script. |
+
+## Second script pass (2026-10-25): echo scenes, the nine endings, the docs
+
+Run after the speaker treatments (#53). Checks: `npm run story -- --check` ok (4 stories, 304 scenes), `node tools/check-night-shift.mjs` (0 problems; 256 scenes, 1,376 lines, 658 choices, 12 endings,
+274,590 states, 0 stuck, 0 decisions that change nothing; shortest 39.3 minutes, average 45.6, longest 54.5).
+
+**Item 25, the scenes that send every choice to the same next scene.** The audit listed 14; four (`shift-prep-*`) were fixed in the first pass, so ten were left.
+Each button now goes to a scene of its own that answers what the player did, then on to the old next scene. The old flags, meters and
+shift-log lines are untouched (they still gate what they gated; `opined` is still read by `okafor-call`, `late-okafor` and the rest). The trace, per scene:
+
+| Scene | Button | New scene (then on to) | What the player hears afterwards |
+| --- | --- | --- | --- |
+| `okafor-out-fast` | Count them with her | `out-counted` (`the-chairs`) | Dee: "You count with your finger." Do it again at six. |
+| | Ask what she's counting | `out-asked` (`the-chairs`) | Dee: "Radios." If it is three, that is a log. |
+| `nephew-held` | Tell Marisol: tomorrow | `held-tomorrow` (`log-held`) | Marisol on the walkie: "I hold you to tomorrow." |
+| | Ask Dee to talk to her | `held-dee` (`log-held`) | Dee: "It was yours to say." She keys the walkie herself. |
+| `dev-ok`, `dev-stay`, `dev-company`, `dev-911`, `dev-dee` | Log it exactly | `entry-exact` (`coat-lobby`) | Dee reads the field: "Times. Floor. Name." |
+| | Add what you thought | `entry-thought` (`coat-lobby`) | Dee: "'Seemed.' He will circle that." |
+| | Leave it out | `entry-blank` (`coat-lobby`) | Dee: "Blank is a line too. He reads those first." |
+| `pierce-waved` | the same three | `lobby-exact-w`, `lobby-thought-w`, `lobby-blank-w` (`dee-back-waved`) | Dee on the lobby field: what the camera says against what the tablet says |
+| `pierce-signin` | the same three | `lobby-exact-s`, `lobby-thought-s`, `lobby-blank-s` (`dee-back-signed`) | the same, for the visitor sheet |
+| `adler-arrives-l` | Correct the entry now | `adler-corrected` (`dev-signout`) | Adler: "That is the entry." She initials beneath it. |
+| | Initial the log beside hers | `adler-initialed` (`dev-signout`) | Adler: "Yours is above it. I did not read yours." (the `lied` flag stays set) |
+
+Fifteen new scenes at the end of `scenes` (46 lines, about 40 seconds on the ways that pass them). The two `dee-back-*` scenes moved from 03:30 to 03:34, after the new scenes.
+
+**Item 32, nine endings that open mid-conversation.** Already fixed in the first pass: each of the nine endings opens on a narrator line (time, who is at the desk, one object). Checked now: the nine first-line recordings
+(`night-shift/end-*/media/line-1.mp3`) exist, are in the narrator's locked voice (`IFbrwI7VRvX2VkoD4Y3K`), and measure -16.5 to -17.5 LUFS (window -19.1 to -14.6). Nothing to record.
+
+**Items 26 to 33 that were left.** 26 (repeated labels), 27 (long pages), 28, 29, 30, 31, 33: fixed or explained in the first pass's table above; nothing further is open. The echo scenes pass the checker's voice rules.
+
+**Unrecorded: the 46 lines of the echo scenes.** The `audio.voice` runs (estimate 1.2 dollars, approved) all failed with ElevenLabs 401 `payment_issue` (failed or incomplete payment). Nothing was spent. When the account is paid:
+`node tools/make-audio.mjs night-shift --list`, one `hawkesgen_run audio.voice` per recipe in `hawkes.assets.json`, `--ingest`, `--mix`, `--dur`, `npm run story`. Until then the lines play on a timer.
+
+**Items 55 to 58 (docs).** `story/night-shift.md`, `story/night-shift-signoff.md` and this file carry the current counts; the signoff's stale "not done" list was brought up to date; `story/README.md` has the lines on the console scenarios;
+`story/night-shift-slice-notes.md` says it is history. `AGENTS.md` was not touched (an agent's brief does not edit it).
 
 ## How this was checked, and what was not
 

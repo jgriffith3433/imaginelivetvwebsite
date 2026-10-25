@@ -2543,7 +2543,7 @@ window.ILTV_STORIES = {
       [
        "Count them with her",
        "Count them with her",
-       "the-chairs",
+       "out-counted",
        {
         "add": {
          "trainer_trust": 1
@@ -2554,7 +2554,7 @@ window.ILTV_STORIES = {
       [
        "Ask what she's counting",
        "Ask what she's counting",
-       "the-chairs",
+       "out-asked",
        {
         "add": {
          "trainer_warmth": 1
@@ -4902,7 +4902,7 @@ window.ILTV_STORIES = {
       [
        "Tell Marisol: tomorrow",
        "Tell Marisol: tomorrow",
-       "log-held",
+       "held-tomorrow",
        {
         "add": {
          "trainer_warmth": 1
@@ -4913,7 +4913,7 @@ window.ILTV_STORIES = {
       [
        "Ask Dee to talk to her",
        "Ask Dee to talk to her",
-       "log-held",
+       "held-dee",
        {
         "add": {
          "trainer_trust": -1
@@ -13395,7 +13395,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "coat-lobby",
+       "entry-exact",
        {
         "add": {
          "trainer_trust": 1
@@ -13406,7 +13406,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "coat-lobby",
+       "entry-thought",
        {
         "set": [
          "opined"
@@ -13417,7 +13417,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "coat-lobby",
+       "entry-blank",
        {
         "set": [
          "opined"
@@ -13473,7 +13473,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "coat-lobby",
+       "entry-exact",
        {
         "add": {
          "trainer_trust": 1
@@ -13484,7 +13484,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "coat-lobby",
+       "entry-thought",
        {
         "set": [
          "opined"
@@ -13495,7 +13495,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "coat-lobby",
+       "entry-blank",
        {
         "set": [
          "opined"
@@ -13564,7 +13564,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "coat-lobby",
+       "entry-exact",
        {
         "add": {
          "trainer_trust": 1
@@ -13575,7 +13575,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "coat-lobby",
+       "entry-thought",
        {
         "set": [
          "opined"
@@ -13586,7 +13586,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "coat-lobby",
+       "entry-blank",
        {
         "set": [
          "opined"
@@ -13641,7 +13641,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "coat-lobby",
+       "entry-exact",
        {
         "add": {
          "trainer_trust": 1
@@ -13652,7 +13652,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "coat-lobby",
+       "entry-thought",
        {
         "set": [
          "opined"
@@ -13663,7 +13663,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "coat-lobby",
+       "entry-blank",
        {
         "set": [
          "opined"
@@ -13743,7 +13743,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "coat-lobby",
+       "entry-exact",
        {
         "add": {
          "trainer_trust": 1
@@ -13754,7 +13754,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "coat-lobby",
+       "entry-thought",
        {
         "set": [
          "opined"
@@ -13765,7 +13765,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "coat-lobby",
+       "entry-blank",
        {
         "set": [
          "opined"
@@ -13869,7 +13869,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "dee-back-waved",
+       "lobby-exact-w",
        {
         "add": {
          "trainer_trust": 1
@@ -13880,7 +13880,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "dee-back-waved",
+       "lobby-thought-w",
        {
         "set": [
          "opined"
@@ -13891,7 +13891,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "dee-back-waved",
+       "lobby-blank-w",
        {
         "set": [
          "opined"
@@ -13942,7 +13942,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "dee-back-signed",
+       "lobby-exact-s",
        {
         "add": {
          "trainer_trust": 1
@@ -13953,7 +13953,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "dee-back-signed",
+       "lobby-thought-s",
        {
         "set": [
          "opined"
@@ -13964,7 +13964,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "dee-back-signed",
+       "lobby-blank-s",
        {
         "set": [
          "opined"
@@ -14051,7 +14051,7 @@ window.ILTV_STORIES = {
      "folder": "night-shift/dee-back-waved",
      "lang": "en",
      "dir": "",
-     "time": "03:30",
+     "time": "03:34",
      "title": [
       "Back",
       "Back"
@@ -14142,7 +14142,7 @@ window.ILTV_STORIES = {
      "folder": "night-shift/dee-back-signed",
      "lang": "en",
      "dir": "",
-     "time": "03:30",
+     "time": "03:34",
      "title": [
       "Back",
       "Back"
@@ -15431,7 +15431,7 @@ window.ILTV_STORIES = {
       [
        "Correct the entry now",
        "Correct the entry now",
-       "dev-signout",
+       "adler-corrected",
        {
         "clear": [
          "lied"
@@ -15445,7 +15445,7 @@ window.ILTV_STORIES = {
       [
        "Initial the log beside hers",
        "Initial the log beside hers",
-       "dev-signout",
+       "adler-initialed",
        {
         "add": {
          "trainer_trust": 1
@@ -22174,6 +22174,597 @@ window.ILTV_STORIES = {
        {
         "log": "Looked at the plate on the shelf."
        }
+      ]
+     ]
+    },
+    "out-counted": {
+     "folder": "night-shift/out-counted",
+     "lang": "en",
+     "dir": "",
+     "time": "18:59",
+     "title": [
+      "Four of four",
+      "Four of four"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You count them with her. One, two, three, four, a green light each. She watches your finger, not the radios.",
+       "file": null,
+       "dur": 7.7
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. You count with your finger.",
+       "file": null,
+       "dur": 2.3
+      },
+      {
+       "speaker": "dee",
+       "text": "Good. Do it again at six.",
+       "file": null,
+       "dur": 2.3
+      }
+     ],
+     "log": "1859 hrs. Radios counted aloud with D. Reyes.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "the-chairs"
+      ]
+     ]
+    },
+    "out-asked": {
+     "folder": "night-shift/out-asked",
+     "lang": "en",
+     "dir": "",
+     "time": "18:59",
+     "title": [
+      "What she counts",
+      "What she counts"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "She says it to the charger, not to you.",
+       "file": null,
+       "dur": 3.5
+      },
+      {
+       "speaker": "dee",
+       "text": "Radios.",
+       "file": null,
+       "dur": 2
+      },
+      {
+       "speaker": "dee",
+       "text": "If it is three, that is a log. If it is four, that is a night.",
+       "file": null,
+       "dur": 6.2
+      }
+     ],
+     "log": "1859 hrs. D. Reyes asked what she counts at the charger. Answer: radios.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "the-chairs"
+      ]
+     ]
+    },
+    "held-tomorrow": {
+     "folder": "night-shift/held-tomorrow",
+     "lang": "en",
+     "dir": "",
+     "time": "21:38",
+     "title": [
+      "Tomorrow",
+      "Tomorrow"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "On tile six Marisol listens to you with her arms folded. Then she takes the walkie from her belt.",
+       "file": null,
+       "dur": 7.3
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tomorrow. Okay. I hold you to tomorrow, mi amor.",
+       "file": null,
+       "dur": 3.5
+      },
+      {
+       "speaker": "dee",
+       "text": "She will.",
+       "file": null,
+       "dur": 2
+      }
+     ],
+     "log": "2138 hrs. M. Quintero told the supervisor would speak to her tomorrow.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "log-held"
+      ]
+     ]
+    },
+    "held-dee": {
+     "folder": "night-shift/held-dee",
+     "lang": "en",
+     "dir": "",
+     "time": "21:38",
+     "title": [
+      "Her floor",
+      "Her floor"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You ask Dolores to be the one. She looks at the walkie on the shelf for a while.",
+       "file": null,
+       "dur": 6.9
+      },
+      {
+       "speaker": "dee",
+       "text": "Mine to say?",
+       "file": null,
+       "dur": 2
+      },
+      {
+       "speaker": "dee",
+       "text": "It was yours to say. Mm. I will say it.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She keys the walkie once, and keeps her thumb on it before she speaks.",
+       "file": null,
+       "dur": 5.4
+      }
+     ],
+     "log": "2138 hrs. D. Reyes asked to speak to M. Quintero at the officer's request.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "log-held"
+      ]
+     ]
+    },
+    "entry-exact": {
+     "folder": "night-shift/entry-exact",
+     "lang": "en",
+     "dir": "",
+     "time": "03:26",
+     "title": [
+      "The field, full",
+      "The field, full"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:26. The incident field for car three has times in it, a floor, a name. Nothing else. Dolores reads it upside down from her chair.",
+       "file": null,
+       "dur": 9.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Times. Floor. Name.",
+       "file": null,
+       "dur": 2
+      },
+      {
+       "speaker": "dee",
+       "text": "That is all he can ask you about.",
+       "file": null,
+       "dur": 3.1
+      }
+     ],
+     "log": "0326 hrs. Incident field for car 3 completed.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "coat-lobby"
+      ]
+     ]
+    },
+    "entry-thought": {
+     "folder": "night-shift/entry-thought",
+     "lang": "en",
+     "dir": "",
+     "time": "03:26",
+     "title": [
+      "A word that is not a time",
+      "A word that is not a time"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:26. The incident field for car three has a word in it that is not a time. Dolores reads it upside down from her chair.",
+       "file": null,
+       "dur": 9.6
+      },
+      {
+       "speaker": "dee",
+       "text": "\"Seemed.\"",
+       "file": null,
+       "dur": 2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. He will circle that.",
+       "file": null,
+       "dur": 2
+      }
+     ],
+     "log": "0326 hrs. Incident field for car 3 completed with the officer's impression.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "coat-lobby"
+      ]
+     ]
+    },
+    "entry-blank": {
+     "folder": "night-shift/entry-blank",
+     "lang": "en",
+     "dir": "",
+     "time": "03:26",
+     "title": [
+      "The field, empty",
+      "The field, empty"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:26. The incident field for car three is empty. The cursor blinks in it. Dolores looks at it, then at you.",
+       "file": null,
+       "dur": 8.1
+      },
+      {
+       "speaker": "dee",
+       "text": "Blank.",
+       "file": null,
+       "dur": 2
+      },
+      {
+       "speaker": "dee",
+       "text": "Blank is a line too. He reads those first.",
+       "file": null,
+       "dur": 3.5
+      }
+     ],
+     "log": "0326 hrs. Incident field for car 3 left blank.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "coat-lobby"
+      ]
+     ]
+    },
+    "lobby-exact-w": {
+     "folder": "night-shift/lobby-exact-w",
+     "lang": "en",
+     "dir": "",
+     "time": "03:31",
+     "title": [
+      "The field, full",
+      "The field, full"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
+       "file": null,
+       "dur": 8.5
+      },
+      {
+       "speaker": "dee",
+       "text": "Not signed in. You wrote it.",
+       "file": null,
+       "dur": 2.3
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Four words. That is a log.",
+       "file": null,
+       "dur": 2.7
+      }
+     ],
+     "log": "0331 hrs. Incident field for the lobby completed.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dee-back-waved"
+      ]
+     ]
+    },
+    "lobby-thought-w": {
+     "folder": "night-shift/lobby-thought-w",
+     "lang": "en",
+     "dir": "",
+     "time": "03:31",
+     "title": [
+      "A word that is not a time",
+      "A word that is not a time"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
+       "file": null,
+       "dur": 8.5
+      },
+      {
+       "speaker": "dee",
+       "text": "\"Hurry.\"",
+       "file": null,
+       "dur": 2
+      },
+      {
+       "speaker": "dee",
+       "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+       "file": null,
+       "dur": 6.2
+      }
+     ],
+     "log": "0331 hrs. Incident field for the lobby completed with the officer's impression.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dee-back-waved"
+      ]
+     ]
+    },
+    "lobby-blank-w": {
+     "folder": "night-shift/lobby-blank-w",
+     "lang": "en",
+     "dir": "",
+     "time": "03:31",
+     "title": [
+      "The field, empty",
+      "The field, empty"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
+       "file": null,
+       "dur": 7.3
+      },
+      {
+       "speaker": "dee",
+       "text": "The Chairman went up. There is a camera that says so.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "0331 hrs. Incident field for the lobby left blank.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dee-back-waved"
+      ]
+     ]
+    },
+    "lobby-exact-s": {
+     "folder": "night-shift/lobby-exact-s",
+     "lang": "en",
+     "dir": "",
+     "time": "03:31",
+     "title": [
+      "The field, full",
+      "The field, full"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
+       "file": null,
+       "dur": 8.5
+      },
+      {
+       "speaker": "dee",
+       "text": "Signed, in only. You wrote that.",
+       "file": null,
+       "dur": 2.3
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Four words. That is a log.",
+       "file": null,
+       "dur": 2.7
+      }
+     ],
+     "log": "0331 hrs. Incident field for the lobby completed.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dee-back-signed"
+      ]
+     ]
+    },
+    "lobby-thought-s": {
+     "folder": "night-shift/lobby-thought-s",
+     "lang": "en",
+     "dir": "",
+     "time": "03:31",
+     "title": [
+      "A word that is not a time",
+      "A word that is not a time"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
+       "file": null,
+       "dur": 8.5
+      },
+      {
+       "speaker": "dee",
+       "text": "\"Hurry.\"",
+       "file": null,
+       "dur": 2
+      },
+      {
+       "speaker": "dee",
+       "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+       "file": null,
+       "dur": 6.2
+      }
+     ],
+     "log": "0331 hrs. Incident field for the lobby completed with the officer's impression.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dee-back-signed"
+      ]
+     ]
+    },
+    "lobby-blank-s": {
+     "folder": "night-shift/lobby-blank-s",
+     "lang": "en",
+     "dir": "",
+     "time": "03:31",
+     "title": [
+      "The field, empty",
+      "The field, empty"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
+       "file": null,
+       "dur": 7.3
+      },
+      {
+       "speaker": "dee",
+       "text": "The Chairman went up. There is a camera that says so.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
+       "file": null,
+       "dur": 5
+      }
+     ],
+     "log": "0331 hrs. Incident field for the lobby left blank.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dee-back-signed"
+      ]
+     ]
+    },
+    "adler-corrected": {
+     "folder": "night-shift/adler-corrected",
+     "lang": "en",
+     "dir": "",
+     "time": "04:14",
+     "title": [
+      "The right entry",
+      "The right entry"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You change the entry while she watches. Her pen waits beside the log until the field says what the panel says.",
+       "file": null,
+       "dur": 8.1
+      },
+      {
+       "speaker": "adler",
+       "text": "Thank you. That is the entry.",
+       "file": null,
+       "dur": 2.3
+      },
+      {
+       "speaker": "narrator",
+       "text": "She initials beneath it. Dolores keeps her eyes on the wall.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0414 hrs. False panel entry corrected at the panel, F.S.D. H. Adler present.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dev-signout"
+      ]
+     ]
+    },
+    "adler-initialed": {
+     "folder": "night-shift/adler-initialed",
+     "lang": "en",
+     "dir": "",
+     "time": "04:14",
+     "title": [
+      "Beside hers",
+      "Beside hers"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You initial the log beside hers. Above it, in your name, the line about the panel is still there.",
+       "file": null,
+       "dur": 7.3
+      },
+      {
+       "speaker": "adler",
+       "text": "That is my entry. Yours is above it. I did not read yours.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "She caps her pen. Dolores does not look up.",
+       "file": null,
+       "dur": 3.5
+      }
+     ],
+     "log": "0414 hrs. Log initialed beside F.S.D. H. Adler; officer's own entry left standing.",
+     "choices": [
+      [
+       "Go on",
+       "Go on",
+       "dev-signout"
       ]
      ]
     }

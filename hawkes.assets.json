@@ -28961,6 +28961,834 @@
       "files": {
         "line": "night-shift/day-officer-let/media/line-3.mp3"
       }
+    },
+    {
+      "id": "night-shift-out-counted-line-1",
+      "note": "Four of four (Night Shift): Narrator says \"You count them with her. One, two, three, four, a green light each. She watches your finger, not the radios.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You count them with her. One, two, three, four, a green light each. She watches your finger, not the radios.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/out-counted/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-out-counted-line-2",
+      "note": "Four of four (Night Shift): Dee says \"Mm. You count with your finger.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] Mm. You count with your finger.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/out-counted/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-out-counted-line-3",
+      "note": "Four of four (Night Shift): Dee says \"Good. Do it again at six.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] Good. Do it again at six.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/out-counted/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-out-asked-line-1",
+      "note": "What she counts (Night Shift): Narrator says \"She says it to the charger, not to you.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She says it to the charger, not to you.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/out-asked/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-out-asked-line-2",
+      "note": "What she counts (Night Shift): Dee says \"Radios.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] Radios.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/out-asked/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-out-asked-line-3",
+      "note": "What she counts (Night Shift): Dee says \"If it is three, that is a log. If it is four, that is a night.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] If it is three, that is a log. If it is four, that is a night.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/out-asked/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-held-tomorrow-line-1",
+      "note": "Tomorrow (Night Shift): Narrator says \"On tile six Marisol listens to you with her arms folded. Then she takes the walkie from her belt.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "On tile six Marisol listens to you with her arms folded. Then she takes the walkie from her belt.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/held-tomorrow/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-held-tomorrow-line-2",
+      "note": "Tomorrow (Night Shift): Marisol says \"Tomorrow. Okay. I hold you to tomorrow, mi amor.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[over the walkie][clipped][warm underneath] Tomorrow. Okay. I hold you to tomorrow, mi amor.",
+            "voice": "Iok0Qd1zNVnFs3DULx6Z",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/held-tomorrow/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-held-tomorrow-line-3",
+      "note": "Tomorrow (Night Shift): Dee says \"She will.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] She will.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/held-tomorrow/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-held-dee-line-1",
+      "note": "Her floor (Night Shift): Narrator says \"You ask Dolores to be the one. She looks at the walkie on the shelf for a while.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You ask Dolores to be the one. She looks at the walkie on the shelf for a while.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/held-dee/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-held-dee-line-2",
+      "note": "Her floor (Night Shift): Dee says \"Mine to say?\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] Mine to say?",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/held-dee/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-held-dee-line-3",
+      "note": "Her floor (Night Shift): Dee says \"It was yours to say. Mm. I will say it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] It was yours to say. Mm. I will say it.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/held-dee/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-held-dee-line-4",
+      "note": "Her floor (Night Shift): Narrator says \"She keys the walkie once, and keeps her thumb on it before she speaks.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She keys the walkie once, and keeps her thumb on it before she speaks.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/held-dee/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-exact-line-1",
+      "note": "The field, full (Night Shift): Narrator says \"03:26. The incident field for car three has times in it, a floor, a name. Nothing else. Dolores reads it upside down from her chair.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:26. The incident field for car three has times in it, a floor, a name. Nothing else. Dolores reads it upside down from her chair.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-exact/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-exact-line-2",
+      "note": "The field, full (Night Shift): Dee says \"Times. Floor. Name.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] Times. Floor. Name.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-exact/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-exact-line-3",
+      "note": "The field, full (Night Shift): Dee says \"That is all he can ask you about.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] That is all he can ask you about.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-exact/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-thought-line-1",
+      "note": "A word that is not a time (Night Shift): Narrator says \"03:26. The incident field for car three has a word in it that is not a time. Dolores reads it upside down from her chair.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:26. The incident field for car three has a word in it that is not a time. Dolores reads it upside down from her chair.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-thought/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-thought-line-2",
+      "note": "A word that is not a time (Night Shift): Dee says \"\"Seemed.\"\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] \"Seemed.\"",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-thought/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-thought-line-3",
+      "note": "A word that is not a time (Night Shift): Dee says \"Mm. He will circle that.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] Mm. He will circle that.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-thought/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-blank-line-1",
+      "note": "The field, empty (Night Shift): Narrator says \"03:26. The incident field for car three is empty. The cursor blinks in it. Dolores looks at it, then at you.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:26. The incident field for car three is empty. The cursor blinks in it. Dolores looks at it, then at you.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-blank/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-blank-line-2",
+      "note": "The field, empty (Night Shift): Dee says \"Blank.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] Blank.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-blank/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-entry-blank-line-3",
+      "note": "The field, empty (Night Shift): Dee says \"Blank is a line too. He reads those first.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] Blank is a line too. He reads those first.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/entry-blank/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-exact-w-line-1",
+      "note": "The field, full (Night Shift): Narrator says \"03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-exact-w/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-exact-w-line-2",
+      "note": "The field, full (Night Shift): Dee says \"Not signed in. You wrote it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] Not signed in. You wrote it.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-exact-w/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-exact-w-line-3",
+      "note": "The field, full (Night Shift): Dee says \"Mm. Four words. That is a log.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] Mm. Four words. That is a log.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-exact-w/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-thought-w-line-1",
+      "note": "A word that is not a time (Night Shift): Narrator says \"03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-thought-w/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-thought-w-line-2",
+      "note": "A word that is not a time (Night Shift): Dee says \"\"Hurry.\"\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] \"Hurry.\"",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-thought-w/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-thought-w-line-3",
+      "note": "A word that is not a time (Night Shift): Dee says \"He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-thought-w/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-blank-w-line-1",
+      "note": "The field, empty (Night Shift): Narrator says \"03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-blank-w/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-blank-w-line-2",
+      "note": "The field, empty (Night Shift): Dee says \"The Chairman went up. There is a camera that says so.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] The Chairman went up. There is a camera that says so.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-blank-w/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-blank-w-line-3",
+      "note": "The field, empty (Night Shift): Dee says \"The tablet says nothing. Mm. He will ask which of them is wrong.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] The tablet says nothing. Mm. He will ask which of them is wrong.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-blank-w/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-exact-s-line-1",
+      "note": "The field, full (Night Shift): Narrator says \"03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-exact-s/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-exact-s-line-2",
+      "note": "The field, full (Night Shift): Dee says \"Signed, in only. You wrote that.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] Signed, in only. You wrote that.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-exact-s/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-exact-s-line-3",
+      "note": "The field, full (Night Shift): Dee says \"Mm. Four words. That is a log.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] Mm. Four words. That is a log.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-exact-s/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-thought-s-line-1",
+      "note": "A word that is not a time (Night Shift): Narrator says \"03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-thought-s/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-thought-s-line-2",
+      "note": "A word that is not a time (Night Shift): Dee says \"\"Hurry.\"\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] \"Hurry.\"",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-thought-s/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-thought-s-line-3",
+      "note": "A word that is not a time (Night Shift): Dee says \"He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-thought-s/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-blank-s-line-1",
+      "note": "The field, empty (Night Shift): Narrator says \"03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-blank-s/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-blank-s-line-2",
+      "note": "The field, empty (Night Shift): Dee says \"The Chairman went up. There is a camera that says so.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] The Chairman went up. There is a camera that says so.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-blank-s/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-lobby-blank-s-line-3",
+      "note": "The field, empty (Night Shift): Dee says \"The tablet says nothing. Mm. He will ask which of them is wrong.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] The tablet says nothing. Mm. He will ask which of them is wrong.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/lobby-blank-s/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-adler-corrected-line-1",
+      "note": "The right entry (Night Shift): Narrator says \"You change the entry while she watches. Her pen waits beside the log until the field says what the panel says.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You change the entry while she watches. Her pen waits beside the log until the field says what the panel says.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/adler-corrected/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-adler-corrected-line-2",
+      "note": "The right entry (Night Shift): Ms. Adler says \"Thank you. That is the entry.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[formal] Thank you. That is the entry.",
+            "voice": "QJ9eYeuXwMsC2KElXT1P",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/adler-corrected/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-adler-corrected-line-3",
+      "note": "The right entry (Night Shift): Narrator says \"She initials beneath it. Dolores keeps her eyes on the wall.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She initials beneath it. Dolores keeps her eyes on the wall.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/adler-corrected/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-adler-initialed-line-1",
+      "note": "Beside hers (Night Shift): Narrator says \"You initial the log beside hers. Above it, in your name, the line about the panel is still there.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You initial the log beside hers. Above it, in your name, the line about the panel is still there.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/adler-initialed/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-adler-initialed-line-2",
+      "note": "Beside hers (Night Shift): Ms. Adler says \"That is my entry. Yours is above it. I did not read yours.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[formal] That is my entry. Yours is above it. I did not read yours.",
+            "voice": "QJ9eYeuXwMsC2KElXT1P",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/adler-initialed/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-adler-initialed-line-3",
+      "note": "Beside hers (Night Shift): Narrator says \"She caps her pen. Dolores does not look up.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She caps her pen. Dolores does not look up.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/adler-initialed/media/line-3.mp3"
+      }
     }
   ]
 }
