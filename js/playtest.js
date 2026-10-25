@@ -3284,9 +3284,12 @@ async function nightGapsRun(options, t) {
     else t.event("criterion", "the output of npm run story -- --check is in the file");
     const sec = (appendix.match(/### Playtests[^\n]*\n([\s\S]*)/) || [])[1] || "";
     for (const id of ["console", "stories", "sound"]) {
-      if (new RegExp(`#### ${id}\\b[\\s\\S]*?(problems|pass|fail)`, "i").test(sec)) t.event("criterion", `the ${id} playtest's report is in the file`);
-      else if (/Not run here/i.test(sec) && sec.includes(id)) t.problem("warning", `night-shift-gaps.md has no report of the ${id} playtest, only that it was not run`);
-      else t.problem("bug", `night-shift-gaps.md says nothing about the ${id} playtest`);
+      // Each playtest has its own "#### <id>" section, up to the next heading: a report in another section doesn't count.
+      const part = (sec.match(new RegExp(`#### ${id}\\b[^\\n]*\\n([\\s\\S]*?)(?=\\n#{3,4} |$)`)) || [])[1];
+      if (!part) t.problem("bug", `night-shift-gaps.md says nothing about the ${id} playtest`);
+      else if (/Not run here/i.test(part)) t.problem("warning", `night-shift-gaps.md has no report of the ${id} playtest, only that it was not run`);
+      else if (/outcome \*\*\w+\*\*[\s\S]*problems/i.test(part)) t.event("criterion", `the ${id} playtest's report is in the file: ${(part.match(/outcome \*\*(\w+)\*\* in ([\d.]+) s, (\d+) problems/) || []).slice(1).join(" / ")}`);
+      else t.problem("bug", `night-shift-gaps.md's ${id} section has no report (an outcome and its problems) and doesn't say it was not run`);
     }
   } finally {
     await sleep(200);
