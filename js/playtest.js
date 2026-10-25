@@ -2688,7 +2688,9 @@ function closeViewFrame() {
   viewFrame = null;
 }
 
-async function viewFrameLoad(t, url, w, h, { loadMs = 0 } = {}) {
+async function viewFrameLoad(t, url, w, h, { loadMs = 0, alive = () => true } = {}) {
+  // A play that was cut off must not open (or close) a frame: the next play owns it.
+  if (!alive()) throw new Error("the play was cut off before its frame opened");
   closeViewFrame();
   viewFrame = document.createElement("iframe");
   viewFrame.title = `Playtest ${w}x${h}`;
@@ -2702,6 +2704,11 @@ async function viewFrameLoad(t, url, w, h, { loadMs = 0 } = {}) {
     if (loadMs) setTimeout(() => resolve(false), loadMs);
     frame.src = url;
   });
+  if (!alive()) {
+    frame.remove();
+    if (viewFrame === frame) viewFrame = null;
+    throw new Error("the play was cut off while its frame loaded");
+  }
   if (!loaded) throw new Error(`the frame ${w}x${h} never finished loading ${url} (${loadMs} ms)`);
   const win = frame.contentWindow;
   const ready = await waitFor(() => win.iltvConsole && win.iltvStories && win.hawkesSound, 10000);
@@ -4008,7 +4015,9 @@ async function nightSignoffRun(options, t) {
         const started = performance.now();
         const limit = near ? PLAY_LIMIT_NEAR : PLAY_LIMIT_FULL;
         let step = "starting";
+        let over = false; // set when this play is done or cut off: a stalled play that wakes later stops at its next step
         const at = (what) => {
+          if (over) throw new Error(`${label}: cut off`);
           step = what;
           t.scene(`${label}: ${what}`); // the runner's line in Studio is this scene (and the note), so it changes at every step
           t.note(`night-shift-signoff: ${label}: ${what}`);
@@ -4051,7 +4060,7 @@ async function nightSignoffRun(options, t) {
               localStorage.removeItem(RUN_KEY + st.cookie);
             }
             at(`loading the ${w}x${h} frame`);
-            doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h, { loadMs: 20000 });
+            doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h, { loadMs: 20000, alive: () => !over });
             at("Tap to play in the frame");
             await consolePrompt(t, doc, label);
             m = consoleModel(st);
@@ -4097,6 +4106,7 @@ async function nightSignoffRun(options, t) {
           t.problem("bug", `${label}: the play stopped at "${step}": ${e && e.message ? e.message : e}`);
           t.event("signoff-stopped", `${sc.ending[0]} (${id}) at ${sizeName}: at "${step}" after ${Math.round((performance.now() - started) / 1000)} s`);
         } finally {
+          over = true;
           clearInterval(heart);
           if (w) closeViewFrame();
         }
