@@ -1809,6 +1809,18 @@ figure.feed { cursor: default; }
   .console-panel { align-self: stretch; }
 }
 
+/* Once the lines are heard, the choices (and the end screen) take what the subtitles need less, on any screen. */
+.console[data-lines="done"] .console-subs { max-height: 40dvh; }
+.console-endcard { max-height: 40dvh; }
+
+/* A phone on its side (844x390): the words column scrolls by itself, so many choices (up to fifteen) never push the
+   Log button or the subtitles off the screen; once the lines are heard the subtitles give room to the choices. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .console-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+  .console[data-lines="done"] .console-subs { flex: 0 0 auto; min-height: 2.6rem; max-height: 6rem; }
+  .console .console-endcard { width: auto; max-width: 100%; max-height: 32dvh; }
+}
+
 @media (min-width: 1000px) and (min-height: 700px) {
   .console-bar h1 { font-size: 0.95rem; }
   .big-pic { height: clamp(120px, 30dvh, 340px); }
