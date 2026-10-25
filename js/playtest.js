@@ -2689,6 +2689,123 @@ async function nightShiftRun(options, t) {
   }
 }
 
+/* ---------------- Night Shift: the voices and sounds (every line has its recording, one voice per speaker, even loudness) ---------------- */
+
+/** Loudness of a file in dBFS RMS (a rough match of what the ear reads), decoded in the page. */
+async function rmsDb(ctx, url) {
+  const buf = await (await fetch(url)).arrayBuffer();
+  const audio = await ctx.decodeAudioData(buf);
+  let sum = 0;
+  let n = 0;
+  for (let c = 0; c < audio.numberOfChannels; c++) {
+    const d = audio.getChannelData(c);
+    for (let i = 0; i < d.length; i += 2) { sum += d[i] * d[i]; n++; }
+  }
+  return { db: 10 * Math.log10(sum / Math.max(1, n) + 1e-12), seconds: audio.duration };
+}
+
+async function nightAudioRun(options, t) {
+  rememberProgress();
+  const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  if (!st) throw new Error("no console story night-shift in js/story-data.js");
+  await passPrompt(t);
+  clearProgress();
+  try {
+    // 1. Every spoken line and cue has a recording that loads.
+    t.scene(`${st.title}: every line and cue has its recording`);
+    const lines = Object.entries(st.scenes).flatMap(([id, sc]) => sc.lines.map((l, i) => ({ id, n: i + 1, ...l })));
+    const bySpeaker = {};
+    for (const l of lines) (bySpeaker[l.speaker] = bySpeaker[l.speaker] || []).push(l);
+    const missing = lines.filter((l) => !l.file);
+    t.metric("lines", lines.length);
+    t.metric("linesWithoutRecording", missing.length);
+    t.event("criterion", `${lines.length - missing.length} of ${lines.length} lines have a recording; speakers: ${Object.entries(bySpeaker).map(([w, ls]) => `${(st.speakers[w] || {}).name || w} ${ls.length}`).join(", ")}`);
+    if (missing.length) t.problem("bug", `${st.id}: ${missing.length} lines have no recording yet (${missing.slice(0, 5).map((l) => `${l.id}#${l.n}`).join(", ")}...)`);
+    const cues = [...Object.entries(st.ambience || {}).map(([k, f]) => ["ambience", k, f]), ...Object.entries(st.sfx || {}).map(([k, f]) => ["sfx", k, f])];
+    cues.filter(([, , f]) => !f).forEach(([kind, k]) => t.problem("bug", `${st.id}: the ${kind} cue ${k} has no recording`));
+    const usedBeds = new Set(Object.values(st.scenes).map((sc) => sc.ambience).filter(Boolean));
+    const usedSfx = new Set(lines.map((l) => l.sfx).filter(Boolean));
+    [...usedBeds].filter((k) => !(st.ambience || {})[k]).forEach((k) => t.problem("bug", `${st.id}: a scene uses the bed ${k}, which has no recording`));
+    [...usedSfx].filter((k) => !(st.sfx || {})[k]).forEach((k) => t.problem("bug", `${st.id}: a line uses the effect ${k}, which has no recording`));
+    t.progress(0.15);
+
+    // 2. Loudness: a few lines of each speaker, every bed and every effect, decoded here.
+    t.scene(`${st.title}: loudness across speakers, ambience under the voice`);
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new Ctx();
+    const speakerDb = {};
+    for (const [who, ls] of Object.entries(bySpeaker)) {
+      const made = ls.filter((l) => l.file);
+      const pick = [made[0], made[Math.floor(made.length / 2)], made[made.length - 1]].filter((x, i, a) => x && a.indexOf(x) === i);
+      for (const l of pick) {
+        try {
+          const r = await rmsDb(ctx, l.file);
+          (speakerDb[who] = speakerDb[who] || []).push(r.db);
+          if (r.seconds > l.dur + 3.5) t.problem("bug", `${l.id}#${l.n}: the recording is ${r.seconds.toFixed(1)} s but its dur is ${l.dur} s, so the player would cut it off`);
+        } catch (e) { t.problem("bug", `${l.id}#${l.n}: ${l.file} doesn't load or decode (${e && e.message})`); }
+      }
+    }
+    const mean = (a) => a.reduce((x, y) => x + y, 0) / a.length;
+    const voiceMeans = Object.entries(speakerDb).map(([w, a]) => [w, mean(a)]);
+    voiceMeans.forEach(([w, db]) => t.event("loudness", `${(st.speakers[w] || {}).name || w}: ${db.toFixed(1)} dB RMS over ${speakerDb[w].length} lines`));
+    if (voiceMeans.length) {
+      const lo = Math.min(...voiceMeans.map((x) => x[1]));
+      const hi = Math.max(...voiceMeans.map((x) => x[1]));
+      t.metric("voiceSpreadDb", Math.round((hi - lo) * 10) / 10);
+      t.event("criterion", `speakers sit within ${(hi - lo).toFixed(1)} dB of each other (${lo.toFixed(1)} to ${hi.toFixed(1)} dB RMS)`);
+      if (hi - lo > 4) t.problem("bug", `${st.id}: speakers differ by ${(hi - lo).toFixed(1)} dB, more than 4`);
+      const voiceDb = mean(voiceMeans.map((x) => x[1]));
+      for (const [kind, k, f] of cues) {
+        if (!f) continue;
+        try {
+          const r = await rmsDb(ctx, f);
+          const under = voiceDb - r.db;
+          t.event("loudness", `${kind} ${k}: ${r.db.toFixed(1)} dB RMS, ${under.toFixed(1)} dB under the voice`);
+          if (kind === "ambience" && under < 12) t.problem("bug", `${st.id}: the bed ${k} is only ${under.toFixed(1)} dB under the voice, it could drown a line`);
+          if (kind === "sfx" && under < 3) t.problem("bug", `${st.id}: the effect ${k} is only ${under.toFixed(1)} dB under the voice`);
+        } catch (e) { t.problem("bug", `${st.id}: ${kind} ${k} doesn't load or decode (${e && e.message})`); }
+      }
+    }
+    ctx.close && ctx.close().catch(() => {});
+    t.progress(0.5);
+
+    // 3. Real play: the opening scene with its own voices and bed, a line at a time (not skipped).
+    t.scene(`${st.title}: the opening scene is heard line by line`);
+    await consoleOpen(t, st);
+    await consoleFresh(t, st);
+    const api = window.iltvConsole;
+    const first = st.scenes[st.start];
+    const want = Math.min(3, first.lines.length);
+    const heard = new Set();
+    const t0 = performance.now();
+    while (heard.size < want && performance.now() - t0 < 40000) {
+      const l = api.lines();
+      const a = api.audio();
+      if (l && l.playing >= 0 && !heard.has(l.playing)) {
+        const line = first.lines[l.playing];
+        await sleep(900);
+        const a2 = api.audio();
+        heard.add(l.playing);
+        const ok = line.file && a2.voice && a2.voice.src.endsWith(line.file);
+        if (!ok) t.problem("bug", `${st.id}/${st.start} line ${l.playing + 1}: the voice element plays ${a2.voice && a2.voice.src}, not ${line.file}`);
+        else if (a2.voice.paused || a2.voice.muted) t.problem("warning", `${st.id}/${st.start} line ${l.playing + 1}: the recording is ${a2.voice.paused ? "paused" : "muted"} (autoplay blocked?)`);
+        else if (a2.voice.time <= 0) t.problem("bug", `${st.id}/${st.start} line ${l.playing + 1}: the recording doesn't advance`);
+        else t.event("voice", `line ${l.playing + 1} (${(st.speakers[line.speaker] || {}).name || line.speaker}) is playing its own recording at ${a2.voice.time.toFixed(1)} s, volume ${a2.voice.volume}`);
+        if (a2.bed && a2.bedCue === first.ambience) t.event("ambience", `the ${first.ambience} bed is ${a2.bed.paused ? "not playing" : "playing"}, looped: ${a2.bed.loop}, volume ${a2.bed.volume}`);
+        else t.problem("bug", `${st.id}/${st.start}: the bed is ${a.bedCue}, the scene says ${first.ambience}`);
+      }
+      await sleep(150);
+    }
+    if (heard.size < want) t.problem("bug", `${st.id}/${st.start}: only ${heard.size} of the first ${want} lines were heard in 40 s`);
+    await consoleHeard(t, document, `${st.id}/${st.start}`);
+    t.progress(1);
+  } finally {
+    await sleep(300);
+    await toLanding(t).catch(() => {});
+  }
+}
+
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
@@ -2699,6 +2816,13 @@ installPlaytest({
       seconds: 75,
       tags: ["full"],
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title.",
+    },
+    {
+      id: "night-shift-audio",
+      title: "Night Shift's voices and sounds: every line and cue has a recording, each speaker keeps their voice, loudness is even, the bed sits under the voice, the opening is heard",
+      seconds: 120,
+      tags: ["full"],
+      description: "Opens the Night Shift draft by its link under its own Tap to play. Checks every line of every scene has a recording (and every bed and effect a scene uses has its file), that each recording loads and decodes and is not longer than the player waits for (dur + 4 s), that a few lines of each speaker are within 4 dB of each other (RMS, decoded in the page), that every ambience bed sits at least 12 dB under the voice and every effect at least 3 dB under it. Then it plays the opening scene from a new run without skipping: each of the first three lines must play its own recording (the voice element's source is the line's file, not paused or muted, its time advancing) over the scene's ambience bed (looped, playing). Logs the loudness of each speaker, bed and effect.",
     },
     { id: "branches", title: "Every story's player (drafts too): every scene, every choice, every video (The Water Road's cuts: 9:16, with sound), the inventory's counts, the percent explored rising scene by scene to 100% only at the last, the Tree locked until found (no Back: after each choice it walks again from the start, a new run)", seconds: 330, tags: ["full"] },
     { id: "pages", title: "Every story's branch pages (one folder per branch): videos, choice links, the inventory's counts; a console story's wall, lines, marked state and open or locked choices", seconds: 100, tags: ["full"] },
@@ -2755,6 +2879,7 @@ installPlaytest({
       else if (id === "pages") await pages(options, t);
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
+      else if (id === "night-shift-audio") await nightAudioRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);

@@ -28,46 +28,57 @@
   "speakers": {
     "narrator": {
       "name": "Narrator",
+      "voice": "IFbrwI7VRvX2VkoD4Y3K",
       "design": "A calm, even voice, neither male nor female in feel, close and plain, reading a log aloud in the present tense. No drama, no smile. Clean recording, faint room tone."
     },
     "dee": {
       "name": "Dee",
+      "voice": "qhe779QaY6YuY9d3VGab",
       "design": "A woman in her late fifties, Bronx accent with a worn, low alto, dry and unhurried, a smoker's rasp from years ago. Speaks quietly and flatly, slight humor underneath. Recorded close and slightly dry, as if in a small room, with faint room tone; no performance polish."
     },
     "okafor": {
       "name": "Mr. Okafor",
+      "voice": "Xxe1qCvSvBHFD7OTAz9I",
       "design": "A man in his mid-forties, American English with a faint New York and West African lilt, a clear baritone, steady, courteous, a little weary. Clean office-room recording, slight reverb, a phone-call quality in the on-the-radio version."
     },
     "terrell": {
       "name": "Terrell",
+      "voice": "idZn18yShmcD0ePsg1A5",
       "design": "A young man in his mid-twenties, Brooklyn accent, light tenor, warm and quick, smiling while he talks. Clean desk-mic recording with a little room noise."
     },
     "marisol": {
       "name": "Marisol",
+      "voice": "Iok0Qd1zNVnFs3DULx6Z",
       "design": "A woman in her early fifties, Dominican-American accent, rich mezzo, fast and expressive, warm with a flare of impatience. Slightly noisy room recording (a vacuum cleaner far away), radio quality on the walkie."
     },
     "dev": {
       "name": "Dev",
+      "voice": "zcQcgx11ALPbj0o2PFsw",
       "design": "A man in his late twenties, American accent, slightly nasal tenor, tired and polite, speech a bit rushed. Recorded on a phone-quality intercom with a tinny filter and a light hum."
     },
     "adler": {
       "name": "Ms. Adler",
+      "voice": "QJ9eYeuXwMsC2KElXT1P",
       "design": "A woman in her early sixties, crisp New York accent, low alto, formal and calm, slight gravel. Close, clean phone-call recording."
     },
     "courier": {
       "name": "Courier",
+      "voice": "cOJkIUDUojZtwaJSfMzy",
       "design": "A man in his thirties, neutral New York accent, flat and tired, recorded through a cheap dock intercom, tinny and clipped."
     },
     "sleeper": {
       "name": "The man in the vestibule",
+      "voice": "YSWR6wrmdI2sOa3gtoye",
       "design": "A man in his fifties, hoarse, soft, a gravelly mumble, recorded through the vestibule's glass, muffled."
     },
     "pierce": {
       "name": "Pierce Hawkes",
+      "voice": "ZthjuvLPty3kTMaNKVKb",
       "design": "Use PH Origins' Pierce voice (the Jackson voice used in that game; do not redesign), unmodified. Mixed lightly as if heard from across a lobby."
     },
     "brandt": {
       "name": "Mr. Brandt",
+      "voice": "ZyVqOeng5wFOY7UfrjR9",
       "design": "A man in his early forties, brisk Manhattan voice, a little entitled and a little tired, speaking fast into a speakerphone in a big quiet room. Clean phone recording."
     }
   },
@@ -231,65 +242,77 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath."
+          "text": "Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath.",
+          "dur": 9.9
         },
         {
           "speaker": "okafor",
           "text": "So. Let's walk through the log. I have a train.",
           "perform": "polite, hurried",
-          "sfx": "tablet-tap"
+          "sfx": "tablet-tap",
+          "dur": 3
         },
         {
           "speaker": "okafor",
           "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
-          "perform": "flat, reading"
+          "perform": "flat, reading",
+          "dur": 6.9
         },
         {
           "speaker": "okafor",
           "text": "Forty-four. Water in the closet. Monitored.",
-          "perform": "flat, a small stop"
+          "perform": "flat, a small stop",
+          "dur": 3.4
         },
         {
           "speaker": "okafor",
           "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
-          "perform": "reading"
+          "perform": "reading",
+          "dur": 5.5
         },
         {
           "speaker": "okafor",
           "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
-          "perform": "dry, not joking"
+          "perform": "dry, not joking",
+          "dur": 6.2
         },
         {
           "speaker": "dee",
           "text": "Four.",
           "perform": "flat",
-          "sfx": "radio-charger"
+          "sfx": "radio-charger",
+          "dur": 1
         },
         {
           "speaker": "okafor",
           "text": "Dolores. You can say hello.",
-          "perform": "patient"
+          "perform": "patient",
+          "dur": 2.4
         },
         {
           "speaker": "dee",
           "text": "Hello. Sit anywhere that isn't mine.",
-          "perform": "dry"
+          "perform": "dry",
+          "dur": 3.1
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "low",
-          "sfx": "radio-charger"
+          "sfx": "radio-charger",
+          "dur": 1
         },
         {
           "speaker": "okafor",
           "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
-          "perform": "cut off"
+          "perform": "cut off",
+          "dur": 4.3
         },
         {
           "speaker": "dee",
           "text": "Extinguisher. Mm-hm. Your train, Okafor.",
-          "perform": "dry, not unkind"
+          "perform": "dry, not unkind",
+          "dur": 4.1
         }
       ],
       "choices": [
@@ -8993,16 +9016,19 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Three twenty-eight. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one."
+          "text": "Three twenty-eight. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one.",
+          "dur": 9.9
         },
         {
           "speaker": "narrator",
-          "text": "On tile one a man in a long dark coat comes through with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again."
+          "text": "On tile one a man in a long dark coat comes through with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again.",
+          "dur": 11.3
         },
         {
           "speaker": "pierce",
           "text": "Evening. Don't get up.",
-          "perform": "to the guard, not stopping, mild"
+          "perform": "to the guard, not stopping, mild",
+          "dur": 1.7
         }
       ],
       "choices": [
@@ -9084,17 +9110,20 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "You stand. \"Sir. After hours, I need you to sign in.\" He stops. For a second he looks at you the way you look at a tile."
+          "text": "You stand. \"Sir. After hours, I need you to sign in.\" He stops. For a second he looks at you the way you look at a tile.",
+          "dur": 9.4
         },
         {
           "speaker": "pierce",
           "text": "Fair. Fifty-eight. I own it. Put that in your log.",
-          "perform": "a pause, an actual smile"
+          "perform": "a pause, an actual smile",
+          "dur": 5.5
         },
         {
           "speaker": "narrator",
           "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0330. In. He does not write the Out column.",
-          "sfx": "pencil"
+          "sfx": "pencil",
+          "dur": 10.9
         }
       ],
       "choices": [

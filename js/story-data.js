@@ -2012,36 +2012,36 @@ window.ILTV_STORIES = {
     }
    },
    "ambience": {
-    "control-room": null,
-    "control-room-late": null,
-    "lobby": null,
-    "vestibule": null,
-    "dock": null,
-    "stairwell": null,
-    "corridor": null,
-    "elevator": null,
-    "roof": null,
-    "morning": null
+    "control-room": "/night-shift/media/ambience/control-room.mp3",
+    "control-room-late": "/night-shift/media/ambience/control-room-late.mp3",
+    "lobby": "/night-shift/media/ambience/lobby.mp3",
+    "vestibule": "/night-shift/media/ambience/vestibule.mp3",
+    "dock": "/night-shift/media/ambience/dock.mp3",
+    "stairwell": "/night-shift/media/ambience/stairwell.mp3",
+    "corridor": "/night-shift/media/ambience/corridor.mp3",
+    "elevator": "/night-shift/media/ambience/elevator.mp3",
+    "roof": "/night-shift/media/ambience/roof.mp3",
+    "morning": "/night-shift/media/ambience/morning.mp3"
    },
    "sfx": {
-    "radio-squelch": null,
-    "radio-charger": null,
-    "walkie-squelch": null,
-    "tablet-tap": null,
-    "pencil": null,
-    "foil": null,
-    "door-buzz": null,
-    "phone-ring": null,
-    "intercom": null,
-    "elevator-chime": null,
-    "panel-buzzer": null,
-    "footsteps-stairs": null,
-    "coffee": null,
-    "drawer": null,
-    "paper": null,
-    "door-heavy": null,
-    "keys": null,
-    "clock-tick": null
+    "radio-squelch": "/night-shift/media/sfx/radio-squelch.mp3",
+    "radio-charger": "/night-shift/media/sfx/radio-charger.mp3",
+    "walkie-squelch": "/night-shift/media/sfx/walkie-squelch.mp3",
+    "tablet-tap": "/night-shift/media/sfx/tablet-tap.mp3",
+    "pencil": "/night-shift/media/sfx/pencil.mp3",
+    "foil": "/night-shift/media/sfx/foil.mp3",
+    "door-buzz": "/night-shift/media/sfx/door-buzz.mp3",
+    "phone-ring": "/night-shift/media/sfx/phone-ring.mp3",
+    "intercom": "/night-shift/media/sfx/intercom.mp3",
+    "elevator-chime": "/night-shift/media/sfx/elevator-chime.mp3",
+    "panel-buzzer": "/night-shift/media/sfx/panel-buzzer.mp3",
+    "footsteps-stairs": "/night-shift/media/sfx/footsteps-stairs.mp3",
+    "coffee": "/night-shift/media/sfx/coffee.mp3",
+    "drawer": "/night-shift/media/sfx/drawer.mp3",
+    "paper": "/night-shift/media/sfx/paper.mp3",
+    "door-heavy": "/night-shift/media/sfx/door-heavy.mp3",
+    "keys": "/night-shift/media/sfx/keys.mp3",
+    "clock-tick": "/night-shift/media/sfx/clock-tick.mp3"
    },
    "unspoken": [
     "restricted",
@@ -2069,77 +2069,77 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath.",
-       "file": null,
-       "dur": 11.8
+       "file": "/night-shift/handover/media/line-1.mp3",
+       "dur": 9.9
       },
       {
        "speaker": "okafor",
        "text": "So. Let's walk through the log. I have a train.",
        "sfx": "tablet-tap",
-       "file": null,
-       "dur": 5
+       "file": "/night-shift/handover/media/line-2.mp3",
+       "dur": 3
       },
       {
        "speaker": "okafor",
        "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
-       "file": null,
-       "dur": 6.6
+       "file": "/night-shift/handover/media/line-3.mp3",
+       "dur": 6.9
       },
       {
        "speaker": "okafor",
        "text": "Forty-four. Water in the closet. Monitored.",
-       "file": null,
+       "file": "/night-shift/handover/media/line-4.mp3",
        "dur": 3.4
       },
       {
        "speaker": "okafor",
        "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
-       "file": null,
-       "dur": 7
+       "file": "/night-shift/handover/media/line-5.mp3",
+       "dur": 5.5
       },
       {
        "speaker": "okafor",
        "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
-       "file": null,
-       "dur": 10.2
+       "file": "/night-shift/handover/media/line-6.mp3",
+       "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Four.",
        "sfx": "radio-charger",
-       "file": null,
-       "dur": 1.4
+       "file": "/night-shift/handover/media/line-7.mp3",
+       "dur": 1
       },
       {
        "speaker": "okafor",
        "text": "Dolores. You can say hello.",
-       "file": null,
-       "dur": 3
+       "file": "/night-shift/handover/media/line-8.mp3",
+       "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Hello. Sit anywhere that isn't mine.",
-       "file": null,
-       "dur": 3.4
+       "file": "/night-shift/handover/media/line-9.mp3",
+       "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "sfx": "radio-charger",
-       "file": null,
-       "dur": 1.4
+       "file": "/night-shift/handover/media/line-10.mp3",
+       "dur": 1
       },
       {
        "speaker": "okafor",
        "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
-       "file": null,
-       "dur": 5.8
+       "file": "/night-shift/handover/media/line-11.mp3",
+       "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Extinguisher. Mm-hm. Your train, Okafor.",
-       "file": null,
-       "dur": 3
+       "file": "/night-shift/handover/media/line-12.mp3",
+       "dur": 4.1
       }
      ],
      "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer.",
@@ -13601,20 +13601,20 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Three twenty-eight. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one.",
-       "file": null,
-       "dur": 11.8
+       "file": "/night-shift/coat-lobby/media/line-1.mp3",
+       "dur": 9.9
       },
       {
        "speaker": "narrator",
        "text": "On tile one a man in a long dark coat comes through with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again.",
-       "file": null,
-       "dur": 14.6
+       "file": "/night-shift/coat-lobby/media/line-2.mp3",
+       "dur": 11.3
       },
       {
        "speaker": "pierce",
        "text": "Evening. Don't get up.",
-       "file": null,
-       "dur": 2.6
+       "file": "/night-shift/coat-lobby/media/line-3.mp3",
+       "dur": 1.7
       }
      ],
      "log": "0328 hrs. Lobby. Chairman P. Hawkes arrived by the revolving door, proceeding to the elevators.",
@@ -13724,21 +13724,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You stand. \"Sir. After hours, I need you to sign in.\" He stops. For a second he looks at you the way you look at a tile.",
-       "file": null,
-       "dur": 11.8
+       "file": "/night-shift/pierce-signin/media/line-1.mp3",
+       "dur": 9.4
       },
       {
        "speaker": "pierce",
        "text": "Fair. Fifty-eight. I own it. Put that in your log.",
-       "file": null,
-       "dur": 5
+       "file": "/night-shift/pierce-signin/media/line-2.mp3",
+       "dur": 5.5
       },
       {
        "speaker": "narrator",
        "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0330. In. He does not write the Out column.",
        "sfx": "pencil",
-       "file": null,
-       "dur": 10.2
+       "file": "/night-shift/pierce-signin/media/line-3.mp3",
+       "dur": 10.9
       }
      ],
      "log": "0330 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception.",
