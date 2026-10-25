@@ -2,8 +2,9 @@
 //   node tools/make-audio.mjs <story> --mix              every file on disk not yet mixed (what Studio's asset make wrote)
 //   node tools/make-audio.mjs <story> --ingest <folder>  <folder>/<asset id>/*.mp3 straight from Hawkes Gen (hawkesgen_run save_to)
 //   node tools/make-audio.mjs <story> --list             the assets with no file yet (add --only <text in the id>)
+//   node tools/make-audio.mjs <story> --seam            close the loop of every ambience bed on disk (see SEAM; --mix does it to new ones)
 //   node tools/make-audio.mjs <story> --dur              set each line's dur in the story data to its recording's length
-// Voices: silence trimmed, loudness -19 LUFS. Sound effects: -26 LUFS. Ambience beds: -38 LUFS, so a bed always sits
+// Music (audio.music, the stingers on endings and key moments) is -40 LUFS: never louder than a bed's neighbour. Voices: silence trimmed, loudness -16 LUFS. Sound effects: -26 LUFS. Ambience beds: -38 LUFS, so a bed always sits
 // well under the voice (the player plays all three at the same volume). The lock entry is the one Studio writes
 // (same recipe fingerprint), so Studio sees these as current.
 import fs from 'node:fs';
@@ -24,14 +25,29 @@ const lock = JSON.parse(fs.readFileSync(lockFile, 'utf8'));
 const sha = (f) => crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 const recipeOf = (a) => crypto.createHash('sha256').update(JSON.stringify({ steps: a.steps, candidates: a.candidates ?? 1, ...(a.pick ? { pick: a.pick } : {}), ...(a.pickAt ? { pickAt: a.pickAt } : {}) })).digest('hex').slice(0, 16);
 
-const kindOf = (a) => (a.id.includes('-ambience-') ? 'bed' : a.id.includes('-sfx-') ? 'sfx' : 'voice');
+const kindOf = (a) => (a.id.includes('-ambience-') ? 'bed' : a.id.includes('-sfx-') ? 'sfx' : a.id.includes('-music-') ? 'music' : 'voice');
 // Voices are cut in stages (start, then the end by reversing, then loudness): one chained graph hung ffmpeg on some clips.
-const LOUD = { voice: 'loudnorm=I=-19:TP=-2:LRA=9', sfx: 'loudnorm=I=-26:TP=-3:LRA=7', bed: 'loudnorm=I=-38:TP=-6:LRA=7' };
+const LOUD = { voice: 'loudnorm=I=-16:TP=-1.5:LRA=9', sfx: 'loudnorm=I=-26:TP=-3:LRA=7', bed: 'loudnorm=I=-38:TP=-6:LRA=7', music: 'loudnorm=I=-40:TP=-6:LRA=7' };
+// A bed loops (audio.sfx has no loop that closes): its first SEAM seconds are laid over its last SEAM seconds with an
+// equal-power crossfade, so the end runs straight into the start and the file is SEAM shorter.
+const SEAM = 2;
+// A sting fades in and out so it never starts or ends on a click.
+const fadeMusic = (sec) => `afade=t=in:d=0.6,afade=t=out:st=${Math.max(0, sec - 3).toFixed(2)}:d=3`;
+const secs = (f) => Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString());
+function seam(src, out) {
+  const n = secs(src);
+  const head = out + '.head.wav', body = out + '.body.wav';
+  ff('-i', src, '-t', String(SEAM), '-ar', '44100', '-ac', '1', head);
+  ff('-i', src, '-ss', String(SEAM), '-ar', '44100', '-ac', '1', body);
+  ff('-i', body, '-i', head, '-filter_complex', `acrossfade=d=${SEAM}:c1=qsin:c2=qsin`, out);
+  for (const t of [head, body]) fs.rmSync(t, { force: true });
+  return n - SEAM;
+}
 const TRIM_START = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05';
 const TRIM_END = 'areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.15,areverse';
 const ff = (...a) => execFileSync('ffmpeg', ['-nostdin', '-y', '-v', 'error', ...a], { timeout: 60000 });
 
-const mine = (a) => a.id.startsWith(story + '-') && !a.id.startsWith(story + '-demo-') && a.steps?.length === 1 && /^audio\.(voice|sfx)$/.test(a.steps[0].tool) && a.id.includes(only);
+const mine = (a) => a.id.startsWith(story + '-') && !a.id.startsWith(story + '-demo-') && a.steps?.length === 1 && /^audio\.(voice|sfx|music)$/.test(a.steps[0].tool) && a.id.includes(only);
 const assets = manifest.assets.filter(mine);
 const relOf = (a) => Object.values(a.files)[0];
 const markFile = path.join(ROOT, story, 'media', '.mixed.json');
@@ -44,13 +60,21 @@ function mixOne(a, input) {
   const kind = kindOf(a);
   const w1 = dest + '.1.wav', w2 = dest + '.2.wav', tmp = dest + '.tmp.mp3';
   let src = input;
+  const tmpFiles = [];
   if (kind === 'voice') {
     ff('-i', src, '-af', TRIM_START, w1);
     ff('-i', w1, '-af', TRIM_END, w2);
     src = w2;
   }
-  ff('-i', src, '-af', LOUD[kind], '-ar', '44100', '-ac', '1', '-codec:a', 'libmp3lame', '-q:a', '4', tmp);
-  for (const t of [w1, w2]) fs.rmSync(t, { force: true });
+  if (kind === 'bed') {
+    const w3 = dest + '.3.wav';
+    seam(src, w3);
+    src = w3;
+    tmpFiles.push(w3);
+  }
+  const af = kind === 'music' ? `${fadeMusic(secs(src))},${LOUD.music}` : LOUD[kind];
+  ff('-i', src, '-af', af, '-ar', '44100', '-ac', '1', '-codec:a', 'libmp3lame', '-q:a', '4', tmp);
+  for (const t of [w1, w2, ...tmpFiles]) fs.rmSync(t, { force: true });
   fs.renameSync(tmp, dest);
   const h = sha(dest);
   mixed[rel] = h;
@@ -76,6 +100,23 @@ if (args.includes('--list')) {
   }
   save();
   console.log(`ingested ${n}`);
+} else if (args.includes('--seam')) {
+  let n = 0;
+  for (const a of assets.filter((x) => kindOf(x) === 'bed')) {
+    const rel = relOf(a), f = path.join(ROOT, rel);
+    if (!fs.existsSync(f) || secs(f) < 29.5) continue; // already closed (a made bed is 30 s)
+    const out = f + '.seam.wav', tmp = f + '.tmp.mp3';
+    seam(f, out);
+    ff('-i', out, '-ar', '44100', '-ac', '1', '-codec:a', 'libmp3lame', '-q:a', '4', tmp);
+    fs.rmSync(out);
+    fs.renameSync(tmp, f);
+    const h = sha(f);
+    mixed[rel] = h;
+    lock[a.id] = { ...(lock[a.id] ?? {}), recipe: recipeOf(a), made: new Date().toISOString(), files: { [rel]: h } };
+    n++;
+  }
+  save();
+  console.log(`closed the loop of ${n} beds`);
 } else if (args.includes('--mix')) {
   let n = 0;
   for (const a of assets) {

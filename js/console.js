@@ -53,6 +53,7 @@
   var voice = null;
   var bed = null;
   var sfx = null;
+  var sting = null;
   var bedCue = null;
   var subsOn = true;
 
@@ -64,10 +65,21 @@
 
   function runKey() { return RUN_KEY + story.cookie; }
 
+  // With localStorage blocked (a private window) the run is kept here, so All stories and back, and the Log, still work
+  // within the page; a reload then starts the story over.
+  var memory = {};
+
+  function stored() {
+    try {
+      return localStorage.getItem(runKey());
+    } catch (e) {
+      return memory[runKey()];
+    }
+  }
+
   function save() {
     if (!story || !run) return;
-    try {
-      localStorage.setItem(runKey(), JSON.stringify({
+    var text = JSON.stringify({
         v: 1,
         scene: run.scene,
         history: run.history,
@@ -76,7 +88,10 @@
         log: run.log,
         done: run.done,
         sel: run.sel,
-      }));
+      });
+    memory[runKey()] = text;
+    try {
+      localStorage.setItem(runKey(), text);
     } catch (e) { /* private mode: the run holds for this page */ }
   }
 
@@ -88,7 +103,7 @@
   function load(cookieScene) {
     if (!cookieScene) return null;
     try {
-      var saved = JSON.parse(localStorage.getItem(runKey()));
+      var saved = JSON.parse(stored());
       if (!saved || saved.v !== 1 || saved.scene !== cookieScene || !story.scenes[saved.scene]) return null;
       var st = rules.fresh(story);
       (saved.flags || []).forEach(function (f) { if (story.state.flags.indexOf(f) >= 0) st.flags[f] = true; });
@@ -122,6 +137,15 @@
 
   function soundReady() {
     return !window.hawkesSound || window.hawkesSound.unlocked();
+  }
+
+  /** A music sting (story.music): plays once as a scene opens, under its first line, never looped. */
+  function playSting(cue) {
+    var file = cue && story.music ? story.music[cue] : null;
+    if (!sting || !file) return;
+    sting.src = file;
+    sting.loop = false;
+    if (soundReady()) playEl(sting).catch(function () {});
   }
 
   function playEl(a) {
@@ -381,6 +405,7 @@
     box.dataset.scene = id;
     renderWall();
     setBed(s.ambience || null);
+    if (!resumed) playSting(s.music);
     save();
     if (!resumed && hooks.tell) hooks.tell("scene", { story: story.id, scene: id, path: run.history.concat(id), video: null, explored: explored });
     if (!els.log.hidden) renderLog();
@@ -506,6 +531,7 @@
     voice = makeAudio(false);
     bed = makeAudio(true);
     sfx = makeAudio(false);
+    sting = makeAudio(false);
     bedCue = null;
     flow++;
     box.hidden = false;
@@ -516,12 +542,12 @@
 
   function close() {
     stopAudio();
-    [voice, bed, sfx].forEach(function (a) {
+    [voice, bed, sfx, sting].forEach(function (a) {
       if (!a) return;
       try { a.pause(); } catch (e) { /* gone */ }
       if (a.parentNode) a.parentNode.removeChild(a);
     });
-    voice = bed = sfx = null;
+    voice = bed = sfx = sting = null;
     bedCue = null;
     if (run) save();
     run = null;
@@ -531,6 +557,7 @@
 
   /** Start Over / a card's reset: forgets the saved run (the cookies are game.js's). */
   function forget(def) {
+    delete memory[RUN_KEY + def.cookie];
     try { localStorage.removeItem(RUN_KEY + def.cookie); } catch (e) { /* nothing saved */ }
   }
 
@@ -552,9 +579,9 @@
     lines: function () { return run ? { done: run.done, total: scene().lines.length, playing: linePlaying ? linePlaying.index : -1 } : null; },
     selected: function () { return run ? run.sel : null; },
     subtitles: function () { return subsOn; },
-    audio: function () { return { voice: audioView(voice), bed: audioView(bed), sfx: audioView(sfx), bedCue: bedCue }; },
+    audio: function () { return { voice: audioView(voice), bed: audioView(bed), sfx: audioView(sfx), sting: audioView(sting), bedCue: bedCue }; },
     saved: function () {
-      try { return story ? JSON.parse(localStorage.getItem(runKey())) : null; } catch (e) { return null; }
+      try { return story ? JSON.parse(stored()) : null; } catch (e) { return null; }
     },
   };
 })();

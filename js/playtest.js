@@ -2234,55 +2234,134 @@ async function consoleView(t, st, [w, h, name]) {
   const lr = log.getBoundingClientRect();
   if (lr.left < -0.5 || lr.right > doc.defaultView.innerWidth + 0.5 || log.scrollWidth > log.clientWidth + 1) t.problem("bug", `${where}: the shift log runs off the side`);
   if (doc.documentElement.scrollWidth > doc.defaultView.innerWidth + 1) t.problem("bug", `${where}: the log scrolls the page sideways`);
+  await tapAt(t, byIdIn(doc, "console-log-btn"), `Close log (${where})`);
+  // The end screen: the shortest way to an ending, played in the frame, then the ending, the Log button and the way out fit.
+  const x = rulesOf().explore(st, { cap: st.stateCap || 50000 });
+  const end = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v }))).filter((v) => st.scenes[v.id].ending).sort((a, b) => a.picks.length - b.picks.length)[0];
+  if (end) {
+    const m = consoleModel(st);
+    await consoleHeard(t, doc, where);
+    for (const i of end.picks) await consoleChoose(t, st, m, i, doc, `${where} end`);
+    await consoleHeard(t, doc, `${where} end`);
+    if (byIdIn(doc, "console-ending").hidden) t.problem("bug", `${where}: the ending isn't shown`);
+    await consoleFit(t, doc, `${where}, the end screen`);
+    if (!byIdIn(doc, "console-ending").getClientRects().length || byIdIn(doc, "console-ending").getBoundingClientRect().bottom > doc.defaultView.innerHeight + 0.5) {
+      byIdIn(doc, "console-ending").scrollIntoView({ block: "nearest", behavior: "instant" });
+      const r = byIdIn(doc, "console-ending").getBoundingClientRect();
+      if (r.bottom > doc.defaultView.innerHeight + 0.5 || r.top < -0.5) t.problem("bug", `${where}: the ending text can't be brought on screen`);
+    }
+  }
   await sleep(500);
   closeViewFrame();
 }
 
-/** Reload mid-story: a new page load (a frame) of the story's link returns to the same scene with the same state,
-    flags, meters, log and the lines already heard. */
+/** Reload one saved moment: what the player holds now (scene, flags, meters, log, history, lines heard) is compared with
+    what a new page load of the story's link (a frame) comes back with. `label` names the moment. */
+async function consoleReloadAt(t, st, label) {
+  const n = st.scenes[apiOf().scene()].lines.length;
+  const before = { scene: apiOf().scene(), flags: apiOf().flags(), meters: apiOf().meters(), log: apiOf().log(), history: apiOf().history(), lines: apiOf().lines() };
+  const saved = apiOf().saved();
+  if (!saved || saved.scene !== before.scene) t.problem("bug", `${st.id} (${label}): nothing saved for the run in localStorage ("${RUN_KEY}${st.cookie}")`);
+  else t.event("run-saved", `${st.id} (${label}): ${saved.scene}, flags ${saved.flags.join(", ") || "none"}, ${saved.log.length} log entries, ${saved.done} line(s) heard, ${JSON.stringify(saved).length} bytes`);
+  const doc = await viewFrameLoad(t, `/?story=${st.id}`, 390, 844);
+  const api = apiOf(doc);
+  if (!api) return t.problem("bug", `${st.id} (${label}): the reloaded page has no console player`);
+  const prompt = soundOf(doc).prompt();
+  if (!prompt && !soundOf(doc).unlocked()) t.problem("bug", `${st.id} (${label}): the reloaded page has no Tap to play prompt`);
+  await consolePrompt(t, doc, `after the reload (${label})`);
+  await sleep(300);
+  const after = { scene: api.scene(), flags: api.flags(), meters: api.meters(), log: api.log(), history: api.history() };
+  for (const k of Object.keys(after)) if (!sameJson(after[k], before[k])) t.problem("bug", `${st.id} (${label}): after a reload ${k} is ${JSON.stringify(after[k])}, it was ${JSON.stringify(before[k])}`);
+  const heard = [...doc.querySelectorAll("#console-subs .sub")].length;
+  if (before.lines.done > 0 && heard < Math.min(before.lines.done, n)) t.problem("bug", `${st.id} (${label}): after a reload ${heard} subtitle(s), ${before.lines.done} line(s) had been heard`);
+  const ended = !!st.scenes[before.scene].ending;
+  if (ended && !(await waitFor(() => !byIdIn(doc, "console-ending").hidden, 20000))) t.problem("bug", `${st.id} (${label}): the reloaded page doesn't show the ending`);
+  await consoleHeard(t, doc, `after the reload (${label})`);
+  if (ended) await consoleFit(t, doc, `${label}, reloaded at the ending`);
+  const ok = sameJson(Object.keys(after).map((k) => after[k]), Object.keys(after).map((k) => before[k]));
+  t.event("reloaded", `${st.id} (${label}): back at ${after.scene} with flags ${after.flags.join(", ") || "none"}, ${after.log.length} log entries, ${heard} line(s) already heard (${ok ? "same" : "DIFFERENT"})`);
+  await sleep(700);
+  closeViewFrame();
+}
+
+/** Reload at four moments: the start (nothing done), mid-scene (some lines heard), right after a choice, and at an
+    ending. Each must come back to the same scene, flags, meters, log and heard lines. */
 async function consoleReload(t, st) {
   const R = rulesOf();
-  t.scene("Reload mid-story");
-  await consoleFresh(t, st);
-  const m = consoleModel(st);
-  // The way to the first scene with a choice that depends on a flag and one that sets it: the explorer's longest variant.
+  t.scene("Reload: start, mid-scene, after a choice, at an ending");
   const x = R.explore(st, { cap: st.stateCap || 50000 });
-  const target = Object.entries(x.variants)
-    .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
-    .filter((v) => v.picks.length && !st.scenes[v.id].ending)
-    .sort((a, b) => b.picks.length - a.picks.length)[0];
+  const all = Object.entries(x.variants).flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })));
+  // The way to the scene with the most choices behind it that is not an ending: the explorer's longest variant.
+  const target = all.filter((v) => v.picks.length && !st.scenes[v.id].ending).sort((a, b) => b.picks.length - a.picks.length)[0];
+  const ending = all.filter((v) => st.scenes[v.id].ending).sort((a, b) => a.picks.length - b.picks.length)[0];
   if (!target) return t.problem("warning", `${st.id}: no scene in the middle to reload at`);
+
+  // 1. The start: a new run, the first line not yet heard.
+  await consoleFresh(t, st);
+  await consoleReloadAt(t, st, "start");
+
+  // 2. Right after a choice: the first choice of the way, the new scene just entered.
+  await consoleFresh(t, st);
+  const mc = consoleModel(st);
   await consoleHeard(t, document, "reload");
-  for (const i of target.picks) await consoleChoose(t, st, m, i, document, "reload");
-  // Mid-scene: the first line heard, the second not.
+  await consoleChoose(t, st, mc, target.picks[0], document, "reload");
+  await consoleReloadAt(t, st, "after a choice");
+
+  // 3. Mid-scene: the first line heard, the second not.
   await consoleFresh(t, st);
   const m2 = consoleModel(st);
   await consoleHeard(t, document, "reload");
-  for (const i of target.picks) await consoleChoose(t, st, m2, i, document, "reload");
-  const n = st.scenes[m2.scene].lines.length;
-  const midway = n > 1;
-  if (midway) await waitFor(() => apiOf().lines().done >= 1, 6000);
-  const before = { scene: apiOf().scene(), flags: apiOf().flags(), meters: apiOf().meters(), log: apiOf().log(), history: apiOf().history(), lines: apiOf().lines() };
-  const saved = apiOf().saved();
-  if (!saved || saved.scene !== before.scene) t.problem("bug", `${st.id}: nothing saved for the run in localStorage ("${RUN_KEY}${st.cookie}")`);
-  else t.event("run-saved", `${st.id}: ${saved.scene}, flags ${saved.flags.join(", ") || "none"}, ${saved.log.length} log entries, ${saved.done} line(s) heard, ${JSON.stringify(saved).length} bytes`);
+  for (const i of target.picks.slice(0, -1)) await consoleChoose(t, st, m2, i, document, "reload");
+  // The last choice by hand, its lines not skipped: the first is heard, the rest are still to come.
+  const lastPick = target.picks[target.picks.length - 1];
+  const lastLabel = st.scenes[m2.scene].choices[lastPick][0];
+  await tapAt(t, openChoices(document).find((b) => b.textContent.trim() === lastLabel), `choice "${lastLabel}"`);
+  m2.choose(lastPick);
+  if (st.scenes[m2.scene].lines.length > 1) await waitFor(() => apiOf().lines().done >= 1 && apiOf().lines().done < st.scenes[m2.scene].lines.length, 20000);
+  await consoleReloadAt(t, st, "mid-scene");
+
+  // 4. At an ending (the shortest way there, its lines heard).
+  if (ending) {
+    await consoleFresh(t, st);
+    const m3 = consoleModel(st);
+    await consoleHeard(t, document, "reload");
+    for (const i of ending.picks) await consoleChoose(t, st, m3, i, document, "reload");
+    await consoleHeard(t, document, "reload");
+    await consoleReloadAt(t, st, "at an ending");
+  } else t.problem("warning", `${st.id}: no ending to reload at`);
+}
+
+/** Progress storage degrades safely: with localStorage refusing every read and write (a private window) the story
+    still opens, plays a choice and shows its log; nothing throws. */
+async function consoleBlockedStorage(t, st) {
+  t.scene("Storage blocked");
+  await consoleFresh(t, st);
   const doc = await viewFrameLoad(t, `/?story=${st.id}`, 390, 844);
+  const win = doc.defaultView;
+  const errors = [];
+  win.addEventListener("error", (e) => errors.push(e.message));
   const api = apiOf(doc);
-  if (!api) return t.problem("bug", `${st.id}: the reloaded page has no console player`);
-  const prompt = soundOf(doc).prompt();
-  if (!prompt && !soundOf(doc).unlocked()) t.problem("bug", `${st.id}: the reloaded page has no Tap to play prompt`);
-  await consolePrompt(t, doc, "after the reload");
-  await sleep(300);
-  const after = { scene: api.scene(), flags: api.flags(), meters: api.meters(), log: api.log(), history: api.history() };
-  for (const k of Object.keys(after)) if (!sameJson(after[k], before[k])) t.problem("bug", `${st.id}: after a reload ${k} is ${JSON.stringify(after[k])}, it was ${JSON.stringify(before[k])}`);
-  const heard = [...doc.querySelectorAll("#console-subs .sub")].length;
-  if (midway && heard < Math.min(before.lines.done, n)) t.problem("bug", `${st.id}: after a reload ${heard} subtitle(s), ${before.lines.done} line(s) had been heard`);
-  await consoleHeard(t, doc, "after the reload");
-  const ok = sameJson(Object.keys(after).map((k) => after[k]), Object.keys(after).map((k) => before[k]));
-  t.event("reloaded", `${st.id}: back at ${after.scene} with flags ${after.flags.join(", ") || "none"}, ${after.log.length} log entries, ${heard} line(s) already heard (${ok ? "same" : "DIFFERENT"})`);
-  // The log in the reloaded page lists the same entries.
-  await sleep(700);
-  closeViewFrame();
+  await consolePrompt(t, doc, "storage blocked");
+  const start = api.scene();
+  // From here every localStorage call in the frame throws, as in a browser that blocks storage.
+  const broken = () => { throw new win.DOMException("blocked", "SecurityError"); };
+  for (const m of ["getItem", "setItem", "removeItem"]) win.Storage.prototype[m] = broken;
+  try {
+    await consoleHeard(t, doc, "storage blocked");
+    const open = openChoices(doc)[0];
+    if (!open) return t.problem("bug", `${st.id}: no choice to press with storage blocked`);
+    await tapAt(t, open, "a choice (storage blocked)");
+    await sleep(300);
+    if (api.scene() === start) t.problem("bug", `${st.id}: with storage blocked the choice did nothing`);
+    await tapAt(t, byIdIn(doc, "console-log-btn"), "Log (storage blocked)");
+    if (byIdIn(doc, "console-log").hidden) t.problem("bug", `${st.id}: with storage blocked the Log doesn't open`);
+    await tapAt(t, byIdIn(doc, "console-cc"), "CC (storage blocked)");
+    if (errors.length) t.problem("bug", `${st.id}: with storage blocked the page threw: ${errors[0]}`);
+    else t.event("storage-blocked", `${st.id}: with localStorage refusing, the story played a choice, opened the Log and toggled CC with no error`);
+  } finally {
+    await sleep(300);
+    closeViewFrame();
+  }
 }
 
 /** The story's own subtitles (on by default), the replay button and the line audio. */
@@ -2442,6 +2521,7 @@ async function consoleRun(options, t) {
     t.progress(0.8);
     // 6. Reload mid-story.
     await consoleReload(t, st);
+    await consoleBlockedStorage(t, st);
     t.progress(0.88);
     // 7. The screen sizes.
     for (const v of VIEWPORTS) await consoleView(t, st, v);
@@ -2751,6 +2831,19 @@ async function rmsDb(ctx, url) {
   return { db: 10 * Math.log10(sum / Math.max(1, n) + 1e-12), seconds: audio.duration };
 }
 
+/** A loop's seam: the step from its last sample to its first against a typical step inside it, and the level of its
+    last and first quarter second. A click or a jump shows in either. */
+async function seamOf(ctx, url) {
+  const audio = await ctx.decodeAudioData(await (await fetch(url)).arrayBuffer());
+  const d = audio.getChannelData(0);
+  let sq = 0;
+  for (let i = 1; i < d.length; i++) sq += (d[i] - d[i - 1]) * (d[i] - d[i - 1]);
+  const step = Math.sqrt(sq / d.length);
+  const q = Math.floor(audio.sampleRate / 4);
+  const rms = (a, b) => { let x = 0; for (let i = a; i < b; i++) x += d[i] * d[i]; return 10 * Math.log10(x / Math.max(1, b - a) + 1e-12); };
+  return { jump: Math.abs(d[0] - d[d.length - 1]), step, levelGap: Math.abs(rms(0, q) - rms(d.length - q, d.length)), seconds: audio.duration };
+}
+
 async function nightAudioRun(options, t) {
   rememberProgress();
   const st = consoleStories().find((s) => s.id === ((options && options.story) || "night-shift"));
@@ -2769,8 +2862,15 @@ async function nightAudioRun(options, t) {
     t.metric("linesWithoutRecording", missing.length);
     t.event("criterion", `${lines.length - missing.length} of ${lines.length} lines have a recording; speakers: ${Object.entries(bySpeaker).map(([w, ls]) => `${(st.speakers[w] || {}).name || w} ${ls.length}`).join(", ")}`);
     if (missing.length) t.problem("bug", `${st.id}: ${missing.length} lines have no recording yet (${missing.slice(0, 5).map((l) => `${l.id}#${l.n}`).join(", ")}...)`);
-    const cues = [...Object.entries(st.ambience || {}).map(([k, f]) => ["ambience", k, f]), ...Object.entries(st.sfx || {}).map(([k, f]) => ["sfx", k, f])];
-    cues.filter(([, , f]) => !f).forEach(([kind, k]) => t.problem("bug", `${st.id}: the ${kind} cue ${k} has no recording`));
+    const cues = [...Object.entries(st.ambience || {}).map(([k, f]) => ["ambience", k, f]), ...Object.entries(st.sfx || {}).map(([k, f]) => ["sfx", k, f]), ...Object.entries(st.music || {}).map(([k, f]) => ["music", k, f])];
+    cues.filter(([kind, , f]) => !f && kind !== "music").forEach(([kind, k]) => t.problem("bug", `${st.id}: the ${kind} cue ${k} has no recording`));
+    const unmadeMusic = cues.filter(([kind, , f]) => kind === "music" && !f);
+    t.metric("musicCuesUnmade", unmadeMusic.length);
+    if (unmadeMusic.length) t.problem("warning", `${st.id}: ${unmadeMusic.length} music stings are designed but not made yet (GPU, waiting for J's approval): ${unmadeMusic.map((c) => c[1]).join(", ")}`);
+    Object.entries(st.scenes).filter(([, sc]) => sc.music && !(st.music || {})[sc.music]).forEach(([id, sc]) => t.problem("bug", `${st.id}/${id}: the music cue ${sc.music} isn't in the story's music`));
+    const noBed = Object.entries(st.scenes).filter(([, sc]) => !sc.ambience);
+    t.event("criterion", `${Object.keys(st.scenes).length - noBed.length} of ${Object.keys(st.scenes).length} scenes have an ambience bed`);
+    noBed.forEach(([id]) => t.problem("bug", `${st.id}/${id}: no ambience bed, the scene would be silent between lines`));
     const usedBeds = new Set(Object.values(st.scenes).map((sc) => sc.ambience).filter(Boolean));
     const usedSfx = new Set(lines.map((l) => l.sfx).filter(Boolean));
     [...usedBeds].filter((k) => !(st.ambience || {})[k]).forEach((k) => t.problem("bug", `${st.id}: a scene uses the bed ${k}, which has no recording`));
@@ -2811,6 +2911,13 @@ async function nightAudioRun(options, t) {
           t.event("loudness", `${kind} ${k}: ${r.db.toFixed(1)} dB RMS, ${under.toFixed(1)} dB under the voice`);
           if (kind === "ambience" && under < 12) t.problem("bug", `${st.id}: the bed ${k} is only ${under.toFixed(1)} dB under the voice, it could drown a line`);
           if (kind === "sfx" && under < 3) t.problem("bug", `${st.id}: the effect ${k} is only ${under.toFixed(1)} dB under the voice`);
+          if (kind === "music" && under < 12) t.problem("bug", `${st.id}: the music ${k} is only ${under.toFixed(1)} dB under the voice, it could mask a line`);
+          if (kind === "ambience") {
+            const sm = await seamOf(ctx, f);
+            t.event("loop", `bed ${k}: ${sm.seconds.toFixed(1)} s, seam step ${sm.jump.toFixed(4)} (typical ${sm.step.toFixed(4)}), level gap ${sm.levelGap.toFixed(1)} dB`);
+            if (sm.jump > Math.max(0.02, sm.step * 8)) t.problem("bug", `${st.id}: the bed ${k} clicks where it loops (a step of ${sm.jump.toFixed(3)} against ${sm.step.toFixed(3)} typical)`);
+            if (sm.levelGap > 3) t.problem("bug", `${st.id}: the bed ${k} jumps ${sm.levelGap.toFixed(1)} dB in level where it loops`);
+          }
         } catch (e) { t.problem("bug", `${st.id}: ${kind} ${k} doesn't load or decode (${e && e.message})`); }
       }
     }
