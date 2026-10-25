@@ -2111,8 +2111,11 @@ function consoleCheck(t, st, m, doc, where, seen) {
     const shown = openChoices(doc).map((b) => b.textContent.trim());
     const want = s.ending ? [] : m.open().map(([c]) => c[0]);
     if (!sameJson(shown, want)) t.problem("bug", `${where}: the choices on screen are ${JSON.stringify(shown)}, the open ones in this state are ${JSON.stringify(want)}`);
+    // Choices may share a label and differ in conditions ("Wait for him" to four endings): compare how many of each
+    // label show with how many are usable, not whether the label shows.
+    const usableCount = (label) => s.choices.filter((c) => c[0] === label && R.usable(c, m.state)).length;
     const gated = s.choices.filter((c) => !R.usable(c, m.state)).map((c) => c[0]);
-    for (const g of gated) if (shown.includes(g)) t.problem("bug", `${where}: "${g}" shows although its conditions fail (${sayState(m.state)})`);
+    for (const g of new Set(gated)) if (shown.filter((x) => x === g).length > usableCount(g)) t.problem("bug", `${where}: "${g}" shows although its conditions fail (${sayState(m.state)})`);
     if (s.ending) {
       const end = byIdIn(doc, "console-ending");
       if (end.hidden || end.textContent.trim() !== s.ending[0]) t.problem("bug", `${where}: the ending text is "${end.textContent}", not "${s.ending[0]}"`);
@@ -3504,6 +3507,57 @@ async function nightAudioRun(options, t) {
   }
 }
 
+/* ---------------- night-shift-card: Night Shift's landing card from Not started to Completed and Start Over ---------------- */
+
+/** The card criteria of a listed console story, by themselves (the `stories` scenario walks every story and takes
+    longer): a new visitor's card (image, logline, Not started, nothing about B3, the vat or the creature), Started once
+    opened, Completed with Start Over at an ending (a seeded run two choices short of it: setup shortcut), and Start
+    Over keeping Completed. Options: {"story":"<id>"} (default night-shift). */
+async function nightCardRun(options, t) {
+  const id = (options && options.story) || "night-shift";
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  const st = story(id);
+  if (!st || !isConsole(st)) throw new Error(`${id} is not a console story`);
+  await passPrompt(t);
+  if (!landingShown()) await toLanding(t);
+  t.scene(`${st.title}: card, Not started`);
+  const list = listedStories();
+  const at = list.findIndex((x) => x.id === id);
+  if (at < 0) t.problem("bug", `${id} isn't listed on the landing page`);
+  else if (id === "night-shift" && list[at - 1]?.id !== "water-road") t.problem("bug", `${id}'s card follows ${list[at - 1]?.id || "nothing"}, not The Water Road`);
+  clearProgress();
+  await badgesAfterLoad(t, () => "new", "fresh browser");
+  const card = cardOf(id);
+  if (!card) throw new Error(`${id} has no card on the landing page`);
+  card.scrollIntoView({ block: "center", behavior: "instant" });
+  const logline = (card.querySelector("p")?.textContent || "").trim();
+  if (!logline) t.problem("bug", `${id}: the card has no logline`);
+  const img = card.querySelector("img");
+  if (!img) t.problem("bug", `${id}: the card has no image`);
+  else {
+    await waitFor(() => img.complete, 10000);
+    if (!img.naturalWidth) t.problem("bug", `${id}: the card's image ${pathOf(img.src)} didn't load`);
+  }
+  const words = `${card.textContent} ${img?.alt || ""} ${st.logline || ""}`;
+  const leak = words.match(/\b(B3|vat|creature)\b/i);
+  if (leak) t.problem("bug", `${id}: the card says "${leak[0]}" (the story never mentions B3, the vat or the creature)`);
+  t.event("card", `${id}: "${logline}"`);
+  checkBadge(t, card, st, "new", "before opening it");
+  await sleep(800); // on screen for the footage
+
+  // Opening it starts it.
+  await consoleListedOpen(t, st);
+  checkBadge(t, cardOf(id), st, "started", `after opening ${st.title}`);
+  t.progress(0.3);
+
+  // An ending completes it: the percent follows the scenes seen, and the button says Start Over.
+  await consoleListedEnding(t, st);
+  t.progress(0.7);
+  await consoleListedStartOver(t, st);
+  t.progress(1);
+}
+
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
@@ -3511,9 +3565,16 @@ installPlaytest({
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
-      seconds: 150,
+      seconds: 240,
       tags: ["full"],
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
+    },
+    {
+      id: "night-shift-card",
+      title: "Night Shift's landing card: Not started with its image and logline (nothing about B3, the vat or the creature), Started once opened, Completed with Start Over at an ending",
+      seconds: 90,
+      tags: ["full"],
+      description: "The card criteria alone, short enough to watch (the `stories` scenario covers every story). Waits for the landing page's splash, clears the saved places, and with the home page loaded in a frame checks every card says Not started. Night Shift's card follows The Water Road, has a logline and an image that loads, and says nothing about B3, the vat or the creature. Opens it from its card (a real press, then its Tap to play): its wall, first lines and choices, its card then says Started with one scene's percent. Reaching an ending (a seeded run two choices short of the shortest way: setup shortcut, event seeded-run; the last choices are real presses) makes the card say Completed with Start Over, the percent following the scenes seen; Start Over opens the story at its first scene and the card still says Completed and Start Over. Options: {\"story\":\"<id>\"}.",
     },
     {
       id: "night-shift-audio",
@@ -3592,6 +3653,7 @@ installPlaytest({
       else if (id === "pages") await pages(options, t);
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
+      else if (id === "night-shift-card") await nightCardRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
       else if (id === "night-shift-gaps") await nightGapsRun(options, t);
       else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
