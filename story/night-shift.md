@@ -1,10 +1,9 @@
 # Night Shift — story doc
 
-**Draft. Waiting for J** (see "Waiting for J" at the end). The whole night is built as a console story in
-`story/night-shift.json` (see "The built night" below), listed as a draft in `story/stories.json` (`listed: false`):
-it plays at `/?story=night-shift`, its pages are under `/night-shift/`. **The script is final** (2026-10-25, the text pass that
-comes before the voices): the voices, beds and effects are cast and the opening lines are recorded; the pictures are still
-stand-ins and most lines are read on a timer until they are voiced (see "Voices as made").
+**Listed on the landing page** (since #35; J's open questions are under "Waiting for J" at the end). The whole night is built as a
+console story in `story/night-shift.json` (see "The built night" below): it plays at `/?story=night-shift`, its pages are under
+`/night-shift/`. **The script is final** (2026-10-25, the text pass that came before the voices). All 1,288 lines are recorded in the
+locked voices, the beds and effects are made, the camera pictures and end cards are real; only the 6 music stings are not made yet.
 
 ## The idea
 
@@ -246,7 +245,7 @@ sets `waved_through_big_name`.
 ## 3. The voice sheets
 
 *Every speaking character. Voices are made through Hawkes Gen / ElevenLabs "voice design" with the description
-given; the description is the whole recipe. No media is made by this doc.*
+given; the description is the whole recipe. The media is made from these descriptions (see "Voices as made").*
 
 ### Dolores "Dee" Reyes: the trainer (the heart of the story)
 
@@ -586,7 +585,7 @@ company's restricted work (an `unspoken` list kept in the data, not in this doc)
 (`story/night-shift-slice-notes.md`, kept as history), moved into the engine's format: the engine has no conditional lines, so a line
 that read a flag now sits in a short scene that follows the choice. Playing time (words at 150 a minute plus a pause per line, the
 build's own `dur`; the voices will move it, usually longer): `node tools/check-night-shift.mjs` prints the shortest, the average (every
-open choice equally likely) and the longest. Now: shortest 38 minutes, average 44, longest 53.
+open choice equally likely) and the longest. Now (from the recordings): shortest 36.4 minutes, average 42.2, longest 50.4.
 
 **Acts.** 1: handover, the wall, the first tour, the sign-in, Marisol and the badge, the first log entry (to 22:05). 2: Terrell's last
 hour, a man behind a badge, the first time alone on the wall, Dee covering tile five, the night-line call, the sandwich and the index
@@ -649,7 +648,7 @@ Nothing in the night says B3, the vat or the creature (`unspoken` in the data; t
 - Whether Pierce's cameo uses PH Origins' voice as written.
 - The media budget: about 1,200 voiced lines (the estimate is in the PR/summary), the camera stills and 12 end cards.
 
-Everything here stays a draft until J approves it.
+Night Shift is listed already; anything J changes here after reading it costs new recordings.
 
 ## Voices as made (2026-10-25)
 
@@ -660,3 +659,4 @@ Terrell `idZn18yShmcD0ePsg1A5`, Marisol `Iok0Qd1zNVnFs3DULx6Z`, Dev `zcQcgx11ALP
 `QJ9eYeuXwMsC2KElXT1P`, the courier `cOJkIUDUojZtwaJSfMzy`, the man in the vestibule `YSWR6wrmdI2sOa3gtoye`, Mr. Brandt
 `ZyVqOeng5wFOY7UfrjR9`, Pierce Hawkes `ZthjuvLPty3kTMaNKVKb` (PH Origins' Jackson voice, unmodified). The radio, walkie,
 intercom and phone treatments in the descriptions are not applied yet (the recordings are clean).
+All 1,288 lines are recorded and mixed (`node tools/make-audio.mjs night-shift --mix`, `--dur`); the 6 music stings are the only unmade audio.

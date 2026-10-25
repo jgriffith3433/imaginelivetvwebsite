@@ -3,6 +3,7 @@
   "title": "Night Shift (demo)",
   "tagline": "Observe and report.",
   "doc": "story/night-shift.md",
+  "placeholder": "The five-scene stand-in the console playtests and tests/test-console.mjs use: silent, voiceless on purpose, so the build does not warn about its voices or its flags.",
   "cookie": "nightShiftDemoProgress",
   "tap": { "title": "NIGHT SHIFT", "line": "Radio check." },
   "start": "radio-check",

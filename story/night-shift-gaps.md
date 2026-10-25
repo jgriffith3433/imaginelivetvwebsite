@@ -151,6 +151,32 @@ meter in any state (13%), in 45 scenes**, 0 are unreachable, 0 neither change no
 52. The `at` start point (playtest contract) is not implemented in `js/playtest.js` for any scenario. `night-shift-gaps` takes `{"at":"gaps"}` (this file only, about 10 s) and `{"at":"story"}`.
 53. `night-shift` scenario text still names "about 45" in its title (item 13).
 
+## Status after the fixes of groups (d), (e), (f)
+
+Fixed in this pass (2026-10-25, on top of `1801b98`), item by item. "Checked" means `node tools/test-console-player.mjs` (the real `js/console.js` run in
+jsdom: no layout, no real audio, no real taps) and the static checks; everything that needs a browser is still the T4's `console` run.
+
+- **31, 37 (not verified in a browser).** Not fixable on this server (no browser). What can be proved here is now proved, in `tools/test-console-player.mjs` (`npm run test:player`, needs jsdom):
+  a reload at the start, mid-scene, right after a choice and at an ending restores scene, flags, meters, history, log, lines heard, the subtitles and the end screen; Skip and Replay;
+  the Log is a Daily Activity Report with one redacted, text-free row per way not taken and nothing pressable, closed again by its button; localStorage, sessionStorage and cookies refusing
+  every call still lets the story play a choice, open the Log, toggle CC and survive All stories and back. 17 checks, all ok.
+- **32 (layout).** The CSS is unchanged (it already has a rule for 360x640, 390x844 and 844x390; targets are `min-height: 44px`; the words column scrolls by itself on a short landscape screen, so 12 choices never push the Log button off). Left for the `console` run.
+- **33 (audio unlock).** Reviewed: voice, bed, effect and sting are `data-sound-start` elements started inside the Tap to play press; Settings on/off and volume reach all four (`hawkes-sound.js` `apply`); a refused `play()` waits for the tap. One bug found and fixed: a line's timer or its tap-wait could still fire after the story was closed
+  (All stories) and throw on the removed audio element; `playLine` now holds its own element and stops when the scene is left (`js/console.js`). Real `page.mouse.click` still needs the T4 (`console` records whether the press was trusted).
+- **Skip.** A skipped line now lets the next one follow at once (no 350 ms pause, which a viewer who pressed Skip does not want) and the bot's Skip loop waits 40 ms, not 150: with 72 choices and about 400 lines, a way to an ending is about 2 minutes of presses, not 5, so `stories` (it plays Night Shift to an ending twice) fits in about 10 minutes; its listed length is now 600 s.
+- **34 (music stings).** Reviewed: `later` in `tools/build-story.mjs` belongs to the video stories' cuts. For a console story the build writes each cue's file only `urlIfMade` (line 802), so an unmade sting is `null` and `playSting` skips it; no scene is held back and nothing 404s. Making the 6 stings is still item 1.
+- **35 (saved progress).** Checked as above. Storage blocked: the run is kept in the page (`memory`), a reload starts the story over, no error.
+- **36 (analytics for console stories).** Not done: the `analytics` scenario still covers The Final Spark only and a second leg cannot be tried without a browser. Left, on purpose.
+- **38, 39 (landing).** Unchanged: the card is listed, its badge, percent and Start Over come from the same code as the video stories; `stories` plays Night Shift's card, its player, its shortest way to an ending and Start Over (`consoleListed*`), not run here.
+- **40 (docs say draft).** Fixed: `AGENTS.md` and `story/night-shift.md` say Night Shift is listed.
+- **41 (demo warnings).** Fixed: `night-shift-demo.json` has `placeholder`, and `npm run story -- --check` is now silent for it (0 warnings).
+- **42 (1.1 MB PNG card).** Fixed: `assets/images/night-shift.jpg` (80 KB, 720x1280), the PNG is gone, `stories.json` and the built card point at the jpg.
+- **44, 45, 48, 53 (docs and scenario text).** Fixed: header, "No media is made by this doc", the built-night minutes (36.4 / 42.2 / 50.4), Voices as made (all 1,288 lines recorded), `AGENTS.md`'s `night-shift` row ("about 42"), `night-shift-audio` row and the scenario's title, description and warning text.
+- **46 (slice notes).** Kept as history; the file says it is superseded.
+- **47, 51 (sign-off and playtests not run).** Still open: they need the T4 (`night-shift-signoff` about 50 minutes, `console` about 4).
+- **49 (`cctv-art` in `story/README.md`).** Unchanged (one sentence is enough).
+- **52 (`at` start points).** Not done: only `night-shift-gaps` has one; the others need no mid-way start while they run in minutes.
+
 ## What is left, in order
 
 1. Run `console`, `stories`, `sound` and `night-shift-signoff` on the T4, paste the reports below (items 31 to 39, 47).
@@ -160,7 +186,7 @@ meter in any state (13%), in 45 scenes**, 0 are unreachable, 0 neither change no
 
 ## Appendix: real command output
 
-Run at `b0d1875`, 2026-10-25.
+Run at `b0d1875`, 2026-10-25 (`npm run story -- --check` re-run after the fixes above: no warnings).
 
 ### `npm run story -- --check`
 
@@ -169,13 +195,6 @@ Run at `b0d1875`, 2026-10-25.
 > imagine-live-tv@1.0.0 story
 > node tools/build-story.mjs --check
 
-warning  night-shift-demo: dee has no voice id yet, so its lines have no voice recipe (the player reads them on a timer until they're made)
-warning  night-shift-demo: terrell has no voice id yet, so its lines have no voice recipe (the player reads them on a timer until they're made)
-warning  night-shift-demo: flag radio_answered is set but no choice reads it
-warning  night-shift-demo: flag told_super_wedge is set but no choice reads it
-warning  night-shift-demo: flag dee_read is set but no choice reads it
-warning  night-shift-demo: flag log_fact is set but no choice reads it
-warning  night-shift-demo: flag log_quiet is set but no choice reads it
 ok       4 stories, 276 scenes, everything generated is up to date
 ```
 

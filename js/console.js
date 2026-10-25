@@ -50,6 +50,7 @@
   var flow = 0; // bumped to cancel the lines in progress
   var linePlaying = null; // { index } while a line is being heard
   var lastFinish = null; // ends the line being heard now (Skip)
+  var skipped = false; // the line just ended was skipped: the next one follows with no pause
   var voice = null;
   var bed = null;
   var sfx = null;
@@ -181,13 +182,15 @@
   function playLine(line, done) {
     var finished = false;
     var timer = 0;
+    var at = flow;
+    var el = voice; // the story may be closed (voice gone) before this line's timer fires
     var finish = function () {
       if (finished) return;
       finished = true;
       if (lastFinish === finish) lastFinish = null;
       clearTimeout(timer);
-      voice.onended = voice.onerror = null;
-      try { voice.pause(); } catch (e) { /* gone */ }
+      el.onended = el.onerror = null;
+      try { el.pause(); } catch (e) { /* gone */ }
       done();
     };
     var byTimer = function (ms) {
@@ -201,19 +204,19 @@
       playEl(sfx).catch(function () {});
     }
     if (!line.file) return byTimer(line.dur * 1000);
-    voice.onended = finish;
-    voice.onerror = function () { byTimer(line.dur * 1000); };
-    voice.src = line.file;
-    voice.loop = false;
+    el.onended = finish;
+    el.onerror = function () { byTimer(line.dur * 1000); };
+    el.src = line.file;
+    el.loop = false;
     byTimer((line.dur + 4) * 1000); // never stuck on a recording that stalls
-    playEl(voice).catch(function (error) {
+    playEl(el).catch(function (error) {
       if (finished) return;
       if (error && error.name === "NotAllowedError") {
         // The browser wants a tap (js/hawkes-sound.js shows its prompt): hear the line again once there was one.
         clearTimeout(timer);
-        voice.onended = voice.onerror = null;
+        el.onended = el.onerror = null;
         var wait = function () {
-          if (finished) return;
+          if (finished || at !== flow) return; // heard (Skip) or the scene was left
           if (soundReady()) return playLine(line, done);
           timer = setTimeout(wait, 250);
         };
@@ -375,7 +378,9 @@
         run.done = i + 1;
         save();
         renderSubs();
-        setTimeout(again, i + 1 >= stop ? 0 : GAP);
+        var wait = skipped || i + 1 >= stop ? 0 : GAP;
+        skipped = false;
+        setTimeout(again, wait);
       });
     };
     again();
@@ -384,6 +389,8 @@
     function stopAudio() {
     flow++;
     linePlaying = null;
+    lastFinish = null;
+    skipped = false;
     [voice, sfx].forEach(function (a) {
       if (!a) return;
       a.onended = a.onerror = null;
@@ -508,7 +515,10 @@
     var s = scene();
     if (run.done >= s.lines.length && !linePlaying) return;
     // The line being heard ends now; the next one follows. With none running, the rest are taken as heard.
-    if (linePlaying && lastFinish) lastFinish();
+    if (linePlaying && lastFinish) {
+      skipped = true;
+      lastFinish();
+    }
     else {
       stopAudio();
       run.done = s.lines.length;
