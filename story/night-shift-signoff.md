@@ -1,11 +1,18 @@
 # Night Shift: sign-off
 
-Written 2026-10-25 on branch `task/4d3f14ab57a1-last-task-after-everything-else-is-merge`, from beta at `c0da356`.
+Written 2026-10-25 (second attempt, on beta at `48f2577`). The first attempt's text is kept below where it still holds; what this attempt
+ran, measured and changed is marked **(attempt 2)**.
 
-**Verdict: not clean, and this file says why.** The script, the voices, the beds and effects, the camera pictures and the end cards are
-all made now. Two things the brief asked for were **not done**, because this server never starts a browser: nobody has walked the
-endings at the four sizes, and none of the browser playtests were run. One asset is still missing (6 music stings, GPU). The
-"Left unfixed" section lists all of it. Nothing below claims a result that was not produced by a command named next to it.
+**Verdict: not proven clean, and this file says why.** The script, the voices, the beds and effects, the camera pictures and the end
+cards are all made; the loudness of the voices is now measured and level. Two things the brief asked for are **still not done**,
+because this server never starts a browser (it starved Studio and Gen of memory): nobody has walked the endings at the four sizes,
+and none of the browser playtests were run here. One asset is still missing (6 music stings, GPU). "Left unfixed" lists all of it.
+Nothing below claims a result that was not produced by a command named next to it.
+
+**Why the first attempt's playtest failed on beta (attempt 2):** `night-shift-signoff` ended `ReferenceError: consoleStories is not
+defined`. That was attempt 1's scenario running against a `js/playtest.js` that did not yet have the helper; `consoleStories` is
+defined now (`js/playtest.js`, in the console-stories block) and `npm run test:playtest` (`tools/test-playtest.mjs`) proves every
+helper `js/playtest.js` calls is declared (540 names, all defined). The scenario itself has still not run in a browser.
 
 ## What was found
 
@@ -74,8 +81,15 @@ What the data does say about those items, from commands that were run:
   card is `assets/images/night-shift.png`. Whether the pictures look right (wrong room, wrong person) was not looked at.
 - **A choice that did nothing, a dead end:** `npm run story` (the state explorer) and `node tools/check-night-shift.mjs` report 0
   decisions that change nothing, no stuck state, all 12 endings reachable, 228 scenes all reachable.
-- **Loudness:** every voice file went through the same -16 LUFS pass, effects -26, beds -38 (`tools/make-audio.mjs`). Not measured
-  again after the pass, not listened to.
+- **Loudness (attempt 2, measured):** all 1,288 voice files measured with ffmpeg `ebur128` (integrated LUFS and sample peak).
+  Before: median -16.6 LUFS, but 38 lines were outside -19 to -14.5 (Dee's one-word "Mm." and "Helen." down to -26.9, one at -13.6, "It's
+  wrong. I said not to say." three times; Okafor's handover line -19.8) and two peaked at -0.4 dBFS. That is an audible jump on a
+  voice with no cause. Fixed by a gain and a limiter on those 38 files (a murmur stays a little under, at -18; the loud ones to
+  -16.2). After: every line between **-19.1 and -14.6 LUFS**, loudest peak **-0.7 dBFS**, 0 peaks above -0.5. `dur` unchanged
+  (`--dur` sets 0 lines). Beds measure -38.3 to -39.5 LUFS (about 22 dB under the voice), effects about -26 (about 9 dB under).
+- **Pictures (attempt 2, looked at):** contact sheets of the 12 end cards and the 26 camera feeds. All are real generated stills of a
+  control room and its cameras; none is a stand-in or a grid placeholder, and nothing in them shows B3, a vat or a creature. Left
+  as is: the `end-under-review` card has the caption "Under review:" baked into its picture (the other eleven have none).
 
 ## The trainer and Pierce
 
@@ -94,14 +108,17 @@ From `node tools/check-night-shift.mjs` and the data:
 
 ## Checks that were run
 
-| Command | Result |
+| Command | Result (attempt 2, 2026-10-25) |
 | --- | --- |
-| `npm run story -- --check` | `ok 4 stories, 276 scenes, everything generated is up to date` (warnings only about the demo story's unread flags) |
-| `node tools/check-night-shift.mjs` | `ok night-shift`: 228 scenes, 1,288 lines, 12 endings, 0 decisions that change nothing |
+| `npm run story -- --check` | `ok 4 stories, 276 scenes, everything generated is up to date` |
+| `node tools/check-night-shift.mjs` | `ok night-shift`: 228 scenes, 1,288 lines, 12 endings, 0 decisions that change nothing, shortest 36.4, average 42.2, longest 50.4 min, Pierce speaks in `coat-lobby` and `pierce-signin` only, all four reveal layers reachable (one way meets all: 77 choices) |
 | `npm run test:console` | all ok |
+| `npm run test:playtest` | `ok js/playtest.js: every called helper is defined (540 names declared)` |
+| `npm run test:player` with jsdom installed in a scratch folder | all ok (reload at the start, mid-scene, after a choice and at an ending; Skip, Replay, Log, storage blocked). Layout and real taps are not covered; that is the browser |
 | `node tools/make-audio.mjs night-shift --list` | 6 of 1,322 without a file: the 6 music stings |
-| `node tools/ending-times.mjs` | the table above |
-| `node --check js/playtest.js` | syntax ok |
+| `node tools/ending-times.mjs --md` | the table above |
+| text scan of every file except Water Road for `B3`, `vat`, `creature` | only the build's own `unspoken` list, the checkers that forbid them, this brief and Final Spark's own shadow-creature scene (another story). None in Night Shift's scenes, lines, choices, logs or recipes |
+| ffmpeg `ebur128` on 1,288 lines, 10 beds, 18 effects | see Loudness |
 
 ## Playtests: NOT RUN
 
@@ -121,10 +138,11 @@ them in this file. Ask for a playtest on the T4; `.hawkes/scenario.txt` names `n
    these as a warning.
 2. **The four-size walk of every ending and all playtests** (above). Until they run on the T4, "clean at desktop and the three phone
    sizes" is **unproven**, not proven clean.
-3. **No listen.** Nobody has heard the 1,154 new lines: whether a `perform` tag was read aloud instead of acted, a voice drifts, a line
+3. **No listen.** Loudness is measured now, but nobody has heard the 1,154 new lines: whether a `perform` tag was read aloud instead of acted, a voice drifts, a line
    clips or two speakers sound alike. `eleven_v4` was used as the earlier batches did; the first 134 lines were not remade.
 4. **The speaker treatments are still not applied** (`story/night-shift.md`, "Voices as made"): the radio, walkie, intercom and phone
    lines (Okafor on the night line, Marisol on the walkie, Dev on the intercom, Adler on the phone, the courier, Pierce across the
    lobby) are clean recordings. Nobody asked for it in this task; it needs an ffmpeg filter step per speaker in `tools/make-audio.mjs`.
-5. `story/night-shift-gaps.md` (the audit from before this change) is out of date: its voice, art and ambience gaps are closed by
+5. The `end-under-review` card has "Under review:" baked into the picture (cosmetic; the other eleven cards have no caption).
+6. `story/night-shift-gaps.md` (the audit from before this change) is out of date: its voice, art and ambience gaps are closed by
    `#32` to `#35` and this change. It is kept as the record of what was found then.
