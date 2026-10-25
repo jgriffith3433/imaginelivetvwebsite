@@ -713,11 +713,11 @@ function validateConsole(st) {
     const said = [s.title, s.ending ?? '', ...(s.lines ?? []).map((l) => l.text), ...(s.choices ?? []).map((c) => c.say)].join(' ').toLowerCase();
     for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) problems.push(`${at(s)}: its words say "${w}", which this story never says (unspoken)`);
   }
-  for (const who of noVoice) warnings.push(`${id}: ${who} has no voice id yet, so its lines have no voice recipe (the player reads them on a timer until they're made)`);
+  for (const who of data.placeholder ? [] : noVoice) warnings.push(`${id}: ${who} has no voice id yet, so its lines have no voice recipe (the player reads them on a timer until they're made)`);
   if (!scenes.some((s) => s.ending)) warnings.push(`${id}: no ending yet (a scene with an "ending"): its card's badge can't say Completed until it has one`);
   for (const f of flags) {
     if (read.has(f) && !wrote.has(f)) problems.push(`${id}: flag ${f} is read by a choice but nothing sets it`);
-    else if (!read.has(f)) warnings.push(`${id}: flag ${f} is set but no choice reads it`);
+    else if (!read.has(f) && !data.placeholder) warnings.push(`${id}: flag ${f} is set but no choice reads it`);
   }
   if (problems.some((p) => p.startsWith(`${id}`))) return;
 

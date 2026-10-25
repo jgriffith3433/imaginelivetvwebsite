@@ -50,6 +50,7 @@
   var flow = 0; // bumped to cancel the lines in progress
   var linePlaying = null; // { index } while a line is being heard
   var lastFinish = null; // ends the line being heard now (Skip)
+  var skipped = false; // the line just ended was skipped: the next one follows with no pause
   var voice = null;
   var bed = null;
   var sfx = null;
@@ -377,7 +378,9 @@
         run.done = i + 1;
         save();
         renderSubs();
-        setTimeout(again, i + 1 >= stop ? 0 : GAP);
+        var wait = skipped || i + 1 >= stop ? 0 : GAP;
+        skipped = false;
+        setTimeout(again, wait);
       });
     };
     again();
@@ -387,6 +390,7 @@
     flow++;
     linePlaying = null;
     lastFinish = null;
+    skipped = false;
     [voice, sfx].forEach(function (a) {
       if (!a) return;
       a.onended = a.onerror = null;
@@ -511,7 +515,10 @@
     var s = scene();
     if (run.done >= s.lines.length && !linePlaying) return;
     // The line being heard ends now; the next one follows. With none running, the rest are taken as heard.
-    if (linePlaying && lastFinish) lastFinish();
+    if (linePlaying && lastFinish) {
+      skipped = true;
+      lastFinish();
+    }
     else {
       stopAudio();
       run.done = s.lines.length;
