@@ -4403,6 +4403,26 @@
       }
     },
     {
+      "id": "night-shift-endcard-end-under-review",
+      "note": "End card for the ending \"Under review.\" (Under review) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Under review.\": Under review. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Under review.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-under-review.png"
+      }
+    },
+    {
       "id": "night-shift-ambience-control-room",
       "note": "Ambience bed control-room (Night Shift): a loop under the scenes that use it.",
       "steps": [
@@ -17921,24 +17941,6 @@
       }
     },
     {
-      "id": "night-shift-tenant-go-line-7",
-      "note": "Forty (Night Shift): Narrator says \"The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
-            "voice": "IFbrwI7VRvX2VkoD4Y3K",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/tenant-go/media/line-7.mp3"
-      }
-    },
-    {
       "id": "night-shift-leak-watch-line-1",
       "note": "Water on forty-four (Night Shift): Narrator says \"On tile six a dark edge is spreading across the carpet from the janitor's closet.\".",
       "steps": [
@@ -26486,6 +26488,312 @@
       ],
       "files": {
         "line": "night-shift/end-noted/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-1",
+      "note": "The good chair (Night Shift): Narrator says \"You turn the good chair to face the wall, beside hers. She does not say sit. She does not say don't.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You turn the good chair to face the wall, beside hers. She does not say sit. She does not say don't.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-2",
+      "note": "The good chair (Night Shift): Narrator says \"You pour two coffees. They are wrong. She holds hers in both hands and drinks none of it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You pour two coffees. They are wrong. She holds hers in both hands and drinks none of it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-3",
+      "note": "The good chair (Night Shift): Dee says \"Ten minutes. That is all it is.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][to the wall] Ten minutes. That is all it is.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-4",
+      "note": "The good chair (Night Shift): Narrator says \"The clock on the wall says 05:28. It is 05:26. She looks at it a long time and says nothing about it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The clock on the wall says 05:28. It is 05:26. She looks at it a long time and says nothing about it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-1",
+      "note": "Thirty seconds (Night Shift): Narrator says \"You take the wall. She goes as far as the corridor door and stops there, one hand on the frame.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You take the wall. She goes as far as the corridor door and stops there, one hand on the frame.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-2",
+      "note": "Thirty seconds (Night Shift): Narrator says \"From your chair you can see her back, and past it the corridor that goes to stair C.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "From your chair you can see her back, and past it the corridor that goes to stair C.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-3",
+      "note": "Thirty seconds (Night Shift): Dee says \"Mm. Thirty seconds.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low][not to you] Mm. Thirty seconds.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-4",
+      "note": "Thirty seconds (Night Shift): Narrator says \"It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-1",
+      "note": "Ten to two (Night Shift): Narrator says \"You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-2",
+      "note": "Ten to two (Night Shift): Dee says \"Ten to two. Bench clear.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][writing it down] Ten to two. Bench clear.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-3",
+      "note": "Ten to two (Night Shift): Dee says \"That is the first line. Everything else hangs off it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] That is the first line. Everything else hangs off it.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-4",
+      "note": "Ten to two (Night Shift): Narrator says \"She writes 0150 on the pad in pencil, small, and puts a box around it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She writes 0150 on the pad in pencil, small, and puts a box around it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-1",
+      "note": "Under review (Night Shift): Mr. Okafor says \"Thank you for telling me. That is noted. I will raise it with the contractor.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][a pen finishing a line] Thank you for telling me. That is noted. I will raise it with the contractor.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-2",
+      "note": "Under review (Night Shift): Mr. Okafor says \"Ms. Reyes. Your post is under review. I did not know.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[turning to her][courteous][careful] Ms. Reyes. Your post is under review. I did not know.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-3",
+      "note": "Under review (Night Shift): Dee says \"Officer.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[level][to you][nothing else in it] Officer.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-4",
+      "note": "Under review (Night Shift): Narrator says \"She puts on her coat. She does not touch the radios. Four, on the charger. She goes out by the dock, so as not to pass the desk.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She puts on her coat. She does not touch the radios. Four, on the charger. She goes out by the dock, so as not to pass the desk.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-5",
+      "note": "Under review (Night Shift): Narrator says \"The pencil is on the shelf, on the middle of the page where she left it. The drawer is shut. It does not stick.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The pencil is on the shelf, on the middle of the page where she left it. The drawer is shut. It does not stick.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-5.mp3"
       }
     }
   ]

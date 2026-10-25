@@ -24,7 +24,7 @@
     "specimen",
     "laboratory"
   ],
-  "stateCap": 200000,
+  "stateCap": 300000,
   "speakers": {
     "narrator": {
       "name": "Narrator",
@@ -120,10 +120,12 @@
       "asked_sandwich",
       "left_wall",
       "lied",
+      "lobby_clear",
       "met_dev",
       "noticed_12th",
       "noticed_notice",
       "opined",
+      "read_p11",
       "trouble_open",
       "wedge_open"
     ],
@@ -325,7 +327,10 @@
         },
         {
           "say": "Ask about Thursday",
-          "next": "binder-thu"
+          "next": "binder-thu",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer."
@@ -392,12 +397,18 @@
         {
           "say": "Read it, then initial",
           "next": "okafor-out",
-          "log": "Read the day log, both pages, then initialed."
+          "log": "Read the day log, both pages, then initialed.",
+          "set": [
+            "read_p11"
+          ]
         },
         {
           "say": "Initial it now",
           "next": "okafor-out-fast",
-          "log": "Initialed the day log without reading it."
+          "log": "Initialed the day log without reading it.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "1852 hrs. Day log shown to night post. Initials requested."
@@ -464,12 +475,18 @@
         {
           "say": "Read it, then initial",
           "next": "okafor-out",
-          "log": "Read the day log, both pages, then initialed."
+          "log": "Read the day log, both pages, then initialed.",
+          "set": [
+            "read_p11"
+          ]
         },
         {
           "say": "Initial it now",
           "next": "okafor-out-fast",
-          "log": "Initialed the day log without reading it."
+          "log": "Initialed the day log without reading it.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "1852 hrs. Day log shown to night post. Initials requested."
@@ -615,14 +632,6 @@
             "trainer_warmth": 1
           },
           "log": "Asked D. Reyes what she is counting."
-        },
-        {
-          "say": "Knock on the wall, grinning",
-          "next": "the-chairs-knock",
-          "add": {
-            "trainer_trust": -1
-          },
-          "log": "Knocked twice on the wall."
         }
       ],
       "log": "1858 hrs. Day supervisor off post. Radios 4 of 4 on charger."
@@ -669,7 +678,10 @@
         {
           "say": "Sit in the good chair",
           "next": "chair-good",
-          "log": "Sat in the chair with the good back."
+          "log": "Sat in the chair with the good back.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Sit in her chair",
@@ -683,8 +695,7 @@
           "say": "Ask about the clock",
           "next": "chair-clock",
           "add": {
-            "trainer_warmth": 1,
-            "building_known": 1
+            "trainer_warmth": 1
           },
           "log": "Asked why the wall clock runs fast."
         }
@@ -738,22 +749,16 @@
         {
           "say": "Sit in the good chair",
           "next": "chair-good",
-          "log": "Sat in the chair with the good back."
-        },
-        {
-          "say": "Sit in her chair",
-          "next": "chair-hers",
+          "log": "Sat in the chair with the good back.",
           "add": {
-            "trainer_trust": -1
-          },
-          "log": "Sat in D. Reyes's chair."
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask about the clock",
           "next": "chair-clock",
           "add": {
-            "trainer_warmth": 1,
-            "building_known": 1
+            "trainer_warmth": 1
           },
           "log": "Asked why the wall clock runs fast."
         }
@@ -1030,7 +1035,10 @@
         {
           "say": "Ask Terrell about the game",
           "next": "talk-game",
-          "log": "Asked Terrell Banks about the game."
+          "log": "Asked Terrell Banks about the game.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "1915 hrs. Break in the control room. Terrell Banks at the desk."
@@ -1105,7 +1113,10 @@
         {
           "say": "Ask Terrell about the game",
           "next": "talk-game",
-          "log": "Asked Terrell Banks about the game."
+          "log": "Asked Terrell Banks about the game.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "1915 hrs. Break in the control room. Terrell Banks at the desk."
@@ -1180,7 +1191,10 @@
         {
           "say": "Ask Terrell about the game",
           "next": "talk-game",
-          "log": "Asked Terrell Banks about the game."
+          "log": "Asked Terrell Banks about the game.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "1915 hrs. Break in the control room. Terrell Banks at the desk."
@@ -1235,12 +1249,18 @@
         {
           "say": "Ask what normal looks like",
           "next": "w1-normal",
-          "log": "Asked what normal looks like on the wall."
+          "log": "Asked what normal looks like on the wall.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Say it all looks dead",
           "next": "w1-dead",
-          "log": "Said the first row looks dead."
+          "log": "Said the first row looks dead.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "1925 hrs. Wall: two monitors, nine feeds. First row reviewed with D. Reyes."
@@ -1299,12 +1319,18 @@
         {
           "say": "Ask what normal looks like",
           "next": "w1-normal",
-          "log": "Asked what normal looks like on the wall."
+          "log": "Asked what normal looks like on the wall.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Say it all looks dead",
           "next": "w1-dead",
-          "log": "Said the first row looks dead."
+          "log": "Said the first row looks dead.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "1925 hrs. Wall: two monitors, nine feeds. First row reviewed with D. Reyes."
@@ -1363,12 +1389,18 @@
         {
           "say": "Ask what normal looks like",
           "next": "w1-normal",
-          "log": "Asked what normal looks like on the wall."
+          "log": "Asked what normal looks like on the wall.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Say it all looks dead",
           "next": "w1-dead",
-          "log": "Said the first row looks dead."
+          "log": "Said the first row looks dead.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "1925 hrs. Wall: two monitors, nine feeds. First row reviewed with D. Reyes."
@@ -1418,15 +1450,18 @@
         {
           "say": "Ask about camera nine",
           "next": "w2-cam9",
+          "log": "Asked about camera 9.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked about camera 9."
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask about the roof door",
           "next": "w2-roof",
-          "log": "Asked about the roof door."
+          "log": "Asked about the roof door.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Keep looking at the wall",
@@ -1485,15 +1520,18 @@
         {
           "say": "Ask about camera nine",
           "next": "w2-cam9",
+          "log": "Asked about camera 9.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked about camera 9."
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask about the roof door",
           "next": "w2-roof",
-          "log": "Asked about the roof door."
+          "log": "Asked about the roof door.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Keep looking at the wall",
@@ -1556,15 +1594,18 @@
         {
           "say": "Ask about camera nine",
           "next": "w2-cam9",
+          "log": "Asked about camera 9.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked about camera 9."
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask about the roof door",
           "next": "w2-roof",
-          "log": "Asked about the roof door."
+          "log": "Asked about the roof door.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Keep looking at the wall",
@@ -1624,20 +1665,26 @@
         {
           "say": "Push the door, hear the latch",
           "next": "tour1-door",
-          "log": "Pushed the fire door on 31 and listened for the latch."
+          "log": "Pushed the fire door on 31 and listened for the latch.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask what she does",
           "next": "tour1-wedge",
+          "log": "Asked D. Reyes what she does when she finds a wedge.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked D. Reyes what she does when she finds a wedge."
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Count the flights down",
           "next": "tour1-count",
-          "log": "Counted the flights down from 31."
+          "log": "Counted the flights down from 31.",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door."
@@ -1689,20 +1736,26 @@
         {
           "say": "Push the door, hear the latch",
           "next": "tour1-door",
-          "log": "Pushed the fire door on 31 and listened for the latch."
+          "log": "Pushed the fire door on 31 and listened for the latch.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask what she does",
           "next": "tour1-wedge",
+          "log": "Asked D. Reyes what she does when she finds a wedge.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked D. Reyes what she does when she finds a wedge."
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Count the flights down",
           "next": "tour1-count",
-          "log": "Counted the flights down from 31."
+          "log": "Counted the flights down from 31.",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door."
@@ -1753,20 +1806,26 @@
         {
           "say": "Push the door, hear the latch",
           "next": "tour1-door",
-          "log": "Pushed the fire door on 31 and listened for the latch."
+          "log": "Pushed the fire door on 31 and listened for the latch.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask what she does",
           "next": "tour1-wedge",
+          "log": "Asked D. Reyes what she does when she finds a wedge.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked D. Reyes what she does when she finds a wedge."
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Count the flights down",
           "next": "tour1-count",
-          "log": "Counted the flights down from 31."
+          "log": "Counted the flights down from 31.",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door."
@@ -1841,7 +1900,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -1924,7 +1986,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -2002,7 +2067,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -2085,7 +2153,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -2168,7 +2239,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -2256,7 +2330,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -2912,7 +2989,10 @@
         {
           "say": "Radio Terrell: the list",
           "next": "visitor-checked",
-          "log": "Radioed the desk to check the after-hours list."
+          "log": "Radioed the desk to check the after-hours list.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Go to the desk, ask",
@@ -2989,7 +3069,10 @@
         {
           "say": "Radio Terrell: the list",
           "next": "visitor-checked",
-          "log": "Radioed the desk to check the after-hours list."
+          "log": "Radioed the desk to check the after-hours list.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Go to the desk, ask",
@@ -3066,7 +3149,10 @@
         {
           "say": "Radio Terrell: the list",
           "next": "visitor-checked",
-          "log": "Radioed the desk to check the after-hours list."
+          "log": "Radioed the desk to check the after-hours list.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Go to the desk, ask",
@@ -3148,7 +3234,10 @@
         {
           "say": "Radio Terrell: the list",
           "next": "visitor-checked",
-          "log": "Radioed the desk to check the after-hours list."
+          "log": "Radioed the desk to check the after-hours list.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Go to the desk, ask",
@@ -3242,7 +3331,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -3336,7 +3428,10 @@
         {
           "say": "Ask for his paperwork",
           "next": "nephew-papers",
-          "log": "Asked M. Quintero for the crew member's paperwork."
+          "log": "Asked M. Quintero for the crew member's paperwork.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "feeds": {
@@ -3383,17 +3478,26 @@
         {
           "say": "Ask about the trucks",
           "next": "tour2-trucks",
-          "log": "Asked D. Reyes about the dock deliveries."
+          "log": "Asked D. Reyes about the dock deliveries.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Check the rollup door lock",
           "next": "tour2-lock",
-          "log": "Checked the lock on the rollup door."
+          "log": "Checked the lock on the rollup door.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Listen to the compactor",
           "next": "tour2-compactor",
-          "log": "Stood at the compactor and listened."
+          "log": "Stood at the compactor and listened.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark."
@@ -3442,17 +3546,26 @@
         {
           "say": "Ask about the trucks",
           "next": "tour2-trucks",
-          "log": "Asked D. Reyes about the dock deliveries."
+          "log": "Asked D. Reyes about the dock deliveries.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Check the rollup door lock",
           "next": "tour2-lock",
-          "log": "Checked the lock on the rollup door."
+          "log": "Checked the lock on the rollup door.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Listen to the compactor",
           "next": "tour2-compactor",
-          "log": "Stood at the compactor and listened."
+          "log": "Stood at the compactor and listened.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark."
@@ -3496,17 +3609,26 @@
         {
           "say": "Ask about the trucks",
           "next": "tour2-trucks",
-          "log": "Asked D. Reyes about the dock deliveries."
+          "log": "Asked D. Reyes about the dock deliveries.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Check the rollup door lock",
           "next": "tour2-lock",
-          "log": "Checked the lock on the rollup door."
+          "log": "Checked the lock on the rollup door.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Listen to the compactor",
           "next": "tour2-compactor",
-          "log": "Stood at the compactor and listened."
+          "log": "Stood at the compactor and listened.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark."
@@ -3548,17 +3670,26 @@
         {
           "say": "Test the push bar",
           "next": "tour3-test",
-          "log": "Tested the push bar on the roof door."
+          "log": "Tested the push bar on the roof door.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask why alone",
           "next": "tour3-alone",
-          "log": "Asked D. Reyes why she does the roof door alone."
+          "log": "Asked D. Reyes why she does the roof door alone.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Read the sign by the door",
           "next": "tour3-sign",
-          "log": "Read the sign beside the roof door."
+          "log": "Read the sign beside the roof door.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "2040 hrs. Tour: roof door, exterior light on. No incident."
@@ -3600,17 +3731,26 @@
         {
           "say": "Test the push bar",
           "next": "tour3-test",
-          "log": "Tested the push bar on the roof door."
+          "log": "Tested the push bar on the roof door.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask why alone",
           "next": "tour3-alone",
-          "log": "Asked D. Reyes why she does the roof door alone."
+          "log": "Asked D. Reyes why she does the roof door alone.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Read the sign by the door",
           "next": "tour3-sign",
-          "log": "Read the sign beside the roof door."
+          "log": "Read the sign beside the roof door.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "2040 hrs. Tour: roof door, exterior light on. No incident."
@@ -3652,17 +3792,26 @@
         {
           "say": "Test the push bar",
           "next": "tour3-test",
-          "log": "Tested the push bar on the roof door."
+          "log": "Tested the push bar on the roof door.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Ask why alone",
           "next": "tour3-alone",
-          "log": "Asked D. Reyes why she does the roof door alone."
+          "log": "Asked D. Reyes why she does the roof door alone.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Read the sign by the door",
           "next": "tour3-sign",
-          "log": "Read the sign beside the roof door."
+          "log": "Read the sign beside the roof door.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "2040 hrs. Tour: roof door, exterior light on. No incident."
@@ -3742,7 +3891,10 @@
           "log": "Took the pen for the visitor sheet.",
           "forbids": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": -1
+          }
         },
         {
           "say": "Take the pen",
@@ -3753,7 +3905,10 @@
           ],
           "clear": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": -1
+          }
         },
         {
           "say": "Ask why the pencil",
@@ -3793,27 +3948,27 @@
         {
           "say": "Ask for an example line",
           "next": "sign-sample",
-          "add": {
-            "building_known": 1
-          },
           "log": "Asked D. Reyes for an example line on the visitor sheet.",
           "forbids": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Ask for an example line",
           "next": "sign-sample-44",
-          "add": {
-            "building_known": 1
-          },
           "log": "Asked D. Reyes for an example line on the visitor sheet.",
           "requires": [
             "asked_44"
           ],
           "clear": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "2100 hrs. Visitor sheet reviewed with D. Reyes."
@@ -3898,7 +4053,10 @@
           "log": "Took the pen for the visitor sheet.",
           "forbids": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": -1
+          }
         },
         {
           "say": "Take the pen",
@@ -3909,7 +4067,10 @@
           ],
           "clear": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": -1
+          }
         },
         {
           "say": "Ask why the pencil",
@@ -3949,27 +4110,27 @@
         {
           "say": "Ask for an example line",
           "next": "sign-sample",
-          "add": {
-            "building_known": 1
-          },
           "log": "Asked D. Reyes for an example line on the visitor sheet.",
           "forbids": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Ask for an example line",
           "next": "sign-sample-44",
-          "add": {
-            "building_known": 1
-          },
           "log": "Asked D. Reyes for an example line on the visitor sheet.",
           "requires": [
             "asked_44"
           ],
           "clear": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "2100 hrs. Visitor sheet reviewed with D. Reyes."
@@ -4053,7 +4214,10 @@
           "log": "Took the pen for the visitor sheet.",
           "forbids": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": -1
+          }
         },
         {
           "say": "Take the pen",
@@ -4064,7 +4228,10 @@
           ],
           "clear": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": -1
+          }
         },
         {
           "say": "Ask why the pencil",
@@ -4104,27 +4271,27 @@
         {
           "say": "Ask for an example line",
           "next": "sign-sample",
-          "add": {
-            "building_known": 1
-          },
           "log": "Asked D. Reyes for an example line on the visitor sheet.",
           "forbids": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Ask for an example line",
           "next": "sign-sample-44",
-          "add": {
-            "building_known": 1
-          },
           "log": "Asked D. Reyes for an example line on the visitor sheet.",
           "requires": [
             "asked_44"
           ],
           "clear": [
             "asked_44"
-          ]
+          ],
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "2100 hrs. Visitor sheet reviewed with D. Reyes."
@@ -4357,13 +4524,15 @@
         {
           "say": "Walk him to the door",
           "next": "terrell-door",
-          "log": "Walked Terrell Banks to the lobby door."
+          "log": "Walked Terrell Banks to the lobby door.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Ask how long she's been here",
           "next": "terrell-ask",
           "add": {
-            "building_known": 1,
             "trainer_warmth": -1
           },
           "log": "Asked Terrell Banks how long D. Reyes has been on the post."
@@ -4371,7 +4540,10 @@
         {
           "say": "Ask Terrell about school",
           "next": "terrell-school",
-          "log": "Asked Terrell Banks about his classes."
+          "log": "Asked Terrell Banks about his classes.",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "2255 hrs. Terrell Banks off post. Night post: two officers."
@@ -4811,15 +4983,18 @@
         {
           "say": "Step out for a minute",
           "next": "step-out",
-          "log": "Considered leaving the wall."
+          "log": "Considered leaving the wall.",
+          "set": [
+            "left_wall"
+          ]
         },
         {
           "say": "Read the day log",
           "next": "day-log",
+          "log": "Read the day shift's log on the shelf.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Read the day shift's log on the shelf."
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal."
@@ -4883,15 +5058,18 @@
         {
           "say": "Step out for a minute",
           "next": "step-out",
-          "log": "Considered leaving the wall."
+          "log": "Considered leaving the wall.",
+          "set": [
+            "left_wall"
+          ]
         },
         {
           "say": "Read the day log",
           "next": "day-log",
+          "log": "Read the day shift's log on the shelf.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Read the day shift's log on the shelf."
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal."
@@ -4961,15 +5139,18 @@
         {
           "say": "Step out for a minute",
           "next": "step-out",
-          "log": "Considered leaving the wall."
+          "log": "Considered leaving the wall.",
+          "set": [
+            "left_wall"
+          ]
         },
         {
           "say": "Read the day log",
           "next": "day-log",
+          "log": "Read the day shift's log on the shelf.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Read the day shift's log on the shelf."
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal."
@@ -5093,7 +5274,10 @@
           "add": {
             "trainer_trust": 1
           },
-          "log": "Radioed D. Reyes that you were stepping off the wall for two minutes."
+          "log": "Radioed D. Reyes that you were stepping off the wall for two minutes.",
+          "clear": [
+            "left_wall"
+          ]
         },
         {
           "say": "Just go, quickly",
@@ -5101,7 +5285,10 @@
           "set": [
             "left_wall"
           ],
-          "log": "Left the control room, wall unattended, without telling D. Reyes."
+          "log": "Left the control room, wall unattended, without telling D. Reyes.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "2330 hrs. Control room. Considering leaving the wall."
@@ -5621,10 +5808,10 @@
         {
           "say": "Ask about the cards",
           "next": "birthdays-ask",
+          "log": "Asked D. Reyes about the index cards.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked D. Reyes about the index cards."
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Pass her the pencil",
@@ -5690,10 +5877,10 @@
         {
           "say": "Ask about the cards",
           "next": "birthdays-ask",
+          "log": "Asked D. Reyes about the index cards.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked D. Reyes about the index cards."
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Pass her the pencil",
@@ -5759,10 +5946,10 @@
         {
           "say": "Ask about the cards",
           "next": "birthdays-ask",
+          "log": "Asked D. Reyes about the index cards.",
           "add": {
-            "building_known": 1
-          },
-          "log": "Asked D. Reyes about the index cards."
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Pass her the pencil",
@@ -6119,7 +6306,10 @@
         {
           "say": "Watch the lobby",
           "next": "wedge-missed",
-          "log": "Watched the lobby."
+          "log": "Watched the lobby.",
+          "set": [
+            "lobby_clear"
+          ]
         },
         {
           "say": "Watch camera 9",
@@ -6622,7 +6812,10 @@
         {
           "say": "Look at the vestibule",
           "next": "laptop-told",
-          "log": "Looked at the vestibule tile."
+          "log": "Looked at the vestibule tile.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Look at camera 9",
@@ -6683,7 +6876,10 @@
         {
           "say": "Look at the vestibule",
           "next": "laptop-told",
-          "log": "Looked at the vestibule tile."
+          "log": "Looked at the vestibule tile.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Look at camera 9",
@@ -6744,7 +6940,10 @@
         {
           "say": "Look at the vestibule",
           "next": "laptop-told",
-          "log": "Looked at the vestibule tile."
+          "log": "Looked at the vestibule tile.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Look at camera 9",
@@ -6805,7 +7004,10 @@
         {
           "say": "Look at the vestibule",
           "next": "laptop-told",
-          "log": "Looked at the vestibule tile."
+          "log": "Looked at the vestibule tile.",
+          "add": {
+            "trainer_warmth": 1
+          }
         },
         {
           "say": "Look at camera 9",
@@ -6857,7 +7059,10 @@
           "add": {
             "trainer_trust": 1
           },
-          "log": "Brought the laptop and lanyard to the control room."
+          "log": "Brought the laptop and lanyard to the control room.",
+          "clear": [
+            "lobby_clear"
+          ]
         },
         {
           "say": "Check the badge on the lanyard",
@@ -6865,7 +7070,10 @@
           "add": {
             "building_known": 1
           },
-          "log": "Looked up the lanyard's badge on the access terminal."
+          "log": "Looked up the lanyard's badge on the access terminal.",
+          "clear": [
+            "lobby_clear"
+          ]
         },
         {
           "say": "Open the laptop",
@@ -6873,7 +7081,21 @@
           "log": "Opened the laptop to find its owner.",
           "add": {
             "slips": 1
-          }
+          },
+          "clear": [
+            "lobby_clear"
+          ]
+        },
+        {
+          "say": "Say the bench was clear",
+          "next": "laptop-time",
+          "requires": [
+            "lobby_clear"
+          ],
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Told D. Reyes the lobby bench was clear at 0150."
         }
       ],
       "feeds": {
@@ -6920,7 +7142,10 @@
           "add": {
             "trainer_trust": 1
           },
-          "log": "Brought the laptop and lanyard to the control room."
+          "log": "Brought the laptop and lanyard to the control room.",
+          "clear": [
+            "lobby_clear"
+          ]
         },
         {
           "say": "Check the badge on the lanyard",
@@ -6928,7 +7153,10 @@
           "add": {
             "building_known": 1
           },
-          "log": "Looked up the lanyard's badge on the access terminal."
+          "log": "Looked up the lanyard's badge on the access terminal.",
+          "clear": [
+            "lobby_clear"
+          ]
         },
         {
           "say": "Open the laptop",
@@ -6936,7 +7164,21 @@
           "log": "Opened the laptop to find its owner.",
           "add": {
             "slips": 1
-          }
+          },
+          "clear": [
+            "lobby_clear"
+          ]
+        },
+        {
+          "say": "Say the bench was clear",
+          "next": "laptop-time",
+          "requires": [
+            "lobby_clear"
+          ],
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Told D. Reyes the lobby bench was clear at 0150."
         }
       ],
       "feeds": {
@@ -7350,7 +7592,10 @@
         {
           "say": "Ask about the floors",
           "next": "marisol-floors",
-          "log": "Asked M. Quintero about the cleaning floors."
+          "log": "Asked M. Quintero about the cleaning floors.",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry."
@@ -7417,7 +7662,10 @@
         {
           "say": "Ask about the floors",
           "next": "marisol-floors",
-          "log": "Asked M. Quintero about the cleaning floors."
+          "log": "Asked M. Quintero about the cleaning floors.",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry."
@@ -7483,7 +7731,10 @@
         {
           "say": "Ask about the floors",
           "next": "marisol-floors",
-          "log": "Asked M. Quintero about the cleaning floors."
+          "log": "Asked M. Quintero about the cleaning floors.",
+          "add": {
+            "trainer_trust": 1
+          }
         }
       ],
       "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry."
@@ -7559,7 +7810,10 @@
         {
           "say": "Go and look at forty",
           "next": "tenant-go",
-          "log": "Went up to 40 to look at the heat."
+          "log": "Went up to 40 to look at the heat.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "0246 hrs. Outside line: tenant on 40 (Mr. Brandt) reports the floor cold."
@@ -7630,7 +7884,10 @@
         {
           "say": "Go and look at forty",
           "next": "tenant-go",
-          "log": "Went up to 40 to look at the heat."
+          "log": "Went up to 40 to look at the heat.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "0246 hrs. Outside line: tenant on 40 (Mr. Brandt) reports the floor cold."
@@ -7696,7 +7953,10 @@
         {
           "say": "Go and look at forty",
           "next": "tenant-go",
-          "log": "Went up to 40 to look at the heat."
+          "log": "Went up to 40 to look at the heat.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "0246 hrs. Outside line: tenant on 40 (Mr. Brandt) reports the floor cold."
@@ -7806,18 +8066,9 @@
         {
           "speaker": "narrator",
           "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut."
-        },
-        {
-          "speaker": "narrator",
-          "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut."
         }
       ],
       "choices": [
-        {
-          "say": "Look at the wall",
-          "next": "leak-watch",
-          "log": "Looked at the wall."
-        },
         {
           "say": "Look at the wall",
           "next": "leak-watch",
@@ -7871,7 +8122,10 @@
         {
           "say": "Call Mr. Okafor's line",
           "next": "leak-okafor",
-          "log": "Called the supervisor's night line about water on 44."
+          "log": "Called the supervisor's night line about water on 44.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Go up with Marisol",
@@ -8143,7 +8397,10 @@
         {
           "say": "Go back to the wall",
           "next": "three-oclock",
-          "log": "Went back to the wall."
+          "log": "Went back to the wall.",
+          "add": {
+            "trainer_warmth": -1
+          }
         }
       ],
       "log": "0255 hrs. Control room. Wall quiet."
@@ -8207,7 +8464,10 @@
         {
           "say": "Go back to the wall",
           "next": "three-oclock",
-          "log": "Went back to the wall."
+          "log": "Went back to the wall.",
+          "add": {
+            "trainer_warmth": -1
+          }
         }
       ],
       "log": "0255 hrs. Control room. Wall quiet."
@@ -8271,7 +8531,10 @@
         {
           "say": "Go back to the wall",
           "next": "three-oclock",
-          "log": "Went back to the wall."
+          "log": "Went back to the wall.",
+          "add": {
+            "trainer_warmth": -1
+          }
         }
       ],
       "log": "0255 hrs. Control room. Wall quiet."
@@ -8345,7 +8608,10 @@
         {
           "say": "Go back to the wall",
           "next": "three-oclock",
-          "log": "Went back to the wall."
+          "log": "Went back to the wall.",
+          "add": {
+            "trainer_warmth": -1
+          }
         }
       ],
       "log": "0258 hrs. Control room. D. Reyes at the coffee machine."
@@ -8415,7 +8681,10 @@
         {
           "say": "Offer to go with her",
           "next": "three-no",
-          "log": "Offered to go with D. Reyes to the roof door."
+          "log": "Offered to go with D. Reyes to the roof door.",
+          "add": {
+            "trainer_warmth": 1
+          }
         }
       ],
       "log": "0258 hrs. D. Reyes on roof-door tour. Post one on the wall."
@@ -8519,7 +8788,10 @@
         {
           "say": "Call the elevator company",
           "next": "dev-company",
-          "log": "Called the elevator contractor's night line."
+          "log": "Called the elevator contractor's night line.",
+          "add": {
+            "building_known": 1
+          }
         },
         {
           "say": "Call 911",
@@ -8588,7 +8860,10 @@
         {
           "say": "Call the elevator company",
           "next": "dev-company",
-          "log": "Called the elevator contractor's night line."
+          "log": "Called the elevator contractor's night line.",
+          "add": {
+            "building_known": 1
+          }
         },
         {
           "say": "Call 911",
@@ -9043,7 +9318,10 @@
         {
           "say": "Ask him to sign in",
           "next": "pierce-signin",
-          "log": "Stood and asked the Chairman to sign in."
+          "log": "Stood and asked the Chairman to sign in.",
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "feeds": {
@@ -9196,13 +9474,16 @@
         {
           "say": "Look at the lobby",
           "next": "cam9-missed",
-          "log": "Looked at the lobby."
+          "log": "Looked at the lobby.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Look at the roof door",
           "next": "cam9-missed",
           "add": {
-            "trainer_trust": 1
+            "trainer_warmth": 1
           },
           "log": "Looked at camera 8, the roof door."
         }
@@ -9253,13 +9534,16 @@
         {
           "say": "Look at the lobby",
           "next": "cam9-missed",
-          "log": "Looked at the lobby."
+          "log": "Looked at the lobby.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Look at the roof door",
           "next": "cam9-missed",
           "add": {
-            "trainer_trust": 1
+            "trainer_warmth": 1
           },
           "log": "Looked at camera 8, the roof door."
         },
@@ -9318,13 +9602,16 @@
         {
           "say": "Look at the lobby",
           "next": "cam9-missed",
-          "log": "Looked at the lobby."
+          "log": "Looked at the lobby.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Look at the roof door",
           "next": "cam9-missed",
           "add": {
-            "trainer_trust": 1
+            "trainer_warmth": 1
           },
           "log": "Looked at camera 8, the roof door."
         },
@@ -9526,17 +9813,35 @@
           "add": {
             "trainer_trust": 1
           },
-          "log": "Pressed the silence on the fire panel's trouble buzzer."
+          "log": "Pressed the silence on the fire panel's trouble buzzer.",
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Ms. Adler",
           "next": "adler-call",
-          "log": "Called the certified fire safety director about the trouble signal."
+          "log": "Called the certified fire safety director about the trouble signal.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "requires": [
+            "read_p11"
+          ],
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Mr. Okafor's line",
           "next": "okafor-trouble",
-          "log": "Called the supervisor's night line about the fire panel."
+          "log": "Called the supervisor's night line about the fire panel.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "clear": [
+            "read_p11"
+          ]
         }
       ],
       "feeds": {
@@ -9591,17 +9896,35 @@
           "add": {
             "trainer_trust": 1
           },
-          "log": "Pressed the silence on the fire panel's trouble buzzer."
+          "log": "Pressed the silence on the fire panel's trouble buzzer.",
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Ms. Adler",
           "next": "adler-call",
-          "log": "Called the certified fire safety director about the trouble signal."
+          "log": "Called the certified fire safety director about the trouble signal.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "requires": [
+            "read_p11"
+          ],
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Mr. Okafor's line",
           "next": "okafor-trouble",
-          "log": "Called the supervisor's night line about the fire panel."
+          "log": "Called the supervisor's night line about the fire panel.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "clear": [
+            "read_p11"
+          ]
         }
       ],
       "feeds": {
@@ -9656,17 +9979,35 @@
           "add": {
             "trainer_trust": 1
           },
-          "log": "Pressed the silence on the fire panel's trouble buzzer."
+          "log": "Pressed the silence on the fire panel's trouble buzzer.",
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Ms. Adler",
           "next": "adler-call",
-          "log": "Called the certified fire safety director about the trouble signal."
+          "log": "Called the certified fire safety director about the trouble signal.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "requires": [
+            "read_p11"
+          ],
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Mr. Okafor's line",
           "next": "okafor-trouble",
-          "log": "Called the supervisor's night line about the fire panel."
+          "log": "Called the supervisor's night line about the fire panel.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "clear": [
+            "read_p11"
+          ]
         }
       ],
       "feeds": {
@@ -9726,17 +10067,35 @@
           "add": {
             "trainer_trust": 1
           },
-          "log": "Pressed the silence on the fire panel's trouble buzzer."
+          "log": "Pressed the silence on the fire panel's trouble buzzer.",
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Ms. Adler",
           "next": "adler-call",
-          "log": "Called the certified fire safety director about the trouble signal."
+          "log": "Called the certified fire safety director about the trouble signal.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "requires": [
+            "read_p11"
+          ],
+          "clear": [
+            "read_p11"
+          ]
         },
         {
           "say": "Call Mr. Okafor's line",
           "next": "okafor-trouble",
-          "log": "Called the supervisor's night line about the fire panel."
+          "log": "Called the supervisor's night line about the fire panel.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "clear": [
+            "read_p11"
+          ]
         }
       ],
       "feeds": {
@@ -9964,7 +10323,10 @@
           "set": [
             "opined"
           ],
-          "log": "0358 hrs. Fire panel beeping, probably nothing. Seemed minor. FSD notified."
+          "log": "0358 hrs. Fire panel beeping, probably nothing. Seemed minor. FSD notified.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Leave it out",
@@ -9972,7 +10334,10 @@
           "set": [
             "opined"
           ],
-          "log": "Left the incident field for the fire panel blank."
+          "log": "Left the incident field for the fire panel blank.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Write that it was cleared",
@@ -10258,7 +10623,10 @@
         {
           "say": "Refuse: no authorization",
           "next": "courier-refused",
-          "log": "Refused the delivery for floor 58, no authorization."
+          "log": "Refused the delivery for floor 58, no authorization.",
+          "add": {
+            "building_known": 1
+          }
         },
         {
           "say": "Sign for it, hold it",
@@ -10272,7 +10640,10 @@
         {
           "say": "Ask who sent it",
           "next": "courier-who",
-          "log": "Asked the courier who the box was from."
+          "log": "Asked the courier who the box was from.",
+          "add": {
+            "trainer_trust": 1
+          }
         },
         {
           "say": "Call Mr. Okafor's line",
@@ -10311,7 +10682,10 @@
         {
           "say": "Refuse: no authorization",
           "next": "courier-refused",
-          "log": "Refused the delivery for floor 58, no authorization."
+          "log": "Refused the delivery for floor 58, no authorization.",
+          "add": {
+            "building_known": 1
+          }
         },
         {
           "say": "Sign for it, hold it",
@@ -10709,7 +11083,10 @@
         {
           "say": "Call Mr. Okafor's line",
           "next": "sleeper-super",
-          "log": "Called the supervisor's night line about the individual in the vestibule."
+          "log": "Called the supervisor's night line about the individual in the vestibule.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Call 911",
@@ -10781,7 +11158,10 @@
         {
           "say": "Call Mr. Okafor's line",
           "next": "sleeper-super",
-          "log": "Called the supervisor's night line about the individual in the vestibule."
+          "log": "Called the supervisor's night line about the individual in the vestibule.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Call 911",
@@ -10854,7 +11234,10 @@
         {
           "say": "Call Mr. Okafor's line",
           "next": "sleeper-super",
-          "log": "Called the supervisor's night line about the individual in the vestibule."
+          "log": "Called the supervisor's night line about the individual in the vestibule.",
+          "add": {
+            "trainer_trust": -1
+          }
         },
         {
           "say": "Call 911",
@@ -11408,7 +11791,7 @@
           ],
           "meters": {
             "trainer_trust": {
-              "min": 3
+              "min": 2
             }
           },
           "clear": [
@@ -11472,7 +11855,7 @@
       "choices": [
         {
           "say": "Sit with her",
-          "next": "light",
+          "next": "twelve-sat",
           "add": {
             "trainer_warmth": 1
           },
@@ -11480,11 +11863,11 @@
         },
         {
           "say": "Give her the wall",
-          "next": "light",
+          "next": "twelve-wall",
           "add": {
             "trainer_trust": 1
           },
-          "log": "Took the wall and let D. Reyes sit."
+          "log": "Took the wall while D. Reyes stood at the corridor door."
         }
       ],
       "log": "0524 hrs. Control room. D. Reyes spoke about floor 12."
@@ -11665,7 +12048,36 @@
         {
           "say": "Write the closing line",
           "next": "closing-line",
-          "log": "Opened the closing line of the shift log."
+          "log": "Opened the closing line of the shift log.",
+          "requires": [
+            "wedge_open"
+          ],
+          "add": {
+            "trainer_trust": -1
+          }
+        },
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log.",
+          "requires": [
+            "trouble_open"
+          ],
+          "forbids": [
+            "wedge_open"
+          ],
+          "add": {
+            "trainer_trust": -1
+          }
+        },
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log.",
+          "forbids": [
+            "wedge_open",
+            "trouble_open"
+          ]
         }
       ],
       "log": "0540 hrs. Shift log reviewed with D. Reyes."
@@ -11730,7 +12142,36 @@
         {
           "say": "Write the closing line",
           "next": "closing-line",
-          "log": "Opened the closing line of the shift log."
+          "log": "Opened the closing line of the shift log.",
+          "requires": [
+            "wedge_open"
+          ],
+          "add": {
+            "trainer_trust": -1
+          }
+        },
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log.",
+          "requires": [
+            "trouble_open"
+          ],
+          "forbids": [
+            "wedge_open"
+          ],
+          "add": {
+            "trainer_trust": -1
+          }
+        },
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log.",
+          "forbids": [
+            "wedge_open",
+            "trouble_open"
+          ]
         }
       ],
       "log": "0540 hrs. Shift log reviewed with D. Reyes."
@@ -11767,7 +12208,10 @@
         {
           "say": "Correct the entry, in ink",
           "next": "confess",
-          "log": "Opened the entry that was not true."
+          "log": "Opened the entry that was not true.",
+          "clear": [
+            "lied"
+          ]
         },
         {
           "say": "Call Mr. Okafor about 31",
@@ -11794,7 +12238,39 @@
         {
           "say": "Write the closing line",
           "next": "closing-line",
-          "log": "Opened the closing line of the shift log."
+          "log": "Opened the closing line of the shift log.",
+          "requires": [
+            "wedge_open"
+          ],
+          "add": {
+            "trainer_trust": -1
+          }
+        },
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log.",
+          "requires": [
+            "trouble_open"
+          ],
+          "forbids": [
+            "wedge_open"
+          ],
+          "add": {
+            "trainer_trust": -1
+          }
+        },
+        {
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log.",
+          "forbids": [
+            "wedge_open",
+            "trouble_open"
+          ],
+          "add": {
+            "trainer_trust": -1
+          }
         }
       ],
       "log": "0540 hrs. Shift log reviewed with D. Reyes."
@@ -12536,144 +13012,6 @@
       "choices": [
         {
           "say": "Tell him about the notice",
-          "next": "end-by-the-book",
-          "requires": [
-            "noticed_notice"
-          ],
-          "add": {
-            "trainer_trust": -1
-          },
-          "log": "Told the day supervisor about the contractor notice in the shelf drawer.",
-          "meters": {
-            "trainer_trust": {
-              "max": 1
-            }
-          }
-        },
-        {
-          "say": "Say nothing about the notice",
-          "next": "end-by-the-book",
-          "requires": [
-            "noticed_notice"
-          ],
-          "log": "Said nothing to the day supervisor about the notice.",
-          "meters": {
-            "trainer_trust": {
-              "max": 1
-            }
-          }
-        },
-        {
-          "say": "Wait for him",
-          "next": "end-by-the-book",
-          "forbids": [
-            "noticed_notice"
-          ],
-          "log": "Signed off the shift.",
-          "meters": {
-            "trainer_trust": {
-              "max": 1
-            }
-          }
-        },
-        {
-          "say": "Tell him about the notice",
-          "next": "end-clean",
-          "requires": [
-            "noticed_notice"
-          ],
-          "add": {
-            "trainer_trust": -1
-          },
-          "log": "Told the day supervisor about the contractor notice in the shelf drawer.",
-          "meters": {
-            "trainer_trust": {
-              "min": 2,
-              "max": 2
-            }
-          }
-        },
-        {
-          "say": "Say nothing about the notice",
-          "next": "end-clean",
-          "requires": [
-            "noticed_notice"
-          ],
-          "log": "Said nothing to the day supervisor about the notice.",
-          "meters": {
-            "trainer_trust": {
-              "min": 2,
-              "max": 2
-            }
-          }
-        },
-        {
-          "say": "Wait for him",
-          "next": "end-clean",
-          "forbids": [
-            "noticed_notice"
-          ],
-          "log": "Signed off the shift.",
-          "meters": {
-            "trainer_trust": {
-              "min": 2,
-              "max": 2
-            }
-          }
-        },
-        {
-          "say": "Tell him about the notice",
-          "next": "end-clean",
-          "requires": [
-            "noticed_notice"
-          ],
-          "add": {
-            "trainer_trust": -1
-          },
-          "log": "Told the day supervisor about the contractor notice in the shelf drawer.",
-          "meters": {
-            "trainer_trust": {
-              "min": 3
-            },
-            "trainer_warmth": {
-              "max": 1
-            }
-          }
-        },
-        {
-          "say": "Say nothing about the notice",
-          "next": "end-clean",
-          "requires": [
-            "noticed_notice"
-          ],
-          "log": "Said nothing to the day supervisor about the notice.",
-          "meters": {
-            "trainer_trust": {
-              "min": 3
-            },
-            "trainer_warmth": {
-              "max": 1
-            }
-          }
-        },
-        {
-          "say": "Wait for him",
-          "next": "end-clean",
-          "forbids": [
-            "noticed_notice"
-          ],
-          "log": "Signed off the shift.",
-          "meters": {
-            "trainer_trust": {
-              "min": 3
-            },
-            "trainer_warmth": {
-              "max": 1
-            }
-          }
-        },
-        {
-          "say": "Tell him about the notice",
           "next": "end-she-knew",
           "requires": [
             "noticed_notice"
@@ -12684,16 +13022,26 @@
             },
             "trainer_warmth": {
               "min": 2
-            },
-            "building_known": {
-              "min": 2
             }
           },
           "log": "Told the day supervisor about the contractor notice in the shelf drawer."
         },
         {
           "say": "Tell him about the notice",
-          "next": "end-eat-something",
+          "next": "end-under-review",
+          "requires": [
+            "noticed_notice"
+          ],
+          "meters": {
+            "trainer_trust": {
+              "max": 2
+            }
+          },
+          "log": "Told the day supervisor about the contractor notice in the shelf drawer."
+        },
+        {
+          "say": "Tell him about the notice",
+          "next": "end-under-review",
           "requires": [
             "noticed_notice"
           ],
@@ -12702,9 +13050,6 @@
               "min": 3
             },
             "trainer_warmth": {
-              "min": 2
-            },
-            "building_known": {
               "max": 1
             }
           },
@@ -12749,12 +13094,97 @@
           "log": "Said nothing to the day supervisor about the notice."
         },
         {
+          "say": "Say nothing about the notice",
+          "next": "end-by-the-book",
+          "requires": [
+            "noticed_notice"
+          ],
+          "meters": {
+            "trainer_trust": {
+              "max": 1
+            }
+          },
+          "log": "Said nothing to the day supervisor about the notice."
+        },
+        {
+          "say": "Say nothing about the notice",
+          "next": "end-clean",
+          "requires": [
+            "noticed_notice"
+          ],
+          "meters": {
+            "trainer_trust": {
+              "min": 2,
+              "max": 2
+            }
+          },
+          "log": "Said nothing to the day supervisor about the notice."
+        },
+        {
+          "say": "Say nothing about the notice",
+          "next": "end-clean",
+          "requires": [
+            "noticed_notice"
+          ],
+          "meters": {
+            "trainer_trust": {
+              "min": 3
+            },
+            "trainer_warmth": {
+              "max": 1
+            }
+          },
+          "log": "Said nothing to the day supervisor about the notice."
+        },
+        {
+          "say": "Wait for him",
+          "next": "end-by-the-book",
+          "forbids": [
+            "noticed_notice"
+          ],
+          "meters": {
+            "trainer_trust": {
+              "max": 1
+            }
+          },
+          "log": "Signed off the shift."
+        },
+        {
+          "say": "Wait for him",
+          "next": "end-clean",
+          "forbids": [
+            "noticed_notice"
+          ],
+          "meters": {
+            "trainer_trust": {
+              "min": 2,
+              "max": 2
+            }
+          },
+          "log": "Signed off the shift."
+        },
+        {
+          "say": "Wait for him",
+          "next": "end-clean",
+          "forbids": [
+            "noticed_notice"
+          ],
+          "meters": {
+            "trainer_trust": {
+              "min": 3
+            },
+            "trainer_warmth": {
+              "max": 1
+            }
+          },
+          "log": "Signed off the shift."
+        },
+        {
           "say": "Wait for him",
           "next": "end-eat-something",
           "forbids": [
             "noticed_notice"
           ],
-          "log": "Signed off the shift.",
           "meters": {
             "trainer_trust": {
               "min": 3
@@ -12762,7 +13192,8 @@
             "trainer_warmth": {
               "min": 2
             }
-          }
+          },
+          "log": "Signed off the shift."
         }
       ],
       "log": "0635 hrs. Day supervisor read the shift log. No corrections."
@@ -13673,6 +14104,180 @@
       },
       "ending": "Noted.",
       "log": "0702 hrs. Shift ended. Log signed."
+    },
+    {
+      "id": "twelve-sat",
+      "folder": "twelve-sat",
+      "time": "05:26",
+      "title": "The good chair",
+      "ambience": "control-room-late",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You turn the good chair to face the wall, beside hers. She does not say sit. She does not say don't."
+        },
+        {
+          "speaker": "narrator",
+          "text": "You pour two coffees. They are wrong. She holds hers in both hands and drinks none of it."
+        },
+        {
+          "speaker": "dee",
+          "text": "Ten minutes. That is all it is.",
+          "perform": "flat, to the wall"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The clock on the wall says 05:28. It is 05:26. She looks at it a long time and says nothing about it.",
+          "sfx": "clock-tick"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Stay until she moves",
+          "next": "light",
+          "log": "Stayed in the chair until D. Reyes got up."
+        }
+      ],
+      "log": "0526 hrs. Control room. Two officers at the wall."
+    },
+    {
+      "id": "twelve-wall",
+      "folder": "twelve-wall",
+      "time": "05:26",
+      "title": "Thirty seconds",
+      "ambience": "control-room-late",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You take the wall. She goes as far as the corridor door and stops there, one hand on the frame."
+        },
+        {
+          "speaker": "narrator",
+          "text": "From your chair you can see her back, and past it the corridor that goes to stair C."
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. Thirty seconds.",
+          "perform": "low, not to you"
+        },
+        {
+          "speaker": "narrator",
+          "text": "It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Watch the wall",
+          "next": "light",
+          "log": "Kept the wall."
+        }
+      ],
+      "log": "0526 hrs. Control room. Wall kept by the new officer."
+    },
+    {
+      "id": "laptop-time",
+      "folder": "laptop-time",
+      "time": "02:16",
+      "title": "Ten to two",
+      "ambience": "lobby",
+      "feeds": {
+        "c1": "laptop"
+      },
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving."
+        },
+        {
+          "speaker": "dee",
+          "text": "Ten to two. Bench clear.",
+          "perform": "flat, writing it down"
+        },
+        {
+          "speaker": "dee",
+          "text": "That is the first line. Everything else hangs off it.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She writes 0150 on the pad in pencil, small, and puts a box around it.",
+          "sfx": "pencil"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Bring it to the desk",
+          "next": "laptop-got",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Brought the laptop and lanyard to the control room.",
+          "clear": [
+            "lobby_clear"
+          ]
+        },
+        {
+          "say": "Check the badge on the lanyard",
+          "next": "laptop-badge",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Looked up the lanyard's badge on the access terminal.",
+          "clear": [
+            "lobby_clear"
+          ]
+        },
+        {
+          "say": "Open the laptop",
+          "next": "laptop-opened",
+          "log": "Opened the laptop to find its owner.",
+          "add": {
+            "slips": 1
+          },
+          "clear": [
+            "lobby_clear"
+          ]
+        }
+      ],
+      "log": "0216 hrs. Control room. Lobby bench clear at 0150 confirmed."
+    },
+    {
+      "id": "end-under-review",
+      "folder": "end-under-review",
+      "time": "07:02",
+      "title": "Under review",
+      "ambience": "morning",
+      "feeds": {
+        "c1": "dawn"
+      },
+      "ending": "Under review.",
+      "lines": [
+        {
+          "speaker": "okafor",
+          "text": "Thank you for telling me. That is noted. I will raise it with the contractor.",
+          "perform": "flat, a pen finishing a line"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Ms. Reyes. Your post is under review. I did not know.",
+          "perform": "turning to her, courteous, careful"
+        },
+        {
+          "speaker": "dee",
+          "text": "Officer.",
+          "perform": "level, to you, nothing else in it"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She puts on her coat. She does not touch the radios. Four, on the charger. She goes out by the dock, so as not to pass the desk."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The pencil is on the shelf, on the middle of the page where she left it. The drawer is shut. It does not stick."
+        }
+      ],
+      "choices": [],
+      "log": "0702 hrs. Shift ended. Log signed. Contractor notice reported to the day supervisor."
     }
   ]
 }

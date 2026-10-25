@@ -1786,10 +1786,12 @@ window.ILTV_STORIES = {
      "asked_sandwich",
      "left_wall",
      "lied",
+     "lobby_clear",
      "met_dev",
      "noticed_12th",
      "noticed_notice",
      "opined",
+     "read_p11",
      "trouble_open",
      "wedge_open"
     ],
@@ -2053,7 +2055,7 @@ window.ILTV_STORIES = {
     "specimen",
     "laboratory"
    ],
-   "stateCap": 200000,
+   "stateCap": 300000,
    "scenes": {
     "handover": {
      "folder": "night-shift/handover",
@@ -2157,7 +2159,12 @@ window.ILTV_STORIES = {
       [
        "Ask about Thursday",
        "Ask about Thursday",
-       "binder-thu"
+       "binder-thu",
+       {
+        "add": {
+         "trainer_trust": 1
+        }
+       }
       ]
      ]
     },
@@ -2241,6 +2248,9 @@ window.ILTV_STORIES = {
        "Read it, then initial",
        "okafor-out",
        {
+        "set": [
+         "read_p11"
+        ],
         "log": "Read the day log, both pages, then initialed."
        }
       ],
@@ -2249,6 +2259,9 @@ window.ILTV_STORIES = {
        "Initial it now",
        "okafor-out-fast",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Initialed the day log without reading it."
        }
       ]
@@ -2334,6 +2347,9 @@ window.ILTV_STORIES = {
        "Read it, then initial",
        "okafor-out",
        {
+        "set": [
+         "read_p11"
+        ],
         "log": "Read the day log, both pages, then initialed."
        }
       ],
@@ -2342,6 +2358,9 @@ window.ILTV_STORIES = {
        "Initial it now",
        "okafor-out-fast",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Initialed the day log without reading it."
        }
       ]
@@ -2532,17 +2551,6 @@ window.ILTV_STORIES = {
         },
         "log": "Asked D. Reyes what she is counting."
        }
-      ],
-      [
-       "Knock on the wall, grinning",
-       "Knock on the wall, grinning",
-       "the-chairs-knock",
-       {
-        "add": {
-         "trainer_trust": -1
-        },
-        "log": "Knocked twice on the wall."
-       }
       ]
      ]
     },
@@ -2603,6 +2611,9 @@ window.ILTV_STORIES = {
        "Sit in the good chair",
        "chair-good",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Sat in the chair with the good back."
        }
       ],
@@ -2623,8 +2634,7 @@ window.ILTV_STORIES = {
        "chair-clock",
        {
         "add": {
-         "trainer_warmth": 1,
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked why the wall clock runs fast."
        }
@@ -2694,18 +2704,10 @@ window.ILTV_STORIES = {
        "Sit in the good chair",
        "chair-good",
        {
-        "log": "Sat in the chair with the good back."
-       }
-      ],
-      [
-       "Sit in her chair",
-       "Sit in her chair",
-       "chair-hers",
-       {
         "add": {
-         "trainer_trust": -1
+         "trainer_trust": 1
         },
-        "log": "Sat in D. Reyes's chair."
+        "log": "Sat in the chair with the good back."
        }
       ],
       [
@@ -2714,8 +2716,7 @@ window.ILTV_STORIES = {
        "chair-clock",
        {
         "add": {
-         "trainer_warmth": 1,
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked why the wall clock runs fast."
        }
@@ -3076,6 +3077,9 @@ window.ILTV_STORIES = {
        "Ask Terrell about the game",
        "talk-game",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Asked Terrell Banks about the game."
        }
       ]
@@ -3174,6 +3178,9 @@ window.ILTV_STORIES = {
        "Ask Terrell about the game",
        "talk-game",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Asked Terrell Banks about the game."
        }
       ]
@@ -3272,6 +3279,9 @@ window.ILTV_STORIES = {
        "Ask Terrell about the game",
        "talk-game",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Asked Terrell Banks about the game."
        }
       ]
@@ -3344,6 +3354,9 @@ window.ILTV_STORIES = {
        "Ask what normal looks like",
        "w1-normal",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked what normal looks like on the wall."
        }
       ],
@@ -3352,6 +3365,9 @@ window.ILTV_STORIES = {
        "Say it all looks dead",
        "w1-dead",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Said the first row looks dead."
        }
       ]
@@ -3430,6 +3446,9 @@ window.ILTV_STORIES = {
        "Ask what normal looks like",
        "w1-normal",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked what normal looks like on the wall."
        }
       ],
@@ -3438,6 +3457,9 @@ window.ILTV_STORIES = {
        "Say it all looks dead",
        "w1-dead",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Said the first row looks dead."
        }
       ]
@@ -3516,6 +3538,9 @@ window.ILTV_STORIES = {
        "Ask what normal looks like",
        "w1-normal",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked what normal looks like on the wall."
        }
       ],
@@ -3524,6 +3549,9 @@ window.ILTV_STORIES = {
        "Say it all looks dead",
        "w1-dead",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Said the first row looks dead."
        }
       ]
@@ -3591,7 +3619,7 @@ window.ILTV_STORIES = {
        "w2-cam9",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Asked about camera 9."
        }
@@ -3601,6 +3629,9 @@ window.ILTV_STORIES = {
        "Ask about the roof door",
        "w2-roof",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked about the roof door."
        }
       ],
@@ -3679,7 +3710,7 @@ window.ILTV_STORIES = {
        "w2-cam9",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Asked about camera 9."
        }
@@ -3689,6 +3720,9 @@ window.ILTV_STORIES = {
        "Ask about the roof door",
        "w2-roof",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked about the roof door."
        }
       ],
@@ -3773,7 +3807,7 @@ window.ILTV_STORIES = {
        "w2-cam9",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Asked about camera 9."
        }
@@ -3783,6 +3817,9 @@ window.ILTV_STORIES = {
        "Ask about the roof door",
        "w2-roof",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked about the roof door."
        }
       ],
@@ -3862,6 +3899,9 @@ window.ILTV_STORIES = {
        "Push the door, hear the latch",
        "tour1-door",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Pushed the fire door on 31 and listened for the latch."
        }
       ],
@@ -3871,7 +3911,7 @@ window.ILTV_STORIES = {
        "tour1-wedge",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes what she does when she finds a wedge."
        }
@@ -3881,6 +3921,9 @@ window.ILTV_STORIES = {
        "Count the flights down",
        "tour1-count",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Counted the flights down from 31."
        }
       ]
@@ -3949,6 +3992,9 @@ window.ILTV_STORIES = {
        "Push the door, hear the latch",
        "tour1-door",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Pushed the fire door on 31 and listened for the latch."
        }
       ],
@@ -3958,7 +4004,7 @@ window.ILTV_STORIES = {
        "tour1-wedge",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes what she does when she finds a wedge."
        }
@@ -3968,6 +4014,9 @@ window.ILTV_STORIES = {
        "Count the flights down",
        "tour1-count",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Counted the flights down from 31."
        }
       ]
@@ -4036,6 +4085,9 @@ window.ILTV_STORIES = {
        "Push the door, hear the latch",
        "tour1-door",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Pushed the fire door on 31 and listened for the latch."
        }
       ],
@@ -4045,7 +4097,7 @@ window.ILTV_STORIES = {
        "tour1-wedge",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes what she does when she finds a wedge."
        }
@@ -4055,6 +4107,9 @@ window.ILTV_STORIES = {
        "Count the flights down",
        "tour1-count",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Counted the flights down from 31."
        }
       ]
@@ -4155,6 +4210,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -4261,6 +4319,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -4361,6 +4422,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -4467,6 +4531,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -4573,6 +4640,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -4685,6 +4755,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -5534,6 +5607,9 @@ window.ILTV_STORIES = {
        "Radio Terrell: the list",
        "visitor-checked",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Radioed the desk to check the after-hours list."
        }
       ],
@@ -5636,6 +5712,9 @@ window.ILTV_STORIES = {
        "Radio Terrell: the list",
        "visitor-checked",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Radioed the desk to check the after-hours list."
        }
       ],
@@ -5738,6 +5817,9 @@ window.ILTV_STORIES = {
        "Radio Terrell: the list",
        "visitor-checked",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Radioed the desk to check the after-hours list."
        }
       ],
@@ -5846,6 +5928,9 @@ window.ILTV_STORIES = {
        "Radio Terrell: the list",
        "visitor-checked",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Radioed the desk to check the after-hours list."
        }
       ],
@@ -5970,6 +6055,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -6089,6 +6177,9 @@ window.ILTV_STORIES = {
        "Ask for his paperwork",
        "nephew-papers",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked M. Quintero for the crew member's paperwork."
        }
       ]
@@ -6146,6 +6237,9 @@ window.ILTV_STORIES = {
        "Ask about the trucks",
        "tour2-trucks",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked D. Reyes about the dock deliveries."
        }
       ],
@@ -6154,6 +6248,9 @@ window.ILTV_STORIES = {
        "Check the rollup door lock",
        "tour2-lock",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Checked the lock on the rollup door."
        }
       ],
@@ -6162,6 +6259,9 @@ window.ILTV_STORIES = {
        "Listen to the compactor",
        "tour2-compactor",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Stood at the compactor and listened."
        }
       ]
@@ -6225,6 +6325,9 @@ window.ILTV_STORIES = {
        "Ask about the trucks",
        "tour2-trucks",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked D. Reyes about the dock deliveries."
        }
       ],
@@ -6233,6 +6336,9 @@ window.ILTV_STORIES = {
        "Check the rollup door lock",
        "tour2-lock",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Checked the lock on the rollup door."
        }
       ],
@@ -6241,6 +6347,9 @@ window.ILTV_STORIES = {
        "Listen to the compactor",
        "tour2-compactor",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Stood at the compactor and listened."
        }
       ]
@@ -6298,6 +6407,9 @@ window.ILTV_STORIES = {
        "Ask about the trucks",
        "tour2-trucks",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked D. Reyes about the dock deliveries."
        }
       ],
@@ -6306,6 +6418,9 @@ window.ILTV_STORIES = {
        "Check the rollup door lock",
        "tour2-lock",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Checked the lock on the rollup door."
        }
       ],
@@ -6314,6 +6429,9 @@ window.ILTV_STORIES = {
        "Listen to the compactor",
        "tour2-compactor",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Stood at the compactor and listened."
        }
       ]
@@ -6369,6 +6487,9 @@ window.ILTV_STORIES = {
        "Test the push bar",
        "tour3-test",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Tested the push bar on the roof door."
        }
       ],
@@ -6377,6 +6498,9 @@ window.ILTV_STORIES = {
        "Ask why alone",
        "tour3-alone",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked D. Reyes why she does the roof door alone."
        }
       ],
@@ -6385,6 +6509,9 @@ window.ILTV_STORIES = {
        "Read the sign by the door",
        "tour3-sign",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Read the sign beside the roof door."
        }
       ]
@@ -6440,6 +6567,9 @@ window.ILTV_STORIES = {
        "Test the push bar",
        "tour3-test",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Tested the push bar on the roof door."
        }
       ],
@@ -6448,6 +6578,9 @@ window.ILTV_STORIES = {
        "Ask why alone",
        "tour3-alone",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked D. Reyes why she does the roof door alone."
        }
       ],
@@ -6456,6 +6589,9 @@ window.ILTV_STORIES = {
        "Read the sign by the door",
        "tour3-sign",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Read the sign beside the roof door."
        }
       ]
@@ -6512,6 +6648,9 @@ window.ILTV_STORIES = {
        "Test the push bar",
        "tour3-test",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Tested the push bar on the roof door."
        }
       ],
@@ -6520,6 +6659,9 @@ window.ILTV_STORIES = {
        "Ask why alone",
        "tour3-alone",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Asked D. Reyes why she does the roof door alone."
        }
       ],
@@ -6528,6 +6670,9 @@ window.ILTV_STORIES = {
        "Read the sign by the door",
        "tour3-sign",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Read the sign beside the roof door."
        }
       ]
@@ -6629,6 +6774,9 @@ window.ILTV_STORIES = {
         "forbids": [
          "asked_44"
         ],
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Took the pen for the visitor sheet."
        }
       ],
@@ -6643,6 +6791,9 @@ window.ILTV_STORIES = {
         "clear": [
          "asked_44"
         ],
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Took the pen for the visitor sheet."
        }
       ],
@@ -6696,7 +6847,7 @@ window.ILTV_STORIES = {
          "asked_44"
         ],
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes for an example line on the visitor sheet."
        }
@@ -6713,7 +6864,7 @@ window.ILTV_STORIES = {
          "asked_44"
         ],
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes for an example line on the visitor sheet."
        }
@@ -6822,6 +6973,9 @@ window.ILTV_STORIES = {
         "forbids": [
          "asked_44"
         ],
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Took the pen for the visitor sheet."
        }
       ],
@@ -6836,6 +6990,9 @@ window.ILTV_STORIES = {
         "clear": [
          "asked_44"
         ],
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Took the pen for the visitor sheet."
        }
       ],
@@ -6889,7 +7046,7 @@ window.ILTV_STORIES = {
          "asked_44"
         ],
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes for an example line on the visitor sheet."
        }
@@ -6906,7 +7063,7 @@ window.ILTV_STORIES = {
          "asked_44"
         ],
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes for an example line on the visitor sheet."
        }
@@ -7015,6 +7172,9 @@ window.ILTV_STORIES = {
         "forbids": [
          "asked_44"
         ],
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Took the pen for the visitor sheet."
        }
       ],
@@ -7029,6 +7189,9 @@ window.ILTV_STORIES = {
         "clear": [
          "asked_44"
         ],
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Took the pen for the visitor sheet."
        }
       ],
@@ -7082,7 +7245,7 @@ window.ILTV_STORIES = {
          "asked_44"
         ],
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes for an example line on the visitor sheet."
        }
@@ -7099,7 +7262,7 @@ window.ILTV_STORIES = {
          "asked_44"
         ],
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes for an example line on the visitor sheet."
        }
@@ -7405,6 +7568,9 @@ window.ILTV_STORIES = {
        "Walk him to the door",
        "terrell-door",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Walked Terrell Banks to the lobby door."
        }
       ],
@@ -7414,7 +7580,6 @@ window.ILTV_STORIES = {
        "terrell-ask",
        {
         "add": {
-         "building_known": 1,
          "trainer_warmth": -1
         },
         "log": "Asked Terrell Banks how long D. Reyes has been on the post."
@@ -7425,6 +7590,9 @@ window.ILTV_STORIES = {
        "Ask Terrell about school",
        "terrell-school",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked Terrell Banks about his classes."
        }
       ]
@@ -8008,6 +8176,9 @@ window.ILTV_STORIES = {
        "Step out for a minute",
        "step-out",
        {
+        "set": [
+         "left_wall"
+        ],
         "log": "Considered leaving the wall."
        }
       ],
@@ -8017,7 +8188,7 @@ window.ILTV_STORIES = {
        "day-log",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Read the day shift's log on the shelf."
        }
@@ -8105,6 +8276,9 @@ window.ILTV_STORIES = {
        "Step out for a minute",
        "step-out",
        {
+        "set": [
+         "left_wall"
+        ],
         "log": "Considered leaving the wall."
        }
       ],
@@ -8114,7 +8288,7 @@ window.ILTV_STORIES = {
        "day-log",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Read the day shift's log on the shelf."
        }
@@ -8209,6 +8383,9 @@ window.ILTV_STORIES = {
        "Step out for a minute",
        "step-out",
        {
+        "set": [
+         "left_wall"
+        ],
         "log": "Considered leaving the wall."
        }
       ],
@@ -8218,7 +8395,7 @@ window.ILTV_STORIES = {
        "day-log",
        {
         "add": {
-         "building_known": 1
+         "trainer_trust": 1
         },
         "log": "Read the day shift's log on the shelf."
        }
@@ -8387,6 +8564,9 @@ window.ILTV_STORIES = {
        "Radio Dee first",
        "step-told",
        {
+        "clear": [
+         "left_wall"
+        ],
         "add": {
          "trainer_trust": 1
         },
@@ -8401,6 +8581,9 @@ window.ILTV_STORIES = {
         "set": [
          "left_wall"
         ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Left the control room, wall unattended, without telling D. Reyes."
        }
       ]
@@ -9082,7 +9265,7 @@ window.ILTV_STORIES = {
        "birthdays-ask",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes about the index cards."
        }
@@ -9174,7 +9357,7 @@ window.ILTV_STORIES = {
        "birthdays-ask",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes about the index cards."
        }
@@ -9266,7 +9449,7 @@ window.ILTV_STORIES = {
        "birthdays-ask",
        {
         "add": {
-         "building_known": 1
+         "trainer_warmth": 1
         },
         "log": "Asked D. Reyes about the index cards."
        }
@@ -9747,6 +9930,9 @@ window.ILTV_STORIES = {
        "Watch the lobby",
        "wedge-missed",
        {
+        "set": [
+         "lobby_clear"
+        ],
         "log": "Watched the lobby."
        }
       ],
@@ -10410,6 +10596,9 @@ window.ILTV_STORIES = {
        "Look at the vestibule",
        "laptop-told",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Looked at the vestibule tile."
        }
       ],
@@ -10493,6 +10682,9 @@ window.ILTV_STORIES = {
        "Look at the vestibule",
        "laptop-told",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Looked at the vestibule tile."
        }
       ],
@@ -10576,6 +10768,9 @@ window.ILTV_STORIES = {
        "Look at the vestibule",
        "laptop-told",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Looked at the vestibule tile."
        }
       ],
@@ -10659,6 +10854,9 @@ window.ILTV_STORIES = {
        "Look at the vestibule",
        "laptop-told",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Looked at the vestibule tile."
        }
       ],
@@ -10728,6 +10926,9 @@ window.ILTV_STORIES = {
        "Bring it to the desk",
        "laptop-got",
        {
+        "clear": [
+         "lobby_clear"
+        ],
         "add": {
          "trainer_trust": 1
         },
@@ -10739,6 +10940,9 @@ window.ILTV_STORIES = {
        "Check the badge on the lanyard",
        "laptop-badge",
        {
+        "clear": [
+         "lobby_clear"
+        ],
         "add": {
          "building_known": 1
         },
@@ -10750,10 +10954,27 @@ window.ILTV_STORIES = {
        "Open the laptop",
        "laptop-opened",
        {
+        "clear": [
+         "lobby_clear"
+        ],
         "add": {
          "slips": 1
         },
         "log": "Opened the laptop to find its owner."
+       }
+      ],
+      [
+       "Say the bench was clear",
+       "Say the bench was clear",
+       "laptop-time",
+       {
+        "requires": [
+         "lobby_clear"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Told D. Reyes the lobby bench was clear at 0150."
        }
       ]
      ]
@@ -10811,6 +11032,9 @@ window.ILTV_STORIES = {
        "Bring it to the desk",
        "laptop-got",
        {
+        "clear": [
+         "lobby_clear"
+        ],
         "add": {
          "trainer_trust": 1
         },
@@ -10822,6 +11046,9 @@ window.ILTV_STORIES = {
        "Check the badge on the lanyard",
        "laptop-badge",
        {
+        "clear": [
+         "lobby_clear"
+        ],
         "add": {
          "building_known": 1
         },
@@ -10833,10 +11060,27 @@ window.ILTV_STORIES = {
        "Open the laptop",
        "laptop-opened",
        {
+        "clear": [
+         "lobby_clear"
+        ],
         "add": {
          "slips": 1
         },
         "log": "Opened the laptop to find its owner."
+       }
+      ],
+      [
+       "Say the bench was clear",
+       "Say the bench was clear",
+       "laptop-time",
+       {
+        "requires": [
+         "lobby_clear"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Told D. Reyes the lobby bench was clear at 0150."
        }
       ]
      ]
@@ -11384,6 +11628,9 @@ window.ILTV_STORIES = {
        "Ask about the floors",
        "marisol-floors",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked M. Quintero about the cleaning floors."
        }
       ]
@@ -11473,6 +11720,9 @@ window.ILTV_STORIES = {
        "Ask about the floors",
        "marisol-floors",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked M. Quintero about the cleaning floors."
        }
       ]
@@ -11562,6 +11812,9 @@ window.ILTV_STORIES = {
        "Ask about the floors",
        "marisol-floors",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked M. Quintero about the cleaning floors."
        }
       ]
@@ -11662,6 +11915,9 @@ window.ILTV_STORIES = {
        "Go and look at forty",
        "tenant-go",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Went up to 40 to look at the heat."
        }
       ]
@@ -11756,6 +12012,9 @@ window.ILTV_STORIES = {
        "Go and look at forty",
        "tenant-go",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Went up to 40 to look at the heat."
        }
       ]
@@ -11844,6 +12103,9 @@ window.ILTV_STORIES = {
        "Go and look at forty",
        "tenant-go",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Went up to 40 to look at the heat."
        }
       ]
@@ -11993,24 +12255,10 @@ window.ILTV_STORIES = {
        "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
        "file": null,
        "dur": 12.2
-      },
-      {
-       "speaker": "narrator",
-       "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
-       "file": null,
-       "dur": 15
       }
      ],
      "log": "0245 hrs. Wall quiet.",
      "choices": [
-      [
-       "Look at the wall",
-       "Look at the wall",
-       "leak-watch",
-       {
-        "log": "Looked at the wall."
-       }
-      ],
       [
        "Look at the wall",
        "Look at the wall",
@@ -12086,6 +12334,9 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "leak-okafor",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about water on 44."
        }
       ],
@@ -12440,6 +12691,9 @@ window.ILTV_STORIES = {
        "Go back to the wall",
        "three-oclock",
        {
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Went back to the wall."
        }
       ]
@@ -12525,6 +12779,9 @@ window.ILTV_STORIES = {
        "Go back to the wall",
        "three-oclock",
        {
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Went back to the wall."
        }
       ]
@@ -12610,6 +12867,9 @@ window.ILTV_STORIES = {
        "Go back to the wall",
        "three-oclock",
        {
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Went back to the wall."
        }
       ]
@@ -12710,6 +12970,9 @@ window.ILTV_STORIES = {
        "Go back to the wall",
        "three-oclock",
        {
+        "add": {
+         "trainer_warmth": -1
+        },
         "log": "Went back to the wall."
        }
       ]
@@ -12802,6 +13065,9 @@ window.ILTV_STORIES = {
        "Offer to go with her",
        "three-no",
        {
+        "add": {
+         "trainer_warmth": 1
+        },
         "log": "Offered to go with D. Reyes to the roof door."
        }
       ]
@@ -12943,6 +13209,9 @@ window.ILTV_STORIES = {
        "Call the elevator company",
        "dev-company",
        {
+        "add": {
+         "building_known": 1
+        },
         "log": "Called the elevator contractor's night line."
        }
       ],
@@ -13036,6 +13305,9 @@ window.ILTV_STORIES = {
        "Call the elevator company",
        "dev-company",
        {
+        "add": {
+         "building_known": 1
+        },
         "log": "Called the elevator contractor's night line."
        }
       ],
@@ -13635,6 +13907,9 @@ window.ILTV_STORIES = {
        "Ask him to sign in",
        "pierce-signin",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Stood and asked the Chairman to sign in."
        }
       ]
@@ -13832,6 +14107,9 @@ window.ILTV_STORIES = {
        "Look at the lobby",
        "cam9-missed",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Looked at the lobby."
        }
       ],
@@ -13841,7 +14119,7 @@ window.ILTV_STORIES = {
        "cam9-missed",
        {
         "add": {
-         "trainer_trust": 1
+         "trainer_warmth": 1
         },
         "log": "Looked at camera 8, the roof door."
        }
@@ -13909,6 +14187,9 @@ window.ILTV_STORIES = {
        "Look at the lobby",
        "cam9-missed",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Looked at the lobby."
        }
       ],
@@ -13918,7 +14199,7 @@ window.ILTV_STORIES = {
        "cam9-missed",
        {
         "add": {
-         "trainer_trust": 1
+         "trainer_warmth": 1
         },
         "log": "Looked at camera 8, the roof door."
        }
@@ -13997,6 +14278,9 @@ window.ILTV_STORIES = {
        "Look at the lobby",
        "cam9-missed",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Looked at the lobby."
        }
       ],
@@ -14006,7 +14290,7 @@ window.ILTV_STORIES = {
        "cam9-missed",
        {
         "add": {
-         "trainer_trust": 1
+         "trainer_warmth": 1
         },
         "log": "Looked at camera 8, the roof door."
        }
@@ -14269,6 +14553,9 @@ window.ILTV_STORIES = {
         "set": [
          "trouble_open"
         ],
+        "clear": [
+         "read_p11"
+        ],
         "add": {
          "trainer_trust": 1
         },
@@ -14280,6 +14567,15 @@ window.ILTV_STORIES = {
        "Call Ms. Adler",
        "adler-call",
        {
+        "requires": [
+         "read_p11"
+        ],
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the certified fire safety director about the trouble signal."
        }
       ],
@@ -14288,6 +14584,12 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "okafor-trouble",
        {
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about the fire panel."
        }
       ]
@@ -14356,6 +14658,9 @@ window.ILTV_STORIES = {
         "set": [
          "trouble_open"
         ],
+        "clear": [
+         "read_p11"
+        ],
         "add": {
          "trainer_trust": 1
         },
@@ -14367,6 +14672,15 @@ window.ILTV_STORIES = {
        "Call Ms. Adler",
        "adler-call",
        {
+        "requires": [
+         "read_p11"
+        ],
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the certified fire safety director about the trouble signal."
        }
       ],
@@ -14375,6 +14689,12 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "okafor-trouble",
        {
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about the fire panel."
        }
       ]
@@ -14443,6 +14763,9 @@ window.ILTV_STORIES = {
         "set": [
          "trouble_open"
         ],
+        "clear": [
+         "read_p11"
+        ],
         "add": {
          "trainer_trust": 1
         },
@@ -14454,6 +14777,15 @@ window.ILTV_STORIES = {
        "Call Ms. Adler",
        "adler-call",
        {
+        "requires": [
+         "read_p11"
+        ],
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the certified fire safety director about the trouble signal."
        }
       ],
@@ -14462,6 +14794,12 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "okafor-trouble",
        {
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about the fire panel."
        }
       ]
@@ -14536,6 +14874,9 @@ window.ILTV_STORIES = {
         "set": [
          "trouble_open"
         ],
+        "clear": [
+         "read_p11"
+        ],
         "add": {
          "trainer_trust": 1
         },
@@ -14547,6 +14888,15 @@ window.ILTV_STORIES = {
        "Call Ms. Adler",
        "adler-call",
        {
+        "requires": [
+         "read_p11"
+        ],
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the certified fire safety director about the trouble signal."
        }
       ],
@@ -14555,6 +14905,12 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "okafor-trouble",
        {
+        "clear": [
+         "read_p11"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about the fire panel."
        }
       ]
@@ -14854,6 +15210,9 @@ window.ILTV_STORIES = {
         "set": [
          "opined"
         ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "0358 hrs. Fire panel beeping, probably nothing. Seemed minor. FSD notified."
        }
       ],
@@ -14865,6 +15224,9 @@ window.ILTV_STORIES = {
         "set": [
          "opined"
         ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Left the incident field for the fire panel blank."
        }
       ],
@@ -15240,6 +15602,9 @@ window.ILTV_STORIES = {
        "Refuse: no authorization",
        "courier-refused",
        {
+        "add": {
+         "building_known": 1
+        },
         "log": "Refused the delivery for floor 58, no authorization."
        }
       ],
@@ -15260,6 +15625,9 @@ window.ILTV_STORIES = {
        "Ask who sent it",
        "courier-who",
        {
+        "add": {
+         "trainer_trust": 1
+        },
         "log": "Asked the courier who the box was from."
        }
       ],
@@ -15311,6 +15679,9 @@ window.ILTV_STORIES = {
        "Refuse: no authorization",
        "courier-refused",
        {
+        "add": {
+         "building_known": 1
+        },
         "log": "Refused the delivery for floor 58, no authorization."
        }
       ],
@@ -15843,6 +16214,9 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "sleeper-super",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about the individual in the vestibule."
        }
       ],
@@ -15940,6 +16314,9 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "sleeper-super",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about the individual in the vestibule."
        }
       ],
@@ -16037,6 +16414,9 @@ window.ILTV_STORIES = {
        "Call Mr. Okafor's line",
        "sleeper-super",
        {
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Called the supervisor's night line about the individual in the vestibule."
        }
       ],
@@ -16772,7 +17152,7 @@ window.ILTV_STORIES = {
         ],
         "meters": {
          "trainer_trust": {
-          "min": 3
+          "min": 2
          }
         },
         "clear": [
@@ -16851,7 +17231,7 @@ window.ILTV_STORIES = {
       [
        "Sit with her",
        "Sit with her",
-       "light",
+       "twelve-sat",
        {
         "add": {
          "trainer_warmth": 1
@@ -16862,12 +17242,12 @@ window.ILTV_STORIES = {
       [
        "Give her the wall",
        "Give her the wall",
-       "light",
+       "twelve-wall",
        {
         "add": {
          "trainer_trust": 1
         },
-        "log": "Took the wall and let D. Reyes sit."
+        "log": "Took the wall while D. Reyes stood at the corridor door."
        }
       ]
      ]
@@ -17102,6 +17482,41 @@ window.ILTV_STORIES = {
        "Write the closing line",
        "closing-line",
        {
+        "requires": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Opened the closing line of the shift log."
+       }
+      ],
+      [
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
+       {
+        "requires": [
+         "trouble_open"
+        ],
+        "forbids": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Opened the closing line of the shift log."
+       }
+      ],
+      [
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
+       {
+        "forbids": [
+         "wedge_open",
+         "trouble_open"
+        ],
         "log": "Opened the closing line of the shift log."
        }
       ]
@@ -17185,6 +17600,41 @@ window.ILTV_STORIES = {
        "Write the closing line",
        "closing-line",
        {
+        "requires": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Opened the closing line of the shift log."
+       }
+      ],
+      [
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
+       {
+        "requires": [
+         "trouble_open"
+        ],
+        "forbids": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Opened the closing line of the shift log."
+       }
+      ],
+      [
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
+       {
+        "forbids": [
+         "wedge_open",
+         "trouble_open"
+        ],
         "log": "Opened the closing line of the shift log."
        }
       ]
@@ -17233,6 +17683,9 @@ window.ILTV_STORIES = {
        "Correct the entry, in ink",
        "confess",
        {
+        "clear": [
+         "lied"
+        ],
         "log": "Opened the entry that was not true."
        }
       ],
@@ -17269,6 +17722,44 @@ window.ILTV_STORIES = {
        "Write the closing line",
        "closing-line",
        {
+        "requires": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Opened the closing line of the shift log."
+       }
+      ],
+      [
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
+       {
+        "requires": [
+         "trouble_open"
+        ],
+        "forbids": [
+         "wedge_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Opened the closing line of the shift log."
+       }
+      ],
+      [
+       "Write the closing line",
+       "Write the closing line",
+       "closing-line",
+       {
+        "forbids": [
+         "wedge_open",
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": -1
+        },
         "log": "Opened the closing line of the shift log."
        }
       ]
@@ -18218,171 +18709,6 @@ window.ILTV_STORIES = {
       [
        "Tell him about the notice",
        "Tell him about the notice",
-       "end-by-the-book",
-       {
-        "requires": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "max": 1
-         }
-        },
-        "add": {
-         "trainer_trust": -1
-        },
-        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
-       }
-      ],
-      [
-       "Say nothing about the notice",
-       "Say nothing about the notice",
-       "end-by-the-book",
-       {
-        "requires": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "max": 1
-         }
-        },
-        "log": "Said nothing to the day supervisor about the notice."
-       }
-      ],
-      [
-       "Wait for him",
-       "Wait for him",
-       "end-by-the-book",
-       {
-        "forbids": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "max": 1
-         }
-        },
-        "log": "Signed off the shift."
-       }
-      ],
-      [
-       "Tell him about the notice",
-       "Tell him about the notice",
-       "end-clean",
-       {
-        "requires": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "min": 2,
-          "max": 2
-         }
-        },
-        "add": {
-         "trainer_trust": -1
-        },
-        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
-       }
-      ],
-      [
-       "Say nothing about the notice",
-       "Say nothing about the notice",
-       "end-clean",
-       {
-        "requires": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "min": 2,
-          "max": 2
-         }
-        },
-        "log": "Said nothing to the day supervisor about the notice."
-       }
-      ],
-      [
-       "Wait for him",
-       "Wait for him",
-       "end-clean",
-       {
-        "forbids": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "min": 2,
-          "max": 2
-         }
-        },
-        "log": "Signed off the shift."
-       }
-      ],
-      [
-       "Tell him about the notice",
-       "Tell him about the notice",
-       "end-clean",
-       {
-        "requires": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "min": 3
-         },
-         "trainer_warmth": {
-          "max": 1
-         }
-        },
-        "add": {
-         "trainer_trust": -1
-        },
-        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
-       }
-      ],
-      [
-       "Say nothing about the notice",
-       "Say nothing about the notice",
-       "end-clean",
-       {
-        "requires": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "min": 3
-         },
-         "trainer_warmth": {
-          "max": 1
-         }
-        },
-        "log": "Said nothing to the day supervisor about the notice."
-       }
-      ],
-      [
-       "Wait for him",
-       "Wait for him",
-       "end-clean",
-       {
-        "forbids": [
-         "noticed_notice"
-        ],
-        "meters": {
-         "trainer_trust": {
-          "min": 3
-         },
-         "trainer_warmth": {
-          "max": 1
-         }
-        },
-        "log": "Signed off the shift."
-       }
-      ],
-      [
-       "Tell him about the notice",
-       "Tell him about the notice",
        "end-she-knew",
        {
         "requires": [
@@ -18394,9 +18720,6 @@ window.ILTV_STORIES = {
          },
          "trainer_warmth": {
           "min": 2
-         },
-         "building_known": {
-          "min": 2
          }
         },
         "log": "Told the day supervisor about the contractor notice in the shelf drawer."
@@ -18405,7 +18728,23 @@ window.ILTV_STORIES = {
       [
        "Tell him about the notice",
        "Tell him about the notice",
-       "end-eat-something",
+       "end-under-review",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "max": 2
+         }
+        },
+        "log": "Told the day supervisor about the contractor notice in the shelf drawer."
+       }
+      ],
+      [
+       "Tell him about the notice",
+       "Tell him about the notice",
+       "end-under-review",
        {
         "requires": [
          "noticed_notice"
@@ -18415,9 +18754,6 @@ window.ILTV_STORIES = {
           "min": 3
          },
          "trainer_warmth": {
-          "min": 2
-         },
-         "building_known": {
           "max": 1
          }
         },
@@ -18466,6 +18802,110 @@ window.ILTV_STORIES = {
          }
         },
         "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-by-the-book",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-clean",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Say nothing about the notice",
+       "Say nothing about the notice",
+       "end-clean",
+       {
+        "requires": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Said nothing to the day supervisor about the notice."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-by-the-book",
+       {
+        "forbids": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-clean",
+       {
+        "forbids": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 2,
+          "max": 2
+         }
+        },
+        "log": "Signed off the shift."
+       }
+      ],
+      [
+       "Wait for him",
+       "Wait for him",
+       "end-clean",
+       {
+        "forbids": [
+         "noticed_notice"
+        ],
+        "meters": {
+         "trainer_trust": {
+          "min": 3
+         },
+         "trainer_warmth": {
+          "max": 1
+         }
+        },
+        "log": "Signed off the shift."
        }
       ],
       [
@@ -19681,6 +20121,242 @@ window.ILTV_STORIES = {
      "ending": [
       "Noted.",
       "Noted."
+     ],
+     "choices": []
+    },
+    "twelve-sat": {
+     "folder": "night-shift/twelve-sat",
+     "lang": "en",
+     "dir": "",
+     "time": "05:26",
+     "title": [
+      "The good chair",
+      "The good chair"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You turn the good chair to face the wall, beside hers. She does not say sit. She does not say don't.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "You pour two coffees. They are wrong. She holds hers in both hands and drinks none of it.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Ten minutes. That is all it is.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "The clock on the wall says 05:28. It is 05:26. She looks at it a long time and says nothing about it.",
+       "sfx": "clock-tick",
+       "file": null,
+       "dur": 9.8
+      }
+     ],
+     "log": "0526 hrs. Control room. Two officers at the wall.",
+     "choices": [
+      [
+       "Stay until she moves",
+       "Stay until she moves",
+       "light",
+       {
+        "log": "Stayed in the chair until D. Reyes got up."
+       }
+      ]
+     ]
+    },
+    "twelve-wall": {
+     "folder": "night-shift/twelve-wall",
+     "lang": "en",
+     "dir": "",
+     "time": "05:26",
+     "title": [
+      "Thirty seconds",
+      "Thirty seconds"
+     ],
+     "ambience": "control-room-late",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You take the wall. She goes as far as the corridor door and stops there, one hand on the frame.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "narrator",
+       "text": "From your chair you can see her back, and past it the corridor that goes to stair C.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Thirty seconds.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing.",
+       "file": null,
+       "dur": 10.6
+      }
+     ],
+     "log": "0526 hrs. Control room. Wall kept by the new officer.",
+     "choices": [
+      [
+       "Watch the wall",
+       "Watch the wall",
+       "light",
+       {
+        "log": "Kept the wall."
+       }
+      ]
+     ]
+    },
+    "laptop-time": {
+     "folder": "night-shift/laptop-time",
+     "lang": "en",
+     "dir": "",
+     "time": "02:16",
+     "title": [
+      "Ten to two",
+      "Ten to two"
+     ],
+     "ambience": "lobby",
+     "feeds": {
+      "c1": "laptop"
+     },
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Ten to two. Bench clear.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "That is the first line. Everything else hangs off it.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "She writes 0150 on the pad in pencil, small, and puts a box around it.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 7
+      }
+     ],
+     "log": "0216 hrs. Control room. Lobby bench clear at 0150 confirmed.",
+     "choices": [
+      [
+       "Bring it to the desk",
+       "Bring it to the desk",
+       "laptop-got",
+       {
+        "clear": [
+         "lobby_clear"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Brought the laptop and lanyard to the control room."
+       }
+      ],
+      [
+       "Check the badge on the lanyard",
+       "Check the badge on the lanyard",
+       "laptop-badge",
+       {
+        "clear": [
+         "lobby_clear"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked up the lanyard's badge on the access terminal."
+       }
+      ],
+      [
+       "Open the laptop",
+       "Open the laptop",
+       "laptop-opened",
+       {
+        "clear": [
+         "lobby_clear"
+        ],
+        "add": {
+         "slips": 1
+        },
+        "log": "Opened the laptop to find its owner."
+       }
+      ]
+     ]
+    },
+    "end-under-review": {
+     "folder": "night-shift/end-under-review",
+     "lang": "en",
+     "dir": "",
+     "time": "07:02",
+     "endcard": null,
+     "title": [
+      "Under review",
+      "Under review"
+     ],
+     "ambience": "morning",
+     "feeds": {
+      "c1": "dawn"
+     },
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "Thank you for telling me. That is noted. I will raise it with the contractor.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "okafor",
+       "text": "Ms. Reyes. Your post is under review. I did not know.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "She puts on her coat. She does not touch the radios. Four, on the charger. She goes out by the dock, so as not to pass the desk.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The pencil is on the shelf, on the middle of the page where she left it. The drawer is shut. It does not stick.",
+       "file": null,
+       "dur": 10.6
+      }
+     ],
+     "log": "0702 hrs. Shift ended. Log signed. Contractor notice reported to the day supervisor.",
+     "ending": [
+      "Under review.",
+      "Under review."
      ],
      "choices": []
     }
