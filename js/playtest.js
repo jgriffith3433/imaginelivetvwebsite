@@ -702,6 +702,47 @@ async function smoke(options, t) {
   checkNoBack(t, "The Final Spark");
   checkHitTargets(t, document, "The Final Spark");
   await toLanding(t);
+  t.progress(0.5);
+  // The other listed stories, each opened from its card the way a viewer does.
+  const others = listedStories().filter((x) => x.id !== FIRST);
+  let k = 0;
+  for (const info of others) {
+    const st = story(info.id);
+    if (!st) { t.problem("bug", `${info.id} is listed but has no data`); continue; }
+    t.scene(`${st.title}: card, first page`);
+    if (isConsole(st)) {
+      await consoleOpen(t, st);
+      await consoleFresh(t, st);
+      await consoleHeard(t, document, st.id);
+      const tiles = document.querySelectorAll("#console-wall .feed").length;
+      if (tiles < 6) t.problem("bug", `${st.title}: the wall shows ${tiles} feeds, not 6 to 9`);
+      const open = openChoices();
+      if (!open.length) t.problem("bug", `${st.title}: no choices on its first scene`);
+      t.event("smoke-story", `${st.title}: ${tiles} feeds, ${open.length} choices after the first lines`);
+      if (open.length) {
+        const m = consoleModel(st);
+        await consoleChoose(t, st, m, m.open()[0][1], document, st.id, null);
+      }
+    } else {
+      await openStory(t, st.id);
+      await toStart(t);
+      const played = await checkVideo(t, document.querySelector("#spark-video video"), `${st.id} start`, 3, { autoplay: true });
+      const btns = choiceButtons();
+      if (!btns.length) t.problem("bug", `${st.title}: no choices on its first page`);
+      if (played && btns.length) {
+        const before = $("spark-story").textContent;
+        btns[0].click();
+        await sleep(300);
+        t.event("choice", `${st.title}: ${enText(btns[0])} -> ${sceneId()}`);
+        if ($("spark-story").textContent === before) t.problem("bug", `${st.title}: the page text didn't change after "${enText(btns[0])}"`);
+        else await checkVideo(t, document.querySelector("#spark-video video"), `${st.id} ${sceneId()}`, 1, { autoplay: true });
+      }
+      checkNoBack(t, st.title);
+      checkHitTargets(t, document, st.title);
+    }
+    await toLanding(t);
+    t.progress(0.5 + (0.5 * ++k) / others.length);
+  }
   t.progress(1);
 }
 
@@ -1389,15 +1430,20 @@ async function cctvStates(t, st, used) {
     if (window.iltvConsole.selected()) await tapAt(t, document.querySelector(`#console-wall .feed[data-camera="${window.iltvConsole.selected()}"]`), "shrink the enlarged feed");
   };
   let n = 0;
+  // The unlocks stay from way to way (a new run keeps them), so the percent explored follows every scene reached so far
+  // in this scenario: start from none, and count each scene as it is entered.
+  document.cookie = `${unlocksCookie(st)}=; Max-Age=0; Path=/`;
+  const seen = new Set();
   for (const way of plan) {
     await consoleFresh(t, st);
+    seen.add(st.start);
     const m = consoleModel(st);
     const where = `${st.id}: ${way.path.join(" > ")}`;
     t.scene(where);
     await consoleHeard(t, document, where);
     await showScene(m, where);
     for (const i of way.picks) {
-      await consoleChoose(t, st, m, i, document, where, new Set());
+      await consoleChoose(t, st, m, i, document, where, seen);
       await showScene(m, where);
     }
     t.progress(++n / plan.length);
@@ -1495,6 +1541,19 @@ async function creditsRun(t) {
   await checkMark(t, document, "home (The Final Spark)");
   await sleep(800);
   await toLanding(t);
+  t.progress(0.22);
+
+  // The other listed video stories (The Water Road), opened from their cards: the same footer under their player.
+  for (const info of listedStories().filter((x) => x.id !== FIRST)) {
+    const other = story(info.id);
+    if (!other || isConsole(other)) continue;
+    t.scene(`${other.title}: footer and video`);
+    await openStory(t, other.id);
+    checkHitTargets(t, document, `home (${other.title})`);
+    await checkMark(t, document, `home (${other.title})`);
+    await sleep(800);
+    await toLanding(t);
+  }
   t.progress(0.25);
 
   // Night Shift, from its card: its own Tap to play title, then the same footer under the console player.
@@ -1700,6 +1759,15 @@ async function sound(options, t) {
     await passPrompt(t, doc, path);
     await checkSound(t, doc.querySelector("video"), path, { on: true, volume: 0.4 });
     closeFrame();
+    // The other listed video stories (The Water Road), from their cards: their video follows the same saved sound.
+    for (const info of listedStories().filter((x) => x.id !== FIRST)) {
+      const other = story(info.id);
+      if (!other || isConsole(other)) continue;
+      t.scene(`${other.title} (sound)`);
+      await openStory(t, other.id);
+      await checkSound(t, document.querySelector("#spark-video video"), `${other.title}, after its tap`, { on: true, volume: 0.4 });
+      await toLanding(t);
+    }
     // A console story's audio (voice, ambience, effects) follows the same Settings: Night Shift, from its card.
     const cs = consoleStories().find((c) => c.listed) || consoleStories()[0];
     if (cs) {
@@ -1760,6 +1828,39 @@ async function answerAsk(t, host, which, label) {
   const skip = [...root.querySelectorAll(".ha-s button")].find((b) => b.textContent.trim() === "Skip");
   if (skip) skip.click();
   if (!(await waitFor(() => !host.isConnected, 4000))) t.problem("bug", `${label}: the feedback card didn't close after answering`);
+}
+
+/** Another video story (The Water Road), from its card with fresh progress: one real choice, then All stories. What went
+    out for it: story_open from the card, a screen of its first page, run_start, a video play, the choice with its
+    context, level_start. */
+async function analyticsVideoStory(t, A, pump, st) {
+  t.scene(`${st.title}: analytics`);
+  clearProgress();
+  const mark = (A.debugLog || []).length;
+  await openStory(t, st.id);
+  await toStart(t);
+  await checkVideo(t, document.querySelector("#spark-video video"), `${st.id} start`, 2, { autoplay: true });
+  const button = choiceButtons()[0];
+  if (button) {
+    await tapAt(t, button, `choice "${enText(button)}"`);
+    await sleep(500);
+  }
+  await toLanding(t);
+  A.flush();
+  await sleep(600);
+  pump();
+  const sent = (A.debugLog || []).slice(mark).filter((e) => e.sent);
+  const has = (name, test) => sent.some((e) => e.name === name && (!test || test(e.props || {}, e)));
+  const want = [
+    ["story_open", (p) => p.story === st.id && p.via === "card", "story_open from its card"],
+    ["screen", (p) => String(p.name).startsWith(`${st.id}/`), "a screen for its first page"],
+    ["run_start", null, "run_start"],
+    ["video", (p) => p.action === "play", "a video play"],
+    ["choice", (p, e) => p.node && p.option && e.ctx && e.ctx.story === st.id && e.ctx.path, "a choice with its node, option and the path so far"],
+    ["level_start", null, "level_start"],
+  ];
+  for (const [name, test, what] of want) if (!has(name, test)) t.problem("bug", `Analytics (${st.title}): no ${what} went out (${name})`);
+  t.note(`${st.title}: ${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
 }
 
 /** Night Shift (a console story, no video): from its card, a camera enlarged, the shift log opened, one real choice, then
@@ -1960,6 +2061,7 @@ async function analyticsRun(options, t) {
     if (noCtx.length) t.problem("bug", `Analytics: ${noCtx.length} choice event(s) without the node and depth in their context`);
     t.note(`${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
     t.progress(0.92);
+    for (const info of listedStories().filter((x) => x.id !== FIRST && !isConsole(x))) await analyticsVideoStory(t, A, pump, story(info.id));
     const night = consoleStories().find((c) => c.listed);
     if (night) await analyticsNight(t, A, pump, night);
     t.progress(1);
@@ -3767,13 +3869,13 @@ async function nightCardRun(options, t) {
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, The Final Spark from its card: its Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories", seconds: 25, tags: ["smoke"] },
+    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories", seconds: 90, tags: ["smoke"] },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
       seconds: 240,
       tags: ["full"],
-      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Play. Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
+      description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Start Over (a Completed card always offers Start Over, the same in all three stories; only an ending sets Completed). Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
     },
     {
       id: "night-shift-card",
@@ -3846,8 +3948,8 @@ installPlaytest({
     {
       id: "analytics",
       title: "Hawkes Analytics: the events going out on a way through The Final Spark (screen, video, choice, back, Try again, the ending), the thumbs question after going back twice and the stars question at the ending",
-      seconds: 120,
-      tags: ["analytics"],
+      seconds: 180,
+      tags: ["full", "analytics"],
       description: "Checks the analytics SDK is loaded with product imaginelivetv and a build (version, commit, date) and, on beta, env beta. Puts every event the page sends on the timeline as its batch goes out (the SDK's debug mode, ?hawkes-analytics-debug=1, on in a bot's tab). Opens The Final Spark from its card (fresh progress), then by tapping choices: Go back, the dead end's go back (back up the tree), the sludge (a death), Try again: the thumbs question (\"Retracing your steps…\") comes up and is answered thumbs up. Then the shortest way to the ending, a page at a time (each video plays, the next choice skips it): at Destroy the town the stars question \"How was this ending?\" comes up above the inventory bar and is answered 5 stars. Then All stories, and a check that screen, video (play, skip with seconds watched), choice (node, option, path in context), run_start, death, back, restart, run_end with the ending, both feedback answers and game_ready went out. The viewer's progress and question history are put back. Then Night Shift (a console story, no video): from its card, a camera enlarged (feature feed), the shift log opened (feature log), one real choice, and the last two choices of its shortest way to an ending after a seeded run (setup shortcut): story_open, screen, level_start, run_start, choice, run_end with the ending and the stars question answered went out, and no video or back event.",
     },
   ],

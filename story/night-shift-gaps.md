@@ -293,6 +293,8 @@ week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who kn
     satisfied it). In this pass the scenario checks each playtest section on its own (`js/playtest.js`, `nightGapsRun`), and the file reports `sound` as not run, as a warning, because it is true. Fix: a `sound` playtest on the T4, then paste its report under `#### sound` and delete the warning.
 60. **`hawkes.assets.json` (988 KB, 1,375 Night Shift assets) and the lock (384 KB)** are consistent with the files except the 6 music stings; `npm run story -- --check` ends "everything generated is up to date". Nothing to fix; the size is why diffs of it are hard to review.
 
+Update (task c_02b57f9eb45e): items 51 and 52 are fixed in the bot (51 was already by choice index; `cctvStates` now counts the scenes it enters from no unlocks, across ways, instead of `new Set()` per way). Item 54: `smoke`, `credits`, `sound` and `analytics` now play The Water Road and Night Shift as well as The Final Spark, and `analytics` is tagged `full`, so beta's run plays them; their first T4 reports are still to be pasted. The card after Start Over (Completed, same percent, Start Over) is the house rule (story doc "Progress on the cards"), the same in all three stories; the `stories` description that said "Play" there was wrong and is fixed.
+
 ## What is left, in order
 
 1. Ask Talk for T4 runs of `sound`, `branches`, `pages`, `analytics` and a `console` run on the real story (items 34, 54, 59); paste the reports under the Appendix.
