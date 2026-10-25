@@ -3,7 +3,7 @@
 //   node tools/make-audio.mjs <story> --ingest <folder>  <folder>/<asset id>/*.mp3 straight from Hawkes Gen (hawkesgen_run save_to)
 //   node tools/make-audio.mjs <story> --list             the assets with no file yet (add --only <text in the id>)
 //   node tools/make-audio.mjs <story> --dur              set each line's dur in the story data to its recording's length
-// Voices: silence trimmed, loudness -19 LUFS. Sound effects: -26 LUFS. Ambience beds: -38 LUFS, so a bed always sits
+// Voices: silence trimmed, loudness -16 LUFS. Sound effects: -26 LUFS. Ambience beds: -38 LUFS, so a bed always sits
 // well under the voice (the player plays all three at the same volume). The lock entry is the one Studio writes
 // (same recipe fingerprint), so Studio sees these as current.
 import fs from 'node:fs';
@@ -26,7 +26,7 @@ const recipeOf = (a) => crypto.createHash('sha256').update(JSON.stringify({ step
 
 const kindOf = (a) => (a.id.includes('-ambience-') ? 'bed' : a.id.includes('-sfx-') ? 'sfx' : 'voice');
 // Voices are cut in stages (start, then the end by reversing, then loudness): one chained graph hung ffmpeg on some clips.
-const LOUD = { voice: 'loudnorm=I=-19:TP=-2:LRA=9', sfx: 'loudnorm=I=-26:TP=-3:LRA=7', bed: 'loudnorm=I=-38:TP=-6:LRA=7' };
+const LOUD = { voice: 'loudnorm=I=-16:TP=-1.5:LRA=9', sfx: 'loudnorm=I=-26:TP=-3:LRA=7', bed: 'loudnorm=I=-38:TP=-6:LRA=7' };
 const TRIM_START = 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05';
 const TRIM_END = 'areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.15,areverse';
 const ff = (...a) => execFileSync('ffmpeg', ['-nostdin', '-y', '-v', 'error', ...a], { timeout: 60000 });
