@@ -955,7 +955,12 @@
         },
         {
           "speaker": "dee",
-          "text": "Now you've done one. Do it every time. Half hour and hour. Never skip a check. A missed check is a hole.",
+          "text": "Now you've done one. Do it every time, half hour and hour.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Never skip a check. A missed check is a hole.",
           "perform": "flat"
         },
         {
@@ -1604,7 +1609,7 @@
           "log": "Pushed the fire door on 31 and listened for the latch."
         },
         {
-          "say": "Ask what she does when she finds one",
+          "say": "Ask what she does",
           "next": "tour1-wedge",
           "add": {
             "building_known": 1
@@ -1669,7 +1674,7 @@
           "log": "Pushed the fire door on 31 and listened for the latch."
         },
         {
-          "say": "Ask what she does when she finds one",
+          "say": "Ask what she does",
           "next": "tour1-wedge",
           "add": {
             "building_known": 1
@@ -1733,7 +1738,7 @@
           "log": "Pushed the fire door on 31 and listened for the latch."
         },
         {
-          "say": "Ask what she does when she finds one",
+          "say": "Ask what she does",
           "next": "tour1-wedge",
           "add": {
             "building_known": 1
@@ -2857,9 +2862,14 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
+        },
+        {
+          "speaker": "terrell",
+          "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+          "perform": "fast"
         },
         {
           "speaker": "dee",
@@ -2868,7 +2878,8 @@
         },
         {
           "speaker": "dee",
-          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
+          "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+          "perform": "dry, not turning"
         }
       ],
       "choices": [
@@ -2928,9 +2939,14 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
+        },
+        {
+          "speaker": "terrell",
+          "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+          "perform": "fast"
         },
         {
           "speaker": "dee",
@@ -2939,7 +2955,8 @@
         },
         {
           "speaker": "dee",
-          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
+          "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+          "perform": "dry, not turning"
         }
       ],
       "choices": [
@@ -2999,9 +3016,14 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
+        },
+        {
+          "speaker": "terrell",
+          "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+          "perform": "fast"
         },
         {
           "speaker": "dee",
@@ -3010,7 +3032,8 @@
         },
         {
           "speaker": "dee",
-          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
+          "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+          "perform": "dry, not turning"
         }
       ],
       "choices": [
@@ -3075,9 +3098,14 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
+        },
+        {
+          "speaker": "terrell",
+          "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+          "perform": "fast"
         },
         {
           "speaker": "dee",
@@ -3086,7 +3114,8 @@
         },
         {
           "speaker": "dee",
-          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
+          "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+          "perform": "dry, not turning"
         }
       ],
       "choices": [
@@ -3124,13 +3153,13 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "Hear that? {the door closing, the latch finding itself} That's it shut.",
-          "perform": "flat"
+          "text": "Hear that? That's it shut.",
+          "perform": "the door closing, the latch finding itself, flat"
         },
         {
           "speaker": "dee",
-          "text": "If you don't hear that, it's open. It can be closed and open at once. {almost a smile} Mm. Stairs.",
-          "perform": "going down"
+          "text": "If you don't hear that, it's open. It can be closed and open at once. Mm. Stairs.",
+          "perform": "almost a smile, going down"
         },
         {
           "speaker": "narrator",
@@ -3145,8 +3174,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
-          "perform": "to the rollup"
+          "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
+          "perform": "flat, to the rollup"
         }
       ],
       "choices": [
@@ -3183,8 +3212,13 @@
         },
         {
           "speaker": "dee",
-          "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it. {a beat on the rail} Mm. You do the book.",
-          "perform": "even"
+          "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. You do the book.",
+          "perform": "a beat on the rail, even"
         },
         {
           "speaker": "narrator",
@@ -3199,8 +3233,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
-          "perform": "to the rollup"
+          "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
+          "perform": "flat, to the rollup"
         }
       ],
       "choices": [
@@ -3253,8 +3287,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
-          "perform": "to the rollup"
+          "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
+          "perform": "flat, to the rollup"
         }
       ],
       "choices": [
@@ -3286,12 +3320,13 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "Fruit. Linen. A crate for the design agency on thirty-seven. {even, listing} Once a box for fifty-eight, at four, with nobody's name on it."
+          "text": "Fruit. Linen. A crate for the design agency on thirty-seven. Once a box for fifty-eight, at four, with nobody's name on it.",
+          "perform": "even, listing"
         },
         {
           "speaker": "dee",
-          "text": "Sign for it? Not unless the list says. Mm. {flat} Not unless.",
-          "perform": "a half second slower the second time"
+          "text": "Sign for it? Not unless the list says. Mm. Not unless.",
+          "perform": "flat, a half second slower the second time"
         },
         {
           "speaker": "narrator",
@@ -3304,7 +3339,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone."
+          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
+          "perform": "even, looking at the door and not at you"
         }
       ],
       "choices": [
@@ -3355,7 +3391,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone."
+          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
+          "perform": "even, looking at the door and not at you"
         }
       ],
       "choices": [
@@ -3392,8 +3429,8 @@
         },
         {
           "speaker": "dee",
-          "text": "There. You heard it. {pleased, not saying so} Now you know what quiet sounds like here.",
-          "perform": "flat"
+          "text": "There. You heard it. Now you know what quiet sounds like here.",
+          "perform": "pleased, not saying so, flat"
         },
         {
           "speaker": "narrator",
@@ -3406,7 +3443,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone."
+          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
+          "perform": "even, looking at the door and not at you"
         }
       ],
       "choices": [
@@ -3438,8 +3476,8 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "It gives. It gives and it holds. {her hand beside yours on the bar} That's all a door is.",
-          "perform": "flat"
+          "text": "It gives. It gives and it holds. That's all a door is.",
+          "perform": "her hand beside yours on the bar, flat"
         },
         {
           "speaker": "narrator",
@@ -3564,8 +3602,8 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "Because I always have. {flat, no more} Because it's quiet.",
-          "perform": "a beat, as if she'd pressed a button by mistake"
+          "text": "Because I always have. Because it's quiet.",
+          "perform": "flat, no more, a beat, as if she'd pressed a button by mistake"
         },
         {
           "speaker": "dee",
@@ -3699,7 +3737,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. Don't read the walls. {flat, already on the stairs} They'll tell you everything."
+          "text": "Mm. Don't read the walls. They'll tell you everything.",
+          "perform": "flat, already on the stairs"
         },
         {
           "speaker": "narrator",
@@ -3912,7 +3951,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Tuesday he had a yes. Today he doesn't. The list doesn't remember Tuesday. {flat, to the wall} Good."
+          "text": "Tuesday he had a yes. Today he doesn't. The list doesn't remember Tuesday. Good.",
+          "perform": "flat, to the wall"
         },
         {
           "speaker": "narrator",
@@ -4315,15 +4355,23 @@
         },
         {
           "speaker": "terrell",
-          "text": "My uncle ran a corner store in Bed-Stuy. Learned names, not rules, you know? Everybody owed him. Nobody wrote anything down. {a grin} It worked. Till it didn't."
+          "text": "My uncle ran a corner store in Bed-Stuy. Learned names, not rules, you know? Everybody owed him. Nobody wrote anything down. It worked. Till it didn't.",
+          "perform": "a grin"
         },
         {
           "speaker": "terrell",
-          "text": "Then I got here and it's all paper. Sign the sheet. Check the list. {a laugh, quieter} I'm bad at it. I like it, though. I like that it's the same every night."
+          "text": "Then I got here and it's all paper. Sign the sheet. Check the list.",
+          "perform": "a laugh, quieter"
+        },
+        {
+          "speaker": "terrell",
+          "text": "I'm bad at it. I like it, though. I like that it's the same every night.",
+          "perform": "warm"
         },
         {
           "speaker": "dee",
-          "text": "The same every night is the point. {flat, from her chair} Go to school, Terrell. Door."
+          "text": "The same every night is the point. Go to school, Terrell. Door.",
+          "perform": "flat, from her chair"
         },
         {
           "speaker": "terrell",
@@ -4410,11 +4458,13 @@
         },
         {
           "speaker": "dee",
-          "text": "He's the best at it. {from the doorway, taking off her coat, not asking what you are reading} Not the best at anything else. Mm."
+          "text": "He's the best at it. Not the best at anything else. Mm.",
+          "perform": "from the doorway, taking off her coat, not asking what you are reading"
         },
         {
           "speaker": "dee",
-          "text": "Don't copy him. Copy what he doesn't write. {flat} What he doesn't write is where the night is."
+          "text": "Don't copy him. Copy what he doesn't write. What he doesn't write is where the night is.",
+          "perform": "flat"
         },
         {
           "speaker": "narrator",
@@ -4449,8 +4499,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Lobby's clear. Dock's clear. {over the radio} Compactor's ticking.",
-          "perform": "a breath, almost company"
+          "text": "Lobby's clear. Dock's clear. Compactor's ticking.",
+          "perform": "over the radio, a breath, almost company"
         },
         {
           "speaker": "narrator",
@@ -4599,7 +4649,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Lobby's clear. Dock's clear. {over the radio, after a moment} Mm."
+          "text": "Lobby's clear. Dock's clear. Mm.",
+          "perform": "over the radio, after a moment"
         },
         {
           "speaker": "narrator",
@@ -4883,8 +4934,8 @@
         },
         {
           "speaker": "dee",
-          "text": "That's him. {not looking up} He reads the portal at midnight. A habit. Pick it up.",
-          "perform": "flat"
+          "text": "That's him. He reads the portal at midnight. A habit. Pick it up.",
+          "perform": "not looking up, flat"
         }
       ],
       "choices": [
@@ -4933,12 +4984,13 @@
         },
         {
           "speaker": "okafor",
-          "text": "That's noted. I don't say it twice. {dry} Is Ms. Reyes there? Put her on. I'll just say good night."
+          "text": "That's noted. I don't say it twice. Is Ms. Reyes there? Put her on. I'll just say good night.",
+          "perform": "dry"
         },
         {
           "speaker": "dee",
-          "text": "Okafor. {taking the phone} Mm. It's quiet. Yes. Good night.",
-          "perform": "hanging up, putting the phone down like an egg"
+          "text": "Okafor. Mm. It's quiet. Yes. Good night.",
+          "perform": "taking the phone, hanging up, putting the phone down like an egg"
         },
         {
           "speaker": "narrator",
@@ -5274,7 +5326,7 @@
         },
         {
           "speaker": "narrator",
-          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
           "sfx": "drawer"
         },
         {
@@ -5343,7 +5395,7 @@
         },
         {
           "speaker": "narrator",
-          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
           "sfx": "drawer"
         },
         {
@@ -5412,7 +5464,7 @@
         },
         {
           "speaker": "narrator",
-          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
           "sfx": "drawer"
         },
         {
@@ -5945,13 +5997,13 @@
         },
         {
           "speaker": "dee",
-          "text": "A wedge. Mm. A wedge. {a long pause on the radio} It's the book.",
-          "perform": "even"
+          "text": "A wedge. Mm. A wedge. It's the book.",
+          "perform": "a long pause on the radio, even"
         },
         {
           "speaker": "dee",
-          "text": "I'd have gone and said hello. {over the radio, quieter} Doesn't matter. You did what it says. Mm. Write it.",
-          "perform": "a click"
+          "text": "I'd have gone and said hello. Doesn't matter. You did what it says. Mm. Write it.",
+          "perform": "over the radio, quieter, a click"
         },
         {
           "speaker": "narrator",
@@ -6025,13 +6077,13 @@
         },
         {
           "speaker": "dee",
-          "text": "Door's shut. He knows. {a pause} You said. Good.",
-          "perform": "the second part quieter"
+          "text": "Door's shut. He knows. You said. Good.",
+          "perform": "a pause, the second part quieter"
         },
         {
           "speaker": "dee",
-          "text": "He's got a closing at nine. They all do. {over the radio, tired and not unkind} I'm coming down. Put the kettle on. It's wrong. Put it on.",
-          "perform": "flat"
+          "text": "He's got a closing at nine. They all do. I'm coming down. Put the kettle on. It's wrong. Put it on.",
+          "perform": "over the radio, tired and not unkind, flat"
         },
         {
           "speaker": "narrator",
@@ -6178,8 +6230,8 @@
         },
         {
           "speaker": "dee",
-          "text": "You were on the wall. Nine tiles. Not four. {a breath} Anand, law firm. Smoke on the landing. Sorry, he says.",
-          "perform": "over the radio"
+          "text": "You were on the wall. Nine tiles. Not four. Anand, law firm. Smoke on the landing. Sorry, he says.",
+          "perform": "a breath, over the radio"
         },
         {
           "speaker": "dee",
@@ -6441,7 +6493,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Somebody's whole life is in that machine. A dog. A will. Something they typed at two in the morning. {tapping the shelf, dry} We hold it. We don't read it. That's the deal. Mm."
+          "text": "Somebody's whole life is in that machine. A dog. A will. Something they typed at two in the morning. We hold it. We don't read it. That's the deal. Mm.",
+          "perform": "tapping the shelf, dry"
         },
         {
           "speaker": "narrator",
@@ -6495,7 +6548,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Don't call him. You'll call him at seven. {flat} Go get it. Tag it."
+          "text": "Don't call him. You'll call him at seven. Go get it. Tag it.",
+          "perform": "flat"
         },
         {
           "speaker": "narrator",
@@ -6549,7 +6603,8 @@
         },
         {
           "speaker": "dee",
-          "text": "One thing in this room nobody opens: what isn't theirs. {low} Close it."
+          "text": "One thing in this room nobody opens: what isn't theirs. Close it.",
+          "perform": "low"
         },
         {
           "speaker": "narrator",
@@ -6612,8 +6667,8 @@
         },
         {
           "speaker": "dee",
-          "text": "A guard at the bank on Fordham Road. Two in the morning, head on the desk. Nothing happened. {a beat} Nothing happened for forty minutes. Then something did.",
-          "perform": "no more"
+          "text": "A guard at the bank on Fordham Road. Two in the morning, head on the desk. Nothing happened. Nothing happened for forty minutes. Then something did.",
+          "perform": "a beat, no more"
         }
       ],
       "choices": [
@@ -6681,7 +6736,8 @@
         },
         {
           "speaker": "marisol",
-          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito."
+          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+          "perform": "delighted"
         }
       ],
       "choices": [
@@ -6723,8 +6779,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Teller found him. Mm. Nobody was watching. {a sip} Nobody. It was a Tuesday.",
-          "perform": "flat"
+          "text": "Teller found him. Mm. Nobody was watching. Nobody. It was a Tuesday.",
+          "perform": "a sip, flat"
         },
         {
           "speaker": "narrator",
@@ -6747,7 +6803,8 @@
         },
         {
           "speaker": "marisol",
-          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito."
+          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+          "perform": "delighted"
         }
       ],
       "choices": [
@@ -6784,8 +6841,8 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "It's wrong. {taking it anyway} Mm.",
-          "perform": "the same word, softer"
+          "text": "It's wrong. Mm.",
+          "perform": "taking it anyway, the same word, softer"
         },
         {
           "speaker": "narrator",
@@ -6812,7 +6869,8 @@
         },
         {
           "speaker": "marisol",
-          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito."
+          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+          "perform": "delighted"
         }
       ],
       "choices": [
@@ -6849,8 +6907,13 @@
       "lines": [
         {
           "speaker": "marisol",
-          "text": "Ay, de nada, mi amor. You say thank you. Nobody says thank you. Twenty years I bring the coffee, I hear thank you from the dentist and from God.",
+          "text": "Ay, de nada, mi amor. You say thank you. Nobody says thank you.",
           "perform": "fast, laughing, wiping her hands"
+        },
+        {
+          "speaker": "marisol",
+          "text": "Twenty years I bring the coffee, I hear thank you from the dentist and from God.",
+          "perform": "fast"
         },
         {
           "speaker": "dee",
@@ -6864,8 +6927,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. {to the wall, after the door} Thirty years she's said that.",
-          "perform": "almost fond"
+          "text": "Mm. Thirty years she's said that.",
+          "perform": "to the wall, after the door, almost fond"
         },
         {
           "speaker": "narrator",
@@ -6899,7 +6962,8 @@
         },
         {
           "speaker": "marisol",
-          "text": "I tell her every Christmas: Dolores, go home. She says: who watches the door. {a laugh that stops itself} She never goes home."
+          "text": "I tell her every Christmas: Dolores, go home. She says: who watches the door. She never goes home.",
+          "perform": "a laugh that stops itself"
         },
         {
           "speaker": "dee",
@@ -6943,12 +7007,13 @@
         },
         {
           "speaker": "marisol",
-          "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. {a shrug in the voice} It's a life. Bendito."
+          "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. It's a life. Bendito.",
+          "perform": "a shrug in the voice"
         },
         {
           "speaker": "dee",
-          "text": "She's always on time. {flat, after she goes} Five-thirty. You could set the clock by her. Mine. The right one.",
-          "perform": "almost a smile"
+          "text": "She's always on time. Five-thirty. You could set the clock by her. Mine. The right one.",
+          "perform": "flat, after she goes, almost a smile"
         },
         {
           "speaker": "narrator",
@@ -7046,7 +7111,8 @@
         },
         {
           "speaker": "marisol",
-          "text": "Off. It's off. It's a lake. It's a little lake. {laughing, furious} Okay."
+          "text": "Off. It's off. It's a lake. It's a little lake. Okay.",
+          "perform": "laughing, furious"
         },
         {
           "speaker": "dee",
@@ -7114,8 +7180,8 @@
         },
         {
           "speaker": "dee",
-          "text": "He'd have said that for a puddle. {to the wall} Mm. It's a lake.",
-          "perform": "dry"
+          "text": "He'd have said that for a puddle. Mm. It's a lake.",
+          "perform": "to the wall, dry"
         },
         {
           "speaker": "narrator",
@@ -7168,8 +7234,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Take Marisol. Radio every floor you pass. {a breath} Go.",
-          "perform": "the radio pressed into your hand",
+          "text": "Take Marisol. Radio every floor you pass. Go.",
+          "perform": "a breath, the radio pressed into your hand",
           "sfx": "radio-squelch"
         },
         {
@@ -7367,7 +7433,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Nothing happens at three o'clock. {at the door, flat} That's why we're here. Nothing is the job. {a beat} Mm."
+          "text": "Nothing happens at three o'clock. That's why we're here. Nothing is the job. Mm.",
+          "perform": "at the door, flat, a beat"
         },
         {
           "speaker": "dee",
@@ -7692,8 +7759,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. Go. {over the radio, no questions} Tell him the company's forty minutes. Tell him he can stand up or sit down.",
-          "perform": "thick, then plain"
+          "text": "Mm. Go. Tell him the company's forty minutes. Tell him he can stand up or sit down.",
+          "perform": "over the radio, no questions, thick, then plain"
         },
         {
           "speaker": "dev",
@@ -7702,7 +7769,7 @@
         },
         {
           "speaker": "narrator",
-          "text": "You tell him he is not a problem. You tell him the company is coming. You tell him what the wall looks like from here: a plant, four cars, a light on his. He laughs once, a short wet sound, like a man surfacing."
+          "text": "You tell him he is not a problem. You tell him the company is coming. You tell him what the wall looks like from here: a plant, four cars, a light on his. He laughs once, like a man surfacing."
         },
         {
           "speaker": "dee",
@@ -7760,8 +7827,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Post one. {over the radio, flat, final} Mm.",
-          "perform": "a long click"
+          "text": "Post one. Mm.",
+          "perform": "over the radio, flat, final, a long click"
         },
         {
           "speaker": "narrator",
@@ -7890,8 +7957,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Who called them? {over the radio, quiet, thick} Mm. Never mind.",
-          "perform": "a long breath"
+          "text": "Who called them? Mm. Never mind.",
+          "perform": "over the radio, quiet, thick, a long breath"
         }
       ],
       "choices": [
@@ -8030,7 +8097,7 @@
           "log": "Stayed in your seat. The Chairman went by."
         },
         {
-          "say": "Stand and ask him to sign in",
+          "say": "Ask him to sign in",
           "next": "pierce-signin",
           "log": "Stood and asked the Chairman to sign in."
         }
@@ -8148,16 +8215,18 @@
       "lines": [
         {
           "speaker": "dee",
-          "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera. {to the wall, flat} I don't know if that's a compliment.",
-          "perform": "a beat"
+          "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera. I don't know if that's a compliment.",
+          "perform": "to the wall, flat, a beat"
         },
         {
           "speaker": "dee",
-          "text": "He walks it every night he's in town. Never signs. Never stops. {dry} Gets out at fifty-eight, stands at the glass, goes home. Mm. Nobody's ever asked him why."
+          "text": "He walks it every night he's in town. Never signs. Never stops. Gets out at fifty-eight, stands at the glass, goes home. Mm. Nobody's ever asked him why.",
+          "perform": "dry"
         },
         {
           "speaker": "dee",
-          "text": "You don't ask. You write what he does. {flat} That's all anyone's ever got on him. A log."
+          "text": "You don't ask. You write what he does. That's all anyone's ever got on him. A log.",
+          "perform": "flat"
         },
         {
           "speaker": "narrator",
@@ -8283,8 +8352,8 @@
         },
         {
           "speaker": "dee",
-          "text": "He wrote the time. He never writes the time. {a sip} I'd have waved.",
-          "perform": "flat"
+          "text": "He wrote the time. He never writes the time. I'd have waved.",
+          "perform": "a sip, flat"
         },
         {
           "speaker": "narrator",
@@ -8349,7 +8418,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. {low, looking toward the shelf} Say it first. Then we'll see."
+          "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. Say it first. Then we'll see.",
+          "perform": "low, looking toward the shelf"
         }
       ],
       "choices": [
@@ -8409,8 +8479,8 @@
         },
         {
           "speaker": "dee",
-          "text": "You were looking right at it. Mm. Looking is not seeing. {a breath} Say it now. Exactly.",
-          "perform": "the cup down"
+          "text": "You were looking right at it. Mm. Looking is not seeing. Say it now. Exactly.",
+          "perform": "a breath, the cup down"
         },
         {
           "speaker": "narrator",
@@ -8478,12 +8548,13 @@
         },
         {
           "speaker": "dee",
-          "text": "That's the thirty-one detector. It does that. {flat, not turning} Press the silence. It stops. It always stops.",
-          "perform": "tired"
+          "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+          "perform": "flat, not turning, tired"
         },
         {
           "speaker": "dee",
-          "text": "Thirty years on this panel, it's cried wolf nine hundred times. Mm. {to the shelf} I don't say it's right. I say it's what I do."
+          "text": "Thirty years on this panel, it's cried wolf nine hundred times. Mm. I don't say it's right. I say it's what I do.",
+          "perform": "to the shelf"
         },
         {
           "speaker": "narrator",
@@ -8531,8 +8602,8 @@
         },
         {
           "speaker": "dee",
-          "text": "There. {a nod, almost kind} See.",
-          "perform": "to the wall"
+          "text": "There. See.",
+          "perform": "a nod, almost kind, to the wall"
         },
         {
           "speaker": "narrator",
@@ -8840,7 +8911,8 @@
         },
         {
           "speaker": "dee",
-          "text": "The book says no. The book says no, and I've said yes forty times, and nobody's died. Mm. {dry} You decide which of those is the point."
+          "text": "The book says no. The book says no, and I've said yes forty times, and nobody's died. Mm. You decide which of those is the point.",
+          "perform": "dry"
         }
       ],
       "choices": [
@@ -8950,8 +9022,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm-hm. {low} The box will be at the mailroom at seven. It'll be fine.",
-          "perform": "to the wall"
+          "text": "Mm-hm. The box will be at the mailroom at seven. It'll be fine.",
+          "perform": "low, to the wall"
         }
       ],
       "choices": [
@@ -9057,13 +9129,13 @@
         },
         {
           "speaker": "okafor",
-          "text": "Log the courier's name if he gives it. The mailroom opens at seven. {a throat cleared} That's noted.",
-          "perform": "even"
+          "text": "Log the courier's name if he gives it. The mailroom opens at seven. That's noted.",
+          "perform": "a throat cleared, even"
         },
         {
           "speaker": "dee",
-          "text": "That's what the book says. {to the wall} Mm.",
-          "perform": "flat"
+          "text": "That's what the book says. Mm.",
+          "perform": "to the wall, flat"
         }
       ],
       "choices": [
@@ -9112,12 +9184,13 @@
         },
         {
           "speaker": "dee",
-          "text": "Twenty minutes. {to the wall, flat} We let him stay twenty minutes. Then I call.",
-          "perform": "quick"
+          "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
+          "perform": "to the wall, flat, quick"
         },
         {
           "speaker": "dee",
-          "text": "Book says trespass. Book says the owner's property. Book doesn't say fourteen degrees. {low} Mm. That's why there's me."
+          "text": "Book says trespass. Book says the owner's property. Book doesn't say fourteen degrees. Mm. That's why there's me.",
+          "perform": "low"
         }
       ],
       "choices": [
@@ -9180,8 +9253,8 @@
         },
         {
           "speaker": "dee",
-          "text": "He's got a place at six. A shelter on Fifty-second. I told him. {back at the wall, dry} Don't tell Okafor I gave away the coffee.",
-          "perform": "flat"
+          "text": "He's got a place at six. A shelter on Fifty-second. I told him. Don't tell Okafor I gave away the coffee.",
+          "perform": "back at the wall, dry, flat"
         }
       ],
       "choices": [
@@ -9281,8 +9354,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. {over your radio, a breath of a laugh} Twenty minutes. {flat, a woman making an exception} Six. Fine.",
-          "perform": "the same word again"
+          "text": "Mm. Twenty minutes. Six. Fine.",
+          "perform": "over your radio, a breath of a laugh, flat, a woman making an exception, the same word again"
         },
         {
           "speaker": "narrator",
@@ -9331,7 +9404,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. {the whole sentence, to the wall} She watches tile two until he is out of the frame and for a while after."
+          "text": "Mm. She watches tile two until he is out of the frame and for a while after.",
+          "perform": "the whole sentence, to the wall"
         },
         {
           "speaker": "narrator",
@@ -9450,8 +9524,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. They'll feed him. That's something. {to the wall} Ask me first, next time.",
-          "perform": "flat, no weight in it"
+          "text": "Mm. They'll feed him. That's something. Ask me first, next time.",
+          "perform": "to the wall, flat, no weight in it"
         }
       ],
       "choices": [
@@ -9630,7 +9704,13 @@
         },
         {
           "speaker": "dee",
-          "text": "It's a dentist now. There was a room. A bench. A kettle. {flat, the pencil still} They took it out. Nine years ago. {a beat} I stand where the door was."
+          "text": "It's a dentist now. There was a room. A bench. A kettle.",
+          "perform": "flat, the pencil still"
+        },
+        {
+          "speaker": "dee",
+          "text": "They took it out. Nine years ago. I stand where the door was.",
+          "perform": "a beat, flat"
         },
         {
           "speaker": "dee",
@@ -9676,8 +9756,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Facts only. Isn't that what I said. {flat, picking the pencil up} A sensor reads a door. It doesn't read a person.",
-          "perform": "even"
+          "text": "Facts only. Isn't that what I said. A sensor reads a door. It doesn't read a person.",
+          "perform": "flat, picking the pencil up, even"
         },
         {
           "speaker": "narrator",
@@ -9722,7 +9802,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Seven hours is a long time to be careful. {to the wall, flat} Nobody's ever said it. Mm. Somebody should have."
+          "text": "Seven hours is a long time to be careful. Nobody's ever said it. Mm. Somebody should have.",
+          "perform": "to the wall, flat"
         },
         {
           "speaker": "narrator",
@@ -9809,9 +9890,9 @@
           "log": "Called the fire safety director about the silenced trouble signal."
         },
         {
-          "say": "Sign the log as it stands",
-          "next": "six-thirty",
-          "log": "Signed the shift log."
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log."
         }
       ],
       "log": "0540 hrs. Shift log reviewed with D. Reyes."
@@ -9864,9 +9945,9 @@
           "log": "Called the fire safety director about the silenced trouble signal."
         },
         {
-          "say": "Sign the log as it stands",
-          "next": "six-thirty",
-          "log": "Signed the shift log."
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log."
         }
       ],
       "log": "0540 hrs. Shift log reviewed with D. Reyes."
@@ -9923,9 +10004,9 @@
           "log": "Called the fire safety director about the silenced trouble signal."
         },
         {
-          "say": "Sign the log as it stands",
-          "next": "six-thirty",
-          "log": "Signed the shift log."
+          "say": "Write the closing line",
+          "next": "closing-line",
+          "log": "Opened the closing line of the shift log."
         }
       ],
       "log": "0540 hrs. Shift log reviewed with D. Reyes."
@@ -9943,13 +10024,13 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. {the whole of it} Once it's ink.",
-          "perform": "a nod, to the page"
+          "text": "Mm. Once it's ink.",
+          "perform": "the whole of it, a nod, to the page"
         },
         {
           "speaker": "dee",
-          "text": "It was a small lie. Small ones are the ones that get you. {flat} Leave it. It's true now.",
-          "perform": "low"
+          "text": "It was a small lie. Small ones are the ones that get you. Leave it. It's true now.",
+          "perform": "flat, low"
         }
       ],
       "choices": [
@@ -10008,8 +10089,8 @@
         },
         {
           "speaker": "dee",
-          "text": "I'll go. {to the wall, getting up} Stay on the wall. Mm.",
-          "perform": "the keys"
+          "text": "I'll go. Stay on the wall. Mm.",
+          "perform": "to the wall, getting up, the keys"
         },
         {
           "speaker": "narrator",
@@ -10076,8 +10157,13 @@
         },
         {
           "speaker": "adler",
-          "text": "I will be there at ten past six. Do not touch it again. Please put the time you silenced it in the log. In the same words.",
+          "text": "I will be there at ten past six. Do not touch it again.",
           "perform": "one idea at a time"
+        },
+        {
+          "speaker": "adler",
+          "text": "Please put the time you silenced it in the log. In the same words.",
+          "perform": "formal"
         },
         {
           "speaker": "dee",
@@ -10127,6 +10213,71 @@
       "log": "0552 hrs. FSD H. Adler notified of the silenced trouble signal, 0358. Attending 0610."
     },
     {
+      "id": "closing-line",
+      "folder": "closing-line",
+      "time": "06:00",
+      "title": "The closing line",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "Six o'clock. The last field on the report is one line long. It has a label, END OF SHIFT, and a cursor that has been waiting all night."
+        },
+        {
+          "speaker": "dee",
+          "text": "Time. Radios. What the night was. Whatever you put there, it's the one he reads first.",
+          "perform": "flat, the pencil on the shelf, not offered"
+        },
+        {
+          "speaker": "dee",
+          "text": "Before the rest. Before the times. He reads that line, and then he reads the rest to see if it's true. Mm.",
+          "perform": "even"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Outside, the sky over Madison Avenue has gone the color of the inside of a shell. On tile one the lobby has its first shadow."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Log it exactly",
+          "next": "six-thirty",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "0600 hrs. End of shift. Eleven items logged on this report. Radios 4 of 4 on charger. Report handed to day supervisor at 0630."
+        },
+        {
+          "say": "Add what you thought",
+          "next": "six-thirty",
+          "set": [
+            "opined"
+          ],
+          "log": "0600 hrs. End of shift. Quiet night, nothing serious. Everything seemed fine, probably."
+        },
+        {
+          "say": "Leave it blank",
+          "next": "six-thirty",
+          "set": [
+            "opined"
+          ],
+          "log": "Left the end-of-shift line blank."
+        },
+        {
+          "say": "Write: No incidents",
+          "next": "six-thirty",
+          "set": [
+            "lied"
+          ],
+          "add": {
+            "trainer_trust": -1
+          },
+          "log": "0600 hrs. End of shift. No incidents. Radios 4 of 4."
+        }
+      ],
+      "log": "0600 hrs. End-of-shift line open on the tablet."
+    },
+    {
       "id": "six-thirty",
       "folder": "six-thirty",
       "time": "06:30",
@@ -10136,7 +10287,7 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "06:30. The lobby has a day in it: the first tenants, a courier with flowers, the hum of the escalator being switched on. The seven o'clock sun lies across the marble like a dropped sheet."
+          "text": "06:30. The lobby has a day in it: the first tenants, a courier with flowers, the hum of the escalator being switched on. The sun lies across the marble like a dropped sheet."
         },
         {
           "speaker": "narrator",
@@ -10150,8 +10301,13 @@
         },
         {
           "speaker": "dee",
-          "text": "It's all in there. {at the charger, not turning} Four.",
-          "perform": "the radios counted again"
+          "text": "It's all in there. Four.",
+          "perform": "at the charger, not turning, the radios counted again"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Good morning, Officer. Good morning, Dolores.",
+          "perform": "a glance at the clock, then at the wall, then at the log"
         }
       ],
       "choices": [
@@ -10262,7 +10418,7 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass."
+          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35."
         },
         {
           "speaker": "okafor",
@@ -10271,18 +10427,33 @@
         },
         {
           "speaker": "okafor",
-          "text": "Times. Places. What you saw. Who you told. It reads like a log.",
+          "text": "The stairwell. I can see the landing. You gave me the floor, the door, the thing in the door, and what was done.",
           "perform": "the thumb stops"
         },
         {
           "speaker": "okafor",
+          "text": "The panel I can read word for word. I don't always get that.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Times. Places. What you saw. Who you told. It reads like a log.",
+          "perform": "a nod to the glass"
+        },
+        {
+          "speaker": "okafor",
           "text": "That's noted. Thank you.",
-          "perform": "a nod, the highest thing he says"
+          "perform": "a nod at you, the highest thing he says"
         },
         {
           "speaker": "dee",
           "text": "Mm.",
           "perform": "from the charger, low"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Ms. Reyes. Before I go up. Is there anything in there I should hear from you and not from the page?",
+          "perform": "polite, to the room"
         }
       ],
       "choices": [
@@ -10528,7 +10699,7 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass."
+          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35."
         },
         {
           "speaker": "okafor",
@@ -10542,8 +10713,23 @@
         },
         {
           "speaker": "okafor",
-          "text": "\"Probably fine.\" Probably what? Fine to whom? {the thumb moves} Not \"guy.\" \"Individual.\"",
+          "text": "\"Probably fine.\" Probably what? Fine to whom? \"Quiet night.\" What does that mean to someone who wasn't here?",
+          "perform": "the thumb moves, even"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Not \"guy.\" \"Individual.\"",
           "perform": "correcting himself, then you"
+        },
+        {
+          "speaker": "okafor",
+          "text": "A log is read later by people who weren't there. Sometimes by a lawyer. They have nothing but your words.",
+          "perform": "flat, a small stop"
+        },
+        {
+          "speaker": "okafor",
+          "text": "It's not that anything is wrong. It's that I can't tell.",
+          "perform": "even"
         },
         {
           "speaker": "dee",
@@ -10611,7 +10797,7 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass."
+          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35."
         },
         {
           "speaker": "okafor",
@@ -10620,13 +10806,28 @@
         },
         {
           "speaker": "okafor",
-          "text": "A contractor on forty with no authorization on the sheet. A box signed for at the dock. A call to nine-one-one for a man asleep.",
+          "text": "A contractor on forty with no authorization on the sheet. A box signed for at the dock.",
           "perform": "flat, each item set down"
+        },
+        {
+          "speaker": "okafor",
+          "text": "A call to nine-one-one for a man asleep. A radio check, late.",
+          "perform": "flat"
         },
         {
           "speaker": "okafor",
           "text": "Let's make sure we're aligned. I'm not saying anyone was wrong. I'm saying they're in the log.",
           "perform": "even"
+        },
+        {
+          "speaker": "okafor",
+          "text": "In your hand, with the time. That's the only reason this is a conversation.",
+          "perform": "even"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Next time, the binder first. And if the binder says no, you say no, and you write that you said it.",
+          "perform": "a nod, tired"
         },
         {
           "speaker": "dee",
@@ -10694,7 +10895,7 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass."
+          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35."
         },
         {
           "speaker": "okafor",
@@ -10708,6 +10909,11 @@
         },
         {
           "speaker": "okafor",
+          "text": "It is the right thing to have written. I want you to hear me say that. It is also the thing I have to act on.",
+          "perform": "even"
+        },
+        {
+          "speaker": "okafor",
           "text": "Dolores. You know the rule. Eleven years.",
           "perform": "not looking up"
         },
@@ -10715,6 +10921,11 @@
           "speaker": "dee",
           "text": "I know the rule.",
           "perform": "from the charger, flat, the counting stopped"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Nothing happened in those four minutes. Nothing happened. That is not what the rule is about.",
+          "perform": "even, to the glass"
         }
       ],
       "choices": [
@@ -10777,7 +10988,7 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass."
+          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35."
         },
         {
           "speaker": "okafor",
@@ -10791,8 +11002,18 @@
         },
         {
           "speaker": "okafor",
-          "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\"",
+          "text": "The fire panel belongs to Ms. Adler. The door belongs to the building. We are the people who tell them.",
           "perform": "he looks up for the first time"
+        },
+        {
+          "speaker": "okafor",
+          "text": "That is the whole job. That is all it ever was.",
+          "perform": "even"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\" It is true and it is not a defense.",
+          "perform": "a breath"
         },
         {
           "speaker": "dee",
@@ -10860,7 +11081,7 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass."
+          "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35."
         },
         {
           "speaker": "okafor",
@@ -10869,12 +11090,17 @@
         },
         {
           "speaker": "okafor",
-          "text": "This entry says an event happened a certain way. The access terminal says it did not.",
+          "text": "There is a line in this log that does not match the record. The terminal, or the rest of the log. One of them is wrong.",
           "perform": "even, polite, the worst voice he has"
         },
         {
           "speaker": "okafor",
-          "text": "I will not ask you why. The building manager will. {a breath} Dolores.",
+          "text": "I will not ask you why. The building manager will, and he is not a patient man, and he will not have slept either.",
+          "perform": "a breath"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Dolores.",
           "perform": "not looking up"
         },
         {
@@ -10890,7 +11116,7 @@
           "log": "Signed off the shift."
         }
       ],
-      "log": "0635 hrs. Day supervisor read the shift log. Entry disagrees with access terminal record."
+      "log": "0635 hrs. Day supervisor read the shift log. Entry disagrees with the record."
     },
     {
       "id": "end-clean",
@@ -10906,8 +11132,13 @@
         },
         {
           "speaker": "dee",
-          "text": "Tuesday. {putting her coat on, short} You'll want to sleep. Don't, till you've eaten.",
-          "perform": "flat"
+          "text": "Tuesday. You'll want to sleep. Don't, till you've eaten.",
+          "perform": "putting her coat on, short, flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "The seven stops under Queensboro. Walk it. Don't wait. I've timed it. It's faster.",
+          "perform": "dry"
         },
         {
           "speaker": "dee",
@@ -10916,7 +11147,16 @@
         },
         {
           "speaker": "narrator",
-          "text": "She goes. You hand your radio to the day officer. It clicks into the charger. Four."
+          "text": "The day officer asks how the night was. You tell him what happened, in order. He writes it down in the hand of a man who is learning to."
+        },
+        {
+          "speaker": "dee",
+          "text": "Radio.",
+          "perform": "from the doorway, one word, not a suggestion"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You hand it over. It clicks into the charger. Four."
         }
       ],
       "choices": [],
@@ -10940,18 +11180,23 @@
         },
         {
           "speaker": "dee",
-          "text": "April first. {to the charger} I know you read it. The drawer sticks. It didn't stick.",
-          "perform": "dry"
+          "text": "April first. I know you read it. The drawer sticks. It didn't stick.",
+          "perform": "to the charger, dry"
         },
         {
           "speaker": "dee",
-          "text": "I put it where you'd find it. Not him. Mm.",
+          "text": "I put it where you'd find it. Not him. Mm. You didn't ask. That's why.",
           "perform": "a breath that is nearly a smile"
         },
         {
           "speaker": "dee",
-          "text": "Pencil. {holding it out, the one from behind her ear} Write it plain. Somebody should, when they stop.",
-          "perform": "even"
+          "text": "They tell me it's a camera and a woman in New Jersey. A woman in New Jersey who has never stood on twelve at three in the morning. Mm. Doesn't matter.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Pencil. Write it plain. Somebody should, when they stop.",
+          "perform": "holding it out, the one from behind her ear, even"
         },
         {
           "speaker": "narrator",
@@ -10979,8 +11224,19 @@
           "perform": "a pen clicking, faintly warmer than usual"
         },
         {
+          "speaker": "okafor",
+          "text": "Ms. Reyes's post is under review. I did not know.",
+          "perform": "a pause"
+        },
+        {
+          "speaker": "okafor",
+          "text": "I should have known. That is also noted.",
+          "perform": "even"
+        },
+        {
           "speaker": "dee",
-          "text": "You told him. {at the charger, flat, no weight on it} Officer."
+          "text": "You told him. Officer.",
+          "perform": "at the charger, flat, no weight on it"
         },
         {
           "speaker": "narrator",
@@ -10993,7 +11249,13 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm. It's the book. {low} Clip it on."
+          "text": "Mm. It's the book. Clip it on.",
+          "perform": "low"
+        },
+        {
+          "speaker": "dee",
+          "text": "I'd have told him in April. You were right. Don't let it go to your head.",
+          "perform": "flat, not looking at you"
         }
       ],
       "choices": [],
@@ -11017,7 +11279,8 @@
         },
         {
           "speaker": "dee",
-          "text": "Eat something. {holding out half a sandwich} Not the corner. {quick, dry} The corner's mine."
+          "text": "Eat something. Not the corner. The corner's mine.",
+          "perform": "holding out half a sandwich, quick, dry"
         },
         {
           "speaker": "narrator",
@@ -11025,8 +11288,17 @@
         },
         {
           "speaker": "dee",
-          "text": "Mm.",
-          "perform": "the whole sentence"
+          "text": "Tuesday. You know where I sit. Mm.",
+          "perform": "folding the foil in four"
+        },
+        {
+          "speaker": "dee",
+          "text": "Nobody's said it to you tonight so I'll say it plain. You didn't leave. Mm. That's all it ever is.",
+          "perform": "to the wall"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She puts the foil in the bin by the door. It makes no noise at all."
         }
       ],
       "choices": [],
@@ -11046,17 +11318,26 @@
       "lines": [
         {
           "speaker": "okafor",
-          "text": "So. Perfect. There is nothing in this log I would change. {the thumb stops} Ms. Reyes's evaluation is one line. \"Competent.\"",
-          "perform": "reading, flat"
+          "text": "So. Perfect. There is nothing in this log I would change. Ms. Reyes's evaluation is one line. \"Competent.\"",
+          "perform": "the thumb stops, reading, flat"
         },
         {
           "speaker": "okafor",
-          "text": "That's the whole of it. It's noted. {a pause, almost an apology} Thank you.",
-          "perform": "to you, politely"
+          "text": "That's the whole of it. It's noted. Thank you.",
+          "perform": "a pause, almost an apology, to you, politely"
+        },
+        {
+          "speaker": "okafor",
+          "text": "I will say, for myself: this is the log I wish I had written, my first week. I did not write it. Good morning.",
+          "perform": "even"
         },
         {
           "speaker": "narrator",
-          "text": "Dolores's coat is not on the hook. The foil is on the shelf, folded in four. She has not taken it."
+          "text": "Dolores's coat is not on the hook. She left at 06:45, by the dock, so as not to pass the desk."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The foil is on the shelf, folded in four. She has not taken it."
         },
         {
           "speaker": "narrator",
@@ -11090,16 +11371,26 @@
         },
         {
           "speaker": "okafor",
-          "text": "Dolores, a word. Not now.",
+          "text": "Dolores, a word. Not now. That's twice this year.",
           "perform": "tired, the thumb on the glass"
         },
         {
           "speaker": "dee",
-          "text": "He's new. I'm the one who counts. {quietly, once} Four."
+          "text": "He's new. I'm the one who counts. Four.",
+          "perform": "quietly, once"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Next time, you say, and I decide. That is what the chain is for.",
+          "perform": "even"
         },
         {
           "speaker": "narrator",
           "text": "In the margin of the log there is a word crossed out in pencil and the right word written beside it. The hand is hers. The word was yours."
+        },
+        {
+          "speaker": "narrator",
+          "text": "She has done it in four places. You count them. You did not see her do any of it."
         }
       ],
       "choices": [],
@@ -11119,8 +11410,8 @@
       "lines": [
         {
           "speaker": "okafor",
-          "text": "So. \"He seemed nervous.\" How did he seem nervous? {reading, flat, patient} \"Probably.\" Probably.",
-          "perform": "the red stylus"
+          "text": "So. \"He seemed nervous.\" How did he seem nervous? \"Probably.\" Probably.",
+          "perform": "reading, flat, patient, the red stylus"
         },
         {
           "speaker": "okafor",
@@ -11131,6 +11422,11 @@
           "speaker": "dee",
           "text": "Mm.",
           "perform": "low, at the charger"
+        },
+        {
+          "speaker": "okafor",
+          "text": "It's a good first week. It is not a clean one. Those are different.",
+          "perform": "even, handing the tablet back"
         },
         {
           "speaker": "narrator",
@@ -11154,12 +11450,23 @@
       "lines": [
         {
           "speaker": "okafor",
-          "text": "I'll write it as it stands. {quietly, not looking at either of you} Four minutes. {the stylus} It's the rule, Dolores."
+          "text": "I'll write it as it stands. Four minutes. It's the rule, Dolores.",
+          "perform": "quietly, not looking at either of you, the stylus"
         },
         {
           "speaker": "dee",
           "text": "I know the rule.",
           "perform": "flat, to the charger"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Ms. Reyes. If you want to say something, say it.",
+          "perform": "gently, for him"
+        },
+        {
+          "speaker": "dee",
+          "text": "No. Thank you, Okafor.",
+          "perform": "one word, flat as a door, the thank you the size of a coin"
         },
         {
           "speaker": "narrator",
@@ -11197,8 +11504,13 @@
         },
         {
           "speaker": "okafor",
-          "text": "I'm not unfair. I want you to know that I'm not. {the thumb on the glass} That's noted.",
-          "perform": "a sigh"
+          "text": "I'm not unfair. I want you to know that I'm not. That's noted.",
+          "perform": "the thumb on the glass, a sigh"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Hand me your badge at the end of the week, not today. You've still got a shift to work. That is also in the book.",
+          "perform": "not unkind"
         },
         {
           "speaker": "dee",
@@ -11208,6 +11520,10 @@
         {
           "speaker": "narrator",
           "text": "You set your radio on the charger the way she showed you. It clicks. Four. Nobody says it."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The badge on your lanyard says your name and a number and a photograph of someone younger. It does not say Night."
         }
       ],
       "choices": [],
@@ -11232,8 +11548,13 @@
         },
         {
           "speaker": "okafor",
-          "text": "Nobody was hurt. It goes in the report, those words, because they are true. {his hand flat on the page} And they are not a defense.",
-          "perform": "even"
+          "text": "Nobody was hurt. It goes in the report, those words, because they are true. And they are not a defense.",
+          "perform": "his hand flat on the page, even"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Page eleven, Officer. The order of calls. You know it. You read it the first night. I watched you read it.",
+          "perform": "a pause, not an accusation"
         },
         {
           "speaker": "dee",
@@ -11262,13 +11583,18 @@
       "lines": [
         {
           "speaker": "okafor",
-          "text": "So. Not wrong. Not right. Next to the binder. {reading, flat} Noted.",
-          "perform": "the stylus, one small check"
+          "text": "So. Not wrong. Not right. Next to the binder. Noted.",
+          "perform": "reading, flat, the stylus, one small check"
         },
         {
           "speaker": "dee",
-          "text": "Mm. Tuesday. {putting on her coat} Read the whole binder.",
-          "perform": "to you, dry"
+          "text": "Mm. Tuesday. Read the whole binder. Page eleven, twice.",
+          "perform": "putting on her coat, to you, dry"
+        },
+        {
+          "speaker": "okafor",
+          "text": "A first night is a first night. Eat something. Go home.",
+          "perform": "even, kind in the only way he knows"
         },
         {
           "speaker": "narrator",
