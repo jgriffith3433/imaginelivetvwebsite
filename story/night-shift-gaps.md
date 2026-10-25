@@ -1,18 +1,48 @@
 # Night Shift: gaps audit
 
-Audit of Night Shift as it is on beta at `d3408c0` (#43), 2026-10-25. It replaces the two earlier audits of this file, which were written
+Audit of Night Shift as it is on beta at `d3408c0` (#43), 2026-10-25. **The numbered items below are the audit as written; "Script pass" right after
+the headline says what each script finding (group c and the text items of the other groups) became.** It replaces the two earlier audits of this file, which were written
 before the voices, the camera art, the listing and the engine fixes (#29 to #43) and were partly out of date (their repairs were pasted under
-a "Status" section; those items are now folded in or withdrawn). **Nothing was fixed in this pass**: this is a list. File names are
-repo-relative. Counts are from `story/night-shift.json` (228 scenes, 1,288 lines, 621 choices, 12 endings), `hawkes.assets.json` (1,375
+a "Status" section; those items are now folded in or withdrawn). **Nothing was fixed in the audit itself**: it is a list. File names are
+repo-relative. Counts are from `story/night-shift.json` as audited (228 scenes, 1,288 lines, 621 choices, 12 endings; now 241 scenes, 1,330 lines, 643 choices, 12 endings), `hawkes.assets.json` (1,375
 Night Shift assets) and the files on disk, by scripts named in the text.
 
-**Headline.** Shortest way through: **36.4 minutes**. Typical way (average, equal to the median): **42.2 minutes**. Longest: 50.4 minutes
+**Headline (after the script pass).** Shortest way through: **38.6 minutes**. Typical way (average, equal to the median): **44.7 minutes**. Longest: 53.3 minutes
 (each line's recording plus the player's 0.35 s gap; `node tools/check-night-shift.mjs`). By the brief's other clock, words at 150 a minute plus
-one second of pause per line, the same ways are 38.2 (shortest), 44.6 (typical) and 53.2 minutes (item 17). All 1,288 lines are recorded, all 10
+one second of pause per line, the ways are 40.6 (shortest), 47.4 (typical) and 56.4 minutes (item 17: before the pass they were 38.2, 44.6 and 53.2). All 1,330 lines are recorded, all 10
 beds, 18 effects, 26 camera pictures, 12 end cards and the landing card exist. **Made nothing: the 6 music stings** (the only unmade assets).
 What is open is mostly *proof*: the browser playtests that did run on beta's T4 (job ids in the appendix) show the story plays, and also
 show that **most of their red flags are the bot's own mistakes** (items 51 and 52), that `console` plays only the 5-scene demo, and that
 `sound`, `branches`, `pages`, `analytics`, `credits` and `blog` have no T4 run at all.
+
+## Script pass (2026-10-25): what each script finding became
+
+Every script finding is **fixed** (the data changed), **explained** (it is the design, now written in `story/night-shift.md`), or **left** (art, audio
+treatment or proof: not script). Checks: `npm run story -- --check`, `node tools/check-night-shift.mjs` (now also page length and the banned
+patterns over titles, logs and ending names), the state explorer (257,606 states, 0 stuck, 241 of 241 scenes and 12 of 12 endings reachable).
+New recordings: 64 lines (about $2), every other line kept its file (`node tools/make-audio.mjs night-shift --reuse`).
+
+| Item | What it became |
+| --- | --- |
+| 16, 17 timing | Fixed: shortest 38.6 (was 36.4), typical 44.7 (was 42.2), longest 53.3, from the recordings. Real scenes added on the way every player takes: the Zurich call (01:42), the day officer's badge (05:32), Dee signing the hours sheet (05:56), the last-twenty-minutes reactions (06:12). |
+| 18 | Left: the sign-off table lists least audio, the played walk the fewest choices; both are right. |
+| 19, 20 random player meets 5 of 12, best endings sit on few states | Explained: the good endings are meant to be earned (`story/night-shift.md`, the ending table). Each of the 12 is reached under conditions no other ending shares (`check-night-shift.mjs` fails on a duplicate). |
+| 21 the 53 "routing" buttons | Explained: a press to go on, a gated variant or a log-wording choice (`story/night-shift.md`, "Every choice changes something"). Each writes its own shift-log line, and the build and the checker prove that no button that sits beside a differently worded one changes nothing. |
+| 22 nine "Open the log" buttons with no log line | Fixed: each of `rice-split`, `rice-hers`, `rice-log` now writes its own line. |
+| 23 one button hides several outcomes | Explained, and fixed where it misled: the reading scenes (`okafor-reads-*`) no longer name events only some ways have, and the endings that followed them open on the room. |
+| 24 scenes with one button | Explained (a press to go on). |
+| 25 scenes that send every choice to the same scene | Fixed for the four `shift-prep-*`: the cup, the radios and the drawer now each have a scene (`prep-cup`, `prep-radios`, `prep-drawer`, `prep-drawer-knew`). The rest are the log-wording choices, explained. |
+| 26 repeated labels | Explained (gated variants). |
+| 27 pages over seven lines | Explained and enforced: the guide says up to twelve where a page is one whole exchange; the checker fails above twelve lines or 170 words. |
+| 28 Dee's "Mm." | Fixed: eight bare "Mm." that carried nothing are cut (it stays where it is her "I'm sorry": after Okafor reads the log, after a lie, at the ledge). |
+| 29 titles, logs, tagline not linted | Fixed: `check-night-shift.mjs` runs the banned patterns and stated feelings over them (0 hits). |
+| 30 not read in full | Done once: the whole script was read for this pass. Found and fixed: `end-by-the-book` said 06:52 at 07:02; `okafor-reads-slips`, `okafor-reads-sloppy`, `end-opinions` and `end-friendly` named a contractor, a box, "seemed harmless", an initial at 2224 that not every way has; `end-wedge` said the player read page eleven when the way may have skipped it. Four Dee lines that read as written were said plainly. |
+| 31 two endings open on the same words | Fixed: `end-under-review` has its own Okafor (he has not seen the notice and asks for it). |
+| 32 nine endings open mid-conversation | Fixed: each opens on a narrator line (time, who is at the desk, one object). |
+| 33 scene `four-hours` and ending `end-four-hours` share a stem | Explained: the id stays (the recipes and folders are keyed by it); the ending's title is "Four minutes." and its scene says so. |
+| 56 `story/night-shift.md` stale | Fixed: section 6 is a pointer, "Waiting for J" no longer asks about money already spent, the new scenes and the three kinds of button are written down. |
+| 10 camera pictures no scene shows | Left (art): `c9:trouble` would contradict the frozen tile nine in the same scenes. |
+| 8, 9 effects, copies, 1 to 7 audio, (b) art, (d) engine, (e) landing, 53 to 55, 57 to 60 | Left: not script. |
 
 ## How this was checked, and what was not
 
@@ -283,7 +313,7 @@ $ npm run story -- --check
 > imagine-live-tv@1.0.0 story
 > node tools/build-story.mjs --check
 
-ok       4 stories, 276 scenes, everything generated is up to date
+ok       4 stories, 289 scenes, everything generated is up to date
 $ node tools/check-night-shift.mjs
 228 scenes, 1288 lines (606 Dee), 12 endings, 240254 states explored
 playing time: shortest 36.4 min | average 42.2 min (every open choice equally likely) | median 42.2 (3000 random plays: 10% 40.9, 90% 43.6) | longest 50.4 min

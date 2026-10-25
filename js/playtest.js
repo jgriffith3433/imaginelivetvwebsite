@@ -3185,7 +3185,7 @@ async function nightShiftRun(options, t) {
     t.metric("longestMinutes", minutes(lengths.longest));
     t.event("criterion", `playing time: shortest ${minutes(lengths.shortest)} min, average ${minutes(lengths.mean)} min (every open choice equally likely), longest ${minutes(lengths.longest)} min (words at 150 a minute plus a pause per line)`);
     if (lengths.shortest < 30 * 60) t.problem("bug", `${st.id}: the shortest way through is ${minutes(lengths.shortest)} minutes, not 30`);
-    if (lengths.mean < 40 * 60 || lengths.mean > 50 * 60) t.problem("warning", `${st.id}: the average way through is ${minutes(lengths.mean)} minutes, not about 42`);
+    if (lengths.mean < 40 * 60 || lengths.mean > 50 * 60) t.problem("warning", `${st.id}: the average way through is ${minutes(lengths.mean)} minutes, not about 45`);
 
     // Pierce Hawkes once, briefly; nothing about B3, the vat or the creature.
     const spoken = Object.entries(st.scenes).flatMap(([id, sc]) => sc.lines.map((l) => ({ id, ...l })));
@@ -3202,7 +3202,44 @@ async function nightShiftRun(options, t) {
     t.event("criterion", "no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work");
 
     // 2. Real presses: the shortest way, the longest way, and two different endings, from a new run each.
+    // {"at":"numbers"} stops here (the data's checks, about 10 s); {"at":"<scene id on the layer way>"} (e.g. "four-hours") plays only the
+    // last stretch of the way through every layer, from a seeded run at that scene, and the last choices to "The wedge".
+    const at = options && options.at;
+    if (at === "numbers") { t.event("start-at", "numbers: the data's checks only, no way played"); return; }
     await consoleOpen(t, st);
+    if (at) {
+      t.event("start-at", `${at}: seeded run at that scene on the way through every layer, then real presses to the end`);
+      if (!layerPicks) return;
+      const m0 = consoleModel(st);
+      let k = -1;
+      for (let n = 0; n <= layerPicks.length; n++) {
+        if (m0.scene === at) { k = n; break; }
+        if (n < layerPicks.length) m0.choose(layerPicks[n]);
+      }
+      if (k < 0) return t.problem("bug", `${st.id}: the way through every layer never passes ${at}`);
+      const where = `${st.id}: from ${at} to "Someone to leave it to"`;
+      const m = await consoleSeedAt(t, st, layerPicks.slice(0, k), null);
+      await consoleHeard(t, document, where);
+      consoleCheck(t, st, m, document, where, null);
+      let seconds = lengths.dur[m.scene];
+      for (const i of layerPicks.slice(k)) { await consoleChoose(t, st, m, i, document, where, null); seconds += lengths.dur[m.scene]; }
+      const end = st.scenes[m.scene].ending;
+      if (!end) t.problem("bug", `${where}: the way ended at ${m.scene}, which is not an ending`);
+      else t.event("night-path", `${where}: ${layerPicks.length - k} choices played, ${(seconds / 60).toFixed(1)} minutes of audio, ends at "${end[0]}" (${m.scene})`);
+      if (end && stories().run(st.id) !== "end") t.problem("bug", `${where}: at an ending the run says "${stories().run(st.id)}", not end`);
+      if (x.scenes["end-wedge"]) {
+        const way = x.scenes["end-wedge"].picks;
+        const back = Math.min(6, way.length);
+        const w = `${st.id}: the last ${back} choices to "${st.scenes["end-wedge"].ending[0]}"`;
+        const mw = await consoleSeedAt(t, st, way.slice(0, way.length - back), null);
+        await consoleHeard(t, document, w);
+        consoleCheck(t, st, mw, document, w, null);
+        for (const i of way.slice(way.length - back)) await consoleChoose(t, st, mw, i, document, w, null);
+        if (mw.scene !== "end-wedge") t.problem("bug", `${w}: ended at ${mw.scene}`);
+        else t.event("night-path", `${w}: ends at "${st.scenes[mw.scene].ending[0]}"`);
+      }
+      return;
+    }
     const plays = [["the shortest way", lengths.shortestWay], ["the longest way", lengths.longestWay]];
     if (layerPicks) plays.push(['the way through every layer of the trainer, to "Someone to leave it to"', layerPicks]);
     else if (x.scenes["end-someone"]) plays.push([`the way to "${st.scenes["end-someone"].ending[0]}"`, x.scenes["end-someone"].picks]);
@@ -3597,10 +3634,10 @@ installPlaytest({
     },
     {
       id: "night-shift",
-      title: "Night Shift, the whole night: at least 8 endings, no dead ends, the shortest way through 30 minutes of audio and a typical one about 42, Pierce Hawkes once and briefly, nothing about B3, the vat or the creature",
+      title: "Night Shift, the whole night: at least 8 endings, no dead ends, the shortest way through 30 minutes of audio and a typical one about 45, Pierce Hawkes once and briefly, nothing about B3, the vat or the creature",
       seconds: 480,
       tags: ["full"],
-      description: "Opens Night Shift (night-shift) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 42 (a warning outside 40 to 50), and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged.",
+      description: "Opens Night Shift (night-shift) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45 (a warning outside 40 to 50), and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged. Options: {\"at\":\"numbers\"} runs only the data's checks (about 10 s); {\"at\":\"four-hours\"} (any scene on the way through every layer) opens a seeded run (named setup shortcut, event seeded-run) at that scene and plays the rest of the way, to \"Someone to leave it to\", with real presses, then the last six choices to \"The wedge\" (about 3 minutes).",
     },
     {
       id: "night-shift-gaps",

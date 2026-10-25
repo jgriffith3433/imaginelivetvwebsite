@@ -2,8 +2,11 @@
 
 **Listed on the landing page** (since #35; J's open questions are under "Waiting for J" at the end). The whole night is built as a
 console story in `story/night-shift.json` (see "The built night" below): it plays at `/?story=night-shift`, its pages are under
-`/night-shift/`. **The script is final** (2026-10-25, the text pass that came before the voices). All 1,288 lines are recorded in the
-locked voices, the beds and effects are made, the camera pictures and end cards are real; only the 6 music stings are not made yet.
+`/night-shift/`. **The script is final** (2026-10-25: the text pass, then the script pass that fixed the gap audit's group (c), see
+`story/night-shift-gaps.md`). All 1,330 lines are recorded in the locked voices, the beds and effects are made, the camera pictures and
+end cards are real; only the 6 music stings are not made yet. A text change costs a new recording for each changed line (about 2.5 cents):
+edit `story/night-shift.json`, run `npm run story`, then `node tools/make-audio.mjs night-shift --reuse` (every line whose voice and text
+already have a recording keeps it, even when it moved) and make only the lines it lists.
 
 ## The idea
 
@@ -301,7 +304,8 @@ given; the description is the whole recipe. The media is made from these descrip
      Her habit: counting the radios.
   2. **The pencil (`sign-why`, `sign-why-44`: trust 2 or more at the sign-in, 21:30).** She admits she writes the log in pencil first
      because "once it's ink, it's true." She mentions a husband, once, in the past tense, and moves on (the sandwich, `sandwich-ray`, if the
-     player asked about it).
+     player asked about it). It comes back at 05:56 (`hours-sheet`): with trust 2 or more the player can hand her the pen, and she signs the
+     training sheet in ink.
   3. **The four hours (`four-hours`, 02:58: warmth 2, the player never left the wall, and sat by her after the leak instead of asking about
      Ray).** She says the number, "four hours," and changes the subject to the clock. Ray, a boiler room, a guard who stepped out; she never
      says more.
@@ -460,7 +464,11 @@ about the work).
 - **Each line is written for its voice.** Test: cover the name; you should still know who is talking.
 - **Humor** is people being people ("The coffee machine is wrong."), never a joke about the job.
 - **Length.** A choice is two to six words ("Log it exactly", "Call Dolores"). A line is short: narration at most 42 words, a speech at most
-  32 and three sentences. A page is six or seven lines, never more than about 170 words (`tools/check-night-shift.mjs` holds the line limits).
+  32 and three sentences. A page is six or seven lines, up to twelve where it is one whole exchange (Terrell's goodbye, the handover), and never
+  more than about 170 words. `tools/check-night-shift.mjs` holds all of it, and runs the banned patterns over every title, log entry and ending name too.
+- **A page may not name what only some ways have.** The engine has no conditional lines, so a scene that many ways reach (Mr. Okafor reading the
+  log, an ending) says only what every one of those ways did: "Seemed." "Probably." are in every opinion log; "a contractor on forty" is not. Every
+  ending opens on a narrator line that puts the room and the time first (07:02, who is at the desk), then the speakers.
 
 ## 5. The ending map
 
@@ -497,102 +505,31 @@ rest are in-between and honest.* No ending has a moral line. Each ends on an obj
 
 ## 6. The state model
 
-*This is the first plan, written before the build. The state the build proves is under "The built night"; where they differ, that wins.*
-
-*Everything the story remembers, written so a build check can verify that every choice changes at least one
-thing. All flags are booleans unless a type is given; meters are integers with the range shown. State is data on
-the scenes (like the inventory in The Water Road) and is worked out from the path, so a saved place comes back
-with it.*
-
-### Flags: what the player noticed
-
-| Flag | Set when |
-| --- | --- |
-| `noticed_wedge` | Looked at camera C4 (or Dee pointed) before the tenant left the stairwell. |
-| `noticed_cam9_freeze` | Looked at C9's tile after 03:41, or used the wall check at 03:45. |
-| `noticed_trouble_light` | Read the fire panel's display. |
-| `noticed_laptop` | Looked at C1 at 02:xx. |
-| `noticed_sleeper` | Looked at C2 at 02:xx–03:xx. |
-| `noticed_leak` | Chose the C6 check or heard Marisol say "wet". |
-| `noticed_12th` | Compared Dee's 03:00 tour entry with the camera sheet. |
-| `noticed_notice` | Read the contractor notice in the shelf drawer. |
-| `noticed_clock_fast` | Asked about the wall clock. |
-
-### Flags: what the player logged (and how)
-
-Each log choice is one of `fact` (exact words), `opinion` ("seemed", "probably"), `omit` (left out), `lie`
-(wrote something untrue).
-
-| Variable | Values | Notes |
-| --- | --- | --- |
-| `log_wedge` | `none`, `fact`, `opinion`, `omit`, `lie` | Per event `E1`–`E9` there is a `log_<event>` with the same values. |
-| `log_style` | meter 0–5 | +1 for each `fact`, −1 for each `opinion`, −2 for each `lie`. At the morning it is the number Okafor reads out. |
-| `log_lies` | count | Any `lie` increments it; ≥ 1 forces competence `failed` unless `confessed`. |
-| `confessed` | bool | Corrected a lie before the morning. Reduces the effect of `log_lies` by one tier. |
-
-### Flags: what the player told people
-
-| Flag | Set when |
-| --- | --- |
-| `told_super_wedge` / `told_super_trouble` / `told_super_cam9` / `told_super_sleeper` | Called Okafor's night line (or the supervisor) for that event. |
-| `called_fsd` | Called Ms. Adler for the trouble signal; `fsd_exact` if the player read the display exactly. |
-| `called_911` | Called 911 (for the sleeper or the leak). `over_reaction` is set when that was not needed. |
-| `told_okafor_notice` | At the morning, told the day supervisor about the remote-monitoring notice. |
-| `vouched_cleaner` | Let the nephew in on Marisol's word (E1). `rule_broken` +1. |
-| `signed_in_pierce` | Asked the Chairman to sign in (cameo). If not, `waved_through_big_name`. |
-| `waved_visitor` | Let a visitor/courier in without authorization (E9 or Terrell's last hour). `rule_broken` +1. |
-| `left_wall` | Left the wall without telling control. `told_control` is the opposite. |
-
-### Meters
-
-| Meter | Range | Starts | Meaning |
-| --- | --- | --- | --- |
-| `trainer_trust` | 0–5 | 1 | How much Dee believes the player is good. Raised by facts in the log, answering radio checks, staying on the wall, asking her real questions. Lowered by lies, leaving the wall, mocking her habits. Reveal layers 2 and 4 read this. |
-| `trainer_warmth` | 0–5 | 0 | How much the player has been *kind* (eating together, not pushing about Ray, covering). Layers 3 and 4 read this. |
-| `post_orders` | 0–5 | 1 | How closely the player follows the binder (the other side of trust). |
-| `rule_broken` | count | 0 | Vouch, wave-through, skipped check, no sign-in. |
-| `radio_missed` | count | 0 | Radio checks the player forgot or answered late. |
-| `building_known` | 0–6 | 0 | Counts `noticed_*` flags that matter. Reads the B axis. |
-
-**Trust in the trainer versus the post orders.** Some choices raise one and lower the other: letting the cleaner's
-nephew in raises `trainer_trust` (Dee would have) and `rule_broken`; calling the supervisor lowers
-`trainer_trust` by 1 and raises `post_orders`. The story never says which is right; the endings cost both ways.
-
-### Axis calculation (at 06:30)
-
-- **C (competence):** `failed` if `log_lies` ≥ 1 and not `confessed`, or `left_wall` and not `told_control`, or
-  `rule_broken` ≥ 3, or `radio_missed` ≥ 3, or a trouble signal not reported; `solid` if `log_style` ≥ 3 and
-  `rule_broken` ≤ 1 and `radio_missed` ≤ 1; else `shaky`.
-- **T (trainer):** `close` if `trainer_trust` ≥ 3 and `trainer_warmth` ≥ 3; `cold` if `trainer_trust` ≤ 1; else
-  `correct`.
-- **B (building):** `learned` if `building_known` ≥ 4; `blind` if ≤ 1; else `partial`.
-- The ending is the row of the table (section 5) that matches; a lookup table in the data resolves ties by listing
-  order. Ending 9 requires `told_okafor_notice`; ending 2 requires `noticed_notice` and not `told_okafor_notice`.
-
-### Build check (so that every choice changes something)
-
-The story build should, for every choice in `story/night-shift.json` (when it exists), assert that the choice
-either (a) changes at least one flag or meter listed above, (b) leads to a scene whose text or available choices
-differ by state, or (c) is declared `"cosmetic": true` with a reason (a maximum of two per run: the choices that
-are pure breath, such as the sandwich). It should also check that each ending is reachable, that each axis value
-is reachable, that the trainer's four reveal layers can each be reached by a path and that no path sets a flag it
-can't read. It should fail the build if a Board member is given a first name, if a scene's text mentions the
-company's restricted work (an `unspoken` list kept in the data, not in this doc), or if Pierce speaks outside the cameo scenes.
+The first plan (nine `noticed_*` flags, `log_*` values, six meters) was cut to what the build can prove. **"The built night" below is the model**;
+the axes (C, T, B) and the ending table in section 5 still describe what each ending means.
 
 ## The built night
 
-`story/night-shift.json`: 228 scenes, about 1,290 spoken lines, 12 endings. The first act (18:45 to 22:05) is the slice
+`story/night-shift.json`: 241 scenes, 1,330 spoken lines, 12 endings. The first act (18:45 to 22:05) is the slice
 (`story/night-shift-slice-notes.md`, kept as history), moved into the engine's format: the engine has no conditional lines, so a line
 that read a flag now sits in a short scene that follows the choice. Playing time (words at 150 a minute plus a pause per line, the
 build's own `dur`; the voices will move it, usually longer): `node tools/check-night-shift.mjs` prints the shortest, the average (every
-open choice equally likely) and the longest. Now (from the recordings): shortest 36.4 minutes, average 42.2, longest 50.4.
+open choice equally likely) and the longest. Now (from the recordings): shortest 38.6 minutes, average 44.7, longest 53.3.
 
 **Acts.** 1: handover, the wall, the first tour, the sign-in, Marisol and the badge, the first log entry (to 22:05). 2: Terrell's last
 hour, a man behind a badge, the first time alone on the wall, Dee covering tile five, the night-line call, the sandwich and the index
 cards, the late list (to 01:35). 3: the wedge on 31, the laptop, Marisol's coffee and the water on 44, Dee up to the roof door, the lights
 dipping, the stuck car, the Chairman, camera nine, the panel, Dev signing out, the box for fifty-eight, the humming, the man on the ledge,
-Dee's page and the twelfth floor (to 05:30). 4: Marisol's plate, the log review, the closing line, the handover ritual, the day supervisor's
-reading (one of six), the ending.
+Dee's page and the twelfth floor (to 05:30). 4: the day officer's failed badge, Marisol's plate, the log review, Dee signing the hours sheet, the
+closing line, the handover ritual, the day supervisor's reading (one of six), the ending.
+
+**Added in the script pass (2026-10-25), all on the way every player takes:** `zurich-call` and `zurich-radio` (01:42: a caller from Zurich asks
+for fifty-eight; the guard takes a number, reads her the list, which is a slip, or radios Dee, who says number and name only); `day-officer`,
+`day-officer-list`, `day-officer-let` (05:32: his badge fails in the cold; list first, or let him in, which is a slip); `hours-sheet`,
+`hours-ink`, `hours-pencil`, `hours-refused` (05:56: the payoff of "Dolores signs your hours" and of the pen or the pencil at nine o'clock: she
+initials in ink if she trusts the player and is handed the pen, in pencil if handed the pencil, in pencil and says "Not that one" if she does
+not trust them); `prep-cup`, `prep-radios`, `prep-drawer`, `prep-drawer-knew` (06:12: what the last twenty minutes' three buttons actually do,
+which used to be a meter the player never saw). They are at the end of `scenes`: the unlocks cookie is a bit per scene, in order.
 
 **The state model as built** (smaller than section 6, so the build can prove it: `npm run story` explores every state, about 250,000, under
 `stateCap` 300,000). Meters: `trainer_trust` 0-3 (starts 1), `trainer_warmth` 0-2, `building_known` 0-2 (what the player noticed:
@@ -605,6 +542,15 @@ player is told by Mr. Okafor). Short-lived: `asked_44`, `asked_sandwich`, `met_d
 "probably"), blank, and where it tempts, a lie; the choice's `log` is the entry in the shift log.
 
 **Every choice changes something.** A button with other buttons beside it either moves a flag or a meter, or it goes straight to an ending.
+Three kinds of button do not look like decisions and are not meant to be:
+
+- **A press to go on** ("Back to the wall", "Take your seat", "Say nothing"): the only choice the scene has. It writes a shift-log line and opens
+  the next scene. 46 of 241 scenes are like this, and each follows a scene that ended on an object or a silence.
+- **A gated variant** (the same words four or seven times, "Hand him the tablet", "Answer the phone"): the state picks which one is on the page, so
+  the player sees one button. It stands for something the player already decided (what they logged, whether they left the wall); the decision was
+  made at the log entry, and the reading scene it opens says only what every way to it has in its log.
+- **A log-wording choice** ("Log it exactly", "Add what you thought", "Leave it out", "Write that ..."): all four go to the same next scene, and
+  the next scene's first line is Dee's reaction to the one that was chosen. Each sets `opined` or `lied` or adds trust, and each has its own log entry.
 The curious ones in the first act spend trust or warmth (the latch, the lock, the compactor, the roof), none of them building knowledge.
 `tools/check-night-shift.mjs` fails the build on a decision that changes neither in any state it can be made in.
 
@@ -646,7 +592,7 @@ Nothing in the night says B3, the vat or the creature (`unspoken` in the data; t
 - The tree itself is done: J has not read it. The script is final for voicing; changes after this cost new recordings.
 - The look (a grounded live-action look? the same game-render look as The Water Road?) and the narrator.
 - Whether Pierce's cameo uses PH Origins' voice as written.
-- The media budget: about 1,200 voiced lines (the estimate is in the PR/summary), the camera stills and 12 end cards.
+- The music stings: 6 of them (`hawkesgen_estimate`: 61 GPU-seconds, about $0.08, $0.70 with the idle tail). Everything else is made.
 
 Night Shift is listed already; anything J changes here after reading it costs new recordings.
 
