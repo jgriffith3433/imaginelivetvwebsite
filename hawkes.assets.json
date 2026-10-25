@@ -4324,12 +4324,12 @@
     },
     {
       "id": "night-shift-endcard-end-four-hours",
-      "note": "End card for the ending \"The four hours.\" (The four hours) (Night Shift): the control room at the end of the shift.",
+      "note": "End card for the ending \"Four minutes.\" (The four hours) (Night Shift): the control room at the end of the shift.",
       "steps": [
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"The four hours.\": The four hours. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Four minutes.\": The four hours. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
             "width": 1024,
             "height": 576
           },
@@ -4337,7 +4337,7 @@
         }
       ],
       "candidates": 3,
-      "pick": "an end card for \"The four hours.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "pick": "an end card for \"Four minutes.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
       "files": {
         "image": "night-shift/media/endcards/end-four-hours.png"
       }
@@ -4400,6 +4400,26 @@
       "pick": "an end card for \"Noted.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
       "files": {
         "image": "night-shift/media/endcards/end-noted.png"
+      }
+    },
+    {
+      "id": "night-shift-endcard-end-under-review",
+      "note": "End card for the ending \"Under review.\" (Under review) (Night Shift): the control room at the end of the shift.",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A fixed security camera frame, 16:9: the control room wall at the end of the shift The ending is called \"Under review.\": Under review. A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
+            "width": 1024,
+            "height": 576
+          },
+          "save": "image"
+        }
+      ],
+      "candidates": 3,
+      "pick": "an end card for \"Under review.\" in the same security-camera look as the wall; matches the building bible's control room; empty of readable text",
+      "files": {
+        "image": "night-shift/media/endcards/end-under-review.png"
       }
     },
     {
@@ -6780,12 +6800,12 @@
     },
     {
       "id": "night-shift-talk-commute-line-3",
-      "note": "The seven (Night Shift): Dee says \"Thirty-six minutes. Door to door. You'll learn the seven by smell.\".",
+      "note": "The seven (Night Shift): Dee says \"Thirty-six minutes. Door to door. The seven smells like pennies.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat][a small][dry kindness] Thirty-six minutes. Door to door. You'll learn the seven by smell.",
+            "text": "[flat][a small][dry kindness] Thirty-six minutes. Door to door. The seven smells like pennies.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -12990,12 +13010,12 @@
     },
     {
       "id": "night-shift-day-log-line-4",
-      "note": "The day log (Night Shift): Dee says \"He's the best at it. Not the best at anything else. Mm.\".",
+      "note": "The day log (Night Shift): Dee says \"He's the best at it. Not the best at anything else.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[from the doorway][taking off her coat][not asking what you are reading] He's the best at it. Not the best at anything else. Mm.",
+            "text": "[from the doorway][taking off her coat][not asking what you are reading] He's the best at it. Not the best at anything else.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -13008,12 +13028,12 @@
     },
     {
       "id": "night-shift-day-log-line-5",
-      "note": "The day log (Night Shift): Dee says \"Don't copy him. Mm. Read what he leaves out.\".",
+      "note": "The day log (Night Shift): Dee says \"Don't copy him. Read what he leaves out.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] Don't copy him. Mm. Read what he leaves out.",
+            "text": "[flat] Don't copy him. Read what he leaves out.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -13314,12 +13334,12 @@
     },
     {
       "id": "night-shift-alone-missed-line-4",
-      "note": "No answer (Night Shift): Dee says \"Lobby's clear. Dock's clear. Mm.\".",
+      "note": "No answer (Night Shift): Dee says \"Lobby's clear. Dock's clear.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[over the radio][after a moment] Lobby's clear. Dock's clear. Mm.",
+            "text": "[over the radio][after a moment] Lobby's clear. Dock's clear.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -15096,12 +15116,12 @@
     },
     {
       "id": "night-shift-late-zurich-line-2",
-      "note": "Zurich (Night Shift): Dee says \"Somebody's awake up there. Mm.\".",
+      "note": "Zurich (Night Shift): Dee says \"Somebody's awake up there.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[dry] Somebody's awake up there. Mm.",
+            "text": "[dry] Somebody's awake up there.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -15204,12 +15224,12 @@
     },
     {
       "id": "night-shift-wedge-watch-line-4",
-      "note": "The wall alone (Night Shift): Dee says \"Somebody put a bench in a fire stair. I sit on it four seconds. Mm.\".",
+      "note": "The wall alone (Night Shift): Dee says \"Somebody put a bench in a fire stair. I sit on it four seconds.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[over the radio][dry][a little out of breath] Somebody put a bench in a fire stair. I sit on it four seconds. Mm.",
+            "text": "[over the radio][dry][a little out of breath] Somebody put a bench in a fire stair. I sit on it four seconds.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -15492,12 +15512,12 @@
     },
     {
       "id": "night-shift-wedge-dee-line-1",
-      "note": "Dee goes (Night Shift): Dee says \"Wedge. Thirty-one. Mm. I'm going up. Wall.\".",
+      "note": "Dee goes (Night Shift): Dee says \"Wedge. Thirty-one. I'm going up. Wall.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[over the radio][already moving] Wedge. Thirty-one. Mm. I'm going up. Wall.",
+            "text": "[over the radio][already moving] Wedge. Thirty-one. I'm going up. Wall.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -17778,12 +17798,12 @@
     },
     {
       "id": "night-shift-tenant-promise-line-3",
-      "note": "Someone (Night Shift): Dee says \"Don't promise what we haven't got. Mm. He'll be at the desk at seven asking where they are.\".",
+      "note": "Someone (Night Shift): Dee says \"Don't promise what we haven't got. He'll be at the desk at seven asking where they are.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] Don't promise what we haven't got. Mm. He'll be at the desk at seven asking where they are.",
+            "text": "[flat] Don't promise what we haven't got. He'll be at the desk at seven asking where they are.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -17886,12 +17906,12 @@
     },
     {
       "id": "night-shift-tenant-go-line-5",
-      "note": "Forty (Night Shift): Dee says \"Forty is the floor you can't help. Come on down. Mm.\".",
+      "note": "Forty (Night Shift): Dee says \"Forty is the floor you can't help. Come on down.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[on the radio][flat] Forty is the floor you can't help. Come on down. Mm.",
+            "text": "[on the radio][flat] Forty is the floor you can't help. Come on down.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -17918,24 +17938,6 @@
       ],
       "files": {
         "line": "night-shift/tenant-go/media/line-6.mp3"
-      }
-    },
-    {
-      "id": "night-shift-tenant-go-line-7",
-      "note": "Forty (Night Shift): Narrator says \"The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
-            "voice": "IFbrwI7VRvX2VkoD4Y3K",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/tenant-go/media/line-7.mp3"
       }
     },
     {
@@ -17994,12 +17996,12 @@
     },
     {
       "id": "night-shift-leak-watch-line-4",
-      "note": "Water on forty-four (Night Shift): Dee says \"Old pipe. Mm.\".",
+      "note": "Water on forty-four (Night Shift): Dee says \"Old pipe.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] Old pipe. Mm.",
+            "text": "[flat] Old pipe.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -18750,12 +18752,12 @@
     },
     {
       "id": "night-shift-three-oclock-line-2",
-      "note": "Roof door (Night Shift): Dee says \"Nothing happens at three o'clock. That's why we're here. Mm.\".",
+      "note": "Roof door (Night Shift): Dee says \"Three o'clock. Mm. Nothing happens.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[at the door][flat] Nothing happens at three o'clock. That's why we're here. Mm.",
+            "text": "[at the door][flat] Three o'clock. Mm. Nothing happens.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -19596,12 +19598,12 @@
     },
     {
       "id": "night-shift-dev-dee-line-3",
-      "note": "Dee takes the intercom (Night Shift): Dee says \"Anand. Dolores. We met. Sit on the floor. It's a small thing. A box that stopped.\".",
+      "note": "Dee takes the intercom (Night Shift): Dee says \"Anand. Dolores. Sit on the floor. It's a small thing. A box that stopped.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[even][low][the voice of someone who has done this before] Anand. Dolores. We met. Sit on the floor. It's a small thing. A box that stopped.",
+            "text": "[even][low][the voice of someone who has done this before] Anand. Dolores. Sit on the floor. It's a small thing. A box that stopped.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -20856,12 +20858,12 @@
     },
     {
       "id": "night-shift-adler-call-line-3",
-      "note": "Ms. Adler (Night Shift): Ms. Adler says \"Nineteen years. The panel says what it means. Read it exactly.\".",
+      "note": "Ms. Adler (Night Shift): Ms. Adler says \"Word for word, please. Take your time.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[crisp] Nineteen years. The panel says what it means. Read it exactly.",
+            "text": "[crisp] Word for word, please. Take your time.",
             "voice": "QJ9eYeuXwMsC2KElXT1P",
             "model": "eleven_v4"
           },
@@ -21666,12 +21668,12 @@
     },
     {
       "id": "night-shift-courier-who-line-2",
-      "note": "Who sent it (Night Shift): Dee says \"Chairman's office is on the second floor of nobody's list at four in the morning.\".",
+      "note": "Who sent it (Night Shift): Dee says \"Chairman's office isn't on anybody's list at four in the morning.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[dry] Chairman's office is on the second floor of nobody's list at four in the morning.",
+            "text": "[dry] Chairman's office isn't on anybody's list at four in the morning.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -21864,12 +21866,12 @@
     },
     {
       "id": "night-shift-courier-super-line-4",
-      "note": "The night line (Night Shift): Dee says \"That's what the book says. Mm.\".",
+      "note": "The night line (Night Shift): Dee says \"That's what the book says.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[to the wall][flat] That's what the book says. Mm.",
+            "text": "[to the wall][flat] That's what the book says.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -22134,12 +22136,12 @@
     },
     {
       "id": "night-shift-hum-along-line-6",
-      "note": "Not the key (Night Shift): Dee says \"Book says trespass. Book doesn't say fourteen degrees. Mm.\".",
+      "note": "Not the key (Night Shift): Dee says \"Book says trespass. Book doesn't say fourteen degrees.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[low] Book says trespass. Book doesn't say fourteen degrees. Mm.",
+            "text": "[low] Book says trespass. Book doesn't say fourteen degrees.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -22782,12 +22784,12 @@
     },
     {
       "id": "night-shift-dawn-tablet-f-line-1",
-      "note": "Her page (Night Shift): Dee says \"Fourteen degrees. In the log. Mm.\".",
+      "note": "Her page (Night Shift): Dee says \"Fourteen degrees. In the log.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[reading][flat] Fourteen degrees. In the log. Mm.",
+            "text": "[reading][flat] Fourteen degrees. In the log.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -22890,12 +22892,12 @@
     },
     {
       "id": "night-shift-dawn-tablet-m-line-1",
-      "note": "Her page (Night Shift): Dee says \"He was there. Whether you write it or not, he was there. Mm.\".",
+      "note": "Her page (Night Shift): Dee says \"He was there. Whether you write it or not.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] He was there. Whether you write it or not, he was there. Mm.",
+            "text": "[flat] He was there. Whether you write it or not.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -23016,12 +23018,12 @@
     },
     {
       "id": "night-shift-dee-back-0520-line-3",
-      "note": "Back from the restroom (Night Shift): Dee says \"Six o'clock, the sky does a thing. Over the river. Can't see the river. Mm.\".",
+      "note": "Back from the restroom (Night Shift): Dee says \"Six o'clock, the sky does a thing. Over the river. Can't see the river.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] Six o'clock, the sky does a thing. Over the river. Can't see the river. Mm.",
+            "text": "[flat] Six o'clock, the sky does a thing. Over the river. Can't see the river.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -23412,12 +23414,12 @@
     },
     {
       "id": "night-shift-write-up-clean-line-4",
-      "note": "Pencil first (Night Shift): Dee says \"Way it was. Mm.\".",
+      "note": "Pencil first (Night Shift): Dee says \"Way it was.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[not looking at the page] Way it was. Mm.",
+            "text": "[not looking at the page] Way it was.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -23520,12 +23522,12 @@
     },
     {
       "id": "night-shift-write-up-sloppy-line-5",
-      "note": "Seemed (Night Shift): Dee says \"He wasn't here. The page is all he gets. Mm.\".",
+      "note": "Seemed (Night Shift): Dee says \"He wasn't here. The page is all he gets.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] He wasn't here. The page is all he gets. Mm.",
+            "text": "[flat] He wasn't here. The page is all he gets.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -23574,12 +23576,12 @@
     },
     {
       "id": "night-shift-write-up-lied-line-3",
-      "note": "Officer (Night Shift): Dee says \"Officer. Which of these is not the way it was.\".",
+      "note": "Officer (Night Shift): Dee says \"Officer. Which of these isn't the way it was?\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat][no weight on any word] Officer. Which of these is not the way it was.",
+            "text": "[flat][no weight on any word] Officer. Which of these isn't the way it was?",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -23718,12 +23720,12 @@
     },
     {
       "id": "night-shift-late-okafor-line-4",
-      "note": "Thirty-one (Night Shift): Dee says \"I'll go. Stay on the wall. Mm.\".",
+      "note": "Thirty-one (Night Shift): Dee says \"I'll go. Stay on the wall.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[to the wall][getting up][the keys] I'll go. Stay on the wall. Mm.",
+            "text": "[to the wall][getting up][the keys] I'll go. Stay on the wall.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -23862,12 +23864,12 @@
     },
     {
       "id": "night-shift-closing-line-line-2",
-      "note": "The closing line (Night Shift): Dee says \"Time. Radios. What the night was. Whatever you put there, it's the one he reads first.\".",
+      "note": "The closing line (Night Shift): Dee says \"Time. Radios. What the night was, in one line.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat][the pencil on the shelf][not offered] Time. Radios. What the night was. Whatever you put there, it's the one he reads first.",
+            "text": "[flat][the pencil on the shelf][not offered] Time. Radios. What the night was, in one line.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -23880,12 +23882,12 @@
     },
     {
       "id": "night-shift-closing-line-line-3",
-      "note": "The closing line (Night Shift): Dee says \"He reads that first. Then he checks the rest. Mm.\".",
+      "note": "The closing line (Night Shift): Dee says \"That's the one he reads first. Then he checks the rest.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[even] He reads that first. Then he checks the rest. Mm.",
+            "text": "[even] That's the one he reads first. Then he checks the rest.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -24024,12 +24026,12 @@
     },
     {
       "id": "night-shift-shift-prep-f-line-7",
-      "note": "The last twenty minutes (Night Shift): Dee says \"Then the log. Then Okafor. Then home. Mm.\".",
+      "note": "The last twenty minutes (Night Shift): Dee says \"Then the log. Then Okafor. Then home.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] Then the log. Then Okafor. Then home. Mm.",
+            "text": "[flat] Then the log. Then Okafor. Then home.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -24168,12 +24170,12 @@
     },
     {
       "id": "night-shift-shift-prep-m-line-1",
-      "note": "The last twenty minutes (Night Shift): Dee says \"A blank is a line too. It says: didn't know what to say.\".",
+      "note": "The last twenty minutes (Night Shift): Dee says \"That's blank. He'll ask why. Mm.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[flat] A blank is a line too. It says: didn't know what to say.",
+            "text": "[flat] That's blank. He'll ask why. Mm.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -25320,12 +25322,12 @@
     },
     {
       "id": "night-shift-end-clean-line-2",
-      "note": "Clean report (Night Shift): Dee says \"Tuesday. You'll want to sleep. Don't, till you've eaten.\".",
+      "note": "Clean report (Night Shift): Dee says \"Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[putting her coat on][short][flat] Tuesday. You'll want to sleep. Don't, till you've eaten.",
+            "text": "[putting her coat on][short][flat] Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -25626,12 +25628,12 @@
     },
     {
       "id": "night-shift-end-she-knew-line-6",
-      "note": "She knew (Night Shift): Narrator says \"Thursday. The charger. She counts four, and then she holds the fourth one out to you.\".",
+      "note": "She knew (Night Shift): Narrator says \"Thursday night. The charger. She counts four.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[her hand shakes once][the width of a pencil] Thursday. The charger. She counts four, and then she holds the fourth one out to you.",
+            "text": "Thursday night. The charger. She counts four.",
             "voice": "IFbrwI7VRvX2VkoD4Y3K",
             "model": "eleven_v4"
           },
@@ -25644,12 +25646,12 @@
     },
     {
       "id": "night-shift-end-she-knew-line-7",
-      "note": "She knew (Night Shift): Dee says \"I'd have told him in April. Mm. It's the book. Clip it on.\".",
+      "note": "She knew (Night Shift): Dee says \"I'd have told him in April. Mm. It's the book.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[low] I'd have told him in April. Mm. It's the book. Clip it on.",
+            "text": "[low] I'd have told him in April. Mm. It's the book.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -25658,6 +25660,24 @@
       ],
       "files": {
         "line": "night-shift/end-she-knew/media/line-7.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-she-knew-line-8",
+      "note": "She knew (Night Shift): Narrator says \"She holds the fourth radio out to you. You clip it on.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She holds the fourth radio out to you. You clip it on.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-she-knew/media/line-8.mp3"
       }
     },
     {
@@ -25716,12 +25736,12 @@
     },
     {
       "id": "night-shift-end-eat-something-line-4",
-      "note": "Eat something (Night Shift): Dee says \"Tuesday. You know where I sit. Mm.\".",
+      "note": "Eat something (Night Shift): Dee says \"Quarter to seven. You know where I sit. Mm.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[folding the foil in four] Tuesday. You know where I sit. Mm.",
+            "text": "[folding the foil in four] Quarter to seven. You know where I sit. Mm.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -25734,12 +25754,12 @@
     },
     {
       "id": "night-shift-end-eat-something-line-5",
-      "note": "Eat something (Night Shift): Dee says \"You stayed on the wall. Mm. Tuesday.\".",
+      "note": "Eat something (Night Shift): Dee says \"You stayed on the wall. Mm. Go home.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[to the wall] You stayed on the wall. Mm. Tuesday.",
+            "text": "[to the wall] You stayed on the wall. Mm. Go home.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -26418,12 +26438,12 @@
     },
     {
       "id": "night-shift-end-noted-line-2",
-      "note": "Noted (Night Shift): Dee says \"Mm. Tuesday. Read the whole binder. Page eleven, twice.\".",
+      "note": "Noted (Night Shift): Dee says \"Mm. Quarter to seven. Read the whole binder. Page eleven, twice.\".",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "[putting on her coat][to you][dry] Mm. Tuesday. Read the whole binder. Page eleven, twice.",
+            "text": "[putting on her coat][to you][dry] Mm. Quarter to seven. Read the whole binder. Page eleven, twice.",
             "voice": "qhe779QaY6YuY9d3VGab",
             "model": "eleven_v4"
           },
@@ -26468,6 +26488,1608 @@
       ],
       "files": {
         "line": "night-shift/end-noted/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-1",
+      "note": "The good chair (Night Shift): Narrator says \"You turn the good chair to face the wall, beside hers. She does not say sit. She does not say don't.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You turn the good chair to face the wall, beside hers. She does not say sit. She does not say don't.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-2",
+      "note": "The good chair (Night Shift): Narrator says \"You pour two coffees. They are wrong. She holds hers in both hands and drinks none of it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You pour two coffees. They are wrong. She holds hers in both hands and drinks none of it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-3",
+      "note": "The good chair (Night Shift): Dee says \"Ten minutes. That's all it is.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][to the wall] Ten minutes. That's all it is.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-sat-line-4",
+      "note": "The good chair (Night Shift): Narrator says \"The clock on the wall says 05:28. It is 05:26. She looks at it a long time and says nothing about it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The clock on the wall says 05:28. It is 05:26. She looks at it a long time and says nothing about it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-sat/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-1",
+      "note": "Thirty seconds (Night Shift): Narrator says \"You take the wall. She goes as far as the corridor door and stops there, one hand on the frame.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You take the wall. She goes as far as the corridor door and stops there, one hand on the frame.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-2",
+      "note": "Thirty seconds (Night Shift): Narrator says \"From your chair you can see her back, and past it the corridor that goes to stair C.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "From your chair you can see her back, and past it the corridor that goes to stair C.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-3",
+      "note": "Thirty seconds (Night Shift): Dee says \"Mm. Thirty seconds.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low][not to you] Mm. Thirty seconds.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-twelve-wall-line-4",
+      "note": "Thirty seconds (Night Shift): Narrator says \"It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/twelve-wall/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-1",
+      "note": "Ten to two (Night Shift): Narrator says \"You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-2",
+      "note": "Ten to two (Night Shift): Dee says \"Ten to two. Bench clear.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][writing it down] Ten to two. Bench clear.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-3",
+      "note": "Ten to two (Night Shift): Dee says \"That's the first line. The rest hangs off it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] That's the first line. The rest hangs off it.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-laptop-time-line-4",
+      "note": "Ten to two (Night Shift): Narrator says \"She writes 0150 on the pad in pencil, small, and puts a box around it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She writes 0150 on the pad in pencil, small, and puts a box around it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/laptop-time/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-1",
+      "note": "Under review (Night Shift): Mr. Okafor says \"Thank you for telling me. That is noted. I will raise it with the contractor.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][a pen finishing a line] Thank you for telling me. That is noted. I will raise it with the contractor.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-2",
+      "note": "Under review (Night Shift): Mr. Okafor says \"Ms. Reyes. Your post is under review. I did not know.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[turning to her][courteous][careful] Ms. Reyes. Your post is under review. I did not know.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-3",
+      "note": "Under review (Night Shift): Dee says \"Officer.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[level][to you][nothing else in it] Officer.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-4",
+      "note": "Under review (Night Shift): Narrator says \"She puts on her coat. She does not touch the radios. Four, on the charger. She goes out by the dock, so as not to pass the desk.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She puts on her coat. She does not touch the radios. Four, on the charger. She goes out by the dock, so as not to pass the desk.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-end-under-review-line-5",
+      "note": "Under review (Night Shift): Narrator says \"The pencil is on the shelf, on the middle of the page where she left it. The drawer is shut. It does not stick.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The pencil is on the shelf, on the middle of the page where she left it. The drawer is shut. It does not stick.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/end-under-review/media/line-5.mp3"
+      }
+    },
+    {
+      "id": "night-shift-desk-tailgate-line-1",
+      "note": "One badge (Night Shift): Narrator says \"22:38. On tile one a woman in a grey coat taps her badge at the turnstile and the glass arms open. A man in a puffer jacket steps through close behind her, the way you step through for someone holding a door.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "22:38. On tile one a woman in a grey coat taps her badge at the turnstile and the glass arms open. A man in a puffer jacket steps through close behind her, the way you step through for someone holding a door.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/desk-tailgate/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-desk-tailgate-line-2",
+      "note": "One badge (Night Shift): Terrell says \"Hey, hey, evening! Cold one, huh? Cold out, you know?\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[bright][already waving][from the desk] Hey, hey, evening! Cold one, huh? Cold out, you know?",
+            "voice": "idZn18yShmcD0ePsg1A5",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/desk-tailgate/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-desk-tailgate-line-3",
+      "note": "One badge (Night Shift): Dee says \"One badge. Two people.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[quiet][not turning her head] One badge. Two people.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/desk-tailgate/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-desk-tailgate-line-4",
+      "note": "One badge (Night Shift): Narrator says \"The woman keeps walking. The man looks at the desk, at the elevators, at nothing. The arms close behind him.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The woman keeps walking. The man looks at the desk, at the elevators, at nothing. The arms close behind him.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/desk-tailgate/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-desk-tailgate-line-5",
+      "note": "One badge (Night Shift): Dee says \"Mm. Your wall.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat; she is handing you this one] Mm. Your wall.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/desk-tailgate/media/line-5.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-radio-line-1",
+      "note": "Floor, please (Night Shift): Terrell says \"Post one, hey. The guy behind her? I figured he was hers. You know?\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[caught][running it together] Post one, hey. The guy behind her? I figured he was hers. You know?",
+            "voice": "idZn18yShmcD0ePsg1A5",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-radio/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-radio-line-2",
+      "note": "Floor, please (Night Shift): Narrator says \"On tile one Terrell comes round the desk and stops the man at the elevators with two fingers raised, like a man asking for a light. The man takes out a card. A visitor pass, dated Tuesday.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "On tile one Terrell comes round the desk and stops the man at the elevators with two fingers raised, like a man asking for a light. The man takes out a card. A visitor pass, dated Tuesday.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-radio/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-radio-line-3",
+      "note": "Floor, please (Night Shift): Terrell says \"Okay. Okay! Thirty-four? Who for? Let me see what I can do.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[fast][reading the card twice] Okay. Okay! Thirty-four? Who for? Let me see what I can do.",
+            "voice": "idZn18yShmcD0ePsg1A5",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-radio/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-radio-line-4",
+      "note": "Floor, please (Night Shift): Dee says \"Mm-hm.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry; she is watching Terrell][not the man] Mm-hm.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-radio/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-radio-line-5",
+      "note": "Floor, please (Night Shift): Narrator says \"Terrell walks him back to the sheet and turns it round for him. It is the first time all week you have seen him hold the pen himself.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Terrell walks him back to the sheet and turns it round for him. It is the first time all week you have seen him hold the pen himself.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-radio/media/line-5.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-watch-line-1",
+      "note": "Thirty-four (Night Shift): Narrator says \"You keep your eyes on him. He rides car one. The numbers over the door go up, one at a time, and stop on thirty-four.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You keep your eyes on him. He rides car one. The numbers over the door go up, one at a time, and stop on thirty-four.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-watch/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-watch-line-2",
+      "note": "Thirty-four (Night Shift): Narrator says \"You write the time on your hand because the tablet is across the room: 22:38, thirty-four, grey coat, puffer jacket.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You write the time on your hand because the tablet is across the room: 22:38, thirty-four, grey coat, puffer jacket.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-watch/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-watch-line-3",
+      "note": "Thirty-four (Night Shift): Dee says \"Thirty-four is insurance. Marsh works late.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][to the wall] Thirty-four is insurance. Marsh works late.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-watch/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-watch-line-4",
+      "note": "Thirty-four (Night Shift): Dee says \"Next time he gets a name on the sheet before he gets an elevator.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[no heat in it] Next time he gets a name on the sheet before he gets an elevator.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-watch/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-watch-line-5",
+      "note": "Thirty-four (Night Shift): Narrator says \"She slides the tablet across the desk to you. The incident field is empty. It will be your hand in it, not hers.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She slides the tablet across the desk to you. The incident field is empty. It will be your hand in it, not hers.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-watch/media/line-5.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-quiet-line-1",
+      "note": "Nothing (Night Shift): Narrator says \"You say nothing. The man gets his elevator.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You say nothing. The man gets his elevator.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-quiet/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-quiet-line-2",
+      "note": "Nothing (Night Shift): Dee says \"Mm.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[the long one] Mm.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-quiet/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-quiet-line-3",
+      "note": "Nothing (Night Shift): Narrator says \"Dolores writes nothing either. She looks at the turnstile, at the clock, at you. The clock says 22:41. It is 22:39.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Dolores writes nothing either. She looks at the turnstile, at the clock, at you. The clock says 22:41. It is 22:39.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-quiet/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-tailgate-quiet-line-4",
+      "note": "Nothing (Night Shift): Dee says \"Thirty-four. I saw.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[level][to the wall] Thirty-four. I saw.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/tailgate-quiet/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-wall-line-1",
+      "note": "Tile five (Night Shift): Narrator says \"23:56. Dolores gets up, takes the folded newspaper from the shelf, and lays it flat against the glass of tile five. It covers the whole picture.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "23:56. Dolores gets up, takes the folded newspaper from the shelf, and lays it flat against the glass of tile five. It covers the whole picture.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-wall/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-wall-line-2",
+      "note": "Tile five (Night Shift): Dee says \"Five. Don't look. What was on it?\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][a teacher she would deny being] Five. Don't look. What was on it?",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-wall/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-wall-line-3",
+      "note": "Tile five (Night Shift): Narrator says \"You saw tile five an hour ago. Elevators, a plant, a call panel, a light. Dolores holds the paper where it is and waits.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You saw tile five an hour ago. Elevators, a plant, a call panel, a light. Dolores holds the paper where it is and waits.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-wall/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-right-line-1",
+      "note": "The leaf (Night Shift): Dee says \"Four cars. A plant.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] Four cars. A plant.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-right/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-right-line-2",
+      "note": "The leaf (Night Shift): Dee says \"Left side, the plant has a dead leaf. You didn't see the leaf.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][almost warm] Left side, the plant has a dead leaf. You didn't see the leaf.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-right/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-right-line-3",
+      "note": "The leaf (Night Shift): Narrator says \"She lifts the paper. The leaf is there, brown, low on the left. It has been there all night.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She lifts the paper. The leaf is there, brown, low on the left. It has been there all night.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-right/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-right-line-4",
+      "note": "The leaf (Night Shift): Dee says \"Mm. Tomorrow you'll see the leaf.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[to the glass][not to you] Mm. Tomorrow you'll see the leaf.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-right/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-vague-line-1",
+      "note": "Some elevators (Night Shift): Dee says \"Elevators.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] Elevators.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-vague/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-vague-line-2",
+      "note": "Some elevators (Night Shift): Dee says \"How many? What colour is the light?\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][no unkindness in it] How many? What colour is the light?",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-vague/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-vague-line-3",
+      "note": "Some elevators (Night Shift): Narrator says \"You don't know. She holds the paper against the glass longer than she needs to and lets you not know it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You don't know. She holds the paper against the glass longer than she needs to and lets you not know it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-vague/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-vague-line-4",
+      "note": "Some elevators (Night Shift): Dee says \"Mm. That's what the log would say. \"Some elevators.\"\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[quiet][taking the paper down] Mm. That's what the log would say. \"Some elevators.\"",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-vague/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-hint-line-1",
+      "note": "No hints (Night Shift): Dee says \"A hint.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][turning it over] A hint.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-hint/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-hint-line-2",
+      "note": "No hints (Night Shift): Dee says \"No hints at three in the morning. There's the wall.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[level; the corner of her mouth moves] No hints at three in the morning. There's the wall.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-hint/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-hint-line-3",
+      "note": "No hints (Night Shift): Narrator says \"She takes the paper down. Four cars. A plant with one brown leaf on the left. A light on the call panel, green.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "She takes the paper down. Four cars. A plant with one brown leaf on the left. A light on the call panel, green.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-hint/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-cover-hint-line-4",
+      "note": "No hints (Night Shift): Dee says \"Mm. Now you have a hint.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][folding the newspaper in four] Mm. Now you have a hint.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/cover-hint/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-line-1",
+      "note": "Lights (Night Shift): Narrator says \"03:01. The lights drop and come back. All nine tiles go to snow together and settle again.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "03:01. The lights drop and come back. All nine tiles go to snow together and settle again.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-line-2",
+      "note": "Lights (Night Shift): Dee says \"Power.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[on the radio][flat][a little out of breath] Power.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-line-3",
+      "note": "Lights (Night Shift): Dee says \"I'm not riding anything tonight. Stairs. You stay on the wall.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[steady][climbing] I'm not riding anything tonight. Stairs. You stay on the wall.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-line-4",
+      "note": "Lights (Night Shift): Narrator says \"Tile five: four cars and a plant. All four numbers are lit. Then three of them are.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Tile five: four cars and a plant. All four numbers are lit. Then three of them are.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-look-line-1",
+      "note": "Car three (Night Shift): Narrator says \"You put your eyes on tile five and keep them there. Car three goes dark between thirty and thirty-one. It lights again. It stays on a number that is not a floor.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You put your eyes on tile five and keep them there. Car three goes dark between thirty and thirty-one. It lights again. It stays on a number that is not a floor.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-look/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-look-line-2",
+      "note": "Car three (Night Shift): Dee says \"Say what you see.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[on the radio][between breaths] Say what you see.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-look/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-look-line-3",
+      "note": "Car three (Night Shift): Narrator says \"You say it. Car three, between thirty and thirty-one, 03:01. She says Mm and does not say anything else, which is how you know it is right.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You say it. Car three, between thirty and thirty-one, 03:01. She says Mm and does not say anything else, which is how you know it is right.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-look/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-panel-line-1",
+      "note": "All green (Night Shift): Narrator says \"You turn to the fire panel beside the binder. Every light on it is green. It does not make a sound.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You turn to the fire panel beside the binder. Every light on it is green. It does not make a sound.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-panel/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-panel-line-2",
+      "note": "All green (Night Shift): Dee says \"Panel?\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[on the radio][short] Panel?",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-panel/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-panel-line-3",
+      "note": "All green (Night Shift): Narrator says \"You read her the lights, left to right. She lets you finish.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You read her the lights, left to right. She lets you finish.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-panel/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-panel-line-4",
+      "note": "All green (Night Shift): Dee says \"Mm. Then it's the building. Buildings do that.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][one landing higher] Mm. Then it's the building. Buildings do that.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-panel/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-panel-line-5",
+      "note": "All green (Night Shift): Narrator says \"On tile five, behind you, one of the four numbers has stopped changing.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "On tile five, behind you, one of the four numbers has stopped changing.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-panel/media/line-5.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-ask-line-1",
+      "note": "Stairs (Night Shift): Dee says \"Wall.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[on the radio][level] Wall.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-ask/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-ask-line-2",
+      "note": "Stairs (Night Shift): Dee says \"I said. Wall.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[no louder than before] I said. Wall.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-ask/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-flicker-ask-line-3",
+      "note": "Stairs (Night Shift): Narrator says \"The radio goes quiet. The stairwell carries her steps up from somewhere, one flight at a time. They don't speed up. They don't slow down.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The radio goes quiet. The stairwell carries her steps up from somewhere, one flight at a time. They don't speed up. They don't slow down.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/flicker-ask/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-signout-line-1",
+      "note": "The sheet (Night Shift): Narrator says \"04:18. Someone knocks twice on the control-room door. It is Dev Anand, with his coat over his arm and his bag held against his chest.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "04:18. Someone knocks twice on the control-room door. It is Dev Anand, with his coat over his arm and his bag held against his chest.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-signout/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-signout-line-2",
+      "note": "The sheet (Night Shift): Dev says \"Hi, sorry, it's Anand, from thirty-one, the elevator? I'm going home for two hours. Do I sign something?\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[rushed][polite][run together] Hi, sorry, it's Anand, from thirty-one, the elevator? I'm going home for two hours. Do I sign something?",
+            "voice": "zcQcgx11ALPbj0o2PFsw",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-signout/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-signout-line-3",
+      "note": "The sheet (Night Shift): Dee says \"He badged in at six. He didn't badge out.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][to you] He badged in at six. He didn't badge out.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-signout/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-sign-line-1",
+      "note": "Out 04:19 (Night Shift): Narrator says \"You find the line on the after-hours sheet. ANAND, D. 31. IN 18:02. You write the out time, 04:19, and turn the sheet for him to initial.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You find the line on the after-hours sheet. ANAND, D. 31. IN 18:02. You write the out time, 04:19, and turn the sheet for him to initial.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-sign/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-sign-line-2",
+      "note": "Out 04:19 (Night Shift): Dev says \"Sorry. Is that, I put it in the wrong box. Sorry.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[mortified][quick] Sorry. Is that, I put it in the wrong box. Sorry.",
+            "voice": "zcQcgx11ALPbj0o2PFsw",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-sign/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-sign-line-3",
+      "note": "Out 04:19 (Night Shift): Dee says \"It's a box.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry] It's a box.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-sign/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-sign-line-4",
+      "note": "Out 04:19 (Night Shift): Narrator says \"He goes out through the revolving door into the cold, and it carries him round and out. One line on the sheet is closed that was open for ten hours and seventeen minutes.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "He goes out through the revolving door into the cold, and it carries him round and out. One line on the sheet is closed that was open for ten hours and seventeen minutes.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-sign/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-ask-line-1",
+      "note": "A little close (Night Shift): Narrator says \"You ask if he is all right. He opens his mouth to say fine, and doesn't.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You ask if he is all right. He opens his mouth to say fine, and doesn't.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-ask/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-ask-line-2",
+      "note": "A little close (Night Shift): Dev says \"It was a little close in there. Sorry. It's fine. Thank you. For staying on.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[fast][embarrassed][looking at the floor] It was a little close in there. Sorry. It's fine. Thank you. For staying on.",
+            "voice": "zcQcgx11ALPbj0o2PFsw",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-ask/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-ask-line-3",
+      "note": "A little close (Night Shift): Dee says \"Go home, Anand. Sleep two hours. Eat something.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[gruff][kind underneath] Go home, Anand. Sleep two hours. Eat something.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-ask/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-dev-out-ask-line-4",
+      "note": "A little close (Night Shift): Narrator says \"At the door he turns back to say something else. He says sorry instead, and the revolving door takes him.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "At the door he turns back to say something else. He says sorry instead, and the revolving door takes him.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/dev-out-ask/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-the-rice-line-1",
+      "note": "And the new one (Night Shift): Narrator says \"05:34. The plate is on the shelf by the freezer, under foil. A sticky note is folded over the edge in Marisol's hand: DOLORES. EAT. Under it, smaller: and the new one.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "05:34. The plate is on the shelf by the freezer, under foil. A sticky note is folded over the edge in Marisol's hand: DOLORES. EAT. Under it, smaller: and the new one.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/the-rice/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-the-rice-line-2",
+      "note": "And the new one (Night Shift): Dee says \"She wrote \"and.\"\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][reading it a second time] She wrote \"and.\"",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/the-rice/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-the-rice-line-3",
+      "note": "And the new one (Night Shift): Dee says \"Twenty-six years, she never wrote \"and.\"\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[to the note] Twenty-six years, she never wrote \"and.\"",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/the-rice/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-split-line-1",
+      "note": "Two forks (Night Shift): Narrator says \"You take two forks from the drawer. She looks at them, and at you, and at the plate.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You take two forks from the drawer. She looks at them, and at you, and at the plate.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-split/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-split-line-2",
+      "note": "Two forks (Night Shift): Dee says \"Don't tell Marisol.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low][taking the first one] Don't tell Marisol.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-split/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-split-line-3",
+      "note": "Two forks (Night Shift): Narrator says \"The rice is cold and it is very good. She eats the way she does everything, to the edge, and leaves the last forkful where you can reach it.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The rice is cold and it is very good. She eats the way she does everything, to the edge, and leaves the last forkful where you can reach it.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-split/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-hers-line-1",
+      "note": "Hers (Night Shift): Dee says \"It says two names.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat] It says two names.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-hers/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-hers-line-2",
+      "note": "Hers (Night Shift): Narrator says \"You tell her it is hers and you will eat later. She takes the plate down and stands there holding it, as though the weight were something she had to read.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You tell her it is hers and you will eat later. She takes the plate down and stands there holding it, as though the weight were something she had to read.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-hers/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-hers-line-3",
+      "note": "Hers (Night Shift): Dee says \"Mm. Later. I'll leave the foil.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[quiet][putting the plate back and the foil over it] Mm. Later. I'll leave the foil.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-hers/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-log-line-1",
+      "note": "Later (Night Shift): Dee says \"Log first.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[level; it could be approval or the other thing] Log first.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-log/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-log-line-2",
+      "note": "Later (Night Shift): Narrator says \"The plate stays under its foil. The note stays folded over the edge. You can feel it there while you work, like a clock you are not allowed to look at.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The plate stays under its foil. The note stays folded over the edge. You can feel it there while you work, like a clock you are not allowed to look at.",
+            "voice": "IFbrwI7VRvX2VkoD4Y3K",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-log/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-rice-log-line-3",
+      "note": "Later (Night Shift): Dee says \"Mm. It keeps.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[to the shelf] Mm. It keeps.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/rice-log/media/line-3.mp3"
       }
     }
   ]

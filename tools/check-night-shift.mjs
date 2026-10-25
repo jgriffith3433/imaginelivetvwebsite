@@ -125,14 +125,100 @@ const endings = new Set(plays.map((p) => p.end));
 const allEndings = data.scenes.filter((s) => s.ending).length;
 
 const x = rules.explore(shape, { cap: data.stateCap ?? 50000 });
+
+// Decisions that change nothing: a choice that is open next to a differently worded one, changes no flag or meter in any state
+// it can be made in, and does not end the story (the ending is the change). The build only asks for a log line, which is weak.
+{
+  const changes = new Set();
+  const decision = new Set();
+  const seen = new Set();
+  const queue = [[data.start, rules.fresh(shape)]];
+  while (queue.length) {
+    const [id, st] = queue.shift();
+    const key = `${id}#${rules.stateKey(st)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const open = shape.scenes[id].choices.map((c, i) => [c, i]).filter(([c]) => rules.usable(c, st));
+    const words = new Set(open.map(([c]) => c[1]));
+    for (const [c, i] of open) {
+      const after = rules.apply(shape, st, c);
+      if (rules.stateKey(after) !== rules.stateKey(st)) changes.add(`${id}#${i}`);
+      if (words.size > 1) decision.add(`${id}#${i}`);
+      queue.push([c[2], after]);
+    }
+  }
+  let dead = 0;
+  for (const s of data.scenes) s.choices.forEach((c, i) => {
+    const k = `${s.id}#${i}`;
+    if (decision.has(k) && !changes.has(k) && !scenes.get(c.next).ending && !c.cosmetic) { dead++; bad(`${s.id} choice ${i + 1} "${c.say}": a decision that changes no flag or meter in any state`); }
+  });
+  var deadDecisions = dead;
+}
+
+// The trainer's reveal layers (Dee's sheet, story doc section 3): each has a scene, each is reached by some way, and one way reaches them all.
+const LAYERS = [
+  ['2 the pencil', ['sign-why', 'sign-why-44']],
+  ['5 the spring', ['drawer-notice']],
+  ['3 the four hours', ['four-hours']],
+  ['4 twelve', ['twelve']],
+];
+// One way through every layer that still ends well. The layers come in this order in the night (pencil 21:30, spring 23:25, four
+// hours 02:58, twelve 05:24), so search stage by stage: every (scene, state) found at one layer is a source for the next.
+const layerLines = [];
+for (const [name, ids] of LAYERS) {
+  const own = ids.map((id) => x.scenes[id]).filter(Boolean).sort((a, b) => a.picks.length - b.picks.length)[0];
+  if (!own) bad(`reveal layer ${name}: no way reaches ${ids.join(' or ')}`);
+  layerLines.push(own ? `${name} (${ids.join('/')}): ${own.picks.length} choices` : `${name}: NOT REACHED`);
+}
+let oneWay = null;
+{
+  let sources = [{ id: data.start, st: rules.fresh(shape), n: 0 }];
+  const stages = [...LAYERS.map(([, ids]) => ids), ['end-someone', 'end-she-knew']];
+  for (const targets of stages) {
+    const seen = new Set();
+    const queue = sources;
+    const found = new Map();
+    for (let q = 0; q < queue.length; q++) {
+      const at = queue[q];
+      const key = `${at.id}#${rules.stateKey(at.st)}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      if (targets.includes(at.id)) { if (!found.has(key)) found.set(key, at); continue; }
+      for (const c of shape.scenes[at.id].choices) if (rules.usable(c, at.st)) queue.push({ id: c[2], st: rules.apply(shape, at.st, c), n: at.n + 1 });
+    }
+    sources = [...found.values()];
+    if (!sources.length) break;
+  }
+  if (sources.length) oneWay = { end: sources[0].id, choices: Math.min(...sources.map((s) => s.n)), ways: sources.length };
+  else bad('no single way reaches every reveal layer (pencil, spring, four hours, twelve) and ends on a spring ending');
+}
+
+// Every ending is earned: its shortest way, and the state it needs, differ from every other ending's.
+const endWays = data.scenes.filter((s) => s.ending).map((s) => {
+  const w = x.scenes[s.id];
+  if (!w) { bad(`the ending ${s.id} is never reached`); return null; }
+  return { id: s.id, name: s.ending, picks: w.picks.length, state: w.state };
+}).filter(Boolean);
+{
+  const feeders = new Map();
+  for (const s of data.scenes) for (const c of s.choices) if (scenes.get(c.next).ending) feeders.set(c.next, [...(feeders.get(c.next) || []), `${s.id}:${JSON.stringify([c.requires, c.forbids, c.meters])}`]);
+  const sigs = new Map([...feeders].map(([id, list]) => [id, [...new Set(list)].sort().join('|')]));
+  const dup = [...sigs].filter(([id, sig], i, a) => a.findIndex(([, s2]) => s2 === sig) !== i);
+  for (const [id] of dup) bad(`the ending ${id} is reached under the same conditions as another ending`);
+}
+
 if (t.min / 60 < 30) bad(`the shortest way through is ${(t.min / 60).toFixed(1)} minutes (needs 30)`);
 if (allEndings < 8) bad(`${allEndings} endings (needs 8)`);
 if (deeLines < 40) bad(`Dee has ${deeLines} lines`);
+if (t.mean / 60 < 42 || t.mean / 60 > 48) bad(`the average way through is ${(t.mean / 60).toFixed(1)} minutes (about 45 wanted: 42 to 48)`);
 
 if (!process.argv.includes('--quiet')) {
   console.log(`${data.scenes.length} scenes, ${lineCount} lines (${deeLines} Dee), ${allEndings} endings, ${x.states} states explored${x.capped ? ' (CAPPED)' : ''}`);
   console.log(`playing time: shortest ${(t.min / 60).toFixed(1)} min | average ${(t.mean / 60).toFixed(1)} min (every open choice equally likely) | median ${pct(0.5)} (3000 random plays: 10% ${pct(0.1)}, 90% ${pct(0.9)}) | longest ${(t.max / 60).toFixed(1)} min`);
   console.log(`endings met in 3000 random plays: ${endings.size} of ${allEndings}; Pierce speaks in: ${pierceScenes.join(', ') || 'nowhere'}`);
+  console.log(`decisions that change nothing: ${deadDecisions}`);
+  console.log(`reveal layers: ${layerLines.join(' | ')} | one way through all of them: ${oneWay ? `yes, ${oneWay.choices} choices` : 'NO'}`);
+  console.log(`endings (shortest way, in choices): ${endWays.map((e) => `${e.name.replace(/\.$/, '')} ${e.picks}`).join(', ')}`);
 }
 if (problems.length) {
   for (const p of problems) console.error('problem  ' + p);
