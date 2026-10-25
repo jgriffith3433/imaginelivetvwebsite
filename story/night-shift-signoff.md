@@ -77,32 +77,40 @@ a wrong speaker image (the wall shows cameras, not speakers; each scene's `focus
   whole `unspoken` list (restricted, chimera, creature, experiment, b3, vat, specimen, laboratory) found 0 hits outside the `unspoken` list
   itself. `story/night-shift.md` has them only in the sentence that forbids them. Images were looked at, not read.
 
-## Checks that were run (2026-10-25)
+## Checks that were run (2026-10-25, on `224a9f5`, #54)
 
 | Command | Result |
 | --- | --- |
-| `npm run story -- --check` | `ok 4 stories, 289 scenes, everything generated is up to date` |
-| `node tools/check-night-shift.mjs` | `ok night-shift` (numbers above) |
+| `npm run story -- --check` | `ok 4 stories, 304 scenes, everything generated is up to date` |
+| `node tools/check-night-shift.mjs` | `ok night-shift`: 256 scenes, 1,376 lines, 12 endings, 0 decisions that change nothing, shortest 39.3 / average 45.6 / longest 54.5 min, Pierce in `coat-lobby` and `pierce-signin` only |
 | `npm run test:console` | all ok |
-| `npm run test:playtest` | `ok js/playtest.js: every called helper is defined (569 names declared)` |
+| `npm run test:playtest` | `ok js/playtest.js: every called helper is defined (645 names declared)` |
 | `npm run test:player` (jsdom in a scratch folder) | all ok |
-| `npm run test:endings` (jsdom) | all ok: 12 endings played by real presses |
-| `node tools/make-audio.mjs night-shift --list` | 6 of 1,364 without a file: the music stings |
-| ffmpeg `ebur128` on 1,330 lines, 10 beds, 18 effects; ffprobe on every line | see above |
+| `npm run test:endings` (jsdom) | **FAILS: 75 problems.** Every ending fails the same way: "no recording" for the lines of the 15 echo scenes it passes (e.g. `end-under-review` at `lobby-exact-w`). The shown buttons, subtitles, beds, pictures and end cards are fine; only the missing recordings fail |
+| `node tools/make-audio.mjs night-shift --list` | **46 of 1,410 have no file**: the 46 lines of the 15 echo scenes. No music is unmade (the six stings exist since #51) |
+| `hawkesgen_run audio.voice` on one of the 46 (retried 2026-10-25) | **refused**: ElevenLabs 401 `payment_issue` ("failed or incomplete payment"), job `j_0017f2fd955e` |
+| ffmpeg `ebur128` loudness | not re-run in this pass (no new recordings since the numbers above) |
 
-## Playtests: NOT RUN
+## Playtests: NOT RUN for the merged commit
 
-`smoke`, `stories`, `branches`, `pages`, `sound`, `blog`, `credits`, `analytics`, `console`, `night-shift`, `night-shift-audio`,
-`cctv-art` and `night-shift-signoff` need a browser. None was run here, for any of the three stories (The Final Spark, The Water
-Road, Night Shift), so this file has no output of them. Beta's playtest runs `night-shift-signoff` with `{"at":"last-choices"}`;
-J or Talk can ask for the rest on the T4.
+I looked for beta's reports for `224a9f5` and there are none: the newest Studio daily report is `r_fa49e962e7d1` (2026-10-24, before #50 to #54),
+and the Gen job store holds no `playtest.run` newer than the T4 runs quoted in `story/night-shift-gaps.md` (`night-shift-signoff` `j_8e0e16c7bc4d`,
+which ran before the fixes of #50 to #54). So, for the merged commit:
 
-## Left unfixed
+| Scenario | Result |
+| --- | --- |
+| `night-shift-signoff` at desktop, 390x844, 360x640, 844x390, 12 endings | **not run** |
+| `console` (real story leg), `stories`, `branches`, `pages`, `sound`, `blog`, `credits`, `analytics`, `cctv-art`, `night-shift-audio`, `night-shift-card` | **not run** |
 
-1. **46 lines are unrecorded.** The 15 echo scenes (`out-counted`, `out-asked`, `held-tomorrow`, `held-dee`, `entry-*`, `lobby-*`, `adler-corrected`, `adler-initialed`) have no recordings: ElevenLabs refused every call (401, failed payment on the account). Estimate 1.2 dollars; when it is paid, `node tools/make-audio.mjs night-shift --reuse`, `hawkesgen_run audio.voice` per line, `--ingest`, `--mix`, `--dur`, `npm run story`. Until then they play on a timer and `night-shift-audio` fails on the unmade count. (The six music stings were made in #51.)
-2. **The four-size walk and every playtest are unproven** (above). The 844x390 end screen fix and the end-card crop are unseen. (Update, c_c4ffb03144e4: `consoleFit` now names what needs a scroll on an end screen and an end screen that needs one is a bug; `console` measures the worst scenes and the 70-entry Log; still unseen until a beta run.)
-3. **No listen.** Nobody has heard the voices in playback: whether a `perform` tag was read aloud, a voice drifts, two speakers sound alike.
-4. **The "14 shows although" report is not explained.** The player is right in jsdom; the check was made stricter and clearer (above).
-   If beta reports it again, the message now says which choice and state.
-5. Speaker treatments were applied in #53 (139 lines carry one).
-6. Counts in `story/night-shift.md`, `-gaps.md` and this file were brought to 256 scenes, 1,376 lines, 658 choices on 2026-10-25.
+`.hawkes/scenario.txt` names `night-shift-signoff` with `{"at":"last-choices"}`; the other scenarios are in `js/playtest.js` and the beta list
+(`AGENTS.md`). The "0 bugs" criteria are **not met by any report yet**, and nothing here claims they are.
+
+## Left
+
+1. **46 voice lines are unrecorded** (the 15 echo scenes). ElevenLabs refuses every call: the account's invoice is unpaid (J). When it is paid:
+   `node tools/make-audio.mjs night-shift --reuse`, `hawkesgen_run audio.voice` per listed line (about 1.2 dollars), `--ingest`, `--mix`, `--dur`,
+   `npm run story`. Until then `npm run test:endings` and `night-shift-audio` fail on the unmade lines and those lines play on a timer.
+2. **Beta's playtest of the merged commit** has to run (nobody can start it from here): `night-shift-signoff` at the four sizes, then the other scenarios above.
+   Fix what they report.
+3. **J's own listening to the voices and reading the script.** No agent has heard a voice or read the whole night as a viewer: a `perform` tag read aloud,
+   a drifting voice, two speakers alike, a wrong-sounding treatment, a line that reads badly.

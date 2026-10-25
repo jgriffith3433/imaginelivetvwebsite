@@ -342,12 +342,13 @@ Update (task c_c4ffb03144e4, nothing run in a browser: the checks are written, t
 
 ## What is left, in order
 
-1. Ask Talk for T4 runs of `sound`, `branches`, `pages`, `analytics` and a `console` run on the real story (items 34, 54, 59); paste the reports under the Appendix.
-2. ~~Fix the bot's two false positives (items 51, 52); set the declared times (item 53).~~ Done (updates above).
-3. Make the 6 music stings (item 1, $0.08 GPU, J's approval), re-cut the three beds (items 3, 4).
-4. Read beta's `console` run for the real-story leg (items 35, 36, 41): the `fit` and `log-scroll` events say what was measured.
-5. J listens to the voices (item 7) and a person reads the script (item 30); then treatments (item 5).
-6. Edit `AGENTS.md`, `story/night-shift.md`, `story/night-shift-signoff.md` (items 55 to 58).
+Status 2026-10-25 on `224a9f5` (#54). Real results only; "not run" means no report exists for that commit.
+
+1. **Beta's playtest of the merged commit: not run** (no report newer than Studio's `r_fa49e962e7d1` of 2026-10-24 and Gen's T4 runs quoted below, which predate #50 to #54): `night-shift-signoff` (4 sizes, 12 endings), `console` (real story leg), `stories`, `branches`, `pages`, `sound`, `blog`, `credits`, `analytics`, `cctv-art`, `night-shift-audio`, `night-shift-card`. Read them when they exist and fix what they show.
+2. **46 voice lines are unrecorded** (15 echo scenes; item 1's stings are done, #51). ElevenLabs answers 401 `payment_issue` (re-tried today, job `j_0017f2fd955e`): J pays the invoice, then `--reuse`, `audio.voice` per line (about 1.2 dollars), `--ingest`, `--mix`, `--dur`, `npm run story`. `npm run test:endings` fails on exactly these (75 problems, all "no recording"); `npm run story -- --check`: ok, 304 scenes, nothing stale.
+3. J listens to the voices (item 7) and reads the script (item 30); then treatments (item 5). Only J can.
+
+Done and checked by command today: `npm run story -- --check`, `check-night-shift` (256 scenes, 12 endings, 0 no-op choices), `test:console`, `test:playtest` (645 helpers), `test:player`.
 
 ## Appendix: real command output
 
