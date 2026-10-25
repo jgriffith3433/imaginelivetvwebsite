@@ -5,7 +5,7 @@
 // with localStorage (and the cookies) refusing every call the story still plays a choice, opens the Log and toggles CC.
 // Layout (390x844, 360x640, 844x390) and real taps need a browser: that is the `console` playtest.
 //
-//   node tools/test-console-player.mjs          (needs jsdom: JSDOM_DIR=<folder with node_modules/jsdom>, or npm i in a scratch folder)
+//   node tools/test-console-player.mjs          (jsdom is a devDependency: npm ci; JSDOM_DIR=<folder with node_modules/jsdom> still works)
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';

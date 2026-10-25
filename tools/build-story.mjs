@@ -354,9 +354,11 @@ function storyLink(st) {
   <header class="site-header">
     <a href="/">Imagine Live TV</a>
   </header>
-  <main class="missing">
+  <main class="story-link">${st.entry.image ? `
+    <img src="${esc(st.entry.image)}" alt="${esc(st.entry.alt ?? titleOf(st))}">` : ''}
     <h1>${esc(titleOf(st))}</h1>
-    <p><a href="${to}">Play</a></p>
+    <p>${esc(st.entry.logline)}</p>
+    <p><a class="story-link-go" href="${to}">Play</a></p>
   </main>
   <footer class="site-footer">
     <p>Copyright © 2026 Imagine Live TV - All Rights Reserved.</p>

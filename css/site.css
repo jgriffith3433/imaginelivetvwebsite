@@ -640,6 +640,20 @@ a { color: var(--green); }
   font-weight: 540;
 }
 
+/* A story's own link, /<id>/ (tools/build-story.mjs): it forwards to the player at once, and until it has, it shows
+   the story's card (picture, title, logline) instead of a blank dark page. */
+.story-link {
+  width: min(28rem, calc(100% - 2rem));
+  min-height: 60dvh;
+  margin: 1.5rem auto;
+  text-align: center;
+}
+
+.story-link img { display: block; width: 100%; max-height: 50dvh; object-fit: cover; border: 1px solid var(--green-soft); border-radius: 6px; }
+.story-link h1 { font-family: var(--serif); font-weight: 540; }
+.story-link p { color: var(--muted); }
+.story-link-go { display: inline-block; min-width: 44px; min-height: 44px; padding: 0.55rem 1.6rem; color: #f4f2ee; background: var(--green-deep); border: 1px solid #5a5e64; border-radius: 8px; text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; }
+
 @media (max-width: 720px) {
   #spark-play {
     grid-template-columns: minmax(0, 1fr);
@@ -1821,8 +1835,15 @@ figure.feed { cursor: default; }
   .console .console-endcard { width: auto; max-width: 100%; max-height: 32dvh; }
   /* The end screen (844x390): the card, the ending's name and the line buttons all fit without the column scrolling. */
   .console[data-state="soon"][data-lines="done"] .console-subs { min-height: 2.6rem; max-height: 3.2rem; }
-  .console[data-state="soon"] .console-endcard { max-height: 24dvh; margin-bottom: 0.2rem; }
-  .console[data-state="soon"] .console-ending { padding: 0.25rem; font-size: 1rem; }
+  .console[data-state="soon"] .console-endcard { max-height: 20dvh; margin-bottom: 0.2rem; }
+  .console[data-state="soon"] .console-ending { padding: 0.2rem; font-size: 1rem; line-height: 1.25; }
+  .console[data-state="soon"] .console-panel { gap: 0.25rem; }
+  /* The wall is as tall as its tiles make it (a third of its width, three rows), so on a short screen its width follows the
+     height that is left under the site bar and the console bar, whatever the width: it never pushes the page into a scroll. */
+  .console-wall { width: min(100%, calc((100dvh - 7.6rem) * 16 / 9)); }
+  /* Many choices (up to twelve) scroll inside the words column; each stays whole and 44px tall. */
+  .console-choices { padding-bottom: 0.15rem; }
+  .console-choices .choice { flex: none; }
 }
 
 @media (min-width: 1000px) and (min-height: 700px) {

@@ -6,7 +6,7 @@
 // file the scene names (lines, bed, effects, camera pictures, end card) exists on disk. Prints the minutes of audio each way
 // holds (each line's recording plus the player's 0.35 s gap). Layout, sound and sync need a browser: that is the playtest.
 //
-//   node tools/test-endings.mjs [end-scene]      (needs jsdom: JSDOM_DIR=<folder with node_modules/jsdom>)
+//   node tools/test-endings.mjs [end-scene]      (jsdom is a devDependency: npm ci)
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
