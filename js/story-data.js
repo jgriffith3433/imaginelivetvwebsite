@@ -2047,12 +2047,12 @@ window.ILTV_STORIES = {
     "clock-tick": "/night-shift/media/sfx/clock-tick.mp3"
    },
    "music": {
-    "shift-begins": null,
-    "the-panel": null,
-    "fifty-eight": null,
-    "ending-plain": null,
-    "ending-warm": null,
-    "ending-cold": null
+    "shift-begins": "/night-shift/media/music/shift-begins.mp3",
+    "the-panel": "/night-shift/media/music/the-panel.mp3",
+    "fifty-eight": "/night-shift/media/music/fifty-eight.mp3",
+    "ending-plain": "/night-shift/media/music/ending-plain.mp3",
+    "ending-warm": "/night-shift/media/music/ending-warm.mp3",
+    "ending-cold": "/night-shift/media/music/ending-cold.mp3"
    },
    "unspoken": [
     "restricted",
