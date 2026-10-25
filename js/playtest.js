@@ -2470,7 +2470,10 @@ async function consoleLogCheck(t, st, m, doc, where) {
   const wantRedacted = m.log.filter((e) => e.k === "c").reduce((n, e) => n + e.o, 0) + (s.ending ? 0 : s.choices.length);
   if (redacted !== wantRedacted) t.problem("bug", `${where}: ${redacted} redacted lines, ${wantRedacted} ways not taken`);
   // Redacted means nothing of the way is readable: no choice that wasn't taken is written in the log.
-  const text = log.textContent;
+  // The words of what was done and seen are cut out first: a taken choice logs as "Back to the wall." and its label
+  // "Back to the wall" is inside that line, which is the way taken and not a leak of another one.
+  let text = log.textContent;
+  for (const w of [...new Set(m.log.map((e) => e.text))].sort((a, b) => b.length - a.length)) text = text.split(w).join("");
   const taken = new Set(m.log.map((e) => e.text));
   for (const sc of Object.values(st.scenes)) for (const c of sc.choices) {
     const x = rulesOf().extraOf(c);
