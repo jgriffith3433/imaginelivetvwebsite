@@ -3660,7 +3660,12 @@ async function crawlConsolePages(t, st, done, total) {
       }
     }
   }
-  Object.keys(st.scenes).map(pageOf).filter((p) => !mine.has(p)).forEach((p) => t.problem("warning", `${p}: no open choice in a marked state links here (orphan page)`));
+  // A page no link of the marked states leads to is an orphan only when no scene's choice points at it; one reached only
+  // in another state (a gated choice, locked in the marked state) is listed as an event: its way there is played by `branches`.
+  const pointedAt = new Set(Object.values(st.scenes).flatMap((sc) => sc.choices.map((c) => c[2])));
+  const notLinked = Object.keys(st.scenes).filter((id) => !mine.has(pageOf(id)));
+  notLinked.filter((id) => !pointedAt.has(id)).forEach((id) => t.problem("warning", `${pageOf(id)}: no choice of any scene leads here (orphan page)`));
+  if (notLinked.some((id) => pointedAt.has(id))) t.event("other-state-pages", `${notLinked.filter((id) => pointedAt.has(id)).length} page(s) are reached only in other states than the marked ones (a locked choice in the marked state): ${notLinked.filter((id) => pointedAt.has(id)).slice(0, 6).map(pageOf).join(", ")}...`);
   if ((await status(`/${st.id}/`)) !== 200) t.problem("bug", `/${st.id}/ (${st.title}'s link) is missing`);
 
   // The pages a viewer meets first, in the frame: the start, then the endings.
