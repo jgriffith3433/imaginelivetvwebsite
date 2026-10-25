@@ -347,6 +347,32 @@ function rememberProgress() {
   const jar = document.cookie.split(";").map((s) => s.trim());
   savedCookie = Object.fromEntries(allStories().flatMap(cookiesOf).map((name) => [name, jar.find((c) => c.startsWith(name + "=")) ?? ""]));
 }
+/** Only the `analytics` scenario talks to Gen's collect endpoint. In every other run the page's analytics batches are
+    swallowed here (sendBeacon says sent, fetch answers 202) so a Gen hiccup (a 502) isn't a console error in a run that
+    isn't about analytics, and bot traffic stays off the shared endpoint. The SDK still queues, batches and marks them
+    sent in its debug log. Returns the undo. */
+function quietAnalytics() {
+  const endpoint = (window.hawkesAnalytics && window.hawkesAnalytics.config && window.hawkesAnalytics.config().endpoint) || "";
+  if (!endpoint) return () => {};
+  const beacon = navigator.sendBeacon;
+  const fetched = window.fetch;
+  const ours = (url) => String(url && url.url ? url.url : url).split("?")[0] === endpoint;
+  try {
+    navigator.sendBeacon = function (url, ...rest) {
+      return ours(url) ? true : beacon.call(this, url, ...rest);
+    };
+    window.fetch = function (url, ...rest) {
+      return ours(url) ? Promise.resolve(new Response("{}", { status: 202 })) : fetched.call(this, url, ...rest);
+    };
+  } catch (e) {
+    return () => {};
+  }
+  return () => {
+    navigator.sendBeacon = beacon;
+    window.fetch = fetched;
+  };
+}
+
 function restoreProgress() {
   for (const [key, value] of Object.entries(savedRuns || {})) value == null ? localStorage.removeItem(key) : localStorage.setItem(key, value);
   savedRuns = null;
@@ -4451,6 +4477,7 @@ installPlaytest({
   ],
   isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
   async start(id, options, t) {
+    const endQuiet = id === "analytics" ? () => {} : quietAnalytics();
     try {
       probeStart();
       probe.all = [];
@@ -4482,6 +4509,7 @@ installPlaytest({
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
     } finally {
+      endQuiet();
       probeStop(t);
       stopVideos();
       closeFrame();
