@@ -1768,7 +1768,7 @@ window.ILTV_STORIES = {
    "tagline": "Say what you see.",
    "logline": "Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who knows every door, and a report with your name on it.",
    "image": "/assets/images/night-shift.png",
-   "listed": false,
+   "listed": true,
    "cookie": "nightShiftProgress",
    "tap": {
     "title": "NIGHT SHIFT",

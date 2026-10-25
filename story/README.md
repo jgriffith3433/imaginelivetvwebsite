@@ -12,7 +12,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
 | --- | --- | --- | --- |
 | **The Final Spark** | `story/final-spark.json` | the site root, as they always were: `/the-sewer/`, `/you-turned-right/`, … | this file, below |
 | **The Water Road** (approved by J 2026-10-18, on the landing page) | `story/water-road.json` | `/water-road/the-water-road/`, … | `story/water-road.md` |
-| **Night Shift** (draft; its demo, `night-shift-demo`, is the placeholder the console playtests use) | `story/night-shift-demo.json` (the real story: `story/night-shift.json`) | `/night-shift-demo/radio-check/`, … | `story/night-shift.md` |
+| **Night Shift** (listed; its demo, `night-shift-demo`, is the unlisted placeholder the console playtests use) | `story/night-shift-demo.json` (the real story: `story/night-shift.json`) | `/night-shift-demo/radio-check/`, … | `story/night-shift.md` |
 
 ## Adding a story (a data job, no code)
 
@@ -76,6 +76,13 @@ choices appear. The story remembers **flags and meters**; a choice can need them
 braided (many choices lead to the same later scene); the state is what makes the same scene different. The video
 stories are untouched: a console story has its own player (`js/console.js`, `<section id="console">` on the home
 page), its own rules (`js/console-rules.js`, shared by the player, the build and the playtest) and its own pages.
+**How a viewer finds Night Shift:** it has a card on the landing page after The Water Road (`story/stories.json`, no
+`listed: false`), with the same badge (Not started / Started / Completed), percent explored and Play / Continue /
+Start Over as the video stories, and its own Tap to play title. Completed means any ending was reached; the percent is
+scenes seen out of all its scenes (the build proves every scene reachable), kept as a bit per scene in the unlocks
+cookie. The `stories` playtest opens it from its card, plays the shortest way to an ending, checks Completed and Start
+Over; `branches`, `pages` and `console` walk it as before.
+
 Its demo, `night-shift-demo` (5 scenes, `listed: false`, silent placeholder audio), is what the `console` playtest plays.
 
 ### The data (`story/<id>.json`, `"type": "console"`)

@@ -378,7 +378,12 @@ function savedUnlocks(st) {
 
 /** The percent explored the data and the unlocks cookie give: unlocked scenes / all, rounded down. */
 function exploredWant(st) {
-  const seen = new Set((savedUnlocks(st)?.seen || []).filter((id) => st.scenes[id]));
+  const u = savedUnlocks(st);
+  // A console story keeps its unlocks as a bit per scene, in the order of its data (js/game.js packSeen).
+  const ids = Object.keys(st.scenes);
+  const bits = (u && u.ix) || "";
+  const packed = ids.filter((id, i) => (parseInt(bits.charAt(Math.floor(i / 4)) || "0", 16) & (1 << (i % 4))) !== 0);
+  const seen = new Set((isConsole(st) ? packed : u?.seen || []).filter((id) => st.scenes[id]));
   return Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
 }
 
@@ -866,6 +871,13 @@ async function storiesRun(options, t) {
     // checked after All stories).
     if (i > 0) checkBadge(t, card, st, "new", "before opening it");
 
+    // A console story opens its own player (title, first scene's lines and choices), under its own Tap to play.
+    if (isConsole(st)) {
+      await consoleListedOpen(t, st);
+      list.forEach((other, j) => checkBadge(t, cardOf(other.id), other, j <= i ? "started" : "new", `after opening ${st.title}`));
+      t.progress((i + 1) / (list.length + 2));
+      continue;
+    }
     // A tap on it opens that story's player, with its title, its first page's text, video and choices.
     await openStory(t, st.id);
     t.scene(`${st.title}: player`);
@@ -903,6 +915,10 @@ async function storiesRun(options, t) {
     const ending = wayTo(st, (s) => !!s.ending);
     if (!ending) {
       t.problem("warning", `${st.id}: no ending to reach (no scene with an "ending")`);
+      continue;
+    }
+    if (isConsole(st)) {
+      await consoleListedEnding(t, st);
       continue;
     }
     t.scene(`${st.title}: to an ending`);
@@ -954,6 +970,10 @@ async function storiesRun(options, t) {
   for (const st of list) {
     const ending = wayTo(st, (s) => !!s.ending);
     if (!ending) continue;
+    if (isConsole(st)) {
+      await consoleListedStartOver(t, st);
+      continue;
+    }
     t.scene(`${st.title}: Start Over`);
     await openStory(t, st.id);
     await toStart(t);
@@ -2540,6 +2560,100 @@ async function consoleRun(options, t) {
 
 /** A console story's draft, opened by its link (the `stories` run): its title, wall, first lines and choices, and its
     saved place coming back after All stories. */
+/** The fewest choices from a new run to an ending, as the state explorer gives them: { picks, id } or null. */
+function consoleShortestEnding(st) {
+  const x = rulesOf().explore(st, { cap: st.stateCap || 50000 });
+  const ways = Object.entries(x.variants)
+    .filter(([id]) => st.scenes[id].ending)
+    .flatMap(([id, vs]) => Object.values(vs).map((v) => ({ id, ...v })))
+    .sort((a, b) => a.picks.length - b.picks.length);
+  return ways[0] || null;
+}
+
+/** A listed console story's card opens its player under its own Tap to play (title, first scene, lines, choices);
+    All stories brings the landing page back and the card says Started. */
+async function consoleListedOpen(t, st) {
+  await consoleOpen(t, st);
+  t.scene(`${st.title}: player`);
+  if ($("console-title").textContent.trim() !== st.title.toUpperCase()) t.problem("bug", `${st.id}: the player's title is "${$("console-title").textContent}"`);
+  await consoleHeard(t, document, st.id);
+  const m = consoleModel(st);
+  consoleCheck(t, st, m, document, `${st.id}: ${st.start}`);
+  if (!openChoices().length) t.problem("bug", `${st.id}: no choices on the first scene`);
+  checkHitTargets(t, document, st.title);
+  // Only the first scene is found: its percent is one scene's worth.
+  const text = (byIdIn(document, "console-explored").textContent || "").trim();
+  const want = Math.floor(100 / Object.keys(st.scenes).length);
+  if (text !== `${want}% explored`) t.problem("bug", `${st.id}: the first scene says "${text}", not ${want}% explored`);
+  t.add("storiesOpened");
+  await sleep(800);
+  await toLanding(t);
+  if (new URL(location.href).searchParams.has("story")) t.problem("bug", "the address still names a story on the landing page");
+  if ($("title-splash")) t.problem("bug", "All stories shows the title splash again (it's for the first visit)");
+  await sleep(100);
+}
+
+/** Plays the shortest way to an ending with real presses from a new run, then back on the landing page. */
+async function consolePlayToEnding(t, st) {
+  const way = consoleShortestEnding(st);
+  if (!way) return null;
+  await consoleOpen(t, st);
+  await consoleFresh(t, st);
+  const m = consoleModel(st);
+  const where = `${st.id}: ${way.path.join(" > ")}`;
+  const seen = new Set();
+  await consoleHeard(t, document, where);
+  consoleCheck(t, st, m, document, where, null);
+  for (const i of way.picks) await consoleChoose(t, st, m, i, document, where, null);
+  if (!st.scenes[m.scene].ending) t.problem("bug", `${where}: expected to end at an ending, is at ${m.scene}`);
+  t.event("ending", `${st.id}/${m.scene}: ${st.scenes[m.scene].ending[0]}`);
+  if (stories().run(st.id) !== "end") t.problem("bug", `${st.id}: at an ending the run says "${stories().run(st.id)}", not end`);
+  return seen;
+}
+
+/** Reaching an ending completes a console story; the percent follows the unlocked scenes; a reload keeps it. */
+async function consoleListedEnding(t, st) {
+  t.scene(`${st.title}: to an ending`);
+  if (!(await consolePlayToEnding(t, st))) return t.problem("warning", `${st.id}: no ending to reach (no scene with an "ending")`);
+  const want = exploredWant(st);
+  const text = (byIdIn(document, "console-explored").textContent || "").trim();
+  if (text !== `${want}% explored`) t.problem("bug", `${st.id}: at an ending the player says "${text}", the unlocks give ${want}%`);
+  await sleep(800);
+  await toLanding(t);
+  checkBadge(t, cardOf(st.id), st, "completed", `after ${st.title}'s ending`);
+  await sleep(600);
+}
+
+/** Start Over on a completed console story: only its run goes (unlocks, percent and Completed stay); it opens at its
+    first scene, and its card still says Completed and Start Over. */
+async function consoleListedStartOver(t, st) {
+  t.scene(`${st.title}: Start Over`);
+  if (!(await consolePlayToEnding(t, st))) return;
+  await toLanding(t);
+  if (!checkBadge(t, cardOf(st.id), st, "completed", `before Start Over in ${st.title}`)) return;
+  const go = () => (cardOf(st.id).querySelector(".story-card-go")?.textContent || "").trim();
+  if (go() !== "Start Over") t.problem("bug", `${st.id}: at an ending its card's button says "${go()}", not Start Over`);
+  const unlocks = JSON.stringify(savedUnlocks(st));
+  const pct = exploredWant(st);
+  const others = Object.fromEntries(allStories().filter((o) => o.id !== st.id).flatMap(cookiesOf).map((name) => [name, readJsonCookie(name)]));
+  await consoleOpen(t, st);
+  await consoleHeard(t, document, `${st.id} (after Start Over)`);
+  if (apiOf().scene() !== st.start || apiOf().history().length) t.problem("bug", `${st.id}: Start Over opened ${apiOf().scene()} (${apiOf().history().length} steps in), not its start`);
+  const saved = savedPlace(st);
+  if (!saved || saved.scene !== st.start) t.problem("bug", `${st.id}: after Start Over its run is ${JSON.stringify(saved)}, not the start`);
+  if (JSON.stringify(savedUnlocks(st)) !== unlocks) t.problem("bug", `${st.id}: Start Over changed its unlocks (${unlocks} -> ${JSON.stringify(savedUnlocks(st))}): they must stay`);
+  if (stories().progress(st.id) !== "completed") t.problem("bug", `${st.id}: after Start Over iltvStories.progress says ${stories().progress(st.id)}, not completed (an ending stays reached)`);
+  for (const [name, was] of Object.entries(others)) {
+    if (JSON.stringify(readJsonCookie(name)) !== JSON.stringify(was)) t.problem("bug", `Start Over in ${st.id} changed the cookie ${name}`);
+  }
+  t.event("start-over", `${st.id}: at ${apiOf().scene()}, ${pct}% explored kept; ${Object.keys(others).length} other cookies untouched`);
+  await sleep(600);
+  await toLanding(t);
+  checkBadge(t, cardOf(st.id), st, "completed", `after Start Over in ${st.title}`);
+  if (go() !== "Start Over") t.problem("bug", `${st.id}: after Start Over its card's button says "${go()}", not Start Over`);
+  await sleep(600);
+}
+
 async function consoleDraft(t, st) {
   await consoleOpen(t, st);
   await consoleFresh(t, st);
