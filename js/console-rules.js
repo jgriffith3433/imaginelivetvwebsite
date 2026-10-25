@@ -10,7 +10,8 @@
      set: [flag]  clear: [flag]  add: { meter: n }   what choosing it does (meters stay inside their range)
      log: "text"                 an extra line for the shift log        cosmetic: "why"   no state effect on purpose
 
-   Plain ES5 so the same file loads in the browser and in node (globalThis.iltvConsoleRules). */
+   ES5 apart from the two generators (exploreSteps, lengthSteps) that let the playtest work the big stories out in
+   slices; the same file loads in the browser and in node (globalThis.iltvConsoleRules). */
 (function (root) {
   "use strict";
 
@@ -98,7 +99,7 @@
         used:   { "scene#i": { usable, changes, branch } }   what each choice does across all reachable states
         cosmetic: [{ scene, path }]            a path with more than `maxCosmetic` cosmetic choices
         capped: true if the search stopped at `cap` states (then nothing is proved unreachable) */
-  function explore(story, opts) {
+  function* exploreSteps(story, opts) {
     opts = opts || {};
     var cap = opts.cap || 50000;
     var maxCosmetic = opts.maxCosmetic == null ? 2 : opts.maxCosmetic;
@@ -113,6 +114,7 @@
     while (queue.length) {
       var at = queue.shift();
       out.states++;
+      if ((out.states & 255) === 0) yield { states: out.states, queued: queue.length };
       var scene = story.scenes[at.id];
       if (!scene) continue;
       if (!out.scenes[at.id]) {
@@ -154,6 +156,95 @@
     return out;
   }
 
+  /** The same search, all at once. */
+  function explore(story, opts) {
+    var it = exploreSteps(story, opts);
+    for (var r = it.next(); !r.done; r = it.next());
+    return r.value;
+  }
+
+  /** The same search in slices: it hands the thread back (`tick()`, a macrotask) whenever `sliceMs` of work has gone by
+      and says how far it is through `onProgress({ states, queued })`. Same result as explore(). */
+  async function exploreAsync(story, opts, run) {
+    return drive(exploreSteps(story, opts), run);
+  }
+
+  async function drive(it, run) {
+    run = run || {};
+    var sliceMs = run.sliceMs == null ? 30 : run.sliceMs;
+    var now = run.now || function () { return Date.now(); };
+    var tick = run.tick || function () { return new Promise(function (ok) { setTimeout(ok, 0); }); };
+    var from = now();
+    for (var r = it.next(); !r.done; r = it.next()) {
+      if (run.onProgress) run.onProgress(r.value);
+      if (now() - from >= sliceMs) {
+        await tick();
+        from = now();
+      }
+    }
+    return r.value;
+  }
+
+  /** How long each way through a story is to listen to: the shortest, the longest and the mean (every open choice
+      equally likely). A line is its `dur` plus the player's 0.35 s gap. */
+  function* lengthSteps(story) {
+    var dur = {};
+    Object.keys(story.scenes).forEach(function (id) {
+      dur[id] = story.scenes[id].lines.reduce(function (a, l) { return a + (l.dur || 0) + 0.35; }, 0);
+    });
+    var memo = new Map();
+    var work = 0;
+    function* go(id, state) {
+      var key = id + "#" + stateKey(state);
+      if (memo.has(key)) return memo.get(key);
+      if ((++work & 255) === 0) yield { states: memo.size };
+      var open = [];
+      story.scenes[id].choices.forEach(function (c, i) { if (usable(c, state)) open.push([c, i]); });
+      var r;
+      if (!open.length) r = { min: dur[id], max: dur[id], mean: dur[id] };
+      else {
+        var next = [];
+        for (var k = 0; k < open.length; k++) {
+          var sub = yield* go(open[k][0][2], apply(story, state, open[k][0]));
+          next.push(Object.assign({ i: open[k][1] }, sub));
+        }
+        var lo = next.reduce(function (a, b) { return b.min < a.min ? b : a; });
+        var hi = next.reduce(function (a, b) { return b.max > a.max ? b : a; });
+        r = { min: dur[id] + lo.min, max: dur[id] + hi.max, mean: dur[id] + next.reduce(function (a, b) { return a + b.mean; }, 0) / next.length, lo: lo.i, hi: hi.i };
+      }
+      memo.set(key, r);
+      return r;
+    }
+    function* wayOf(which) {
+      var id = story.start;
+      var state = fresh(story);
+      var picks = [];
+      for (;;) {
+        var r = yield* go(id, state);
+        var i = which === "lo" ? r.lo : r.hi;
+        if (i == null) return picks;
+        picks.push(i);
+        var c = story.scenes[id].choices[i];
+        state = apply(story, state, c);
+        id = c[2];
+      }
+    }
+    var top = yield* go(story.start, fresh(story));
+    var shortestWay = yield* wayOf("lo");
+    var longestWay = yield* wayOf("hi");
+    return { dur: dur, shortest: top.min, longest: top.max, mean: top.mean, shortestWay: shortestWay, longestWay: longestWay, states: memo.size };
+  }
+
+  function lengths(story) {
+    var it = lengthSteps(story);
+    for (var r = it.next(); !r.done; r = it.next());
+    return r.value;
+  }
+
+  async function lengthsAsync(story, run) {
+    return drive(lengthSteps(story), run);
+  }
+
   var api = {
     fresh: fresh,
     clone: clone,
@@ -162,6 +253,9 @@
     stateKey: stateKey,
     feedsOf: feedsOf,
     explore: explore,
+    exploreAsync: exploreAsync,
+    lengths: lengths,
+    lengthsAsync: lengthsAsync,
     extraOf: extraOf,
     has: has,
   };

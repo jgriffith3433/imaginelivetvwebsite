@@ -2139,6 +2139,7 @@ function consoleModel(st) {
 /** The state explorer's result for a story, worked out once per page load (it takes seconds on a story this size). */
 const exploreCache = new Map();
 function consoleExplore(st) {
+  // consoleWarm fills the cache in slices before anything plays; this is only the one-go fallback.
   if (!exploreCache.has(st.id)) exploreCache.set(st.id, rulesOf().explore(st, { cap: st.stateCap || 50000 }));
   return exploreCache.get(st.id);
 }
@@ -2196,17 +2197,52 @@ function probeStop(t) {
 async function consoleWarm(t) {
   for (const st of consoleStories()) {
     if (exploreCache.has(st.id)) continue;
-    t.scene(`setup: working out ${st.id}'s states`); // the page is blocked while the explorer runs: say so first
+    t.scene(`setup: exploring ${st.id} 0%`);
     t.note(`${st.title}: working out its states before play`);
     t.progress(0.01);
-    await boxed(t, `${st.id}: letting a frame draw`, sleep(80)); // let a frame draw first
     const t0 = performance.now();
-    const x = consoleExplore(st);
+    // Sliced: the work hands the thread back every ~30 ms (a macrotask), so frames draw and the runner can poll the page.
+    // The job line moves every few seconds; 5 minutes in all is a bug that names the step.
+    const run = (what, share, from) => {
+      let said = 0;
+      return {
+        sliceMs: 30,
+        tick: () => new Promise((ok) => setTimeout(ok, 0)),
+        now: () => performance.now(),
+        onProgress: (p) => {
+          const now = performance.now();
+          if (now - t0 > SETUP_TOTAL) throw new Error(`setup "${st.id}: ${what}" took over ${SETUP_TOTAL / 60000} minutes`);
+          if (now - said < 2500) return;
+          said = now;
+          const frac = p.queued != null ? p.states / (p.states + p.queued) : Math.min(0.95, p.states / 260000);
+          t.scene(`setup: ${what} ${st.id} ${Math.round(frac * 100)}%`);
+          t.progress(from + share * frac);
+          t.note(`${st.title}: ${what} (${p.states} states)`);
+        },
+      };
+    };
+    let x;
+    try {
+      x = await rulesOf().exploreAsync(st, { cap: st.stateCap || 50000 }, run("exploring", 0.03, 0.01));
+      exploreCache.set(st.id, x);
+      if (st.stateCap || x.states > 5000) {
+        const stored = lengthsStored(st);
+        if (stored) lengthsCache.set(st.id, stored);
+        else {
+          t.scene(`setup: working out how long each way of ${st.id} is 0%`);
+          const l = await rulesOf().lengthsAsync(st, run("working out the ways of", 0.03, 0.04));
+          lengthsCache.set(st.id, l);
+          lengthsStore(st, l);
+        }
+      }
+    } catch (e) {
+      t.problem("bug", e.message);
+      throw e;
+    }
     t.scene(`setup: ${st.id}'s ways worked out`);
-    if (st.stateCap || x.states > 5000) nightLengths(st);
     const ms = Math.round(performance.now() - t0);
     probeFlush(t, `${st.id}: state explorer`);
-    t.event("state-explorer", `${st.id}: ${x.states} states in ${ms} ms on the page's thread, before anything plays (it stalls the page for that long, so it can't be inside a scene)`);
+    t.event("state-explorer", `${st.id}: ${x.states} states in ${ms} ms, sliced (the page gets the thread back every ~30 ms), before anything plays`);
     t.metric(`explorerMs:${st.id}`, ms);
     await boxed(t, `${st.id}: after the explorer`, sleep(200));
   }
@@ -2215,6 +2251,7 @@ async function consoleWarm(t) {
 /** A setup await with a 60 s box: it rejects with a bug that names the step (a wait that never resolves is a finding
     named by step, not a 10-minute stall). Synchronous work can't be boxed: say the step with t.scene before it. */
 const SETUP_LIMIT = 60 * 1000;
+const SETUP_TOTAL = 5 * 60 * 1000; // the explorer and the lengths together
 function boxed(t, what, promise, ms = SETUP_LIMIT) {
   let timer;
   const box = new Promise((_, reject) => {
@@ -3572,44 +3609,25 @@ async function crawlConsolePages(t, st, done, total) {
     average (every open choice equally likely). A line is its recording (the build's own `dur`) plus the player's 0.35 s gap before the next (`GAP` in js/console.js). */
 const lengthsCache = new Map();
 function nightLengths(st) {
-  if (!lengthsCache.has(st.id)) lengthsCache.set(st.id, nightLengthsOf(st));
+  // Warmed by consoleWarm (sliced, and kept in sessionStorage); only worked out here, in one go, if nothing warmed it.
+  if (!lengthsCache.has(st.id)) lengthsCache.set(st.id, lengthsStored(st) || rulesOf().lengths(st));
   return lengthsCache.get(st.id);
 }
-function nightLengthsOf(st) {
-  const R = rulesOf();
-  const dur = Object.fromEntries(Object.entries(st.scenes).map(([id, sc]) => [id, sc.lines.reduce((a, l) => a + (l.dur || 0) + 0.35, 0)]));
-  const memo = new Map();
-  const go = (id, state) => {
-    const key = `${id}#${R.stateKey(state)}`;
-    if (memo.has(key)) return memo.get(key);
-    const open = st.scenes[id].choices.map((c, i) => [c, i]).filter(([c]) => R.usable(c, state));
-    let r;
-    if (!open.length) r = { min: dur[id], max: dur[id], mean: dur[id] };
-    else {
-      const next = open.map(([c, i]) => ({ i, ...go(c[2], R.apply(st, state, c)) }));
-      const lo = next.reduce((a, b) => (b.min < a.min ? b : a));
-      const hi = next.reduce((a, b) => (b.max > a.max ? b : a));
-      r = { min: dur[id] + lo.min, max: dur[id] + hi.max, mean: dur[id] + next.reduce((a, b) => a + b.mean, 0) / next.length, lo: lo.i, hi: hi.i };
-    }
-    memo.set(key, r);
-    return r;
-  };
-  const wayOf = (which) => {
-    let id = st.start;
-    let state = R.fresh(st);
-    const picks = [];
-    for (;;) {
-      const r = go(id, state);
-      const i = which === "lo" ? r.lo : r.hi;
-      if (i == null) return picks;
-      picks.push(i);
-      const c = st.scenes[id].choices[i];
-      state = R.apply(st, state, c);
-      id = c[2];
-    }
-  };
-  const top = go(st.start, R.fresh(st));
-  return { dur, shortest: top.min, longest: top.max, mean: top.mean, shortestWay: wayOf("lo"), longestWay: wayOf("hi"), states: memo.size };
+/** The lengths kept for this story's data in sessionStorage (so `console` and `night-shift-signoff` in one tab don't both
+    pay for them); keyed by a sum of the story's lines so edited data is never answered from the old numbers. */
+function lengthsKey(st) {
+  let h = 0;
+  for (const [id, sc] of Object.entries(st.scenes)) for (const c of [id, JSON.stringify(sc.choices), ...sc.lines.map((l) => l.dur)]) for (let i = 0; i < String(c).length; i++) h = (h * 31 + String(c).charCodeAt(i)) | 0;
+  return `iltv.playtest.lengths.${st.id}.${h}`;
+}
+function lengthsStored(st) {
+  try {
+    const v = JSON.parse(sessionStorage.getItem(lengthsKey(st)) || "null");
+    return v && typeof v.shortest === "number" ? v : null;
+  } catch { return null; }
+}
+function lengthsStore(st, v) {
+  try { sessionStorage.setItem(lengthsKey(st), JSON.stringify(v)); } catch { /* full or refused: just not kept */ }
 }
 
 /** One way through every reveal layer of the trainer (stages in the order they come in the night) that ends on "Someone to leave it to":
@@ -3900,7 +3918,7 @@ async function nightSignoffRun(options, t) {
     t.scene("signoff: working out the ways to every ending");
     t.progress(0.02);
     t.event("signoff-prepare", "working out the state explorer's ways to every ending");
-    const x = consoleExplore(st); // cached by consoleWarm; only synchronous if it wasn't
+    const x = consoleExplore(st); // cached by consoleWarm (sliced); only synchronous if it wasn't
     t.scene("signoff: working out how long each way is");
     const lengths = nightLengths(st);
     t.scene("signoff: ways found");
