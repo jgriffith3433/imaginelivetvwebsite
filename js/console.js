@@ -321,20 +321,37 @@
 
   // When the strip changes height (the end screen shrinks it, the phone turns), it stays on its newest line.
   // Its minimum height is the newest line's own height, so the strip never cuts that line off (a long line wraps to five rows on a phone).
-  function fitSubs() {
+  // The ResizeObserver watches the strip this writes to, so it must settle: a write only happens when the height needed
+  // differs by more than 1px, the observer only schedules one animation frame (never writes inside its own callback),
+  // and the observer's writes are capped at 5 a second until the scene changes.
+  var subsWrites = [], subsCapped = false;
+  function fitSubs(fromObserver) {
     var last = els.subs.lastElementChild;
-    if (!last || !subsOn) { els.subs.style.minHeight = ""; return; }
+    if (!last || !subsOn) { if (els.subs.style.minHeight) els.subs.style.minHeight = ""; return; }
     var cs = window.getComputedStyle(els.subs);
-    var need = Math.ceil(last.offsetHeight + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom));
+    var need = Math.ceil(last.offsetHeight + (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0));
+    var now = parseFloat(els.subs.style.minHeight);
+    if (now === now && Math.abs(need - now) <= 1) return;
+    if (fromObserver) {
+      if (subsCapped) return;
+      var t = Date.now();
+      subsWrites = subsWrites.filter(function (w) { return t - w < 1000; });
+      if (subsWrites.length >= 5) { subsCapped = true; return; }
+      subsWrites.push(t);
+    }
     els.subs.style.minHeight = need + "px";
   }
 
   if (window.ResizeObserver) {
-    var subsH = 0;
-    new ResizeObserver(function () {
-      fitSubs();
+    var subsH = 0, subsFrame = 0;
+    var subsFrameRun = function () {
+      subsFrame = 0;
+      fitSubs(true);
       var h = els.subs.clientHeight;
       if (h !== subsH) { subsH = h; els.subs.scrollTop = els.subs.scrollHeight; }
+    };
+    new ResizeObserver(function () {
+      if (!subsFrame) subsFrame = window.requestAnimationFrame(subsFrameRun);
     }).observe(els.subs);
   }
 
@@ -434,6 +451,7 @@
 
   function enter(id, resumed) {
     run.scene = id;
+    subsCapped = false; subsWrites = [];
     var s = scene();
     if (!resumed) {
       run.done = 0;
