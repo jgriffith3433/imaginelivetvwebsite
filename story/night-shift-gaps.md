@@ -344,6 +344,8 @@ Update (task c_c4ffb03144e4, nothing run in a browser: the checks are written, t
 
 Status 2026-10-25 on `224a9f5` (#54). Real results only; "not run" means no report exists for that commit.
 
+Re-checked on `6182b85` (#60): still no beta report for it (newest is Studio `r_fa49e962e7d1`; `night-shift-signoff` `j_55e8a96b943b` was cancelled with no result), ElevenLabs still refuses (`j_f61bbb6b4f1e`, 401). Every item below is unchanged.
+
 1. **Beta's playtest of the merged commit: not run** (no report newer than Studio's `r_fa49e962e7d1` of 2026-10-24 and Gen's T4 runs quoted below, which predate #50 to #54): `night-shift-signoff` (4 sizes, 12 endings), `console` (real story leg), `stories`, `branches`, `pages`, `sound`, `blog`, `credits`, `analytics`, `cctv-art`, `night-shift-audio`, `night-shift-card`. Read them when they exist and fix what they show.
 2. **46 voice lines are unrecorded** (15 echo scenes; item 1's stings are done, #51). ElevenLabs answers 401 `payment_issue` (re-tried today, job `j_0017f2fd955e`): J pays the invoice, then `--reuse`, `audio.voice` per line (about 1.2 dollars), `--ingest`, `--mix`, `--dur`, `npm run story`. `npm run test:endings` fails on exactly these (75 problems, all "no recording"); `npm run story -- --check`: ok, 304 scenes, nothing stale.
 3. J listens to the voices (item 7) and reads the script (item 30); then treatments (item 5). Only J can.

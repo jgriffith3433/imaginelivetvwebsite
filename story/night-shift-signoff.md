@@ -105,12 +105,33 @@ which ran before the fixes of #50 to #54). So, for the merged commit:
 `.hawkes/scenario.txt` names `night-shift-signoff` with `{"at":"last-choices"}`; the other scenarios are in `js/playtest.js` and the beta list
 (`AGENTS.md`). The "0 bugs" criteria are **not met by any report yet**, and nothing here claims they are.
 
-## Left
+## Status on `6182b85` (#60), 2026-10-25 (third attempt)
+
+Nothing new is claimed. What was looked at, and what was found:
+
+- **Reports:** the newest Studio report is still `r_fa49e962e7d1` (2026-10-24, before #50 to #60). Gen's job store holds no `playtest.run` for `6182b85`:
+  `night-shift-signoff` `j_55e8a96b943b` is **cancelled** (no result), and the finished runs are older `night-shift-gaps`, `night-shift-treatment`, `console`,
+  `night-shift-card` and `night-shift-audio` at desktop. Every scenario in the criteria is therefore **not run** for this commit; no run id is cited because none
+  belongs to it.
+- **ElevenLabs:** still blocked. The newest voice job, `j_f61bbb6b4f1e`, failed with "blocked by an unpaid invoice; J must pay it. Do not retry (401)". It was not retried.
+  `node tools/make-audio.mjs night-shift --list`: **46 of 1,410 have no file** (the 15 echo scenes), so `npm run test:endings` still fails on exactly those.
+- **Analytics collect 502:** no beta report shows it for this commit, so which side it comes from (this site or Studio's endpoint) is **not known**.
+  The site only posts through the SDK copy and `quietAnalytics()` swallows it outside the `analytics` run; nothing was changed.
+- **The beta scenario list** is `playtests` for `imaginelivetv` in `hawkesstudio/products.json` (smoke, branches, blog local, smoke live, smoke live phone). It is
+  Studio's file, not this repo's, so it was not edited here. The scenarios exist in `js/playtest.js` (stories, night-shift-card, night-shift-treatment, night-shift-audio, console,
+  night-shift, night-shift-gaps, night-shift-signoff, cctv-art, credits, sound, analytics, plus smoke, branches, pages, blog).
+- **Checked by command today:** `npm run story -- --check` ok (4 stories, 304 scenes, nothing stale); `node tools/check-night-shift.mjs` ok (12 endings, 0 choices that change nothing).
+- **GPU:** none needed, none used.
+
+## Blocked, not done (not J's listening or reading)
 
 1. **46 voice lines are unrecorded** (the 15 echo scenes). ElevenLabs refuses every call: the account's invoice is unpaid (J). When it is paid:
    `node tools/make-audio.mjs night-shift --reuse`, `hawkesgen_run audio.voice` per listed line (about 1.2 dollars), `--ingest`, `--mix`, `--dur`,
    `npm run story`. Until then `npm run test:endings` and `night-shift-audio` fail on the unmade lines and those lines play on a timer.
 2. **Beta's playtest of the merged commit** has to run (nobody can start it from here): `night-shift-signoff` at the four sizes, then the other scenarios above.
    Fix what they report.
-3. **J's own listening to the voices and reading the script.** No agent has heard a voice or read the whole night as a viewer: a `perform` tag read aloud,
+
+## Left
+
+1. **J's own listening to the voices and reading the script.** No agent has heard a voice or read the whole night as a viewer: a `perform` tag read aloud,
    a drifting voice, two speakers alike, a wrong-sounding treatment, a line that reads badly.
