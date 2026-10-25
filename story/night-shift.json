@@ -24,7 +24,7 @@
     "specimen",
     "laboratory"
   ],
-  "stateCap": 400000,
+  "stateCap": 150000,
   "speakers": {
     "narrator": {
       "name": "Narrator",
@@ -246,6 +246,16 @@
           "perform": "flat, a small stop"
         },
         {
+          "speaker": "okafor",
+          "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
+          "perform": "reading"
+        },
+        {
+          "speaker": "okafor",
+          "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
+          "perform": "dry, not joking"
+        },
+        {
           "speaker": "dee",
           "text": "Four.",
           "perform": "flat",
@@ -321,6 +331,16 @@
           "perform": "correcting himself"
         },
         {
+          "speaker": "okafor",
+          "text": "And the binder. Fire, access, medical, who to call, in what order. Page eleven is the one people skip.",
+          "perform": "tapping the shelf"
+        },
+        {
+          "speaker": "dee",
+          "text": "Page eleven.",
+          "perform": "flat, to the charger"
+        },
+        {
           "speaker": "dee",
           "text": "Read it.",
           "perform": "flat"
@@ -383,6 +403,16 @@
           "perform": "correcting himself"
         },
         {
+          "speaker": "okafor",
+          "text": "And the binder. Fire, access, medical, who to call, in what order. Page eleven is the one people skip.",
+          "perform": "tapping the shelf"
+        },
+        {
+          "speaker": "dee",
+          "text": "Page eleven.",
+          "perform": "flat, to the charger"
+        },
+        {
           "speaker": "dee",
           "text": "Read it.",
           "perform": "flat"
@@ -426,7 +456,16 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
+          "text": "You read both pages while he waits. The panel belongs to the fire safety director, not to you. One badge, one person. After hours the tenant says yes first.",
+          "sfx": "paper"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Page eleven is the order of calls: supervisor, building manager, nine-one-one. Unless a life is at risk. Then nine-one-one first, and everyone else after."
+        },
+        {
+          "speaker": "narrator",
+          "text": "You initial it. Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
           "sfx": "door-heavy"
         },
         {
@@ -444,6 +483,11 @@
           "text": "Coffee's on the left. It's wrong. Don't tell me it's wrong.",
           "perform": "dry",
           "sfx": "coffee"
+        },
+        {
+          "speaker": "dee",
+          "text": "Terrell has the desk. You don't go out to the desk. The desk comes to you.",
+          "perform": "flat, a house rule"
         },
         {
           "speaker": "dee",
@@ -519,6 +563,11 @@
         },
         {
           "speaker": "dee",
+          "text": "Terrell has the desk. You don't go out to the desk. The desk comes to you.",
+          "perform": "flat, a house rule"
+        },
+        {
+          "speaker": "dee",
           "text": "Officer. You've got a name? Say it once. I'll use it when I use it.",
           "perform": "looks at you for the first time"
         }
@@ -560,6 +609,10 @@
       "lines": [
         {
           "speaker": "narrator",
+          "text": "The control room is smaller than the wall makes it look. A shelf, a binder, an extinguisher, a charger with four green lights, a coffee machine that has been wrong for a long time."
+        },
+        {
+          "speaker": "narrator",
           "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person."
         },
         {
@@ -578,6 +631,11 @@
           "text": "Radios. You've got one. Clip it on.",
           "perform": "holds the fourth out",
           "sfx": "radio-charger"
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't move the chairs. The chairs know where they are.",
+          "perform": "flat, to the wall"
         }
       ],
       "choices": [
@@ -620,6 +678,10 @@
         },
         {
           "speaker": "narrator",
+          "text": "The control room is smaller than the wall makes it look. A shelf, a binder, an extinguisher, a charger with four green lights, a coffee machine that has been wrong for a long time."
+        },
+        {
+          "speaker": "narrator",
           "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person."
         },
         {
@@ -638,6 +700,11 @@
           "text": "Radios. You've got one. Clip it on.",
           "perform": "holds the fourth out",
           "sfx": "radio-charger"
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't move the chairs. The chairs know where they are.",
+          "perform": "flat, to the wall"
         }
       ],
       "choices": [
@@ -677,6 +744,15 @@
           "speaker": "dee",
           "text": "Back's all right? It's the only thing in here that is.",
           "perform": "a dry look at the chair"
+        },
+        {
+          "speaker": "dee",
+          "text": "It's been in here since before Terrell. Since before the carpet. Nobody's sure how it got in.",
+          "perform": "dry, to the wall"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The good chair has a back that remembers somebody's spine. It isn't yours. It will do."
         },
         {
           "speaker": "narrator",
@@ -742,6 +818,15 @@
         },
         {
           "speaker": "narrator",
+          "text": "The cushion is flatter than you thought, and warm in a way that no cushion should be at seven in the evening. You sit in the shape of someone else."
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't get used to it.",
+          "perform": "flat, from the good chair, the one she has never once sat in"
+        },
+        {
+          "speaker": "narrator",
           "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move."
         },
         {
@@ -803,6 +888,15 @@
           "perform": "flat"
         },
         {
+          "speaker": "dee",
+          "text": "Mine's the watch on my wrist. That one's the room. Don't trust the room.",
+          "perform": "flat, tapping the glass of her watch"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The clock on the wall ticks in a slightly different place from where your pulse says it should."
+        },
+        {
           "speaker": "narrator",
           "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move."
         },
@@ -858,6 +952,11 @@
           "speaker": "dee",
           "text": "Mm.",
           "perform": "the small one, the good one"
+        },
+        {
+          "speaker": "dee",
+          "text": "Now you've done one. Do it every time. Half hour and hour. Never skip a check. A missed check is a hole.",
+          "perform": "flat"
         },
         {
           "speaker": "narrator",
@@ -932,6 +1031,10 @@
         },
         {
           "speaker": "narrator",
+          "text": "The radio goes quiet. She doesn't look pleased and she doesn't look cross. She looks like a woman writing down a fact."
+        },
+        {
+          "speaker": "narrator",
           "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
           "sfx": "foil"
         },
@@ -1000,6 +1103,10 @@
           "speaker": "dee",
           "text": "Mm. A minute late.",
           "perform": "the whole verdict"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The radio goes quiet. She puts the pencil down very precisely, on the right of the tablet, as if to give her hands somewhere to be."
         },
         {
           "speaker": "narrator",
@@ -1073,6 +1180,11 @@
           "perform": "hearing you sip it"
         },
         {
+          "speaker": "dee",
+          "text": "Thirty-six minutes. Door to door. You'll learn the seven by smell.",
+          "perform": "flat, a small, dry kindness"
+        },
+        {
           "speaker": "narrator",
           "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock."
         },
@@ -1131,6 +1243,10 @@
           "speaker": "dee",
           "text": "It's wrong. I said not to say.",
           "perform": "hearing you sip it"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She eats half, then folds the foil back over the rest and puts it on the shelf. It is, you think, half past seven. She is saving it."
         },
         {
           "speaker": "narrator",
@@ -1194,6 +1310,10 @@
         },
         {
           "speaker": "narrator",
+          "text": "Terrell's voice carries from the lobby for another ten seconds, then a revolving door cuts it off. Dolores lets out a breath that is almost a laugh and is not."
+        },
+        {
+          "speaker": "narrator",
           "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock."
         },
         {
@@ -1246,6 +1366,10 @@
           "speaker": "dee",
           "text": "Look at it till it's boring. Then look again.",
           "perform": "tapping the glass of tile two"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You give her the tiles one by one, and she nods at each as if you were handing her cards she had expected to be there."
         },
         {
           "speaker": "narrator",
@@ -1308,6 +1432,11 @@
           "speaker": "dee",
           "text": "Look at it till it's boring. Then look again.",
           "perform": "tapping the glass of tile two"
+        },
+        {
+          "speaker": "dee",
+          "text": "Eight hours, nine tiles, a hundred thousand frames. Normal is the one that doesn't surprise you.",
+          "perform": "flat"
         },
         {
           "speaker": "narrator",
@@ -1378,6 +1507,10 @@
         },
         {
           "speaker": "narrator",
+          "text": "She doesn't correct you. She taps the glass over tile two, where nothing moves, and lets the silence correct you for her."
+        },
+        {
+          "speaker": "narrator",
           "text": "The second row: a stairwell landing on thirty-one, the elevator lobby, a corridor on forty-four. Then the chairman's glass doors. The roof. A cabinet on two."
         },
         {
@@ -1424,7 +1557,7 @@
     {
       "id": "w2-cam9",
       "folder": "w2-cam9",
-      "time": "20:10",
+      "time": "20:00",
       "title": "Camera nine",
       "ambience": "control-room",
       "lines": [
@@ -1440,121 +1573,56 @@
         },
         {
           "speaker": "narrator",
-          "text": "You walked the stairwells, the dock, the roof door. Back at the lobby desk, Dolores lays out the visitor sheet and puts a pen and a pencil beside it."
+          "text": "Eight o'clock. Dolores takes the keys and a flashlight that does not work. Stairwell A, stairwell B, then C, one flight at a time, her hand on the rail.",
+          "sfx": "keys"
         },
         {
           "speaker": "dee",
-          "text": "Name. Company. Who they're seeing. Floor. In. Out.",
-          "perform": "tapping each column"
+          "text": "Stairs are the spine of the building. Everything that goes wrong goes through one.",
+          "perform": "flat, climbing",
+          "sfx": "footsteps-stairs"
         },
         {
           "speaker": "dee",
-          "text": "ID, you look at it. Look. Not glance.",
-          "perform": "flat"
+          "text": "Thirty-one. Look at the door.",
+          "perform": "at the landing, a little out of breath, hiding it"
+        },
+        {
+          "speaker": "narrator",
+          "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular."
         },
         {
           "speaker": "dee",
-          "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
-          "perform": "like a recipe she has said a thousand times"
-        },
-        {
-          "speaker": "dee",
-          "text": "However nice.",
-          "perform": "a beat, one eyebrow"
-        },
-        {
-          "speaker": "dee",
-          "text": "Pen's for the sheet. Pencil's for… Pick one.",
-          "perform": "holding both out"
+          "text": "Smokers. Associates who can't leave a deal. Door sticks, they prop it, they forget. Orange wedge. Everyone in this city owns an orange wedge.",
+          "perform": "dry"
         }
       ],
       "choices": [
         {
-          "say": "Take the pencil",
-          "next": "sign-pencil",
+          "say": "Push the door, hear the latch",
+          "next": "tour1-door",
+          "log": "Pushed the fire door on 31 and listened for the latch."
+        },
+        {
+          "say": "Ask what she does when she finds one",
+          "next": "tour1-wedge",
           "add": {
-            "trainer_trust": 1
+            "building_known": 1
           },
-          "log": "Took the pencil for the visitor sheet.",
-          "forbids": [
-            "asked_44"
-          ]
+          "log": "Asked D. Reyes what she does when she finds a wedge."
         },
         {
-          "say": "Take the pencil",
-          "next": "sign-pencil-44",
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Took the pencil for the visitor sheet.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Take the pen",
-          "next": "sign-pen",
-          "log": "Took the pen for the visitor sheet.",
-          "forbids": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Take the pen",
-          "next": "sign-pen-44",
-          "log": "Took the pen for the visitor sheet.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Ask why the pencil",
-          "next": "sign-why",
-          "meters": {
-            "trainer_trust": {
-              "min": 2
-            }
-          },
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Asked D. Reyes why the pencil.",
-          "forbids": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Ask why the pencil",
-          "next": "sign-why-44",
-          "meters": {
-            "trainer_trust": {
-              "min": 2
-            }
-          },
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Asked D. Reyes why the pencil.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
+          "say": "Count the flights down",
+          "next": "tour1-count",
+          "log": "Counted the flights down from 31."
         }
       ],
-      "log": "2010 hrs. Tour: stairwells A, B, C, dock, roof door. No incident. Visitor sheet reviewed with D. Reyes."
+      "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door."
     },
     {
       "id": "w2-roof",
       "folder": "w2-roof",
-      "time": "20:10",
+      "time": "20:00",
       "title": "The roof door",
       "ambience": "control-room",
       "lines": [
@@ -1570,121 +1638,56 @@
         },
         {
           "speaker": "narrator",
-          "text": "You walked the stairwells, the dock, the roof door. Back at the lobby desk, Dolores lays out the visitor sheet and puts a pen and a pencil beside it."
+          "text": "Eight o'clock. Dolores takes the keys and a flashlight that does not work. Stairwell A, stairwell B, then C, one flight at a time, her hand on the rail.",
+          "sfx": "keys"
         },
         {
           "speaker": "dee",
-          "text": "Name. Company. Who they're seeing. Floor. In. Out.",
-          "perform": "tapping each column"
+          "text": "Stairs are the spine of the building. Everything that goes wrong goes through one.",
+          "perform": "flat, climbing",
+          "sfx": "footsteps-stairs"
         },
         {
           "speaker": "dee",
-          "text": "ID, you look at it. Look. Not glance.",
-          "perform": "flat"
+          "text": "Thirty-one. Look at the door.",
+          "perform": "at the landing, a little out of breath, hiding it"
+        },
+        {
+          "speaker": "narrator",
+          "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular."
         },
         {
           "speaker": "dee",
-          "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
-          "perform": "like a recipe she has said a thousand times"
-        },
-        {
-          "speaker": "dee",
-          "text": "However nice.",
-          "perform": "a beat, one eyebrow"
-        },
-        {
-          "speaker": "dee",
-          "text": "Pen's for the sheet. Pencil's for… Pick one.",
-          "perform": "holding both out"
+          "text": "Smokers. Associates who can't leave a deal. Door sticks, they prop it, they forget. Orange wedge. Everyone in this city owns an orange wedge.",
+          "perform": "dry"
         }
       ],
       "choices": [
         {
-          "say": "Take the pencil",
-          "next": "sign-pencil",
+          "say": "Push the door, hear the latch",
+          "next": "tour1-door",
+          "log": "Pushed the fire door on 31 and listened for the latch."
+        },
+        {
+          "say": "Ask what she does when she finds one",
+          "next": "tour1-wedge",
           "add": {
-            "trainer_trust": 1
+            "building_known": 1
           },
-          "log": "Took the pencil for the visitor sheet.",
-          "forbids": [
-            "asked_44"
-          ]
+          "log": "Asked D. Reyes what she does when she finds a wedge."
         },
         {
-          "say": "Take the pencil",
-          "next": "sign-pencil-44",
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Took the pencil for the visitor sheet.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Take the pen",
-          "next": "sign-pen",
-          "log": "Took the pen for the visitor sheet.",
-          "forbids": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Take the pen",
-          "next": "sign-pen-44",
-          "log": "Took the pen for the visitor sheet.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Ask why the pencil",
-          "next": "sign-why",
-          "meters": {
-            "trainer_trust": {
-              "min": 2
-            }
-          },
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Asked D. Reyes why the pencil.",
-          "forbids": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Ask why the pencil",
-          "next": "sign-why-44",
-          "meters": {
-            "trainer_trust": {
-              "min": 2
-            }
-          },
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Asked D. Reyes why the pencil.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
+          "say": "Count the flights down",
+          "next": "tour1-count",
+          "log": "Counted the flights down from 31."
         }
       ],
-      "log": "2010 hrs. Tour: stairwells A, B, C, dock, roof door. No incident. Visitor sheet reviewed with D. Reyes."
+      "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door."
     },
     {
       "id": "w2-look",
       "folder": "w2-look",
-      "time": "20:10",
+      "time": "20:00",
       "title": "The wall",
       "ambience": "control-room",
       "lines": [
@@ -1695,116 +1698,55 @@
         },
         {
           "speaker": "narrator",
-          "text": "You walked the stairwells, the dock, the roof door. Back at the lobby desk, Dolores lays out the visitor sheet and puts a pen and a pencil beside it."
+          "text": "On tile seven the glass doors of fifty-eight are lit and nobody is behind them. It is the only lit tile in the room that isn't on a schedule."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Eight o'clock. Dolores takes the keys and a flashlight that does not work. Stairwell A, stairwell B, then C, one flight at a time, her hand on the rail.",
+          "sfx": "keys"
         },
         {
           "speaker": "dee",
-          "text": "Name. Company. Who they're seeing. Floor. In. Out.",
-          "perform": "tapping each column"
+          "text": "Stairs are the spine of the building. Everything that goes wrong goes through one.",
+          "perform": "flat, climbing",
+          "sfx": "footsteps-stairs"
         },
         {
           "speaker": "dee",
-          "text": "ID, you look at it. Look. Not glance.",
-          "perform": "flat"
+          "text": "Thirty-one. Look at the door.",
+          "perform": "at the landing, a little out of breath, hiding it"
+        },
+        {
+          "speaker": "narrator",
+          "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular."
         },
         {
           "speaker": "dee",
-          "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
-          "perform": "like a recipe she has said a thousand times"
-        },
-        {
-          "speaker": "dee",
-          "text": "However nice.",
-          "perform": "a beat, one eyebrow"
-        },
-        {
-          "speaker": "dee",
-          "text": "Pen's for the sheet. Pencil's for… Pick one.",
-          "perform": "holding both out"
+          "text": "Smokers. Associates who can't leave a deal. Door sticks, they prop it, they forget. Orange wedge. Everyone in this city owns an orange wedge.",
+          "perform": "dry"
         }
       ],
       "choices": [
         {
-          "say": "Take the pencil",
-          "next": "sign-pencil",
+          "say": "Push the door, hear the latch",
+          "next": "tour1-door",
+          "log": "Pushed the fire door on 31 and listened for the latch."
+        },
+        {
+          "say": "Ask what she does when she finds one",
+          "next": "tour1-wedge",
           "add": {
-            "trainer_trust": 1
+            "building_known": 1
           },
-          "log": "Took the pencil for the visitor sheet.",
-          "forbids": [
-            "asked_44"
-          ]
+          "log": "Asked D. Reyes what she does when she finds a wedge."
         },
         {
-          "say": "Take the pencil",
-          "next": "sign-pencil-44",
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Took the pencil for the visitor sheet.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Take the pen",
-          "next": "sign-pen",
-          "log": "Took the pen for the visitor sheet.",
-          "forbids": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Take the pen",
-          "next": "sign-pen-44",
-          "log": "Took the pen for the visitor sheet.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Ask why the pencil",
-          "next": "sign-why",
-          "meters": {
-            "trainer_trust": {
-              "min": 2
-            }
-          },
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Asked D. Reyes why the pencil.",
-          "forbids": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Ask why the pencil",
-          "next": "sign-why-44",
-          "meters": {
-            "trainer_trust": {
-              "min": 2
-            }
-          },
-          "add": {
-            "trainer_trust": 1
-          },
-          "log": "Asked D. Reyes why the pencil.",
-          "requires": [
-            "asked_44"
-          ],
-          "clear": [
-            "asked_44"
-          ]
+          "say": "Count the flights down",
+          "next": "tour1-count",
+          "log": "Counted the flights down from 31."
         }
       ],
-      "log": "2010 hrs. Tour: stairwells A, B, C, dock, roof door. No incident. Visitor sheet reviewed with D. Reyes."
+      "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door."
     },
     {
       "id": "sign-pencil",
@@ -2331,6 +2273,10 @@
           "speaker": "dee",
           "text": "That's a line you write down, Officer.",
           "perform": "flat, the pencil already in her hand"
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile six the young man is already pushing the bucket down the corridor. The door behind him swings shut on its closer. It is a very ordinary sound, and you have just made it happen."
         }
       ],
       "choices": [
@@ -2396,6 +2342,10 @@
           "speaker": "dee",
           "text": "Mm-hm. I'd have… Doesn't matter.",
           "perform": "trailing off, reaching for the cup"
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile six the young man sits down on the bucket, turned over. Marisol stands beside him with her arms folded. They look like a statue of two people waiting for a bus."
         }
       ],
       "choices": [
@@ -2457,6 +2407,10 @@
           "speaker": "marisol",
           "text": "So you let him wait in the hall. In the hall! Dios mío.",
           "perform": "overlapping, fast"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The photocopy is a name and a date, with a stamp too faint to read at this size. You are not sure what you are looking at. You are sure that you are the one looking."
         }
       ],
       "choices": [
@@ -2490,6 +2444,10 @@
       "ambience": "control-room",
       "focus": "c6",
       "lines": [
+        {
+          "speaker": "narrator",
+          "text": "She says it flatly and does not move her hand from the pencil. It is the longest sentence you have heard her say to you without a pause."
+        },
         {
           "speaker": "narrator",
           "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. The cursor blinks.",
@@ -2566,6 +2524,10 @@
       "ambience": "control-room",
       "focus": "c6",
       "lines": [
+        {
+          "speaker": "narrator",
+          "text": "Tile six holds its picture: a corridor, a closet door, a dark line along the sill. You have watched it so long it has started to look like a painting."
+        },
         {
           "speaker": "narrator",
           "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. The cursor blinks.",
@@ -2671,6 +2633,10 @@
           "speaker": "dee",
           "text": "Mm. Slow. You'll want to hurry. Don't.",
           "perform": "while you reach for the tablet"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The cursor blinks in the field. The field has a label: INCIDENT. It is the first word on the tablet that has ever looked at you."
         }
       ],
       "choices": [
@@ -2723,6 +2689,10 @@
       "ambience": "control-room",
       "focus": "c6",
       "lines": [
+        {
+          "speaker": "narrator",
+          "text": "Beside the tablet, the photocopy has begun to curl at one corner. It is the kind of paper that does not want to be evidence."
+        },
         {
           "speaker": "narrator",
           "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six."
@@ -2873,6 +2843,10 @@
           "perform": "reading it twice, not out loud"
         },
         {
+          "speaker": "narrator",
+          "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided."
+        },
+        {
           "speaker": "dee",
           "text": "Two hours to the half. Eat something.",
           "perform": "closing the binder"
@@ -2883,7 +2857,7 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
         },
@@ -2891,6 +2865,10 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
         }
       ],
       "choices": [
@@ -2936,6 +2914,10 @@
           "perform": "reaching for the rubber on the end of the pencil"
         },
         {
+          "speaker": "narrator",
+          "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided."
+        },
+        {
           "speaker": "dee",
           "text": "Two hours to the half. Eat something.",
           "perform": "closing the binder"
@@ -2946,7 +2928,7 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
         },
@@ -2954,6 +2936,10 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
         }
       ],
       "choices": [
@@ -2999,6 +2985,10 @@
           "perform": "the tablet turned toward you"
         },
         {
+          "speaker": "narrator",
+          "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided."
+        },
+        {
           "speaker": "dee",
           "text": "Two hours to the half. Eat something.",
           "perform": "closing the binder"
@@ -3009,7 +2999,7 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
         },
@@ -3017,6 +3007,10 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
         }
       ],
       "choices": [
@@ -3067,6 +3061,10 @@
           "perform": "formal, from here on"
         },
         {
+          "speaker": "narrator",
+          "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry. For the first time all night, nothing has to be decided."
+        },
+        {
           "speaker": "dee",
           "text": "Two hours to the half. Eat something.",
           "perform": "closing the binder"
@@ -3077,7 +3075,7 @@
         },
         {
           "speaker": "terrell",
-          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know?",
+          "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty. He was here Tuesday, you know? He's got a thing, a work order.",
           "perform": "fast, over the radio",
           "sfx": "radio-squelch"
         },
@@ -3085,6 +3083,10 @@
           "speaker": "dee",
           "text": "Terrell's desk.",
           "perform": "to the wall, flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "He'll say Tuesday. Everybody was here Tuesday. {dry, not turning} What does the list say, Officer."
         }
       ],
       "choices": [
@@ -3113,6 +3115,706 @@
       "log": "2215 hrs. Lobby. Contractor at the desk for floor 40. No authorization on the visitor sheet."
     },
     {
+      "id": "tour1-door",
+      "folder": "tour1-door",
+      "time": "20:20",
+      "title": "The latch",
+      "ambience": "stairwell",
+      "focus": "c4",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Hear that? {the door closing, the latch finding itself} That's it shut.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "If you don't hear that, it's open. It can be closed and open at once. {almost a smile} Mm. Stairs.",
+          "perform": "going down"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
+          "sfx": "door-heavy"
+        },
+        {
+          "speaker": "dee",
+          "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
+          "perform": "dry",
+          "sfx": "clock-tick"
+        },
+        {
+          "speaker": "dee",
+          "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
+          "perform": "to the rollup"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Ask about the trucks",
+          "next": "tour2-trucks",
+          "log": "Asked D. Reyes about the dock deliveries."
+        },
+        {
+          "say": "Check the rollup door lock",
+          "next": "tour2-lock",
+          "log": "Checked the lock on the rollup door."
+        },
+        {
+          "say": "Listen to the compactor",
+          "next": "tour2-compactor",
+          "log": "Stood at the compactor and listened."
+        }
+      ],
+      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark."
+    },
+    {
+      "id": "tour1-wedge",
+      "folder": "tour1-wedge",
+      "time": "20:20",
+      "title": "What she does",
+      "ambience": "stairwell",
+      "focus": "c4",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "I pull it. I go and find the smoker. I say hello.",
+          "perform": "flat, quiet, going down"
+        },
+        {
+          "speaker": "dee",
+          "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it. {a beat on the rail} Mm. You do the book.",
+          "perform": "even"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
+          "sfx": "door-heavy"
+        },
+        {
+          "speaker": "dee",
+          "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
+          "perform": "dry",
+          "sfx": "clock-tick"
+        },
+        {
+          "speaker": "dee",
+          "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
+          "perform": "to the rollup"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Ask about the trucks",
+          "next": "tour2-trucks",
+          "log": "Asked D. Reyes about the dock deliveries."
+        },
+        {
+          "say": "Check the rollup door lock",
+          "next": "tour2-lock",
+          "log": "Checked the lock on the rollup door."
+        },
+        {
+          "say": "Listen to the compactor",
+          "next": "tour2-compactor",
+          "log": "Stood at the compactor and listened."
+        }
+      ],
+      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark."
+    },
+    {
+      "id": "tour1-count",
+      "folder": "tour1-count",
+      "time": "20:20",
+      "title": "The flights",
+      "ambience": "stairwell",
+      "focus": "c4",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Thirty-one. Thirty-one flights. You'll know it in the dark.",
+          "perform": "flat, the rail under her hand"
+        },
+        {
+          "speaker": "dee",
+          "text": "Good. Next.",
+          "perform": "the way a stamp does"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
+          "sfx": "door-heavy"
+        },
+        {
+          "speaker": "dee",
+          "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
+          "perform": "dry",
+          "sfx": "clock-tick"
+        },
+        {
+          "speaker": "dee",
+          "text": "Dock's the other door. The one nobody thinks is a door. {flat} Trucks at four. Never trust a truck at four.",
+          "perform": "to the rollup"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Ask about the trucks",
+          "next": "tour2-trucks",
+          "log": "Asked D. Reyes about the dock deliveries."
+        },
+        {
+          "say": "Check the rollup door lock",
+          "next": "tour2-lock",
+          "log": "Checked the lock on the rollup door."
+        },
+        {
+          "say": "Listen to the compactor",
+          "next": "tour2-compactor",
+          "log": "Stood at the compactor and listened."
+        }
+      ],
+      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark."
+    },
+    {
+      "id": "tour2-trucks",
+      "folder": "tour2-trucks",
+      "time": "20:35",
+      "title": "Trucks",
+      "ambience": "dock",
+      "focus": "c3",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Fruit. Linen. A crate for the design agency on thirty-seven. {even, listing} Once a box for fifty-eight, at four, with nobody's name on it."
+        },
+        {
+          "speaker": "dee",
+          "text": "Sign for it? Not unless the list says. Mm. {flat} Not unless.",
+          "perform": "a half second slower the second time"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it like a rumor."
+        },
+        {
+          "speaker": "dee",
+          "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Test the push bar",
+          "next": "tour3-test",
+          "log": "Tested the push bar on the roof door."
+        },
+        {
+          "say": "Ask why alone",
+          "next": "tour3-alone",
+          "log": "Asked D. Reyes why she does the roof door alone."
+        },
+        {
+          "say": "Read the sign by the door",
+          "next": "tour3-sign",
+          "log": "Read the sign beside the roof door."
+        }
+      ],
+      "log": "2040 hrs. Tour: roof door, exterior light on. No incident."
+    },
+    {
+      "id": "tour2-lock",
+      "folder": "tour2-lock",
+      "time": "20:35",
+      "title": "The lock",
+      "ambience": "dock",
+      "focus": "c3",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Pull. Don't push. Pull.",
+          "perform": "watching your hands on the chain"
+        },
+        {
+          "speaker": "dee",
+          "text": "Doors tell you what they want. Nobody checks that one. That's how it gets to be the one.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it like a rumor."
+        },
+        {
+          "speaker": "dee",
+          "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Test the push bar",
+          "next": "tour3-test",
+          "log": "Tested the push bar on the roof door."
+        },
+        {
+          "say": "Ask why alone",
+          "next": "tour3-alone",
+          "log": "Asked D. Reyes why she does the roof door alone."
+        },
+        {
+          "say": "Read the sign by the door",
+          "next": "tour3-sign",
+          "log": "Read the sign beside the roof door."
+        }
+      ],
+      "log": "2040 hrs. Tour: roof door, exterior light on. No incident."
+    },
+    {
+      "id": "tour2-compactor",
+      "folder": "tour2-compactor",
+      "time": "20:35",
+      "title": "Ticking",
+      "ambience": "dock",
+      "focus": "c3",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You stand still. The compactor ticks, three slow ticks, a pause, three more. A truck passes on the street and the rollup door answers it with a shiver.",
+          "sfx": "clock-tick"
+        },
+        {
+          "speaker": "dee",
+          "text": "There. You heard it. {pleased, not saying so} Now you know what quiet sounds like here.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it like a rumor."
+        },
+        {
+          "speaker": "dee",
+          "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Roof's cold. Three o'clock it's colder. I do this one at three. {even, looking at the door and not at you} Alone."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Test the push bar",
+          "next": "tour3-test",
+          "log": "Tested the push bar on the roof door."
+        },
+        {
+          "say": "Ask why alone",
+          "next": "tour3-alone",
+          "log": "Asked D. Reyes why she does the roof door alone."
+        },
+        {
+          "say": "Read the sign by the door",
+          "next": "tour3-sign",
+          "log": "Read the sign beside the roof door."
+        }
+      ],
+      "log": "2040 hrs. Tour: roof door, exterior light on. No incident."
+    },
+    {
+      "id": "tour3-test",
+      "folder": "tour3-test",
+      "time": "20:50",
+      "title": "The bar",
+      "ambience": "roof",
+      "focus": "c8",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "It gives. It gives and it holds. {her hand beside yours on the bar} That's all a door is.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Back at the lobby desk at nine, Dolores lays out the visitor sheet and puts a pen and a pencil beside it."
+        },
+        {
+          "speaker": "dee",
+          "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+          "perform": "tapping each column"
+        },
+        {
+          "speaker": "dee",
+          "text": "ID, you look at it. Look. Not glance.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+          "perform": "like a recipe she has said a thousand times"
+        },
+        {
+          "speaker": "dee",
+          "text": "However nice.",
+          "perform": "a beat, one eyebrow"
+        },
+        {
+          "speaker": "dee",
+          "text": "Pen's for the sheet. Pencil's for… Pick one.",
+          "perform": "holding both out"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Take the pencil",
+          "next": "sign-pencil",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Took the pencil for the visitor sheet.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pencil",
+          "next": "sign-pencil-44",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Took the pencil for the visitor sheet.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pen",
+          "next": "sign-pen",
+          "log": "Took the pen for the visitor sheet.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pen",
+          "next": "sign-pen-44",
+          "log": "Took the pen for the visitor sheet.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Ask why the pencil",
+          "next": "sign-why",
+          "meters": {
+            "trainer_trust": {
+              "min": 2
+            }
+          },
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Asked D. Reyes why the pencil.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Ask why the pencil",
+          "next": "sign-why-44",
+          "meters": {
+            "trainer_trust": {
+              "min": 2
+            }
+          },
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Asked D. Reyes why the pencil.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        }
+      ],
+      "log": "2100 hrs. Visitor sheet reviewed with D. Reyes."
+    },
+    {
+      "id": "tour3-alone",
+      "folder": "tour3-alone",
+      "time": "20:50",
+      "title": "Alone",
+      "ambience": "roof",
+      "focus": "c8",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Because I always have. {flat, no more} Because it's quiet.",
+          "perform": "a beat, as if she'd pressed a button by mistake"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. Go on. It's ten to nine. We have a sheet.",
+          "perform": "down the stairs already"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Back at the lobby desk at nine, Dolores lays out the visitor sheet and puts a pen and a pencil beside it."
+        },
+        {
+          "speaker": "dee",
+          "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+          "perform": "tapping each column"
+        },
+        {
+          "speaker": "dee",
+          "text": "ID, you look at it. Look. Not glance.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+          "perform": "like a recipe she has said a thousand times"
+        },
+        {
+          "speaker": "dee",
+          "text": "However nice.",
+          "perform": "a beat, one eyebrow"
+        },
+        {
+          "speaker": "dee",
+          "text": "Pen's for the sheet. Pencil's for… Pick one.",
+          "perform": "holding both out"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Take the pencil",
+          "next": "sign-pencil",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Took the pencil for the visitor sheet.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pencil",
+          "next": "sign-pencil-44",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Took the pencil for the visitor sheet.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pen",
+          "next": "sign-pen",
+          "log": "Took the pen for the visitor sheet.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pen",
+          "next": "sign-pen-44",
+          "log": "Took the pen for the visitor sheet.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Ask why the pencil",
+          "next": "sign-why",
+          "meters": {
+            "trainer_trust": {
+              "min": 2
+            }
+          },
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Asked D. Reyes why the pencil.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Ask why the pencil",
+          "next": "sign-why-44",
+          "meters": {
+            "trainer_trust": {
+              "min": 2
+            }
+          },
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Asked D. Reyes why the pencil.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        }
+      ],
+      "log": "2100 hrs. Visitor sheet reviewed with D. Reyes."
+    },
+    {
+      "id": "tour3-sign",
+      "folder": "tour3-sign",
+      "time": "20:50",
+      "title": "The sign",
+      "ambience": "roof",
+      "focus": "c8",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "ROOF ACCESS. AUTHORIZED PERSONNEL ONLY. DOOR ALARMED. In smaller letters under it, someone has pencilled a date and two initials and rubbed them half out."
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. Don't read the walls. {flat, already on the stairs} They'll tell you everything."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Back at the lobby desk at nine, Dolores lays out the visitor sheet and puts a pen and a pencil beside it."
+        },
+        {
+          "speaker": "dee",
+          "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+          "perform": "tapping each column"
+        },
+        {
+          "speaker": "dee",
+          "text": "ID, you look at it. Look. Not glance.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+          "perform": "like a recipe she has said a thousand times"
+        },
+        {
+          "speaker": "dee",
+          "text": "However nice.",
+          "perform": "a beat, one eyebrow"
+        },
+        {
+          "speaker": "dee",
+          "text": "Pen's for the sheet. Pencil's for… Pick one.",
+          "perform": "holding both out"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Take the pencil",
+          "next": "sign-pencil",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Took the pencil for the visitor sheet.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pencil",
+          "next": "sign-pencil-44",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Took the pencil for the visitor sheet.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pen",
+          "next": "sign-pen",
+          "log": "Took the pen for the visitor sheet.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Take the pen",
+          "next": "sign-pen-44",
+          "log": "Took the pen for the visitor sheet.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Ask why the pencil",
+          "next": "sign-why",
+          "meters": {
+            "trainer_trust": {
+              "min": 2
+            }
+          },
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Asked D. Reyes why the pencil.",
+          "forbids": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Ask why the pencil",
+          "next": "sign-why-44",
+          "meters": {
+            "trainer_trust": {
+              "min": 2
+            }
+          },
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Asked D. Reyes why the pencil.",
+          "requires": [
+            "asked_44"
+          ],
+          "clear": [
+            "asked_44"
+          ]
+        }
+      ],
+      "log": "2100 hrs. Visitor sheet reviewed with D. Reyes."
+    },
+    {
       "id": "visitor-waved",
       "folder": "visitor-waved",
       "time": "22:20",
@@ -3136,19 +3838,27 @@
           "perform": "low"
         },
         {
+          "speaker": "narrator",
+          "text": "She does not say what she saw. She looks at tile one for a while, the way you look at a stove you have just turned off."
+        },
+        {
           "speaker": "dee",
           "text": "Stay on the wall.",
           "perform": "getting up, the pencil from behind her ear"
         },
         {
           "speaker": "narrator",
-          "text": "On the lobby tile, Dolores takes the sheet from the desk. She writes for some time, in pencil, and then she writes over it."
+          "text": "On the lobby tile, Dolores takes the sheet from the desk. She writes for some time, in pencil, and then she writes over it. Terrell watches her with his mouth a little open.",
+          "sfx": "pencil"
         },
         {
           "speaker": "dee",
           "text": "Eat something.",
-          "perform": "back in the doorway, nothing in her hands",
-          "sfx": "pencil"
+          "perform": "back in the doorway, nothing in her hands"
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile one the vest is a small bright shape in a brown elevator, rising. Terrell goes back to his phone. The sheet lies on the desk where Dolores left it, in her hand."
         }
       ],
       "choices": [
@@ -3199,6 +3909,14 @@
           "speaker": "dee",
           "text": "Mm-hm. That's how Terrell learns.",
           "perform": "dry"
+        },
+        {
+          "speaker": "dee",
+          "text": "Tuesday he had a yes. Today he doesn't. The list doesn't remember Tuesday. {flat, to the wall} Good."
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile one Terrell is doing something he has not done all week. He is looking at the sheet."
         }
       ],
       "choices": [
@@ -3240,7 +3958,7 @@
         },
         {
           "speaker": "narrator",
-          "text": "The night number for forty rings six times. A tired voice says send him up, sign him, he'll be an hour.",
+          "text": "You ask for his ID and you look at it, not glance. The night number for forty rings six times. A tired voice says send him up, sign him, he'll be an hour.",
           "sfx": "phone-ring"
         },
         {
@@ -3249,9 +3967,17 @@
           "perform": "to nobody, delighted"
         },
         {
+          "speaker": "narrator",
+          "text": "You write the name, the company, the floor, the time in. Terrell watches your pen as if it were a card trick."
+        },
+        {
           "speaker": "dee",
           "text": "Initial the sheet. Both of you.",
           "perform": "over your radio, quiet"
+        },
+        {
+          "speaker": "narrator",
+          "text": "When you come back, the door to the control room is open and Dolores has not moved. She does not ask how it went. She looks at the sheet in your hand, and then at the wall."
         }
       ],
       "choices": [
@@ -3275,6 +4001,10 @@
       "lines": [
         {
           "speaker": "narrator",
+          "text": "It is five to eleven. The lobby tile shows the long marble floor with the lights on the eastern half already dimmed by the timer, as if the building were taking off its shoes."
+        },
+        {
+          "speaker": "narrator",
           "text": "Terrell's bag is on his shoulder. He stands in the control-room doorway like a man leaving a party."
         },
         {
@@ -3296,6 +4026,11 @@
           "speaker": "terrell",
           "text": "I'm going. I'm going!",
           "perform": "backing out"
+        },
+        {
+          "speaker": "terrell",
+          "text": "Hey. You're good, you know? You're good. I don't say that.",
+          "perform": "quick, over his shoulder"
         }
       ],
       "choices": [
@@ -3320,6 +4055,11 @@
             "trainer_warmth": -1
           },
           "log": "Asked Terrell Banks how long D. Reyes has been on the post."
+        },
+        {
+          "say": "Ask Terrell about school",
+          "next": "terrell-school",
+          "log": "Asked Terrell Banks about his classes."
         }
       ],
       "log": "2255 hrs. Terrell Banks off post. Night post: two officers."
@@ -3333,13 +4073,18 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "At eleven the lobby is quiet, and the wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock."
+          "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock."
         },
         {
           "speaker": "dee",
           "text": "Twenty minutes. Stay on the wall.",
           "perform": "at the door, flat",
           "sfx": "keys"
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+          "perform": "flat, the door half open"
         },
         {
           "speaker": "narrator",
@@ -3399,7 +4144,7 @@
         },
         {
           "speaker": "terrell",
-          "text": "Okay. Okay! Radios, you know? Watch the radios.",
+          "text": "Okay. Okay! Radios, you know? Watch the radios. She counts them in her sleep.",
           "perform": "backing into the cold"
         },
         {
@@ -3414,13 +4159,22 @@
         },
         {
           "speaker": "narrator",
-          "text": "At eleven the lobby is quiet, and the wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock."
+          "text": "His shape on tile one shrinks across the lobby, and the revolving door takes him in a long slow arc into Madison Avenue."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock."
         },
         {
           "speaker": "dee",
           "text": "Twenty minutes. Stay on the wall.",
           "perform": "at the door, flat",
           "sfx": "keys"
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+          "perform": "flat, the door half open"
         },
         {
           "speaker": "narrator",
@@ -3490,13 +4244,22 @@
         },
         {
           "speaker": "narrator",
-          "text": "At eleven the lobby is quiet, and the wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock."
+          "text": "The revolving door has stopped. On tile one the lobby is empty and bright, and you can hear the building's refrigerator come on. It is eleven o'clock."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock."
         },
         {
           "speaker": "dee",
           "text": "Twenty minutes. Stay on the wall.",
           "perform": "at the door, flat",
           "sfx": "keys"
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+          "perform": "flat, the door half open"
         },
         {
           "speaker": "narrator",
@@ -3539,6 +4302,140 @@
       "log": "2300 hrs. D. Reyes on lobby and dock tour. Post one on the wall alone."
     },
     {
+      "id": "terrell-school",
+      "folder": "terrell-school",
+      "time": "23:00",
+      "title": "Terrell's classes",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "terrell",
+          "text": "Criminal justice. Night classes, Tuesdays, Thursdays. Three years, I'm, like, a year and a half from done.",
+          "perform": "fast, pleased to be asked"
+        },
+        {
+          "speaker": "terrell",
+          "text": "My uncle ran a corner store in Bed-Stuy. Learned names, not rules, you know? Everybody owed him. Nobody wrote anything down. {a grin} It worked. Till it didn't."
+        },
+        {
+          "speaker": "terrell",
+          "text": "Then I got here and it's all paper. Sign the sheet. Check the list. {a laugh, quieter} I'm bad at it. I like it, though. I like that it's the same every night."
+        },
+        {
+          "speaker": "dee",
+          "text": "The same every night is the point. {flat, from her chair} Go to school, Terrell. Door."
+        },
+        {
+          "speaker": "terrell",
+          "text": "Going. I'm going! Night, you two.",
+          "perform": "over his shoulder, warm"
+        },
+        {
+          "speaker": "narrator",
+          "text": "His shape crosses tile one, shrinking, and the revolving door takes him out into Madison Avenue in a long slow arc."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock."
+        },
+        {
+          "speaker": "dee",
+          "text": "Twenty minutes. Stay on the wall.",
+          "perform": "at the door, flat",
+          "sfx": "keys"
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+          "perform": "flat, the door half open"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01."
+        },
+        {
+          "speaker": "dee",
+          "text": "Radio check.",
+          "perform": "over the radio, flat",
+          "sfx": "radio-squelch"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Key it: loud and clear",
+          "next": "alone-ok",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Answered the 2300 radio check on time."
+        },
+        {
+          "say": "Look for the button",
+          "next": "alone-late",
+          "log": "Answered the 2300 radio check late.",
+          "add": {
+            "slips": 1
+          }
+        },
+        {
+          "say": "Finish reading the log first",
+          "next": "alone-missed",
+          "add": {
+            "trainer_trust": -1,
+            "slips": 1
+          },
+          "log": "Did not answer the 2300 radio check."
+        }
+      ],
+      "log": "2300 hrs. D. Reyes on lobby and dock tour. Post one on the wall alone."
+    },
+    {
+      "id": "day-log",
+      "folder": "day-log",
+      "time": "23:30",
+      "title": "The day log",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "The day shift's log is a thin stack of paper beside the binder, in Mr. Okafor's neat hand. You read it the way you read a stranger's diary."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Ten-fifteen. Visitor for nineteen, signed in, ID checked. Twelve-ten. Elevator contractor on site, car two, out at one. Fourteen-fifteen. Fire drill notice for Thursday posted at the desk."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Fifteen-thirty. Tenant on twelve, a dental practice, reports a lost key. Found by the day officer in the lobby, returned, signed for. Sixteen-forty. Mr. Pruitt out. All in the same hand. Not one adjective."
+        },
+        {
+          "speaker": "dee",
+          "text": "He's the best at it. {from the doorway, taking off her coat, not asking what you are reading} Not the best at anything else. Mm."
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't copy him. Copy what he doesn't write. {flat} What he doesn't write is where the night is."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off."
+        },
+        {
+          "speaker": "dee",
+          "text": "Four.",
+          "perform": "to the charger"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Take your seat",
+          "next": "okafor-call",
+          "log": "Took your seat at the wall."
+        }
+      ],
+      "log": "2345 hrs. Day shift log read. Floor 12: lost key returned 1530."
+    },
+    {
       "id": "alone-ok",
       "folder": "alone-ok",
       "time": "23:12",
@@ -3551,9 +4448,22 @@
           "perform": "over the radio, the small one"
         },
         {
+          "speaker": "dee",
+          "text": "Lobby's clear. Dock's clear. {over the radio} Compactor's ticking.",
+          "perform": "a breath, almost company"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You put the radio back on the shelf where it was. The hum of the room is now the sound of your own responsibility, and it is not as loud as you expected."
+        },
+        {
           "speaker": "narrator",
           "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
           "sfx": "drawer"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The coffee is wrong. The monitors hum. There is nothing to do but the job, and the job is to look."
         }
       ],
       "choices": [
@@ -3580,6 +4490,14 @@
           "say": "Step out for a minute",
           "next": "step-out",
           "log": "Considered leaving the wall."
+        },
+        {
+          "say": "Read the day log",
+          "next": "day-log",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Read the day shift's log on the shelf."
         }
       ],
       "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal."
@@ -3602,9 +4520,22 @@
           "perform": "the whole verdict"
         },
         {
+          "speaker": "dee",
+          "text": "Lobby's clear. Dock's clear. Pay attention to the side.",
+          "perform": "over the radio"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Your thumb finds the button on the side the way it should have the first time. It is a good button. It has been there the whole time."
+        },
+        {
           "speaker": "narrator",
           "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
           "sfx": "drawer"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The coffee is wrong. The monitors hum. There is nothing to do but the job, and the job is to look."
         }
       ],
       "choices": [
@@ -3631,6 +4562,14 @@
           "say": "Step out for a minute",
           "next": "step-out",
           "log": "Considered leaving the wall."
+        },
+        {
+          "say": "Read the day log",
+          "next": "day-log",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Read the day shift's log on the shelf."
         }
       ],
       "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal."
@@ -3659,9 +4598,21 @@
           "sfx": "radio-squelch"
         },
         {
+          "speaker": "dee",
+          "text": "Lobby's clear. Dock's clear. {over the radio, after a moment} Mm."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The radio sits in your hand like something you were handed at a funeral. You put it on the shelf. You pick it up again. You keep it by your hand."
+        },
+        {
           "speaker": "narrator",
           "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
           "sfx": "drawer"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The coffee is wrong. The monitors hum. There is nothing to do but the job, and the job is to look."
         }
       ],
       "choices": [
@@ -3688,6 +4639,14 @@
           "say": "Step out for a minute",
           "next": "step-out",
           "log": "Considered leaving the wall."
+        },
+        {
+          "say": "Read the day log",
+          "next": "day-log",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Read the day shift's log on the shelf."
         }
       ],
       "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal."
@@ -3710,7 +4669,11 @@
         },
         {
           "speaker": "narrator",
-          "text": "You fold it back along its creases. You put it under the binder the way it was."
+          "text": "You read it twice. You fold it back along its creases. You put it under the binder the way it was."
+        },
+        {
+          "speaker": "narrator",
+          "text": "You sit and look at tile one for a long time, and it looks at you back without the slightest interest, and you are grateful for that."
         },
         {
           "speaker": "narrator",
@@ -3720,27 +4683,18 @@
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger"
+        },
+        {
+          "speaker": "dee",
+          "text": "Drawer sticks.",
+          "perform": "at the shelf, not looking at it, not looking at you"
         }
       ],
       "choices": [
         {
           "say": "Take your seat",
-          "next": "sandwich",
-          "log": "Returned the page to the drawer and took your seat.",
-          "forbids": [
-            "asked_sandwich"
-          ]
-        },
-        {
-          "say": "Take your seat",
-          "next": "sandwich-ray",
-          "log": "Returned the page to the drawer and took your seat.",
-          "requires": [
-            "asked_sandwich"
-          ],
-          "clear": [
-            "asked_sandwich"
-          ]
+          "next": "okafor-call",
+          "log": "Returned the page to the drawer and took your seat."
         }
       ],
       "log": "2335 hrs. Control room. Shelf drawer closed."
@@ -3763,6 +4717,10 @@
         },
         {
           "speaker": "narrator",
+          "text": "At 23:44 the lobby tile shows the revolving door turning once with nobody in it. You write it down. It is the first line you have written on your own."
+        },
+        {
+          "speaker": "narrator",
           "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off."
         },
         {
@@ -3774,36 +4732,24 @@
           "speaker": "dee",
           "text": "Say what you see.",
           "perform": "at the doorway, taking off her coat, not asking"
+        },
+        {
+          "speaker": "dee",
+          "text": "Revolving door. Wind. Mm. Good. Write it.",
+          "perform": "when you tell her"
         }
       ],
       "choices": [
         {
           "say": "Say it back to her",
-          "next": "sandwich",
+          "next": "okafor-call",
           "add": {
             "trainer_warmth": 1
           },
-          "log": "Said the wall back to D. Reyes, tile by tile.",
-          "forbids": [
-            "asked_sandwich"
-          ]
-        },
-        {
-          "say": "Say it back to her",
-          "next": "sandwich-ray",
-          "add": {
-            "trainer_warmth": 1
-          },
-          "log": "Said the wall back to D. Reyes, tile by tile.",
-          "requires": [
-            "asked_sandwich"
-          ],
-          "clear": [
-            "asked_sandwich"
-          ]
+          "log": "Said the wall back to D. Reyes, tile by tile."
         }
       ],
-      "log": "2340 hrs. Wall: nine feeds, all normal. Radios 4 of 4."
+      "log": "2340 hrs. Wall: nine feeds, all normal. Revolving door turned once, no one in it, 2344. Radios 4 of 4."
     },
     {
       "id": "step-out",
@@ -3856,33 +4802,28 @@
         },
         {
           "speaker": "narrator",
+          "text": "She does not say well done. She does not say anything. She gives the nod of a woman crossing something off."
+        },
+        {
+          "speaker": "narrator",
           "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off."
         },
         {
           "speaker": "dee",
           "text": "Four.",
           "perform": "to the charger"
+        },
+        {
+          "speaker": "dee",
+          "text": "You said. Mm.",
+          "perform": "the whole of it, not looking up"
         }
       ],
       "choices": [
         {
           "say": "Take your seat",
-          "next": "sandwich",
-          "log": "Took your seat at the wall.",
-          "forbids": [
-            "asked_sandwich"
-          ]
-        },
-        {
-          "say": "Take your seat",
-          "next": "sandwich-ray",
-          "log": "Took your seat at the wall.",
-          "requires": [
-            "asked_sandwich"
-          ],
-          "clear": [
-            "asked_sandwich"
-          ]
+          "next": "okafor-call",
+          "log": "Took your seat at the wall."
         }
       ],
       "log": "2338 hrs. Returned to the wall after two minutes. Radios 4 of 4."
@@ -3915,27 +4856,112 @@
         },
         {
           "speaker": "narrator",
-          "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off."
-        },
-        {
-          "speaker": "dee",
-          "text": "Four.",
-          "perform": "to the charger"
+          "text": "She counts the radios. Four. She counts them again, with one finger, as if one of them might have gone somewhere.",
+          "sfx": "radio-charger"
         }
       ],
       "choices": [
         {
           "say": "Take your seat",
+          "next": "okafor-call",
+          "log": "Took your seat at the wall."
+        }
+      ],
+      "log": "2338 hrs. Returned to the wall after four minutes. Wall unattended 2330 to 2334."
+    },
+    {
+      "id": "okafor-call",
+      "folder": "okafor-call",
+      "time": "00:10",
+      "title": "The night line",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "At ten past midnight the night line rings. It is the day supervisor, at home, with the log open on a screen in a kitchen.",
+          "sfx": "phone-ring"
+        },
+        {
+          "speaker": "dee",
+          "text": "That's him. {not looking up} He reads the portal at midnight. A habit. Pick it up.",
+          "perform": "flat"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Answer the phone",
+          "next": "okafor-call-lied",
+          "requires": [
+            "lied"
+          ],
+          "log": "Answered the supervisor's night line."
+        },
+        {
+          "say": "Answer the phone",
+          "next": "okafor-call-opined",
+          "forbids": [
+            "lied"
+          ],
+          "requires": [
+            "opined"
+          ],
+          "log": "Answered the supervisor's night line."
+        },
+        {
+          "say": "Answer the phone",
+          "next": "okafor-call-clean",
+          "forbids": [
+            "lied",
+            "opined"
+          ],
+          "log": "Answered the supervisor's night line."
+        }
+      ],
+      "log": "0010 hrs. Supervisor's night line ringing."
+    },
+    {
+      "id": "okafor-call-clean",
+      "folder": "okafor-call-clean",
+      "time": "00:11",
+      "title": "Spot check",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "okafor",
+          "text": "So. It's Okafor. Two entries and a tour sheet. They read like a log. Times. Places. Who you told.",
+          "perform": "polite, a chair creaking"
+        },
+        {
+          "speaker": "okafor",
+          "text": "That's noted. I don't say it twice. {dry} Is Ms. Reyes there? Put her on. I'll just say good night."
+        },
+        {
+          "speaker": "dee",
+          "text": "Okafor. {taking the phone} Mm. It's quiet. Yes. Good night.",
+          "perform": "hanging up, putting the phone down like an egg"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She looks at the phone a moment longer than she needs to."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The line goes dead. Somewhere in a kitchen in Queens a screen turns itself off. The wall clock says 00:14, which is 00:12, which means he was early."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Hand the phone back",
           "next": "sandwich",
-          "log": "Took your seat at the wall.",
+          "log": "Handed the phone back to D. Reyes.",
           "forbids": [
             "asked_sandwich"
           ]
         },
         {
-          "say": "Take your seat",
+          "say": "Hand the phone back",
           "next": "sandwich-ray",
-          "log": "Took your seat at the wall.",
+          "log": "Handed the phone back to D. Reyes.",
           "requires": [
             "asked_sandwich"
           ],
@@ -3944,7 +4970,185 @@
           ]
         }
       ],
-      "log": "2338 hrs. Returned to the wall after four minutes. Wall unattended 2330 to 2334."
+      "log": "0013 hrs. Supervisor spot-checked the log by phone. No corrections."
+    },
+    {
+      "id": "okafor-call-opined",
+      "folder": "okafor-call-opined",
+      "time": "00:11",
+      "title": "Spot check",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "okafor",
+          "text": "So. It's Okafor. The entry for forty-four. I'd like it to say what happened, in order, without \"seemed\" and without a gap.",
+          "perform": "polite, a chair creaking"
+        },
+        {
+          "speaker": "okafor",
+          "text": "A log is read later by people who weren't there. Sometimes by a lawyer. Can you do that tonight?",
+          "perform": "even"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm.",
+          "perform": "a pencil tapping the shelf"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Dolores puts the tablet in front of you with the incident field open and the pencil beside it."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The incident field is open. Your own words are in it, in grey. They looked all right the first time. They look like somebody else's now."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Rewrite it now",
+          "next": "sandwich",
+          "clear": [
+            "opined"
+          ],
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Rewrote the 2134 entry as fact on the supervisor's request.",
+          "forbids": [
+            "asked_sandwich"
+          ]
+        },
+        {
+          "say": "Rewrite it now",
+          "next": "sandwich-ray",
+          "clear": [
+            "opined",
+            "asked_sandwich"
+          ],
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Rewrote the 2134 entry as fact on the supervisor's request.",
+          "requires": [
+            "asked_sandwich"
+          ]
+        },
+        {
+          "say": "Tell him you'll fix it later",
+          "next": "sandwich",
+          "add": {
+            "trainer_trust": -1
+          },
+          "log": "Told the supervisor the 2134 entry would be fixed later.",
+          "forbids": [
+            "asked_sandwich"
+          ]
+        },
+        {
+          "say": "Tell him you'll fix it later",
+          "next": "sandwich-ray",
+          "add": {
+            "trainer_trust": -1
+          },
+          "log": "Told the supervisor the 2134 entry would be fixed later.",
+          "requires": [
+            "asked_sandwich"
+          ],
+          "clear": [
+            "asked_sandwich"
+          ]
+        }
+      ],
+      "log": "0013 hrs. Supervisor asked for the 2134 entry to be rewritten as fact."
+    },
+    {
+      "id": "okafor-call-lied",
+      "folder": "okafor-call-lied",
+      "time": "00:11",
+      "title": "Spot check",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "okafor",
+          "text": "So. It's Okafor. I'm reading the entry for forty-four. I'll look at the reader record in the morning.",
+          "perform": "polite, a chair creaking, slower"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Let's make sure we're aligned. If anything in it is not exactly right, tell me now and we call it a correction. In the morning it isn't a correction.",
+          "perform": "even"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm.",
+          "perform": "very low, to the wall, not to you"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The phone is warm against your ear. Dolores has stopped moving the pencil."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The incident field is open. You read the line you wrote. It is one sentence long. It reads like a door someone has painted shut."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Correct it now",
+          "next": "sandwich",
+          "clear": [
+            "lied"
+          ],
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Told the supervisor the 2134 entry was not exact and corrected it.",
+          "forbids": [
+            "asked_sandwich"
+          ]
+        },
+        {
+          "say": "Correct it now",
+          "next": "sandwich-ray",
+          "clear": [
+            "lied",
+            "asked_sandwich"
+          ],
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Told the supervisor the 2134 entry was not exact and corrected it.",
+          "requires": [
+            "asked_sandwich"
+          ]
+        },
+        {
+          "say": "Tell him it's right",
+          "next": "sandwich",
+          "add": {
+            "trainer_trust": -1
+          },
+          "log": "Told the supervisor the 2134 entry is right.",
+          "forbids": [
+            "asked_sandwich"
+          ]
+        },
+        {
+          "say": "Tell him it's right",
+          "next": "sandwich-ray",
+          "add": {
+            "trainer_trust": -1
+          },
+          "log": "Told the supervisor the 2134 entry is right.",
+          "requires": [
+            "asked_sandwich"
+          ],
+          "clear": [
+            "asked_sandwich"
+          ]
+        }
+      ],
+      "log": "0013 hrs. Supervisor asked whether the 2134 entry is exact."
     },
     {
       "id": "sandwich",
@@ -3967,7 +5171,7 @@
       "choices": [
         {
           "say": "Eat your own in silence",
-          "next": "late-list",
+          "next": "sandwich-quiet",
           "add": {
             "trainer_trust": 1
           },
@@ -4023,7 +5227,7 @@
       "choices": [
         {
           "say": "Eat your own in silence",
-          "next": "late-list",
+          "next": "sandwich-quiet",
           "add": {
             "trainer_trust": 1
           },
@@ -4047,6 +5251,65 @@
         }
       ],
       "log": "0030 hrs. Dolores Reyes on meal break at the wall. Post one on the wall."
+    },
+    {
+      "id": "sandwich-quiet",
+      "folder": "sandwich-quiet",
+      "time": "00:45",
+      "title": "In silence",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "You eat. She eats. The foil makes the only noise in the room, and then it makes none. On tile one the revolving door turns once with nobody in it."
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm.",
+          "perform": "the whole sentence, to the wall"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She finishes first. She folds the foil in four and puts it in the bin by the door, where it makes no noise at all."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+          "sfx": "drawer"
+        },
+        {
+          "speaker": "dee",
+          "text": "Nothing. Admin.",
+          "perform": "flat, before you ask"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Ask about the cards",
+          "next": "birthdays-ask",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Asked D. Reyes about the index cards."
+        },
+        {
+          "say": "Pass her the pencil",
+          "next": "birthdays-pencil",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Passed D. Reyes the pencil."
+        },
+        {
+          "say": "Keep your eyes on the wall",
+          "next": "late-list",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Kept your eyes on the wall."
+        }
+      ],
+      "log": "0045 hrs. Control room. D. Reyes at the desk drawer."
     },
     {
       "id": "sandwich-career",
@@ -4073,6 +5336,144 @@
         {
           "speaker": "narrator",
           "text": "On tile one, the revolving door turns once with nobody in it."
+        },
+        {
+          "speaker": "narrator",
+          "text": "She has said, in four sentences, a quarter of a century. She shakes the crumbs from the foil into her palm and eats them. It is not a performance. It is a habit."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+          "sfx": "drawer"
+        },
+        {
+          "speaker": "dee",
+          "text": "Nothing. Admin.",
+          "perform": "flat, before you ask"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Ask about the cards",
+          "next": "birthdays-ask",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Asked D. Reyes about the index cards."
+        },
+        {
+          "say": "Pass her the pencil",
+          "next": "birthdays-pencil",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Passed D. Reyes the pencil."
+        },
+        {
+          "say": "Keep your eyes on the wall",
+          "next": "late-list",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Kept your eyes on the wall."
+        }
+      ],
+      "log": "0045 hrs. Control room. D. Reyes at the desk drawer."
+    },
+    {
+      "id": "sandwich-coffee",
+      "folder": "sandwich-coffee",
+      "time": "00:45",
+      "title": "The coffee",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "It's wrong.",
+          "perform": "looking at the cup you hold out"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. Give it here.",
+          "perform": "taking it anyway"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She drinks half of it standing at the wall, and puts it down on the shelf, away from the sandwich."
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't tell Terrell.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You taste what is left in your own cup. It is wrong. It is, with some effort, drinkable."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At a quarter to one Dolores opens the bottom drawer of the desk, the one under the radio charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
+          "sfx": "drawer"
+        },
+        {
+          "speaker": "dee",
+          "text": "Nothing. Admin.",
+          "perform": "flat, before you ask"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Ask about the cards",
+          "next": "birthdays-ask",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Asked D. Reyes about the index cards."
+        },
+        {
+          "say": "Pass her the pencil",
+          "next": "birthdays-pencil",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Passed D. Reyes the pencil."
+        },
+        {
+          "say": "Keep your eyes on the wall",
+          "next": "late-list",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Kept your eyes on the wall."
+        }
+      ],
+      "log": "0045 hrs. Control room. D. Reyes at the desk drawer."
+    },
+    {
+      "id": "birthdays-ask",
+      "folder": "birthdays-ask",
+      "time": "00:55",
+      "title": "The cards",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Birthdays.",
+          "perform": "flat, a word with the lid on"
+        },
+        {
+          "speaker": "dee",
+          "text": "Ms. Adler, the third of March. Marisol, July. Okafor, the third of November. Terrell's was Tuesday. I gave him a muffin. Don't say.",
+          "perform": "quick, quieter each name"
+        },
+        {
+          "speaker": "dee",
+          "text": "I don't care about the tenants. Mm. I keep the cards because I don't care. You understand.",
+          "perform": "dry"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The pile is two inches thick. Every card has a name and a month. The top three are in handwriting you recognize from the incident forms. The bottom ones are in a hand that has changed over the years."
         },
         {
           "speaker": "narrator",
@@ -4118,30 +5519,28 @@
       "log": "0130 hrs. After-hours list: floor 58, Director Hale's office, late authorization to 0400. Lang on call with Zurich."
     },
     {
-      "id": "sandwich-coffee",
-      "folder": "sandwich-coffee",
-      "time": "00:45",
-      "title": "The coffee",
+      "id": "birthdays-pencil",
+      "folder": "birthdays-pencil",
+      "time": "00:55",
+      "title": "The pencil",
       "ambience": "control-room",
       "lines": [
         {
-          "speaker": "dee",
-          "text": "It's wrong.",
-          "perform": "looking at the cup you hold out"
+          "speaker": "narrator",
+          "text": "She takes it without looking, the way she takes a radio. She writes a name on the top card, small, and the day under it, and puts a rubber band around the pile."
         },
         {
           "speaker": "dee",
-          "text": "Mm. Give it here.",
-          "perform": "taking it anyway"
+          "text": "Mm.",
+          "perform": "the whole sentence"
         },
         {
           "speaker": "narrator",
-          "text": "She drinks half of it standing at the wall, and puts it down on the shelf, away from the sandwich."
+          "text": "She puts the drawer back with her foot and does not tell you whose card it was."
         },
         {
-          "speaker": "dee",
-          "text": "Don't tell Terrell.",
-          "perform": "flat"
+          "speaker": "narrator",
+          "text": "The drawer is a small museum. You think of asking. You think of what she would say. You decide to be a person who did not look."
         },
         {
           "speaker": "narrator",
@@ -4353,10 +5752,20 @@
           "text": "01:50. Nine tiles, none moving, and a radio that breathes when Dolores climbs. You can watch only so many at once."
         },
         {
+          "speaker": "narrator",
+          "text": "The dead hours start at two. Everyone says so: the tours are done, the tenants have gone, the phones stop. The body wants to sleep. Most mistakes are made right here.",
+          "sfx": "clock-tick"
+        },
+        {
           "speaker": "dee",
           "text": "Stairwell A. Clear. Going up to B.",
           "perform": "over the radio, echo on it",
           "sfx": "footsteps-stairs"
+        },
+        {
+          "speaker": "dee",
+          "text": "Eyes open. I can hear you blinking from here.",
+          "perform": "over the radio, dry, a little out of breath"
         }
       ],
       "choices": [
@@ -4400,6 +5809,79 @@
           "speaker": "dee",
           "text": "Stairwell B. Clear.",
           "perform": "over the radio, no idea"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She is two stairwells away and four floors down. She doesn't know. Only the wall knows, and the wall is you."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Your hand is on the phone, or on the radio, or on the mouse. All three are within reach. Nobody is hurrying you. A door that is open is only a door that is open until someone decides what to call it."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Call Mr. Okafor's line",
+          "next": "wedge-called",
+          "add": {
+            "trainer_trust": -1
+          },
+          "log": "Called the supervisor's night line about the wedge on 31."
+        },
+        {
+          "say": "Radio Dee: wedge on 31",
+          "next": "wedge-dee",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Radioed D. Reyes: wedge in the door, stairwell C, 31."
+        },
+        {
+          "say": "Log it and keep watching",
+          "next": "wedge-wait",
+          "set": [
+            "wedge_open"
+          ],
+          "log": "Logged the wedge and kept watching camera 4."
+        },
+        {
+          "say": "Look up who's on 31",
+          "next": "wedge-seen-badge",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Looked up the access record for floor 31."
+        }
+      ],
+      "feeds": {
+        "c4": "wedge"
+      },
+      "log": "0152 hrs. Camera 4, stairwell C, 31st floor landing. Fire door held open by a rubber wedge."
+    },
+    {
+      "id": "wedge-seen-badge",
+      "folder": "wedge-seen-badge",
+      "time": "01:54",
+      "title": "Who's on thirty-one",
+      "ambience": "stairwell",
+      "focus": "c4",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "The access terminal lists the floor: five badges swiped in after six, one still unswiped out. A law firm's name, a time, a single entry. Anand, D. In at 18:02."
+        },
+        {
+          "speaker": "narrator",
+          "text": "One badge in. No badge out. There is a man somewhere on thirty-one who has been working for eight hours."
+        },
+        {
+          "speaker": "dee",
+          "text": "Stairwell B. Clear. Heading for the roof side.",
+          "perform": "over the radio, no idea"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You know now who the wedge is for. You do not know his face. It is a different kind of knowing than the tile gives you, and a slower one."
         }
       ],
       "choices": [
@@ -4431,7 +5913,7 @@
       "feeds": {
         "c4": "wedge"
       },
-      "log": "0152 hrs. Camera 4, stairwell C, 31st floor landing. Fire door held open by a rubber wedge."
+      "log": "0154 hrs. Access terminal: floor 31, one badge in without exit (Anand, D., 1802). Camera 4: fire door held open by wedge."
     },
     {
       "id": "wedge-called",
@@ -4465,6 +5947,15 @@
           "speaker": "dee",
           "text": "A wedge. Mm. A wedge. {a long pause on the radio} It's the book.",
           "perform": "even"
+        },
+        {
+          "speaker": "dee",
+          "text": "I'd have gone and said hello. {over the radio, quieter} Doesn't matter. You did what it says. Mm. Write it.",
+          "perform": "a click"
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile four the wedge sits in the doorway like a dropped word. The supervisor's instruction was clear: don't go up. It is a good instruction. It is also, you notice, a way of not going."
         }
       ],
       "choices": [
@@ -4536,6 +6027,15 @@
           "speaker": "dee",
           "text": "Door's shut. He knows. {a pause} You said. Good.",
           "perform": "the second part quieter"
+        },
+        {
+          "speaker": "dee",
+          "text": "He's got a closing at nine. They all do. {over the radio, tired and not unkind} I'm coming down. Put the kettle on. It's wrong. Put it on.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Four minutes ago you were a person who had seen a wedge. Now Dolores has the wedge in her hand and you are a person who said so. It is a small difference. It is, you suspect, most of the job."
         }
       ],
       "choices": [
@@ -4606,6 +6106,14 @@
           "speaker": "dee",
           "text": "Stairwell B. Clear. Heading to the roof side.",
           "perform": "over the radio, away from C"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Four minutes later the radio says the same thing again, from another landing. Nobody on the radio says the word thirty-one. Nobody on the wall does either."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The tablet is on your knee. The incident field is blank and bright. You could write what you saw. You could write what you did. They are not the same sentence."
         }
       ],
       "choices": [
@@ -4677,6 +6185,15 @@
           "speaker": "dee",
           "text": "Door's shut. Say it was me. It was me.",
           "perform": "over the radio, even"
+        },
+        {
+          "speaker": "dee",
+          "text": "Look at four. Look at it till it's boring. Then look again.",
+          "perform": "a click, then not a sound"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You look at tile four and it is ordinary: a door, a landing, a painted number. There is no wedge in the picture now. There was one. You were looking at something else."
         }
       ],
       "choices": [
@@ -4742,6 +6259,11 @@
           "speaker": "dee",
           "text": "Tile one. Tile two. Say.",
           "perform": "testing, flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She does this twice a night, you will learn: a test that sounds like a habit. It is also a habit. The two are not different.",
+          "sfx": "pencil"
         }
       ],
       "choices": [
@@ -4786,6 +6308,10 @@
           "speaker": "dee",
           "text": "Good. Next.",
           "perform": "the way a stamp does"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She says nothing more. The pencil goes back behind her ear. You have been given something, and you cannot tell what."
         },
         {
           "speaker": "narrator",
@@ -4845,6 +6371,10 @@
           "speaker": "dee",
           "text": "Nobody sat there tonight. Nobody.",
           "perform": "pointing, not unkind"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You look. The bench is the bench. A shape on it is a shape you should have named. She doesn't say so. She waits long enough for you to say it for her."
         },
         {
           "speaker": "narrator",
@@ -4908,12 +6438,20 @@
           "speaker": "dee",
           "text": "Not \"found.\" \"Found on the lobby bench at.\" Exact.",
           "perform": "flat"
+        },
+        {
+          "speaker": "dee",
+          "text": "Somebody's whole life is in that machine. A dog. A will. Something they typed at two in the morning. {tapping the shelf, dry} We hold it. We don't read it. That's the deal. Mm."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The laptop is closed on its own reflection. The lanyard has a photo of a man who looks like he has been told to smile. You stand there a moment, holding someone else's night."
         }
       ],
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "add": {
             "trainer_trust": 1
           },
@@ -4921,7 +6459,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "set": [
             "opined"
           ],
@@ -4929,7 +6467,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "set": [
             "opined"
           ],
@@ -4958,12 +6496,16 @@
         {
           "speaker": "dee",
           "text": "Don't call him. You'll call him at seven. {flat} Go get it. Tag it."
+        },
+        {
+          "speaker": "narrator",
+          "text": "On the terminal the badge is a row of numbers and a green icon. The terminal knows when T. Marsh left and nothing else about him. It is a very clean way to know a person."
         }
       ],
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "add": {
             "trainer_trust": 1
           },
@@ -4971,7 +6513,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "set": [
             "opined"
           ],
@@ -4979,7 +6521,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "set": [
             "opined"
           ],
@@ -5012,12 +6554,16 @@
         {
           "speaker": "narrator",
           "text": "The screen goes dark. The dog goes with it."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Your hand is still warm from the lid. You wipe it on your trouser leg the way you do after touching a stranger's door. It does not help."
         }
       ],
       "choices": [
         {
           "say": "Log it exactly",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "add": {
             "trainer_trust": -1
           },
@@ -5025,7 +6571,7 @@
         },
         {
           "say": "Add what you thought",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "add": {
             "trainer_trust": -1
           },
@@ -5036,7 +6582,7 @@
         },
         {
           "say": "Leave it out",
-          "next": "leak-watch",
+          "next": "awake-0225",
           "add": {
             "trainer_trust": -1
           },
@@ -5047,6 +6593,380 @@
         }
       ],
       "log": "0220 hrs. Laptop opened by post one. Login screen displayed, no password entered. Closed."
+    },
+    {
+      "id": "awake-0225",
+      "folder": "awake-0225",
+      "time": "02:25",
+      "title": "The hour",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee. She does not look tired. She looks like a woman who has decided not to be."
+        },
+        {
+          "speaker": "dee",
+          "text": "Don't sit still. Sitting still is how it gets you. Stand. Change chairs. Say the tiles. Eat something salty.",
+          "perform": "flat, a list she has said to nobody"
+        },
+        {
+          "speaker": "dee",
+          "text": "A guard at the bank on Fordham Road. Two in the morning, head on the desk. Nothing happened. {a beat} Nothing happened for forty minutes. Then something did.",
+          "perform": "no more"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Stand up and say the tiles",
+          "next": "awake-stand",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Stood at the wall and said the tiles aloud."
+        },
+        {
+          "say": "Ask what happened at the bank",
+          "next": "awake-bank",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Asked D. Reyes what happened at the bank."
+        },
+        {
+          "say": "Pour two coffees",
+          "next": "awake-coffee",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Poured two coffees."
+        }
+      ],
+      "log": "0225 hrs. Control room. D. Reyes standing at the wall."
+    },
+    {
+      "id": "awake-stand",
+      "folder": "awake-stand",
+      "time": "02:35",
+      "title": "The tiles",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Louder. Nobody's asleep in here but the monitors.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You say them standing: lobby, vestibule, dock, stairwell, elevator, corridor, reception, roof, alcove. By the ninth you are awake. She nods once, at the wall."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Your voice sounds small in the room and then, at the ninth tile, ordinary. That is what the job is: making your voice ordinary in a room that wants it to be small."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
+          "sfx": "door-heavy"
+        },
+        {
+          "speaker": "marisol",
+          "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
+          "perform": "fast, warm, everything at once"
+        },
+        {
+          "speaker": "dee",
+          "text": "Marisol. The broker knows.",
+          "perform": "dry"
+        },
+        {
+          "speaker": "marisol",
+          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Thank her for the coffee",
+          "next": "marisol-thanks",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Thanked M. Quintero for the coffee."
+        },
+        {
+          "say": "Ask about Dolores",
+          "next": "marisol-dee",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Asked M. Quintero about D. Reyes."
+        },
+        {
+          "say": "Ask about the floors",
+          "next": "marisol-floors",
+          "log": "Asked M. Quintero about the cleaning floors."
+        }
+      ],
+      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry."
+    },
+    {
+      "id": "awake-bank",
+      "folder": "awake-bank",
+      "time": "02:35",
+      "title": "The bank",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "A man at the counter. A heart. Ten minutes on the floor. The guard was reading his phone.",
+          "perform": "even, to the cup, no pause between them"
+        },
+        {
+          "speaker": "dee",
+          "text": "Teller found him. Mm. Nobody was watching. {a sip} Nobody. It was a Tuesday.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You don't ask whether the man lived. She doesn't say. She turns the cup a quarter turn on the shelf."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
+          "sfx": "door-heavy"
+        },
+        {
+          "speaker": "marisol",
+          "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
+          "perform": "fast, warm, everything at once"
+        },
+        {
+          "speaker": "dee",
+          "text": "Marisol. The broker knows.",
+          "perform": "dry"
+        },
+        {
+          "speaker": "marisol",
+          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Thank her for the coffee",
+          "next": "marisol-thanks",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Thanked M. Quintero for the coffee."
+        },
+        {
+          "say": "Ask about Dolores",
+          "next": "marisol-dee",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Asked M. Quintero about D. Reyes."
+        },
+        {
+          "say": "Ask about the floors",
+          "next": "marisol-floors",
+          "log": "Asked M. Quintero about the cleaning floors."
+        }
+      ],
+      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry."
+    },
+    {
+      "id": "awake-coffee",
+      "folder": "awake-coffee",
+      "time": "02:35",
+      "title": "Two coffees",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "It's wrong. {taking it anyway} Mm.",
+          "perform": "the same word, softer"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She drinks half of it standing and sets it on the shelf, away from the radios. You notice she puts it down exactly where the old ring is."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The machine makes its noise. Dolores drinks without comment, as if an exchange had been made and recorded. It has."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
+          "sfx": "door-heavy"
+        },
+        {
+          "speaker": "marisol",
+          "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
+          "perform": "fast, warm, everything at once"
+        },
+        {
+          "speaker": "dee",
+          "text": "Marisol. The broker knows.",
+          "perform": "dry"
+        },
+        {
+          "speaker": "marisol",
+          "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! {delighted} Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Thank her for the coffee",
+          "next": "marisol-thanks",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Thanked M. Quintero for the coffee."
+        },
+        {
+          "say": "Ask about Dolores",
+          "next": "marisol-dee",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Asked M. Quintero about D. Reyes."
+        },
+        {
+          "say": "Ask about the floors",
+          "next": "marisol-floors",
+          "log": "Asked M. Quintero about the cleaning floors."
+        }
+      ],
+      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry."
+    },
+    {
+      "id": "marisol-thanks",
+      "folder": "marisol-thanks",
+      "time": "02:40",
+      "title": "The broker's pot",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "marisol",
+          "text": "Ay, de nada, mi amor. You say thank you. Nobody says thank you. Twenty years I bring the coffee, I hear thank you from the dentist and from God.",
+          "perform": "fast, laughing, wiping her hands"
+        },
+        {
+          "speaker": "dee",
+          "text": "Marisol.",
+          "perform": "flat"
+        },
+        {
+          "speaker": "marisol",
+          "text": "I'm going, I'm going. Floors don't mop themselves. They should. I'd retire.",
+          "perform": "out the door, the cart rattling"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm. {to the wall, after the door} Thirty years she's said that.",
+          "perform": "almost fond"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The cart's wheel squeaks down the corridor outside and fades toward the elevators. For a moment the room smells of the good coffee and nothing else."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Look at the wall",
+          "next": "leak-watch",
+          "log": "Looked at the wall."
+        }
+      ],
+      "log": "0245 hrs. Wall quiet."
+    },
+    {
+      "id": "marisol-dee",
+      "folder": "marisol-dee",
+      "time": "02:40",
+      "title": "About Dolores",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "marisol",
+          "text": "Dolores? Ay. Twenty-six years she's here. I'm thirty. We're the building, her and me. The rest are tenants.",
+          "perform": "fast, proud"
+        },
+        {
+          "speaker": "marisol",
+          "text": "I tell her every Christmas: Dolores, go home. She says: who watches the door. {a laugh that stops itself} She never goes home."
+        },
+        {
+          "speaker": "dee",
+          "text": "Marisol. Floors.",
+          "perform": "the voice of a closing door"
+        },
+        {
+          "speaker": "marisol",
+          "text": "Okay. Okay! Eat something, mi amor! Both of you!",
+          "perform": "gone, the cart rattling"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Dolores is looking at the wall. She is not looking at the door Marisol went through. She is looking at it harder than she is looking at the door."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Look at the wall",
+          "next": "leak-watch",
+          "log": "Looked at the wall."
+        }
+      ],
+      "log": "0245 hrs. Wall quiet."
+    },
+    {
+      "id": "marisol-floors",
+      "folder": "marisol-floors",
+      "time": "02:40",
+      "title": "The floors",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "marisol",
+          "text": "Thirty to forty-four. Six of us. Forty-one's the worst, the lawyers leave their lunch. Thirty-three's the best, they leave a pot.",
+          "perform": "listing, fast"
+        },
+        {
+          "speaker": "marisol",
+          "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. {a shrug in the voice} It's a life. Bendito."
+        },
+        {
+          "speaker": "dee",
+          "text": "She's always on time. {flat, after she goes} Five-thirty. You could set the clock by her. Mine. The right one.",
+          "perform": "almost a smile"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You try to picture it: six people, fifteen floors, one night, nobody writing anything down. It sounds like a different kind of log."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Look at the wall",
+          "next": "leak-watch",
+          "log": "Looked at the wall."
+        }
+      ],
+      "log": "0245 hrs. Wall quiet."
     },
     {
       "id": "leak-watch",
@@ -5069,6 +6989,12 @@
           "speaker": "dee",
           "text": "Marisol finished that floor at midnight.",
           "perform": "pencil on the glass of tile six"
+        },
+        {
+          "speaker": "dee",
+          "text": "Water's patient. Water finds the lowest place and waits.",
+          "perform": "flat, as if reading it off a wall",
+          "sfx": "clock-tick"
         }
       ],
       "choices": [
@@ -5126,6 +7052,10 @@
           "speaker": "dee",
           "text": "Mm. A hose.",
           "perform": "to you, dry"
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile six the stain stops growing. You watch it for a full minute to make sure, because Dolores taught you to watch things until they are boring."
         }
       ],
       "choices": [
@@ -5186,6 +7116,10 @@
           "speaker": "dee",
           "text": "He'd have said that for a puddle. {to the wall} Mm. It's a lake.",
           "perform": "dry"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The line clicks. Somewhere a television goes off. The supervisor's voice was the voice of someone who has done this call before and will do it again, and for whom it is not a story. It is a form."
         }
       ],
       "choices": [
@@ -5250,6 +7184,10 @@
         {
           "speaker": "narrator",
           "text": "She shows you the valve. You turn it together, and the sound in the wall stops."
+        },
+        {
+          "speaker": "narrator",
+          "text": "In the elevator back down, you press thirty-one and then remember it isn't yours. You press one. Marisol is still talking. You nod. It is the loudest quiet of the night."
         }
       ],
       "choices": [
@@ -5298,6 +7236,14 @@
           "speaker": "dee",
           "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
           "perform": "to the cup"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She has said it three times tonight in three forms, and every time as if it were a rule in the binder. It is not in the binder. You have read the binder."
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile six the floor is dry now, a dark shape on dry carpet and then a dark shape that is only a shadow. The building has gone back to sleep, and it was never awake."
         }
       ],
       "choices": [
@@ -5352,7 +7298,7 @@
         },
         {
           "speaker": "narrator",
-          "text": "She says nothing else for a while. The clock ticks. Two minutes ahead of everything."
+          "text": "She says nothing else for a while. The clock ticks. Two minutes ahead of everything. On tile six the stain is a dark shape on a dry floor, and then a dry floor."
         },
         {
           "speaker": "dee",
@@ -5421,6 +7367,10 @@
         },
         {
           "speaker": "dee",
+          "text": "Nothing happens at three o'clock. {at the door, flat} That's why we're here. Nothing is the job. {a beat} Mm."
+        },
+        {
+          "speaker": "dee",
           "text": "Roof door. Three. Alone. Stay on the wall.",
           "perform": "at the door, the keys in her hand",
           "sfx": "keys"
@@ -5433,6 +7383,10 @@
         {
           "speaker": "narrator",
           "text": "She goes. The door swings shut behind her and the room is very quiet."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The room is very quiet without her. The wall is yours; the wall has always been yours; tonight, for the first time, you can hear that."
         }
       ],
       "choices": [
@@ -5489,6 +7443,10 @@
         {
           "speaker": "narrator",
           "text": "The door swings shut. The elevator chime rings once, far off."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The room is very quiet without her. The wall is yours. You had not noticed until now how much of the quiet is her."
         }
       ],
       "choices": [
@@ -5542,6 +7500,14 @@
           "speaker": "dev",
           "text": "No, no, it's fine. It's fine. It's a little close in here.",
           "perform": "fast, too bright"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Tile five shows four cars and a plant. Three of the cars are where they should be. The fourth is a lit number between two floors, and under the number a thin line of light at the seam of the doors."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Dolores is on the stairs, somewhere above floor ten. The radio on the shelf is quiet. The post is you."
         }
       ],
       "choices": [
@@ -5603,6 +7569,14 @@
           "speaker": "dev",
           "text": "No, no, it's fine. It's fine. It's a little close in here.",
           "perform": "fast, too bright"
+        },
+        {
+          "speaker": "narrator",
+          "text": "Tile five shows four cars and a plant. Three of the cars are where they should be. The fourth is a lit number between two floors, and under the number a thin line of light at the seam of the doors."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Dolores is on the stairs, somewhere above floor ten. The radio on the shelf is quiet. The post is you."
         }
       ],
       "choices": [
@@ -5669,6 +7643,14 @@
           "speaker": "dev",
           "text": "It's — is it — it's getting a little —",
           "perform": "over the intercom, quieter, breaking off"
+        },
+        {
+          "speaker": "narrator",
+          "text": "His breath is on the line. It is the only thing on the line. You have about as long as it takes to say a sentence to decide which voice you owe."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The intercom crackles. The picture on tile five does not change. It is a lit number between two floors, and a man behind it whose breath you have started to count."
         }
       ],
       "choices": [
@@ -5717,6 +7699,15 @@
           "speaker": "dev",
           "text": "Okay. Okay. Sorry. You don't have to — okay.",
           "perform": "over the intercom, steadier"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You tell him he is not a problem. You tell him the company is coming. You tell him what the wall looks like from here: a plant, four cars, a light on his. He laughs once, a short wet sound, like a man surfacing."
+        },
+        {
+          "speaker": "dee",
+          "text": "Dolores, from the stairs, in two words: Roof. Cold.",
+          "perform": "over the radio, thick, then plain, not an explanation"
         }
       ],
       "choices": [
@@ -5771,6 +7762,10 @@
           "speaker": "dee",
           "text": "Post one. {over the radio, flat, final} Mm.",
           "perform": "a long click"
+        },
+        {
+          "speaker": "narrator",
+          "text": "You stay with him. You tell him how long you have been awake. He tells you how long he has. It is a contest that neither of you is winning, and for four minutes it is exactly the right conversation."
         }
       ],
       "choices": [
@@ -5835,6 +7830,10 @@
         {
           "speaker": "narrator",
           "text": "You key the radio. \"Post one. Loud and clear.\" Dolores says Mm. That is all she says."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Gus calls back at 03:21 to say he is in the lobby, with a bar and a key you have never seen. At 03:34 the car opens at thirty-one and a man steps out with his bag held against his chest."
         }
       ],
       "choices": [
@@ -5958,6 +7957,14 @@
           "speaker": "dee",
           "text": "The company's forty minutes. I'll stay here. You talk.",
           "perform": "to him, not you"
+        },
+        {
+          "speaker": "narrator",
+          "text": "She tells him about the building: how old the cables are, how many times she has heard the car stop and start again. It is not true that nothing happens. It is true that nothing happens to him."
+        },
+        {
+          "speaker": "narrator",
+          "text": "At 03:34 the doors open at thirty-one. Dev steps out. Dolores watches him on tile five until the plant hides him."
         }
       ],
       "choices": [
@@ -6001,7 +8008,11 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "On tile one a man in a long dark coat comes through the revolving door with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again."
+          "text": "Three-twenty. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one."
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile one a man in a long dark coat comes through with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again."
         },
         {
           "speaker": "pierce",
@@ -6129,6 +8140,56 @@
       "log": "0322 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception."
     },
     {
+      "id": "chairman-talk",
+      "folder": "chairman-talk",
+      "time": "03:36",
+      "title": "The Chairman",
+      "ambience": "control-room",
+      "lines": [
+        {
+          "speaker": "dee",
+          "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera. {to the wall, flat} I don't know if that's a compliment.",
+          "perform": "a beat"
+        },
+        {
+          "speaker": "dee",
+          "text": "He walks it every night he's in town. Never signs. Never stops. {dry} Gets out at fifty-eight, stands at the glass, goes home. Mm. Nobody's ever asked him why."
+        },
+        {
+          "speaker": "dee",
+          "text": "You don't ask. You write what he does. {flat} That's all anyone's ever got on him. A log."
+        },
+        {
+          "speaker": "narrator",
+          "text": "03:41. Dolores has the cup. You have the wall. On tile nine the picture jumps once, a thin tear across it. Then it does not move at all."
+        }
+      ],
+      "choices": [
+        {
+          "say": "Look at nine",
+          "next": "cam9-seen",
+          "add": {
+            "building_known": 1
+          },
+          "log": "Looked at camera 9."
+        },
+        {
+          "say": "Look at the lobby",
+          "next": "cam9-missed",
+          "log": "Looked at the lobby."
+        },
+        {
+          "say": "Look at the roof door",
+          "next": "cam9-missed",
+          "add": {
+            "trainer_trust": 1
+          },
+          "log": "Looked at camera 8, the roof door."
+        }
+      ],
+      "log": "0341 hrs. Camera 9, floor 2 alcove. Picture jumped once. Chairman discussed with D. Reyes."
+    },
+    {
       "id": "dee-back-waved",
       "folder": "dee-back-waved",
       "time": "03:30",
@@ -6186,6 +8247,14 @@
             "trainer_trust": 1
           },
           "log": "Looked at camera 8, the roof door."
+        },
+        {
+          "say": "Ask Dee about the Chairman",
+          "next": "chairman-talk",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Asked D. Reyes about the Chairman."
         }
       ],
       "log": "0341 hrs. Camera 9, floor 2 alcove. Picture jumped once."
@@ -6248,6 +8317,14 @@
             "trainer_trust": 1
           },
           "log": "Looked at camera 8, the roof door."
+        },
+        {
+          "say": "Ask Dee about the Chairman",
+          "next": "chairman-talk",
+          "add": {
+            "trainer_warmth": 1
+          },
+          "log": "Asked D. Reyes about the Chairman."
         }
       ],
       "log": "0341 hrs. Camera 9, floor 2 alcove. Picture jumped once."
@@ -6269,6 +8346,10 @@
           "speaker": "dee",
           "text": "Camera, time, what it did. Not \"something's wrong.\" That's a mood, not a sentence.",
           "perform": "even"
+        },
+        {
+          "speaker": "dee",
+          "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. {low, looking toward the shelf} Say it first. Then we'll see."
         }
       ],
       "choices": [
@@ -6393,12 +8474,20 @@
         },
         {
           "speaker": "narrator",
-          "text": "On tile nine, frozen, the repeater is still green."
+          "text": "On tile nine, frozen, the repeater is still green. In this room it is amber. Two things that should say the same thing are saying different things."
         },
         {
           "speaker": "dee",
           "text": "That's the thirty-one detector. It does that. {flat, not turning} Press the silence. It stops. It always stops.",
           "perform": "tired"
+        },
+        {
+          "speaker": "dee",
+          "text": "Thirty years on this panel, it's cried wolf nine hundred times. Mm. {to the shelf} I don't say it's right. I say it's what I do."
+        },
+        {
+          "speaker": "narrator",
+          "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven. The fire panel belongs to the director, not to you. You have read it. She has read it more times than anyone alive."
         }
       ],
       "choices": [
@@ -6744,6 +8833,14 @@
           "speaker": "dee",
           "text": "Sign for it. Tag it. It sits on the shelf till seven. We don't send things back into the cold.",
           "perform": "flat, a woman who has done this a thousand times"
+        },
+        {
+          "speaker": "narrator",
+          "text": "On tile three the man shifts the box from one arm to the other. The van's engine runs. He has been up since yesterday too, and it is in the way he stands."
+        },
+        {
+          "speaker": "dee",
+          "text": "The book says no. The book says no, and I've said yes forty times, and nobody's died. Mm. {dry} You decide which of those is the point."
         }
       ],
       "choices": [
@@ -7010,9 +9107,17 @@
           "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen."
         },
         {
+          "speaker": "narrator",
+          "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down."
+        },
+        {
           "speaker": "dee",
           "text": "Twenty minutes. {to the wall, flat} We let him stay twenty minutes. Then I call.",
           "perform": "quick"
+        },
+        {
+          "speaker": "dee",
+          "text": "Book says trespass. Book says the owner's property. Book doesn't say fourteen degrees. {low} Mm. That's why there's me."
         }
       ],
       "choices": [
@@ -7389,7 +9494,11 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "05:15. Dolores takes her coat to the restroom. The tablet stays where she was working, open to her own page. The 0300 line is there in grey type. ROOF DOOR. TOUR. NO INCIDENT. D. REYES."
+          "text": "05:15. The sky has not changed yet. It is the last of the dark hours, the ones people mean when they say night shift, and the wall has gone as quiet as it will get."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Dolores takes her coat to the restroom. The tablet stays where she was working, open to her own page. The 0300 line is there in grey type. ROOF DOOR. TOUR. NO INCIDENT. D. REYES."
         }
       ],
       "choices": [
@@ -7606,6 +9715,14 @@
           "speaker": "dee",
           "text": "Mm. Go home, Marisol.",
           "perform": "on the walkie, short"
+        },
+        {
+          "speaker": "narrator",
+          "text": "The elevator lobby on thirty-one is lit by an actual sun at the window, a pink bar on the carpet. On tile one the day officer's cap is a shape in the vestibule, waiting for the door."
+        },
+        {
+          "speaker": "dee",
+          "text": "Seven hours is a long time to be careful. {to the wall, flat} Nobody's ever said it. Mm. Somebody should have."
         },
         {
           "speaker": "narrator",
@@ -8019,7 +10136,11 @@
       "lines": [
         {
           "speaker": "narrator",
-          "text": "06:30. The lobby has a day in it. Mr. Okafor comes through the revolving door with a coffee and a coat that has not been slept in.",
+          "text": "06:30. The lobby has a day in it: the first tenants, a courier with flowers, the hum of the escalator being switched on. The seven o'clock sun lies across the marble like a dropped sheet."
+        },
+        {
+          "speaker": "narrator",
+          "text": "Mr. Okafor comes through the revolving door with a coffee and a coat that has not been slept in.",
           "sfx": "door-heavy"
         },
         {
