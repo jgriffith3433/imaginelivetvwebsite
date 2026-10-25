@@ -2,8 +2,9 @@
 
 **Draft. Waiting for J** (see "Waiting for J" at the end). The whole night is built as a console story in
 `story/night-shift.json` (see "The built night" below), listed as a draft in `story/stories.json` (`listed: false`):
-it plays at `/?story=night-shift`, its pages are under `/night-shift/`. No media is made yet (the player reads the lines on a timer
-and draws placeholder tiles).
+it plays at `/?story=night-shift`, its pages are under `/night-shift/`. **The script is final** (2026-10-25, the text pass that
+comes before the voices): the voices, beds and effects are cast and the opening lines are recorded; the pictures are still
+stand-ins and most lines are read on a timer until they are voiced (see "Voices as made").
 
 ## The idea
 
@@ -14,7 +15,7 @@ teaching it to you. Nobody is a hero.** There are no monsters, no fights and no 
 happens on a good night is paperwork.
 
 - **Title:** *Night Shift*
-- **Tagline:** *Observe and report.*
+- **Tagline:** *Say what you see.* (Not "Observe and report": nobody says that except as a flat quotation of the post orders.)
 - **Logline** (its card): *Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer
   who knows every door, and a report with your name on it.*
 - **Tap to play:** *NIGHT SHIFT*, "Sound on. Radio check."
@@ -22,6 +23,10 @@ happens on a good night is paperwork.
 **It is a different night from PH Origins.** Same building, same company, another night and another floor of the
 building's life. Nothing here is secret, strange or hidden: the story stays on the floors a guard walks, from the street entrance
 and loading dock up to the roof door. See "Canon this must keep".
+
+**The night.** A Wednesday in the middle of February, 18:45 to 07:00 (fourteen degrees in the vestibule at 04:45). The notice in the drawer
+takes effect on the first of April. Dee's next shift is Thursday night, "tonight" by the time the story ends. Tuesday is the day before:
+Terrell's birthday, the man in the vestibule, the air-handler man's last visit.
 
 ## 1. What the job is
 
@@ -290,25 +295,27 @@ given; the description is the whole recipe. No media is made by this doc.*
   - "Sit. It's three o'clock. Nothing is going to happen at three o'clock. That's why we're here."
   - "Don't open it. Not for him. Not for the nice one. *Especially* for the nice one."
   - "My husband used to… Forget it. Eat something."
-- **Reveal layers** (what the player learns, by how they have treated her, tracked by `trainer_trust` and
-  `trainer_warmth`, below):
-  1. **The shell (any treatment).** She is competent, dry, a stickler. She says the job is "watching a wall."
-     Facts only. Her habit: counting the radios.
-  2. **The pencil (respectful; follows her rules; `trainer_trust` ≥ 2).** She admits she writes the log in
-     pencil first because "once it's ink, it's true." She shows the player how she words things, and why the DAR
-     matters to *the next person*. She mentions a husband, once, in the past tense, and moves on.
-  3. **The four hours (warm; asks about her and doesn't push; `trainer_warmth` ≥ 3 and the player has stayed on
-     the wall).** She says why she never leaves the wall: Ray, a boiler room, a guard who stepped out. No
-     tidy speech: she says the number, "four hours," and changes the subject to the clock.
-  4. **Twelve (high trust *and* the player caught the 03:00 line in her log without exposing her; or
-     covered for her).** The 12th-floor landing. She tells the player where she goes at three. She does not
-     explain it. The player can sit with her, or log a plain "tour, no incident" for her. The game never says
-     what the right answer is.
-  5. **The spring (any, if the player reads the contractor notice in the shelf drawer).** She knows the night
-     shift will be replaced. She tells nobody. If the player tells the day supervisor, this changes the ending.
-  - **Treated badly** (mocked, lied to in the log, skipped her radio checks, left the wall): she doesn't get
-    angry. She gets *more* formal, calls the player "Officer" till morning, writes the report by the book and the
-    book is cold. She keeps layers 3 to 5 to herself and the story does not give them back.
+- **Reveal layers** (what the player learns, by how they have treated her, tracked by `trainer_trust` (0 to 3) and `trainer_warmth`
+  (0 to 2); the first plan had 0 to 5 and was cut to what the build can prove). Each is a scene a way reaches, and one way meets them all
+  (`node tools/check-night-shift.mjs` prints the shortest way to each and the one way through all of them):
+  1. **The shell (any treatment).** `handover` on. She is competent, dry, a stickler. She says the job is "watching a wall." Facts only.
+     Her habit: counting the radios.
+  2. **The pencil (`sign-why`, `sign-why-44`: trust 2 or more at the sign-in, 21:30).** She admits she writes the log in pencil first
+     because "once it's ink, it's true." She mentions a husband, once, in the past tense, and moves on (the sandwich, `sandwich-ray`, if the
+     player asked about it).
+  3. **The four hours (`four-hours`, 02:58: warmth 2, the player never left the wall, and sat by her after the leak instead of asking about
+     Ray).** She says the number, "four hours," and changes the subject to the clock. Ray, a boiler room, a guard who stepped out; she never
+     says more.
+  4. **Twelve (`twelve`, 05:24: the player checked her page against the roof door's record, caught the 03:00 line, and asked where she goes
+     at three, trust 2 or more).** The 12th-floor landing: a dentist now, "there was a room. A bench. A kettle." The player can sit with her
+     (`twelve-sat`, warmth) or give her the wall (`twelve-wall`, trust). The game never says which is right. Telling her they saw the door
+     (`twelve-shut`) shuts it.
+  5. **The spring (`drawer-notice`, 23:25: the player opened the shelf drawer).** The night shift is replaced in April. She tells nobody.
+     At the morning the player can tell the day supervisor or say nothing: `end-she-knew` (close, told), `end-someone` (close, learned, said
+     nothing), `end-under-review` (not close, told).
+  - **Treated badly** (mocked, lied to in the log, skipped her radio checks, left the wall): she doesn't get angry. She gets *more* formal,
+    calls the player "Officer" till morning, writes the report by the book and the book is cold. She keeps layers 3 to 5 to herself and the
+    story does not give them back.
 
 ### Mr. Chidi Okafor: day supervisor
 
@@ -386,6 +393,17 @@ given; the description is the whole recipe. No media is made by this doc.*
 - **Sample lines:** "Read me the display. Exactly. Do not paraphrase." / "Do not silence it. Do not reset it."
   / "Thank you. That is the correct answer. Please put it in the log in the same words."
 
+### Mr. Brandt: tenant on forty
+
+- **Age:** early forties. A hedge fund on forty, awake for a call with Singapore at four. Five lines in the whole night: the call about the
+  cold (02:46), "Great. Thanks. I'll be here.", and, if the player goes up, "Oh. Hi. It's cold."
+- **How he talks:** Brisk, fast, a little entitled and a little tired. Gives his name and his floor first. Says "Great. Thanks." when told
+  nothing will happen. Never rude, never loud.
+- **Never says:** please, or sorry.
+- **ElevenLabs voice design (as made):** *A man in his early forties, brisk Manhattan voice, a little entitled and a little tired, speaking
+  fast into a speakerphone in a big quiet room. Clean phone recording.*
+- **Sample lines:** "Hi, Brandt, forty. It's sixty-one degrees up here." / "Great. Thanks. I'll be here."
+
 ### The courier (the dock intercom)
 
 - **Age:** ~35. A tired delivery driver. A voice on a crackling intercom. Bored, polite, wants a signature.
@@ -442,7 +460,8 @@ about the work).
 - **Specifics over adjectives.** The time, the floor, the exact words on the panel.
 - **Each line is written for its voice.** Test: cover the name; you should still know who is talking.
 - **Humor** is people being people ("The coffee machine is wrong."), never a joke about the job.
-- **Length.** A choice is two to six words ("Log it exactly", "Call Dolores"). A page's text is ≤ 40 words.
+- **Length.** A choice is two to six words ("Log it exactly", "Call Dolores"). A line is short: narration at most 42 words, a speech at most
+  32 and three sentences. A page is six or seven lines, never more than about 170 words (`tools/check-night-shift.mjs` holds the line limits).
 
 ## 5. The ending map
 
@@ -455,25 +474,31 @@ about the work).
 - **What the player learned about the building (B):** `learned` (noticed the wedge, the camera-9 freeze, the
   2am pattern and the 12th-floor line), `partial`, `blind` (the player never looked).
 
-Each ending is a morning scene at 06:30 with the day supervisor reading the log, then the next sentence of
-the player's life. Nine endings:
+Each ending is a morning scene at 07:00 with the day supervisor reading the log, then the next sentence of the player's life.
+Twelve are built (the first plan had nine; Eat something, Noted and Under review came with the build). The table is what the build
+resolves; "The built night" below has the exact rules.
 
-| # | Ending | C | T | B | Why it exists |
+| # | Ending (scene) | C | T | B | Why it exists |
 | --- | --- | --- | --- | --- | --- |
-| 1 | **Clean report** | solid | correct | partial | The "good" baseline: a boring, correct night. It proves the job is done by being unremarkable. |
-| 2 | **Someone to leave it to** | solid | close | learned | The best ending: Dee's spring news, the pencil, the 12th floor. She hands over the pencil. The player carries the log and a different reason to stay. |
-| 3 | **By the book, alone** | solid | cold | partial | Competent and lonely: the report is perfect and the trainer hands in a one-line evaluation. Shows that rules without people is a kind of failure. |
-| 4 | **The friendly one** | shaky | close | blind | The player is liked, Dee covers for a mistake (the waved-through visitor), the cost is hers and the player doesn't see it until the log is read. |
-| 5 | **Opinions** | shaky | correct | partial | The log says "seemed suspicious", "someone lazy". Okafor corrects every line. No catastrophe, a lesson by red pen. |
-| 6 | **The four hours** | failed | close | partial | The player leaves the wall once and doesn't tell control; Dee finds out. The echo of Ray hits her; she says nothing; the supervisor writes it. A quiet, painful ending. |
-| 7 | **Written up** | failed | cold | blind | The player lied in the log, or skipped a trouble signal; Okafor and the building manager read it; the player is let go at the end of the 90 days. |
-| 8 | **The wedge** | failed | correct | blind | The stairwell door stayed propped and a tenant complains; the trouble light was never reported; nobody was hurt; a near miss that cost the player the benefit of the doubt. |
-| 9 | **She knew** | solid | close | learned | Variant of 2 where the player *also* told Okafor about the remote-monitoring notice: Dee is angry, in her way, for one day, and then isn't. Why: the player can trade a secret for a rule, and the story lets them. |
+| 1 | **Clean report** (`end-clean`) | solid | correct | any | The "good" baseline: a boring, correct night. It proves the job is done by being unremarkable. |
+| 2 | **Someone to leave it to** (`end-someone`) | solid | close | learned | The best ending: Dee's spring news, the pencil, the 12th floor. She hands over the pencil. The player read the notice and said nothing. |
+| 3 | **She knew** (`end-she-knew`) | solid | close | any | The player *also* told Okafor about the notice: Dee is angry, in her way, for one day, and then isn't. The player can trade a secret for a rule, and the story lets them. |
+| 4 | **Eat something** (`end-eat-something`) | solid | close | not learned, or no notice | The quiet good ending: she hands over the sandwich, not the pencil. |
+| 5 | **By the book, alone** (`end-by-the-book`) | solid | cold | any | Competent and lonely: the report is perfect and the trainer hands in a one-line evaluation. Rules without people is a kind of failure. |
+| 6 | **Under review** (`end-under-review`) | solid | not close | any | The player told Okafor about the notice without being trusted with it. Dee hears it from him, and leaves by the dock. |
+| 7 | **The friendly one** (`end-friendly`) | shaky | close | any | The player is liked, Dee covers for a mistake, the cost is hers and the player doesn't see it until the log is read. |
+| 8 | **Opinions** (`end-opinions`) | shaky | correct or cold | any | The log says "seemed", "probably". Okafor corrects every line. No catastrophe, a lesson by red pen. |
+| 9 | **Noted** (`end-noted`) | shaky | correct or cold | any | Rule slips only: a contractor, a box, a call. It was in the log, in the player's hand, so it is only a conversation. |
+| 10 | **Four minutes** (`end-four-hours`) | failed | close or correct | any | The player left the wall without telling control. Four minutes; Dee hears the number Ray had. She says nothing. (Renamed from "The four hours": that name is Dee's layer 3, the opposite behaviour.) |
+| 11 | **The wedge** (`end-wedge`) | failed | close or correct | any | The stairwell door stayed propped or the trouble light was never reported; nobody was hurt; a near miss that cost the player the benefit of the doubt. |
+| 12 | **Written up** (`end-written-up`) | failed | cold, or a lie | any | The player lied in the log, or left the wall and Dee had stopped trusting them; the player is let go at the end of the 90 days. |
 
-*The acceptance bar is eight or more; nine are defined. 2 and 9 are the two "reveal" endings; 7 is the
-punishment; the rest are in-between and honest.* No ending has a moral line. Each ends on an object.
+*The acceptance bar is eight or more. 2, 3 and 6 are the three "spring" endings (the player read the notice); 12 is the punishment; the
+rest are in-between and honest.* No ending has a moral line. Each ends on an object: a radio, a pencil, a foil, a drawer.
 
 ## 6. The state model
+
+*This is the first plan, written before the build. The state the build proves is under "The built night"; where they differ, that wins.*
 
 *Everything the story remembers, written so a build check can verify that every choice changes at least one
 thing. All flags are booleans unless a type is given; meters are integers with the range shown. State is data on
@@ -557,65 +582,74 @@ company's restricted work (an `unspoken` list kept in the data, not in this doc)
 
 ## The built night
 
-`story/night-shift.json`: 200 scenes, about 1,150 spoken lines, 11 endings. The first act (18:45 to 22:05) is the slice
-(`story/night-shift-slice-notes.md`), its lines unchanged, moved into the engine's format: the engine has no conditional
-lines, so a line that read a flag now sits in a short scene that follows the choice. Playing time (words at 150 a minute plus a
-pause per line, the build's own `dur`): `node tools/check-night-shift.mjs` prints the shortest, the average (every open choice
-equally likely) and the longest.
+`story/night-shift.json`: 228 scenes, about 1,290 spoken lines, 12 endings. The first act (18:45 to 22:05) is the slice
+(`story/night-shift-slice-notes.md`, kept as history), moved into the engine's format: the engine has no conditional lines, so a line
+that read a flag now sits in a short scene that follows the choice. Playing time (words at 150 a minute plus a pause per line, the
+build's own `dur`; the voices will move it, usually longer): `node tools/check-night-shift.mjs` prints the shortest, the average (every
+open choice equally likely) and the longest. Now: shortest 38 minutes, average 44, longest 53.
 
 **Acts.** 1: handover, the wall, the first tour, the sign-in, Marisol and the badge, the first log entry (to 22:05). 2: Terrell's last
-hour, the first time alone on the wall, the night-line call, the sandwich and the index cards, the late list (to 01:35). 3: the wedge
-on 31, the laptop, Marisol's coffee and the water on 44, Dee up to "the roof door", the stuck car, the Chairman, camera nine, the
-panel, the box for fifty-eight, the humming, the man on the ledge, Dee's page and the twelfth floor (to 05:30). 4: the log
-review, the closing line, the handover ritual, the day supervisor's reading (one of six), the ending.
+hour, a man behind a badge, the first time alone on the wall, Dee covering tile five, the night-line call, the sandwich and the index
+cards, the late list (to 01:35). 3: the wedge on 31, the laptop, Marisol's coffee and the water on 44, Dee up to the roof door, the lights
+dipping, the stuck car, the Chairman, camera nine, the panel, Dev signing out, the box for fifty-eight, the humming, the man on the ledge,
+Dee's page and the twelfth floor (to 05:30). 4: Marisol's plate, the log review, the closing line, the handover ritual, the day supervisor's
+reading (one of six), the ending.
 
-**The state model as built** (smaller than section 6, so the build can prove it: `npm run story` explores every state).
-Meters: `trainer_trust` 0-3 (starts 1), `trainer_warmth` 0-2, `building_known` 0-2, `slips` 0-2 (rule breaks and radio misses; the
-third slip is not counted). Flags that last: `left_wall`, `lied` (cleared by a correction), `wedge_open`, `trouble_open` (cleared by
-reporting late), `noticed_notice`, `opined` (an opinion or a blank in a log entry; cleared by a rewrite). Short-lived: `asked_44`,
-`asked_sandwich`, `met_dev`, `noticed_12th`. A DAR (log) moment has up to four wordings: fact, opinion ("seemed", "probably"), blank,
-and where it tempts, a lie; the choice's `log` is the entry in the shift log.
+**The state model as built** (smaller than section 6, so the build can prove it: `npm run story` explores every state, about 250,000, under
+`stateCap` 300,000). Meters: `trainer_trust` 0-3 (starts 1), `trainer_warmth` 0-2, `building_known` 0-2 (what the player noticed:
+almost all of it in the dead zone, plus the drawer and the list), `slips` 0-2 (rule breaks and radio misses; the third slip is not counted).
+Flags that last: `left_wall` (set when the player steps off the wall, cleared by telling Dee first), `lied` (cleared by a correction),
+`wedge_open`, `trouble_open` (cleared by reporting late), `noticed_notice`, `opined` (an opinion or a blank in a log entry; cleared by a
+rewrite), `read_p11` (read page eleven at the handover, 18:52: it is why "Call Ms. Adler" is on the panel's page at 03:58; without it the
+player is told by Mr. Okafor). Short-lived: `asked_44`, `asked_sandwich`, `met_dev`, `noticed_12th`, `lobby_clear` (watched the lobby at
+01:50, so the bench can be called clear when the laptop turns up). A DAR (log) moment has up to four wordings: fact, opinion ("seemed",
+"probably"), blank, and where it tempts, a lie; the choice's `log` is the entry in the shift log.
+
+**Every choice changes something.** A button with other buttons beside it either moves a flag or a meter, or it goes straight to an ending.
+The curious ones in the first act spend trust or warmth (the latch, the lock, the compactor, the roof), none of them building knowledge.
+`tools/check-night-shift.mjs` fails the build on a decision that changes neither in any state it can be made in.
 
 **Axes at 06:30.** C: *failed* if `left_wall`, `lied`, `wedge_open` or `trouble_open`; *solid* if none of those, no `opined`, and at
 most one slip; else *shaky*. T: *close* if trust 3 and warmth 2; *cold* if trust 1 or less; else *correct*. B: *learned* if
-`building_known` is 2. The morning picks one of six readings by C (solid, opinions, rule slips, wall left, life safety left, a lie),
-then the ending:
+`building_known` is 2. The morning picks one of six readings by C (solid, opinions, rule slips, wall left, life safety left, a lie), then
+the ending. A player who read the drawer notice has two buttons in the solid reading (tell Mr. Okafor, or say nothing); the others have one.
 
 | Ending | C | T | Also |
 | --- | --- | --- | --- |
-| Clean report | solid | correct | |
+| Clean report | solid | correct (trust 2, or trust 3 and warmth under 2) | said nothing, or no notice |
 | Someone to leave it to | solid | close | read the notice, said nothing, learned |
-| She knew | solid | close | told Okafor about the notice, learned |
-| Eat something | solid | close | no notice (or not learned) |
-| By the book, alone | solid | cold | |
+| She knew | solid | close | told Okafor about the notice |
+| Eat something | solid | close | no notice, or said nothing and not learned |
+| By the book, alone | solid | cold | said nothing, or no notice |
+| Under review | solid | cold or correct | told Okafor about the notice |
 | The friendly one | shaky | close | |
 | Opinions | shaky | correct or cold | `opined` |
 | Noted | shaky | correct or cold | slips only |
-| The four hours | failed | close or correct | `left_wall` |
+| Four minutes | failed | close or correct | `left_wall` |
 | The wedge | failed | close or correct | `wedge_open` or `trouble_open` |
 | Written up | failed | cold, or a lie | |
 
-**Dee's layers.** 1 the shell (always). 2 the pencil (`sign-why`, trust 2). 3 the four hours (`four-hours`: warmth 2, never left the
-wall, sat with her at 02:55). 4 twelve (`twelve`: trust 3, checked her page against the door sensor, then asked). 5 the spring
-(the notice in the shelf drawer; telling Okafor is the choice in the morning).
+**Dee's layers.** See section 3: 1 the shell (always), 2 the pencil (`sign-why`), 3 the four hours (`four-hours`), 4 twelve (`twelve`, then
+`twelve-sat` or `twelve-wall`), 5 the spring (`drawer-notice`, then the morning). Every one is reached by some way, and one way (about 77
+choices) meets all five and ends on "Someone to leave it to".
 
 **Trust against the post orders.** Every incident has Dee's way and the binder's: the badge on 44 (vouch or call), the wedge (she
 says hello to the smoker, the book calls the supervisor), the panel (she presses silence, the book calls the director), the box
 (she signs and tags, the book refuses), the man on the ledge (twenty minutes, the book says trespass). Her way raises trust; the
-book's way raises nothing and costs nothing; the endings cost both ways.
+book's way raises nothing or costs a little, and the endings cost both ways.
 
 **Pierce Hawkes** speaks in `coat-lobby` (one line) and, if the player stands and asks him to sign in, `pierce-signin` (one more).
 Nothing in the night says B3, the vat or the creature (`unspoken` in the data; the build and the checker both refuse them).
 
 ## Waiting for J
 
-- The title, tagline and logline (fix the camera count on the card: nine).
-- The tree itself (this doc defines the world, characters, state and endings, not the pages).
+- The title, tagline and logline. The tagline is now *Say what you see.* (the old one is a banned phrase); the logline says nine cameras.
+- The tree itself is done: J has not read it. The script is final for voicing; changes after this cost new recordings.
 - The look (a grounded live-action look? the same game-render look as The Water Road?) and the narrator.
 - Whether Pierce's cameo uses PH Origins' voice as written.
-- The media budget (see the GPU estimate in the PR/summary).
+- The media budget: about 1,200 voiced lines (the estimate is in the PR/summary), the camera stills and 12 end cards.
 
-Everything here stays a draft until J approves it. No media was made.
+Everything here stays a draft until J approves it.
 
 ## Voices as made (2026-10-25)
 
