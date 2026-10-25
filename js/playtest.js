@@ -4189,6 +4189,120 @@ async function nightAudioBetween(t, st) {
     longer): a new visitor's card (image, logline, Not started, nothing about B3, the vat or the creature), Started once
     opened, Completed with Start Over at an ending (a seeded run two choices short of it: setup shortcut), and Start
     Over keeping Completed. Options: {"story":"<id>"} (default night-shift). */
+/* ---------------- Night Shift: lines over a radio, walkie, intercom or phone sound like it (story doc "Treated lines") ---------------- */
+
+/** How much of a recording's energy sits above 4 kHz, in dB under its total (a band-limited line is far under). */
+async function highBandDb(url) {
+  const buf = await (await fetch(url)).arrayBuffer();
+  const Ctx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  const probe = new (window.AudioContext || window.webkitAudioContext)();
+  const audio = await probe.decodeAudioData(buf);
+  probe.close && probe.close().catch(() => {});
+  const d = audio.getChannelData(0);
+  let total = 0;
+  for (let i = 0; i < d.length; i++) total += d[i] * d[i];
+  const off = new Ctx(1, audio.length, audio.sampleRate);
+  const src = off.createBufferSource();
+  src.buffer = audio;
+  let node = src;
+  for (let k = 0; k < 2; k++) { const hp = off.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 4000; node.connect(hp); node = hp; }
+  node.connect(off.destination);
+  src.start();
+  const high = (await off.startRendering()).getChannelData(0);
+  let hi = 0;
+  for (let i = 0; i < high.length; i++) hi += high[i] * high[i];
+  return { db: 10 * Math.log10((hi + 1e-12) / (total + 1e-12)), rms: 10 * Math.log10(total / Math.max(1, d.length) + 1e-12) };
+}
+
+async function nightTreatmentRun(options, t) {
+  const id = (options && options.story) || "night-shift";
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  const st = story(id);
+  if (!st || !isConsole(st)) throw new Error(`${id} is not a console story`);
+  await passPrompt(t);
+  clearProgress();
+  try {
+    // 1. The data: every line the scene puts on a radio, walkie, intercom or phone has a treatment, and the lock says it was made.
+    t.scene(`${st.title}: every radio, walkie, intercom and phone line has a treatment`);
+    const data = await (await fetch("/story/night-shift.json")).json();
+    const lock = await (await fetch("/hawkes.assets.lock.json")).json();
+    const onAir = /\b(?:over|on)(?: the| your)? (?:radio|walkie|intercom)\b|speakerphone|phone-flat/i;
+    const notAir = /\b(?:off|not) the radio\b/i;
+    const all = [];
+    for (const sc of data.scenes) sc.lines.forEach((l, i) => all.push({ scene: sc.id, folder: sc.folder, n: i + 1, speaker: l.speaker, perform: l.perform || "", treatment: l.treatment || (data.speakers[l.speaker] || {}).treatment || "none" }));
+    const treated = all.filter((l) => l.treatment !== "none");
+    const bad = all.filter((l) => l.treatment !== "none" && !["radio", "walkie", "intercom", "phone"].includes(l.treatment));
+    bad.forEach((l) => t.problem("bug", `${l.scene}#${l.n}: unknown treatment "${l.treatment}"`));
+    const missed = all.filter((l) => l.speaker !== "narrator" && onAir.test(l.perform) && !notAir.test(l.perform) && l.treatment === "none");
+    missed.forEach((l) => t.problem("bug", `${l.scene}#${l.n} (${l.speaker}, "${l.perform}") is on the air but has no treatment`));
+    const kinds = {};
+    treated.forEach((l) => (kinds[l.treatment] = (kinds[l.treatment] || 0) + 1));
+    t.metric("treatedLines", treated.length);
+    t.event("criterion", `${treated.length} lines carry a treatment (${Object.entries(kinds).map(([k, n]) => `${k} ${n}`).join(", ")}); ${missed.length} lines whose performance says radio, walkie, intercom or phone are untreated`);
+    const stale = treated.filter((l) => (lock[`night-shift-${l.scene}-line-${l.n}`] || {}).treatment !== l.treatment);
+    stale.slice(0, 5).forEach((l) => t.problem("bug", `${l.scene}#${l.n}: the lock says "${(lock[`night-shift-${l.scene}-line-${l.n}`] || {}).treatment || "none"}", the data says ${l.treatment} (node tools/make-audio.mjs night-shift --treat)`));
+    if (stale.length > 5) t.problem("bug", `${stale.length} treated lines are out of date in the lock`);
+    t.progress(0.15);
+
+    // 2. The recordings: a treated line has next to nothing above 4 kHz; the same speakers' clean lines do. Loudness stays even.
+    t.scene(`${st.title}: the treated recordings are band-limited and as loud as the rest`);
+    const file = (l) => `/night-shift/${l.folder}/media/line-${l.n}.mp3`;
+    const bandOf = {};
+    const untreatedPick = all.filter((l) => l.treatment === "none" && ["dee", "terrell", "marisol", "okafor", "adler"].includes(l.speaker) && l.n % 4 === 0).slice(0, 40);
+    const high = { clean: [], treated: [] };
+    const rms = { clean: [], treated: [] };
+    for (const [kind, ls] of [["clean", untreatedPick], ["treated", treated]]) {
+      for (const l of ls) {
+        try {
+          const r = await highBandDb(file(l));
+          high[kind].push(r.db);
+          rms[kind].push(r.rms);
+          if (kind === "treated") (bandOf[l.treatment] = bandOf[l.treatment] || []).push(r.db);
+          if (kind === "treated" && r.db > -14) t.problem("bug", `${l.scene}#${l.n} (${l.treatment}) still has ${r.db.toFixed(1)} dB of its energy above 4 kHz, a clean voice's: not band-limited`);
+        } catch (e) { t.problem("bug", `${l.scene}#${l.n}: ${file(l)} doesn't load or decode (${e && e.message})`); }
+      }
+    }
+    const mean = (a) => a.reduce((x, y) => x + y, 0) / Math.max(1, a.length);
+    Object.entries(bandOf).forEach(([k, a]) => t.event("band", `${k}: ${mean(a).toFixed(1)} dB above 4 kHz under the whole (worst ${Math.max(...a).toFixed(1)}), ${a.length} lines`));
+    t.event("band", `clean voices (${high.clean.length} lines): ${mean(high.clean).toFixed(1)} dB above 4 kHz under the whole`);
+    t.metric("treatedHighBandDb", Math.round(mean(high.treated) * 10) / 10);
+    t.metric("cleanHighBandDb", Math.round(mean(high.clean) * 10) / 10);
+    if (mean(high.clean) - mean(high.treated) < 6) t.problem("bug", `treated lines have ${mean(high.treated).toFixed(1)} dB above 4 kHz, clean ones ${mean(high.clean).toFixed(1)}: less than 6 dB apart, the treatment isn't heard`);
+    const gap = Math.abs(mean(rms.treated) - mean(rms.clean));
+    t.metric("treatedLoudnessGapDb", Math.round(gap * 10) / 10);
+    t.event("criterion", `treated lines average ${mean(rms.treated).toFixed(1)} dB RMS, clean ones ${mean(rms.clean).toFixed(1)} (${gap.toFixed(1)} dB apart); the data side holds LUFS in -19.1 to -14.6`);
+    if (gap > 3.5) t.problem("bug", `treated lines are ${gap.toFixed(1)} dB from the clean ones in RMS, over 3.5`);
+    t.progress(0.4);
+
+    // 3. Played: one scene per treatment, entered by a real press from a seeded run at its parent; the line's own (treated) file plays.
+    t.scene(`${st.title}: a treated line is heard`);
+    const x = consoleExplore(st);
+    await consoleOpen(t, st);
+    for (const kind of ["radio", "walkie", "phone", "intercom"]) {
+      const cand = treated.filter((l) => l.treatment === kind && x.scenes[l.scene]).sort((a, b) => a.n - b.n || x.scenes[a.scene].picks.length - x.scenes[b.scene].picks.length)[0];
+      if (!cand) { t.problem("bug", `no reachable ${kind} line to play`); continue; }
+      const way = x.scenes[cand.scene];
+      const where = `${st.id}: ${way.path.join(" > ")}`;
+      const m = await consoleSeedAt(t, st, way.picks.slice(0, -1), null);
+      await consoleChoose(t, st, m, way.picks[way.picks.length - 1], document, where, null, { hear: false });
+      const api = window.iltvConsole;
+      const ok = await waitFor(() => { const l = api.lines(); return l && l.playing === cand.n - 1; }, 70000);
+      if (!ok) { t.problem("bug", `${cand.scene}: line ${cand.n} (${kind}) never played`); continue; }
+      await sleep(900);
+      const a = api.audio();
+      const want = st.scenes[cand.scene].lines[cand.n - 1].file;
+      if (!(want && a.voice && a.voice.src.endsWith(want))) t.problem("bug", `${cand.scene} line ${cand.n}: the voice element plays ${a.voice && a.voice.src}, not ${want}`);
+      else if (a.voice.paused || a.voice.muted) t.problem("warning", `${cand.scene} line ${cand.n}: the recording is ${a.voice.paused ? "paused" : "muted"} (autoplay blocked?)`);
+      else t.event("treated-line", `${cand.scene} line ${cand.n} (${cand.speaker}, ${kind}) plays ${want}, ${a.voice.time.toFixed(1)} s in`);
+    }
+    t.progress(1);
+  } finally {
+    await sleep(300);
+    await toLanding(t).catch(() => {});
+  }
+}
+
 async function nightCardRun(options, t) {
   const id = (options && options.story) || "night-shift";
   rememberProgress();
@@ -4254,6 +4368,13 @@ installPlaytest({
       seconds: 90,
       tags: ["full"],
       description: "The card criteria alone, short enough to watch (the `stories` scenario covers every story). Waits for the landing page's splash, clears the saved places, and with the home page loaded in a frame checks every card says Not started. Night Shift's card follows The Water Road, has a logline and an image that loads, and says nothing about B3, the vat or the creature. Opens it from its card (a real press, then its Tap to play): its wall, first lines and choices, its card then says Started with one scene's percent. Reaching an ending (a seeded run two choices short of the shortest way: setup shortcut, event seeded-run; the last choices are real presses) makes the card say Completed with Start Over, the percent following the scenes seen; Start Over opens the story at its first scene and the card still says Completed and Start Over. Options: {\"story\":\"<id>\"}.",
+    },
+    {
+      id: "night-shift-treatment",
+      title: "Night Shift's radio, walkie, intercom and phone lines are band-limited, treated lines are in the lock and as loud as the rest, and a treated line is heard",
+      seconds: 150,
+      tags: ["full"],
+      description: "Reads story/night-shift.json: every line whose performance says over the radio, on the walkie, over the intercom or a speakerphone has a treatment (radio, walkie, intercom, phone), and hawkes.assets.lock.json carries the same treatment for it. Decodes every treated recording in the page and checks it has next to nothing above 4 kHz (at least 6 dB less than clean voices, none within 14 dB of its total) and that treated lines are within 3.5 dB RMS of clean ones. Then for each treatment plays one scene with such a line, entered by a real press from a seeded run at its parent (setup shortcut, event seeded-run), and checks the voice element plays that line's own recording. Options: {\"story\":\"<id>\"}.",
     },
     {
       id: "night-shift-audio",
@@ -4349,6 +4470,7 @@ installPlaytest({
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
+      else if (id === "night-shift-treatment") await nightTreatmentRun(options, t);
       else if (id === "night-shift-gaps") await nightGapsRun(options, t);
       else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);

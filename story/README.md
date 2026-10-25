@@ -110,11 +110,31 @@ opens), `lines`, `log`, `choices`, or `ending` (a string, no choices; reaching o
   is a recording to use (the demo's silent placeholder). Without `file`, the player uses
   `<id>/<folder>/media/line-<n>.mp3` once it is made, and until then reads the line on a timer.
 - `log`: the line this scene writes in the shift log when the player reaches it.
+- `treatment` (on a line, or on a speaker as the default for all their lines; a line's own wins): how the line sounds
+  when it is spoken over a **radio**, **walkie**, **intercom** or **phone**, or `none` (the default). It is post-processing
+  of the recording, never a new voice (the `perform` tags and the voice design are unchanged, so the recipe is too):
+  `radio` and `walkie` are band-limited (350 to 3200 Hz, 450 to 2800 Hz), compressed, a touch of noise and end on a short
+  squelch burst (the walkie harder and a little overdriven); `intercom` is tinny (500 to 2600 Hz) with a faint 120 Hz hum
+  and no squelch; `phone` is 300 to 3400 Hz, lightly compressed, with a hint of noise. Treated lines are set back to the
+  voices' -16 LUFS (the window is -19.1 to -14.6). Mark a line when the scene has it on the air: the `perform` says "over the
+  radio", "on the walkie", "over the intercom", the narrator has the night line ring, or the voice is a tile's speaker.
+  A person in the room is `none` even in a scene that has a radio in it. `tools/make-audio.mjs` does the work (below).
 - a **choice**: `say` (the words on the button), `next`, and any of `requires` (flags that must be set), `forbids`
   (flags that must not be), `meters` (`{ name: { min, max } }` ranges the meters must be in), `set` / `clear` (flags),
   `add` (`{ meter: n }`, kept inside its range), `log` (the shift log line for having done it; without one the log
   shows the choice's words) and `cosmetic` (a reason: this choice does nothing on purpose; at most two on one run).
   A choice whose conditions fail is **not on the page**.
+
+### Treated lines (radio, walkie, intercom, phone)
+
+`node tools/make-audio.mjs <story> --treat` puts every voice line through its `treatment` with ffmpeg (`--mix`, `--ingest`
+and `--reuse` do it for the lines they touch; `--treat --check` lists the lines out of date and exits 1 if any). The clean
+recording of a treated line is kept in `<story>/media/clean/<scene folder>-line-N.mp3` and the played `line-N.mp3` is made
+from it, so no voice is made again and a treatment can be changed or taken off at any time. The lock entry
+(`hawkes.assets.lock.json`) of a treated line adds `treatment` and `clean` (the clean file's hash): change a line's
+treatment in the data and only that line is stale and redone. Afterwards run `--dur` (the squelch tail adds a tenth of a
+second) and `npm run story`. `--level` brings any untreated voice outside -18.9 to -14.8 LUFS to -16. The treatments and
+their settings are `TREATMENTS` in the tool.
 
 ### What the player does
 

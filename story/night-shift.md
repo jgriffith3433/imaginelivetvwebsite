@@ -604,7 +604,8 @@ of line, candidate 1 of 3 kept; picked by the description, not by ear, so J may 
 Terrell `idZn18yShmcD0ePsg1A5`, Marisol `Iok0Qd1zNVnFs3DULx6Z`, Dev `zcQcgx11ALPbj0o2PFsw`, Ms. Adler
 `QJ9eYeuXwMsC2KElXT1P`, the courier `cOJkIUDUojZtwaJSfMzy`, the man in the vestibule `YSWR6wrmdI2sOa3gtoye`, Mr. Brandt
 `ZyVqOeng5wFOY7UfrjR9`, Pierce Hawkes `ZthjuvLPty3kTMaNKVKb` (PH Origins' Jackson voice, unmodified). The radio, walkie,
-intercom and phone treatments in the descriptions are not applied yet (the recordings are clean).
+intercom and phone treatments in the descriptions are applied after the fact (2026-10-25): 137 lines carry a `treatment`
+(52 radio, 37 walkie, 33 phone, 15 intercom; `story/README.md`, "Treated lines"), made from the clean recordings in `night-shift/media/clean/`.
 All 1,288 lines are recorded and mixed (`node tools/make-audio.mjs night-shift --mix`, `--dur`); the 6 music stings are the only unmade audio.
 
 ## Non-voice audio as made (2026-10-25)
