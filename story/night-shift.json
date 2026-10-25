@@ -1,0 +1,438 @@
+{
+  "title": "Night Shift",
+  "tagline": "Observe and report.",
+  "doc": "story/night-shift.md",
+  "format": "state-console v0 (slice): see story/night-shift-slice-notes.md. Text only, no media.",
+  "slice": "handover to the first log-wording decision, 18:45 to 22:05",
+  "start": "handover",
+  "state": {
+    "meters": {
+      "trainer_trust": { "min": 0, "max": 5, "start": 1 },
+      "trainer_warmth": { "min": 0, "max": 5, "start": 0 },
+      "post_orders": { "min": 0, "max": 5, "start": 1 },
+      "rule_broken": { "min": 0, "max": 9, "start": 0 },
+      "radio_missed": { "min": 0, "max": 9, "start": 0 },
+      "building_known": { "min": 0, "max": 6, "start": 0 },
+      "log_style": { "min": 0, "max": 5, "start": 0 },
+      "log_lies": { "min": 0, "max": 9, "start": 0 }
+    },
+    "logs": {
+      "log_e1": ["none", "fact", "opinion", "omit", "lie"]
+    },
+    "flags": {
+      "noticed_leak": "model",
+      "noticed_clock_fast": "model",
+      "vouched_cleaner": "model",
+      "asked_44": "slice",
+      "asked_thursday": "slice",
+      "initialed_unread": "slice",
+      "mocked_habit": "slice",
+      "took_her_chair": "slice",
+      "sat_good_chair": "slice",
+      "told_commute": "slice",
+      "asked_sandwich": "slice",
+      "asked_game": "slice",
+      "named_tiles": "slice",
+      "asked_normal": "slice",
+      "said_dead": "slice",
+      "asked_cam9": "slice",
+      "asked_roof": "slice",
+      "wrote_pencil": "slice",
+      "wrote_pen": "slice",
+      "asked_pencil": "slice",
+      "asked_dee_right": "slice",
+      "kept_eyes_on_44": "slice",
+      "called_super_e1": "slice",
+      "told_marisol_tomorrow": "slice",
+      "passed_it_to_dee": "slice",
+      "asked_papers": "slice",
+      "read_name": "slice",
+      "answered_late": "slice"
+    },
+    "flags_read_later": ["noticed_leak", "noticed_clock_fast", "vouched_cleaner", "asked_cam9", "asked_roof", "kept_eyes_on_44", "called_super_e1", "told_marisol_tomorrow", "read_name", "answered_late", "wrote_pen"]
+  },
+  "unspoken": ["restricted", "chimera", "creature", "experiment"],
+  "characters": {
+    "dee": { "name": "Dee", "sheet": "story/night-shift.md#dolores-dee-reyes-the-trainer-the-heart-of-the-story" },
+    "okafor": { "name": "Mr. Okafor", "sheet": "story/night-shift.md#mr-chidi-okafor-day-supervisor" },
+    "terrell": { "name": "Terrell", "sheet": "story/night-shift.md#terrell-banks-lobby--desk-officer" },
+    "marisol": { "name": "Marisol", "sheet": "story/night-shift.md#marisol-quintero-cleaning-crew-lead" },
+    "narrator": { "name": "Narrator", "note": "the log's voice: plain, present tense, second person" }
+  },
+  "scenes": [
+    {
+      "id": "handover",
+      "time": "18:45",
+      "wall_clock": "18:47",
+      "text": "Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath.",
+      "ambience": "control-room-hum, far-off lobby doors",
+      "wall": { "C1": "lobby, day crowd thinning, desk lit", "C2": "vestibule, empty, door swinging shut", "C3": "dock, rollup door down, one hand truck", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, car doors closing", "C6": "floor 44 corridor, cart parked", "C7": "58 reception, low light, glass doors shut", "C8": "roof door, shut, sign", "C9": "fire panel repeater, floor 2, steady" },
+      "lines": [
+        { "who": "okafor", "text": "So. Let's walk through the log. I have a train.", "dir": "polite, one arm already in his coat", "sfx": "tablet-tap" },
+        { "who": "okafor", "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.", "dir": "reading flat off the screen" },
+        { "who": "okafor", "text": "Forty-four. Water in the closet. Monitored.", "dir": "a small stop before 'monitored'" },
+        { "who": "dee", "text": "Four.", "dir": "to the charger, not turning around", "sfx": "radio-set-clicks-into-charger" },
+        { "who": "okafor", "text": "Dolores. You can say hello.", "dir": "patient" },
+        { "who": "dee", "text": "Hello. Sit anywhere that isn't mine.", "dir": "dry, still counting" },
+        { "who": "dee", "text": "Mm.", "dir": "a sound at the charger, no more", "sfx": "radio-set-clicks-into-charger" },
+        { "who": "okafor", "text": "Dolores signs your hours. The binder's on the shelf, next to the…", "dir": "pointing, cut off" },
+        { "who": "dee", "text": "Extinguisher. Mm-hm. Your train, Okafor.", "dir": "not unkind, she has heard this speech before" }
+      ],
+      "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer.",
+      "choices": [
+        { "text": "Ask about forty-four", "effects": { "set": { "asked_44": true }, "add": { "post_orders": 1 } }, "to": "the-binder" },
+        { "text": "Ask about Thursday", "effects": { "set": { "asked_thursday": true }, "add": { "post_orders": 1 } }, "to": "the-binder" }
+      ]
+    },
+    {
+      "id": "the-binder",
+      "time": "18:52",
+      "wall_clock": "18:54",
+      "text": "Mr. Okafor turns the tablet toward you. A box for your initials sits under the last line of the day.",
+      "ambience": "control-room-hum, coat zipper",
+      "wall": { "C1": "lobby, two people at the turnstiles", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, cart parked", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "okafor", "text": "Initial here. That says you've seen the day's log.", "dir": "tablet held out, a little too long" },
+        { "who": "okafor", "text": "Forty-four is the third line. Water was dry by four.", "if": "asked_44", "dir": "answering a question he was glad to get" },
+        { "who": "okafor", "text": "Thursday. Ten a.m. Not your shift.", "if": "asked_thursday", "dir": "a nod to himself" },
+        { "who": "okafor", "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.", "dir": "correcting himself as he goes" },
+        { "who": "dee", "text": "Read it.", "dir": "from the charger; one word, not a suggestion" },
+        { "who": "okafor", "text": "It's two pages.", "dir": "mild" },
+        { "who": "dee", "text": "Then it's two minutes.", "dir": "flat" },
+        { "who": "dee", "text": "Initial.", "dir": "when he doesn't move" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Read it, then initial", "effects": { "add": { "post_orders": 1 } }, "to": "okafor-out" },
+        { "text": "Initial it now", "effects": { "set": { "initialed_unread": true } }, "to": "okafor-out" }
+      ]
+    },
+    {
+      "id": "okafor-out",
+      "time": "18:58",
+      "wall_clock": "19:00",
+      "text": "Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
+      "ambience": "control-room-hum, door closing, charger beep",
+      "wall": { "C1": "lobby, day staff leaving", "C2": "vestibule, Okafor passing through", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, cart parked", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "okafor", "text": "It's customary to read it first.", "if": "initialed_unread", "dir": "from the door, tired, not angry" },
+        { "who": "dee", "text": "Mm.", "if": "initialed_unread", "dir": "less than a word" },
+        { "who": "dee", "text": "Four radios. Four on the charger when I walk in. Four when I leave.", "dir": "like reading a street sign" },
+        { "who": "dee", "text": "Doesn't matter why.", "dir": "before you can ask" },
+        { "who": "dee", "text": "Coffee's on the left. It's wrong. Don't tell me it's wrong.", "dir": "tapping the machine with one finger" },
+        { "who": "dee", "text": "Officer. You've got a name? Say it once. I'll use it when I use it.", "dir": "looking at you for the first time" }
+      ],
+      "log": "1858 hrs. Day supervisor off post. Radios 4 of 4 on charger.",
+      "choices": [
+        { "text": "Count them with her", "effects": { "add": { "trainer_trust": 1 } }, "to": "the-chairs" },
+        { "text": "Ask what she's counting", "effects": { "add": { "trainer_warmth": 1 } }, "to": "the-chairs" },
+        { "text": "Knock on the wall, grinning", "effects": { "set": { "mocked_habit": true }, "add": { "trainer_trust": -1 } }, "to": "the-chairs" }
+      ]
+    },
+    {
+      "id": "the-chairs",
+      "time": "19:00",
+      "wall_clock": "19:02",
+      "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person.",
+      "ambience": "control-room-hum, vending compressor",
+      "wall": { "C1": "lobby, nearly empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, cart parked", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "dee", "text": "Sit.", "dir": "already seated in the flat one" },
+        { "who": "dee", "text": "Knocking on it again, are we.", "if": "mocked_habit", "dir": "to the wall, not to you" },
+        { "who": "dee", "text": "No, not… That one's the good one. Take it.", "if": "!took_her_chair", "dir": "a half-gesture, then back to the wall" },
+        { "who": "dee", "text": "You're in my chair, Officer. Go on, I'll live.", "if": "took_her_chair", "dir": "deadpan, not moving" },
+        { "who": "dee", "text": "The clock's two minutes fast. Leave it.", "dir": "eyes on the wall clock" },
+        { "who": "dee", "text": "Radios. You've got one. Clip it on.", "dir": "holding the fourth one out" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Sit in the good chair", "effects": { "set": { "sat_good_chair": true } }, "to": "radio-check" },
+        { "text": "Sit in her chair", "effects": { "set": { "took_her_chair": true }, "add": { "trainer_trust": -1 } }, "to": "radio-check" },
+        { "text": "Ask about the clock", "requires": "!noticed_clock_fast", "effects": { "set": { "noticed_clock_fast": true }, "add": { "trainer_warmth": 1, "building_known": 1 } }, "to": "radio-check" }
+      ]
+    },
+    {
+      "id": "radio-check",
+      "time": "19:00",
+      "wall_clock": "19:02",
+      "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
+      "ambience": "control-room-hum, radio static",
+      "wall": { "C1": "lobby, Terrell at the desk, lifting a hand to the lens", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, cart parked", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "terrell", "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?", "dir": "bright, over the radio", "sfx": "radio-squelch" },
+        { "who": "dee", "text": "That's you.", "dir": "not looking up" },
+        { "who": "dee", "text": "Button's on the side. Side. The…", "if": "answered_late", "dir": "cut off by her own sigh" },
+        { "who": "dee", "text": "Mm. A minute late.", "if": "answered_late", "dir": "the whole verdict" },
+        { "who": "dee", "text": "Mm.", "if": "!answered_late", "dir": "the small one, the good one" }
+      ],
+      "log": "1900 hrs. Radio check, post one.",
+      "choices": [
+        { "text": "Post one. Loud and clear.", "effects": { "add": { "trainer_trust": 1 } }, "to": "small-talk" },
+        { "text": "Fumble for the button", "effects": { "set": { "answered_late": true }, "add": { "radio_missed": 1 } }, "to": "small-talk" },
+        { "text": "Hold the radio out to Dee", "effects": { "add": { "radio_missed": 1, "trainer_trust": -1 } }, "to": "small-talk" }
+      ]
+    },
+    {
+      "id": "small-talk",
+      "time": "19:15",
+      "wall_clock": "19:17",
+      "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
+      "ambience": "control-room-hum, foil, paper cup",
+      "wall": { "C1": "lobby, desk empty for a moment", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, cart parked", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "terrell", "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?", "dir": "fast, finishing the thought wrong" },
+        { "who": "dee", "text": "Terrell. Desk.", "dir": "without turning" },
+        { "who": "terrell", "text": "I'm going, I'm going. Hey, you see the game? Two points. Two. In the last…", "if": "asked_game", "dir": "backing out the door, still talking" },
+        { "who": "dee", "text": "Where do you live?", "dir": "to you, a real question, which surprises her" },
+        { "who": "dee", "text": "The seven? Mm. It stops. It always stops, right under Queensboro.", "if": "told_commute", "dir": "like she's been stuck there" },
+        { "who": "dee", "text": "Pepper and egg. Half past midnight. Don't ask for a bite.", "if": "asked_sandwich", "dir": "closing the foil" },
+        { "who": "dee", "text": "Ray used to… Forget it. Drink the coffee.", "if": "asked_sandwich", "dir": "trails off, picks up the cup instead" },
+        { "who": "dee", "text": "Back's all right? It's the only thing in here that is.", "if": "sat_good_chair", "dir": "a dry look at the chair" },
+        { "who": "dee", "text": "It's wrong. I said not to say.", "dir": "hearing you sip it" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Tell her the commute", "effects": { "set": { "told_commute": true }, "add": { "trainer_warmth": 1 } }, "to": "the-wall-one" },
+        { "text": "Ask about the sandwich", "effects": { "set": { "asked_sandwich": true }, "add": { "trainer_warmth": 1 } }, "to": "the-wall-one" },
+        { "text": "Ask Terrell about the game", "effects": { "set": { "asked_game": true } }, "to": "the-wall-one" }
+      ]
+    },
+    {
+      "id": "the-wall-one",
+      "time": "19:25",
+      "wall_clock": "19:27",
+      "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock.",
+      "ambience": "control-room-hum, monitor fans",
+      "wall": { "C1": "lobby, empty bench, desk light", "C2": "vestibule, glass fogged at the corners", "C3": "dock, compactor, service door", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, cart parked", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "dee", "text": "One. Lobby. Two. Vestibule. Three, dock.", "dir": "pencil moving left to right, no hurry" },
+        { "who": "dee", "text": "Say what you see. Not what it is.", "dir": "short" },
+        { "who": "dee", "text": "Good. Next.", "if": "named_tiles", "dir": "approving the way a stamp does" },
+        { "who": "dee", "text": "Nothing's normal. Same lobby all night. That's normal.", "if": "asked_normal", "dir": "a small shrug in the voice" },
+        { "who": "dee", "text": "Dead. Mm. That's the idea.", "if": "said_dead", "dir": "half-amused, not warm" },
+        { "who": "dee", "text": "Look at it till it's boring. Then look again.", "dir": "tapping the glass of tile two with the pencil" },
+        { "who": "dee", "text": "Mm-hm. Next.", "dir": "before you've finished the sentence" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Name each tile", "effects": { "set": { "named_tiles": true }, "add": { "trainer_trust": 1 } }, "to": "the-wall-two" },
+        { "text": "Ask what normal looks like", "effects": { "set": { "asked_normal": true }, "add": { "post_orders": 1 } }, "to": "the-wall-two" },
+        { "text": "Say it all looks dead", "effects": { "set": { "said_dead": true } }, "to": "the-wall-two" }
+      ]
+    },
+    {
+      "id": "the-wall-two",
+      "time": "19:35",
+      "wall_clock": "19:37",
+      "text": "The second row: a stairwell landing on thirty-one, the elevator lobby, a corridor on forty-four. Then the chairman's glass doors. The roof. A cabinet on two.",
+      "ambience": "control-room-hum, a monitor ticks",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut, painted 31", "C5": "elevator lobby 31, a plant, four cars", "C6": "floor 44 corridor, closet door, dark floor at the sill", "C7": "58 reception, glass doors, low light", "C8": "roof door, push bar, sign", "C9": "cabinet and fire panel repeater, floor 2, steady" },
+      "lines": [
+        { "who": "dee", "text": "Four. Five. Six.", "dir": "the pencil sliding down" },
+        { "who": "dee", "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.", "dir": "a pause long enough to be a comment" },
+        { "who": "dee", "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.", "dir": "the pencil stops on the last tile" },
+        { "who": "dee", "text": "Nine never moves. If it moves, say.", "if": "asked_cam9", "dir": "slower, close to a rule" },
+        { "who": "dee", "text": "Roof door. Eight. I do that one at three. Alone.", "if": "asked_roof", "dir": "too quickly, then back to the wall" },
+        { "who": "dee", "text": "That's the wall. You've seen it. Now you've seen it.", "dir": "pencil behind her ear" }
+      ],
+      "log": "1935 hrs. Wall: nine feeds on two monitors, all normal.",
+      "choices": [
+        { "text": "Ask about camera nine", "effects": { "set": { "asked_cam9": true }, "add": { "building_known": 1 } }, "to": "the-sign-in" },
+        { "text": "Ask about the roof door", "effects": { "set": { "asked_roof": true } }, "to": "the-sign-in" },
+        { "text": "Ask about the clock", "requires": "!noticed_clock_fast", "effects": { "set": { "noticed_clock_fast": true }, "add": { "trainer_warmth": 1, "building_known": 1 } }, "to": "the-sign-in" }
+      ]
+    },
+    {
+      "id": "the-sign-in",
+      "time": "20:10",
+      "wall_clock": "20:12",
+      "text": "You walked the stairwells, the dock, the roof door. Back at the lobby desk, Dolores lays out the visitor sheet and puts a pen and a pencil beside it.",
+      "ambience": "lobby, marble, a revolving door turning once",
+      "wall": { "C1": "lobby, Dolores and you at the desk", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, cart parked, light under the closet door", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "dee", "text": "Name. Company. Who they're seeing. Floor. In. Out.", "dir": "tapping each column" },
+        { "who": "dee", "text": "ID, you look at it. Look. Not glance.", "dir": "flat" },
+        { "who": "dee", "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.", "dir": "like a recipe she has said a thousand times" },
+        { "who": "dee", "text": "However nice.", "dir": "a beat, one eyebrow" },
+        { "who": "dee", "text": "Pen's for the sheet. Pencil's for… Pick one.", "dir": "holding both out" },
+        { "who": "dee", "text": "Once it's ink, it's true. I write it in pencil first.", "if": "asked_pencil", "dir": "gives it up like a coin" },
+        { "who": "dee", "text": "Mm. Good.", "if": "wrote_pencil", "dir": "taking the pen back" }
+      ],
+      "log": "2010 hrs. Tour: stairwells A, B, C, dock, roof door. No incident. Visitor sheet reviewed with D. Reyes.",
+      "choices": [
+        { "text": "Take the pencil", "effects": { "set": { "wrote_pencil": true }, "add": { "trainer_trust": 1 } }, "to": "marisol-calls" },
+        { "text": "Take the pen", "effects": { "set": { "wrote_pen": true } }, "to": "marisol-calls" },
+        { "text": "Ask why the pencil", "requires": "trainer_trust>=2", "effects": { "set": { "asked_pencil": true, "wrote_pencil": true }, "add": { "trainer_trust": 1 } }, "to": "marisol-calls" }
+      ]
+    },
+    {
+      "id": "marisol-calls",
+      "time": "21:30",
+      "wall_clock": "21:32",
+      "enter": { "set": { "noticed_leak": true }, "add": { "building_known": 1 } },
+      "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+      "ambience": "control-room-hum, walkie static, a vacuum far off",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, cart with bags", "C6": "floor 44 corridor, Marisol and a young man at the badge reader, closet door behind", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "marisol", "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.", "dir": "fast, warm, a little breathless", "sfx": "walkie-squelch" },
+        { "who": "marisol", "text": "And forty-four, the closet. Wet. *Wet.* You hear me?", "dir": "talking over her own sentence" },
+        { "who": "dee", "text": "Forty-four. You asked about forty-four.", "if": "asked_44", "dir": "to you, dry, a small nod" },
+        { "who": "dee", "text": "Check the list.", "dir": "quiet, hands in her lap" },
+        { "who": "dee", "text": "Mm-hm. I know. I know what the book says.", "dir": "cutting you off before the rule" },
+        { "who": "marisol", "text": "Tell your boss nothing. Tell him tomorrow. Okay?", "dir": "walkie held too close to her mouth" },
+        { "who": "dee", "text": "What's your call, Officer?", "dir": "she doesn't look away from the wall" }
+      ],
+      "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+      "choices": [
+        { "text": "Let him in", "effects": { "set": { "vouched_cleaner": true }, "add": { "rule_broken": 1, "trainer_trust": 1 } }, "to": "nephew-in" },
+        { "text": "Call Mr. Okafor's line", "effects": { "set": { "called_super_e1": true }, "add": { "post_orders": 1, "trainer_trust": -1 } }, "to": "nephew-held" },
+        { "text": "Ask for his paperwork", "effects": { "set": { "asked_papers": true }, "add": { "post_orders": 1 } }, "to": "nephew-papers" }
+      ]
+    },
+    {
+      "id": "nephew-in",
+      "time": "21:36",
+      "wall_clock": "21:38",
+      "text": "You press the release. On tile six the reader goes green. The young man looks up at the lens, then goes in after the bucket.",
+      "ambience": "door release buzz, bucket on tile",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, cart", "C6": "floor 44 corridor, young man inside, Marisol at the closet door", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "marisol", "text": "Gracias, mi amor. Bendito. I owe you a plate.", "dir": "already moving, the walkie bouncing on her hip" },
+        { "who": "dee", "text": "Mm.", "dir": "the whole sentence" },
+        { "who": "dee", "text": "I'd have done it.", "dir": "not looking at you" },
+        { "who": "dee", "text": "That's a line you write down, Officer.", "dir": "flat, the pencil already in her hand" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Ask if that was right", "effects": { "set": { "asked_dee_right": true }, "add": { "trainer_trust": 1 } }, "to": "log-in" },
+        { "text": "Watch tile six", "effects": { "set": { "kept_eyes_on_44": true }, "add": { "building_known": 1 } }, "to": "log-in" }
+      ]
+    },
+    {
+      "id": "nephew-held",
+      "time": "21:36",
+      "wall_clock": "21:38",
+      "text": "Mr. Okafor's night line rings four times. His voice is flatter on the phone, and there is a television somewhere behind it.",
+      "ambience": "phone ringing, a television in another room",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, cart", "C6": "floor 44 corridor, Marisol and the young man still at the door, arms crossed", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "okafor", "text": "So. Not on the list. Then he doesn't go in tonight.", "dir": "phone-flat, a fork against a plate" },
+        { "who": "okafor", "text": "Put it in the log. Both times. When you called, when he said.", "dir": "even" },
+        { "who": "marisol", "text": "Hijo de… *Okay.* Okay. I don't forget this.", "dir": "over the walkie, clipped, not warm", "sfx": "walkie-squelch" },
+        { "who": "dee", "text": "She'll be fine by Thursday.", "dir": "to the wall" },
+        { "who": "dee", "text": "You called it. Fine. It's the book.", "dir": "a nod, grudging, not cold" },
+        { "who": "dee", "text": "Mm-hm. I'd have… Doesn't matter.", "dir": "trailing off, reaching for the cup" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Tell Marisol: tomorrow", "effects": { "set": { "told_marisol_tomorrow": true }, "add": { "trainer_warmth": 1 } }, "to": "log-held" },
+        { "text": "Ask Dee to talk to her", "effects": { "set": { "passed_it_to_dee": true }, "add": { "trainer_trust": -1 } }, "to": "log-held" }
+      ]
+    },
+    {
+      "id": "nephew-papers",
+      "time": "21:36",
+      "wall_clock": "21:38",
+      "text": "Marisol holds a photocopy up to the lens. It is a name, a date, a stamp that doesn't read on tile six.",
+      "ambience": "walkie static, paper against glass",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, cart", "C6": "floor 44 corridor, Marisol holding a page to the lens, the young man behind her", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "marisol", "text": "I told you! Look. Look at it. Paper. He has paper.", "dir": "triumphant, loud, on the walkie" },
+        { "who": "dee", "text": "Read me the name.", "dir": "quiet, hands still" },
+        { "who": "dee", "text": "That's a name. That's not the list.", "dir": "turning the paper in her head" },
+        { "who": "dee", "text": "Mm. But it's a name.", "dir": "so low it's almost the wall talking" },
+        { "who": "marisol", "text": "So you let him wait in the hall. In the hall! Dios mío.", "dir": "overlapping, fast" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Read the name to Dee", "effects": { "set": { "read_name": true }, "add": { "trainer_trust": 1 } }, "to": "log-papers" },
+        { "text": "Hand it to Dee", "effects": { "set": { "passed_it_to_dee": true }, "add": { "trainer_trust": -1 } }, "to": "log-papers" }
+      ]
+    },
+    {
+      "id": "log-in",
+      "time": "21:55",
+      "wall_clock": "21:57",
+      "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. The cursor blinks.",
+      "ambience": "control-room-hum, a pencil rolls",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, water at the closet door sill, a mop", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "dee", "text": "Say what you did.", "dir": "plain" },
+        { "who": "dee", "text": "I said I'd have done it. I didn't say write that I did.", "if": "asked_dee_right", "dir": "answer to a question you already asked" },
+        { "who": "dee", "text": "Water. Under the closet. You were watching.", "if": "kept_eyes_on_44", "dir": "a nod at tile six" },
+        { "who": "dee", "text": "Time. Place. What you saw. What you did. Who you told.", "dir": "tapping the pencil on each word" },
+        { "who": "dee", "text": "Nothing about how he looked.", "dir": "short" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Log it exactly", "effects": { "set": { "log_e1": "fact" }, "add": { "log_style": 1, "trainer_trust": 1 }, "log": "2134 hrs. Floor 44. Crew member of M. Quintero's crew, not on after-hours list, badge failed. Admitted on M. Quintero's verbal word. Supervisor not notified." }, "to": "slice-end" },
+        { "text": "Add what you thought", "effects": { "set": { "log_e1": "opinion" }, "add": { "log_style": -1 }, "log": "2134 hrs. Floor 44. Quintero's nephew seemed harmless, probably fine. Let him in." }, "to": "slice-end" },
+        { "text": "Leave it out", "effects": { "set": { "log_e1": "omit" } }, "to": "slice-end" },
+        { "text": "Write that he badged", "requires": "vouched_cleaner", "effects": { "set": { "log_e1": "lie" }, "add": { "log_style": -2, "log_lies": 1 }, "log": "2134 hrs. Floor 44. Crew member badged in. No incident." }, "to": "slice-end" }
+      ]
+    },
+    {
+      "id": "log-held",
+      "time": "21:55",
+      "wall_clock": "21:57",
+      "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. Marisol's walkie, far off on the floor, has gone quiet.",
+      "ambience": "control-room-hum, a pencil rolls",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, the young man gone, the cart gone, water at the sill", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "dee", "text": "Say what you did.", "dir": "plain" },
+        { "who": "dee", "text": "I'd have done it differently. That doesn't go in.", "dir": "dry, to the tablet" },
+        { "who": "dee", "text": "Not 'she got mad.' When did she say it, and what did she say?", "dir": "tapping the pencil on each word" },
+        { "who": "dee", "text": "Time. Place. What you saw. Who you told.", "dir": "short" },
+        { "who": "dee", "text": "Mm. Slow. You'll want to hurry. Don't.", "dir": "while you reach for the tablet" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Log it exactly", "effects": { "set": { "log_e1": "fact" }, "add": { "log_style": 1, "trainer_trust": 1 }, "log": "2133 hrs. Floor 44. Crew member of M. Quintero's crew, not on after-hours list, badge failed. Entry refused. Supervisor night line called 2135, instructed same." }, "to": "slice-end" },
+        { "text": "Add what you thought", "effects": { "set": { "log_e1": "opinion" }, "add": { "log_style": -1 }, "log": "2133 hrs. Floor 44. Quintero was rude and upset, seemed to think the rules don't apply. Refused entry." }, "to": "slice-end" },
+        { "text": "Leave it out", "effects": { "set": { "log_e1": "omit" } }, "to": "slice-end" },
+        { "text": "Write that Okafor approved", "requires": "called_super_e1", "effects": { "set": { "log_e1": "lie" }, "add": { "log_style": -2, "log_lies": 1 }, "log": "2133 hrs. Floor 44. Crew member admitted with supervisor's approval." }, "to": "slice-end" }
+      ]
+    },
+    {
+      "id": "log-papers",
+      "time": "21:55",
+      "wall_clock": "21:57",
+      "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six.",
+      "ambience": "control-room-hum, paper settling",
+      "wall": { "C1": "lobby, empty", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, the young man sitting on the bucket, Marisol with the closet door open", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "dee", "text": "Say what happened. The paper's evidence. It's not permission.", "dir": "plain, flat on the second sentence" },
+        { "who": "dee", "text": "You read the name. Good. That's the first line.", "if": "read_name", "dir": "a nod at the page" },
+        { "who": "dee", "text": "You handed it to me. It goes in your log, not mine.", "if": "passed_it_to_dee", "dir": "pushing the pencil an inch toward you" },
+        { "who": "dee", "text": "Time. Place. What was shown. What you did.", "dir": "tapping the pencil on each word" }
+      ],
+      "log": null,
+      "choices": [
+        { "text": "Log it exactly", "effects": { "set": { "log_e1": "fact" }, "add": { "log_style": 1, "trainer_trust": 1 }, "log": "2136 hrs. Floor 44. Crew member of M. Quintero's crew presented a photocopy of paperwork. Name not on after-hours list. Entry held pending list. Copy retained at desk." }, "to": "slice-end" },
+        { "text": "Add what you thought", "effects": { "set": { "log_e1": "opinion" }, "add": { "log_style": -1 }, "log": "2136 hrs. Floor 44. Paperwork looked legit, seemed to be in order. Probably fine." }, "to": "slice-end" },
+        { "text": "Leave it out", "effects": { "set": { "log_e1": "omit" } }, "to": "slice-end" },
+        { "text": "Write that he was cleared", "requires": "asked_papers", "effects": { "set": { "log_e1": "lie" }, "add": { "log_style": -2, "log_lies": 1 }, "log": "2136 hrs. Floor 44. Crew member cleared by paperwork. No incident." }, "to": "slice-end" }
+      ]
+    },
+    {
+      "id": "slice-end",
+      "time": "22:05",
+      "wall_clock": "22:07",
+      "slice_end": true,
+      "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
+      "ambience": "control-room-hum, a pencil, the clock",
+      "wall": { "C1": "lobby, Terrell packing his bag", "C2": "vestibule, empty", "C3": "dock, empty", "C4": "stairwell C, 31, door shut", "C5": "elevator lobby 31, empty", "C6": "floor 44 corridor, a mop bucket", "C7": "58 reception, low light", "C8": "roof door, shut", "C9": "fire panel repeater, steady" },
+      "lines": [
+        { "who": "dee", "text": "Keep that one.", "if": "log_e1==fact", "dir": "reading it twice, not out loud" },
+        { "who": "dee", "text": "Facts only. What did you see?", "if": "log_e1==opinion", "dir": "reaching for the rubber on the end of the pencil" },
+        { "who": "dee", "text": "Where's forty-four?", "if": "log_e1==omit", "dir": "the tablet turned toward you" },
+        { "who": "dee", "text": "Mm.", "if": "log_e1==lie", "dir": "the tablet slowly turned face down" },
+        { "who": "dee", "text": "Officer.", "if": "log_e1==lie", "dir": "formal, from here on" },
+        { "who": "dee", "text": "Midnight. Don't forget the sandwich.", "if": "asked_sandwich", "dir": "wrapping the foil twice" },
+        { "who": "dee", "text": "Two hours to the half. Eat something.", "dir": "closing the binder" }
+      ],
+      "log": "2205 hrs. Wall: nine feeds, all normal. Incident 2134 entered.",
+      "choices": []
+    }
+  ]
+}
