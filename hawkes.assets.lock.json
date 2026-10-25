@@ -791,5 +791,293 @@
     "files": {
       "night-shift/pierce-signin/media/line-3.mp3": "8e45205252fb8f64d1ec22fe72e1858ee2c2f2144f837ed38660712e1391c662"
     }
+  },
+  "night-shift-binder-44-line-1": {
+    "recipe": "4b45eb01b41a48be",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:41.789Z",
+    "files": {
+      "night-shift/binder-44/media/line-1.mp3": "6235535f4197c730f8e651ffa0f296754687b6472d02dc75da8af6c07e8f8f94"
+    }
+  },
+  "night-shift-binder-44-line-2": {
+    "recipe": "cdb343d939cd56b2",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:42.135Z",
+    "files": {
+      "night-shift/binder-44/media/line-2.mp3": "62ddb502d302f1e73c390313e27caf1252eae0ec839fbea945a748d15651290e"
+    }
+  },
+  "night-shift-binder-44-line-3": {
+    "recipe": "fa889d1d769998e4",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:42.410Z",
+    "files": {
+      "night-shift/binder-44/media/line-3.mp3": "b3e0d46a3cf27f63a3adf9ea3757c8201e60b3940c062ff1b033447f8386d115"
+    }
+  },
+  "night-shift-binder-44-line-4": {
+    "recipe": "f4b63dbf78401ded",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:42.697Z",
+    "files": {
+      "night-shift/binder-44/media/line-4.mp3": "58cbab80789991842b423d27e4cef4b9238499a8db3b9f18d294d816e9513266"
+    }
+  },
+  "night-shift-binder-44-line-5": {
+    "recipe": "d49a233fd97c2f88",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:43.088Z",
+    "files": {
+      "night-shift/binder-44/media/line-5.mp3": "49bcec7146428bec3daf7ee09dfe070e4b1e5bc7fea579e9bd78dee91373685b"
+    }
+  },
+  "night-shift-binder-44-line-6": {
+    "recipe": "ca18d794814077a6",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:43.276Z",
+    "files": {
+      "night-shift/binder-44/media/line-6.mp3": "22e95c5b25dee212b4e924450e0e61755c5a3300aebbfeac3042143a0e129014"
+    }
+  },
+  "night-shift-binder-44-line-7": {
+    "recipe": "ba95a46bcd28871e",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:43.453Z",
+    "files": {
+      "night-shift/binder-44/media/line-7.mp3": "53b8869aaa4f105f4f15a8f1141151bf4e6d20bdd718e91fb433f88e164ccf61"
+    }
+  },
+  "night-shift-binder-44-line-8": {
+    "recipe": "b23cd97c0e06861c",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:43.634Z",
+    "files": {
+      "night-shift/binder-44/media/line-8.mp3": "32ede33d101d753dd8d9c491eae1272e8547e24ebae6ea1ecb9f6529be5ecafa"
+    }
+  },
+  "night-shift-binder-44-line-9": {
+    "recipe": "485a27d4efe7d391",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:43.832Z",
+    "files": {
+      "night-shift/binder-44/media/line-9.mp3": "c7553ac94cd0b9b5f07e318918fa0021b337fbeb37572bd3a1dcdaf53d3aa27a"
+    }
+  },
+  "night-shift-binder-44-line-10": {
+    "recipe": "7f86ccde309bca19",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:44.000Z",
+    "files": {
+      "night-shift/binder-44/media/line-10.mp3": "551515bbb403fff722200733f53730b5a63033e2367e755b1861c9bcad35862e"
+    }
+  },
+  "night-shift-binder-thu-line-1": {
+    "recipe": "5882fb9ad57cc81b",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:44.251Z",
+    "files": {
+      "night-shift/binder-thu/media/line-1.mp3": "ab3a9dd651af5f863cea00fc9616071026a6891373456ddc35bd396631a002e1"
+    }
+  },
+  "night-shift-binder-thu-line-2": {
+    "recipe": "cdb343d939cd56b2",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:44.591Z",
+    "files": {
+      "night-shift/binder-thu/media/line-2.mp3": "62ddb502d302f1e73c390313e27caf1252eae0ec839fbea945a748d15651290e"
+    }
+  },
+  "night-shift-binder-thu-line-3": {
+    "recipe": "fa889d1d769998e4",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:44.852Z",
+    "files": {
+      "night-shift/binder-thu/media/line-3.mp3": "b3e0d46a3cf27f63a3adf9ea3757c8201e60b3940c062ff1b033447f8386d115"
+    }
+  },
+  "night-shift-binder-thu-line-4": {
+    "recipe": "f4b63dbf78401ded",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:45.128Z",
+    "files": {
+      "night-shift/binder-thu/media/line-4.mp3": "58cbab80789991842b423d27e4cef4b9238499a8db3b9f18d294d816e9513266"
+    }
+  },
+  "night-shift-binder-thu-line-5": {
+    "recipe": "d49a233fd97c2f88",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:45.499Z",
+    "files": {
+      "night-shift/binder-thu/media/line-5.mp3": "49bcec7146428bec3daf7ee09dfe070e4b1e5bc7fea579e9bd78dee91373685b"
+    }
+  },
+  "night-shift-binder-thu-line-6": {
+    "recipe": "ca18d794814077a6",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:45.672Z",
+    "files": {
+      "night-shift/binder-thu/media/line-6.mp3": "22e95c5b25dee212b4e924450e0e61755c5a3300aebbfeac3042143a0e129014"
+    }
+  },
+  "night-shift-binder-thu-line-7": {
+    "recipe": "ba95a46bcd28871e",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:45.834Z",
+    "files": {
+      "night-shift/binder-thu/media/line-7.mp3": "53b8869aaa4f105f4f15a8f1141151bf4e6d20bdd718e91fb433f88e164ccf61"
+    }
+  },
+  "night-shift-binder-thu-line-8": {
+    "recipe": "b23cd97c0e06861c",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:46.024Z",
+    "files": {
+      "night-shift/binder-thu/media/line-8.mp3": "32ede33d101d753dd8d9c491eae1272e8547e24ebae6ea1ecb9f6529be5ecafa"
+    }
+  },
+  "night-shift-binder-thu-line-9": {
+    "recipe": "485a27d4efe7d391",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:46.218Z",
+    "files": {
+      "night-shift/binder-thu/media/line-9.mp3": "c7553ac94cd0b9b5f07e318918fa0021b337fbeb37572bd3a1dcdaf53d3aa27a"
+    }
+  },
+  "night-shift-binder-thu-line-10": {
+    "recipe": "7f86ccde309bca19",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:46.395Z",
+    "files": {
+      "night-shift/binder-thu/media/line-10.mp3": "551515bbb403fff722200733f53730b5a63033e2367e755b1861c9bcad35862e"
+    }
+  },
+  "night-shift-okafor-out-line-1": {
+    "recipe": "e4093ad024217b06",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:46.915Z",
+    "files": {
+      "night-shift/okafor-out/media/line-1.mp3": "352cd1a03c6505c829a7fdaeb9a7b160372db6a196bd4f29691c481cddad647e"
+    }
+  },
+  "night-shift-okafor-out-line-2": {
+    "recipe": "01877af583600b33",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:47.351Z",
+    "files": {
+      "night-shift/okafor-out/media/line-2.mp3": "ce47005eb2dd85195eadc838029fe06041d3f96228f239e1afeb982d09ad9459"
+    }
+  },
+  "night-shift-okafor-out-line-3": {
+    "recipe": "de217751cda42b84",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:47.837Z",
+    "files": {
+      "night-shift/okafor-out/media/line-3.mp3": "9bb78ed4b4a517a1eeb8a3c9ecf00d6c880b08b18a3840f8c61ad3744d358a88"
+    }
+  },
+  "night-shift-okafor-out-line-4": {
+    "recipe": "45084dda629b3be0",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:48.127Z",
+    "files": {
+      "night-shift/okafor-out/media/line-4.mp3": "98a1dd7b6a3ab04f206ba4ca307c7810224608b4c5a71fce4532e935f4e8023e"
+    }
+  },
+  "night-shift-okafor-out-line-5": {
+    "recipe": "f075dd772bad279c",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:48.314Z",
+    "files": {
+      "night-shift/okafor-out/media/line-5.mp3": "dc860c847e8ae0d555790074844d21e359b0f9989d65e97204e614505a29ca77"
+    }
+  },
+  "night-shift-okafor-out-line-6": {
+    "recipe": "143fd5b2ce002e50",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:48.613Z",
+    "files": {
+      "night-shift/okafor-out/media/line-6.mp3": "419d1d7a11ff4616db79ee6b2735a7e1946698749c16f9c2ce33e6aa984b552c"
+    }
+  },
+  "night-shift-okafor-out-line-7": {
+    "recipe": "4b30153e971c7fcb",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:48.982Z",
+    "files": {
+      "night-shift/okafor-out/media/line-7.mp3": "e879484dfc1393bb02e7e693db2c9d966fcaae40e270783a2a4b147048123e7f"
+    }
+  },
+  "night-shift-okafor-out-line-8": {
+    "recipe": "d292ee019b8ce80e",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:49.304Z",
+    "files": {
+      "night-shift/okafor-out/media/line-8.mp3": "d6be1e682b5b0721d6542f3db0164e1f573d3389f266f269be33bb2093c6250f"
+    }
+  },
+  "night-shift-okafor-out-fast-line-1": {
+    "recipe": "8cfd709d8fcf9184",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:49.782Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-1.mp3": "d5da5d2f99747b1acacc51a5660e22cd7722d1f34043ca547002058851e28c8f"
+    }
+  },
+  "night-shift-okafor-out-fast-line-2": {
+    "recipe": "5f3ca31ec32829b2",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:50.001Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-2.mp3": "240c41c01c8607d192e2c2501c0bbe9d581ef1c21fb20fff7b0535698574f53f"
+    }
+  },
+  "night-shift-okafor-out-fast-line-3": {
+    "recipe": "f893c7066a3d17f7",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:50.222Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-3.mp3": "a7f484a9694d4513d8b44a8ca7101a9324f0832116e8852717eeb1c56d01aeb5"
+    }
+  },
+  "night-shift-okafor-out-fast-line-4": {
+    "recipe": "45084dda629b3be0",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:50.585Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-4.mp3": "98a1dd7b6a3ab04f206ba4ca307c7810224608b4c5a71fce4532e935f4e8023e"
+    }
+  },
+  "night-shift-okafor-out-fast-line-5": {
+    "recipe": "f075dd772bad279c",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:50.782Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-5.mp3": "dc860c847e8ae0d555790074844d21e359b0f9989d65e97204e614505a29ca77"
+    }
+  },
+  "night-shift-okafor-out-fast-line-6": {
+    "recipe": "143fd5b2ce002e50",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:51.094Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-6.mp3": "419d1d7a11ff4616db79ee6b2735a7e1946698749c16f9c2ce33e6aa984b552c"
+    }
+  },
+  "night-shift-okafor-out-fast-line-7": {
+    "recipe": "4b30153e971c7fcb",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:51.392Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-7.mp3": "e879484dfc1393bb02e7e693db2c9d966fcaae40e270783a2a4b147048123e7f"
+    }
+  },
+  "night-shift-okafor-out-fast-line-8": {
+    "recipe": "d292ee019b8ce80e",
+    "job": "hawkesgen_run",
+    "made": "2026-10-25T04:51:51.695Z",
+    "files": {
+      "night-shift/okafor-out-fast/media/line-8.mp3": "d6be1e682b5b0721d6542f3db0164e1f573d3389f266f269be33bb2093c6250f"
+    }
   }
 }
