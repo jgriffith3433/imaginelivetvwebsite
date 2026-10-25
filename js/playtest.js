@@ -3629,7 +3629,7 @@ async function crawlConsolePages(t, st, done, total) {
   // Every page, level by level, eight at a time.
   let level = [first];
   while (level.length) {
-    const batch = level.filter((p) => !mine.has(p));
+    const batch = [...new Set(level)].filter((p) => !mine.has(p)); // a page reached from several parents is read once (without the Set the level grew with every way into a page: 13,066 pages read for 228)
     batch.forEach((p) => mine.add(p));
     level = [];
     for (let k = 0; k < batch.length; k += 8) {
