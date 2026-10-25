@@ -22,6 +22,8 @@
     {
       "id": "night-shift",
       "logline": "Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who knows every door, and a report with your name on it.",
+      "image": "/assets/images/night-shift.svg",
+      "alt": "A wall of nine security camera tiles in a dark control room",
       "listed": false
     }
   ]

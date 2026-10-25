@@ -300,6 +300,13 @@
     els.choices.hidden = !finished || !!s.ending;
     els.ending.hidden = !(finished && s.ending);
     els.ending.textContent = s.ending ? s.ending[0] : "";
+    if (s.ending && s.endcard) {
+      var card = document.createElement("img");
+      card.className = "console-endcard";
+      card.src = s.endcard;
+      card.alt = "";
+      els.ending.prepend(card);
+    }
     box.dataset.state = s.ending ? "soon" : "play";
     if (!finished || s.ending) return;
     s.choices.forEach(function (c, i) {

@@ -303,3 +303,7 @@ npm run story -- --check   # fails if a tree is broken or anything generated is 
 
 Then make the media through Hawkes Studio (costs GPU time: ask J first):
 `studio.cmd assets imaginelivetv` (status) and `studio.cmd assets imaginelivetv make`.
+
+### Camera art for console stories
+
+`style` is written as positive wording (image.generate ignores negatives): a CCTV still, fisheye, low-res, grain, scanlines, a clear strip for the timestamp. Until the real stills exist, `tools/make-standins.mjs` draws SVG stand-ins (`<id>/media/standin/`): one per camera state on that camera's fixed room, one end card per ending, and the landing card; the build uses them only while `media/feeds/<camera>-<state>.png` / `media/endcards/<scene>.png` is missing. Recipes: `<id>-feed-*`, `<id>-endcard-<scene>`, `<id>-card`. The `cctv-art` playtest checks them.

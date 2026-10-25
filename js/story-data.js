@@ -1708,6 +1708,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "06:30",
+     "endcard": null,
      "title": [
       "Clean report",
       "Clean report"
@@ -1733,6 +1734,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "06:30",
+     "endcard": null,
      "title": [
       "All quiet",
       "All quiet"
@@ -1764,7 +1766,7 @@ window.ILTV_STORIES = {
    "title": "Night Shift",
    "tagline": "Observe and report.",
    "logline": "Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who knows every door, and a report with your name on it.",
-   "image": null,
+   "image": "/assets/images/night-shift.svg",
    "listed": false,
    "cookie": "nightShiftProgress",
    "tap": {
@@ -1821,27 +1823,27 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "The lobby: the long desk, the turnstiles, the revolving door and the bench by the window, all empty under flat light.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c1-normal.svg"
       },
       "desk-visitor": {
        "desc": "The lobby desk: a young officer leaning over it, and a man in a hi-vis vest with a clipboard on the other side.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c1-desk-visitor.svg"
       },
       "laptop": {
        "desc": "The bench by the window with a closed laptop and a lanyard left on it, nobody near.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c1-laptop.svg"
       },
       "coat": {
        "desc": "A man in a long dark coat crossing the lobby toward the elevators, phone in hand, not looking at the camera.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c1-coat.svg"
       },
       "box": {
        "desc": "A cardboard box on the lobby desk, a courier's hand just leaving the frame.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c1-box.svg"
       },
       "dawn": {
        "desc": "The lobby in grey early light at the revolving door, the first shapes of the day staff beyond the glass.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c1-dawn.svg"
       }
      }
     },
@@ -1851,15 +1853,15 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "The glass airlock between Madison Avenue and the lobby, a ledge along one wall, the street light cold on the floor.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c2-normal.svg"
       },
       "sleeper": {
        "desc": "The vestibule ledge with a man lying along it under a worn coat, his shoes together, frost at the corners of the glass.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c2-sleeper.svg"
       },
       "empty-cold": {
        "desc": "The vestibule with a folded coat's worth of damp on the ledge and the outer door still swinging shut.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c2-empty-cold.svg"
       }
      }
     },
@@ -1869,11 +1871,11 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "The rollup door, the dock office window and a trash compactor under a single caged bulb.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c3-normal.svg"
       },
       "van": {
        "desc": "The rollup door half raised, a white van's lights beyond it, a man in a cap standing at the intercom with a box.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c3-van.svg"
       }
      }
     },
@@ -1883,11 +1885,11 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A fire door on a concrete landing with a painted number 31, closed.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c4-normal.svg"
       },
       "wedge": {
        "desc": "The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c4-wedge.svg"
       }
      }
     },
@@ -1897,15 +1899,15 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "Four elevator cars, a call panel and a plant, the floor shining.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c5-normal.svg"
       },
       "stuck": {
        "desc": "The four elevators; the indicator over one car frozen between 30 and 31, its doors closed, the call light lit.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c5-stuck.svg"
       },
       "cart": {
        "desc": "The four elevators with a cleaning cart parked in front of them, bags tied on the rail.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c5-cart.svg"
       }
      }
     },
@@ -1915,19 +1917,19 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A long carpeted corridor and a janitor's closet door at the far end.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c6-normal.svg"
       },
       "reader": {
        "desc": "A woman in a cleaner's smock and a younger man holding a mop bucket stand at a badge reader beside a door.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c6-reader.svg"
       },
       "leak": {
        "desc": "The janitor's closet door at the end of the corridor with a dark stain spreading across the carpet from its sill.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c6-leak.svg"
       },
       "papers": {
        "desc": "A woman holding a sheet of paper up toward the camera, the young man behind her with the bucket.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c6-papers.svg"
       }
      }
     },
@@ -1937,11 +1939,11 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A reception with tall glass doors, a low desk nobody sits at and one lamp left on.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c7-normal.svg"
       },
       "coat": {
        "desc": "The reception lit, a man in a long dark coat crossing it toward the glass doors, phone in hand.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c7-coat.svg"
       }
      }
     },
@@ -1951,7 +1953,7 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A steel door with a push bar, a sign and a single light above it, closed.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c8-normal.svg"
       }
      }
     },
@@ -1961,15 +1963,15 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A small alcove with a grey cabinet and the fire panel's repeater, one steady green light.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c9-normal.svg"
       },
       "frozen": {
        "desc": "The same alcove, the picture caught with a faint horizontal tear across it as if the signal has stopped.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c9-frozen.svg"
       },
       "trouble": {
        "desc": "The alcove with the repeater showing a steady amber light.",
-       "image": null
+       "image": "/night-shift/media/standin/feeds/c9-trouble.svg"
       }
      }
     }
@@ -19026,6 +19028,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-clean.svg",
      "title": [
       "Clean report",
       "Clean report"
@@ -19091,6 +19094,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-someone.svg",
      "title": [
       "Someone to leave it to",
       "Someone to leave it to"
@@ -19150,6 +19154,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-she-knew.svg",
      "title": [
       "She knew",
       "She knew"
@@ -19215,6 +19220,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-eat-something.svg",
      "title": [
       "Eat something",
       "Eat something"
@@ -19274,6 +19280,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-by-the-book.svg",
      "title": [
       "By the book, alone",
       "By the book, alone"
@@ -19327,6 +19334,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-friendly.svg",
      "title": [
       "The friendly one",
       "The friendly one"
@@ -19392,6 +19400,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-opinions.svg",
      "title": [
       "Opinions",
       "Opinions"
@@ -19445,6 +19454,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-four-hours.svg",
      "title": [
       "The four hours",
       "The four hours"
@@ -19510,6 +19520,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-written-up.svg",
      "title": [
       "Written up",
       "Written up"
@@ -19569,6 +19580,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-wedge.svg",
      "title": [
       "The wedge",
       "The wedge"
@@ -19622,6 +19634,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
+     "endcard": "/night-shift/media/standin/endcards/end-noted.svg",
      "title": [
       "Noted",
       "Noted"

@@ -9,7 +9,7 @@
     "line": "Radio check."
   },
   "start": "handover",
-  "style": "A frozen frame from a security camera: wide-angle, slightly fisheye, flat fluorescent light, low-resolution, a little noise and compression, a timestamp-free clean image, empty and quiet, an American office tower at night.",
+  "style": "A frozen frame from a ceiling-mounted CCTV security camera: low-resolution 4:3-style picture cropped wide, strong fisheye barrel distortion at the edges, flat green-grey fluorescent light, fine film grain and video noise, soft compression blocks, scanlines, slightly washed-out colour, a clear dark strip along the bottom edge where a timestamp is overlaid, an empty and quiet American office tower at night.",
   "negative": "text, watermark, timestamp, people looking at the camera, cartoon, illustration, gore, weapons",
   "narrator": {
     "model": "eleven_v4"

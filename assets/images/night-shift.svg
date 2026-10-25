@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1280" width="720" height="1280" role="img" aria-label="Night Shift">
+<title>Night Shift (stand-in)</title>
+<defs><radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="50%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.8"/></radialGradient>
+<pattern id="s" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="2" fill="#000" opacity="0.2"/></pattern></defs>
+<rect width="720" height="1280" fill="#1b2221"/>
+<rect x="57.6" y="153.6" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="273.6" y="153.6" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="489.6" y="153.6" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="57.6" y="256" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="273.6" y="256" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="489.6" y="256" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="57.6" y="358.4" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="273.6" y="358.4" width="187.20000000000002" height="76.8" fill="#2b3534"/><rect x="489.6" y="358.4" width="187.20000000000002" height="76.8" fill="#2b3534"/>
+<rect width="720" height="1280" fill="url(#s)"/><rect width="720" height="1280" fill="url(#v)"/>
+<g font-family="Georgia,serif" fill="#e6ece4" text-anchor="middle"><text x="360" y="793.6" font-size="60" letter-spacing="3">NIGHT SHIFT</text>
+<text x="360" y="896" font-size="28" opacity="0.8" font-style="italic">Nine cameras of nothing</text></g>
+</svg>

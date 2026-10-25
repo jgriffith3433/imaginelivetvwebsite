@@ -1268,6 +1268,57 @@ async function blog(options, t) {
   t.progress(1);
 }
 
+/* ---------------- cctv-art: the camera wall's pictures, the end cards and the landing card ---------------- */
+const loadsImage = (url) => new Promise((resolve) => {
+  const img = new Image();
+  img.onload = () => resolve({ w: img.naturalWidth || 1024, h: img.naturalHeight || 576 });
+  img.onerror = () => resolve(null);
+  img.src = url;
+});
+
+async function cctvArt(options, t) {
+  const st = storyOf(options.story || "night-shift");
+  if (!st || st.type !== "console") throw new Error(`cctv-art: ${options.story || "night-shift"} isn't a console story`);
+  await passSplash(t);
+  // The scenes name which states each camera shows; every one of those needs a picture, and a camera's pictures one look.
+  const used = {};
+  for (const sc of Object.values(st.scenes)) for (const [cam, state] of Object.entries(sc.feeds || {})) (used[cam] = used[cam] || new Set()).add(state);
+  let pictures = 0;
+  for (const cam of st.cameras) {
+    const states = new Set(["normal", ...(used[cam.id] || [])]);
+    const sizes = [];
+    for (const state of states) {
+      const info = cam.states[state];
+      if (!info) { t.problem("bug", `${cam.id}: the script uses state ${state}, which the camera doesn't have`); continue; }
+      const size = info.image ? await loadsImage(info.image) : null;
+      if (!size) { t.problem("bug", `${cam.id} ${state}: no picture${info.image ? ` (${info.image} doesn't load)` : ""}`); continue; }
+      sizes.push(size.w / size.h);
+      pictures++;
+    }
+    if (sizes.length && sizes.some((r) => Math.abs(r - sizes[0]) > 0.01)) t.problem("bug", `${cam.id}: its states aren't one picture format (the same room must frame the same)`);
+    t.event("camera", `${cam.id} ${cam.name}: ${states.size} states with pictures [${[...states].join(", ")}]`);
+  }
+  t.event("pictures", `${pictures} camera pictures load, ${st.cameras.length} cameras`);
+  const endings = Object.entries(st.scenes).filter(([, sc]) => sc.ending);
+  for (const [id, sc] of endings) {
+    if (!sc.endcard || !(await loadsImage(sc.endcard))) t.problem("bug", `ending ${id} (${sc.ending[0]}): no end card picture`);
+  }
+  t.event("end-cards", `${endings.length} endings, each with an end card`);
+  const entry = (window.ILTV_STORIES.stories || []).find((x) => x.id === st.id);
+  if (!entry.image || !(await loadsImage(entry.image))) t.problem("bug", `${st.id}: the landing card has no image that loads`);
+  else t.event("landing-card", `${st.id}: ${entry.image}`);
+  // Then the wall as a viewer sees it: the first scene's tiles carry their pictures.
+  await consoleOpen(t, st);
+  await consoleFresh(t, st);
+  await sleep(600);
+  const tiles = [...document.querySelectorAll("#console-wall > *")];
+  const loaded = tiles.filter((el) => { const im = el.querySelector("img"); return im && im.complete && im.naturalWidth > 0; });
+  if (tiles.length !== st.cameras.length) t.problem("bug", `the wall shows ${tiles.length} tiles for ${st.cameras.length} cameras`);
+  else if (loaded.length !== tiles.length) t.problem("bug", `${tiles.length - loaded.length} of ${tiles.length} wall tiles show no picture`);
+  else t.event("wall", `all ${tiles.length} tiles show their picture`);
+  await toLanding(t);
+}
+
 /* ---------------- credits: "Powered by HAWKES GEN" on every page, the parent company on the home page ---------------- */
 
 const GEN_URL = "https://hawkesgen.com";
@@ -2789,6 +2840,13 @@ installPlaytest({
       tags: ["full"],
       description: "Opens the Night Shift draft (night-shift, listed: false) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45, and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged.",
     },
+    {
+      id: "cctv-art",
+      title: "Night Shift's camera wall art: every camera has a picture for every state the script uses, one look and one room per camera; every ending has an end card; the landing card has its image",
+      seconds: 30,
+      tags: ["full"],
+      description: "Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 40, tags: ["full"] },
     {
       id: "credits",
@@ -2822,6 +2880,7 @@ installPlaytest({
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
+      else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
