@@ -88,7 +88,8 @@ Top level: `title`, `tagline`, `doc`, `cookie`, `tap`, `start` (as in "Adding a 
 - `speakers`: `{ id: { name, voice (an ElevenLabs voice id, once the voice is made), design (the voice design) } }`.
 - `ambience` and `sfx`: `{ cue: "prompt for audio.sfx" }`, the beds (looped) and the one-shot effects.
 - `style`, `negative`, `avoid`: the look of the camera stills; `narrator.model` (default `eleven_v4`); `unspoken`
-  (words no page may say); `stateCap` (states the build explores, default 50000).
+  (words no page may say); `stateCap` (states the build explores, default 50000; the playtest uses it too, so keep the state small: every meter
+  and flag multiplies the states, and `lines` can't depend on state, so a state-dependent line is a short scene the choice leads to).
 
 A **scene**: `id`, `folder`, `time` ("HH:MM", the shift log's timestamp and the clock on screen), `title`, `ambience`
 (a cue), `feeds` (`{ camera: state }`; a camera not named shows `normal`), `focus` (a camera enlarged when the scene

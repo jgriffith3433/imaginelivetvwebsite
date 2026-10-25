@@ -1,3 +1,7 @@
+> **Superseded.** This slice is now the first act of the whole night, in the engine's format (conditional lines became short
+> scenes that follow the choice; flags `mocked_habit`, `asked_game`, `told_commute` and others were dropped to keep the state small).
+> Dee's lines below are unchanged. See `story/night-shift.md`, "The built night", and run `node tools/check-night-shift.mjs`.
+
 # Night Shift, first slice: read this first
 
 `story/night-shift.json` is the first ~10 minutes of the night (18:45 to 22:05 on the story clock; 17 scenes,

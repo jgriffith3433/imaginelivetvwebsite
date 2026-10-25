@@ -1,8 +1,9 @@
 # Night Shift — story doc
 
-**Draft. Waiting for J** (see "Waiting for J" at the end). Docs only: there is no `story/night-shift.json`, no
-listing in `story/stories.json`, no card and no media yet. When it is built it will live at `/?story=night-shift`,
-its pages under `/night-shift/`, its asset ids starting `night-shift-`.
+**Draft. Waiting for J** (see "Waiting for J" at the end). The whole night is built as a console story in
+`story/night-shift.json` (see "The built night" below), listed as a draft in `story/stories.json` (`listed: false`):
+it plays at `/?story=night-shift`, its pages are under `/night-shift/`. No media is made yet (the player reads the lines on a timer
+and draws placeholder tiles).
 
 ## The idea
 
@@ -553,6 +554,58 @@ are pure breath, such as the sandwich). It should also check that each ending is
 is reachable, that the trainer's four reveal layers can each be reached by a path and that no path sets a flag it
 can't read. It should fail the build if a Board member is given a first name, if a scene's text mentions the
 company's restricted work (an `unspoken` list kept in the data, not in this doc), or if Pierce speaks outside the cameo scenes.
+
+## The built night
+
+`story/night-shift.json`: 200 scenes, about 1,150 spoken lines, 11 endings. The first act (18:45 to 22:05) is the slice
+(`story/night-shift-slice-notes.md`), its lines unchanged, moved into the engine's format: the engine has no conditional
+lines, so a line that read a flag now sits in a short scene that follows the choice. Playing time (words at 150 a minute plus a
+pause per line, the build's own `dur`): `node tools/check-night-shift.mjs` prints the shortest, the average (every open choice
+equally likely) and the longest.
+
+**Acts.** 1: handover, the wall, the first tour, the sign-in, Marisol and the badge, the first log entry (to 22:05). 2: Terrell's last
+hour, the first time alone on the wall, the night-line call, the sandwich and the index cards, the late list (to 01:35). 3: the wedge
+on 31, the laptop, Marisol's coffee and the water on 44, Dee up to "the roof door", the stuck car, the Chairman, camera nine, the
+panel, the box for fifty-eight, the humming, the man on the ledge, Dee's page and the twelfth floor (to 05:30). 4: the log
+review, the closing line, the handover ritual, the day supervisor's reading (one of six), the ending.
+
+**The state model as built** (smaller than section 6, so the build can prove it: `npm run story` explores every state).
+Meters: `trainer_trust` 0-3 (starts 1), `trainer_warmth` 0-2, `building_known` 0-2, `slips` 0-2 (rule breaks and radio misses; the
+third slip is not counted). Flags that last: `left_wall`, `lied` (cleared by a correction), `wedge_open`, `trouble_open` (cleared by
+reporting late), `noticed_notice`, `opined` (an opinion or a blank in a log entry; cleared by a rewrite). Short-lived: `asked_44`,
+`asked_sandwich`, `met_dev`, `noticed_12th`. A DAR (log) moment has up to four wordings: fact, opinion ("seemed", "probably"), blank,
+and where it tempts, a lie; the choice's `log` is the entry in the shift log.
+
+**Axes at 06:30.** C: *failed* if `left_wall`, `lied`, `wedge_open` or `trouble_open`; *solid* if none of those, no `opined`, and at
+most one slip; else *shaky*. T: *close* if trust 3 and warmth 2; *cold* if trust 1 or less; else *correct*. B: *learned* if
+`building_known` is 2. The morning picks one of six readings by C (solid, opinions, rule slips, wall left, life safety left, a lie),
+then the ending:
+
+| Ending | C | T | Also |
+| --- | --- | --- | --- |
+| Clean report | solid | correct | |
+| Someone to leave it to | solid | close | read the notice, said nothing, learned |
+| She knew | solid | close | told Okafor about the notice, learned |
+| Eat something | solid | close | no notice (or not learned) |
+| By the book, alone | solid | cold | |
+| The friendly one | shaky | close | |
+| Opinions | shaky | correct or cold | `opined` |
+| Noted | shaky | correct or cold | slips only |
+| The four hours | failed | close or correct | `left_wall` |
+| The wedge | failed | close or correct | `wedge_open` or `trouble_open` |
+| Written up | failed | cold, or a lie | |
+
+**Dee's layers.** 1 the shell (always). 2 the pencil (`sign-why`, trust 2). 3 the four hours (`four-hours`: warmth 2, never left the
+wall, sat with her at 02:55). 4 twelve (`twelve`: trust 3, checked her page against the door sensor, then asked). 5 the spring
+(the notice in the shelf drawer; telling Okafor is the choice in the morning).
+
+**Trust against the post orders.** Every incident has Dee's way and the binder's: the badge on 44 (vouch or call), the wedge (she
+says hello to the smoker, the book calls the supervisor), the panel (she presses silence, the book calls the director), the box
+(she signs and tags, the book refuses), the man on the ledge (twenty minutes, the book says trespass). Her way raises trust; the
+book's way raises nothing and costs nothing; the endings cost both ways.
+
+**Pierce Hawkes** speaks in `coat-lobby` (one line) and, if the player stands and asks him to sign in, `pierce-signin` (one more).
+Nothing in the night says B3, the vat or the creature (`unspoken` in the data; the build and the checker both refuse them).
 
 ## Waiting for J
 

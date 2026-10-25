@@ -2004,6 +2004,9 @@ window.ILTV_STORIES = {
     },
     "pierce": {
      "name": "Pierce Hawkes"
+    },
+    "brandt": {
+     "name": "Mr. Brandt"
     }
    },
    "ambience": {
@@ -2048,7 +2051,7 @@ window.ILTV_STORIES = {
     "specimen",
     "laboratory"
    ],
-   "stateCap": 150000,
+   "stateCap": 200000,
    "scenes": {
     "handover": {
      "folder": "night-shift/handover",
@@ -2829,9 +2832,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The cushion is flat, and warm. You sit in the shape of someone else.",
+       "text": "The cushion is flat, and still warm. You sit.",
        "file": null,
-       "dur": 6.6
+       "dur": 4.6
       },
       {
        "speaker": "dee",
@@ -3003,15 +3006,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Now you've done one. Do it every time, half hour and hour.",
+       "text": "Mm. Every time. Half hour, hour.",
        "file": null,
-       "dur": 5.8
-      },
-      {
-       "speaker": "dee",
-       "text": "Never skip a check. A missed check is a hole.",
-       "file": null,
-       "dur": 5
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -3389,9 +3386,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She eats half, then folds the foil back over the rest and puts it on the shelf. She is saving it.",
+       "text": "She eats half, folds the foil back over the rest and puts it on the shelf.",
        "file": null,
-       "dur": 9.4
+       "dur": 7.4
       },
       {
        "speaker": "narrator",
@@ -3643,9 +3640,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Eight hours, nine tiles, a hundred thousand frames. Normal is the one that doesn't surprise you.",
+       "text": "Eight hours. Nine tiles. Same lobby.",
        "file": null,
-       "dur": 7.4
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -3832,10 +3829,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Stairs are the spine of the building. Everything that goes wrong goes through one.",
+       "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
        "file": null,
-       "dur": 6.6
+       "dur": 2.6
       },
       {
        "speaker": "dee",
@@ -3851,9 +3848,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Smokers. Associates who can't leave a deal. Door sticks, they prop it, they forget. Orange wedge. Everyone in this city owns an orange wedge.",
+       "text": "Smokers. Door sticks, they prop it. Orange wedge.",
        "file": null,
-       "dur": 10.6
+       "dur": 4.2
       }
      ],
      "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door.",
@@ -3919,10 +3916,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Stairs are the spine of the building. Everything that goes wrong goes through one.",
+       "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
        "file": null,
-       "dur": 6.6
+       "dur": 2.6
       },
       {
        "speaker": "dee",
@@ -3938,9 +3935,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Smokers. Associates who can't leave a deal. Door sticks, they prop it, they forget. Orange wedge. Everyone in this city owns an orange wedge.",
+       "text": "Smokers. Door sticks, they prop it. Orange wedge.",
        "file": null,
-       "dur": 10.6
+       "dur": 4.2
       }
      ],
      "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door.",
@@ -3993,9 +3990,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "On tile seven the glass doors of fifty-eight are lit and nobody is behind them. It is the only lit tile in the room that isn't on a schedule.",
+       "text": "On tile seven the glass doors of fifty-eight are lit and nobody is behind them.",
        "file": null,
-       "dur": 12.6
+       "dur": 7
       },
       {
        "speaker": "narrator",
@@ -4006,10 +4003,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Stairs are the spine of the building. Everything that goes wrong goes through one.",
+       "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
        "file": null,
-       "dur": 6.6
+       "dur": 2.6
       },
       {
        "speaker": "dee",
@@ -4025,9 +4022,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Smokers. Associates who can't leave a deal. Door sticks, they prop it, they forget. Orange wedge. Everyone in this city owns an orange wedge.",
+       "text": "Smokers. Door sticks, they prop it. Orange wedge.",
        "file": null,
-       "dur": 10.6
+       "dur": 4.2
       }
      ],
      "log": "2000 hrs. Tour: stairwells A and B clear. Stairwell C, 31st floor landing: scuffs at the fire door.",
@@ -4797,9 +4794,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "Put it in the log. Both times. When you called, when he said.",
+       "text": "So. Please put it in the log, both times: when you called, and when he answered.",
        "file": null,
-       "dur": 6.2
+       "dur": 7.4
       },
       {
        "speaker": "marisol",
@@ -5290,9 +5287,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Say what happened. The paper's evidence. It's not permission.",
+       "text": "Say what happened. The paper's not a yes.",
        "file": null,
-       "dur": 4.6
+       "dur": 4.2
       },
       {
        "speaker": "dee",
@@ -5381,9 +5378,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Say what happened. The paper's evidence. It's not permission.",
+       "text": "Say what happened. The paper's not a yes.",
        "file": null,
-       "dur": 4.6
+       "dur": 4.2
       },
       {
        "speaker": "dee",
@@ -5863,6 +5860,238 @@ window.ILTV_STORIES = {
       ]
      ]
     },
+    "sign-sample": {
+     "folder": "night-shift/sign-sample",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "A sample line",
+      "A sample line"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Name. Santa Claus. Company. North Pole Logistics.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "That's a line that makes Okafor read the whole sheet. Mm. Rub it out.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
+    "sign-sample-44": {
+     "folder": "night-shift/sign-sample-44",
+     "lang": "en",
+     "dir": "",
+     "time": "21:30",
+     "title": [
+      "A sample line",
+      "A sample line"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c6": "reader"
+     },
+     "focus": "c6",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Name. Santa Claus. Company. North Pole Logistics.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "That's a line that makes Okafor read the whole sheet. Mm. Rub it out.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "marisol",
+       "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "marisol",
+       "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Forty-four. You asked about forty-four.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "dee",
+       "text": "Check the list.",
+       "file": null,
+       "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm-hm. I know. I know what the book says.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "What's your call, Officer?",
+       "file": null,
+       "dur": 2.6
+      }
+     ],
+     "log": "2130 hrs. Floor 44. Badge reader reports failed read, new crew member of M. Quintero's crew. Water reported at closet door, 44.",
+     "choices": [
+      [
+       "Let him in",
+       "Let him in",
+       "nephew-in",
+       {
+        "add": {
+         "trainer_trust": 1,
+         "slips": 1
+        },
+        "log": "Released the door on 44 on M. Quintero's word."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "nephew-held",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Called the supervisor's night line about the badge on 44."
+       }
+      ],
+      [
+       "Ask for his paperwork",
+       "Ask for his paperwork",
+       "nephew-papers",
+       {
+        "log": "Asked M. Quintero for the crew member's paperwork."
+       }
+      ]
+     ]
+    },
     "tour1-door": {
      "folder": "night-shift/tour1-door",
      "lang": "en",
@@ -5883,9 +6112,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "If you don't hear that, it's open. It can be closed and open at once. Mm. Stairs.",
+       "text": "If you don't hear that, it's open. Mm. Stairs.",
        "file": null,
-       "dur": 7.8
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -5903,9 +6132,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
+       "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
        "file": null,
-       "dur": 9
+       "dur": 6.2
       }
      ],
      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark.",
@@ -5982,9 +6211,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
+       "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
        "file": null,
-       "dur": 9
+       "dur": 6.2
       }
      ],
      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark.",
@@ -6055,9 +6284,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Dock's the other door. The one nobody thinks is a door. Trucks at four. Never trust a truck at four.",
+       "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
        "file": null,
-       "dur": 9
+       "dur": 6.2
       }
      ],
      "log": "2020 hrs. Tour: loading dock. Compactor, rollup door locked, dock office dark.",
@@ -6179,9 +6408,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Doors tell you what they want. Nobody checks that one. That's how it gets to be the one.",
+       "text": "Nobody checks that one. So it's the one.",
        "file": null,
-       "dur": 8.2
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -6244,16 +6473,16 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "You stand still. The compactor ticks, three slow ticks, a pause, three more. A truck passes on the street and the rollup door answers it with a shiver.",
+       "text": "You stand still. The compactor ticks, three slow ticks, a pause, three more. A truck passes on the street and the rollup door rattles.",
        "sfx": "clock-tick",
        "file": null,
-       "dur": 12.2
+       "dur": 10.6
       },
       {
        "speaker": "dee",
-       "text": "There. You heard it. Now you know what quiet sounds like here.",
+       "text": "There. You heard it. That's quiet.",
        "file": null,
-       "dur": 5.8
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -6316,9 +6545,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "It gives. It gives and it holds. That's all a door is.",
+       "text": "It gives. It holds. Good.",
        "file": null,
-       "dur": 5.8
+       "dur": 3
       },
       {
        "speaker": "narrator",
@@ -6455,6 +6684,37 @@ window.ILTV_STORIES = {
         },
         "log": "Asked D. Reyes why the pencil."
        }
+      ],
+      [
+       "Ask for an example line",
+       "Ask for an example line",
+       "sign-sample",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes for an example line on the visitor sheet."
+       }
+      ],
+      [
+       "Ask for an example line",
+       "Ask for an example line",
+       "sign-sample-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes for an example line on the visitor sheet."
+       }
       ]
      ]
     },
@@ -6472,9 +6732,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Because I always have. Because it's quiet.",
+       "text": "Because I always have.",
        "file": null,
-       "dur": 3.8
+       "dur": 2.6
       },
       {
        "speaker": "dee",
@@ -6617,6 +6877,37 @@ window.ILTV_STORIES = {
         },
         "log": "Asked D. Reyes why the pencil."
        }
+      ],
+      [
+       "Ask for an example line",
+       "Ask for an example line",
+       "sign-sample",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes for an example line on the visitor sheet."
+       }
+      ],
+      [
+       "Ask for an example line",
+       "Ask for an example line",
+       "sign-sample-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes for an example line on the visitor sheet."
+       }
       ]
      ]
     },
@@ -6640,9 +6931,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. Don't read the walls. They'll tell you everything.",
+       "text": "Mm. Don't read the walls.",
        "file": null,
-       "dur": 4.6
+       "dur": 3
       },
       {
        "speaker": "narrator",
@@ -6779,6 +7070,37 @@ window.ILTV_STORIES = {
         },
         "log": "Asked D. Reyes why the pencil."
        }
+      ],
+      [
+       "Ask for an example line",
+       "Ask for an example line",
+       "sign-sample",
+       {
+        "forbids": [
+         "asked_44"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes for an example line on the visitor sheet."
+       }
+      ],
+      [
+       "Ask for an example line",
+       "Ask for an example line",
+       "sign-sample-44",
+       {
+        "requires": [
+         "asked_44"
+        ],
+        "clear": [
+         "asked_44"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes for an example line on the visitor sheet."
+       }
       ]
      ]
     },
@@ -6881,9 +7203,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "Huh. There's no, uh. There's no yes. On forty. Sorry, man.",
+       "text": "Huh. Forty's got, uh. Nothing for him, man. Let me see what I can do.",
        "file": null,
-       "dur": 5.4
+       "dur": 7
       },
       {
        "speaker": "narrator",
@@ -6900,15 +7222,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm-hm. That's how Terrell learns.",
+       "text": "Mm-hm.",
        "file": null,
-       "dur": 3
+       "dur": 1.4
       },
       {
        "speaker": "dee",
-       "text": "Tuesday he had a yes. Today he doesn't. The list doesn't remember Tuesday. Good.",
+       "text": "Tuesday he had a yes. Today he doesn't.",
        "file": null,
-       "dur": 6.6
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -7028,9 +7350,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Terrell's bag is on his shoulder. He stands in the control-room doorway like a man leaving a party.",
+       "text": "Terrell's bag is on his shoulder. He stands in the control-room doorway, bag on his shoulder.",
        "file": null,
-       "dur": 8.2
+       "dur": 7.4
       },
       {
        "speaker": "terrell",
@@ -7058,9 +7380,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "Hey. You're good, you know? You're good. I don't say that.",
+       "text": "Hey. You're good, you know? You're, uh. Night!",
        "file": null,
-       "dur": 5.4
+       "dur": 4.2
       }
      ],
      "log": "2255 hrs. Terrell Banks off post. Night post: two officers.",
@@ -7438,9 +7760,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "My uncle ran a corner store in Bed-Stuy. Learned names, not rules, you know? Everybody owed him. Nobody wrote anything down. It worked. Till it didn't.",
+       "text": "My uncle's store, Bed-Stuy. Names, not rules, you know? Nobody wrote anything down, it worked, till, uh.",
        "file": null,
-       "dur": 11.4
+       "dur": 7.8
       },
       {
        "speaker": "terrell",
@@ -7450,15 +7772,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "terrell",
-       "text": "I'm bad at it. I like it, though. I like that it's the same every night.",
+       "text": "I'm bad at it. The sheet's the same every night, so, you know?",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       },
       {
        "speaker": "dee",
-       "text": "The same every night is the point. Go to school, Terrell. Door.",
+       "text": "Mm. Go to school, Terrell. Door.",
        "file": null,
-       "dur": 5.8
+       "dur": 3.4
       },
       {
        "speaker": "terrell",
@@ -7580,9 +7902,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Don't copy him. Copy what he doesn't write. What he doesn't write is where the night is.",
+       "text": "Don't copy him. Mm. Read what he leaves out.",
        "file": null,
-       "dur": 7.8
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
@@ -7647,9 +7969,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The coffee is wrong. The monitors hum. There is nothing to do but the job, and the job is to look.",
+       "text": "The coffee is wrong. The monitors hum. You look.",
        "file": null,
-       "dur": 9.4
+       "dur": 4.6
       }
      ],
      "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal.",
@@ -7744,9 +8066,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The coffee is wrong. The monitors hum. There is nothing to do but the job, and the job is to look.",
+       "text": "The coffee is wrong. The monitors hum. You look.",
        "file": null,
-       "dur": 9.4
+       "dur": 4.6
       }
      ],
      "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal.",
@@ -7848,9 +8170,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The coffee is wrong. The monitors hum. There is nothing to do but the job, and the job is to look.",
+       "text": "The coffee is wrong. The monitors hum. You look.",
        "file": null,
-       "dur": 9.4
+       "dur": 4.6
       }
      ],
      "log": "2320 hrs. Control room. Post one alone on the wall. All feeds normal.",
@@ -7994,9 +8316,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "At 23:44 the lobby tile shows the revolving door turning once with nobody in it. You write it down. It is the first line you have written on your own.",
+       "text": "At 23:44 the lobby tile shows the revolving door turning once with nobody in it. You write it down.",
        "file": null,
-       "dur": 13
+       "dur": 8.6
       },
       {
        "speaker": "narrator",
@@ -8108,9 +8430,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She does not say well done. She does not say anything. She gives the nod of a woman crossing something off.",
+       "text": "She does not say anything. She nods once.",
        "file": null,
-       "dur": 9.4
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
@@ -8180,10 +8502,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She counts the radios. Four. She counts them again, with one finger, as if one of them might have gone somewhere.",
+       "text": "She counts the radios. Four. She counts them again, with one finger.",
        "sfx": "radio-charger",
        "file": null,
-       "dur": 9.4
+       "dur": 5.8
       }
      ],
      "log": "2338 hrs. Returned to the wall after four minutes. Wall unattended 2330 to 2334.",
@@ -8218,9 +8540,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "That's him. He reads the portal at midnight. A habit. Pick it up.",
+       "text": "That's him. Midnight, every night. Pick it up.",
        "file": null,
-       "dur": 6.2
+       "dur": 4.2
       }
      ],
      "log": "0010 hrs. Supervisor's night line ringing.",
@@ -8277,15 +8599,21 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "okafor",
-       "text": "So. It's Okafor. Two entries and a tour sheet. They read like a log. Times. Places. Who you told.",
+       "text": "So. It's Okafor. Two entries and a tour sheet. They give times, places, and who you told.",
        "file": null,
-       "dur": 8.6
+       "dur": 7.8
       },
       {
        "speaker": "okafor",
-       "text": "That's noted. I don't say it twice. Is Ms. Reyes there? Put her on. I'll just say good night.",
+       "text": "That's noted. Are you eating? It's in the handbook, page nine.",
        "file": null,
-       "dur": 8.6
+       "dur": 5.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "Is Ms. Reyes there? Put her on. I'll just say good night.",
+       "file": null,
+       "dur": 5.8
       },
       {
        "speaker": "dee",
@@ -8354,9 +8682,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "A log is read later by people who weren't there. Sometimes by a lawyer. Can you do that tonight?",
+       "text": "\"Seemed.\" How did he seem? Put what he did, in order. Can you do that tonight?",
        "file": null,
-       "dur": 8.6
+       "dur": 7.4
       },
       {
        "speaker": "dee",
@@ -8582,6 +8910,12 @@ window.ILTV_STORIES = {
        "text": "Pepper and egg.",
        "file": null,
        "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Peppers raw. Egg fried hard. The deli on Seventy-seventh has it wrapped before I'm through the door.",
+       "file": null,
+       "dur": 7.8
       }
      ],
      "log": "0030 hrs. Dolores Reyes on meal break at the wall. Post one on the wall.",
@@ -8794,15 +9128,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Then here. Twenty-six years. It goes fast when it's the same hall.",
+       "text": "Then here. Twenty-six years. Same hall.",
        "file": null,
-       "dur": 5.8
+       "dur": 3.4
       },
       {
        "speaker": "dee",
-       "text": "You get good at one door. Mm. Eat.",
+       "text": "One door. Mm. Eat.",
        "file": null,
-       "dur": 4.2
+       "dur": 2.6
       },
       {
        "speaker": "narrator",
@@ -8978,15 +9312,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Ms. Adler, the third of March. Marisol, July. Okafor, the third of November. Terrell's was Tuesday. I gave him a muffin. Don't say.",
+       "text": "Adler, March. Marisol, July. Terrell's was Tuesday. Muffin. Don't say.",
        "file": null,
-       "dur": 10.2
+       "dur": 5
       },
       {
        "speaker": "dee",
-       "text": "I don't care about the tenants. Mm. I keep the cards because I don't care. You understand.",
+       "text": "I don't care about the tenants. Mm. Hand me the pencil.",
        "file": null,
-       "dur": 7.8
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
@@ -9319,9 +9653,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Which means somebody up there is awake. Not our business.",
+       "text": "Somebody's awake up there. Mm.",
        "file": null,
-       "dur": 5
+       "dur": 3
       },
       {
        "speaker": "dee",
@@ -9368,23 +9702,29 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The dead hours start at two. Everyone says so: the tours are done, the tenants have gone, the phones stop. The body wants to sleep. Most mistakes are made right here.",
+       "text": "The tours are done. The tenants have gone. The phones have stopped.",
        "sfx": "clock-tick",
        "file": null,
-       "dur": 13.4
+       "dur": 5.8
       },
       {
        "speaker": "dee",
-       "text": "Stairwell A. Clear. Going up to B.",
+       "text": "Stairwell A. Clear. Landing nineteen has a bench.",
        "sfx": "footsteps-stairs",
        "file": null,
-       "dur": 3.8
+       "dur": 4.2
       },
       {
        "speaker": "dee",
-       "text": "Eyes open. I can hear you blinking from here.",
+       "text": "Somebody put a bench in a fire stair. I sit on it four seconds. Mm.",
        "file": null,
-       "dur": 4.6
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "Going up to B. Eyes open. Mm-hm.",
+       "file": null,
+       "dur": 3.8
       }
      ],
      "log": "0150 hrs. D. Reyes on stairwell tour. Post one on the wall.",
@@ -9450,15 +9790,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She is two stairwells away and four floors down. She doesn't know. Only the wall knows, and the wall is you.",
+       "text": "She is two stairwells away and four floors down. She doesn't know.",
        "file": null,
-       "dur": 9.4
+       "dur": 5.8
       },
       {
        "speaker": "narrator",
-       "text": "The phone, the radio and the mouse are all within reach. Nobody is hurrying you.",
+       "text": "The phone, the radio and the mouse are all within reach.",
        "file": null,
-       "dur": 7
+       "dur": 5.4
       }
      ],
      "log": "0152 hrs. Camera 4, stairwell C, 31st floor landing. Fire door held open by a rubber wedge.",
@@ -9597,10 +9937,10 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "The night line rings four times. Mr. Okafor sounds like a man sitting up in the dark.",
+       "text": "The night line rings four times. Mr. Okafor answers on the fifth, awake.",
        "sfx": "phone-ring",
        "file": null,
-       "dur": 7.8
+       "dur": 6.2
       },
       {
        "speaker": "okafor",
@@ -9634,9 +9974,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "On tile four the wedge sits in the doorway. The supervisor's instruction was clear: don't go up.",
+       "text": "On tile four the wedge sits in the doorway.",
        "file": null,
-       "dur": 7.8
+       "dur": 4.6
       }
      ],
      "log": "0156 hrs. Supervisor notified of wedge, stairwell C, 31.",
@@ -9644,7 +9984,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "laptop-watch",
+       "laptop-watch-f",
        {
         "add": {
          "trainer_trust": 1
@@ -9655,7 +9995,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "laptop-watch",
+       "laptop-watch-o",
        {
         "set": [
          "opined"
@@ -9666,7 +10006,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "laptop-watch",
+       "laptop-watch-m",
        {
         "set": [
          "opined"
@@ -9677,7 +10017,7 @@ window.ILTV_STORIES = {
       [
        "Write that you removed it",
        "Write that you removed it",
-       "laptop-watch",
+       "laptop-watch-l",
        {
         "set": [
          "lied"
@@ -9707,10 +10047,10 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Wedge. Thirty-one. Mm. Stay on the wall. I'll go.",
+       "text": "Wedge. Thirty-one. Mm. I'm going up. Wall.",
        "sfx": "footsteps-stairs",
        "file": null,
-       "dur": 4.6
+       "dur": 3.8
       },
       {
        "speaker": "narrator",
@@ -9738,9 +10078,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Four minutes ago you had seen a wedge. Now Dolores has it in her hand and you are the one who said so.",
+       "text": "Dolores has the wedge in her hand.",
        "file": null,
-       "dur": 10.2
+       "dur": 3.8
       }
      ],
      "log": "0159 hrs. Stairwell C, 31. Wedge removed by D. Reyes. Tenant (Anand, 31) advised.",
@@ -9748,7 +10088,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "laptop-watch",
+       "laptop-watch-f",
        {
         "set": [
          "met_dev"
@@ -9762,7 +10102,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "laptop-watch",
+       "laptop-watch-o",
        {
         "set": [
          "met_dev",
@@ -9774,7 +10114,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "laptop-watch",
+       "laptop-watch-m",
        {
         "set": [
          "met_dev",
@@ -9786,7 +10126,7 @@ window.ILTV_STORIES = {
       [
        "Write that you removed it",
        "Write that you removed it",
-       "laptop-watch",
+       "laptop-watch-l",
        {
         "set": [
          "lied",
@@ -9851,7 +10191,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "laptop-watch",
+       "laptop-watch-f",
        {
         "add": {
          "trainer_trust": 1
@@ -9862,7 +10202,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "laptop-watch",
+       "laptop-watch-o",
        {
         "set": [
          "opined"
@@ -9873,7 +10213,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "laptop-watch",
+       "laptop-watch-m",
        {
         "set": [
          "opined"
@@ -9884,7 +10224,7 @@ window.ILTV_STORIES = {
       [
        "Write that it was reported",
        "Write that it was reported",
-       "laptop-watch",
+       "laptop-watch-l",
        {
         "set": [
          "lied"
@@ -9955,7 +10295,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "laptop-watch",
+       "laptop-watch-f",
        {
         "set": [
          "met_dev"
@@ -9969,7 +10309,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "laptop-watch",
+       "laptop-watch-o",
        {
         "set": [
          "met_dev",
@@ -9981,7 +10321,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "laptop-watch",
+       "laptop-watch-m",
        {
         "set": [
          "met_dev",
@@ -9993,7 +10333,7 @@ window.ILTV_STORIES = {
       [
        "Write that you noticed it first",
        "Write that you noticed it first",
-       "laptop-watch",
+       "laptop-watch-l",
        {
         "set": [
          "lied",
@@ -10007,8 +10347,8 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "laptop-watch": {
-     "folder": "night-shift/laptop-watch",
+    "laptop-watch-f": {
+     "folder": "night-shift/laptop-watch-f",
      "lang": "en",
      "dir": "",
      "time": "02:12",
@@ -10018,6 +10358,18 @@ window.ILTV_STORIES = {
      ],
      "ambience": "control-room",
      "lines": [
+      {
+       "speaker": "narrator",
+       "text": "02:10. Dolores comes back down and reads the wedge entry standing, with the pencil behind her ear.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody lazy in it. Nobody tired. A door and a wedge. Good.",
+       "file": null,
+       "dur": 5.8
+      },
       {
        "speaker": "narrator",
        "text": "02:12. Dolores is back at the wall with her coat over the chair. She puts the pencil against the glass of tile one and does not touch it.",
@@ -10032,10 +10384,259 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She does this twice a night, you will learn: a test that sounds like a habit. It is also a habit. The two are not different.",
+       "text": "She does this twice a night.",
        "sfx": "pencil",
        "file": null,
-       "dur": 11.4
+       "dur": 3.4
+      }
+     ],
+     "log": "0212 hrs. D. Reyes on the wall. All feeds reviewed.",
+     "choices": [
+      [
+       "Look at the lobby",
+       "Look at the lobby",
+       "laptop-seen",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked at the lobby tile."
+       }
+      ],
+      [
+       "Look at the vestibule",
+       "Look at the vestibule",
+       "laptop-told",
+       {
+        "log": "Looked at the vestibule tile."
+       }
+      ],
+      [
+       "Look at camera 9",
+       "Look at camera 9",
+       "laptop-told",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Looked at camera 9."
+       }
+      ]
+     ]
+    },
+    "laptop-watch-o": {
+     "folder": "night-shift/laptop-watch-o",
+     "lang": "en",
+     "dir": "",
+     "time": "02:12",
+     "title": [
+      "Tile one, tile two",
+      "Tile one, tile two"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "02:10. Dolores comes back down and reads the wedge entry standing, with the pencil behind her ear.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Probably being lazy. You weren't there. You watched a door.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody's lazy at two in the morning. They're tired. Write the door.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "02:12. Dolores is back at the wall with her coat over the chair. She puts the pencil against the glass of tile one and does not touch it.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Tile one. Tile two. Say.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "She does this twice a night.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "0212 hrs. D. Reyes on the wall. All feeds reviewed.",
+     "choices": [
+      [
+       "Look at the lobby",
+       "Look at the lobby",
+       "laptop-seen",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked at the lobby tile."
+       }
+      ],
+      [
+       "Look at the vestibule",
+       "Look at the vestibule",
+       "laptop-told",
+       {
+        "log": "Looked at the vestibule tile."
+       }
+      ],
+      [
+       "Look at camera 9",
+       "Look at camera 9",
+       "laptop-told",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Looked at camera 9."
+       }
+      ]
+     ]
+    },
+    "laptop-watch-m": {
+     "folder": "night-shift/laptop-watch-m",
+     "lang": "en",
+     "dir": "",
+     "time": "02:12",
+     "title": [
+      "Tile one, tile two",
+      "Tile one, tile two"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "02:10. Dolores comes back down and looks for the wedge entry. There isn't one.",
+       "file": null,
+       "dur": 6.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Where's thirty-one?",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "There's a blank. Write it.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "02:12. Dolores is back at the wall with her coat over the chair. She puts the pencil against the glass of tile one and does not touch it.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Tile one. Tile two. Say.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "She does this twice a night.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.4
+      }
+     ],
+     "log": "0212 hrs. D. Reyes on the wall. All feeds reviewed.",
+     "choices": [
+      [
+       "Look at the lobby",
+       "Look at the lobby",
+       "laptop-seen",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Looked at the lobby tile."
+       }
+      ],
+      [
+       "Look at the vestibule",
+       "Look at the vestibule",
+       "laptop-told",
+       {
+        "log": "Looked at the vestibule tile."
+       }
+      ],
+      [
+       "Look at camera 9",
+       "Look at camera 9",
+       "laptop-told",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Looked at camera 9."
+       }
+      ]
+     ]
+    },
+    "laptop-watch-l": {
+     "folder": "night-shift/laptop-watch-l",
+     "lang": "en",
+     "dir": "",
+     "time": "02:12",
+     "title": [
+      "Tile one, tile two",
+      "Tile one, tile two"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "02:10. Dolores comes back down and reads the wedge entry once, then again.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Officer.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "02:12. Dolores is back at the wall with her coat over the chair. She puts the pencil against the glass of tile one and does not touch it.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Tile one. Tile two. Say.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "She does this twice a night.",
+       "sfx": "pencil",
+       "file": null,
+       "dur": 3.4
       }
      ],
      "log": "0212 hrs. D. Reyes on the wall. All feeds reviewed.",
@@ -10270,9 +10871,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Somebody's whole life is in that machine. A dog. A will. Something they typed at two in the morning. We hold it. We don't read it. That's the deal. Mm.",
+       "text": "Don't read it. Tag it. Time, where, who touched it.",
        "file": null,
-       "dur": 13
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -10286,7 +10887,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "awake-0225",
+       "awake-0225-f",
        {
         "add": {
          "trainer_trust": 1
@@ -10297,7 +10898,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "awake-0225",
+       "awake-0225-o",
        {
         "set": [
          "opined"
@@ -10308,7 +10909,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "awake-0225",
+       "awake-0225-m",
        {
         "set": [
          "opined"
@@ -10360,7 +10961,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "awake-0225",
+       "awake-0225-f",
        {
         "add": {
          "trainer_trust": 1
@@ -10371,7 +10972,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "awake-0225",
+       "awake-0225-o",
        {
         "set": [
          "opined"
@@ -10382,7 +10983,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "awake-0225",
+       "awake-0225-m",
        {
         "set": [
          "opined"
@@ -10418,9 +11019,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "One thing in this room nobody opens: what isn't theirs. Close it.",
+       "text": "Now.",
        "file": null,
-       "dur": 5.8
+       "dur": 1.4
       },
       {
        "speaker": "narrator",
@@ -10430,9 +11031,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Your hand is still warm from the lid. You wipe it on your trouser leg the way you do after touching a stranger's door. It does not help.",
+       "text": "You close the lid the rest of the way.",
        "file": null,
-       "dur": 12.2
+       "dur": 4.6
       }
      ],
      "log": "0220 hrs. Laptop opened by post one. Login screen displayed, no password entered. Closed.",
@@ -10440,7 +11041,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "awake-0225",
+       "awake-0225-f",
        {
         "add": {
          "trainer_trust": -1
@@ -10451,7 +11052,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "awake-0225",
+       "awake-0225-o",
        {
         "set": [
          "opined"
@@ -10465,7 +11066,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "awake-0225",
+       "awake-0225-m",
        {
         "set": [
          "opined"
@@ -10478,8 +11079,8 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "awake-0225": {
-     "folder": "night-shift/awake-0225",
+    "awake-0225-f": {
+     "folder": "night-shift/awake-0225-f",
      "lang": "en",
      "dir": "",
      "time": "02:25",
@@ -10490,22 +11091,174 @@ window.ILTV_STORIES = {
      "ambience": "control-room",
      "lines": [
       {
+       "speaker": "dee",
+       "text": "Tagged. Timed. Whose. Good.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
        "speaker": "narrator",
-       "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee. She does not look tired. She looks like a woman who has decided not to be.",
+       "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee.",
        "file": null,
-       "dur": 15.4
+       "dur": 9
       },
       {
        "speaker": "dee",
-       "text": "Don't sit still. Sitting still is how it gets you. Stand. Change chairs. Say the tiles. Eat something salty.",
+       "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
        "file": null,
-       "dur": 8.6
+       "dur": 4.6
       },
       {
        "speaker": "dee",
-       "text": "A guard at the bank on Fordham Road. Two in the morning, head on the desk. Nothing happened. Nothing happened for forty minutes. Then something did.",
+       "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
        "file": null,
-       "dur": 11.4
+       "dur": 9
+      }
+     ],
+     "log": "0225 hrs. Control room. D. Reyes standing at the wall.",
+     "choices": [
+      [
+       "Stand up and say the tiles",
+       "Stand up and say the tiles",
+       "awake-stand",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stood at the wall and said the tiles aloud."
+       }
+      ],
+      [
+       "Ask what happened at the bank",
+       "Ask what happened at the bank",
+       "awake-bank",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes what happened at the bank."
+       }
+      ],
+      [
+       "Pour two coffees",
+       "Pour two coffees",
+       "awake-coffee",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Poured two coffees."
+       }
+      ]
+     ]
+    },
+    "awake-0225-o": {
+     "folder": "night-shift/awake-0225-o",
+     "lang": "en",
+     "dir": "",
+     "time": "02:25",
+     "title": [
+      "The hour",
+      "The hour"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Probably on his way back. He's asleep, Officer. Write where it was.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
+       "file": null,
+       "dur": 9
+      }
+     ],
+     "log": "0225 hrs. Control room. D. Reyes standing at the wall.",
+     "choices": [
+      [
+       "Stand up and say the tiles",
+       "Stand up and say the tiles",
+       "awake-stand",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Stood at the wall and said the tiles aloud."
+       }
+      ],
+      [
+       "Ask what happened at the bank",
+       "Ask what happened at the bank",
+       "awake-bank",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes what happened at the bank."
+       }
+      ],
+      [
+       "Pour two coffees",
+       "Pour two coffees",
+       "awake-coffee",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Poured two coffees."
+       }
+      ]
+     ]
+    },
+    "awake-0225-m": {
+     "folder": "night-shift/awake-0225-m",
+     "lang": "en",
+     "dir": "",
+     "time": "02:25",
+     "title": [
+      "The hour",
+      "The hour"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "No line for the laptop. Where is it, in the log?",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
+       "file": null,
+       "dur": 9
       }
      ],
      "log": "0225 hrs. Control room. D. Reyes standing at the wall.",
@@ -10595,9 +11348,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+       "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
        "file": null,
-       "dur": 11.4
+       "dur": 7.4
       }
      ],
      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry.",
@@ -10647,15 +11400,15 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "A man at the counter. A heart. Ten minutes on the floor. The guard was reading his phone.",
+       "text": "A man at the counter. A heart. The guard was on his phone.",
        "file": null,
-       "dur": 8.2
+       "dur": 6.2
       },
       {
        "speaker": "dee",
-       "text": "Teller found him. Mm. Nobody was watching. Nobody. It was a Tuesday.",
+       "text": "Mm. A Tuesday.",
        "file": null,
-       "dur": 5.8
+       "dur": 2.2
       },
       {
        "speaker": "narrator",
@@ -10684,9 +11437,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+       "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
        "file": null,
-       "dur": 11.4
+       "dur": 7.4
       }
      ],
      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry.",
@@ -10773,9 +11526,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "The broker knows nothing. The broker thinks the pot refills itself. Ha! Forty-four's dry, tell her, the closet is dry, I did the sink last. Bendito.",
+       "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
        "file": null,
-       "dur": 11.4
+       "dur": 7.4
       }
      ],
      "log": "0240 hrs. M. Quintero visited the control room. Floor 44 reported dry.",
@@ -10861,19 +11614,53 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
+       "text": "02:46. The outside line rings on the desk phone. Dolores lifts her chin at it. It is not her call to take.",
        "file": null,
-       "dur": 15
+       "dur": 9.8
+      },
+      {
+       "speaker": "brandt",
+       "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Facilities. Not us.",
+       "file": null,
+       "dur": 2.2
       }
      ],
-     "log": "0245 hrs. Wall quiet.",
+     "log": "0246 hrs. Outside line: tenant on 40 (Mr. Brandt) reports the floor cold.",
      "choices": [
       [
-       "Look at the wall",
-       "Look at the wall",
-       "leak-watch",
+       "Take his name, log it",
+       "Take his name, log it",
+       "tenant-log",
        {
-        "log": "Looked at the wall."
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took Mr. Brandt's name and floor and logged the complaint."
+       }
+      ],
+      [
+       "Say you'll send someone",
+       "Say you'll send someone",
+       "tenant-promise",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Told Mr. Brandt someone would be sent up."
+       }
+      ],
+      [
+       "Go and look at forty",
+       "Go and look at forty",
+       "tenant-go",
+       {
+        "log": "Went up to 40 to look at the heat."
        }
       ]
      ]
@@ -10921,19 +11708,53 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
+       "text": "02:46. The outside line rings on the desk phone. Dolores lifts her chin at it. It is not her call to take.",
        "file": null,
-       "dur": 15
+       "dur": 9.8
+      },
+      {
+       "speaker": "brandt",
+       "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Facilities. Not us.",
+       "file": null,
+       "dur": 2.2
       }
      ],
-     "log": "0245 hrs. Wall quiet.",
+     "log": "0246 hrs. Outside line: tenant on 40 (Mr. Brandt) reports the floor cold.",
      "choices": [
       [
-       "Look at the wall",
-       "Look at the wall",
-       "leak-watch",
+       "Take his name, log it",
+       "Take his name, log it",
+       "tenant-log",
        {
-        "log": "Looked at the wall."
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took Mr. Brandt's name and floor and logged the complaint."
+       }
+      ],
+      [
+       "Say you'll send someone",
+       "Say you'll send someone",
+       "tenant-promise",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Told Mr. Brandt someone would be sent up."
+       }
+      ],
+      [
+       "Go and look at forty",
+       "Go and look at forty",
+       "tenant-go",
+       {
+        "log": "Went up to 40 to look at the heat."
        }
       ]
      ]
@@ -10957,9 +11778,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "marisol",
-       "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. It's a life. Bendito.",
+       "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. Bendito.",
        "file": null,
-       "dur": 7.4
+       "dur": 6.2
       },
       {
        "speaker": "dee",
@@ -10975,6 +11796,204 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
+       "text": "02:46. The outside line rings on the desk phone. Dolores lifts her chin at it. It is not her call to take.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "brandt",
+       "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Facilities. Not us.",
+       "file": null,
+       "dur": 2.2
+      }
+     ],
+     "log": "0246 hrs. Outside line: tenant on 40 (Mr. Brandt) reports the floor cold.",
+     "choices": [
+      [
+       "Take his name, log it",
+       "Take his name, log it",
+       "tenant-log",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Took Mr. Brandt's name and floor and logged the complaint."
+       }
+      ],
+      [
+       "Say you'll send someone",
+       "Say you'll send someone",
+       "tenant-promise",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Told Mr. Brandt someone would be sent up."
+       }
+      ],
+      [
+       "Go and look at forty",
+       "Go and look at forty",
+       "tenant-go",
+       {
+        "log": "Went up to 40 to look at the heat."
+       }
+      ]
+     ]
+    },
+    "tenant-log": {
+     "folder": "night-shift/tenant-log",
+     "lang": "en",
+     "dir": "",
+     "time": "02:48",
+     "title": [
+      "Name and floor",
+      "Name and floor"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You write: Brandt, forty, cold, 0246. He hangs up before you have said you will pass it on.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Good. Don't promise warm.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Day facilities gets it at seven. They'll say it's the thermostat. It's never the thermostat.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "narrator",
+       "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
+       "file": null,
+       "dur": 12.2
+      }
+     ],
+     "log": "0300 hrs. Wall quiet.",
+     "choices": [
+      [
+       "Look at the wall",
+       "Look at the wall",
+       "leak-watch",
+       {
+        "log": "Looked at the wall."
+       }
+      ]
+     ]
+    },
+    "tenant-promise": {
+     "folder": "night-shift/tenant-promise",
+     "lang": "en",
+     "dir": "",
+     "time": "02:48",
+     "title": [
+      "Someone",
+      "Someone"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "brandt",
+       "text": "Great. Thanks. I'll be here.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "There is no one to send. The line clicks. Dolores watches the phone as if it might ask her something.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "dee",
+       "text": "Don't promise what we haven't got. Mm. He'll be at the desk at seven asking where they are.",
+       "file": null,
+       "dur": 8.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
+       "file": null,
+       "dur": 12.2
+      }
+     ],
+     "log": "0300 hrs. Wall quiet.",
+     "choices": [
+      [
+       "Look at the wall",
+       "Look at the wall",
+       "leak-watch",
+       {
+        "log": "Looked at the wall."
+       }
+      ]
+     ]
+    },
+    "tenant-go": {
+     "folder": "night-shift/tenant-go",
+     "lang": "en",
+     "dir": "",
+     "time": "02:55",
+     "title": [
+      "Forty",
+      "Forty"
+     ],
+     "ambience": "corridor",
+     "focus": "c5",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Go. Radio at each floor.",
+       "sfx": "keys",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "Forty is one long room with fourteen screens, a man in a hoodie and a plastic cover over the thermostat. He looks up as if you were a delivery.",
+       "file": null,
+       "dur": 12.6
+      },
+      {
+       "speaker": "brandt",
+       "text": "Oh. Hi. It's cold.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "You write the thermostat's number. You tell him facilities will see to it at seven. He nods and does not look away from the screens again.",
+       "file": null,
+       "dur": 11.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Forty is the floor you can't help. Come on down. Mm.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
+       "file": null,
+       "dur": 12.2
+      },
+      {
+       "speaker": "narrator",
        "text": "The wall settles again. The coffee is, for once, not wrong. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
        "file": null,
        "dur": 15
@@ -10982,6 +12001,14 @@ window.ILTV_STORIES = {
      ],
      "log": "0245 hrs. Wall quiet.",
      "choices": [
+      [
+       "Look at the wall",
+       "Look at the wall",
+       "leak-watch",
+       {
+        "log": "Looked at the wall."
+       }
+      ],
       [
        "Look at the wall",
        "Look at the wall",
@@ -11009,9 +12036,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "On tile six a dark edge is spreading across the carpet from the janitor's closet, very slowly, the way a stain does when no one is looking.",
+       "text": "On tile six a dark edge is spreading across the carpet from the janitor's closet.",
        "file": null,
-       "dur": 11.8
+       "dur": 7
       },
       {
        "speaker": "dee",
@@ -11027,10 +12054,16 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Water's patient. Water finds the lowest place and waits.",
+       "text": "Old pipe. Mm.",
        "sfx": "clock-tick",
        "file": null,
-       "dur": 4.6
+       "dur": 2.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "The stain has not stopped.",
+       "file": null,
+       "dur": 3
       }
      ],
      "log": "0235 hrs. Camera 6, floor 44. Water spreading from the janitor's closet.",
@@ -11119,7 +12152,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "leak-quiet",
+       "leak-quiet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -11130,7 +12163,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "leak-quiet",
+       "leak-quiet-o",
        {
         "set": [
          "opined"
@@ -11141,7 +12174,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "leak-quiet",
+       "leak-quiet-m",
        {
         "set": [
          "opined"
@@ -11203,7 +12236,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "leak-quiet",
+       "leak-quiet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -11214,7 +12247,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "leak-quiet",
+       "leak-quiet-o",
        {
         "set": [
          "opined"
@@ -11225,7 +12258,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "leak-quiet",
+       "leak-quiet-m",
        {
         "set": [
          "opined"
@@ -11265,9 +12298,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "Forty-four is cold and bright and smells of wet carpet. Marisol is at the closet door with her sleeves up, holding a mop like a flag.",
+       "text": "Forty-four is cold and bright and smells of wet carpet. Marisol is at the closet door with her sleeves up, with a mop.",
        "file": null,
-       "dur": 11.4
+       "dur": 10.2
       },
       {
        "speaker": "marisol",
@@ -11293,7 +12326,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "leak-quiet",
+       "leak-quiet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -11304,7 +12337,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "leak-quiet",
+       "leak-quiet-o",
        {
         "set": [
          "opined"
@@ -11315,7 +12348,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "leak-quiet",
+       "leak-quiet-m",
        {
         "set": [
          "opined"
@@ -11325,8 +12358,8 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "leak-quiet": {
-     "folder": "night-shift/leak-quiet",
+    "leak-quiet-f": {
+     "folder": "night-shift/leak-quiet-f",
      "lang": "en",
      "dir": "",
      "time": "02:55",
@@ -11336,6 +12369,12 @@ window.ILTV_STORIES = {
      ],
      "ambience": "control-room",
      "lines": [
+      {
+       "speaker": "dee",
+       "text": "Hose. Sink. Off. That's a log.",
+       "file": null,
+       "dur": 3.4
+      },
       {
        "speaker": "narrator",
        "text": "Quarter to three. The wall is quiet again. Dolores holds her cup with both hands and does not drink from it.",
@@ -11350,9 +12389,179 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She has said it three times tonight in three forms, and every time as if it were a rule in the binder. It is not in the binder. You have read the binder.",
+       "text": "It is not in the binder. You have read the binder.",
        "file": null,
-       "dur": 14.2
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile six the carpet is drying, a dark shape and then a shadow.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0255 hrs. Control room. Wall quiet.",
+     "choices": [
+      [
+       "Sit by her. Say nothing.",
+       "Sit by her. Say nothing.",
+       "four-hours",
+       {
+        "forbids": [
+         "left_wall"
+        ],
+        "meters": {
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Sat by D. Reyes and said nothing."
+       }
+      ],
+      [
+       "Ask about Ray",
+       "Ask about Ray",
+       "dee-shut",
+       {
+        "add": {
+         "trainer_warmth": -2,
+         "trainer_trust": -1
+        },
+        "log": "Asked D. Reyes about Ray."
+       }
+      ],
+      [
+       "Go back to the wall",
+       "Go back to the wall",
+       "three-oclock",
+       {
+        "log": "Went back to the wall."
+       }
+      ]
+     ]
+    },
+    "leak-quiet-o": {
+     "folder": "night-shift/leak-quiet-o",
+     "lang": "en",
+     "dir": "",
+     "time": "02:55",
+     "title": [
+      "The cup",
+      "The cup"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Careless cleaner. Marisol's crew is never careless. They're loud. Write the hose.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Quarter to three. The wall is quiet again. Dolores holds her cup with both hands and does not drink from it.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is not in the binder. You have read the binder.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile six the carpet is drying, a dark shape and then a shadow.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0255 hrs. Control room. Wall quiet.",
+     "choices": [
+      [
+       "Sit by her. Say nothing.",
+       "Sit by her. Say nothing.",
+       "four-hours",
+       {
+        "forbids": [
+         "left_wall"
+        ],
+        "meters": {
+         "trainer_warmth": {
+          "min": 2
+         }
+        },
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Sat by D. Reyes and said nothing."
+       }
+      ],
+      [
+       "Ask about Ray",
+       "Ask about Ray",
+       "dee-shut",
+       {
+        "add": {
+         "trainer_warmth": -2,
+         "trainer_trust": -1
+        },
+        "log": "Asked D. Reyes about Ray."
+       }
+      ],
+      [
+       "Go back to the wall",
+       "Go back to the wall",
+       "three-oclock",
+       {
+        "log": "Went back to the wall."
+       }
+      ]
+     ]
+    },
+    "leak-quiet-m": {
+     "folder": "night-shift/leak-quiet-m",
+     "lang": "en",
+     "dir": "",
+     "time": "02:55",
+     "title": [
+      "The cup",
+      "The cup"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Forty-four's the one he'll ask about. The water's gone. The carpet isn't.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Quarter to three. The wall is quiet again. Dolores holds her cup with both hands and does not drink from it.",
+       "file": null,
+       "dur": 9.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is not in the binder. You have read the binder.",
+       "file": null,
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
@@ -11523,9 +12732,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Nothing happens at three o'clock. That's why we're here. Nothing is the job. Mm.",
+       "text": "Nothing happens at three o'clock. That's why we're here. Mm.",
        "file": null,
-       "dur": 6.6
+       "dur": 5
       },
       {
        "speaker": "dee",
@@ -11895,15 +13104,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "His breath is on the line. It is the only thing on the line. You have about as long as it takes to say a sentence to decide which voice you owe.",
+       "text": "His breath is on the line.",
        "file": null,
-       "dur": 13.8
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
-       "text": "The intercom crackles. The picture on tile five does not change. It is a lit number between two floors, and a man behind it whose breath you have started to count.",
+       "text": "The intercom crackles. The picture on tile five does not change. It is a lit number between two floors.",
        "file": null,
-       "dur": 13.4
+       "dur": 8.6
       }
      ],
      "log": "0310 hrs. Intercom contact with occupant of car 3 maintained. Radio check from D. Reyes received.",
@@ -12401,9 +13610,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "pierce",
-       "text": "Evening. Don't get up. Whatever's on that screen, it's yours.",
+       "text": "Evening. Don't get up.",
        "file": null,
-       "dur": 5
+       "dur": 2.6
       }
      ],
      "log": "0328 hrs. Lobby. Chairman P. Hawkes arrived by the revolving door, proceeding to the elevators.",
@@ -12447,9 +13656,15 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "A car chimes. The doors close on the coat. On tile seven the glass doors of fifty-eight open before the car has finished rising, and the man crosses the reception with his phone at his ear.",
-       "sfx": "elevator-chime",
        "file": null,
        "dur": 15.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "He does not sit. He does not turn on a light. He stands at the glass for most of a minute, looking at the dark, the phone down at his side.",
+       "sfx": "elevator-chime",
+       "file": null,
+       "dur": 13.4
       }
      ],
      "log": "0330 hrs. Camera 7, 58 reception. Chairman crossed reception, no further contact.",
@@ -12574,21 +13789,21 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "dee",
-       "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera. I don't know if that's a compliment.",
+       "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera.",
        "file": null,
-       "dur": 9
+       "dur": 6.2
       },
       {
        "speaker": "dee",
-       "text": "He walks it every night he's in town. Never signs. Never stops. Gets out at fifty-eight, stands at the glass, goes home. Mm. Nobody's ever asked him why.",
+       "text": "He walks it every night he's in town. Never signs. Never stops.",
        "file": null,
-       "dur": 12.2
+       "dur": 5.8
       },
       {
        "speaker": "dee",
-       "text": "You don't ask. You write what he does. That's all anyone's ever got on him. A log.",
+       "text": "Mm. Don't ask. Write what he does.",
        "file": null,
-       "dur": 7.8
+       "dur": 3.8
       },
       {
        "speaker": "narrator",
@@ -12830,15 +14045,21 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Camera, time, what it did. Not \"something's wrong.\" That's a mood, not a sentence.",
+       "text": "Camera, time, what it did. Not \"something's wrong.\"",
        "file": null,
-       "dur": 6.6
+       "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. Say it first. Then we'll see.",
        "file": null,
        "dur": 9.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Stopped. Not why. Write it.",
+       "file": null,
+       "dur": 3
       }
      ],
      "log": "0343 hrs. Camera 9 feed frozen since 0341.",
@@ -12846,7 +14067,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "trouble-signal",
+       "trouble-signal-f",
        {
         "add": {
          "trainer_trust": 1
@@ -12857,7 +14078,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "trouble-signal",
+       "trouble-signal-o",
        {
         "set": [
          "opined"
@@ -12868,7 +14089,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "trouble-signal",
+       "trouble-signal-m",
        {
         "set": [
          "opined"
@@ -12879,7 +14100,7 @@ window.ILTV_STORIES = {
       [
        "Write that you checked it",
        "Write that you checked it",
-       "trouble-signal",
+       "trouble-signal-l",
        {
         "set": [
          "lied"
@@ -12908,6 +14129,12 @@ window.ILTV_STORIES = {
      "focus": "c9",
      "lines": [
       {
+       "speaker": "narrator",
+       "text": "Dolores has her eyes on nine. She has not said a word.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
        "speaker": "dee",
        "text": "Nine hasn't moved in fourteen minutes.",
        "file": null,
@@ -12915,9 +14142,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "You were looking right at it. Mm. Looking is not seeing. Say it now. Exactly.",
+       "text": "You were looking right at it. Mm. Say it now. Exactly.",
        "file": null,
-       "dur": 7
+       "dur": 5.4
       },
       {
        "speaker": "narrator",
@@ -12931,7 +14158,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "trouble-signal",
+       "trouble-signal-f",
        {
         "add": {
          "trainer_trust": 1
@@ -12942,7 +14169,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "trouble-signal",
+       "trouble-signal-o",
        {
         "set": [
          "opined"
@@ -12953,7 +14180,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "trouble-signal",
+       "trouble-signal-m",
        {
         "set": [
          "opined"
@@ -12964,7 +14191,7 @@ window.ILTV_STORIES = {
       [
        "Write that you noticed it first",
        "Write that you noticed it first",
-       "trouble-signal",
+       "trouble-signal-l",
        {
         "set": [
          "lied"
@@ -12977,8 +14204,8 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "trouble-signal": {
-     "folder": "night-shift/trouble-signal",
+    "trouble-signal-f": {
+     "folder": "night-shift/trouble-signal-f",
      "lang": "en",
      "dir": "",
      "time": "03:58",
@@ -12993,6 +14220,12 @@ window.ILTV_STORIES = {
      "focus": "c9",
      "lines": [
       {
+       "speaker": "dee",
+       "text": "Camera, time, what it did. There. That's the sentence.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
        "speaker": "narrator",
        "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
        "sfx": "panel-buzzer",
@@ -13001,9 +14234,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "On tile nine, frozen, the repeater is still green. In this room it is amber. Two things that should say the same thing are saying different things.",
+       "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
        "file": null,
-       "dur": 11.8
+       "dur": 7
       },
       {
        "speaker": "dee",
@@ -13013,15 +14246,282 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Thirty years on this panel, it's cried wolf nine hundred times. Mm. I don't say it's right. I say it's what I do.",
+       "text": "Nine hundred times it's done that. Mm. Press the silence.",
        "file": null,
-       "dur": 10.2
+       "dur": 5
       },
       {
        "speaker": "narrator",
-       "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven. The fire panel belongs to the director, not to you. You have read it. She has read it more times than anyone alive.",
+       "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
        "file": null,
-       "dur": 15.8
+       "dur": 6.6
+      }
+     ],
+     "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+     "choices": [
+      [
+       "Silence it, like Dee says",
+       "Silence it, like Dee says",
+       "trouble-silenced",
+       {
+        "set": [
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Pressed the silence on the fire panel's trouble buzzer."
+       }
+      ],
+      [
+       "Call Ms. Adler",
+       "Call Ms. Adler",
+       "adler-call",
+       {
+        "log": "Called the certified fire safety director about the trouble signal."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "okafor-trouble",
+       {
+        "log": "Called the supervisor's night line about the fire panel."
+       }
+      ]
+     ]
+    },
+    "trouble-signal-o": {
+     "folder": "night-shift/trouble-signal-o",
+     "lang": "en",
+     "dir": "",
+     "time": "03:58",
+     "title": [
+      "The panel",
+      "The panel"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c9": "frozen"
+     },
+     "focus": "c9",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Tampering. Who tampered? Mm. Write that it stopped.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+       "sfx": "panel-buzzer",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "Nine hundred times it's done that. Mm. Press the silence.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+     "choices": [
+      [
+       "Silence it, like Dee says",
+       "Silence it, like Dee says",
+       "trouble-silenced",
+       {
+        "set": [
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Pressed the silence on the fire panel's trouble buzzer."
+       }
+      ],
+      [
+       "Call Ms. Adler",
+       "Call Ms. Adler",
+       "adler-call",
+       {
+        "log": "Called the certified fire safety director about the trouble signal."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "okafor-trouble",
+       {
+        "log": "Called the supervisor's night line about the fire panel."
+       }
+      ]
+     ]
+    },
+    "trouble-signal-m": {
+     "folder": "night-shift/trouble-signal-m",
+     "lang": "en",
+     "dir": "",
+     "time": "03:58",
+     "title": [
+      "The panel",
+      "The panel"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c9": "frozen"
+     },
+     "focus": "c9",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Nine stopped. If you don't write it, nine didn't stop. Mm. It stopped.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+       "sfx": "panel-buzzer",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "Nine hundred times it's done that. Mm. Press the silence.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
+       "file": null,
+       "dur": 6.6
+      }
+     ],
+     "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+     "choices": [
+      [
+       "Silence it, like Dee says",
+       "Silence it, like Dee says",
+       "trouble-silenced",
+       {
+        "set": [
+         "trouble_open"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Pressed the silence on the fire panel's trouble buzzer."
+       }
+      ],
+      [
+       "Call Ms. Adler",
+       "Call Ms. Adler",
+       "adler-call",
+       {
+        "log": "Called the certified fire safety director about the trouble signal."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "okafor-trouble",
+       {
+        "log": "Called the supervisor's night line about the fire panel."
+       }
+      ]
+     ]
+    },
+    "trouble-signal-l": {
+     "folder": "night-shift/trouble-signal-l",
+     "lang": "en",
+     "dir": "",
+     "time": "03:58",
+     "title": [
+      "The panel",
+      "The panel"
+     ],
+     "ambience": "control-room",
+     "feeds": {
+      "c9": "frozen"
+     },
+     "focus": "c9",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Checked in person. You went to floor two?",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Nobody left this room. Officer.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "At 03:58 the fire panel beside the binder gives one low buzz and does not stop. An amber light. The display: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+       "sfx": "panel-buzzer",
+       "file": null,
+       "dur": 11.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "Nine hundred times it's done that. Mm. Press the silence.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
+       "file": null,
+       "dur": 6.6
       }
      ],
      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
@@ -13173,6 +14673,12 @@ window.ILTV_STORIES = {
        "text": "Read me the display. Exactly. Do not paraphrase.",
        "file": null,
        "dur": 4.2
+      },
+      {
+       "speaker": "adler",
+       "text": "Nineteen years. The panel says what it means. Read it exactly.",
+       "file": null,
+       "dur": 5.4
       }
      ],
      "log": "0405 hrs. Fire safety director on the phone. Display being read.",
@@ -13243,7 +14749,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "adler-arrives",
+       "adler-arrives-f",
        {
         "add": {
          "trainer_trust": 1
@@ -13254,7 +14760,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "adler-arrives",
+       "adler-arrives-o",
        {
         "set": [
          "opined"
@@ -13265,7 +14771,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "adler-arrives",
+       "adler-arrives-m",
        {
         "set": [
          "opined"
@@ -13276,7 +14782,7 @@ window.ILTV_STORIES = {
       [
        "Write that it was cleared",
        "Write that it was cleared",
-       "adler-arrives",
+       "adler-arrives-l",
        {
         "set": [
          "lied"
@@ -13330,7 +14836,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "adler-arrives",
+       "adler-arrives-f",
        {
         "add": {
          "trainer_trust": 1
@@ -13341,7 +14847,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "adler-arrives",
+       "adler-arrives-o",
        {
         "set": [
          "opined"
@@ -13352,7 +14858,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "adler-arrives",
+       "adler-arrives-m",
        {
         "set": [
          "opined"
@@ -13363,7 +14869,7 @@ window.ILTV_STORIES = {
       [
        "Write that it was cleared",
        "Write that it was cleared",
-       "adler-arrives",
+       "adler-arrives-l",
        {
         "set": [
          "lied"
@@ -13376,8 +14882,8 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "adler-arrives": {
-     "folder": "night-shift/adler-arrives",
+    "adler-arrives-f": {
+     "folder": "night-shift/adler-arrives-f",
      "lang": "en",
      "dir": "",
      "time": "04:12",
@@ -13389,9 +14895,15 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it the way you read a menu in a foreign language.",
+       "text": "She reads your entry on the tablet before she reads the panel.",
        "file": null,
-       "dur": 16.6
+       "dur": 5.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
+       "file": null,
+       "dur": 13
       },
       {
        "speaker": "adler",
@@ -13407,19 +14919,240 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "adler",
-       "text": "Detector thirty-one, fourteen. A loose head. A technician at eight. Initial the log beside mine.",
+       "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
        "file": null,
-       "dur": 7
+       "dur": 5.8
       },
       {
        "speaker": "adler",
-       "text": "The alcove camera has stopped. That is on the same switch. It is a cable. Nobody did anything.",
+       "text": "The alcove camera has stopped. It is on the same switch.",
        "file": null,
-       "dur": 8.2
+       "dur": 5.4
       }
      ],
      "log": "0412 hrs. FSD H. Adler at the panel. Detector 31-14, loose head. Technician at 0800.",
      "choices": [
+      [
+       "Initial the log beside hers",
+       "Initial the log beside hers",
+       "courier-intercom",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Initialed the log beside the fire safety director's entry."
+       }
+      ]
+     ]
+    },
+    "adler-arrives-o": {
+     "folder": "night-shift/adler-arrives-o",
+     "lang": "en",
+     "dir": "",
+     "time": "04:12",
+     "title": [
+      "At the panel",
+      "At the panel"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "She reads your entry on the tablet before she reads the panel.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "adler",
+       "text": "That word is not on the display. Please cross it out and write what the display said.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "adler",
+       "text": "Dolores.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Helen.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "adler",
+       "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "adler",
+       "text": "The alcove camera has stopped. It is on the same switch.",
+       "file": null,
+       "dur": 5.4
+      }
+     ],
+     "log": "0412 hrs. FSD H. Adler at the panel. Detector 31-14, loose head. Technician at 0800.",
+     "choices": [
+      [
+       "Initial the log beside hers",
+       "Initial the log beside hers",
+       "courier-intercom",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Initialed the log beside the fire safety director's entry."
+       }
+      ]
+     ]
+    },
+    "adler-arrives-m": {
+     "folder": "night-shift/adler-arrives-m",
+     "lang": "en",
+     "dir": "",
+     "time": "04:12",
+     "title": [
+      "At the panel",
+      "At the panel"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "She looks for your entry on the tablet. There isn't one.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "adler",
+       "text": "I will wait. Please write it now, in the same words.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "adler",
+       "text": "Dolores.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Helen.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "adler",
+       "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "adler",
+       "text": "The alcove camera has stopped. It is on the same switch.",
+       "file": null,
+       "dur": 5.4
+      }
+     ],
+     "log": "0412 hrs. FSD H. Adler at the panel. Detector 31-14, loose head. Technician at 0800.",
+     "choices": [
+      [
+       "Initial the log beside hers",
+       "Initial the log beside hers",
+       "courier-intercom",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Initialed the log beside the fire safety director's entry."
+       }
+      ]
+     ]
+    },
+    "adler-arrives-l": {
+     "folder": "night-shift/adler-arrives-l",
+     "lang": "en",
+     "dir": "",
+     "time": "04:12",
+     "title": [
+      "At the panel",
+      "At the panel"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "She reads your entry on the tablet, and then she looks at the panel, and then at the tablet again.",
+       "file": null,
+       "dur": 9
+      },
+      {
+       "speaker": "adler",
+       "text": "The panel has not been reset. I am looking at it. Please correct the entry.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "narrator",
+       "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
+       "file": null,
+       "dur": 13
+      },
+      {
+       "speaker": "adler",
+       "text": "Dolores.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Helen.",
+       "file": null,
+       "dur": 1.4
+      },
+      {
+       "speaker": "adler",
+       "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
+       "file": null,
+       "dur": 5.8
+      },
+      {
+       "speaker": "adler",
+       "text": "The alcove camera has stopped. It is on the same switch.",
+       "file": null,
+       "dur": 5.4
+      }
+     ],
+     "log": "0412 hrs. FSD H. Adler at the panel. Detector 31-14, loose head. Technician at 0800.",
+     "choices": [
+      [
+       "Correct the entry now",
+       "Correct the entry now",
+       "courier-intercom",
+       {
+        "clear": [
+         "lied"
+        ],
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Corrected the false panel entry in front of the fire safety director."
+       }
+      ],
       [
        "Initial the log beside hers",
        "Initial the log beside hers",
@@ -13487,9 +15220,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "The book says no. The book says no, and I've said yes forty times, and nobody's died. Mm. You decide which of those is the point.",
+       "text": "Book says no. I've said yes forty times. Mm. Your call.",
        "file": null,
-       "dur": 11.4
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Whoever you tell, you write who.",
+       "file": null,
+       "dur": 3.4
       }
      ],
      "log": "0425 hrs. Loading dock. Courier at the intercom with a box for floor 58. No authorization on the list.",
@@ -13624,10 +15363,10 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "courier",
-       "text": "Okay. Okay. Have a night.",
+       "text": "Yeah. Have a night.",
        "sfx": "intercom",
        "file": null,
-       "dur": 3
+       "dur": 2.6
       },
       {
        "speaker": "dee",
@@ -13641,7 +15380,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "sleeper-core",
+       "hum-0435-f",
        {
         "add": {
          "trainer_trust": 1
@@ -13652,7 +15391,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "sleeper-core",
+       "hum-0435-o",
        {
         "set": [
          "opined"
@@ -13663,7 +15402,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "sleeper-core",
+       "hum-0435-m",
        {
         "set": [
          "opined"
@@ -13713,7 +15452,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "sleeper-core",
+       "hum-0435-f",
        {
         "add": {
          "trainer_trust": 1
@@ -13724,7 +15463,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "sleeper-core",
+       "hum-0435-o",
        {
         "set": [
          "opined"
@@ -13735,7 +15474,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "sleeper-core",
+       "hum-0435-m",
        {
         "set": [
          "opined"
@@ -13788,7 +15527,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "sleeper-core",
+       "hum-0435-f",
        {
         "add": {
          "trainer_trust": 1
@@ -13799,7 +15538,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "sleeper-core",
+       "hum-0435-o",
        {
         "set": [
          "opined"
@@ -13810,7 +15549,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "sleeper-core",
+       "hum-0435-m",
        {
         "set": [
          "opined"
@@ -13820,14 +15559,215 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "sleeper-core": {
-     "folder": "night-shift/sleeper-core",
+    "hum-0435-f": {
+     "folder": "night-shift/hum-0435-f",
      "lang": "en",
      "dir": "",
-     "time": "04:45",
+     "time": "04:35",
      "title": [
-      "The ledge",
-      "The ledge"
+      "A sound she makes",
+      "A sound she makes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Box, dock, who, when. Fine.",
+       "file": null,
+       "dur": 3
+      },
+      {
+       "speaker": "narrator",
+       "text": "04:35. The panel is quiet and the dock is empty. Dolores is humming. She does not know she is.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is an old song, flat on the high notes. She stops when she hears herself, and starts again a bar later.",
+       "file": null,
+       "dur": 9.8
+      }
+     ],
+     "log": "0435 hrs. Control room. Wall quiet.",
+     "choices": [
+      [
+       "Hum along, quietly",
+       "Hum along, quietly",
+       "hum-along",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Hummed along with D. Reyes."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "hum-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Said nothing and kept the wall."
+       }
+      ],
+      [
+       "Ask what the song is",
+       "Ask what the song is",
+       "hum-ask",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes what she was humming."
+       }
+      ]
+     ]
+    },
+    "hum-0435-o": {
+     "folder": "night-shift/hum-0435-o",
+     "lang": "en",
+     "dir": "",
+     "time": "04:35",
+     "title": [
+      "A sound she makes",
+      "A sound she makes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Probably expected. By whom? Write the label.",
+       "file": null,
+       "dur": 3.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "04:35. The panel is quiet and the dock is empty. Dolores is humming. She does not know she is.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is an old song, flat on the high notes. She stops when she hears herself, and starts again a bar later.",
+       "file": null,
+       "dur": 9.8
+      }
+     ],
+     "log": "0435 hrs. Control room. Wall quiet.",
+     "choices": [
+      [
+       "Hum along, quietly",
+       "Hum along, quietly",
+       "hum-along",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Hummed along with D. Reyes."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "hum-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Said nothing and kept the wall."
+       }
+      ],
+      [
+       "Ask what the song is",
+       "Ask what the song is",
+       "hum-ask",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes what she was humming."
+       }
+      ]
+     ]
+    },
+    "hum-0435-m": {
+     "folder": "night-shift/hum-0435-m",
+     "lang": "en",
+     "dir": "",
+     "time": "04:35",
+     "title": [
+      "A sound she makes",
+      "A sound she makes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "No line. Seven o'clock somebody asks where the box came from. Then you're tired too.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "narrator",
+       "text": "04:35. The panel is quiet and the dock is empty. Dolores is humming. She does not know she is.",
+       "file": null,
+       "dur": 8.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "It is an old song, flat on the high notes. She stops when she hears herself, and starts again a bar later.",
+       "file": null,
+       "dur": 9.8
+      }
+     ],
+     "log": "0435 hrs. Control room. Wall quiet.",
+     "choices": [
+      [
+       "Hum along, quietly",
+       "Hum along, quietly",
+       "hum-along",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Hummed along with D. Reyes."
+       }
+      ],
+      [
+       "Say nothing",
+       "Say nothing",
+       "hum-quiet",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Said nothing and kept the wall."
+       }
+      ],
+      [
+       "Ask what the song is",
+       "Ask what the song is",
+       "hum-ask",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Asked D. Reyes what she was humming."
+       }
+      ]
+     ]
+    },
+    "hum-along": {
+     "folder": "night-shift/hum-along",
+     "lang": "en",
+     "dir": "",
+     "time": "04:40",
+     "title": [
+      "Not the key",
+      "Not the key"
      ],
      "ambience": "vestibule",
      "feeds": {
@@ -13835,6 +15775,18 @@ window.ILTV_STORIES = {
      },
      "focus": "c2",
      "lines": [
+      {
+       "speaker": "dee",
+       "text": "That's not the key.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm. Fine. Go on. Quieter. You'll wake the monitors.",
+       "file": null,
+       "dur": 4.6
+      },
       {
        "speaker": "narrator",
        "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen.",
@@ -13855,9 +15807,203 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Book says trespass. Book says the owner's property. Book doesn't say fourteen degrees. Mm. That's why there's me.",
+       "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
        "file": null,
-       "dur": 8.2
+       "dur": 4.6
+      }
+     ],
+     "log": "0445 hrs. Camera 2, vestibule. Individual asleep on the ledge. Outside temperature 14 degrees.",
+     "choices": [
+      [
+       "Watch him, twenty minutes",
+       "Watch him, twenty minutes",
+       "sleeper-watch",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Watched camera 2 with D. Reyes for twenty minutes."
+       }
+      ],
+      [
+       "Wake him, gently",
+       "Wake him, gently",
+       "sleeper-wake",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Went to the vestibule door to speak to the individual."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "sleeper-super",
+       {
+        "log": "Called the supervisor's night line about the individual in the vestibule."
+       }
+      ],
+      [
+       "Call 911",
+       "Call 911",
+       "sleeper-911",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Called 911 for a welfare check on the individual in the vestibule."
+       }
+      ]
+     ]
+    },
+    "hum-quiet": {
+     "folder": "night-shift/hum-quiet",
+     "lang": "en",
+     "dir": "",
+     "time": "04:40",
+     "title": [
+      "The wall",
+      "The wall"
+     ],
+     "ambience": "vestibule",
+     "feeds": {
+      "c2": "sleeper"
+     },
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "narrator",
+       "text": "You keep your eyes on the wall. She hums a verse, and part of another. Then she notices, and her mouth closes.",
+       "file": null,
+       "dur": 9.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Habit. Mm.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
+       "file": null,
+       "dur": 13.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
+       "file": null,
+       "dur": 4.6
+      }
+     ],
+     "log": "0445 hrs. Camera 2, vestibule. Individual asleep on the ledge. Outside temperature 14 degrees.",
+     "choices": [
+      [
+       "Watch him, twenty minutes",
+       "Watch him, twenty minutes",
+       "sleeper-watch",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Watched camera 2 with D. Reyes for twenty minutes."
+       }
+      ],
+      [
+       "Wake him, gently",
+       "Wake him, gently",
+       "sleeper-wake",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Went to the vestibule door to speak to the individual."
+       }
+      ],
+      [
+       "Call Mr. Okafor's line",
+       "Call Mr. Okafor's line",
+       "sleeper-super",
+       {
+        "log": "Called the supervisor's night line about the individual in the vestibule."
+       }
+      ],
+      [
+       "Call 911",
+       "Call 911",
+       "sleeper-911",
+       {
+        "add": {
+         "slips": 1
+        },
+        "log": "Called 911 for a welfare check on the individual in the vestibule."
+       }
+      ]
+     ]
+    },
+    "hum-ask": {
+     "folder": "night-shift/hum-ask",
+     "lang": "en",
+     "dir": "",
+     "time": "04:40",
+     "title": [
+      "The sound",
+      "The sound"
+     ],
+     "ambience": "vestibule",
+     "feeds": {
+      "c2": "sleeper"
+     },
+     "focus": "c2",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "No song. A sound I make. When it's quiet.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Terrell's got a name for it. Don't ask him.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen.",
+       "file": null,
+       "dur": 13.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
+       "file": null,
+       "dur": 13.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
+       "file": null,
+       "dur": 5.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
+       "file": null,
+       "dur": 4.6
       }
      ],
      "log": "0445 hrs. Camera 2, vestibule. Individual asleep on the ledge. Outside temperature 14 degrees.",
@@ -13951,7 +16097,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "dawn-tablet",
+       "dawn-tablet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -13962,7 +16108,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "dawn-tablet",
+       "dawn-tablet-o",
        {
         "set": [
          "opined"
@@ -13973,7 +16119,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "dawn-tablet",
+       "dawn-tablet-m",
        {
         "set": [
          "opined"
@@ -14086,7 +16232,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "dawn-tablet",
+       "dawn-tablet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -14097,7 +16243,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "dawn-tablet",
+       "dawn-tablet-o",
        {
         "set": [
          "opined"
@@ -14108,7 +16254,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "dawn-tablet",
+       "dawn-tablet-m",
        {
         "set": [
          "opined"
@@ -14138,9 +16284,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. She watches tile two until he is out of the frame and for a while after.",
+       "text": "Mm.",
        "file": null,
-       "dur": 7.8
+       "dur": 1.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "She watches tile two until he is out of the frame and for a while after.",
+       "file": null,
+       "dur": 7.4
       },
       {
        "speaker": "narrator",
@@ -14154,7 +16306,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "dawn-tablet",
+       "dawn-tablet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -14165,7 +16317,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "dawn-tablet",
+       "dawn-tablet-o",
        {
         "set": [
          "opined"
@@ -14176,7 +16328,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "dawn-tablet",
+       "dawn-tablet-m",
        {
         "set": [
          "opined"
@@ -14232,7 +16384,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "dawn-tablet",
+       "dawn-tablet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -14243,7 +16395,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "dawn-tablet",
+       "dawn-tablet-o",
        {
         "set": [
          "opined"
@@ -14254,7 +16406,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "dawn-tablet",
+       "dawn-tablet-m",
        {
         "set": [
          "opined"
@@ -14310,7 +16462,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "dawn-tablet",
+       "dawn-tablet-f",
        {
         "add": {
          "trainer_trust": 1
@@ -14321,7 +16473,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "dawn-tablet",
+       "dawn-tablet-o",
        {
         "set": [
          "opined"
@@ -14332,7 +16484,7 @@ window.ILTV_STORIES = {
       [
        "Leave it out",
        "Leave it out",
-       "dawn-tablet",
+       "dawn-tablet-m",
        {
         "set": [
          "opined"
@@ -14342,8 +16494,8 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "dawn-tablet": {
-     "folder": "night-shift/dawn-tablet",
+    "dawn-tablet-f": {
+     "folder": "night-shift/dawn-tablet-f",
      "lang": "en",
      "dir": "",
      "time": "05:15",
@@ -14353,6 +16505,130 @@ window.ILTV_STORIES = {
      ],
      "ambience": "control-room",
      "lines": [
+      {
+       "speaker": "dee",
+       "text": "Fourteen degrees. In the log. Mm.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "05:15. The sky has not changed yet. The wall has gone as quiet as it will get.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Dolores takes her coat to the restroom. The tablet stays where she was working, open to her own page. The 0300 line is there in grey type. ROOF DOOR. TOUR. NO INCIDENT. D. REYES.",
+       "file": null,
+       "dur": 14.6
+      }
+     ],
+     "log": "0515 hrs. D. Reyes off the wall, restroom. Post one on the wall.",
+     "choices": [
+      [
+       "Check the roof door against it",
+       "Check the roof door against it",
+       "twelve-check",
+       {
+        "set": [
+         "noticed_12th"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked camera 8 and the access terminal against D. Reyes's 0300 entry."
+       }
+      ],
+      [
+       "Leave the page alone",
+       "Leave the page alone",
+       "dee-back-0520",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Left D. Reyes's page alone."
+       }
+      ]
+     ]
+    },
+    "dawn-tablet-o": {
+     "folder": "night-shift/dawn-tablet-o",
+     "lang": "en",
+     "dir": "",
+     "time": "05:15",
+     "title": [
+      "Her page",
+      "Her page"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Homeless. Okafor says individual. Not for him. For the lawyer.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "narrator",
+       "text": "05:15. The sky has not changed yet. The wall has gone as quiet as it will get.",
+       "file": null,
+       "dur": 7.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "Dolores takes her coat to the restroom. The tablet stays where she was working, open to her own page. The 0300 line is there in grey type. ROOF DOOR. TOUR. NO INCIDENT. D. REYES.",
+       "file": null,
+       "dur": 14.6
+      }
+     ],
+     "log": "0515 hrs. D. Reyes off the wall, restroom. Post one on the wall.",
+     "choices": [
+      [
+       "Check the roof door against it",
+       "Check the roof door against it",
+       "twelve-check",
+       {
+        "set": [
+         "noticed_12th"
+        ],
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked camera 8 and the access terminal against D. Reyes's 0300 entry."
+       }
+      ],
+      [
+       "Leave the page alone",
+       "Leave the page alone",
+       "dee-back-0520",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Left D. Reyes's page alone."
+       }
+      ]
+     ]
+    },
+    "dawn-tablet-m": {
+     "folder": "night-shift/dawn-tablet-m",
+     "lang": "en",
+     "dir": "",
+     "time": "05:15",
+     "title": [
+      "Her page",
+      "Her page"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "He was there. Whether you write it or not, he was there. Mm.",
+       "file": null,
+       "dur": 6.2
+      },
       {
        "speaker": "narrator",
        "text": "05:15. The sky has not changed yet. The wall has gone as quiet as it will get.",
@@ -14454,6 +16730,18 @@ window.ILTV_STORIES = {
        "text": "Mm. Light soon.",
        "file": null,
        "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Six o'clock, the sky does a thing. Over the river. Can't see the river. Mm.",
+       "file": null,
+       "dur": 7
+      },
+      {
+       "speaker": "narrator",
+       "text": "Tile one shows the long bench, the long desk, the long floor, all of it a color between grey and nothing.",
+       "file": null,
+       "dur": 9.4
       }
      ],
      "log": "0520 hrs. D. Reyes returned to the wall.",
@@ -14539,15 +16827,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "They took it out. Nine years ago. I stand where the door was.",
+       "text": "They took it out. Nine years. Mm.",
        "file": null,
-       "dur": 6.2
+       "dur": 3.8
       },
       {
        "speaker": "dee",
-       "text": "Ten minutes. Then I log it. I log it wrong. Mm. You know.",
+       "text": "Ten minutes. Then I write tour. Mm. Is there coffee.",
        "file": null,
-       "dur": 6.2
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -14601,15 +16889,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Facts only. Isn't that what I said. A sensor reads a door. It doesn't read a person.",
+       "text": "Facts only. Isn't that what I said. Mm. A sensor reads a door.",
        "file": null,
-       "dur": 7.8
+       "dur": 6.2
       },
       {
        "speaker": "narrator",
-       "text": "She is formal for the rest of the hour. She calls you Officer twice, as if she were checking that it still fits.",
+       "text": "She is formal for the rest of the hour. She calls you Officer twice.",
        "file": null,
-       "dur": 10.2
+       "dur": 6.6
       }
      ],
      "log": "0524 hrs. Control room. D. Reyes formal.",
@@ -14659,6 +16947,25 @@ window.ILTV_STORIES = {
        "dur": 2.6
       },
       {
+       "speaker": "marisol",
+       "text": "Dolores! There's a plate for you on the shelf by the freezer. Rice. Don't say no.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dee",
+       "text": "I didn't say anything.",
+       "file": null,
+       "dur": 2.6
+      },
+      {
+       "speaker": "marisol",
+       "text": "Your face said no, mi amor! It always says no. Eat it!",
+       "sfx": "walkie-squelch",
+       "file": null,
+       "dur": 5.8
+      },
+      {
        "speaker": "narrator",
        "text": "On tile five a bar of pink light lies across the carpet at the window. On tile one the day officer's cap is a shape in the vestibule, waiting for the door.",
        "file": null,
@@ -14666,9 +16973,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Seven hours is a long time to be careful. Nobody's ever said it. Mm. Somebody should have.",
+       "text": "Mm. Rice. By the freezer.",
        "file": null,
-       "dur": 7.8
+       "dur": 3
       },
       {
        "speaker": "narrator",
@@ -14734,10 +17041,22 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "You wrote it the way it was. That's the whole job.",
+       "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
        "sfx": "pencil",
        "file": null,
-       "dur": 5.4
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Every one has a time. Every one has a place. Nobody's lazy, nobody's nervous, nobody seemed.",
+       "file": null,
+       "dur": 7.4
+      },
+      {
+       "speaker": "dee",
+       "text": "Way it was. Mm.",
+       "file": null,
+       "dur": 2.6
       },
       {
        "speaker": "dee",
@@ -14805,8 +17124,14 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Seemed. Probably. Seemed.",
+       "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
        "sfx": "pencil",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "dee",
+       "text": "Seemed. Probably. Seemed.",
        "file": null,
        "dur": 2.2
       },
@@ -14815,6 +17140,12 @@ window.ILTV_STORIES = {
        "text": "He'll say: how did he seem? What did you see? Fix the ones you can.",
        "file": null,
        "dur": 7
+      },
+      {
+       "speaker": "dee",
+       "text": "He wasn't here. The page is all he gets. Mm.",
+       "file": null,
+       "dur": 5
       }
      ],
      "log": "0540 hrs. Shift log reviewed with D. Reyes.",
@@ -14873,6 +17204,12 @@ window.ILTV_STORIES = {
        "text": "I read it.",
        "file": null,
        "dur": 2.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
+       "file": null,
+       "dur": 4.6
       },
       {
        "speaker": "dee",
@@ -14960,9 +17297,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "It was a small lie. Small ones are the ones that get you. Leave it. It's true now.",
+       "text": "Small one. Leave it. It's ink.",
        "file": null,
-       "dur": 8.2
+       "dur": 3.4
       }
      ],
      "log": "0550 hrs. Entry corrected by post one. Corrected entry replaces the previous entry.",
@@ -15029,7 +17366,7 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "Let's make sure we're aligned. You will tell me that now, not at the handover. Go and look at it. Together.",
+       "text": "Let's make sure we're aligned. You will tell me that now, not at the handover. I would like it looked at.",
        "file": null,
        "dur": 9.4
       },
@@ -15041,9 +17378,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "When she comes back the wedge is in her pocket. She puts it on the shelf beside the binder like a witness.",
+       "text": "When she comes back the wedge is in her pocket. She puts it on the shelf beside the binder.",
        "file": null,
-       "dur": 9.8
+       "dur": 8.6
       }
      ],
      "log": "0552 hrs. Supervisor notified of the wedge on 31, found still in place at 0545. Wedge removed by D. Reyes 0556.",
@@ -15202,9 +17539,9 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "narrator",
-       "text": "Six o'clock. The last field on the report is one line long. It has a label, END OF SHIFT, and a cursor that has been waiting all night.",
+       "text": "Six o'clock. The last field on the report is one line long. It has a label, END OF SHIFT, and a cursor.",
        "file": null,
-       "dur": 12.2
+       "dur": 9.8
       },
       {
        "speaker": "dee",
@@ -15214,15 +17551,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Before the rest. Before the times. He reads that line, and then he reads the rest to see if it's true. Mm.",
+       "text": "He reads that first. Then he checks the rest. Mm.",
        "file": null,
-       "dur": 9.8
+       "dur": 5
       },
       {
        "speaker": "narrator",
-       "text": "Outside, the sky over Madison Avenue has gone the color of the inside of a shell. On tile one the lobby has its first shadow.",
+       "text": "Outside, the sky over Madison Avenue has gone pale. On tile one the lobby has its first shadow.",
        "file": null,
-       "dur": 11
+       "dur": 8.2
       }
      ],
      "log": "0600 hrs. End-of-shift line open on the tablet.",
@@ -15230,7 +17567,7 @@ window.ILTV_STORIES = {
       [
        "Log it exactly",
        "Log it exactly",
-       "six-thirty",
+       "shift-prep-f",
        {
         "add": {
          "trainer_trust": 1
@@ -15241,7 +17578,7 @@ window.ILTV_STORIES = {
       [
        "Add what you thought",
        "Add what you thought",
-       "six-thirty",
+       "shift-prep-o",
        {
         "set": [
          "opined"
@@ -15252,7 +17589,7 @@ window.ILTV_STORIES = {
       [
        "Leave it blank",
        "Leave it blank",
-       "six-thirty",
+       "shift-prep-m",
        {
         "set": [
          "opined"
@@ -15263,7 +17600,7 @@ window.ILTV_STORIES = {
       [
        "Write: No incidents",
        "Write: No incidents",
-       "six-thirty",
+       "shift-prep-l",
        {
         "set": [
          "lied"
@@ -15272,6 +17609,380 @@ window.ILTV_STORIES = {
          "trainer_trust": -1
         },
         "log": "0600 hrs. End of shift. No incidents. Radios 4 of 4."
+       }
+      ]
+     ]
+    },
+    "shift-prep-f": {
+     "folder": "night-shift/shift-prep-f",
+     "lang": "en",
+     "dir": "",
+     "time": "06:10",
+     "title": [
+      "The last twenty minutes",
+      "The last twenty minutes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Eleven items. Good. He'll count them.",
+       "file": null,
+       "dur": 3.4
+      },
+      {
+       "speaker": "narrator",
+       "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Radios. Four.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Keys. On the hook. Binder. Page back where it was.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Cup. Rinsed.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Then the log. Then Okafor. Then home. Mm.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0610 hrs. Handover checklist run with D. Reyes.",
+     "choices": [
+      [
+       "Rinse her cup",
+       "Rinse her cup",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Rinsed D. Reyes's cup."
+       }
+      ],
+      [
+       "Count the radios again",
+       "Count the radios again",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Counted the radios again: 4 of 4."
+       }
+      ],
+      [
+       "Check the drawer",
+       "Check the drawer",
+       "six-thirty",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked that the shelf drawer was shut."
+       }
+      ]
+     ]
+    },
+    "shift-prep-o": {
+     "folder": "night-shift/shift-prep-o",
+     "lang": "en",
+     "dir": "",
+     "time": "06:10",
+     "title": [
+      "The last twenty minutes",
+      "The last twenty minutes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "Quiet night. It wasn't. Eleven items. Mm. He'll see.",
+       "file": null,
+       "dur": 4.6
+      },
+      {
+       "speaker": "narrator",
+       "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Radios. Four.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Keys. On the hook. Binder. Page back where it was.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Cup. Rinsed.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Then the log. Then Okafor. Then home. Mm.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0610 hrs. Handover checklist run with D. Reyes.",
+     "choices": [
+      [
+       "Rinse her cup",
+       "Rinse her cup",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Rinsed D. Reyes's cup."
+       }
+      ],
+      [
+       "Count the radios again",
+       "Count the radios again",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Counted the radios again: 4 of 4."
+       }
+      ],
+      [
+       "Check the drawer",
+       "Check the drawer",
+       "six-thirty",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked that the shelf drawer was shut."
+       }
+      ]
+     ]
+    },
+    "shift-prep-m": {
+     "folder": "night-shift/shift-prep-m",
+     "lang": "en",
+     "dir": "",
+     "time": "06:10",
+     "title": [
+      "The last twenty minutes",
+      "The last twenty minutes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "A blank is a line too. It says: didn't know what to say.",
+       "file": null,
+       "dur": 6.2
+      },
+      {
+       "speaker": "narrator",
+       "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Radios. Four.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Keys. On the hook. Binder. Page back where it was.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Cup. Rinsed.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Then the log. Then Okafor. Then home. Mm.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0610 hrs. Handover checklist run with D. Reyes.",
+     "choices": [
+      [
+       "Rinse her cup",
+       "Rinse her cup",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Rinsed D. Reyes's cup."
+       }
+      ],
+      [
+       "Count the radios again",
+       "Count the radios again",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Counted the radios again: 4 of 4."
+       }
+      ],
+      [
+       "Check the drawer",
+       "Check the drawer",
+       "six-thirty",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked that the shelf drawer was shut."
+       }
+      ]
+     ]
+    },
+    "shift-prep-l": {
+     "folder": "night-shift/shift-prep-l",
+     "lang": "en",
+     "dir": "",
+     "time": "06:10",
+     "title": [
+      "The last twenty minutes",
+      "The last twenty minutes"
+     ],
+     "ambience": "control-room",
+     "lines": [
+      {
+       "speaker": "dee",
+       "text": "No incidents.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Eleven. Mm.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "narrator",
+       "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
+       "file": null,
+       "dur": 10.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Radios. Four.",
+       "sfx": "radio-charger",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Keys. On the hook. Binder. Page back where it was.",
+       "file": null,
+       "dur": 5
+      },
+      {
+       "speaker": "dee",
+       "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "file": null,
+       "dur": 4.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Cup. Rinsed.",
+       "file": null,
+       "dur": 1.8
+      },
+      {
+       "speaker": "dee",
+       "text": "Then the log. Then Okafor. Then home. Mm.",
+       "file": null,
+       "dur": 4.2
+      }
+     ],
+     "log": "0610 hrs. Handover checklist run with D. Reyes.",
+     "choices": [
+      [
+       "Rinse her cup",
+       "Rinse her cup",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_warmth": 1
+        },
+        "log": "Rinsed D. Reyes's cup."
+       }
+      ],
+      [
+       "Count the radios again",
+       "Count the radios again",
+       "six-thirty",
+       {
+        "add": {
+         "trainer_trust": 1
+        },
+        "log": "Counted the radios again: 4 of 4."
+       }
+      ],
+      [
+       "Check the drawer",
+       "Check the drawer",
+       "six-thirty",
+       {
+        "add": {
+         "building_known": 1
+        },
+        "log": "Checked that the shelf drawer was shut."
        }
       ]
      ]
@@ -15819,15 +18530,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "A log is read later by people who weren't there. Sometimes by a lawyer. They have nothing but your words.",
+       "text": "The building manager wasn't here. Neither was the lawyer. They have your words.",
        "file": null,
-       "dur": 9
+       "dur": 6.2
       },
       {
        "speaker": "okafor",
-       "text": "It's not that anything is wrong. It's that I can't tell.",
+       "text": "I can't tell what happened.",
        "file": null,
-       "dur": 5.4
+       "dur": 3
       },
       {
        "speaker": "dee",
@@ -16053,15 +18764,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "It is the right thing to have written. I want you to hear me say that. It is also the thing I have to act on.",
+       "text": "That's noted. It is also the thing I have to act on.",
        "file": null,
-       "dur": 11.4
+       "dur": 5.8
       },
       {
        "speaker": "okafor",
-       "text": "Dolores. You know the rule. Eleven years.",
+       "text": "Dolores. You know the rule.",
        "file": null,
-       "dur": 3.8
+       "dur": 3
       },
       {
        "speaker": "dee",
@@ -16176,12 +18887,6 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "That is the whole job. That is all it ever was.",
-       "file": null,
-       "dur": 5.4
-      },
-      {
-       "speaker": "okafor",
        "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\" It is true and it is not a defense.",
        "file": null,
        "dur": 11.8
@@ -16287,9 +18992,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "I will not ask you why. The building manager will, and he is not a patient man, and he will not have slept either.",
+       "text": "I will not ask you why. The building manager will. He reads this at nine.",
        "file": null,
-       "dur": 10.6
+       "dur": 7
       },
       {
        "speaker": "okafor",
@@ -16357,9 +19062,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "The day officer asks how the night was. You tell him what happened, in order. He writes it down in the hand of a man who is learning to.",
+       "text": "The day officer asks how the night was. You tell him what happened, in order. He writes it down.",
        "file": null,
-       "dur": 12.6
+       "dur": 8.6
       },
       {
        "speaker": "dee",
@@ -16416,15 +19121,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "They tell me it's a camera and a woman in New Jersey. A woman in New Jersey who has never stood on twelve at three in the morning. Mm. Doesn't matter.",
+       "text": "A camera and a woman in New Jersey. Mm. Doesn't matter.",
        "file": null,
-       "dur": 13.4
+       "dur": 5.4
       },
       {
        "speaker": "dee",
-       "text": "Pencil. Write it plain. Somebody should, when they stop.",
+       "text": "Pencil. Write it plain.",
        "file": null,
-       "dur": 4.6
+       "dur": 2.6
       },
       {
        "speaker": "narrator",
@@ -16481,9 +19186,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "She says it again, \"Officer,\" and puts on her coat as if it were the first coat she had ever owned.",
+       "text": "She says it again, \"Officer,\" and puts on her coat.",
        "file": null,
-       "dur": 9.4
+       "dur": 5
       },
       {
        "speaker": "narrator",
@@ -16493,15 +19198,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Mm. It's the book. Clip it on.",
+       "text": "I'd have told him in April. Mm. It's the book. Clip it on.",
        "file": null,
-       "dur": 3.8
-      },
-      {
-       "speaker": "dee",
-       "text": "I'd have told him in April. You were right. Don't let it go to your head.",
-       "file": null,
-       "dur": 7.4
+       "dur": 6.2
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16552,9 +19251,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "dee",
-       "text": "Nobody's said it to you tonight so I'll say it plain. You didn't leave. Mm. That's all it ever is.",
+       "text": "You stayed on the wall. Mm. Tuesday.",
        "file": null,
-       "dur": 9
+       "dur": 3.8
       },
       {
        "speaker": "narrator",
@@ -16587,21 +19286,15 @@ window.ILTV_STORIES = {
      "lines": [
       {
        "speaker": "okafor",
-       "text": "So. Perfect. There is nothing in this log I would change. Ms. Reyes's evaluation is one line. \"Competent.\"",
+       "text": "So. There is nothing in this log I would change. Ms. Reyes's evaluation is one line. \"Competent.\"",
        "file": null,
-       "dur": 8.2
+       "dur": 7.8
       },
       {
        "speaker": "okafor",
-       "text": "That's the whole of it. It's noted. Thank you.",
+       "text": "That's noted. Thank you. Good morning.",
        "file": null,
-       "dur": 4.6
-      },
-      {
-       "speaker": "okafor",
-       "text": "I will say, for myself: this is the log I wish I had written, my first week. I did not write it. Good morning.",
-       "file": null,
-       "dur": 10.6
+       "dur": 3.4
       },
       {
        "speaker": "narrator",
@@ -16729,15 +19422,15 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "It's a good first week. It is not a clean one. Those are different.",
+       "text": "It is not a clean first week. That's noted.",
        "file": null,
-       "dur": 6.6
+       "dur": 4.6
       },
       {
        "speaker": "narrator",
-       "text": "He hands the tablet back. There are red marks beside each of them, down the margin like a staircase. You count them, and then you stop.",
+       "text": "He hands the tablet back. There are red marks beside each of them, down the margin. You count them, and then you stop.",
        "file": null,
-       "dur": 11.4
+       "dur": 10.2
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16835,9 +19528,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "I'm not unfair. I want you to know that I'm not. That's noted.",
+       "text": "This is the procedure. Nothing in it is personal.",
        "file": null,
-       "dur": 6.2
+       "dur": 4.6
       },
       {
        "speaker": "okafor",
@@ -16894,9 +19587,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "Nobody was hurt. It goes in the report, those words, because they are true. And they are not a defense.",
+       "text": "Nobody was hurt. That goes in the report. It is not a defense.",
        "file": null,
-       "dur": 9
+       "dur": 6.2
       },
       {
        "speaker": "okafor",
@@ -16912,9 +19605,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "narrator",
-       "text": "He closes the binder. He puts it back on the shelf, next to the extinguisher, exactly where it was. The binder is a little heavier than you remember.",
+       "text": "He closes the binder. He puts it back on the shelf, next to the extinguisher, exactly where it was.",
        "file": null,
-       "dur": 12.2
+       "dur": 8.6
       }
      ],
      "log": "0702 hrs. Shift ended. Log signed.",
@@ -16953,9 +19646,9 @@ window.ILTV_STORIES = {
       },
       {
        "speaker": "okafor",
-       "text": "A first night is a first night. Eat something. Go home.",
+       "text": "So. You are off at seven. Go home.",
        "file": null,
-       "dur": 5.4
+       "dur": 4.2
       },
       {
        "speaker": "narrator",
