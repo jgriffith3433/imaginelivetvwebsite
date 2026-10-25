@@ -1497,6 +1497,7 @@ window.ILTV_STORIES = {
     "radio-squelch": null,
     "pencil": null
    },
+   "music": {},
    "scenes": {
     "radio-check": {
      "folder": "night-shift-demo/radio-check",
@@ -2045,6 +2046,14 @@ window.ILTV_STORIES = {
     "keys": "/night-shift/media/sfx/keys.mp3",
     "clock-tick": "/night-shift/media/sfx/clock-tick.mp3"
    },
+   "music": {
+    "shift-begins": null,
+    "the-panel": null,
+    "fifty-eight": null,
+    "ending-plain": null,
+    "ending-warm": null,
+    "ending-cold": null
+   },
    "unspoken": [
     "restricted",
     "chimera",
@@ -2067,6 +2076,7 @@ window.ILTV_STORIES = {
       "Handover"
      ],
      "ambience": "control-room",
+     "music": "shift-begins",
      "lines": [
       {
        "speaker": "narrator",
@@ -13949,6 +13959,7 @@ window.ILTV_STORIES = {
       "Fifty-eight"
      ],
      "ambience": "lobby",
+     "music": "fifty-eight",
      "feeds": {
       "c7": "coat"
      },
@@ -14458,6 +14469,7 @@ window.ILTV_STORIES = {
       "The panel"
      ],
      "ambience": "control-room-late",
+     "music": "the-panel",
      "feeds": {
       "c9": "frozen"
      },
@@ -14563,6 +14575,7 @@ window.ILTV_STORIES = {
       "The panel"
      ],
      "ambience": "control-room-late",
+     "music": "the-panel",
      "feeds": {
       "c9": "frozen"
      },
@@ -14668,6 +14681,7 @@ window.ILTV_STORIES = {
       "The panel"
      ],
      "ambience": "control-room-late",
+     "music": "the-panel",
      "feeds": {
       "c9": "frozen"
      },
@@ -14773,6 +14787,7 @@ window.ILTV_STORIES = {
       "The panel"
      ],
      "ambience": "control-room-late",
+     "music": "the-panel",
      "feeds": {
       "c9": "frozen"
      },
@@ -19406,6 +19421,7 @@ window.ILTV_STORIES = {
       "Clean report"
      ],
      "ambience": "morning",
+     "music": "ending-plain",
      "feeds": {
       "c1": "dawn"
      },
@@ -19472,6 +19488,7 @@ window.ILTV_STORIES = {
       "Someone to leave it to"
      ],
      "ambience": "morning",
+     "music": "ending-cold",
      "feeds": {
       "c1": "dawn"
      },
@@ -19532,6 +19549,7 @@ window.ILTV_STORIES = {
       "She knew"
      ],
      "ambience": "morning",
+     "music": "ending-cold",
      "feeds": {
       "c1": "dawn"
      },
@@ -19605,6 +19623,7 @@ window.ILTV_STORIES = {
       "Eat something"
      ],
      "ambience": "morning",
+     "music": "ending-warm",
      "feeds": {
       "c1": "dawn"
      },
@@ -19665,6 +19684,7 @@ window.ILTV_STORIES = {
       "By the book, alone"
      ],
      "ambience": "morning",
+     "music": "ending-plain",
      "feeds": {
       "c1": "dawn"
      },
@@ -19719,6 +19739,7 @@ window.ILTV_STORIES = {
       "The friendly one"
      ],
      "ambience": "morning",
+     "music": "ending-warm",
      "feeds": {
       "c1": "dawn"
      },
@@ -19785,6 +19806,7 @@ window.ILTV_STORIES = {
       "Opinions"
      ],
      "ambience": "morning",
+     "music": "ending-plain",
      "feeds": {
       "c1": "dawn"
      },
@@ -19839,6 +19861,7 @@ window.ILTV_STORIES = {
       "The four hours"
      ],
      "ambience": "morning",
+     "music": "ending-cold",
      "feeds": {
       "c1": "dawn"
      },
@@ -19905,6 +19928,7 @@ window.ILTV_STORIES = {
       "Written up"
      ],
      "ambience": "morning",
+     "music": "ending-plain",
      "feeds": {
       "c1": "dawn"
      },
@@ -19965,6 +19989,7 @@ window.ILTV_STORIES = {
       "The wedge"
      ],
      "ambience": "morning",
+     "music": "ending-cold",
      "feeds": {
       "c1": "dawn"
      },
@@ -20019,6 +20044,7 @@ window.ILTV_STORIES = {
       "Noted"
      ],
      "ambience": "morning",
+     "music": "ending-plain",
      "feeds": {
       "c1": "dawn"
      },
@@ -20250,6 +20276,7 @@ window.ILTV_STORIES = {
       "Under review"
      ],
      "ambience": "morning",
+     "music": "ending-plain",
      "feeds": {
       "c1": "dawn"
      },

@@ -53,6 +53,7 @@
   var voice = null;
   var bed = null;
   var sfx = null;
+  var sting = null;
   var bedCue = null;
   var subsOn = true;
 
@@ -136,6 +137,15 @@
 
   function soundReady() {
     return !window.hawkesSound || window.hawkesSound.unlocked();
+  }
+
+  /** A music sting (story.music): plays once as a scene opens, under its first line, never looped. */
+  function playSting(cue) {
+    var file = cue && story.music ? story.music[cue] : null;
+    if (!sting || !file) return;
+    sting.src = file;
+    sting.loop = false;
+    if (soundReady()) playEl(sting).catch(function () {});
   }
 
   function playEl(a) {
@@ -395,6 +405,7 @@
     box.dataset.scene = id;
     renderWall();
     setBed(s.ambience || null);
+    if (!resumed) playSting(s.music);
     save();
     if (!resumed && hooks.tell) hooks.tell("scene", { story: story.id, scene: id, path: run.history.concat(id), video: null, explored: explored });
     if (!els.log.hidden) renderLog();
@@ -520,6 +531,7 @@
     voice = makeAudio(false);
     bed = makeAudio(true);
     sfx = makeAudio(false);
+    sting = makeAudio(false);
     bedCue = null;
     flow++;
     box.hidden = false;
@@ -530,12 +542,12 @@
 
   function close() {
     stopAudio();
-    [voice, bed, sfx].forEach(function (a) {
+    [voice, bed, sfx, sting].forEach(function (a) {
       if (!a) return;
       try { a.pause(); } catch (e) { /* gone */ }
       if (a.parentNode) a.parentNode.removeChild(a);
     });
-    voice = bed = sfx = null;
+    voice = bed = sfx = sting = null;
     bedCue = null;
     if (run) save();
     run = null;
@@ -567,7 +579,7 @@
     lines: function () { return run ? { done: run.done, total: scene().lines.length, playing: linePlaying ? linePlaying.index : -1 } : null; },
     selected: function () { return run ? run.sel : null; },
     subtitles: function () { return subsOn; },
-    audio: function () { return { voice: audioView(voice), bed: audioView(bed), sfx: audioView(sfx), bedCue: bedCue }; },
+    audio: function () { return { voice: audioView(voice), bed: audioView(bed), sfx: audioView(sfx), sting: audioView(sting), bedCue: bedCue }; },
     saved: function () {
       try { return story ? JSON.parse(stored()) : null; } catch (e) { return null; }
     },

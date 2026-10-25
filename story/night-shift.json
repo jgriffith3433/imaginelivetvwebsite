@@ -333,7 +333,8 @@
           }
         }
       ],
-      "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer."
+      "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer.",
+      "music": "shift-begins"
     },
     {
       "id": "binder-44",
@@ -9513,7 +9514,8 @@
       "feeds": {
         "c7": "coat"
       },
-      "log": "0330 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception."
+      "log": "0330 hrs. Chairman P. Hawkes signed the visitor sheet at officer's request. Camera 7: crossed 58 reception.",
+      "music": "fifty-eight"
     },
     {
       "id": "chairman-talk",
@@ -9927,7 +9929,8 @@
       "feeds": {
         "c9": "frozen"
       },
-      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT."
+      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+      "music": "the-panel"
     },
     {
       "id": "trouble-signal-o",
@@ -10010,7 +10013,8 @@
       "feeds": {
         "c9": "frozen"
       },
-      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT."
+      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+      "music": "the-panel"
     },
     {
       "id": "trouble-signal-m",
@@ -10093,7 +10097,8 @@
       "feeds": {
         "c9": "frozen"
       },
-      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT."
+      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+      "music": "the-panel"
     },
     {
       "id": "trouble-signal-l",
@@ -10181,7 +10186,8 @@
       "feeds": {
         "c9": "frozen"
       },
-      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT."
+      "log": "0358 hrs. Fire panel, control room: TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
+      "music": "the-panel"
     },
     {
       "id": "trouble-silenced",
@@ -13727,7 +13733,8 @@
         "c1": "dawn"
       },
       "ending": "Clean report.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-plain"
     },
     {
       "id": "end-someone",
@@ -13771,7 +13778,8 @@
         "c1": "dawn"
       },
       "ending": "Someone to leave it to.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-cold"
     },
     {
       "id": "end-she-knew",
@@ -13825,7 +13833,8 @@
         "c1": "dawn"
       },
       "ending": "She knew.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-cold"
     },
     {
       "id": "end-eat-something",
@@ -13868,7 +13877,8 @@
         "c1": "dawn"
       },
       "ending": "Eat something.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-warm"
     },
     {
       "id": "end-by-the-book",
@@ -13906,7 +13916,8 @@
         "c1": "dawn"
       },
       "ending": "By the book, alone.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-plain"
     },
     {
       "id": "end-friendly",
@@ -13955,7 +13966,8 @@
         "c1": "dawn"
       },
       "ending": "The friendly one.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-warm"
     },
     {
       "id": "end-opinions",
@@ -13995,7 +14007,8 @@
         "c1": "dawn"
       },
       "ending": "Opinions.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-plain"
     },
     {
       "id": "end-four-hours",
@@ -14044,7 +14057,8 @@
         "c1": "dawn"
       },
       "ending": "Four minutes.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-cold"
     },
     {
       "id": "end-written-up",
@@ -14088,7 +14102,8 @@
         "c1": "dawn"
       },
       "ending": "Written up.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-plain"
     },
     {
       "id": "end-wedge",
@@ -14128,7 +14143,8 @@
         "c1": "dawn"
       },
       "ending": "The wedge.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-cold"
     },
     {
       "id": "end-noted",
@@ -14163,7 +14179,8 @@
         "c1": "dawn"
       },
       "ending": "Noted.",
-      "log": "0702 hrs. Shift ended. Log signed."
+      "log": "0702 hrs. Shift ended. Log signed.",
+      "music": "ending-plain"
     },
     {
       "id": "twelve-sat",
@@ -14337,7 +14354,8 @@
         }
       ],
       "choices": [],
-      "log": "0702 hrs. Shift ended. Log signed. Contractor notice reported to the day supervisor."
+      "log": "0702 hrs. Shift ended. Log signed. Contractor notice reported to the day supervisor.",
+      "music": "ending-plain"
     },
     {
       "id": "desk-tailgate",
@@ -15190,5 +15208,13 @@
       ],
       "log": "0536 hrs. Control room. Went to the log before the plate."
     }
-  ]
+  ],
+  "music": {
+    "shift-begins": "Instrumental, sparse: one low felt-piano note every few seconds over a faint warm drone, dry and close, like a tired office at six in the evening. No melody, no swell, no drums. Restrained, quiet.",
+    "the-panel": "Instrumental, sparse: a single low muted pulse, slow, with a thin high tone far behind it, uneasy but small. No swell, no drums, no melody. Very quiet.",
+    "fifty-eight": "Instrumental, sparse: two soft sustained notes on a warm electric piano that never resolve, a breath of room tone around them. No swell, no drums. Very quiet.",
+    "ending-plain": "Instrumental, sparse: a slow plain piano figure of three notes repeated and left to fade, early morning, dry. No strings swell, no drums, no melody build. Restrained.",
+    "ending-warm": "Instrumental, sparse: a soft felt piano and a single bowed note, slightly warmer and major, morning light through a lobby. No swell, no drums, very restrained.",
+    "ending-cold": "Instrumental, sparse: one low sustained note under a slow detuned piano note, cold and still, a door closing on something. No swell, no drums, no melody. Very quiet."
+  }
 }
