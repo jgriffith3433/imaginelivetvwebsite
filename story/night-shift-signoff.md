@@ -105,7 +105,7 @@ J or Talk can ask for the rest on the T4.
    and this task has no GPU budget. `hawkesgen_estimate` (6 clips): 66 GPU-seconds on one ACE-Step server, **$0.09**, or **$0.71**
    counting the 20-minute idle tail if the server isn't stopped at once. Needs J's OK; then
    `node tools/make-audio.mjs night-shift --ingest <folder>` and `npm run story`.
-2. **The four-size walk and every playtest are unproven** (above). The 844x390 end screen fix and the end-card crop are unseen.
+2. **The four-size walk and every playtest are unproven** (above). The 844x390 end screen fix and the end-card crop are unseen. (Update, c_c4ffb03144e4: `consoleFit` now names what needs a scroll on an end screen and an end screen that needs one is a bug; `console` measures the worst scenes and the 70-entry Log; still unseen until a beta run.)
 3. **No listen.** Nobody has heard the voices in playback: whether a `perform` tag was read aloud, a voice drifts, two speakers sound alike.
 4. **The "14 shows although" report is not explained.** The player is right in jsdom; the check was made stricter and clearer (above).
    If beta reports it again, the message now says which choice and state.
