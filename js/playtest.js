@@ -2792,17 +2792,6 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
     }
     if (el.matches("button, a, .choice") && (r.height < 43.5 || (r.width < 43.5))) bad(`${el.id || el.className || el.tagName} is ${Math.round(r.width)}x${Math.round(r.height)} px, under 44x44`);
   }
-  // The subtitle strip shows the newest line whole (it is scrolled to its foot): never a strip that cuts the line's top off.
-  const subsEl = byIdIn(doc, "console-subs");
-  if (subsEl && subsEl.getClientRects().length && subsEl.lastElementChild) {
-    const lastSub = subsEl.lastElementChild;
-    const sr = subsEl.getBoundingClientRect();
-    const lr = lastSub.getBoundingClientRect();
-    const c = clipOf(subsEl);
-    const top = Math.max(sr.top, c.top);
-    const bottom = Math.min(sr.bottom, c.bottom);
-    if (lr.height > 0 && (lr.top < top - 1 || lr.bottom > bottom + 1)) bad(`the subtitle strip cuts the newest line off (the line is ${Math.round(lr.height)} px tall, ${Math.round(lr.top)}..${Math.round(lr.bottom)}; the strip shows ${Math.round(top)}..${Math.round(bottom)}, ${Math.round(bottom - top)} px; ${["#console-endcard", ".console-endcard", "#console-wall", "#console-big:not([hidden])", ".console-panel", "#console-subs", ".console-controls", "#console-ending:not([hidden])"].map((q) => { const b = doc.querySelector(q)?.getBoundingClientRect(); return b ? `${q} ${Math.round(b.top)}..${Math.round(b.bottom)}` : ""; }).filter(Boolean).join(", ")}; scrollTop ${Math.round(subsEl.scrollTop)} of ${Math.round(subsEl.scrollHeight)})`);
-  }
   // A choice's words are all there (not cut off by the button).
   for (const b of openChoices(doc)) if (b.scrollWidth > b.clientWidth + 1) bad(`choice "${b.textContent.trim()}" is cut off at the side`);
   // Two things never lie over each other. The words column was scrolled to bring the last choice up, so it goes back to
@@ -2822,6 +2811,17 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
     const [an, a] = boxes[i];
     const [bn, b2] = boxes[j];
     if (a.width && b2.width && a.height && b2.height && overlaps(a, b2) && Math.min(a.right, b2.right) - Math.max(a.left, b2.left) > 2 && Math.min(a.bottom, b2.bottom) - Math.max(a.top, b2.top) > 2) bad(`${an} and ${bn} lie over each other`);
+  }
+  // With the words column back at its top (above), the subtitle strip shows the newest line whole (it is scrolled to its foot): never a strip that cuts the line's top off.
+  const subsEl = byIdIn(doc, "console-subs");
+  if (subsEl && subsEl.getClientRects().length && subsEl.lastElementChild) {
+    const lastSub = subsEl.lastElementChild;
+    const sr = subsEl.getBoundingClientRect();
+    const lr = lastSub.getBoundingClientRect();
+    const c = clipOf(subsEl);
+    const top = Math.max(sr.top, c.top);
+    const bottom = Math.min(sr.bottom, c.bottom);
+    if (lr.height > 0 && (lr.top < top - 1 || lr.bottom > bottom + 1)) bad(`the subtitle strip cuts the newest line off (the line is ${Math.round(lr.height)} px tall, ${Math.round(lr.top)}..${Math.round(lr.bottom)}; the strip shows ${Math.round(top)}..${Math.round(bottom)}, ${Math.round(bottom - top)} px; ${["#console-endcard", ".console-endcard", "#console-wall", "#console-big:not([hidden])", ".console-panel", "#console-subs", ".console-controls", "#console-ending:not([hidden])"].map((q) => { const b = doc.querySelector(q)?.getBoundingClientRect(); return b ? `${q} ${Math.round(b.top)}..${Math.round(b.bottom)}` : ""; }).filter(Boolean).join(", ")}; scrollTop ${Math.round(subsEl.scrollTop)} of ${Math.round(subsEl.scrollHeight)})`);
   }
   // What holds the scroll, named with its sizes: the report that says which part of a screen is too tall.
   const holders = [".console-body", ".console-panel", "#console-subs", "#console-choices", "#console-wall"].map((q) => [q, doc.querySelector(q)]).filter(([, el]) => el);
