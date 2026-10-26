@@ -4811,7 +4811,11 @@ async function nightRoomRun(options, t) {
     const inset = byIdIn(document, "console-big").getBoundingClientRect();
     const room = a.host.getBoundingClientRect();
     if (inset.width > room.width * 0.4) t.problem("bug", `${id}: the big screen is still the focus out of the room (${Math.round(inset.width)} of ${Math.round(room.width)} px)`);
-    if (!a.host.querySelector("#console-room-art svg, .room-art svg") || a.host.querySelector(".r-door")) t.problem("bug", `${id}: the picture is still the control room, not the ${place}`);
+    const still = a.host.getAttribute("data-art") === "photo" ? a.host.querySelector(".room-plate") : null;
+    if (still) {
+      if (!new RegExp(`/places/${place}`).test(still.getAttribute("src") || "")) t.problem("bug", `${id}: the photograph is ${still.getAttribute("src")}, not the ${place}'s still`);
+      else if (!still.complete || !still.naturalWidth) t.problem("bug", `${id}: the ${place}'s still (${still.getAttribute("src")}) didn't load`);
+    } else if (!a.host.querySelector("#console-room-art svg, .room-art svg") || a.host.querySelector(".r-door")) t.problem("bug", `${id}: the picture is still the control room, not the ${place}`);
     t.event("away", `${id}: ${place}, ${a.figs.map((f) => f.getAttribute("data-who")).join(" and ")} drawn as people, the screen an inset`);
   }
   if (x.scenes["visitor-desk"]) {

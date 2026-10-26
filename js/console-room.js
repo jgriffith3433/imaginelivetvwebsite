@@ -77,7 +77,20 @@
   var poseWraps = {}; // who -> the person's layer holder
   var ovMade = {};
 
-  function photoOn(place) { return !!stage && (place || (state && state.place)) === "room"; }
+  /** The still behind the people for a place, or null (the SVG place stays). The room is the plate; the other places are stills
+     with their people in them (stage.places: "<place>@<scene id>", "<place>:<who is with you>", "<place>"). */
+  function stillFor(place) {
+    if (!stage || !place) return null;
+    if (place === "room") return stage.plate;
+    var pl = stage.places;
+    if (!pl) return null;
+    var who = state && state.awayList ? state.awayList.filter(function (w) { return w !== "you"; }).sort().join("+") : "";
+    var keys = [place + "@" + (state ? state.id : ""), place + ":" + who, place];
+    for (var i = 0; i < keys.length; i++) if (pl[keys[i]]) return pl[keys[i]];
+    return null;
+  }
+
+  function photoOn(place) { return !!stillFor(place || (state && state.place)); }
 
   function photoReset() {
     if (photoEl && photoEl.parentNode) photoEl.parentNode.removeChild(photoEl);
@@ -86,38 +99,42 @@
     ovMade = {};
   }
 
-  /** The photographed room's base: the plate and the clock's hands. Called whenever the room is (re)drawn. */
+  /** The photographed room's base: the plate (or the place's still) and, in the room, the clock's hands. Called whenever the art is (re)drawn. */
   function photoBase() {
-    var on = photoOn();
-    host.setAttribute("data-art", on ? "photo" : "svg");
-    if (!on) { photoReset(); return; }
-    if (photoEl) return;
+    var file = state ? stillFor(state.place) : null;
+    host.setAttribute("data-art", file ? "photo" : "svg");
+    if (!file) { photoReset(); return; }
+    if (photoEl && photoEl.getAttribute("data-still") === file) return;
+    photoReset();
     photoEl = document.createElement("div");
     photoEl.className = "room-photo";
     photoEl.setAttribute("aria-hidden", "true");
+    photoEl.setAttribute("data-still", file);
     var plate = document.createElement("img");
     plate.className = "room-plate";
     plate.alt = "";
     plate.decoding = "async";
-    plate.src = STAGE_URL + stage.plate;
+    plate.src = STAGE_URL + file;
     photoEl.appendChild(plate);
-    var cx = stage.clock ? stage.clock.x / stage.width * 100 : 74.7, cy = stage.clock ? stage.clock.y / stage.height * 100 : 25.5;
-    var clock = document.createElement("div");
-    clock.className = "room-clock";
-    clock.style.left = cx + "%";
-    clock.style.top = cy + "%";
-    clock.innerHTML = '<svg viewBox="-50 -50 100 100" focusable="false"><circle r="46" fill="#dcd9cf" stroke="#15191b" stroke-width="5"/>'
-      + '<g stroke="#15191b" stroke-width="2.4"><line x1="0" y1="-40" x2="0" y2="-34"/><line x1="40" y1="0" x2="34" y2="0"/><line x1="0" y1="40" x2="0" y2="34"/><line x1="-40" y1="0" x2="-34" y2="0"/></g>'
-      + '<line class="hand-h" x1="0" y1="2" x2="0" y2="-22" stroke="#15191b" stroke-width="5" stroke-linecap="round"/>'
-      + '<line class="hand-m" x1="0" y1="3" x2="0" y2="-34" stroke="#15191b" stroke-width="3" stroke-linecap="round"/></svg>';
-    photoEl.appendChild(clock);
+    if (state.place === "room") {
+      var cx = stage.clock ? stage.clock.x / stage.width * 100 : 74.7, cy = stage.clock ? stage.clock.y / stage.height * 100 : 25.5;
+      var clock = document.createElement("div");
+      clock.className = "room-clock";
+      clock.style.left = cx + "%";
+      clock.style.top = cy + "%";
+      clock.innerHTML = '<svg viewBox="-50 -50 100 100" focusable="false"><circle r="46" fill="#dcd9cf" stroke="#15191b" stroke-width="5"/>'
+        + '<g stroke="#15191b" stroke-width="2.4"><line x1="0" y1="-40" x2="0" y2="-34"/><line x1="40" y1="0" x2="34" y2="0"/><line x1="0" y1="40" x2="0" y2="34"/><line x1="-40" y1="0" x2="-34" y2="0"/></g>'
+        + '<line class="hand-h" x1="0" y1="2" x2="0" y2="-22" stroke="#15191b" stroke-width="5" stroke-linecap="round"/>'
+        + '<line class="hand-m" x1="0" y1="3" x2="0" y2="-34" stroke="#15191b" stroke-width="3" stroke-linecap="round"/></svg>';
+      photoEl.appendChild(clock);
+    }
     host.insertBefore(photoEl, artEl.nextSibling);
     setClock();
   }
 
   /** An overlay (a layer over the plate) is requested the first time its flag is raised. */
   function photoOverlay(name) {
-    if (!photoOn() || !photoEl || ovMade[name] || !stage.overlays || !stage.overlays[name]) return;
+    if (!photoEl || !state || state.place !== "room" || ovMade[name] || !stage.overlays || !stage.overlays[name]) return;
     ovMade[name] = 1;
     var im = document.createElement("img");
     im.className = "room-ov ov-" + name;
@@ -138,7 +155,7 @@
 
   /** The person's layer for the state they are in: crossfaded (or set at once for a resume and Skip). */
   function photoFig(f, instant) {
-    if (!photoEl || !photoOn()) return;
+    if (!photoEl || !state || state.place !== "room") return;
     var wrap = poseWraps[f.who];
     if (!wrap) {
       wrap = document.createElement("div");
@@ -170,7 +187,7 @@
   }
 
   function photoView() {
-    var o = { on: photoOn(), plate: stage ? stage.plate : null, layers: {}, overlays: Object.keys(ovMade) };
+    var o = { on: photoOn(), plate: stage ? stage.plate : null, still: state ? stillFor(state.place) : null, layers: {}, overlays: Object.keys(ovMade) };
     Object.keys(poseWraps).forEach(function (k) { o.layers[k] = poseWraps[k].getAttribute("data-file") || ""; });
     return o;
   }
@@ -736,7 +753,7 @@
 
   function setClock() {
     var t = state && state.time ? state.time.split(":") : null;
-    var svg = photoOn() && photoEl ? photoEl.querySelector(".room-clock svg") : artEl.querySelector("svg");
+    var svg = photoEl ? photoEl.querySelector(".room-clock svg") : artEl.querySelector("svg");
     if (!t || !svg) return;
     var hh = (+t[0] % 12) + (+t[1]) / 60, mm = +t[1];
     var h = svg.querySelector(".hand-h"), m = svg.querySelector(".hand-m");

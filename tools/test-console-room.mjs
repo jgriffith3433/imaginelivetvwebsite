@@ -167,7 +167,7 @@ const play = (R, id, upTo) => {
 {
   const stageJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'night-shift/media/stage/stage.json'), 'utf8'));
   const dir = path.join(ROOT, 'night-shift/media/stage');
-  const files = new Set([stageJson.plate, ...Object.values(stageJson.overlays), ...Object.values(stageJson.poses).flatMap((t) => Object.values(t))]);
+  const files = new Set([stageJson.plate, ...Object.values(stageJson.places), ...Object.values(stageJson.overlays), ...Object.values(stageJson.poses).flatMap((t) => Object.values(t))]);
   const missing = [...files].filter((f) => !fs.existsSync(path.join(dir, f)));
   check(`every layer stage.json names exists (${files.size} files)`, !missing.length, missing);
   const notWebp = [...files].filter((f) => !/\.webp$/.test(f) || fs.readFileSync(path.join(dir, f)).subarray(8, 12).toString() !== 'WEBP');
@@ -187,7 +187,7 @@ const play = (R, id, upTo) => {
       s.lines.forEach((l, i) => R.line(i));
       R.catchUp(s.lines.length);
       const ph = R.view().photo;
-      if (ph.on !== (R.view().place === 'room')) throw new Error(`${id}: photo is ${ph.on} in ${R.view().place}`);
+      if (ph.on !== !!ph.still || (R.view().place === 'room' && !ph.on)) throw new Error(`${id}: photo is ${ph.on} (${ph.still}) in ${R.view().place}`);
     }
   } catch (e) { threw = e.message; }
   check('every scene and line runs in the photographed room', !threw, threw);
@@ -209,9 +209,19 @@ const play = (R, id, upTo) => {
   play(R, 'laptop-opened');
   check('Dee standing angry is her angry layer', R.view().photo.layers.dee === 'dee-angry.webp', R.view().photo);
   R.scene(def('tour1-door'));
-  check('out of the room is not a photograph yet (the stairwell is an SVG place)', !R.view().photo.on);
-  R.scene(def('end-clean'));
-  check('an ending by daylight is not a photograph yet', !R.view().photo.on);
+  check('the stairwell is its own still, people in it', R.view().photo.on && R.view().photo.still === 'places/stairwell.webp', R.view().photo);
+  R.scene(def('courier-signed'));
+  R.line(0);
+  check('the dock with the courier is its own still', R.view().photo.still === 'places/dock-courier.webp', R.view().photo);
+  R.scene(def('leak-go'));
+  for (let i = 0; i < story.scenes['leak-go'].lines.length; i++) R.line(i);
+  check('the corridor upstairs has no still yet and stays the SVG place', !R.view().photo.on && R.view().place === 'corridor', R.view().photo);
+  const endings = Object.entries(story.scenes).filter(([, s]) => s.ending).map(([id]) => id);
+  const noStill = endings.filter((id) => { R.scene(def(id)); return R.view().photo.still !== `places/${id}.webp`; });
+  check(`every ending (${endings.length}) is its own still by daylight`, endings.length === 12 && !noStill.length, noStill);
+  const used = new Set();
+  for (const s of Object.values(story.scenes)) { if (s.place) used.add(s.place); for (const l of s.lines) if (l.place) used.add(l.place); }
+  check('the places the data uses are all stills except the corridor', [...used].filter((p) => !['room', 'room-day', 'corridor'].includes(p) && !Object.keys(stageJson.places).some((k) => k === p || k.startsWith(p + ':'))).length === 0, [...used]);
 }
 
 console.log(failed ? `\n${failed} failed` : '\nall ok');

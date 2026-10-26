@@ -2151,7 +2151,7 @@ figure.feed { cursor: default; }
 .room-photo .room-clock { position: absolute; width: 5.2%; aspect-ratio: 1; transform: translate(-50%, -50%); }
 .room-photo .room-clock svg { width: 100%; height: 100%; }
 .console-room[data-art="photo"] .room-art, .console-room[data-art="photo"] .room-figs { display: none; }
-.console-room[data-art="photo"] .console-big {
+.console-room[data-art="photo"][data-mode="room"] .console-big {
   left: 36.46%;
   top: 19.57%;
   width: 26.37%;

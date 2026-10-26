@@ -12,6 +12,28 @@
     "spill": "ov-spill.webp",
     "buzz": "ov-fire-amber.webp"
   },
+  "places": {
+    "stairwell": "places/stairwell.webp",
+    "dock": "places/dock.webp",
+    "dock:courier": "places/dock-courier.webp",
+    "roof": "places/roof.webp",
+    "lobby": "places/lobby-terrell.webp",
+    "lobby:terrell": "places/lobby-terrell.webp",
+    "lobby:dee": "places/lobby-dee.webp",
+    "vestibule": "places/vestibule.webp",
+    "room-day@end-clean": "places/end-clean.webp",
+    "room-day@end-someone": "places/end-someone.webp",
+    "room-day@end-she-knew": "places/end-she-knew.webp",
+    "room-day@end-eat-something": "places/end-eat-something.webp",
+    "room-day@end-by-the-book": "places/end-by-the-book.webp",
+    "room-day@end-friendly": "places/end-friendly.webp",
+    "room-day@end-opinions": "places/end-opinions.webp",
+    "room-day@end-four-hours": "places/end-four-hours.webp",
+    "room-day@end-written-up": "places/end-written-up.webp",
+    "room-day@end-wedge": "places/end-wedge.webp",
+    "room-day@end-noted": "places/end-noted.webp",
+    "room-day@end-under-review": "places/end-under-review.webp"
+  },
   "poses": {
     "dee": {
       "seated": "dee-sit.webp", "seated.phone": "dee-phone.webp", "seated.write": "dee-write.webp", "seated.eat": "dee-eat.webp",
