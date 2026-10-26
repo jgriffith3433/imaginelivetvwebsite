@@ -1869,7 +1869,7 @@ figure.feed { cursor: default; }
 /* What the people do. Poses are inline transforms from js/console-room.js; these are the transitions and the little effects. */
 .fig { transition: transform 1.25s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.3s ease; }
 .fig[data-show="0"] { opacity: 0; visibility: hidden; }
-.fig .rig, .fig .a, .fig .f, .fig .head, .fig .chair-rear, .fig .leg { transition: transform 0.45s ease; }
+.fig .rig, .fig .a, .fig .f, .fig .head, .chair-seat .push, .fig .leg { transition: transform 0.45s ease; }
 .fig.no-tx, .fig.no-tx * { transition: none !important; }
 .fig .tag { paint-order: stroke; stroke: #0b1114; stroke-width: 2.6px; opacity: 0.92; }
 .fig .fx-anger, .fig .fx-knock, .fig .fx-talk, .fig .held { opacity: 0; }
@@ -1939,7 +1939,7 @@ figure.feed { cursor: default; }
 
 /* Reduced motion: the people change place and pose with a short fade, the screen change is a brief dip, and nothing loops. */
 @media (prefers-reduced-motion: reduce) {
-  .fig, .fig .rig, .fig .a, .fig .f, .fig .head, .fig .chair-rear, .fig .leg, .console-room .door-leaf, .console-room .puddle { transition-duration: 0.01s !important; }
+  .fig, .fig .rig, .fig .a, .fig .f, .fig .head, .chair-seat .push, .fig .leg, .console-room .door-leaf, .console-room .puddle { transition-duration: 0.01s !important; }
   .fig *, .console-room *, .console-room[data-flicker], .console-room[data-touch]::after { animation: none !important; }
   .console-big.is-flash .big-crt { animation: none !important; }
   .console-big.is-flash .big-pic { animation: crt-soft 0.16s ease-out !important; }
@@ -1950,7 +1950,7 @@ figure.feed { cursor: default; }
 @keyframes crt-soft { from { opacity: 0.55; } to { opacity: 1; } }
 
 @media (orientation: landscape) and (min-width: 640px) {
-  .console-stage { align-self: start; width: min(100%, calc((100dvh - 7.6rem - 1.8rem) / 0.6625)); }
+  .console-stage { align-self: start; width: min(100%, calc((100dvh - 7.6rem - 2.4rem) / 0.6625)); }
 }
 
 .console-panel {
@@ -2019,13 +2019,11 @@ figure.feed { cursor: default; }
   /* The subtitles take what the end screen leaves (the player also lifts their minimum to the newest line's height), so a whole line always shows. */
   .console[data-state="soon"][data-lines="done"] .console-subs { flex: 1 1 0; min-height: 2.6rem; max-height: none; }
   .console[data-state="soon"] .console-panel { gap: 0.25rem; }
-  .console[data-state="soon"] .console-stage { width: min(100%, 40dvh); }
 }
 
 /* A short portrait screen (360x640): a slimmer card and enlarged feed on the end screen leave room for a whole subtitle line. */
 @media (orientation: portrait) and (max-height: 700px) {
   .console[data-state="soon"] .console-endcard { max-height: 8dvh; }
-  .console[data-state="soon"] .console-stage { width: min(100%, 34dvh); }
 }
 
 /* Once the lines are heard, the choices (and the end screen) take what the subtitles need less, on any screen. */
@@ -2045,8 +2043,7 @@ figure.feed { cursor: default; }
   .console[data-state="soon"] .console-ending { padding: 0.2rem; font-size: 1rem; line-height: 1.25; }
   .console[data-state="soon"] .console-panel { gap: 0.25rem; }
   /* The stage's width follows the height that is left under the site bar and the console bar, so it never pushes the page into a scroll. */
-  .console-stage { width: min(100%, calc((100dvh - 7.6rem - 1.8rem) / 0.6625)); }
-  .console[data-state="soon"] .console-stage { width: min(100%, calc((100dvh - 7.6rem - 4.5rem) / 0.6625)); }
+  .console-stage { width: min(100%, calc((100dvh - 7.6rem - 2.4rem) / 0.6625)); }
   /* Many choices (up to twelve) scroll inside the words column; each stays whole and 44px tall. */
   .console-choices { padding-bottom: 0.15rem; }
   .console-choices .choice { flex: none; }

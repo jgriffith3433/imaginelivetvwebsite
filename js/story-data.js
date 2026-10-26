@@ -2433,7 +2433,6 @@ window.ILTV_STORIES = {
        "text": "You initial it. Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
        "sfx": "door-heavy",
        "act": [
-        "room:door",
         "you:write",
         "okafor:leave",
         "dee:knock"
@@ -2532,7 +2531,7 @@ window.ILTV_STORIES = {
        "text": "Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him. Dolores puts the fourth radio on the charger and knocks twice on the wall.",
        "sfx": "door-heavy",
        "act": [
-        "room:door",
+        "okafor:leave",
         "dee:knock"
        ],
        "file": "/night-shift/okafor-out-fast/media/line-1.mp3",
@@ -2541,7 +2540,6 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "It's customary to read it first.",
-       "act": "okafor:leave",
        "file": "/night-shift/okafor-out-fast/media/line-2.mp3",
        "dur": 2.6
       },
@@ -2655,10 +2653,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. You've got one. Clip it on.",
        "sfx": "radio-charger",
-       "act": [
-        "dee:count",
-        "dee:hand"
-       ],
+       "act": "dee:hand",
        "file": "/night-shift/the-chairs/media/line-5.mp3",
        "dur": 3.4
       },
@@ -2757,10 +2752,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. You've got one. Clip it on.",
        "sfx": "radio-charger",
-       "act": [
-        "dee:count",
-        "dee:hand"
-       ],
+       "act": "dee:hand",
        "file": "/night-shift/the-chairs-knock/media/line-6.mp3",
        "dur": 3.4
       },
@@ -3096,8 +3088,8 @@ window.ILTV_STORIES = {
        "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
        "sfx": "foil",
        "act": [
-        "dee:eat",
-        "terrell:enter:left"
+        "terrell:enter:left",
+        "dee:eat"
        ],
        "file": "/night-shift/radio-ok/media/line-2.mp3",
        "dur": 8.2
@@ -3203,8 +3195,8 @@ window.ILTV_STORIES = {
        "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
        "sfx": "foil",
        "act": [
-        "dee:eat",
-        "terrell:enter:left"
+        "terrell:enter:left",
+        "dee:eat"
        ],
        "file": "/night-shift/radio-late/media/line-4.mp3",
        "dur": 8.2
@@ -3309,8 +3301,8 @@ window.ILTV_STORIES = {
        "text": "Terrell leans in from the lobby for coffee he says he won't drink. Dolores unwraps something from foil and doesn't open it all the way.",
        "sfx": "foil",
        "act": [
-        "dee:eat",
-        "terrell:enter:left"
+        "terrell:enter:left",
+        "dee:eat"
        ],
        "file": "/night-shift/radio-dee/media/line-4.mp3",
        "dur": 8.2
@@ -3421,7 +3413,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "One. Lobby. Two. Vestibule. Three, dock.",
        "sfx": "pencil",
-       "act": "dee:write",
+       "act": "dee:touch",
        "feed": [
         "c1",
         "c2",
@@ -3521,7 +3513,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "One. Lobby. Two. Vestibule. Three, dock.",
        "sfx": "pencil",
-       "act": "dee:write",
+       "act": "dee:touch",
        "feed": [
         "c1",
         "c2",
@@ -3620,7 +3612,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "One. Lobby. Two. Vestibule. Three, dock.",
        "sfx": "pencil",
-       "act": "dee:write",
+       "act": "dee:touch",
        "feed": [
         "c1",
         "c2",
@@ -7667,14 +7659,12 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You ask for his ID and you look at it, not glance. The night number for forty rings six times. A tired voice says send him up, sign him, he'll be an hour.",
        "sfx": "phone-ring",
-       "act": "room:ring",
        "file": "/night-shift/visitor-desk/media/line-4.mp3",
        "dur": 11.8
       },
       {
        "speaker": "terrell",
        "text": "See? See, I said.",
-       "act": "you:phone",
        "file": "/night-shift/visitor-desk/media/line-5.mp3",
        "dur": 2.5
       },
@@ -9287,7 +9277,6 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm.",
-       "act": "you:hangup",
        "file": "/night-shift/okafor-call-lied/media/line-3.mp3",
        "dur": 1.9
       },
@@ -9300,7 +9289,10 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The incident field is open. You read the line you wrote. It is one sentence long.",
-       "act": "you:hangup",
+       "act": [
+        "you:hangup",
+        "you:write"
+       ],
        "file": "/night-shift/okafor-call-lied/media/line-5.mp3",
        "dur": 5.7
       }
@@ -12000,10 +11992,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
        "sfx": "door-heavy",
-       "act": [
-        "room:door",
-        "marisol:enter:left"
-       ],
+       "act": "marisol:enter:left",
        "file": "/night-shift/awake-stand/media/line-4.mp3",
        "dur": 9.1
       },
@@ -12096,10 +12085,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
        "sfx": "door-heavy",
-       "act": [
-        "room:door",
-        "marisol:enter:left"
-       ],
+       "act": "marisol:enter:left",
        "file": "/night-shift/awake-bank/media/line-4.mp3",
        "dur": 9.1
       },
@@ -12192,10 +12178,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
        "sfx": "door-heavy",
-       "act": [
-        "room:door",
-        "marisol:enter:left"
-       ],
+       "act": "marisol:enter:left",
        "file": "/night-shift/awake-coffee/media/line-4.mp3",
        "dur": 9.1
       },
@@ -14075,14 +14058,13 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The contractor's night line puts you on hold with a recorded voice, then a man named Gus who says twenty minutes.",
        "sfx": "phone-ring",
-       "act": "room:ring",
+       "act": "you:phone",
        "file": "/night-shift/dev-company/media/line-1.mp3",
        "dur": 7.6
       },
       {
        "speaker": "dev",
        "text": "Twenty? Twenty minutes? Sorry. No. That's fine. That's fine.",
-       "act": "you:phone",
        "file": "/night-shift/dev-company/media/line-2.mp3",
        "dur": 4
       },
@@ -14102,6 +14084,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You key the radio. \"Post one. Loud and clear.\" Dolores says Mm. That is all she says.",
+       "act": "you:hangup",
        "file": "/night-shift/dev-company/media/line-5.mp3",
        "dur": 7.6
       },
@@ -14170,6 +14153,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The dispatcher asks if anyone is hurt. No. If anyone is in distress. You say a little close in there. The dispatcher says the fire department is notified.",
+       "act": "you:phone",
        "file": "/night-shift/dev-911/media/line-1.mp3",
        "dur": 10.7
       },
@@ -14182,6 +14166,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "At 03:15 two firefighters come into the lobby with a bar and a bag. At 03:22 the car opens at thirty-one and Dev walks out with his laptop bag held to his chest.",
+       "act": "you:hangup",
        "file": "/night-shift/dev-911/media/line-3.mp3",
        "dur": 12.3
       },
@@ -14496,7 +14481,6 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0330. In. He does not write the Out column.",
        "sfx": "pencil",
-       "act": "dee:write",
        "file": "/night-shift/pierce-signin/media/line-3.mp3",
        "dur": 10.9
       }
@@ -15617,7 +15601,6 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Thank you. That is the correct answer. Please put it in the log in the same words.",
-       "act": "you:phone",
        "file": "/night-shift/adler-exact/media/line-2.mp3",
        "dur": 5.7
       },
@@ -15707,7 +15690,6 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You read it again. TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
-       "act": "you:hangup",
        "file": "/night-shift/adler-short/media/line-2.mp3",
        "dur": 6.4
       },
@@ -17389,6 +17371,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The dispatcher asks if he is breathing. Yes. If he is responsive. You don't know. An ambulance comes up Madison Avenue at 04:58 without its siren.",
+       "act": "you:phone",
        "file": "/night-shift/sleeper-911/media/line-1.mp3",
        "dur": 11
       },
@@ -17396,6 +17379,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Two medics wake him. He gets up slowly. He says it again to them.",
        "sfx": "door-buzz",
+       "act": "you:hangup",
        "file": "/night-shift/sleeper-911/media/line-2.mp3",
        "dur": 5
       },
@@ -21319,14 +21303,12 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Okay. Okay! Thirty-four? Who for? Let me see what I can do.",
        "sfx": "phone-ring",
-       "act": "room:ring",
        "file": "/night-shift/tailgate-radio/media/line-3.mp3",
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "Mm-hm.",
-       "act": "you:phone",
        "file": "/night-shift/tailgate-radio/media/line-4.mp3",
        "dur": 2.8
       },

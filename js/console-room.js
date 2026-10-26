@@ -56,6 +56,7 @@
 
   var state = null; // the scene on stage
   var timers = [];
+  var chairs = {}; // who -> the empty-or-not chair at their seat
   var figs = {}; // who -> { el, who, posture, spot, present, pose, hold }
   var lastAction = "";
   var trail = []; // everything said about the room since the scene opened (the playtest and the tests read it)
@@ -232,8 +233,7 @@
       : look.bag === 2 ? '<rect class="p-bag" x="-15" y="-96" width="30" height="36" rx="8" fill="#46556b"/>' : "";
     var tie = look.tie ? '<path class="p-tie" d="M-2.4,-104 l4.8,0 l1.6,18 l-8,0 z" fill="#8a2f2f"/>' : "";
     var radio = look.radio ? '<rect class="p-bag" x="12" y="-66" width="6" height="11" rx="1.6" fill="#252c31"/>' : "";
-    return '<g class="chair-rear">' + chair() + chairBack() + '</g>'
-      + '<g class="clipw"><g class="rig">'
+    return '<g class="clipw"><g class="rig">'
       + '<g class="legs"><g transform="translate(-6.5 -52)"><g class="leg l"><rect class="p-bottom" x="-5" y="-2" width="10" height="54" rx="4.4" fill="' + look.bottom + '"/><rect class="p-shoe" x="-5.6" y="49" width="12" height="5" rx="2.4" fill="#14181b"/></g></g>'
       + '<g transform="translate(6.5 -52)"><g class="leg r"><rect class="p-bottom" x="-5" y="-2" width="10" height="54" rx="4.4" fill="' + look.bottom + '"/><rect class="p-shoe" x="-5.6" y="49" width="12" height="5" rx="2.4" fill="#14181b"/></g></g></g>'
       + '<g class="torso">' + coat
@@ -260,7 +260,7 @@
     [].forEach.call(g.querySelectorAll("[class^='p-']"), function (el) { el.setAttribute("data-c", el.getAttribute("fill")); parts.push(el); });
     var refs = {
       parts: parts, rig: q(".rig"), clipw: q(".clipw"), head: q(".head"), back: q(".back"), tie: q(".p-tie") || document.createElementNS(NS, "g"), front: q(".front"), tag: q(".tag"),
-      chairRear: q(".chair-rear"), chairFront: q(".chair-front"), legs: g.querySelectorAll(".leg"),
+      chairFront: q(".chair-front"), legs: g.querySelectorAll(".leg"),
       al: q(".arm.l .a"), fl: q(".arm.l .f"), ar: q(".arm.r .a"), fr: q(".arm.r .f"),
     };
     return { el: g, q: refs };
@@ -323,11 +323,17 @@
     q.tie.setAttribute("display", away ? "inline" : "none");
     q.back.setAttribute("display", away ? "none" : "inline");
     q.front.setAttribute("display", away ? "inline" : "none");
-    var chaired = seatOf(f.who) && !away;
-    q.chairRear.setAttribute("display", chaired ? "inline" : "none");
+    var chaired = seatOf(f.who) && !away && f.spot === "seat";
     q.chairFront.setAttribute("display", chaired && seated ? "inline" : "none");
-    q.chairRear.style.transform = chaired && !seated ? "translate(" + (f.x > 200 ? 36 : -36) + "px,3px) rotate(" + (f.x > 200 ? 16 : -16) + "deg)" : "translate(0px,0px)";
     q.clipw.setAttribute("clip-path", chaired && seated ? "url(#rg-seatclip)" : "");
+    if (seatOf(f.who)) {
+      if (f.present && f.spot === "seat") f.pushed = !seated;
+      var c = chairs[f.who];
+      if (c) {
+        c.setAttribute("display", away ? "none" : "inline");
+        c.firstChild.style.transform = f.pushed ? "translate(" + (SEAT[f.who] > 200 ? 36 : -36) + "px,3px) rotate(" + (SEAT[f.who] > 200 ? 16 : -16) + "deg)" : "translate(0px,0px)";
+      }
+    }
     var drop = seated ? (away ? 30 : 40) : 0;
     if (f.pose === "lean") drop -= 6;
     q.rig.style.transform = "translateY(" + drop + "px)";
@@ -619,9 +625,19 @@
       ["ring", "buzz", "writing", "touch", "spill", "knock", "count", "flicker", "swap"].forEach(function (k) { host.removeAttribute("data-" + k); });
       var cast = def.cast && def.cast.length ? def.cast : ["you", "dee"];
       var place = def.place || "room";
-      state = { id: def.id, time: def.time, place: place, castList: cast, awayList: (def.away && def.away.length ? def.away : cast), lines: def.lines || [], at: -1 };
-      figsEl.innerHTML = '<svg class="figs-svg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet" focusable="false"><defs><clipPath id="rg-seatclip" clipPathUnits="userSpaceOnUse"><rect x="-80" y="-220" width="160" height="186"/></clipPath></defs><g class="figs"></g></svg>';
+      state = { id: def.id, time: def.time, place: place, castList: cast, awayList: (def.away && def.away.length ? def.away : cast), lines: def.lines || [], at: -1, acted: {} };
+      figsEl.innerHTML = '<svg class="figs-svg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet" focusable="false"><defs><clipPath id="rg-seatclip" clipPathUnits="userSpaceOnUse"><rect x="-80" y="-220" width="160" height="186"/></clipPath></defs><g class="chairs"></g><g class="figs"></g></svg>';
       figs = {};
+      chairs = {};
+      Object.keys(SEAT).forEach(function (w) {
+        var c = document.createElementNS(NS, "g");
+        c.setAttribute("class", "chair-seat");
+        c.setAttribute("data-who", w);
+        c.style.transform = "translate(" + SEAT[w] + "px," + ROOM_Y + "px) scale(" + ROOM_S + ")";
+        c.innerHTML = '<g class="push">' + chair() + chairBack() + '</g>';
+        figsEl.querySelector("g.chairs").appendChild(c);
+        chairs[w] = c;
+      });
       artEl.innerHTML = AWAY[place] ? placeArt(place, dawn()) : roomArt();
       var spots = {};
       cast = cast.map(function (e) {
@@ -662,7 +678,8 @@
       var l = state.lines[i];
       state.at = i;
       if (!l) return;
-      if (l.place) setPlace(l.place, instant);
+      state.acted[i] = actsOf(l).slice();
+      if (l.place) { setPlace(l.place, instant); state.acted[i].unshift("place:" + l.place); }
       actsOf(l).forEach(function (a) { act(a, instant); });
     } catch (e) { /* the story plays without the room */ }
   }
@@ -699,7 +716,7 @@
 
   function view() {
     var away = state ? placeIsAway() : false;
-    var o = { place: state ? state.place : null, look: state ? (looksColor() ? "color" : "sil") : null, mode: state ? (away ? "away" : "room") : null, action: lastAction, said: trail.slice(), line: state ? state.at : -1, actors: {} };
+    var o = { place: state ? state.place : null, look: state ? (looksColor() ? "color" : "sil") : null, mode: state ? (away ? "away" : "room") : null, action: lastAction, said: trail.slice(), acted: state ? Object.keys(state.acted).map(Number).sort(function (a, b) { return a - b; }).reduce(function (all, k) { return all.concat(state.acted[k]); }, []) : [], line: state ? state.at : -1, actors: {} };
     Object.keys(figs).forEach(function (k) {
       var f = figs[k];
       o.actors[k] = { present: f.present, shown: !!state && here(f), posture: f.posture, spot: f.spot, pose: f.pose };

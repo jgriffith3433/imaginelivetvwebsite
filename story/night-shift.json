@@ -569,7 +569,6 @@
           "sfx": "door-heavy",
           "dur": 11.7,
           "act": [
-            "room:door",
             "you:write",
             "okafor:leave",
             "dee:knock"
@@ -654,7 +653,7 @@
           "sfx": "door-heavy",
           "dur": 10.4,
           "act": [
-            "room:door",
+            "okafor:leave",
             "dee:knock"
           ]
         },
@@ -662,8 +661,7 @@
           "speaker": "okafor",
           "text": "It's customary to read it first.",
           "perform": "from the door, tired",
-          "dur": 2.6,
-          "act": "okafor:leave"
+          "dur": 2.6
         },
         {
           "speaker": "dee",
@@ -765,10 +763,7 @@
           "perform": "holds the fourth out",
           "sfx": "radio-charger",
           "dur": 3.4,
-          "act": [
-            "dee:count",
-            "dee:hand"
-          ]
+          "act": "dee:hand"
         },
         {
           "speaker": "dee",
@@ -852,10 +847,7 @@
           "perform": "holds the fourth out",
           "sfx": "radio-charger",
           "dur": 3.4,
-          "act": [
-            "dee:count",
-            "dee:hand"
-          ]
+          "act": "dee:hand"
         },
         {
           "speaker": "dee",
@@ -1139,8 +1131,8 @@
           "sfx": "foil",
           "dur": 8.2,
           "act": [
-            "dee:eat",
-            "terrell:enter:left"
+            "terrell:enter:left",
+            "dee:eat"
           ]
         },
         {
@@ -1231,8 +1223,8 @@
           "sfx": "foil",
           "dur": 8.2,
           "act": [
-            "dee:eat",
-            "terrell:enter:left"
+            "terrell:enter:left",
+            "dee:eat"
           ]
         },
         {
@@ -1322,8 +1314,8 @@
           "sfx": "foil",
           "dur": 8.2,
           "act": [
-            "dee:eat",
-            "terrell:enter:left"
+            "terrell:enter:left",
+            "dee:eat"
           ]
         },
         {
@@ -1420,7 +1412,7 @@
           "perform": "pencil moving, no hurry",
           "sfx": "pencil",
           "dur": 7.2,
-          "act": "dee:write",
+          "act": "dee:touch",
           "feed": [
             "c1",
             "c2",
@@ -1505,7 +1497,7 @@
           "perform": "pencil moving, no hurry",
           "sfx": "pencil",
           "dur": 7.2,
-          "act": "dee:write",
+          "act": "dee:touch",
           "feed": [
             "c1",
             "c2",
@@ -1589,7 +1581,7 @@
           "perform": "pencil moving, no hurry",
           "sfx": "pencil",
           "dur": 7.2,
-          "act": "dee:write",
+          "act": "dee:touch",
           "feed": [
             "c1",
             "c2",
@@ -5069,15 +5061,13 @@
           "speaker": "narrator",
           "text": "You ask for his ID and you look at it, not glance. The night number for forty rings six times. A tired voice says send him up, sign him, he'll be an hour.",
           "sfx": "phone-ring",
-          "dur": 11.8,
-          "act": "room:ring"
+          "dur": 11.8
         },
         {
           "speaker": "terrell",
           "text": "See? See, I said.",
           "perform": "to nobody, delighted",
-          "dur": 2.5,
-          "act": "you:phone"
+          "dur": 2.5
         },
         {
           "speaker": "narrator",
@@ -6454,8 +6444,7 @@
           "speaker": "dee",
           "text": "Mm.",
           "perform": "very low, to the wall, not to you",
-          "dur": 1.9,
-          "act": "you:hangup"
+          "dur": 1.9
         },
         {
           "speaker": "narrator",
@@ -6466,7 +6455,10 @@
           "speaker": "narrator",
           "text": "The incident field is open. You read the line you wrote. It is one sentence long.",
           "dur": 5.7,
-          "act": "you:hangup"
+          "act": [
+            "you:hangup",
+            "you:write"
+          ]
         }
       ],
       "choices": [
@@ -8706,10 +8698,7 @@
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
           "dur": 9.1,
-          "act": [
-            "room:door",
-            "marisol:enter:left"
-          ]
+          "act": "marisol:enter:left"
         },
         {
           "speaker": "marisol",
@@ -8787,10 +8776,7 @@
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
           "dur": 9.1,
-          "act": [
-            "room:door",
-            "marisol:enter:left"
-          ]
+          "act": "marisol:enter:left"
         },
         {
           "speaker": "marisol",
@@ -8867,10 +8853,7 @@
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
           "dur": 9.1,
-          "act": [
-            "room:door",
-            "marisol:enter:left"
-          ]
+          "act": "marisol:enter:left"
         },
         {
           "speaker": "marisol",
@@ -10451,15 +10434,14 @@
           "text": "The contractor's night line puts you on hold with a recorded voice, then a man named Gus who says twenty minutes.",
           "sfx": "phone-ring",
           "dur": 7.6,
-          "act": "room:ring"
+          "act": "you:phone"
         },
         {
           "speaker": "dev",
           "text": "Twenty? Twenty minutes? Sorry. No. That's fine. That's fine.",
           "perform": "over the intercom, rushing",
           "dur": 4,
-          "treatment": "intercom",
-          "act": "you:phone"
+          "treatment": "intercom"
         },
         {
           "speaker": "narrator",
@@ -10477,7 +10459,8 @@
         {
           "speaker": "narrator",
           "text": "You key the radio. \"Post one. Loud and clear.\" Dolores says Mm. That is all she says.",
-          "dur": 7.6
+          "dur": 7.6,
+          "act": "you:hangup"
         },
         {
           "speaker": "narrator",
@@ -10530,7 +10513,8 @@
         {
           "speaker": "narrator",
           "text": "The dispatcher asks if anyone is hurt. No. If anyone is in distress. You say a little close in there. The dispatcher says the fire department is notified.",
-          "dur": 10.7
+          "dur": 10.7,
+          "act": "you:phone"
         },
         {
           "speaker": "dev",
@@ -10542,7 +10526,8 @@
         {
           "speaker": "narrator",
           "text": "At 03:15 two firefighters come into the lobby with a bar and a bag. At 03:22 the car opens at thirty-one and Dev walks out with his laptop bag held to his chest.",
-          "dur": 12.3
+          "dur": 12.3,
+          "act": "you:hangup"
         },
         {
           "speaker": "dee",
@@ -10800,8 +10785,7 @@
           "speaker": "narrator",
           "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0330. In. He does not write the Out column.",
           "sfx": "pencil",
-          "dur": 10.9,
-          "act": "dee:write"
+          "dur": 10.9
         }
       ],
       "choices": [
@@ -11740,8 +11724,7 @@
           "text": "Thank you. That is the correct answer. Please put it in the log in the same words.",
           "perform": "crisp",
           "dur": 5.7,
-          "treatment": "phone",
-          "act": "you:phone"
+          "treatment": "phone"
         },
         {
           "speaker": "adler",
@@ -11815,8 +11798,7 @@
         {
           "speaker": "narrator",
           "text": "You read it again. TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
-          "dur": 6.4,
-          "act": "you:hangup"
+          "dur": 6.4
         },
         {
           "speaker": "adler",
@@ -13206,13 +13188,15 @@
         {
           "speaker": "narrator",
           "text": "The dispatcher asks if he is breathing. Yes. If he is responsive. You don't know. An ambulance comes up Madison Avenue at 04:58 without its siren.",
-          "dur": 11
+          "dur": 11,
+          "act": "you:phone"
         },
         {
           "speaker": "narrator",
           "text": "Two medics wake him. He gets up slowly. He says it again to them.",
           "sfx": "door-buzz",
-          "dur": 5
+          "dur": 5,
+          "act": "you:hangup"
         },
         {
           "speaker": "sleeper",
@@ -16536,15 +16520,13 @@
           "text": "Okay. Okay! Thirty-four? Who for? Let me see what I can do.",
           "perform": "fast, reading the card twice",
           "sfx": "phone-ring",
-          "dur": 4.2,
-          "act": "room:ring"
+          "dur": 4.2
         },
         {
           "speaker": "dee",
           "text": "Mm-hm.",
           "perform": "dry; she is watching Terrell, not the man",
-          "dur": 2.8,
-          "act": "you:phone"
+          "dur": 2.8
         },
         {
           "speaker": "narrator",

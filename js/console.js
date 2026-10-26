@@ -506,6 +506,7 @@
     }
     var before = shown;
     renderWall();
+    if (!before && hooks.tell) hooks.tell("feature", { story: story.id, feature: "feed", camera: run.sel, via: "open" });
     if (R && !resumed && before && before.cam !== run.sel) {
       var cam = camera(run.sel);
       R.switched(cam.id.toUpperCase() + " " + cam.name);
