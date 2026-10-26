@@ -188,6 +188,22 @@ in colour, facing you, in the place they are in (`lobby`, `vestibule`, `dock`, `
 screen is a small inset in the corner; **in daylight** (`room-day`, the endings: the shift is over) the room shows people in
 colour too. A scene or a line says which.
 
+**The photographed room (J, 2026-10-26).** When `night-shift/media/stage/stage.json` loads, the room is a photograph and the SVG room
+and people are not drawn (the SVG stays as the fallback for anything with no still, and keeps the people's state machine that the
+tests and the `room` playtest read). In `room`: the plate (`plate.webp`, the empty control room, 1536x920, fixed camera; marks in
+`night-shift/stage-marks.json`), overlays raised by the same flags the SVG used (`door` lobby/corridor, `writing` the tablet lit,
+`spill`, `buzz` the fire panel's lights; each is requested the first time it is needed), the clock's hands (an SVG clock on the plate's
+clock), and **one black silhouette layer per person**, a full-plate WebP with alpha cut from a generated still (`image.edit` of the
+plate, `image.segment`, `tools/pose-bake.mjs`), crossfaded about 250 ms at the line its `act` is tied to (line index, never audio time).
+A layer is picked by the person's state: `posture.pose.arg`, `posture.pose`, `spot.pose`, `spot`, `door`, `posture`, `*` (the table is
+`poses` in stage.json; the plate is mirrored against the SVG room, so `dee@right` stands at the charger on the plate's left). A person
+with no layer is not drawn (brandt, the courier and the sleeper are never in the room). Out of the room (`stairwell`, `dock`, `roof`,
+`lobby`, `vestibule`) and in `room-day` at the twelve endings the picture is a photographic still with its people in it
+(`places` in stage.json: `<place>@<scene id>`, `<place>:<who is with you>`, `<place>`; the big screen sits on the plate's screen in
+the room and by day, an inset elsewhere). The corridor upstairs (`tenant-go`, `leak-go`) has no still yet and stays the SVG place.
+`night-shift/stage-recipes.json` holds every prompt, seed, chosen asset and segmentation prompt; `node tools/make-storyboard.mjs`
+writes `night-shift/storyboard.html` (every scene's lines beside its keyframes). Stills only: no 3D, no video, no SVG people in the photographed room.
+
 Scene fields: `place` (where the scene opens: `room` by default, `room-day`, or one of the places above), `cast` (who is in the
 room when it opens: `["you","dee"]` by default; `"okafor@left"` stands them at the left of the desk, `@right` at the
 charger side), `away` (who is on stage when the place isn't the room; default the cast).

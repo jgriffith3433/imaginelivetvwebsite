@@ -185,6 +185,12 @@ console story go at the end of `scenes` (the unlocks cookie is a bit per scene, 
 
 **The control room (J, 2026-10-26).** A console story is drawn as the security room (`js/console-room.js`, story doc "The control room"): the people in it are black silhouettes that act what the lines say, facing one big screen they switch between the cameras (a CRT flash on each change), and out of the room (the tour, the lobby desk, the endings by daylight) they are drawn as people in that place. What they do is data: a scene's `place`, `cast` and `away`, and a line's `act`, `place` and `feed` in `story/night-shift.json`; `npm run story` checks them and `npm run test:room` plays every scene's acts in jsdom (the `room` playtest checks it all in a browser). A new scene needs none of them (the trainee and Dee sit and listen); add `act`s where the words do something. Nothing on the screen or in the strip of cameras can be pressed: don't bring back click-to-enlarge. It is all SVG and CSS: no GPU.
 
+**The photographed room (J, 2026-10-26).** Night Shift's room is a photograph when `night-shift/media/stage/stage.json` loads (story doc
+"The control room": plate, overlays, one black silhouette layer per person, stills for the places and the twelve daylight endings;
+recipes in `night-shift/stage-recipes.json`, tools `tools/pose-bake.mjs` and `tools/make-storyboard.mjs`). The SVG room and its people are
+the fallback and still carry the state the tests and the `room` playtest read (`.fig[data-who]`): don't delete them. `npm run test:room`
+checks the layers; every layer must stay a full-plate WebP under 160 KB.
+
 Stories are data. `story/stories.json` lists them (id, logline, card image, `listed`), each one's scenes are in
 `story/<id>.json`, and `npm run story` builds every story: `js/story-data.js`, the landing cards in `index.html`
 (between the `<!-- stories -->` markers), each story's `/<id>/` link, its branch pages and its media recipes in

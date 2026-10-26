@@ -1,0 +1,630 @@
+{
+ "_about": "How the stage layers were made (Hawkes Gen project imaginelivetv). Edit prompts are KEEP + text + TAIL, base image 1 = the plate. The pilot (plate, Dee/Okafor/trainee sheets) is in story/night-shift.md and night-shift/stage-marks.json. Re-make a layer: image.edit with that prompt and seed, image.segment with its prompt, node tools/pose-bake.mjs.",
+ "cast": {
+  "terrell.webp": {
+   "tool": "image.generate",
+   "job": "j_5442b9a0c9c6",
+   "picked": "asset:a_dbecd52f6088abca",
+   "seed": 5100,
+   "count": 4,
+   "size": "1536x1024",
+   "outlineCue": "lanky, navy uniform cap with a badge, lanyard",
+   "design": "a young man, 24, Brooklyn, friendly open face, navy lobby security uniform"
+  },
+  "marisol.webp": {
+   "tool": "image.generate",
+   "job": "j_b1316c470674",
+   "picked": "asset:a_f390d3c10ed76264",
+   "seed": 5201,
+   "count": 4,
+   "size": "1536x1024",
+   "outlineCue": "janitor cart with mop bucket, bright patterned scarf, grey smock, walkie at the shoulder",
+   "design": "a Dominican-American woman, 51, warm expressive face"
+  },
+  "adler.webp": {
+   "tool": "image.generate",
+   "job": "j_7f19eaff7bee",
+   "picked": "asset:a_a40db826b98f3030",
+   "seed": 5302,
+   "count": 4,
+   "size": "1536x1024",
+   "outlineCue": "white hard hat, high-visibility vest, clipboard",
+   "design": "a woman, 62, retired fire department, crisp calm face"
+  },
+  "dev.webp": {
+   "tool": "image.generate",
+   "job": "j_800ef6830308",
+   "picked": "asset:a_b828c91bf8197017",
+   "seed": 5401,
+   "count": 4,
+   "size": "1536x1024",
+   "outlineCue": "large backpack on both shoulders, loosened tie, visitor lanyard",
+   "design": "a young man, 29, Indian-American junior lawyer, tired polite face"
+  },
+  "brandt.webp": {
+   "tool": "image.generate",
+   "job": "j_adcb3b14786f",
+   "picked": "asset:a_b8d9fe818cb6f2f9",
+   "seed": 5500,
+   "count": 4,
+   "size": "1536x1024",
+   "outlineCue": "long camel overcoat and a leather briefcase",
+   "design": "a man, early forties, hedge fund tenant, brisk slightly entitled tired face"
+  },
+  "pierce.webp": {
+   "tool": "image.generate",
+   "job": "j_1294583446ff",
+   "picked": "asset:a_ca368818809ae589",
+   "seed": 5600,
+   "count": 4,
+   "size": "1536x1024",
+   "outlineCue": "long dark overcoat to the shins, silver hair swept back",
+   "design": "a tall man in his fifties, corporate chairman, severe confident face (PH Origins Lore.txt gives him no physical description beyond the chairman/58th floor, so the look is new)"
+  }
+ },
+ "poses": {
+  "dee-phone.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, seated in the worn beige swivel chair at the right of the desk, a black desk telephone handset held to her ear, facing the monitors. Photoreal, gritty low light.",
+   "seed": 6101,
+   "count": 2,
+   "picked": "asset:a_6e22e3affcc3a6fa",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan",
+    "also": {
+     "prompt": "the beige swivel office chair with the woman sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs dee-phone <cutouts>"
+  },
+  "dee-write.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, seated in the worn beige swivel chair at the right of the desk, head bowed, writing with a pen on a tablet on the desk. Photoreal, gritty low light.",
+   "seed": 6201,
+   "count": 2,
+   "picked": "asset:a_1f262e8f8da6496a",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan",
+    "also": {
+     "prompt": "the beige swivel office chair with the woman sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs dee-write <cutouts>"
+  },
+  "dee-eat.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, seated in the worn beige swivel chair at the right of the desk, lifting a sandwich to her mouth. Photoreal, gritty low light.",
+   "seed": 6301,
+   "count": 2,
+   "picked": "asset:a_ed27deb8c5d68dfa",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan",
+    "also": {
+     "prompt": "the beige swivel office chair with the woman sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs dee-eat <cutouts>"
+  },
+  "dee-drink.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, seated in the worn beige swivel chair at the right of the desk, drinking from a paper coffee cup held to her lips. Photoreal, gritty low light.",
+   "seed": 6401,
+   "count": 2,
+   "picked": "asset:a_444973903ccca2df",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan",
+    "also": {
+     "prompt": "the beige swivel office chair with the woman sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs dee-drink <cutouts>"
+  },
+  "dee-lean.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, seated in the worn beige swivel chair at the right of the desk, leaning forward over the desk with one elbow on it, turned toward the left, as if speaking closely to someone. Photoreal, gritty low light.",
+   "seed": 6501,
+   "count": 2,
+   "picked": "asset:a_a4d9ee9bf1c026ce",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan",
+    "also": {
+     "prompt": "the beige swivel office chair with the woman sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs dee-lean <cutouts>"
+  },
+  "dee-angry.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing at the desk leaning over it with both fists planted on the desk, shoulders forward, angry, seen from the side. Photoreal, gritty low light.",
+   "seed": 6601,
+   "count": 2,
+   "picked": "asset:a_a4c365a8346b82b6",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-angry <cutouts>"
+  },
+  "dee-halfup.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, caught halfway up from the worn beige swivel chair at the right of the desk, knees bent, hands on the armrests, rising. Photoreal, gritty low light.",
+   "seed": 6701,
+   "count": 2,
+   "picked": "asset:a_eec994c58cbb7175",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-halfup <cutouts>"
+  },
+  "dee-panel.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing at the wall fire alarm panel on the left wall, one arm raised pointing at its lights, seen from the side. Photoreal, gritty low light.",
+   "seed": 6801,
+   "count": 2,
+   "picked": "asset:a_6201da5cefa9c4e4",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-panel <cutouts>"
+  },
+  "dee-door-l.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing at the left door, her back to the camera, one hand on the door handle, about to leave. Photoreal, gritty low light.",
+   "seed": 6901,
+   "count": 2,
+   "picked": "asset:a_94738b645db06d5e",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-door-l <cutouts>"
+  },
+  "dee-door-r.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing at the right door, her back to the camera, one hand on the door handle. Photoreal, gritty low light.",
+   "seed": 7001,
+   "count": 2,
+   "picked": "asset:a_bc116a5454270a5f",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-door-r <cutouts>"
+  },
+  "dee-hand.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing in the middle of the room holding out a white binder at arm's length toward the left, handing it over, seen from the side. Photoreal, gritty low light.",
+   "seed": 7101,
+   "count": 2,
+   "picked": "asset:a_783ec21c060c3ba7",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan and the white binder she holds"
+   },
+   "bake": "node tools/pose-bake.mjs dee-hand <cutouts>"
+  },
+  "dee-shelf.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing at the right side of the room by the shelf, one arm raised pointing up at the shelf with the binders, seen from the side. Photoreal, gritty low light.",
+   "seed": 7201,
+   "count": 2,
+   "picked": "asset:a_3766e17a6795d7dd",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-shelf <cutouts>"
+  },
+  "dee-taps-screen.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing in front of the big wall screen, her arm raised, one finger tapping the glass of the screen, seen from behind. Photoreal, gritty low light.",
+   "seed": 4301,
+   "count": 2,
+   "picked": "asset:a_2498873ccf8966a0",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with grey curly hair and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-taps-screen <cutouts>"
+  },
+  "dee-at-charger.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing at the wall radio charger left of the desk, taking a radio from it, seen from the side. Photoreal, gritty low light.",
+   "seed": 4201,
+   "count": 2,
+   "picked": "asset:a_201e42a60d1527fd",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the standing woman with grey curly hair and long cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-at-charger <cutouts>"
+  },
+  "dee-stand-folded.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing beside the beige chair, one hand on its back, arms folded (pilot pose test). Photoreal, gritty low light.",
+   "seed": 2086170000,
+   "count": 2,
+   "picked": "asset:a_d9f6cd555a657993",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the standing woman with glasses and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-stand-folded <cutouts>",
+   "note": "j_b4ed73d972b9 (pilot)"
+  },
+  "dee-stand-beside.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, standing beside the seated trainee in the beige chair with her arms folded, looking down at him. Spare layer for the chair choice, not in stage.json yet. Photoreal, gritty low light.",
+   "seed": 4401,
+   "count": 2,
+   "picked": "asset:a_3a4097fd3484aa58",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the standing woman with folded arms and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-stand-beside <cutouts>"
+  },
+  "dee-sit.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan, seated at the desk. Photoreal, gritty low light.",
+   "seed": 842788388,
+   "count": 2,
+   "picked": "asset:a_6f6dcdb5e7bf2110",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the seated woman with glasses and cardigan"
+   },
+   "bake": "node tools/pose-bake.mjs dee-sit <cutouts>",
+   "note": "j_f5e3dfda8cf8 (pilot)"
+  },
+  "trainee-sit.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, seated in the good dark ergonomic chair at the desk. Photoreal, gritty low light.",
+   "seed": 1986241871,
+   "count": 2,
+   "picked": "asset:a_3c14e3c3153a90ee",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the seated security guard in the navy uniform"
+   },
+   "bake": "node tools/pose-bake.mjs trainee-sit <cutouts>",
+   "note": "j_f8ef348fb2a1 (pilot)"
+  },
+  "trainee-sit-hers.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, sitting in the worn beige swivel chair on the right of the desk, and an older woman with grey curly hair and glasses, navy security uniform under a long open grey cardigan standing beside him with her arms folded. Photoreal, gritty low light.",
+   "seed": 4401,
+   "count": 2,
+   "picked": "asset:a_3a4097fd3484aa58",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the seated man in navy uniform",
+    "also": {
+     "prompt": "the beige swivel office chair with the man sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs trainee-sit-hers <cutouts>"
+  },
+  "trainee-stand-clock.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, standing between the two chairs, head turned up to look at the round wall clock. Photoreal, gritty low light.",
+   "seed": 4101,
+   "count": 2,
+   "picked": "asset:a_ac98be5187713754",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the standing security guard in navy uniform seen from behind"
+   },
+   "bake": "node tools/pose-bake.mjs trainee-stand-clock <cutouts>"
+  },
+  "you-phone.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, seated in the good dark ergonomic chair at the left of the desk, a black desk telephone handset held to his ear. Photoreal, gritty low light.",
+   "seed": 8101,
+   "count": 2,
+   "picked": "asset:a_52dfe9fe00c2002e",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the security guard in navy uniform",
+    "also": {
+     "prompt": "the dark ergonomic office chair with the man sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs you-phone <cutouts>"
+  },
+  "you-write.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, seated in the good dark ergonomic chair at the left of the desk, head bowed, writing with a pen on a tablet on the desk. Photoreal, gritty low light.",
+   "seed": 8201,
+   "count": 2,
+   "picked": "asset:a_17d9aae8d807ca7e",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the security guard in navy uniform",
+    "also": {
+     "prompt": "the dark ergonomic office chair with the man sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs you-write <cutouts>"
+  },
+  "you-eat.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, seated in the good dark ergonomic chair at the left of the desk, lifting a sandwich to his mouth. Photoreal, gritty low light.",
+   "seed": 8301,
+   "count": 2,
+   "picked": "asset:a_20cf3949913a885a",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the security guard in navy uniform",
+    "also": {
+     "prompt": "the dark ergonomic office chair with the man sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs you-eat <cutouts>"
+  },
+  "you-lean.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, seated in the good dark ergonomic chair at the left of the desk, leaning forward with his elbows on the desk, turned slightly toward the right. Photoreal, gritty low light.",
+   "seed": 8401,
+   "count": 2,
+   "picked": "asset:a_b4afa6cfa1e8fbd5",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the security guard in navy uniform",
+    "also": {
+     "prompt": "the dark ergonomic office chair with the man sitting in it",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs you-lean <cutouts>"
+  },
+  "you-hand.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, standing in the middle of the room holding out a clipboard at arm's length toward the right, handing it over. Photoreal, gritty low light.",
+   "seed": 8501,
+   "count": 2,
+   "picked": "asset:a_b9235aebe8c75f45",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the security guard in navy uniform"
+   },
+   "bake": "node tools/pose-bake.mjs you-hand <cutouts>"
+  },
+  "you-press.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a security guard in a plain navy uniform with short dark hair, seen from behind, standing at the left door, one arm raised pressing a button on the wall beside the door frame. Photoreal, gritty low light.",
+   "seed": 8601,
+   "count": 2,
+   "picked": "asset:a_33aacb8a86db30b3",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the security guard in navy uniform"
+   },
+   "bake": "node tools/pose-bake.mjs you-press <cutouts>"
+  },
+  "okafor-at-door.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a tall man in a dark suit with a leather bag across his body, at the left door with a hand on the handle (pilot). Photoreal, gritty low light.",
+   "seed": "pilot",
+   "count": 2,
+   "picked": "asset:a_d53fd1088d596ae7",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the man in the suit with the shoulder bag",
+    "also": {
+     "prompt": "the brown leather messenger bag and its strap",
+     "threshold": 0.4
+    }
+   },
+   "bake": "node tools/pose-bake.mjs okafor-at-door <cutouts>",
+   "note": "j_06633d434236 (pilot)"
+  },
+  "okafor-right.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a tall man in a dark suit with a leather bag across his body, standing near the right door beside the shelf, seen from the side facing left. Photoreal, gritty low light.",
+   "seed": 8701,
+   "count": 2,
+   "picked": "asset:a_53216959b162cd03",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the man in the dark suit with the leather bag"
+   },
+   "bake": "node tools/pose-bake.mjs okafor-right <cutouts>"
+  },
+  "okafor-read.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a tall man in a dark suit with a leather bag across his body, standing between the two chairs at the desk, holding a tablet in both hands and looking down at it, seen from the side. Photoreal, gritty low light.",
+   "seed": 8801,
+   "count": 2,
+   "picked": "asset:a_c9b95265b313ef26",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the man in the dark suit with the leather bag"
+   },
+   "bake": "node tools/pose-bake.mjs okafor-read <cutouts>"
+  },
+  "okafor-shelf.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a tall man in a dark suit with a leather bag across his body, standing at the right side of the room, one arm raised pointing up at the shelf with the binders, seen from the side. Photoreal, gritty low light.",
+   "seed": 8901,
+   "count": 2,
+   "picked": "asset:a_d56a5c005553f455",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the man in the dark suit with the leather bag"
+   },
+   "bake": "node tools/pose-bake.mjs okafor-shelf <cutouts>"
+  },
+  "terrell-left.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a lanky young man in a navy lobby security uniform and a navy uniform cap, standing just inside the left door, seen from the side facing right. Photoreal, gritty low light.",
+   "seed": 9001,
+   "count": 2,
+   "picked": "asset:a_8f4e984283c2e752",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the young man in the navy uniform and cap"
+   },
+   "bake": "node tools/pose-bake.mjs terrell-left <cutouts>"
+  },
+  "marisol-left.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a woman in a grey work smock with a bright patterned scarf and dark hair tied back, pushing a janitor's cart with a mop bucket just inside the left door, seen from the side facing right. Photoreal, gritty low light.",
+   "seed": 9101,
+   "count": 2,
+   "picked": "asset:a_a0220595674fb48d",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman in the grey smock with the janitor cart and mop"
+   },
+   "bake": "node tools/pose-bake.mjs marisol-left <cutouts>"
+  },
+  "dev-left.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a young man in a rumpled shirt with a loosened tie and a large backpack on both shoulders, standing just inside the left door, seen from the side facing right. Photoreal, gritty low light.",
+   "seed": 9201,
+   "count": 2,
+   "picked": "asset:a_58ebd2e62a984d08",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the young man with the large backpack"
+   },
+   "bake": "node tools/pose-bake.mjs dev-left <cutouts>"
+  },
+  "adler-right.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman wearing a white hard hat and a high-visibility vest, holding a clipboard, standing near the right door, seen from the side facing left. Photoreal, gritty low light.",
+   "seed": 9301,
+   "count": 2,
+   "picked": "asset:a_e8313ede227afe47",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with the white hard hat, vest and clipboard"
+   },
+   "bake": "node tools/pose-bake.mjs adler-right <cutouts>"
+  },
+  "adler-panel.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add an older woman wearing a white hard hat and a high-visibility vest, holding a clipboard, standing at the wall fire alarm panel on the left wall, pointing at its lights, seen from the side. Photoreal, gritty low light.",
+   "seed": 9401,
+   "count": 2,
+   "picked": "asset:a_2c0beb95f75c73a2",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the woman with the white hard hat, vest and clipboard"
+   },
+   "bake": "node tools/pose-bake.mjs adler-panel <cutouts>"
+  },
+  "pierce-left.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged. Add a tall silver-haired man in a long dark overcoat over a charcoal suit, standing just inside the left door, seen from the side facing right. Photoreal, gritty low light.",
+   "seed": 9501,
+   "count": 2,
+   "picked": "asset:a_3fc7f003911b98f5",
+   "segment": {
+    "tool": "image.segment",
+    "prompt": "the man in the long dark overcoat"
+   },
+   "bake": "node tools/pose-bake.mjs pierce-left <cutouts>"
+  }
+ },
+ "overlays": {
+  "ov-door-lobby.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged, but the left door wide open into a bright lit hallway, light spilling across the floor. Photoreal.",
+   "seed": 11001,
+   "count": 2,
+   "picked": "asset:a_1a177d33df2b9b32",
+   "layer": "the edit, scaled to 1536x920, kept only inside a feathered box x,y,w,h,blur = 0,40,270,860,14 (ffmpeg drawbox + gblur -> alphamerge; the room drifts a little between edits, so a whole-plate diff is not used)"
+  },
+  "ov-door-corridor.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged, but the right door wide open into a dim corridor, light spilling across the floor. Photoreal.",
+   "seed": 11101,
+   "count": 2,
+   "picked": "asset:a_b1245196cd3631ab",
+   "layer": "the edit, scaled to 1536x920, kept only inside a feathered box x,y,w,h,blur = 1290,40,246,860,14 (ffmpeg drawbox + gblur -> alphamerge; the room drifts a little between edits, so a whole-plate diff is not used)"
+  },
+  "ov-spill.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged, but a paper coffee cup tipped over on the desk and dark coffee spilled across the desk surface in a wide puddle, dripping off the edge. Photoreal.",
+   "seed": 11201,
+   "count": 2,
+   "picked": "asset:a_a8cc4950bef30c07",
+   "layer": "the edit, scaled to 1536x920, kept only inside a feathered box x,y,w,h,blur = 560,520,560,400,18 (ffmpeg drawbox + gblur -> alphamerge; the room drifts a little between edits, so a whole-plate diff is not used)"
+  },
+  "ov-tablet.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged, but the small tablet on the desk lit up bright with a pale yellow page of ruled lines. Photoreal.",
+   "seed": 11301,
+   "count": 2,
+   "picked": "asset:a_55dfe88e285b05ea",
+   "layer": "the edit, scaled to 1536x920, kept only inside a feathered box x,y,w,h,blur = 705,525,125,70,6 (ffmpeg drawbox + gblur -> alphamerge; the room drifts a little between edits, so a whole-plate diff is not used)"
+  },
+  "ov-fire-amber.webp": {
+   "tool": "image.edit",
+   "base": "asset:a_23930505ce5ea587 (the plate)",
+   "prompt": "Keep this exact room unchanged, but the fire alarm panel on the left wall glowing with amber and red warning lights, a trouble light lit. Photoreal.",
+   "seed": 11401,
+   "count": 2,
+   "picked": "asset:a_a3be2bedede224cb",
+   "layer": "the edit, scaled to 1536x920, kept only inside a feathered box x,y,w,h,blur = 0,120,700,520,45 (ffmpeg drawbox + gblur -> alphamerge; the room drifts a little between edits, so a whole-plate diff is not used)"
+  }
+ }
+}

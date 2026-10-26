@@ -1,0 +1,61 @@
+{
+  "_about": "The photographed control room (js/console-room.js, 'The photographed room'; story/README.md 'The control room'). Every layer is a full-plate WebP (1536x920) over the plate; people are black silhouettes cut from generated stills (tools/pose-bake.mjs). The room's spots are mirrored for the plate (its charger is on the left, its shelf on the right): Dee at `right` stands at the charger, Mr. Okafor at `left` by the shelf side. Pose keys, first found: posture.pose.arg, posture.pose, spot.pose, spot, door, posture, *. Recipes: night-shift/stage-recipes.json.",
+  "plate": "plate.webp",
+  "width": 1536,
+  "height": 920,
+  "clock": { "x": 1148, "y": 235 },
+  "bigScreen": { "x": 560, "y": 180, "w": 405, "h": 235 },
+  "overlays": {
+    "door-left": "ov-door-lobby.webp",
+    "door-right": "ov-door-corridor.webp",
+    "writing": "ov-tablet.webp",
+    "spill": "ov-spill.webp",
+    "buzz": "ov-fire-amber.webp"
+  },
+  "places": {
+    "stairwell": "places/stairwell.webp",
+    "dock": "places/dock.webp",
+    "dock:courier": "places/dock-courier.webp",
+    "roof": "places/roof.webp",
+    "lobby": "places/lobby-terrell.webp",
+    "lobby:terrell": "places/lobby-terrell.webp",
+    "lobby:dee": "places/lobby-dee.webp",
+    "vestibule": "places/vestibule.webp",
+    "room-day@end-clean": "places/end-clean.webp",
+    "room-day@end-someone": "places/end-someone.webp",
+    "room-day@end-she-knew": "places/end-she-knew.webp",
+    "room-day@end-eat-something": "places/end-eat-something.webp",
+    "room-day@end-by-the-book": "places/end-by-the-book.webp",
+    "room-day@end-friendly": "places/end-friendly.webp",
+    "room-day@end-opinions": "places/end-opinions.webp",
+    "room-day@end-four-hours": "places/end-four-hours.webp",
+    "room-day@end-written-up": "places/end-written-up.webp",
+    "room-day@end-wedge": "places/end-wedge.webp",
+    "room-day@end-noted": "places/end-noted.webp",
+    "room-day@end-under-review": "places/end-under-review.webp"
+  },
+  "poses": {
+    "dee": {
+      "seated": "dee-sit.webp", "seated.phone": "dee-phone.webp", "seated.write": "dee-write.webp", "seated.eat": "dee-eat.webp",
+      "seated.drink": "dee-drink.webp", "seated.lean": "dee-lean.webp", "seated.angry": "dee-angry.webp",
+      "standing": "dee-stand-folded.webp", "standing.point": "dee-taps-screen.webp", "standing.touch": "dee-taps-screen.webp",
+      "standing.knock": "dee-taps-screen.webp", "standing.point.shelf": "dee-shelf.webp", "standing.point.panel": "dee-panel.webp",
+      "standing.press.panel": "dee-panel.webp", "standing.count": "dee-at-charger.webp", "standing.hand": "dee-hand.webp",
+      "standing.angry": "dee-angry.webp", "door": "dee-door-l.webp", "right": "dee-at-charger.webp", "left": "dee-stand-folded.webp"
+    },
+    "you": {
+      "seated": "trainee-sit.webp", "seated.phone": "you-phone.webp", "seated.write": "you-write.webp", "seated.read": "you-write.webp",
+      "seated.eat": "you-eat.webp", "seated.lean": "you-lean.webp",
+      "standing": "trainee-stand-clock.webp", "standing.hand": "you-hand.webp", "standing.press": "you-press.webp", "door": "you-press.webp"
+    },
+    "okafor": {
+      "standing": "okafor-right.webp", "left": "okafor-right.webp", "right": "okafor-at-door.webp", "standing.read": "okafor-read.webp", "standing.write": "okafor-read.webp",
+      "standing.hand": "okafor-read.webp", "standing.point": "okafor-shelf.webp", "standing.point.shelf": "okafor-shelf.webp", "door": "okafor-at-door.webp"
+    },
+    "terrell": { "standing": "terrell-left.webp" },
+    "marisol": { "standing": "marisol-left.webp" },
+    "dev": { "standing": "dev-left.webp" },
+    "adler": { "standing": "adler-right.webp", "standing.point": "adler-panel.webp", "standing.point.panel": "adler-panel.webp", "standing.write": "adler-right.webp" },
+    "pierce": { "standing": "pierce-left.webp" }
+  }
+}
