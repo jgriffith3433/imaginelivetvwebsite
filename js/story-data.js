@@ -83,10 +83,6 @@ window.ILTV_STORIES = {
      "mouth": "سرنگ کا منہ",
      "depth": "گہرائی"
     },
-    "pl": {
-     "mouth": "Ujście tunelu",
-     "depth": "Głębokość"
-    },
     "th": {
      "mouth": "ปากอุโมงค์",
      "depth": "ความลึก"
@@ -552,24 +548,24 @@ window.ILTV_STORIES = {
     },
     "insideTruck": {
      "folder": "get-inside-the-truck",
-     "lang": "pl",
+     "lang": "es",
      "dir": "",
      "title": [
-      "W środku",
+      "Dentro",
       "Inside"
      ],
      "story": [
-      "Wchodzisz do ciężarówki.",
+      "Subes a la camioneta.",
       "You get inside the truck."
      ],
      "question": [
-      "Co dzieje się dalej?",
+      "¿Qué pasa ahora?",
       "What happens next?"
      ],
      "video": "/assets/video/inside-truck.mp4",
      "choices": [
       [
-       "Zatańcz z cieniem",
+       "Baila con la sombra",
        "Dance with the shadow",
        "shadowDance"
       ]
