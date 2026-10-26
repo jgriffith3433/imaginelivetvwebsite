@@ -10,7 +10,8 @@
     "test:console": "node tools/test-console.mjs",
     "test:playtest": "node tools/test-playtest.mjs && node tools/test-chunked.mjs",
     "test:player": "node tools/test-console-player.mjs",
-    "test:endings": "node tools/test-endings.mjs"
+    "test:endings": "node tools/test-endings.mjs",
+    "test:room": "node tools/test-console-room.mjs"
   },
   "devDependencies": {
     "jsdom": "^26.1.0",

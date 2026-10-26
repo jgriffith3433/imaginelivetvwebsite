@@ -102,8 +102,15 @@
         <button type="button" class="console-btn" id="console-log-btn" aria-pressed="false">Log</button>
       </div>
       <div class="console-body">
-        <div class="console-wall" id="console-wall" role="group" aria-label="Camera wall"></div>
-        <figure class="console-big" id="console-big" hidden></figure>
+        <div class="console-stage" id="console-stage">
+          <div class="console-room" id="console-room" data-place="room" data-look="sil" data-mode="room" role="img" aria-label="Control room">
+            <div class="room-art" id="console-room-art" aria-hidden="true"></div>
+            <figure class="console-big" id="console-big" hidden aria-label="Big screen"></figure>
+            <div class="room-figs" id="console-room-figs" aria-hidden="true"></div>
+          </div>
+          <p class="room-action" id="console-action" aria-live="off"></p>
+          <div class="console-wall" id="console-wall" role="group" aria-label="Cameras (the people in the room choose what the big screen shows)"></div>
+        </div>
         <div class="console-panel">
           <div class="console-subs" id="console-subs" aria-live="polite"></div>
           <div class="console-controls">
@@ -247,6 +254,7 @@ Before the roads were carved into earth.</span></p>
   <script src="/js/story-data.js"></script>
   <script src="/js/kit.js"></script>
   <script src="/js/console-rules.js"></script>
+  <script src="/js/console-room.js"></script>
   <script src="/js/console.js"></script>
   <script src="/js/game.js"></script>
   <script src="/js/spot.js"></script>
