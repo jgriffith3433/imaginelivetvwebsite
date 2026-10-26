@@ -166,7 +166,7 @@ gets no GPU server is marked "inconclusive" by Studio and is not counted (they w
 | `sound` | `r_99544a26e1ef` | ship | 0 | in the run |
 | `analytics` | `r_47bd81c925d7` | ship | 0 | in the run |
 | `cctv-art` | `r_a0f70ca4d72e` | fix-first (quality bar again; 0 findings, 22 camera states loaded) | 0 | https://studio.hawkesgen.com/gen/v1/files/a_5b5d6e377a86c16a |
-| `credits` | `r_6912729f0c73` | fix-first for the internal text on the older What's new entries, fixed in `releases.json` | 0 | in the run |
+| `credits` | `r_6912729f0c73` (found the internal text on the older What's new entries), then after the `releases.json` fix `r_9086f92d36a8` | fix-first, then **ship** (0 findings) | 0 | in the run |
 
 The whole runs were split by screen size because Studio ends any run that goes over 45 minutes; each size took about 6 minutes. Each played the shortest way
 to every ending from a new run with real presses (`signoff-ending` x 12, `criterion`: "12 endings played to the end"), with the end screen checked for scroll, sideways
