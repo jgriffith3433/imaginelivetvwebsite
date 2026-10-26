@@ -1,8 +1,8 @@
 /* The player for console stories (story type "console", story doc: story/README.md, "Console stories").
 
    A console story is heard first: each scene is a few voiced lines that follow one another by themselves over an
-   ambience bed, while a wall of camera feeds (one of which the player can enlarge) shows what the scene says is on
-   the cameras. When the lines are done the choices appear; a choice can need flags or meters and sets or changes
+   ambience bed, in a control room (js/console-room.js: the people in it are silhouettes that act what the lines say) with
+   one big screen that the people switch between the cameras, a strip of the nine cameras under it. When the lines are done the choices appear; a choice can need flags or meters and sets or changes
    them (js/console-rules.js has those rules, the build checks them). The Tree of the video stories is a shift log
    here: a ruled Daily Activity Report of what the player has done and seen, with redacted lines for the ways not taken.
 
@@ -250,26 +250,33 @@
     return el;
   }
 
+  /* ---------------- the screen and the strip ---------------- */
+
+  var room = function () { return window.iltvRoom || null; };
+  var shown = null; // { cam, state } on the big screen now
+  var changes = 0; // how many times the screen changed camera or picture (CRT flashes)
+
+  function camera(id) { return story.cameras.filter(function (c) { return c.id === id; })[0] || null; }
+
+  /** The strip under the screen: the nine cameras, each with its number and what it shows in this scene. Nothing in it is pressed:
+      the people in the room choose what the screen shows. */
   function renderWall() {
     var feeds = rules.feedsOf(story, scene());
     els.wall.replaceChildren();
     els.wall.dataset.count = String(story.cameras.length);
-    story.cameras.forEach(function (cam) {
+    els.wall.style.setProperty("--cams", String(story.cameras.length));
+    story.cameras.forEach(function (cam, i) {
       var state = feeds[cam.id];
       var info = cam.states[state] || cam.states.normal;
-      var tile = text("button", "feed" + (run.sel === cam.id ? " is-selected" : ""));
-      tile.type = "button";
+      var on = run.sel === cam.id;
+      var tile = text("div", "feed" + (on ? " is-selected" : ""));
       tile.dataset.camera = cam.id;
       tile.dataset.state = state;
-      tile.setAttribute("aria-pressed", run.sel === cam.id ? "true" : "false");
-      tile.setAttribute("aria-label", cam.id.toUpperCase() + " " + cam.name + (state === "normal" ? "" : ", " + state) + ": " + info.desc + (run.sel === cam.id ? " (enlarged)" : ". Press to enlarge"));
+      if (on) tile.setAttribute("aria-current", "true");
+      tile.setAttribute("aria-label", cam.id.toUpperCase() + " " + cam.name + (state === "normal" ? "" : ", " + state) + ": " + info.desc + (on ? " (on the big screen)" : ""));
       var pic = text("span", "feed-pic");
       pic.appendChild(picture(info, cam, state));
-      var cap = text("span", "feed-cap");
-      cap.appendChild(text("b", "", cam.id.toUpperCase()));
-      cap.appendChild(document.createTextNode(" " + cam.name));
-      tile.append(pic, cap);
-      tile.addEventListener("click", function () { select(run.sel === cam.id ? null : cam.id); });
+      tile.append(pic, text("b", "feed-num", String(i + 1)));
       els.wall.appendChild(tile);
     });
     renderBig(feeds);
@@ -291,32 +298,57 @@
     return blank;
   }
 
-  function renderBig(feeds) {
-    els.big.replaceChildren();
-    var cam = run.sel && story.cameras.filter(function (c) { return c.id === run.sel; })[0];
-    els.big.hidden = !cam;
+  /** The big screen shows the camera the scene (or a line) names. When the camera or its picture is not the one already on it,
+      it does a short CRT channel change (about 260 ms) as the picture swaps. `quiet`: no flash (the story just opened or resumed). */
+  function renderBig(feeds, quiet) {
+    var cam = camera(run.sel);
     box.dataset.enlarged = cam ? cam.id : "";
-    if (!cam) return;
+    if (!cam) { els.big.hidden = true; shown = null; return; }
+    els.big.hidden = false;
     var state = feeds[cam.id];
     var info = cam.states[state] || cam.states.normal;
+    var changed = !shown || shown.cam !== cam.id || shown.state !== state;
     els.big.dataset.camera = cam.id;
     els.big.dataset.state = state;
+    if (!changed && els.big.firstChild) return;
+    els.big.replaceChildren();
     var pic = text("div", "big-pic");
     pic.appendChild(picture(info, cam, state));
+    var tag = text("span", "big-tag", cam.id.toUpperCase() + " " + cam.name);
     var cap = text("p", "big-cap");
     cap.appendChild(text("b", "", cam.id.toUpperCase() + " " + cam.name + (state === "normal" ? "" : " · " + state)));
     cap.appendChild(document.createTextNode(" " + info.desc));
-    var close = text("button", "big-close", "Shrink");
-    close.type = "button";
-    close.addEventListener("click", function () { select(null); });
-    els.big.append(pic, cap, close);
+    els.big.append(pic, text("span", "big-crt"), tag, cap);
+    if (state !== "normal") els.big.appendChild(text("span", "big-mark", state));
+    if (changed && shown && !quiet) flash();
+    else if (changed && shown) changes++;
+    shown = { cam: cam.id, state: state };
+    els.big.dataset.changes = String(changes);
   }
 
-  function select(id) {
-    run.sel = id;
-    save();
+  var flashTimer = 0;
+  function flash() {
+    changes++;
+    els.big.dataset.changes = String(changes);
+    els.big.classList.remove("is-flash");
+    void els.big.offsetWidth;
+    els.big.classList.add("is-flash");
+    els.big.dataset.flash = String(changes);
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(function () { els.big.classList.remove("is-flash"); }, 300);
+  }
+
+  /** The people in the room change the feed (a scene's focus, or a line's `feed`): the screen flashes and shows that camera. */
+  function showFeed(id, by, quiet) {
+    var cam = camera(id);
+    if (!cam || !run) return;
+    var was = shown;
+    run.sel = cam.id;
     renderWall();
-    if (hooks.tell) hooks.tell("feature", { story: story.id, feature: "feed", camera: id || "none" });
+    if (quiet) return;
+    var moved = !was || was.cam !== cam.id;
+    if (moved && room()) room().switched(cam.id.toUpperCase() + " " + cam.name, by);
+    if (moved && hooks.tell) hooks.tell("feature", { story: story.id, feature: "feed", camera: cam.id });
   }
 
   // When the strip changes height (the end screen shrinks it, the phone turns), it stays on its newest line.
@@ -424,8 +456,10 @@
       linePlaying = { index: i };
       renderSubs();
       renderChoices();
+      lineEffects(s, i);
       playLine(s.lines[i], function () {
         if (token !== flow) return;
+        if (room()) room().speaking(null);
         linePlaying = null;
         run.done = i + 1;
         save();
@@ -443,6 +477,7 @@
     linePlaying = null;
     lastFinish = null;
     skipped = false;
+    if (room()) room().speaking(null);
     [voice, sfx].forEach(function (a) {
       if (!a) return;
       a.onended = a.onerror = null;
@@ -456,14 +491,27 @@
     var s = scene();
     if (!resumed) {
       run.done = 0;
-      run.sel = s.focus || null;
+      if (s.focus) run.sel = s.focus;
       if (s.log) run.log.push({ k: "s", t: s.time, text: s.log, sc: id });
     }
+    if (!camera(run.sel)) run.sel = story.cameras[0].id;
     var explored = hooks.visit(id);
     els.time.textContent = s.time;
     els.explored.textContent = explored + "% explored";
     box.dataset.scene = id;
+    var R = room();
+    if (R) {
+      R.scene({ id: id, time: s.time, place: s.place, cast: s.cast, away: s.away, lines: s.lines });
+      if (resumed && run.done) R.catchUp(run.done);
+    }
+    var before = shown;
     renderWall();
+    if (!before && hooks.tell) hooks.tell("feature", { story: story.id, feature: "feed", camera: run.sel, via: "open" });
+    if (R && !resumed && before && before.cam !== run.sel) {
+      var cam = camera(run.sel);
+      R.switched(cam.id.toUpperCase() + " " + cam.name);
+      if (hooks.tell) hooks.tell("feature", { story: story.id, feature: "feed", camera: cam.id });
+    }
     setBed(s.ambience || null);
     if (!resumed) playSting(s.music);
     save();
@@ -471,6 +519,38 @@
     if (!els.log.hidden) renderLog();
     runLines(run.done, false);
     els.skip.disabled = false;
+  }
+
+  /** What the line being heard makes happen in the room: the people's acts, the one speaking, the screen they switch. */
+  function lineEffects(s, i) {
+    var R = room();
+    var l = s.lines[i];
+    if (R) {
+      R.line(i);
+      R.speaking(l.speaker);
+    }
+    var feeds = l.feed == null ? [] : Array.isArray(l.feed) ? l.feed : [l.feed];
+    // Several cameras in one line (the tiles are read out one after another): the screen follows them across the line.
+    feeds.forEach(function (cam, k) {
+      if (k === 0) return showFeed(cam);
+      var token = flow;
+      setTimeout(function () { if (run && token === flow && linePlaying && linePlaying.index === i) showFeed(cam); }, (l.dur * 1000 * k) / feeds.length);
+    });
+  }
+
+  /** The rest of a scene's lines were taken as heard (Skip): the room and the screen end as the lines leave them. */
+  function lineSettle(s, from) {
+    var R = room();
+    if (R) {
+      R.speaking(null);
+      R.catchUp(s.lines.length);
+    }
+    var last = null;
+    for (var i = from; i < s.lines.length; i++) {
+      var f = s.lines[i].feed;
+      if (f) last = Array.isArray(f) ? f[f.length - 1] : f;
+    }
+    if (last) showFeed(last);
   }
 
   function choose(i) {
@@ -574,8 +654,10 @@
       lastFinish();
     }
     else {
+      var from = run.done;
       stopAudio();
       run.done = s.lines.length;
+      lineSettle(s, from);
       save();
       renderSubs();
       renderChoices();
@@ -597,6 +679,7 @@
     sfx = makeAudio(false);
     sting = makeAudio(false);
     bedCue = null;
+    shown = null;
     warmBeds();
     flow++;
     box.hidden = false;
@@ -614,6 +697,8 @@
     });
     voice = bed = sfx = sting = null;
     bedCue = null;
+    shown = null;
+    if (room()) room().close();
     if (run) save();
     run = null;
     story = null;
@@ -643,6 +728,8 @@
     log: function () { return run ? JSON.parse(JSON.stringify(run.log)) : []; },
     lines: function () { return run ? { done: run.done, total: scene().lines.length, playing: linePlaying ? linePlaying.index : -1 } : null; },
     selected: function () { return run ? run.sel : null; },
+    screen: function () { return run && shown ? { camera: shown.cam, state: shown.state, changes: changes } : null; },
+    room: function () { return room() ? room().view() : null; },
     subtitles: function () { return subsOn; },
     audio: function () { return { voice: audioView(voice), bed: audioView(bed), sfx: audioView(sfx), sting: audioView(sting), bedCue: bedCue }; },
     saved: function () {

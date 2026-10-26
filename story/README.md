@@ -71,8 +71,8 @@ badges, the percent, the buttons and Start Over.
 
 A second kind of story (J, 2026-10-24): `"type": "console"` in `story/<id>.json`. It is *heard* before it is seen: a
 night in a control room. Each scene is a few voiced lines that follow one another by themselves over an ambience
-bed, while a **wall** of camera feeds shows what the scene says is on the cameras. When the lines are done the
-choices appear. The story remembers **flags and meters**; a choice can need them and can change them. The graph is
+bed, in the **control room itself** (J, 2026-10-26): the people in it are black silhouettes that act what the lines say,
+and they face one **big screen** that they switch between the nine cameras. When the lines are done the choices appear. The story remembers **flags and meters**; a choice can need them and can change them. The graph is
 braided (many choices lead to the same later scene); the state is what makes the same scene different. The video
 stories are untouched: a console story has its own player (`js/console.js`, `<section id="console">` on the home
 page), its own rules (`js/console-rules.js`, shared by the player, the build and the playtest) and its own pages.
@@ -101,10 +101,12 @@ Top level: `title`, `tagline`, `doc`, `cookie`, `tap`, `start` (as in "Adding a 
   and flag multiplies the states, and `lines` can't depend on state, so a state-dependent line is a short scene the choice leads to).
 
 A **scene**: `id`, `folder`, `time` ("HH:MM", the shift log's timestamp and the clock on screen), `title`, `ambience`
-(a cue), `feeds` (`{ camera: state }`; a camera not named shows `normal`), `focus` (a camera enlarged when the scene
-opens), `lines`, `log`, `choices`, or `ending` (a string, no choices; reaching one completes the story).
+(a cue), `feeds` (`{ camera: state }`; a camera not named shows `normal`), `focus` (the camera the people switch the big
+screen to when the scene opens; a scene without one keeps the camera that is on it), `place`, `cast` and `away` (the control
+room, below), `lines`, `log`, `choices`, or `ending` (a string, no choices; reaching one completes the story).
 
-- `lines`: in order, each `{ speaker, text, perform, sfx, dur, file }`. `text` is what is said and what the
+- `lines`: in order, each `{ speaker, text, perform, sfx, dur, file, act, place, feed }` (`act`, `place` and `feed` are what the room
+  does while the line is heard: "The control room", below). `text` is what is said and what the
   subtitles show; `perform` is the performance tags for `eleven_v4` ("flat, dry" is sent as `[flat][dry] text`); `sfx`
   is a cue played just before the line; `dur` (seconds) is how long the line takes when it has no recording; `file`
   is a recording to use (the demo's silent placeholder). Without `file`, the player uses
@@ -143,8 +145,8 @@ effects) that `js/hawkes-sound.js` owns like it owns the videos: they are marked
 play** press starts them (and unlocks them on iOS); Settings (Sound on/off, Volume) applies to all three. Lines start
 only once sound is unlocked, then follow each other. **Replay line** plays the current (or last) line again, **Skip
 line** moves on. **Subtitles are on by default** (CC in the bar turns them off, kept in `localStorage["iltv.subtitles"]`;
-off, they stay for screen readers). Tapping a **feed** enlarges it (its description under it); another replaces it, the
-same again, or Shrink, puts it back.
+off, they stay for screen readers). Nothing on the screen or in the strip of cameras can be pressed (there is no
+click-to-enlarge): the people in the room choose what the big screen shows.
 
 **Saving.** The whole run is in `localStorage["iltv.run.<cookie>"]`: the scene, the way there, the flags and meters, the
 log and how many lines were heard, so a returning player resumes in the same scene with the same state. The two
@@ -158,9 +160,59 @@ player has done (the choice's `log`) and seen (the scene's `log`), and a redacte
 other choice of a scene they decided at, and all the choices of the scene they are in). Nothing in it can be pressed. The
 Log button in the bar opens and closes it at any time.
 
-**Layout.** Mobile first: in portrait the wall (3 columns) is on top, then the enlarged feed, the subtitles, the
-line buttons and the choices; every tap target is 44 px or more, safe-area insets are respected, nothing scrolls
-sideways (works at 360x640); in landscape (640 px and wider) the wall and the enlarged feed are on the left and the words on the right.
+**Layout.** Mobile first: in portrait the room (a 5:3 picture that scales to the width, the big screen inside it) is on top, a
+caption of what is happening and the strip of the nine cameras under it, then the subtitles, the line buttons and the choices;
+every tap target is 44 px or more, safe-area insets are respected, nothing scrolls sideways (works at 360x640); in landscape
+(640 px and wider) the room and the strip are on the left (as large as the height allows) and the words on the right.
+
+### The control room (`js/console-room.js`)
+
+One flat SVG room in a consistent style, drawn by code (no images, nothing from the GPU): the door to the lobby (with its
+sign), the wall clock (its hands are the scene's `time`), the fire panel, the access-control terminal, the shelf with the binder
+and the extinguisher, the coffee machine, the radio charger with four radios, a desk with its controls, the log tablet, the
+desk phone, a cup, and two chairs, in front of **one big screen** (an HTML element over the room's screen, so it keeps the
+camera pictures, `js/console.js` owns it). The nine cameras are a numbered strip under the room: it only shows what each camera
+has in the scene (the lit one is on the big screen); nothing there can be pressed.
+
+**The big screen.** The people switch it, never the viewer. A scene's `focus` is the camera the screen shows when it opens
+(and, with no `focus`, the camera stays); a line's `feed` (a camera id, or a list read out one after another across the
+line) switches it while that line is heard. Every change of camera or of its picture plays a CRT channel change (the picture
+collapses to a line and snaps back, bright and noisy, about 260 ms; reduced motion gets a brief dip instead), and the person
+at the desk is seen reaching for the controls ("Dee switches the screen to 4 Stairwell C, 31", in the caption under the room).
+
+**The people.** In the room they are **black silhouettes** (a head and shoulders seen from behind, so they face the screen),
+each with a shape of their own (Dee's bun and the radio on her belt, Mr. Okafor's height, bag and tie, Terrell's beanie, and
+so on; a name tag under each). The trainee (`you`) and Dee are there by default, seated. The speaker nods and has a small
+speech mark over them. **Out of the room** (the tour, a call-up to a floor, the lobby desk) they are drawn **as people**,
+in colour, facing you, in the place they are in (`lobby`, `vestibule`, `dock`, `stairwell`, `corridor`, `roof`), and the big
+screen is a small inset in the corner; **in daylight** (`room-day`, the endings: the shift is over) the room shows people in
+colour too. A scene or a line says which.
+
+Scene fields: `place` (where the scene opens: `room` by default, `room-day`, or one of the places above), `cast` (who is in the
+room when it opens: `["you","dee"]` by default; `"okafor@left"` stands them at the left of the desk, `@right` at the
+charger side), `away` (who is on stage when the place isn't the room; default the cast).
+
+Line fields: `act` (a string or a list of `"who:verb"`, `who` one of `you, dee, okafor, terrell, marisol, dev, adler, brandt,
+courier, sleeper, pierce` or `room`), `place` (the place changes when the line starts) and `feed`. The verbs, each of which the
+caption says in words ("Dee stands up"):
+
+| Verb | What is seen |
+| --- | --- |
+| `sit` / `stand` | rises from the chair (the chair rolls aside) / sits back down (the chair is pulled in) |
+| `enter[:left\|right]` / `leave` | walks in at the door (it opens) to a spot / walks to the door and out |
+| `point[:target]` / `touch[:target]` | an arm up at the screen (or `shelf`, `panel`, `ahead`) / a hand on the screen (a ripple) or on `door`, `glass` |
+| `write` / `read` | writes in the log (the tablet fills, the head tilts) / reads it |
+| `phone` / `hangup` (and `room:ring`) | answers the phone, handset at the ear (the ringing stops) / hangs up; the desk phone rings |
+| `spill` | the cup tips and coffee runs across the desk |
+| `angry` | fists, a shaking body and red marks |
+| `knock` / `count` | knocks twice on the wall / counts the radios on the charger, one light at a time |
+| `eat` / `drink` / `hand` / `lean` / `press[:panel]` / `rest` | the sandwich, the cup, handing something over, leaning in, pressing the door release (or the silence button on the fire panel), and standing easy |
+| `room:buzz` / `room:door` / `room:flicker` | the fire panel buzzes / the door opens / the lights drop |
+
+An act sets a state (seated, standing, in the room or not) that holds until another changes it, or a moment (a pose that
+lasts a couple of seconds and returns). A resume or a Skip settles the room where the lines leave it, with no motion. The build
+checks every field (people, verbs, places, cameras); `npm run test:room` plays every scene's acts in jsdom, and the `room`
+playtest checks it all in a browser.
 
 ### The build (`npm run story`)
 
@@ -201,7 +253,7 @@ except the camera stills (`image.generate`, `image.edit`); the voices and sounds
 > at four sizes (~23 min; `{"at":"last-choices"}` seeds the run 2 choices short, under 10 min), `night-shift-audio` checks every line and bed. Night Shift today: 256 scenes, 1,376 lines, 12 endings, shortest way 39.3 minutes, average 45.6, longest 54.5.
 
 The `console` scenario plays the demo (or `{"story":"<id>"}`): opens it by its link under its own Tap to play, subtitles
-and lines in order, Replay, the wall and the enlarged feed, gated choices, every scene and ending from the state explorer
+and lines in order, Replay, the room and its big screen, gated choices, every scene and ending from the state explorer
 (real presses), the Log (at the start, in the middle and at an ending), Settings on the audio, a reload mid-scene, and three
 screen sizes (a frame of 390x844, 360x640 and 844x390). The `stories`, `branches`, `pages` and `sound` scenarios cover
 console stories next to the video ones (a console draft opens by its link and keeps its saved place; `branches` walks it;

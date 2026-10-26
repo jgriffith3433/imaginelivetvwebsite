@@ -1,0 +1,166 @@
+#!/usr/bin/env node
+// Runs the control room (js/console-room.js) for real in jsdom against Night Shift's data and checks what a browser-less
+// server can: every scene opens, every line's acts run without a throw, the people are where the data puts them (in the
+// room as silhouettes, out of it in the place they are in, in daylight at the endings), and the moments the story needs to
+// show are there (someone stands up, someone comes in at the door, the phone is answered, something is written in the log,
+// coffee spills, the screen is touched, someone gets angry). Looks and layout need a browser: that is the `room` playtest.
+//
+//   node tools/test-console-room.mjs          (jsdom is a devDependency: npm ci; JSDOM_DIR=<folder with node_modules/jsdom> still works)
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+let JSDOM;
+try {
+  ({ JSDOM } = createRequire(path.join(process.env.JSDOM_DIR || ROOT, 'x.js'))('jsdom'));
+} catch {
+  console.log('skip jsdom is not installed (JSDOM_DIR=<folder with node_modules/jsdom>); nothing checked');
+  process.exit(0);
+}
+
+const src = fs.readFileSync(path.join(ROOT, 'js/console-room.js'), 'utf8');
+const data = Function(`const window = {}; ${fs.readFileSync(path.join(ROOT, 'js/story-data.js'), 'utf8')}; return window.ILTV_STORIES;`)();
+const story = data.stories.find((s) => s.id === 'night-shift');
+
+let failed = 0;
+const check = (name, ok, extra) => {
+  if (!ok) failed++;
+  console.log(`${ok ? 'ok  ' : 'FAIL'} ${name}${ok ? '' : `\n     ${extra === undefined ? '' : JSON.stringify(extra)}`}`);
+};
+
+function stage() {
+  const dom = new JSDOM('<body><div id="console-room"><div id="console-room-art"></div><figure id="console-big"></figure><div id="console-room-figs"></div></div><p id="console-action"></p></body>', { runScripts: 'outside-only', pretendToBeVisual: true });
+  const w = dom.window;
+  w.setTimeout = () => 0; // the moments are checked by their start; none waits for a timer here
+  w.eval(src);
+  return { R: w.iltvRoom, doc: w.document };
+}
+
+const def = (id) => {
+  const s = story.scenes[id];
+  return { id, time: s.time, place: s.place, cast: s.cast, away: s.away, lines: s.lines };
+};
+const play = (R, id, upTo) => {
+  const s = story.scenes[id];
+  R.scene(def(id));
+  const said = [];
+  for (let i = 0; i < (upTo ?? s.lines.length); i++) {
+    R.line(i);
+  }
+  said.push(...R.view().said);
+  return said;
+};
+
+/* every scene opens and every line runs; the whole data keeps the room standing */
+{
+  const { R } = stage();
+  let threw = null;
+  let acts = 0;
+  const seen = {};
+  for (const [id, s] of Object.entries(story.scenes)) {
+    try {
+      R.scene(def(id));
+      s.lines.forEach((l, i) => {
+        R.line(i);
+        for (const a of l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]) {
+          acts++;
+          const k = a.split(':').slice(0, 2).join(':').replace(/^[a-z]+:/, '');
+          seen[k] = (seen[k] || 0) + 1;
+        }
+      });
+      R.catchUp(s.lines.length);
+      const v = R.view();
+      if (!v.place || !v.mode) throw new Error(`${id}: no place after its lines`);
+    } catch (e) {
+      threw = `${id}: ${e.message}`;
+      break;
+    }
+  }
+  check('every scene opens and every line runs in the room', !threw, threw);
+  check('the data holds acts for the room (some hundreds)', acts > 250, acts);
+  for (const verb of ['stand', 'enter', 'leave', 'phone', 'write', 'spill', 'touch', 'angry', 'knock', 'count', 'ring', 'door', 'hangup', 'sit', 'eat', 'press'])
+    check(`the data uses "${verb}"`, !!seen[verb], seen);
+}
+
+/* silhouettes in the room, people out of it, daylight at the endings */
+{
+  const { R } = stage();
+  R.scene(def('the-chairs'));
+  let v = R.view();
+  check('the room opens with silhouettes in front of the screen', v.mode === 'room' && v.look === 'sil' && v.place === 'room', v);
+  check('the trainee starts standing, Dee seated', v.actors.you.posture === 'standing' && v.actors.dee.posture === 'seated', v.actors);
+  play(R, 'the-chairs');
+  v = R.view();
+  check('"Sit." sits the trainee down', v.actors.you.posture === 'seated', v.actors.you);
+
+  R.scene(def('tour1-door'));
+  v = R.view();
+  check('a tour scene is out of the room: the stairwell, drawn as people', v.mode === 'away' && v.look === 'color' && v.place === 'stairwell', v);
+  check('the trainee and Dee are with you out there', v.actors.you.shown && v.actors.dee.shown, v.actors);
+  for (const [id, place] of [['tour2-trucks', 'dock'], ['tour3-test', 'roof'], ['leak-go', 'corridor'], ['sleeper-wake', 'vestibule']]) {
+    R.scene(def(id));
+    if (id === 'leak-go') for (let i = 0; i < story.scenes[id].lines.length; i++) R.line(i);
+    check(`${id} is ${place}, out of the room`, R.view().place === place && R.view().look === 'color', R.view());
+  }
+
+  R.scene(def('visitor-desk'));
+  for (let i = 0; i < 2; i++) R.line(i);
+  v = R.view();
+  check('visitor-desk: the lobby desk takes the trainee out of the room (with Terrell)', v.place === 'lobby' && v.actors.terrell?.shown, v);
+  for (let i = 2; i < story.scenes['visitor-desk'].lines.length; i++) R.line(i);
+  v = R.view();
+  check('visitor-desk: back in the room, silhouettes again', v.place === 'room' && v.look === 'sil' && v.mode === 'room', v);
+
+  R.scene(def('end-clean'));
+  v = R.view();
+  check('an ending is in the room by daylight: people, not silhouettes', v.place === 'room-day' && v.look === 'color' && v.mode === 'room', v);
+}
+
+/* the moments */
+{
+  const { R } = stage();
+  let said = play(R, 'okafor-out');
+  let v = R.view();
+  check('someone leaves through the door (Mr. Okafor goes at handover)', said.some((a) => /leaves the room/.test(a)) && !v.actors.okafor.present, { said, v: v.actors.okafor });
+  check('Dee knocks twice on the wall', said.some((a) => /knocks twice/.test(a)), said);
+
+  said = play(R, 'radio-ok');
+  check('someone enters through the door (Terrell leans in for coffee)', said.some((a) => /Terrell comes in through the door/.test(a)), said);
+
+  said = play(R, 'okafor-call');
+  check('the phone rings and is answered', said.some((a) => /phone rings/.test(a)) && said.some((a) => /answer the phone/.test(a)), said);
+
+  said = play(R, 'log-in-asked');
+  check('something is written in the log', said.some((a) => /write in the log/.test(a)), said);
+
+  said = play(R, 'flicker');
+  check('the lights flicker and coffee spills', said.some((a) => /lights flicker/.test(a)) && said.some((a) => /Coffee spills/.test(a)), said);
+
+  said = play(R, 'w1-dead');
+  check('the screen is touched (Dee taps the glass over tile two)', said.some((a) => /touches the screen/.test(a)), said);
+
+  said = play(R, 'laptop-opened');
+  v = R.view();
+  check('Dee stands up and gets angry', said.some((a) => /stands up/.test(a)) && said.some((a) => /gets angry/.test(a)), said);
+
+  said = play(R, 'trouble-signal-f');
+  check('the fire panel buzzes', said.some((a) => /fire panel buzzes/.test(a)), said);
+
+  said = play(R, 'radio-23');
+  v = R.view();
+  check('Dee leaves with the keys at eleven and is gone from the room', said.some((a) => /Dee stands up/.test(a)) && !v.actors.dee.present, { said, dee: v.actors.dee });
+
+  said = play(R, 'day-log');
+  v = R.view();
+  check('Dee comes back in from the lobby and counts the radios', said.some((a) => /Dee comes in/.test(a)) && v.actors.dee.present, { said });
+
+  // a resume: the lines already heard leave the room as they would have
+  R.scene(def('radio-23'));
+  R.catchUp(4);
+  check('a resume after four lines settles Dee out of the room', !R.view().actors.dee.present, R.view().actors);
+}
+
+console.log(failed ? `\n${failed} failed` : '\nall ok');
+process.exit(failed ? 1 : 0);

@@ -25,6 +25,7 @@ const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const section = html.slice(html.indexOf('<section class="console"'), html.indexOf('</section>', html.indexOf('<section class="console"')) + 10);
 const rulesSrc = fs.readFileSync(path.join(ROOT, 'js/console-rules.js'), 'utf8');
 const playerSrc = fs.readFileSync(path.join(ROOT, 'js/console.js'), 'utf8');
+const roomSrc = fs.readFileSync(path.join(ROOT, 'js/console-room.js'), 'utf8');
 const data = Function(`const window = {}; ${fs.readFileSync(path.join(ROOT, 'js/story-data.js'), 'utf8')}; return window.ILTV_STORIES;`)();
 const story = data.stories.find((s) => s.id === 'night-shift');
 
@@ -37,7 +38,7 @@ const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 /** A page: the console markup, the rules and the player, with timers 100x faster and audio that ends at once.
     `blocked`: localStorage and the cookie jar refuse every call. */
-function page({ store, blocked, fakeRO } = {}) {
+function page({ store, blocked, fakeRO, room } = {}) {
   const dom = new JSDOM(`<!doctype html><body>${section}</body>`, { runScripts: 'outside-only', pretendToBeVisual: true, url: 'https://example.test/' });
   const w = dom.window;
   const realSet = w.setTimeout.bind(w);
@@ -59,6 +60,7 @@ function page({ store, blocked, fakeRO } = {}) {
   }
   if (fakeRO) w.ResizeObserver = fakeRO;
   w.eval(rulesSrc);
+  if (room) w.eval(roomSrc);
   w.eval(playerSrc);
   const hooks = {
     place: null,
@@ -195,6 +197,61 @@ async function main() {
     await sleep(120);
     check(`fitSubs: ${name} in at most ${max} writes (${writes})`, writes >= 1 && writes <= max, writes);
     l.c.close();
+  }
+
+  // --- the control room: one big screen the people switch, a strip nobody presses, silhouettes acting the lines
+  {
+    const r = page({ room: true });
+    r.c.open(story, r.hooks, null);
+    const big = r.$('console-big');
+    const tiles = () => [...r.doc.querySelectorAll('#console-wall .feed')];
+    check('the room opens: the big screen shows a camera, nine tiles in the strip, none a button',
+      !big.hidden && !!big.dataset.camera && tiles().length === 9 && tiles().every((x) => x.tagName === 'DIV') && !r.doc.querySelector('#console-wall button, #console-big button, .big-close'),
+      { camera: big.dataset.camera, tiles: tiles().length });
+    check('the strip marks the camera that is on the big screen', tiles().filter((x) => x.classList.contains('is-selected')).map((x) => x.dataset.camera).join() === big.dataset.camera);
+    const room = r.c.room();
+    check('the room has the trainee, Dee and Mr. Okafor at the handover, as silhouettes', room && room.mode === 'room' && room.look === 'sil' && ['you', 'dee', 'okafor'].every((k) => room.actors[k] && room.actors[k].shown), room);
+    const before = { selected: r.c.selected(), screen: r.c.screen() };
+    const other = tiles().find((x) => x.dataset.camera !== big.dataset.camera);
+    other.click();
+    big.click();
+    check('pressing a tile or the big screen does nothing', r.c.selected() === before.selected && r.c.screen().changes === before.screen.changes && !big.classList.contains('is-flash'), r.c.screen());
+    check('the screen is not enlarged and has no Shrink button', !r.doc.querySelector('.big-close') && !r.$('console').dataset.enlarged === false);
+    // Walk on: whenever a scene names a camera that isn't on the screen, the screen flashes and shows it.
+    let flashes = 0;
+    let focusOk = true;
+    for (let i = 0; i < 40 && !r.c.scene().startsWith('end-'); i++) {
+      await until(() => heard(r), `lines of ${r.c.scene()}`);
+      const buttons = r.$('console-choices').querySelectorAll('.choice');
+      if (!buttons.length) break;
+      const was = r.c.screen();
+      buttons[0].click();
+      const s = story.scenes[r.c.scene()];
+      const now = r.c.screen();
+      if (s.focus && s.focus !== was.camera) {
+        flashes++;
+        if (now.camera !== s.focus || now.changes !== was.changes + 1 || !big.classList.contains('is-flash') || !/switch|screen shows/.test(r.c.room().said.join(' '))) { focusOk = false;  }
+      }
+      if (s.focus && now.camera !== s.focus) focusOk = false;
+    }
+    check('a scene with a new focus switches the screen with a CRT flash and someone is seen switching it', flashes >= 1 && focusOk, { flashes });
+    await until(() => heard(r), `lines of ${r.c.scene()}`);
+    check('the room recorded exactly the acts of the scene it is in', (() => {
+      const s = story.scenes[r.c.scene()];
+      const data = s.lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act])]);
+      return same(r.c.room().acted, data);
+    })(), r.c.room().acted);
+    // Skip all: the room settles where the lines leave it, and a reload returns the same screen.
+    const saved = { camera: r.c.screen().camera, selected: r.c.selected(), room: r.c.room().actors };
+    const place = r.hooks.place;
+    const store = {};
+    for (let i = 0; i < r.w.localStorage.length; i++) { const k = r.w.localStorage.key(i); store[k] = r.w.localStorage.getItem(k); }
+    r.c.close();
+    const r2 = page({ room: true, store });
+    r2.hooks.seen = new Set(r.hooks.seen);
+    r2.c.open(story, r2.hooks, place);
+    check('a reload returns the same camera on the big screen', r2.c.screen().camera === saved.camera && r2.c.selected() === saved.selected, [saved.camera, r2.c.screen()]);
+    r2.c.close();
   }
 
   // --- storage refusing every call

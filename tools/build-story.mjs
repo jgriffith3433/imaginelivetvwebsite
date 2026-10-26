@@ -687,6 +687,12 @@ function validateConsole(st) {
       else if (!cams.get(cam).states?.[state]) problems.push(`${at(s)}: camera ${cam} has no state "${state}"`);
     }
     if (s.focus && !cams.has(s.focus)) problems.push(`${at(s)}: focus ${s.focus} isn't a camera`);
+    if (s.place != null && !ROOM_PLACES.includes(s.place)) problems.push(`${at(s)}: place ${s.place} isn't one of ${ROOM_PLACES.join(', ')}`);
+    for (const key of ['cast', 'away']) {
+      if (s[key] == null) continue;
+      const who = Array.isArray(s[key]) ? s[key].map((w) => String(w).split('@')[0]) : [];
+      if (!Array.isArray(s[key]) || !s[key].length || s[key].some((w) => !ROOM_ACTORS.includes(String(w).split('@')[0]) || (String(w).includes('@') && !['left', 'right'].includes(String(w).split('@')[1]))) || new Set(who).size !== who.length) problems.push(`${at(s)}: ${key} is a list of people (${ROOM_ACTORS.join(', ')}), each once, optionally standing at left or right ("dee@right")`);
+    }
     if (!Array.isArray(s.lines) || !s.lines.length) problems.push(`${at(s)}: no lines (a scene is heard: at least one voiced line)`);
     for (const l of s.lines ?? []) {
       const who = data.speakers?.[l.speaker];
@@ -694,6 +700,12 @@ function validateConsole(st) {
       else if (!who.voice) noVoice.add(l.speaker);
       if (!l.text) problems.push(`${at(s)}: a line of ${l.speaker} has no text`);
       if (l.sfx && !data.sfx?.[l.sfx]) problems.push(`${at(s)}: sfx cue ${l.sfx} isn't in sfx`);
+      if (l.place != null && !ROOM_PLACES.includes(l.place)) problems.push(`${at(s)}: a line's place ${l.place} isn't one of ${ROOM_PLACES.join(', ')}`);
+      for (const cam of l.feed == null ? [] : Array.isArray(l.feed) ? l.feed : [l.feed]) if (!cams.has(cam)) problems.push(`${at(s)}: a line's feed ${cam} isn't a camera`);
+      for (const a of l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]) {
+        const [who, verb, where] = String(a).split(':');
+        if (!(who === 'room' ? ROOM_OBJECT_VERBS : ROOM_VERBS).includes(verb) || (who !== 'room' && !ROOM_ACTORS.includes(who)) || (where != null && !(verb === 'enter' ? ['left', 'right'].includes(where) : ['point', 'touch', 'press'].includes(verb)))) problems.push(`${at(s)}: act "${a}" isn't who:verb (people ${ROOM_ACTORS.join(', ')}, or room; verbs ${ROOM_VERBS.join(', ')}; room: ${ROOM_OBJECT_VERBS.join(', ')}; enter takes left or right, point, touch and press a target)`);
+      }
     }
     if (s.log != null && typeof s.log !== 'string') problems.push(`${at(s)}: log must be a string`);
     if (!s.log) warnings.push(`${at(s)}: no log line (the shift log shows a blank for it)`);
@@ -741,6 +753,12 @@ function validateConsole(st) {
   for (const c of x.cosmetic) problems.push(`${id}/${c.scene}: more than 2 cosmetic choices on one run (${where(c.path)})`);
 }
 
+/** The control room of a console story (js/console-room.js): where scenes can be, who can be in them, what they can do. */
+const ROOM_PLACES = ['room', 'room-day', 'lobby', 'vestibule', 'dock', 'stairwell', 'corridor', 'roof'];
+const ROOM_ACTORS = ['you', 'dee', 'okafor', 'terrell', 'marisol', 'dev', 'adler', 'brandt', 'courier', 'sleeper', 'pierce'];
+const ROOM_VERBS = ['sit', 'stand', 'point', 'touch', 'write', 'phone', 'hangup', 'spill', 'angry', 'knock', 'count', 'lean', 'hand', 'drink', 'eat', 'press', 'read', 'enter', 'leave', 'rest'];
+const ROOM_OBJECT_VERBS = ['ring', 'buzz', 'door', 'flicker'];
+
 /** Where a console story's made media would be, and whether it is. */
 const consoleFiles = (st) => ({
   line: (s, i) => `${st.base}${s.folder}/media/line-${i + 1}.mp3`,
@@ -768,10 +786,16 @@ function consoleData(st) {
       ...(s.music ? { music: s.music } : {}),
       ...(s.feeds ? { feeds: s.feeds } : {}),
       ...(s.focus ? { focus: s.focus } : {}),
+      ...(s.place ? { place: s.place } : {}),
+      ...(s.cast ? { cast: s.cast } : {}),
+      ...(s.away ? { away: s.away } : {}),
       lines: s.lines.map((l, i) => ({
         speaker: l.speaker,
         text: l.text,
         ...(l.sfx ? { sfx: l.sfx } : {}),
+        ...(l.act ? { act: l.act } : {}),
+        ...(l.place ? { place: l.place } : {}),
+        ...(l.feed ? { feed: l.feed } : {}),
         file: l.file ?? urlIfMade(f.line(s, i)),
         dur: l.dur ?? Math.round((words(l.text) / 2.5 + 1) * 10) / 10,
       })),

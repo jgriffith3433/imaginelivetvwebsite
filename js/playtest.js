@@ -159,6 +159,49 @@ async function tapAt(t, el, label, { quick = false } = {}) {
   await sleep(quick ? 15 : 120);
 }
 
+
+/** A press on something that must not react (a camera tile, the big screen): a real pointer and click at its middle on whatever is there. */
+async function pressNothing(t, el, label) {
+  if (!el) throw new Error(`${label} is not on the page`);
+  const doc = el.ownerDocument;
+  const win = doc.defaultView;
+  const r = el.getBoundingClientRect();
+  const x = r.left + r.width / 2;
+  const y = r.top + r.height / 2;
+  const target = doc.elementFromPoint(x, y) || el;
+  const init = { pointerType: "mouse", pointerId: 1, isPrimary: true, button: 0, buttons: 1, bubbles: true, cancelable: true, composed: true, clientX: x, clientY: y, view: win };
+  target.dispatchEvent(new win.PointerEvent("pointerdown", init));
+  target.dispatchEvent(new win.MouseEvent("mousedown", init));
+  await sleep(40);
+  target.dispatchEvent(new win.PointerEvent("pointerup", { ...init, buttons: 0 }));
+  target.dispatchEvent(new win.MouseEvent("mouseup", { ...init, buttons: 0 }));
+  target.dispatchEvent(new win.MouseEvent("click", { ...init, buttons: 0 }));
+  t.log(`press ${label} (it must do nothing)`);
+  await sleep(120);
+}
+
+/** What the big screen and the strip show, for the player in `doc`: the same camera on both, no button anywhere. */
+function screenState(doc) {
+  const api = apiOf(doc);
+  const big = byIdIn(doc, "console-big");
+  return { selected: api.selected(), camera: big.dataset.camera, state: big.dataset.state, changes: api.screen() ? api.screen().changes : -1, marked: [...doc.querySelectorAll("#console-wall .feed.is-selected")].map((x) => x.dataset.camera) };
+}
+
+/** Pressing a tile of the strip or the big screen does nothing (the characters change the feed, never the viewer). */
+async function checkNotEnlargeable(t, doc, where) {
+  const before = screenState(doc);
+  const other = [...doc.querySelectorAll("#console-wall .feed")].find((x) => x.dataset.camera !== before.camera);
+  if (other) await pressNothing(t, other, `a camera tile (${where})`);
+  await pressNothing(t, byIdIn(doc, "console-big"), `the big screen (${where})`);
+  await sleep(150);
+  const after = screenState(doc);
+  if (JSON.stringify(after) !== JSON.stringify(before)) t.problem("bug", `${where}: a press on a camera tile or the big screen changed the screen (${JSON.stringify(before)} -> ${JSON.stringify(after)})`);
+  const buttons = doc.querySelectorAll("#console-wall button, #console-wall [role=button], #console-big button, .console-big button");
+  if (buttons.length) t.problem("bug", `${where}: the camera strip or the big screen has ${buttons.length} buttons (nothing there can be pressed)`);
+  if (doc.querySelector("#console-wall .feed[aria-pressed], .big-close")) t.problem("bug", `${where}: a camera tile still says it can be pressed (aria-pressed or a Shrink button)`);
+  return before;
+}
+
 /** The prompt's line says the saved Sound setting: "Sound on." or "Sound off.", never "Sound on." over a saved Off. */
 function checkNote(t, doc, where) {
   const sound = soundOf(doc);
@@ -1426,13 +1469,13 @@ async function cctvArt(options, t) {
   if (tiles.length !== st.cameras.length) t.problem("bug", `the wall shows ${tiles.length} tiles for ${st.cameras.length} cameras`);
   else if (loaded.length !== tiles.length) t.problem("bug", `${tiles.length - loaded.length} of ${tiles.length} wall tiles show no picture`);
   else t.event("wall", `all ${tiles.length} tiles show their picture`);
-  // Then every state as a viewer sees it: play to scenes that show each (camera, state) and enlarge that feed.
+  // Then every state as a viewer sees it: play to scenes that show each (camera, state) and check its tile in the strip (and, for the focus, the big screen).
   if (options.at !== "wall") await cctvStates(t, st, used);
   await toLanding(t);
 }
 
 /** Plays the fewest ways (real presses) that reach a scene for every camera state the script uses; at each scene
-    presses every feed whose state hasn't been shown yet and checks the enlarged picture is that state's own, loaded. */
+    checks every feed whose state hasn't been seen yet is in the strip with that state's own, loaded picture, and the big screen shows the focus's. */
 async function cctvStates(t, st, used) {
   const R = rulesOf();
   const x = consoleExplore(st);
@@ -1462,21 +1505,24 @@ async function cctvStates(t, st, used) {
       if (shownPairs.has(key) || !want.has(key)) continue;
       const tile = document.querySelector(`#console-wall .feed[data-camera="${cam.id}"]`);
       if (!tile) { t.problem("bug", `${where}: no tile for ${cam.id}`); continue; }
-      if (window.iltvConsole.selected()) await tapAt(t, document.querySelector(`#console-wall .feed[data-camera="${window.iltvConsole.selected()}"]`), "shrink the enlarged feed");
-      await tapAt(t, document.querySelector(`#console-wall .feed[data-camera="${cam.id}"]`), `feed ${cam.id} (${state})`);
-      await sleep(250);
-      const big = $("console-big");
-      const img = big.querySelector("img");
+      const img = tile.querySelector("img");
       const want_ = (cam.states[state] || {}).image;
-      if (big.hidden || big.dataset.camera !== cam.id || big.dataset.state !== state) t.problem("bug", `${where}: pressing ${cam.id} didn't enlarge its ${state} feed`);
-      else if (!img || !want_ || !img.src.endsWith(want_.replace(/^\.?\//, "")) || !(await waitFor(() => img.complete && img.naturalWidth > 0, 3000))) t.problem("bug", `${where}: the enlarged ${cam.id} ${state} feed shows no picture of its own`);
+      if (tile.dataset.state !== state) t.problem("bug", `${where}: the strip shows ${cam.id} as ${tile.dataset.state}, the scene says ${state}`);
+      else if (!img || !want_ || !img.src.endsWith(want_.replace(/^\.?\//, "")) || !(await waitFor(() => img.complete && img.naturalWidth > 0, 3000))) t.problem("bug", `${where}: the strip's ${cam.id} ${state} tile shows no picture of its own`);
       else {
         shownPairs.add(key);
         t.event("camera-state", `${cam.id} ${cam.name} ${state}: ${img.naturalWidth}x${img.naturalHeight} ${want_}`);
-        await sleep(400);
       }
     }
-    if (window.iltvConsole.selected()) await tapAt(t, document.querySelector(`#console-wall .feed[data-camera="${window.iltvConsole.selected()}"]`), "shrink the enlarged feed");
+    // The big screen shows the scene's focus camera, in the state the scene gives it, from that state's own picture.
+    const focus = st.scenes[m.scene].focus;
+    if (focus) {
+      const big = $("console-big");
+      const want_ = (st.cameras.find((c) => c.id === focus).states[feeds[focus]] || {}).image;
+      const bimg = big.querySelector("img");
+      if (big.hidden || big.dataset.camera !== focus || big.dataset.state !== feeds[focus]) t.problem("bug", `${where}: the big screen shows ${big.dataset.camera}/${big.dataset.state}, the scene's focus is ${focus}/${feeds[focus]}`);
+      else if (!bimg || !want_ || !bimg.src.endsWith(want_.replace(/^\.?\//, "")) || !(await waitFor(() => bimg.complete && bimg.naturalWidth > 0, 3000))) t.problem("bug", `${where}: the big screen's ${focus} ${feeds[focus]} feed shows no picture of its own`);
+    }
   };
   let n = 0;
   // The unlocks stay from way to way (a new run keeps them), so the percent explored follows every scene reached so far
@@ -1497,7 +1543,7 @@ async function cctvStates(t, st, used) {
     }
     t.progress(++n / plan.length);
   }
-  t.event("camera-states", `${shownPairs.size} of ${want.size} camera states shown enlarged, each from its own picture`);
+  t.event("camera-states", `${shownPairs.size} of ${want.size} camera states shown in the strip, each from its own picture`);
 }
 
 /* ---------------- credits: "Powered by HAWKES GEN" on every page, the parent company on the home page ---------------- */
@@ -1922,7 +1968,7 @@ async function analyticsVideoStory(t, A, pump, st) {
   t.note(`${st.title}: ${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
 }
 
-/** Night Shift (a console story, no video): from its card, a camera enlarged, the shift log opened, one real choice, then
+/** Night Shift (a console story, no video): from its card, the big screen showing a camera, the shift log opened, one real choice, then
     the shortest way's last choices to an ending (a seeded run, consoleSeedAt: setup shortcut), where "How was this
     ending?" shows and is answered. What went out: story_open from the card, the screen and level, run_start, the choice,
     the two features, run_end with the ending, the stars. */
@@ -1933,8 +1979,6 @@ async function analyticsNight(t, A, pump, st) {
   await consoleOpen(t, st);
   const m = consoleModel(st);
   await consoleHeard(t, document, st.id);
-  const tile = document.querySelector("#console-wall .feed");
-  if (tile) await tapAt(t, tile, "a camera feed");
   await tapAt(t, byIdIn(document, "console-log-btn"), "Log");
   await sleep(300);
   await tapAt(t, byIdIn(document, "console-log-btn"), "Close log");
@@ -1973,7 +2017,7 @@ async function analyticsNight(t, A, pump, st) {
     ["level_start", null, "level_start"],
     ["run_start", (p) => p.run === st.id, "run_start"],
     ["choice", (p, e) => p.node && p.option && e.ctx && e.ctx.story === st.id && e.ctx.path, "a choice with its node, option and the path so far"],
-    ["feature", (p) => p.name === "feed" && p.story === st.id, "a camera enlarged (feature feed)"],
+    ["feature", (p) => p.name === "feed" && p.story === st.id, "the big screen showing a camera (feature feed)"],
     ["feature", (p) => p.name === "log" && p.story === st.id, "the shift log opened (feature log)"],
     ["run_end", (p) => p.result === "win" && p.ending === node, "run_end with the ending"],
     ["feedback", (p) => p.rating === 4, "the ending's stars"],
@@ -2751,8 +2795,8 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
     byIdIn(doc, "console-stories"),
     ...openChoices(doc),
   ];
-  const big = byIdIn(doc, "console-big");
-  if (!big.hidden) must.push(big);
+  const room = byIdIn(doc, "console-room");
+  if (room) must.push(room);
   let scrolled = 0;
   const scrolledNames = [];
   // The part of the screen an element can really be seen in: the viewer's screen cut down by every box that scrolls
@@ -2798,7 +2842,7 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   // its top first, and each box counts only where it can be seen (what the column scrolls past is not over the wall).
   doc.querySelector(".console-body")?.scrollTo?.(0, 0);
   doc.querySelector(".console-panel")?.scrollTo?.(0, 0);
-  const boxes = [...doc.querySelectorAll("#console-wall, #console-big:not([hidden]), .console-subs, .console-controls, #console-choices:not([hidden])")].map((el) => {
+  const boxes = [...doc.querySelectorAll("#console-room, .room-action, #console-wall, .console-subs, .console-controls, #console-choices:not([hidden])")].map((el) => {
     const b = el.getBoundingClientRect();
     const c = clipOf(el);
     const left = Math.max(b.left, c.left);
@@ -2832,7 +2876,7 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
     const b = doc.querySelector(q)?.getBoundingClientRect();
     return b ? `${q} ${Math.round(b.top)}..${Math.round(b.bottom)}` : "";
   };
-  const layout = [".console-bar", "#console-wall", ".console-panel", "#console-subs", ".console-controls", "#console-choices:not([hidden])", "#console-ending:not([hidden])"].map(boxOf).filter(Boolean).join(", ");
+  const layout = [".console-bar", "#console-room", "#console-wall", ".console-panel", "#console-subs", ".console-controls", "#console-choices:not([hidden])", "#console-ending:not([hidden])"].map(boxOf).filter(Boolean).join(", ");
   t.event("fit", `${where}: ${W}x${H}, wall ${doc.querySelectorAll("#console-wall .feed").length} feeds, ${openChoices(doc).length} choices, ${scrolled} needed a scroll${scrolledNames.length ? ` (${scrolledNames.join("; ")})` : ""}, no sideways scroll; layout ${layout}${tall.length ? `; taller inside than shown: ${tall.join(", ")}` : ""}`);
   // The end screen has nothing to choose: the card, the ending's name, the line buttons and the wall all fit with no scroll at all, at any size.
   const tallEnd = tall.filter((x) => x.startsWith(".console-body") || x.startsWith(".console-panel"));
@@ -2845,7 +2889,7 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   return scrolled;
 }
 
-/** The console at one screen size: the wall, subtitles while a line plays, a feed enlarged, the choices. */
+/** The console at one screen size: the room and its big screen, subtitles while a line plays, the choices. */
 async function consoleView(t, st, [w, h, name]) {
   const where = `${name} ${w}x${h}`;
   t.scene(where);
@@ -2856,18 +2900,14 @@ async function consoleView(t, st, [w, h, name]) {
   await consolePrompt(t, doc, where);
   await waitFor(() => api.lines() && api.lines().playing >= 0, 4000);
   await consoleFit(t, doc, `${where}, a line playing`);
-  // Enlarge a feed with a press on its tile.
-  const cam = st.scenes[api.scene()].focus || st.cameras[st.cameras.length > 3 ? 3 : 0].id;
-  const tile = doc.querySelector(`#console-wall .feed[data-camera="${cam}"]`);
-  await tapAt(t, tile, `feed ${cam} (${where})`);
-  await sleep(150);
-  const big = byIdIn(doc, "console-big");
-  if (big.hidden || big.dataset.camera !== cam || api.selected() !== cam) t.problem("bug", `${where}: pressing feed ${cam} didn't enlarge it`);
+  // The big screen shows one camera and nothing in the strip or on the screen can be pressed to enlarge it.
+  const cam = api.selected();
+  const bigNow = byIdIn(doc, "console-big");
+  if (bigNow.hidden || bigNow.dataset.camera !== cam) t.problem("bug", `${where}: the big screen doesn't show the selected camera (${bigNow.dataset.camera} / ${cam})`);
+  await checkNotEnlargeable(t, doc, where);
   await consoleHeard(t, doc, where);
-  await consoleFit(t, doc, `${where}, a feed enlarged, the choices shown`);
+  await consoleFit(t, doc, `${where}, the room and the big screen, the choices shown`);
   await sleep(500);
-  await tapAt(t, doc.querySelector("#console-big .big-close"), `Shrink (${where})`);
-  if (!byIdIn(doc, "console-big").hidden) t.problem("bug", `${where}: Shrink didn't put the feed back`);
   // The shift log fits too.
   await tapAt(t, byIdIn(doc, "console-log-btn"), `Log (${where})`);
   await sleep(200);
@@ -3053,39 +3093,35 @@ async function consoleLines(t, st) {
   }
 }
 
-/** The wall: each feed a button, one enlarged by a press, and its picture follows the scene's state. */
+/** The big screen and the strip: nine cameras in the strip (the state the scene says), one camera on the big screen
+    (the scene's focus, with what it shows written under it for a screen reader), and no press changes it. */
 async function consoleWall(t, st, { fresh = true } = {}) {
-  const where = `${st.id} wall`;
+  const where = `${st.id} screen`;
   t.scene(where);
   if (fresh) await consoleFresh(t, st);
   await consoleHeard(t, document, where);
-  const feeds = rulesOf().feedsOf(st, st.scenes[fresh ? st.start : apiOf().scene()]);
+  const scene = st.scenes[fresh ? st.start : apiOf().scene()];
+  const feeds = rulesOf().feedsOf(st, scene);
   const tiles = [...document.querySelectorAll("#console-wall .feed")];
   t.metric("feeds", tiles.length);
-  const cam = st.cameras.find((c) => feeds[c.id] !== "normal") || st.cameras[0];
-  const tile = tiles.find((x) => x.dataset.camera === cam.id);
-  const tr = tile.getBoundingClientRect();
-  await tapAt(t, tile, `feed ${cam.id}`);
-  await sleep(200);
   const big = $("console-big");
+  if (big.hidden) return t.problem("bug", `${where}: the big screen isn't there`);
+  const cam = st.cameras.find((c) => c.id === big.dataset.camera);
+  if (!cam) return t.problem("bug", `${where}: the big screen shows no camera`);
+  if (scene.focus && cam.id !== scene.focus) t.problem("bug", `${where}: the scene's focus is ${scene.focus}, the big screen shows ${cam.id}`);
   const desc = (cam.states[feeds[cam.id]] || cam.states.normal).desc;
-  if (big.hidden) t.problem("bug", `${where}: pressing feed ${cam.id} didn't enlarge it`);
-  else {
-    if (big.dataset.camera !== cam.id || big.dataset.state !== feeds[cam.id]) t.problem("bug", `${where}: the enlarged feed is ${big.dataset.camera}/${big.dataset.state}, not ${cam.id}/${feeds[cam.id]}`);
-    if (!big.textContent.includes(desc)) t.problem("bug", `${where}: the enlarged feed doesn't say what it shows ("${desc}")`);
-    const br = big.getBoundingClientRect();
-    if (br.width * br.height <= tr.width * tr.height) t.problem("bug", `${where}: the enlarged feed (${Math.round(br.width)}x${Math.round(br.height)}) isn't bigger than its tile (${Math.round(tr.width)}x${Math.round(tr.height)})`);
-    if (document.querySelector(`#console-wall .feed[data-camera="${cam.id}"]`).getAttribute("aria-pressed") !== "true") t.problem("bug", `${where}: the pressed tile isn't marked`);
-    t.event("feed-enlarged", `${st.id}: ${cam.id} (${feeds[cam.id]}): "${desc.slice(0, 60)}"`);
-  }
-  // Another feed replaces it; the same one again puts it back.
-  const tileOf = (id) => document.querySelector(`#console-wall .feed[data-camera="${id}"]`); // the wall is drawn again on each press
-  const other = tiles.find((x) => x.dataset.camera !== cam.id).dataset.camera;
-  await tapAt(t, tileOf(other), `feed ${other}`);
-  if (apiOf().selected() !== other) t.problem("bug", `${where}: a second feed didn't replace the first`);
-  await tapAt(t, tileOf(other), `feed ${other} again`);
-  if (!$("console-big").hidden) t.problem("bug", `${where}: the same feed again didn't put it back`);
-  await sleep(500);
+  if (big.dataset.state !== feeds[cam.id]) t.problem("bug", `${where}: the big screen is ${cam.id}/${big.dataset.state}, not ${cam.id}/${feeds[cam.id]}`);
+  if (!big.textContent.includes(desc)) t.problem("bug", `${where}: the big screen doesn't say what it shows ("${desc}")`);
+  const marked = tiles.filter((x) => x.classList.contains("is-selected")).map((x) => x.dataset.camera);
+  if (marked.length !== 1 || marked[0] !== cam.id) t.problem("bug", `${where}: the strip marks ${JSON.stringify(marked)}, the screen shows ${cam.id}`);
+  const numbers = tiles.map((x) => (x.querySelector(".feed-num") || {}).textContent);
+  if (numbers.join() !== tiles.map((_, i) => String(i + 1)).join()) t.problem("bug", `${where}: the strip doesn't number its cameras 1 to ${tiles.length} (${numbers.join(" ")})`);
+  const tr = tiles[0].getBoundingClientRect();
+  const br = big.getBoundingClientRect();
+  if (br.width * br.height <= tr.width * tr.height * 4) t.problem("bug", `${where}: the big screen (${Math.round(br.width)}x${Math.round(br.height)}) isn't much bigger than a tile (${Math.round(tr.width)}x${Math.round(tr.height)})`);
+  await checkNotEnlargeable(t, document, where);
+  t.event("big-screen", `${st.id}: ${cam.id} (${feeds[cam.id]}) on the big screen, ${tiles.length} in the strip, none pressable: "${desc.slice(0, 60)}"`);
+  await sleep(300);
 }
 
 /** The gating criterion in the open: a choice that needs a flag isn't there without it and is with it, and a choice
@@ -4102,20 +4138,12 @@ async function nightSignoffRun(options, t) {
           if (shown.hidden || shown.textContent.trim() !== sc.ending[0]) t.problem("bug", `${label}: the ending isn't shown (it says "${shown.textContent.trim()}")`);
           if (!w && stories().run(st.id) !== "end") t.problem("bug", `${label}: at an ending the run says "${stories().run(st.id)}", not end`);
           await consoleFit(t, doc, `${label}, the end screen`, { endScreen: true });
-          // The ending opens with the scene's camera enlarged (checked above); a press on a feed toggles it, so the other state is checked too: the end screen fits with and without the enlarged feed.
-          // Once per size: it checks a layout, not an ending, and on every play it pushed the quick run past its 10 minutes.
-          const wasBig = !byIdIn(doc, "console-big").hidden;
-          const bigTile = toggled.has(sizeName) && near ? null : (wasBig ? doc.querySelector("#console-wall .feed.is-selected") : doc.querySelector("#console-wall .feed"));
-          if (bigTile) {
+          // The big screen and the strip can't be pressed (once per size: it checks a layout, not an ending, and on every play it pushed the quick run past its 10 minutes).
+          if (!(toggled.has(sizeName) && near)) {
             toggled.add(sizeName);
-            at("end screen with the feed toggled");
-            const selBefore = apiOf(doc).selected();
-            const r0 = bigTile.getBoundingClientRect();
-            const hitEl = doc.elementFromPoint(r0.left + r0.width / 2, r0.top + r0.height / 2);
-            await tapAt(t, bigTile, `a feed on the end screen (${label})`);
-            await sleep(200);
-            if (byIdIn(doc, "console-big").hidden !== wasBig) t.problem("bug", `${label}: pressing a feed on the end screen didn't ${wasBig ? "shrink" : "enlarge"} it (the player's selected feed ${selBefore} -> ${apiOf(doc).selected()}; the tile ${bigTile.dataset.camera}, still in the page: ${doc.contains(bigTile)}, at ${Math.round(r0.left)},${Math.round(r0.top)} ${Math.round(r0.width)}x${Math.round(r0.height)}; the press landed on ${hitEl ? hitEl.tagName + "." + hitEl.className : "nothing"})`);
-            await consoleFit(t, doc, `${label}, the end screen ${wasBig ? "with the feed shrunk" : "with a feed enlarged"}`, { endScreen: true });
+            at("end screen with a press on the strip and the screen");
+            await checkNotEnlargeable(t, doc, label);
+            await consoleFit(t, doc, `${label}, the end screen after pressing the strip and the screen`, { endScreen: true });
           }
           t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
           done++;
@@ -4572,8 +4600,273 @@ async function nightCardRun(options, t) {
   t.progress(1);
 }
 
+/* ---------------- room: Night Shift's control room, the silhouettes and the big screen ---------------- */
+
+const SILHOUETTE = "#050708";
+
+/** The control room as a viewer sees it in `doc`: the stage, its people (black silhouettes in the room), the one big screen. */
+function roomStage(doc) {
+  const host = byIdIn(doc, "console-room");
+  const api = apiOf(doc);
+  const view = api.room();
+  const figs = [...doc.querySelectorAll("#console-room-figs .fig")].filter((f) => f.getAttribute("data-show") === "1");
+  const fill = (f) => (f.querySelector(".p-skin") || {}).getAttribute?.("fill");
+  return { host, view, figs, fill, mode: host.getAttribute("data-mode"), look: host.getAttribute("data-look"), place: host.getAttribute("data-place") };
+}
+
+/** The room's acts the data gives a scene, in line order (a line's place first), as the room records them. */
+function roomDataActs(st, id) {
+  return st.scenes[id].lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act])]);
+}
+
+/** Plays a scene from a seeded run at its parent with a real press into it; returns the model. `hear`: skip to the end of its lines. */
+async function roomEnter(t, st, x, id, seen, { hear = true } = {}) {
+  const way = x.scenes[id];
+  if (!way) throw new Error(`${st.id}/${id}: no way reaches it`);
+  if (!way.picks.length) throw new Error(`${st.id}/${id} is the first scene`);
+  const m = await consoleSeedAt(t, st, way.picks.slice(0, -1), seen);
+  await consoleChoose(t, st, m, way.picks[way.picks.length - 1], document, `${st.id}: ${way.path.join(" > ")}`, seen, { hear });
+  if (m.scene !== id) t.problem("bug", `${st.id}: expected to enter ${id}, is at ${m.scene}`);
+  return m;
+}
+
+/** Waits (the scene plays at its own pace) for `test()` to hold, sampled every 40 ms. */
+async function roomWatch(test, ms = 60000) {
+  const t0 = performance.now();
+  while (performance.now() - t0 < ms) {
+    let ok = false;
+    try { ok = test(); } catch (e) { ok = false; }
+    if (ok) return performance.now() - t0;
+    await sleep(40);
+  }
+  return -1;
+}
+
+async function nightRoomRun(options, t) {
+  const st = storyOf(options.story || "night-shift");
+  if (!st || st.type !== "console") throw new Error(`room: ${options.story || "night-shift"} isn't a console story`);
+  await consoleWarm(t);
+  const x = consoleExplore(st);
+  const seen = new Set();
+  document.cookie = `${unlocksCookie(st)}=; Max-Age=0; Path=/`;
+  await passSplash(t);
+
+  /* 1. Opening the story: the room, with silhouettes of the trainer and the player facing the big screen, not a grid */
+  t.scene(`${st.title}: the room`);
+  await consoleOpen(t, st);
+  await consoleFresh(t, st);
+  let r = roomStage(document);
+  if (!r.host || !r.view) throw new Error("room: the control room didn't start (js/console-room.js)");
+  if (r.mode !== "room" || r.look !== "sil" || r.place !== "room") t.problem("bug", `the first scene opens as ${r.mode}/${r.look}/${r.place}, not the room with silhouettes`);
+  for (const who of ["you", "dee", "okafor"]) {
+    const f = r.figs.find((el) => el.getAttribute("data-who") === who);
+    if (!f) t.problem("bug", `the control room doesn't show ${who} at the handover`);
+    else if (r.fill(f) !== SILHOUETTE) t.problem("bug", `${who} in the room isn't a black silhouette (skin fill ${r.fill(f)})`);
+  }
+  for (const part of [".r-door", ".r-clock", ".r-fire", ".r-access", ".r-charger", ".r-coffee", ".r-tablet", ".r-phone", ".r-shelf"]) if (!r.host.querySelector(part)) t.problem("bug", `the room has no ${part.slice(3)} (door, clock, fire panel, access terminal, charger, coffee machine, tablet, phone, shelf)`);
+  if (!r.host.querySelectorAll(".chair-seat").length) t.problem("bug", "the room shows no chairs");
+  if (document.querySelectorAll("#console-wall button, #console-big button").length) t.problem("bug", "the camera strip or the big screen has buttons: it is not a grid to press");
+  const tiles = document.querySelectorAll("#console-wall .feed");
+  if (tiles.length !== st.cameras.length) t.problem("bug", `the strip has ${tiles.length} tiles for ${st.cameras.length} cameras`);
+  const hr = r.host.getBoundingClientRect();
+  const br = byIdIn(document, "console-big").getBoundingClientRect();
+  if (br.left < hr.left || br.right > hr.right || br.top < hr.top || br.bottom > hr.bottom) t.problem("bug", "the big screen is not inside the room");
+  if (br.width < hr.width * 0.3) t.problem("bug", `the big screen is only ${Math.round(br.width)} px of a ${Math.round(hr.width)} px room`);
+  const clock = r.host.querySelector(".hand-m")?.getAttribute("transform") || "";
+  if (!clock.startsWith(`rotate(${+st.scenes[st.start].time.slice(3) * 6} `)) t.problem("bug", `the wall clock's minute hand doesn't say the scene's time (${st.scenes[st.start].time}): "${clock}"`);
+  t.event("room", `${st.start}: ${r.figs.length} people (${r.figs.map((f) => f.getAttribute("data-who")).join(", ")}) in silhouette, the big screen ${Math.round(br.width)}x${Math.round(br.height)} in a ${Math.round(hr.width)}x${Math.round(hr.height)} room, ${tiles.length} cameras in the strip`);
+  await checkNotEnlargeable(t, document, "the first scene");
+  // Reduced motion: the CRT flash and the silhouettes' motion are toned down in the stylesheet.
+  let reduced = false;
+  for (const sheet of document.styleSheets) {
+    let rules = [];
+    try { rules = [...sheet.cssRules]; } catch (e) { continue; }
+    for (const rule of rules) if (rule.conditionText && /prefers-reduced-motion/.test(rule.conditionText) && /big-crt/.test(rule.cssText) && /\.fig/.test(rule.cssText)) reduced = true;
+  }
+  if (!reduced) t.problem("bug", "no prefers-reduced-motion rule tones down the CRT flash and the silhouettes");
+  t.progress(0.1);
+
+  /* 2. The characters change the feed: a CRT flash and the big screen on the scene's focus */
+  t.scene(`${st.title}: the screen switches`);
+  const flashes = ["sign-pencil", "w2-cam9", "visitor-waved"].filter((id) => x.scenes[id] && st.scenes[id].focus);
+  for (const id of flashes) {
+    const way = x.scenes[id];
+    const m = await consoleSeedAt(t, st, way.picks.slice(0, -1), seen);
+    const api = window.iltvConsole;
+    const before = api.screen();
+    const button = openChoices(document).find((b) => Number(b.dataset.choice) === way.picks[way.picks.length - 1]);
+    if (!button) throw new Error(`${id}: no choice into it on screen`);
+    await tapAt(t, button, `the choice into ${id}`, { quick: true });
+    m.choose(way.picks[way.picks.length - 1]);
+    const big = byIdIn(document, "console-big");
+    const on = await roomWatch(() => big.classList.contains("is-flash"), 400);
+    const off = await roomWatch(() => !big.classList.contains("is-flash"), 1500);
+    const after = api.screen();
+    const focus = st.scenes[id].focus;
+    if (before.camera === focus) { t.note(`${id}: the screen was already on ${focus}`); continue; }
+    const lasted = on + off + 15; // the poll for its end starts where the poll for its start ended; the press was 15 ms before
+    if (on < 0) t.problem("bug", `${id}: the screen changed from ${before.camera} to ${focus} with no CRT flash`);
+    else if (off < 0 || lasted < 120 || lasted > 700) t.problem("bug", `${id}: the CRT flash lasted ${Math.round(lasted)} ms (it should be a short flash, about 200-300 ms)`);
+    if (after.camera !== focus || big.dataset.camera !== focus) t.problem("bug", `${id}: the big screen shows ${big.dataset.camera}, the scene's focus is ${focus}`);
+    if (after.changes <= before.changes) t.problem("bug", `${id}: the screen's change count didn't rise (${before.changes} -> ${after.changes})`);
+    const crt = big.querySelector(".big-crt");
+    if (!crt) t.problem("bug", `${id}: the big screen has no CRT layer`);
+    const said = window.iltvConsole.room().said.join(" | ");
+    if (!/switches the screen to|switch the screen to/.test(said)) t.problem("bug", `${id}: nobody in the room is seen switching the screen (${said})`);
+    t.event("crt-flash", `${id}: ${before.camera} -> ${focus}, a CRT flash of about ${Math.round(lasted)} ms, "${window.iltvConsole.room().said.find((s) => /switch/.test(s)) || ""}"`);
+    await consoleHeard(t, document, id);
+    const lineFeeds = st.scenes[id].lines.filter((l) => l.feed);
+    if (lineFeeds.length) {
+      const last = lineFeeds[lineFeeds.length - 1].feed;
+      const want = Array.isArray(last) ? last[last.length - 1] : last;
+      if (api.selected() !== want) t.problem("bug", `${id}: the lines switch the screen to ${want}, it shows ${api.selected()}`);
+    }
+  }
+  t.progress(0.25);
+
+  /* 3. What happens in the room, at the matching story moments */
+  t.scene(`${st.title}: the moments`);
+  const moments = [
+    ["the-chairs", "the trainee sits down", ["you:sit"]],
+    ["okafor-out", "Mr. Okafor leaves through the door", ["okafor:leave"]],
+    ["radio-ok", "Terrell comes in through the door", ["terrell:enter:left"]],
+    ["okafor-call", "the phone rings and is answered", ["room:ring", "you:phone"]],
+    ["log-in-asked", "something is written in the log", ["you:write"]],
+    ["flicker", "the lights flicker and coffee spills", ["room:flicker", "you:spill"]],
+    ["w1-dead", "Dee taps the screen", ["dee:touch"]],
+    ["laptop-opened", "Dee stands up and gets angry", ["dee:stand", "dee:angry"]],
+    ["radio-23", "Dee takes the keys and leaves", ["dee:stand", "dee:leave"]],
+    ["trouble-silenced", "the silence button on the fire panel is pressed", ["you:press:panel"]],
+  ].filter(([id]) => x.scenes[id] && x.scenes[id].picks.length);
+  let n = 0;
+  for (const [id, what, want] of moments) {
+    await roomEnter(t, st, x, id, seen);
+    const v = window.iltvConsole.room();
+    const acted = v.acted.join(" ");
+    for (const a of want) if (!v.acted.includes(a)) t.problem("bug", `${id} (${what}): the room didn't do "${a}" (it did: ${acted || "nothing"})`);
+    const data = roomDataActs(st, id);
+    if (JSON.stringify(v.acted) !== JSON.stringify(data)) t.problem("bug", `${id}: the room did ${JSON.stringify(v.acted)}, the scene's data says ${JSON.stringify(data)}`);
+    if (id === "okafor-out" && v.actors.okafor && v.actors.okafor.present) t.problem("bug", "okafor-out: Mr. Okafor is still in the room after he leaves");
+    if (id === "radio-23" && v.actors.dee && v.actors.dee.present) t.problem("bug", "radio-23: Dee is still in the room after she leaves with the keys");
+    if (id === "the-chairs" && v.actors.you.posture !== "seated") t.problem("bug", "the-chairs: the trainee never sat down");
+    t.event("moment", `${id}: ${what}: ${acted}`);
+    t.progress(0.25 + (0.35 * ++n) / moments.length);
+  }
+
+  /* 4. Seen in motion (nothing skipped): the door, the ring and the answer, the stand and the anger */
+  t.scene(`${st.title}: in motion`);
+  const live = async (id, label, steps) => {
+    if (!x.scenes[id] || !x.scenes[id].picks.length) return;
+    await roomEnter(t, st, x, id, seen, { hear: false });
+    for (const [what, test, ms] of steps) {
+      const took = await roomWatch(() => test(roomStage(document)), ms || 45000);
+      if (took < 0) t.problem("bug", `${id}: ${what} never showed (${label})`);
+      else t.event("motion", `${id}: ${what}, ${Math.round(took)} ms after the scene opened or the step before`);
+    }
+    await consoleHeard(t, document, id);
+  };
+  const fig = (who, attr, value) => (r) => r.host.querySelector(`.fig[data-who="${who}"][${attr}${value == null ? "" : `="${value}"`}]`);
+  await live("okafor-out", "Mr. Okafor leaves", [
+    ["the door opens", (r) => r.host.hasAttribute("data-door")],
+    ["Mr. Okafor walks to the door", fig("okafor", "data-spot", "door")],
+    ["Dee knocks twice on the wall", fig("dee", "data-pose", "knock")],
+  ]);
+  await live("okafor-call", "the night line", [
+    ["the phone rings", (r) => r.host.hasAttribute("data-ring")],
+    ["the trainee answers it", fig("you", "data-pose", "phone")],
+  ]);
+  await live("laptop-opened", "Dee is angry", [
+    ["Dee stands up", fig("dee", "data-posture", "standing")],
+    ["Dee gets angry", fig("dee", "data-angry")],
+  ]);
+  t.progress(0.7);
+
+  /* 5. Out of the room: people, in the place they are in; back in the room: silhouettes again */
+  t.scene(`${st.title}: out of the room`);
+  for (const [id, place] of [["tour1-door", "stairwell"], ["tour2-trucks", "dock"], ["tour3-test", "roof"]].filter(([i]) => x.scenes[i])) {
+    await roomEnter(t, st, x, id, seen, { hear: false });
+    await sleep(500);
+    const a = roomStage(document);
+    if (a.mode !== "away" || a.place !== place || a.look !== "color") t.problem("bug", `${id}: out of the room it is ${a.mode}/${a.place}/${a.look}, not away/${place}/color`);
+    for (const f of a.figs) if (a.fill(f) === SILHOUETTE) t.problem("bug", `${id}: ${f.getAttribute("data-who")} is still a silhouette out of the room`);
+    if (!a.figs.find((f) => f.getAttribute("data-who") === "dee") || !a.figs.find((f) => f.getAttribute("data-who") === "you")) t.problem("bug", `${id}: the trainee and Dee aren't shown in the ${place}`);
+    const inset = byIdIn(document, "console-big").getBoundingClientRect();
+    const room = a.host.getBoundingClientRect();
+    if (inset.width > room.width * 0.4) t.problem("bug", `${id}: the big screen is still the focus out of the room (${Math.round(inset.width)} of ${Math.round(room.width)} px)`);
+    if (!a.host.querySelector("#console-room-art svg, .room-art svg") || a.host.querySelector(".r-door")) t.problem("bug", `${id}: the picture is still the control room, not the ${place}`);
+    t.event("away", `${id}: ${place}, ${a.figs.map((f) => f.getAttribute("data-who")).join(" and ")} drawn as people, the screen an inset`);
+  }
+  if (x.scenes["visitor-desk"]) {
+    await roomEnter(t, st, x, "visitor-desk", seen, { hear: false });
+    const sawLobby = await roomWatch(() => roomStage(document).place === "lobby", 60000);
+    if (sawLobby < 0) t.problem("bug", "visitor-desk: the trainee never went out to the lobby desk");
+    else {
+      const a = roomStage(document);
+      if (a.look !== "color" || a.mode !== "away") t.problem("bug", `visitor-desk: in the lobby it is ${a.mode}/${a.look}, not away/color`);
+    }
+    const back = await roomWatch(() => roomStage(document).place === "room", 90000);
+    if (back < 0) t.problem("bug", "visitor-desk: the trainee never came back to the control room");
+    else {
+      await sleep(400);
+      const a = roomStage(document);
+      if (a.mode !== "room" || a.look !== "sil") t.problem("bug", `visitor-desk: back in the room it is ${a.mode}/${a.look}, not room/sil`);
+      for (const f of a.figs) if (a.fill(f) !== SILHOUETTE) t.problem("bug", `visitor-desk: ${f.getAttribute("data-who")} isn't a silhouette back in the room`);
+      t.event("away", "visitor-desk: the lobby desk (people), then back in the room (silhouettes)");
+    }
+    await consoleHeard(t, document, "visitor-desk");
+  }
+  const endingId = Object.keys(st.scenes).find((id) => st.scenes[id].ending && st.scenes[id].place === "room-day" && x.scenes[id]);
+  if (endingId) {
+    await roomEnter(t, st, x, endingId, seen, { hear: false });
+    await sleep(500);
+    const a = roomStage(document);
+    if (a.look !== "color" || a.mode !== "room") t.problem("bug", `${endingId}: the ending is ${a.mode}/${a.look}, not the room in daylight with people`);
+    for (const f of a.figs) if (a.fill(f) === SILHOUETTE) t.problem("bug", `${endingId}: ${f.getAttribute("data-who")} is a silhouette at the end of the shift`);
+    t.event("away", `${endingId}: the ending in daylight, ${a.figs.length} people drawn in colour`);
+    await consoleHeard(t, document, endingId);
+  }
+  t.progress(0.85);
+
+  /* 6. Phone, tablet and desktop: the room scales to the width, nothing overlaps, no sideways scroll */
+  for (const [w, h, name] of [[390, 844, "phone"], [360, 640, "small phone"], [844, 390, "phone on its side"], [820, 1180, "tablet"], [1280, 800, "desktop"]]) {
+    const where = `${name} ${w}x${h}`;
+    t.scene(where);
+    await consoleFresh(t, st);
+    const doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h);
+    const api = apiOf(doc);
+    if (!api) { t.problem("bug", `${where}: the console player didn't start in the frame`); continue; }
+    await consolePrompt(t, doc, where);
+    await waitFor(() => api.lines() && api.lines().playing >= 0, 4000);
+    await sleep(400);
+    await consoleFit(t, doc, `${where}, the room and a line playing`);
+    const a = roomStage(doc);
+    const room = a.host.getBoundingClientRect();
+    const big = byIdIn(doc, "console-big").getBoundingClientRect();
+    const win = doc.defaultView;
+    if (room.right > win.innerWidth + 0.5 || room.left < -0.5) t.problem("bug", `${where}: the room runs off the side (${Math.round(room.left)}..${Math.round(room.right)})`);
+    const ratio = room.height / room.width;
+    if (Math.abs(ratio - 0.6) > 0.02) t.problem("bug", `${where}: the room is ${Math.round(room.width)}x${Math.round(room.height)}, not the picture's 5:3`);
+    if (w < 800 && h > w && room.width < win.innerWidth * 0.85) t.problem("bug", `${where}: the room is only ${Math.round(room.width)} of ${win.innerWidth} px wide (it should scale to the width)`);
+    if (big.width < 100 || big.left < room.left || big.right > room.right) t.problem("bug", `${where}: the big screen is ${Math.round(big.width)} px wide or outside the room`);
+    const strip = [...doc.querySelectorAll("#console-wall .feed")].map((el) => el.getBoundingClientRect());
+    if (strip.some((r2) => r2.right > win.innerWidth + 0.5 || r2.width < 20)) t.problem("bug", `${where}: the camera strip doesn't fit (${strip.map((r2) => Math.round(r2.width)).join(", ")})`);
+    for (const f of a.figs) {
+      const fr = f.getBoundingClientRect();
+      if (fr.right < room.left || fr.left > room.right) t.problem("bug", `${where}: ${f.getAttribute("data-who")} is outside the room`);
+    }
+    const shot = byIdIn(doc, "console-room").getBoundingClientRect();
+    t.event("layout", `${where}: room ${Math.round(shot.width)}x${Math.round(shot.height)}, big screen ${Math.round(big.width)}x${Math.round(big.height)}, ${strip.length} tiles of ${Math.round(strip[0].width)} px`);
+    await checkNotEnlargeable(t, doc, where);
+    await consoleHeard(t, doc, where);
+    await consoleFit(t, doc, `${where}, the room and the choices`);
+    closeViewFrame();
+  }
+  t.progress(1);
+  await toLanding(t);
+}
+
 // The scenarios that use a console story's state explorer: it is worked out before they play (consoleWarm).
-const NEEDS_STATES = ["stories", "branches", "pages", "console", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics"];
+const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics"];
 
 installPlaytest({
   product: "imaginelivetv",
@@ -4615,7 +4908,14 @@ installPlaytest({
       seconds: 200,
       tags: ["full"],
       starts: ["real", "demo"],
-      description: "Two legs: the demo's, then the real Night Shift's (see the end of this text). Opens the console draft (night-shift-demo, listed: false) by its link under its own Tap to play (under a runner with a real mouse it waits for a real page.mouse.click first, then taps itself; either way it records whether the press was trusted and that audio is running). Subtitles are on by default and the lines play one after the other in the order of the data; CC turns the subtitles off and on; Replay line plays the last line again. The wall shows a feed per camera (6 to 9) in the state the scene says; pressing a feed enlarges it (its description under it), another replaces it, the same again puts it back. Choices gated by a flag are not on the page without it and are with it, and a choice sets a flag a later scene reads. The build's state explorer (js/console-rules.js) gives every way to every scene and ending and every different set of open choices: the bot plays all of them with real presses from a new run and checks, at each scene, the flags, meters, history, shift log, wall, clock and choices against what the data says, the percent explored, and the ending. The Log button opens the shift log at the start, in the middle and at an ending: it lists exactly what was done and seen, a redacted line per way not taken, nothing in it can be pressed, and it gives away no choice that was not taken. Settings Sound off / on and Volume apply to the voice, ambience and effects elements. Reloading mid-scene (a new page load of the story's link in a frame) returns to the same scene with the same flags, meters, log and the lines already heard. At 390x844, 360x640 and 844x390 (a frame of that size) the wall, subtitles, line buttons, choices and the log fit with no sideways scroll and tap targets of 44px or more. Then the real Night Shift (night-shift, 241 scenes, nine cameras), every position past its start a seeded run (setup shortcut, event seeded-run) and then real presses: the wall of nine feeds (one enlarged, another replacing it); a gated choice (a scene reached two ways, the choice on the page with one and not the other, and pressed), with the flag that opens it and the choice that set it; Settings Sound off, Sound on and Volume 40% on the voice, ambience, effects and sting elements, opened in the middle of a line, in the first scene and the next; a reload at the 40th scene (mid-scene and with its lines heard) and with the Log open at 70 entries (the Log read again after the reload); at 360x640 the 70-entry Log opens, scrolls from its first row to its foot inside itself and closes; and okafor-reads-solid (12 choices in the data) and tour3-test (8), in the state that opens the most of them, at 390x844, 360x640 and 844x390: every open choice reachable (scrolling inside the words column is fine), 44px or more, nothing sideways, and the same screen filled to the scene's 12 or 8 buttons with copies (the story never opens more than four at once). Every ending screen must fit with no scroll at any size (the fit event names what scrolls). Frame time is logged per scene (frame-time events for scenes with a dip over 50 ms, metrics frameWorstMs, framesOver50 and slowestScenes) and the state explorer runs before anything plays (event state-explorer). Options: {\"at\":\"real\"} plays only the real story's leg, {\"at\":\"demo\"} only the demo's. Last, All stories brings the landing page back and the audio goes.",
+      description: "Two legs: the demo's, then the real Night Shift's (see the end of this text). Opens the console draft (night-shift-demo, listed: false) by its link under its own Tap to play (under a runner with a real mouse it waits for a real page.mouse.click first, then taps itself; either way it records whether the press was trusted and that audio is running). Subtitles are on by default and the lines play one after the other in the order of the data; CC turns the subtitles off and on; Replay line plays the last line again. The room shows one big screen on the scene's camera (its description for a screen reader) and a strip with a feed per camera (6 to 9) in the state the scene says; pressing a tile or the screen does nothing (nobody but the people in the room switches it). Choices gated by a flag are not on the page without it and are with it, and a choice sets a flag a later scene reads. The build's state explorer (js/console-rules.js) gives every way to every scene and ending and every different set of open choices: the bot plays all of them with real presses from a new run and checks, at each scene, the flags, meters, history, shift log, wall, clock and choices against what the data says, the percent explored, and the ending. The Log button opens the shift log at the start, in the middle and at an ending: it lists exactly what was done and seen, a redacted line per way not taken, nothing in it can be pressed, and it gives away no choice that was not taken. Settings Sound off / on and Volume apply to the voice, ambience and effects elements. Reloading mid-scene (a new page load of the story's link in a frame) returns to the same scene with the same flags, meters, log and the lines already heard. At 390x844, 360x640 and 844x390 (a frame of that size) the wall, subtitles, line buttons, choices and the log fit with no sideways scroll and tap targets of 44px or more. Then the real Night Shift (night-shift, 241 scenes, nine cameras), every position past its start a seeded run (setup shortcut, event seeded-run) and then real presses: the big screen and the strip of nine cameras (the screen on the scene's camera, a press on the strip or the screen changes nothing); a gated choice (a scene reached two ways, the choice on the page with one and not the other, and pressed), with the flag that opens it and the choice that set it; Settings Sound off, Sound on and Volume 40% on the voice, ambience, effects and sting elements, opened in the middle of a line, in the first scene and the next; a reload at the 40th scene (mid-scene and with its lines heard) and with the Log open at 70 entries (the Log read again after the reload); at 360x640 the 70-entry Log opens, scrolls from its first row to its foot inside itself and closes; and okafor-reads-solid (12 choices in the data) and tour3-test (8), in the state that opens the most of them, at 390x844, 360x640 and 844x390: every open choice reachable (scrolling inside the words column is fine), 44px or more, nothing sideways, and the same screen filled to the scene's 12 or 8 buttons with copies (the story never opens more than four at once). Every ending screen must fit with no scroll at any size (the fit event names what scrolls). Frame time is logged per scene (frame-time events for scenes with a dip over 50 ms, metrics frameWorstMs, framesOver50 and slowestScenes) and the state explorer runs before anything plays (event state-explorer). Options: {\"at\":\"real\"} plays only the real story's leg, {\"at\":\"demo\"} only the demo's. Last, All stories brings the landing page back and the audio goes.",
+    },
+    {
+      id: "room",
+      title: "Night Shift's control room: silhouettes of the trainee and Dee facing one big screen, acting what the story says, the screen switching with a CRT flash, people (not silhouettes) out of the room, a layout that holds on phone, tablet and desktop",
+      seconds: 180,
+      tags: ["full"],
+      description: "Opens Night Shift (a real press on its card, Tap to play) and checks the first scene is the security room, not a grid: the door to the lobby, wall clock (hands at the scene's time), fire panel, access terminal, radio charger, coffee machine, log tablet, desk phone, shelf and two chairs, with the trainee, Dee and Mr. Okafor as black silhouettes in front of one big screen inside the room; the nine cameras are a numbered strip under it and a press on a tile or on the screen does nothing (no buttons, no Shrink, the same camera after). A reduced-motion rule tones the flash and the motion down. Then, from a seeded run (setup shortcut, event seeded-run) and a real press into each of three scenes with a new focus, the screen changes camera with a CRT flash of about 200-300 ms on the camera the scene names, a person is seen switching it, and a line that names a camera (a tile read out, 'tile four') switches to it. Then ten story moments, each entered by a real press: the trainee sits when told to sit, Mr. Okafor leaves through the door at handover, Terrell comes in, the night line rings and is answered, something is written in the log, the lights flicker and coffee spills, Dee taps the screen, Dee stands up and gets angry, Dee takes the keys and leaves, the silence button on the fire panel is pressed: the room records exactly the acts the scene's data holds (act, place and feed fields in story/night-shift.json, in line order). Three of them are watched in motion with nothing skipped (the door opens, the phone rings then the answer, Dee stands then is angry). Out of the room (the tour: stairwell, dock, roof; the lobby desk; the endings by daylight) the people are drawn in colour in the place they are in, the screen a small inset and the room's picture gone; back in the room (visitor-desk) they are silhouettes again. Last, in a frame at 390x844, 360x640, 844x390, 820x1180 and 1280x800: the room scales to the width (5:3), the big screen sits inside it, the strip fits, nothing overlaps (the console fit checks) and no sideways scroll, with a line playing and with the choices up. Options: {\"story\":\"<id>\"}.",
     },
     {
       id: "night-shift",
@@ -4645,7 +4945,7 @@ installPlaytest({
       title: "Night Shift's camera wall art: every camera has a picture for every state the script uses, one look and one room per camera; every ending has an end card; the landing card has its image",
       seconds: 100,
       tags: ["full"],
-      description: "Then plays real presses to scenes that show every camera state and enlarges each one (option {\"at\":\"wall\"} skips that). Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
+      description: "Then plays real presses to scenes that show every camera state and checks each one's tile in the strip (and the big screen, for the focus) from its own picture (option {\"at\":\"wall\"} skips that). Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
     },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
@@ -4667,7 +4967,7 @@ installPlaytest({
       title: "Hawkes Analytics: the events going out on a way through The Final Spark (screen, video, choice, back, Try again, the ending), the thumbs question after going back twice and the stars question at the ending",
       seconds: 180,
       tags: ["full", "analytics"],
-      description: "Checks the analytics SDK is loaded with product imaginelivetv and a build (version, commit, date) and, on beta, env beta. Puts every event the page sends on the timeline as its batch goes out (the SDK's debug mode, ?hawkes-analytics-debug=1, on in a bot's tab). Opens The Final Spark from its card (fresh progress), then by tapping choices: Go back, the dead end's go back (back up the tree), the sludge (a death), Try again: the thumbs question (\"Retracing your steps…\") comes up and is answered thumbs up. Then the shortest way to the ending, a page at a time (each video plays, the next choice skips it): at Destroy the town the stars question \"How was this ending?\" comes up above the inventory bar and is answered 5 stars. Then All stories, and a check that screen, video (play, skip with seconds watched), choice (node, option, path in context), run_start, death, back, restart, run_end with the ending, both feedback answers and game_ready went out. The viewer's progress and question history are put back. Then Night Shift (a console story, no video): from its card, a camera enlarged (feature feed), the shift log opened (feature log), one real choice, and the last two choices of its shortest way to an ending after a seeded run (setup shortcut): story_open, screen, level_start, run_start, choice, run_end with the ending and the stars question answered went out, and no video or back event.",
+      description: "Checks the analytics SDK is loaded with product imaginelivetv and a build (version, commit, date) and, on beta, env beta. Puts every event the page sends on the timeline as its batch goes out (the SDK's debug mode, ?hawkes-analytics-debug=1, on in a bot's tab). Opens The Final Spark from its card (fresh progress), then by tapping choices: Go back, the dead end's go back (back up the tree), the sludge (a death), Try again: the thumbs question (\"Retracing your steps…\") comes up and is answered thumbs up. Then the shortest way to the ending, a page at a time (each video plays, the next choice skips it): at Destroy the town the stars question \"How was this ending?\" comes up above the inventory bar and is answered 5 stars. Then All stories, and a check that screen, video (play, skip with seconds watched), choice (node, option, path in context), run_start, death, back, restart, run_end with the ending, both feedback answers and game_ready went out. The viewer's progress and question history are put back. Then Night Shift (a console story, no video): from its card, the big screen showing a camera (feature feed), the shift log opened (feature log), one real choice, and the last two choices of its shortest way to an ending after a seeded run (setup shortcut): story_open, screen, level_start, run_start, choice, run_end with the ending and the stars question answered went out, and no video or back event.",
     },
   ],
   isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
@@ -4702,6 +5002,7 @@ installPlaytest({
       else if (id === "night-shift-gaps") await nightGapsRun(options, t);
       else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);
+      else if (id === "room") await nightRoomRun(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
