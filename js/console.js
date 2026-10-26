@@ -348,7 +348,8 @@
       subsFrame = 0;
       fitSubs(true);
       var h = els.subs.clientHeight;
-      if (h !== subsH) { subsH = h; els.subs.scrollTop = els.subs.scrollHeight; }
+      subsH = h;
+      els.subs.scrollTop = els.subs.scrollHeight; // whatever moved the strip, it stays on its newest line
     };
     new ResizeObserver(function () {
       if (!subsFrame) subsFrame = window.requestAnimationFrame(subsFrameRun);

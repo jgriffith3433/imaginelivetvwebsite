@@ -2814,6 +2814,8 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   }
   // With the words column back at its top (above), the subtitle strip shows the newest line whole (it is scrolled to its foot): never a strip that cuts the line's top off.
   const subsEl = byIdIn(doc, "console-subs");
+  // The strip follows its newest line a frame after the layout changes (a ResizeObserver, then an animation frame): let those pass.
+  await Promise.race([new Promise((res) => win.requestAnimationFrame(() => win.requestAnimationFrame(() => win.requestAnimationFrame(res)))), sleep(150)]);
   if (subsEl && subsEl.getClientRects().length && subsEl.lastElementChild) {
     const lastSub = subsEl.lastElementChild;
     const sr = subsEl.getBoundingClientRect();
