@@ -1,5 +1,5 @@
 {
-  "_about": "The photographed control room (js/console-room.js, 'The photographed room'; story/README.md 'The control room'). Every layer is a full-plate WebP (1536x920) over the plate; people are black silhouettes cut from generated stills (tools/pose-bake.mjs). Pose keys, first found: posture.pose.arg, posture.pose, spot.pose, spot, door, posture, *. Recipes: night-shift/stage-recipes.json.",
+  "_about": "The photographed control room (js/console-room.js, 'The photographed room'; story/README.md 'The control room'). Every layer is a full-plate WebP (1536x920) over the plate; people are black silhouettes cut from generated stills (tools/pose-bake.mjs). The room's spots are mirrored for the plate (its charger is on the left, its shelf on the right): Dee at `right` stands at the charger, Mr. Okafor at `left` by the shelf side. Pose keys, first found: posture.pose.arg, posture.pose, spot.pose, spot, door, posture, *. Recipes: night-shift/stage-recipes.json.",
   "plate": "plate.webp",
   "width": 1536,
   "height": 920,
@@ -41,7 +41,7 @@
       "standing": "dee-stand-folded.webp", "standing.point": "dee-taps-screen.webp", "standing.touch": "dee-taps-screen.webp",
       "standing.knock": "dee-taps-screen.webp", "standing.point.shelf": "dee-shelf.webp", "standing.point.panel": "dee-panel.webp",
       "standing.press.panel": "dee-panel.webp", "standing.count": "dee-at-charger.webp", "standing.hand": "dee-hand.webp",
-      "standing.angry": "dee-angry.webp", "door": "dee-door-l.webp", "right": "dee-door-r.webp"
+      "standing.angry": "dee-angry.webp", "door": "dee-door-l.webp", "right": "dee-at-charger.webp", "left": "dee-stand-folded.webp"
     },
     "you": {
       "seated": "trainee-sit.webp", "seated.phone": "you-phone.webp", "seated.write": "you-write.webp", "seated.read": "you-write.webp",
@@ -49,7 +49,7 @@
       "standing": "trainee-stand-clock.webp", "standing.hand": "you-hand.webp", "standing.press": "you-press.webp", "door": "you-press.webp"
     },
     "okafor": {
-      "standing": "okafor-at-door.webp", "right": "okafor-right.webp", "standing.read": "okafor-read.webp", "standing.write": "okafor-read.webp",
+      "standing": "okafor-right.webp", "left": "okafor-right.webp", "right": "okafor-at-door.webp", "standing.read": "okafor-read.webp", "standing.write": "okafor-read.webp",
       "standing.hand": "okafor-read.webp", "standing.point": "okafor-shelf.webp", "standing.point.shelf": "okafor-shelf.webp", "door": "okafor-at-door.webp"
     },
     "terrell": { "standing": "terrell-left.webp" },
