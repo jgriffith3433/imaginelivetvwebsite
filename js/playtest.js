@@ -4114,7 +4114,7 @@ async function nightSignoffRun(options, t) {
             const hitEl = doc.elementFromPoint(r0.left + r0.width / 2, r0.top + r0.height / 2);
             await tapAt(t, bigTile, `a feed on the end screen (${label})`);
             await sleep(200);
-            if (byIdIn(doc, "console-big").hidden === wasBig) t.problem("bug", `${label}: pressing a feed on the end screen didn't ${wasBig ? "shrink" : "enlarge"} it (the player's selected feed ${selBefore} -> ${apiOf(doc).selected()}; the tile ${bigTile.dataset.camera}, still in the page: ${doc.contains(bigTile)}, at ${Math.round(r0.left)},${Math.round(r0.top)} ${Math.round(r0.width)}x${Math.round(r0.height)}; the press landed on ${hitEl ? hitEl.tagName + "." + hitEl.className : "nothing"})`);
+            if (byIdIn(doc, "console-big").hidden !== wasBig) t.problem("bug", `${label}: pressing a feed on the end screen didn't ${wasBig ? "shrink" : "enlarge"} it (the player's selected feed ${selBefore} -> ${apiOf(doc).selected()}; the tile ${bigTile.dataset.camera}, still in the page: ${doc.contains(bigTile)}, at ${Math.round(r0.left)},${Math.round(r0.top)} ${Math.round(r0.width)}x${Math.round(r0.height)}; the press landed on ${hitEl ? hitEl.tagName + "." + hitEl.className : "nothing"})`);
             await consoleFit(t, doc, `${label}, the end screen ${wasBig ? "with the feed shrunk" : "with a feed enlarged"}`, { endScreen: true });
           }
           t.event("signoff-ending", `${sc.ending[0]} (${id}) at ${sizeName}: ${way.picks.length} choices, ${(seconds / 60).toFixed(1)} minutes of audio on this way${near ? `, the last ${way.picks.length - seedLen} choices pressed after a seeded run` : ", all pressed from a new run"}, ending shown`);
