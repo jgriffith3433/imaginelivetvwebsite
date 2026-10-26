@@ -1326,12 +1326,12 @@
     },
     {
       "id": "insideTruck-voice",
-      "note": "Inside: narration in pl.",
+      "note": "Inside: narration in es.",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Wchodzisz do ciężarówki. Co dzieje się dalej?",
+            "text": "Subes a la camioneta. ¿Qué pasa ahora?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },

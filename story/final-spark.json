@@ -118,10 +118,6 @@
       "mouth": "سرنگ کا منہ",
       "depth": "گہرائی"
     },
-    "pl": {
-      "mouth": "Ujście tunelu",
-      "depth": "Głębokość"
-    },
     "th": {
       "mouth": "ปากอุโมงค์",
       "depth": "ความลึก"
@@ -726,22 +722,22 @@
     {
       "id": "insideTruck",
       "folder": "get-inside-the-truck",
-      "lang": "pl",
+      "lang": "es",
       "title": [
-        "W środku",
+        "Dentro",
         "Inside"
       ],
       "story": [
-        "Wchodzisz do ciężarówki.",
+        "Subes a la camioneta.",
         "You get inside the truck."
       ],
       "question": [
-        "Co dzieje się dalej?",
+        "¿Qué pasa ahora?",
         "What happens next?"
       ],
       "choices": [
         {
-          "say": "Zatańcz z cieniem",
+          "say": "Baila con la sombra",
           "en": "Dance with the shadow",
           "next": "shadowDance"
         }
