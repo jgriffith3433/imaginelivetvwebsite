@@ -1,8 +1,19 @@
 {
   "product": "imaginelivetv",
   "name": "Imagine Live TV",
-  "current": "1.6.0",
+  "current": "1.7.0",
   "releases": [
+    {
+      "version": "1.7.0",
+      "date": "2026-10-26",
+      "build": "6d5d652",
+      "title": "Night Shift now has voices and sound",
+      "notes": [
+        "Every line of Night Shift is voiced, and the radio, walkie-talkie, intercom and phone voices each sound distinct.",
+        "Every scene in Night Shift has its own ambience, sound effects and music, with new musical stings at key moments.",
+        "On the end screen, you can tap a security camera feed to enlarge it, then tap it again to shrink it back."
+      ]
+    },
     {
       "version": "1.6.0",
       "date": "2026-10-25",
