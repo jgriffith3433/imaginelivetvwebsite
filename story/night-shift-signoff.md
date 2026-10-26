@@ -1,5 +1,7 @@
 # Night Shift: sign-off
 
+**Read "Final status, 2026-10-26" near the end first: it supersedes the "not run" cells in the older sections below, which are kept as the history of the earlier attempts.**
+
 Written 2026-10-25 (third attempt, on top of beta at `22c5b65`). **Verdict: not proven clean.** What a server with no browser can
 run is clean (listed with its output below). What needs a browser (the four screen sizes, listening, the playtests) was **not
 run here**, and this file says so wherever it applies. (Since then the T4 has played all 12 endings at the four sizes: 48 plays, 0 console errors, the ending shown each time; see `story/night-shift-gaps.md`, item 57. The "not run" cells in the table below are the state of this attempt.) Nothing below claims a result that no command named next to it produced.
@@ -131,16 +133,44 @@ Nothing new is claimed. What was looked at, and what was found:
 - **Beta runs on this build:** `night-shift-audio` ship (0 problems, speaker spread 3.1 dB), `night-shift-treatment` ship (138 treated lines), `night-shift-card` ship,
   `console` 0 problems (real Night Shift leg included), `night-shift-signoff` finishes (12 endings x 4 sizes, 48 plays in 1 min 26 s; it used to stall for 10 minutes: the
   desktop play left the story open on the page, and the first phone frame then hung the tab, so the page now goes back to the landing page before each frame).
-- **Open:** at 844x390 (landscape phone) the end screen needs a scroll on every ending when a camera feed is enlarged (`console-big` 339..440 of 390). Portrait 390x844 and 360x640 end
-  screens now fit (smaller card, wall 39dvh; at 360x640 the subtitles are a thin strip there). `stories`, `branches`, `pages`, `sound`, `credits`, `analytics`, `cctv-art` and
-  `night-shift-signoff` `{"at":"whole"}` (about 50 minutes) have no run on this build. `npm run test:endings` and `test:player` skip here (jsdom isn't installed on this PC).
+- **Open at the time:** at 844x390 the end screen needed a scroll with a camera feed enlarged; the subtitle strip was a thin strip at 360x640. Both are closed in the final status below.
 
-## Status, 2026-10-25 (fourth attempt)
+## Final status, 2026-10-26 (proof round 5, beta `5d2b465` and after)
 
-- **Reports:** no beta report for this commit was available to this session, so every scenario in the criteria is **not run** here and no run id is cited. Nothing below claims a pass.
-- **Changed:** the landscape end screen (844x390) with a camera feed enlarged needed a scroll (`console-big` 339..440 of 390). `css/site.css` now makes the wall narrower and the enlarged picture shorter on that end screen. **Not yet seen in a run:** the next beta `night-shift-signoff` or `console` run shows whether it fits.
-- **Checked by command:** `npm run story -- --check` ok (4 stories, 304 scenes, nothing stale). Voices: all 1,410 have files (see the status above); no voice job was needed or run.
-- **GPU:** none used.
+Everything below is from Studio reports of runs on beta; each run id can be opened in Studio's Report tab. The playtester is shared: a run that
+gets no GPU server is marked "inconclusive" by Studio and is not counted (they were run again).
+
+**What was fixed**
+
+| Problem | Fix (commit) | Seen fixed in |
+| --- | --- | --- |
+| Subtitle strip cut the newest line off (a 64 px line in a 51 px strip at 390x844, 360x640 and 844x390, on the end screen) | The strip takes the room the end screen leaves; the player lifts its minimum height to the newest line (`fitSubs`), follows the newest line after every resize, `scrollbar-gutter: stable`; a slimmer end card and enlarged feed on a short portrait screen (`7930ebe`..`c8c02a6`, `30cca06`; Studio's #73 made `fitSubs` safe against a resize loop my first version caused) | `console` `r_b5ca08f9a621`, `night-shift-signoff` `r_6ade0204d5e0` (0 problems) |
+| The strip was a fixed 5 to 6 rem box in the choices state | It takes all the room the choices leave and shrinks only as far as the newest line | `console` `r_b5ca08f9a621` |
+| Landscape end screen with a feed enlarged needed a scroll | Already fixed by the earlier landscape CSS; now **checked on purpose**: the sign-off presses a feed on every end screen and checks the screen both with the feed enlarged and shrunk (`d10d182`, `e7da8cd`, `0558f09`, `5d2b465`) | `r_6ade0204d5e0` and the four whole runs below (0 problems) |
+| `pages` read each Night Shift page once per way into it (13,066 reads, over its 200 s) | Read once per level (`7930ebe`); a page reached only in another state is an event, not an orphan warning | `pages` `r_f4e2b45515e7` |
+| What's new showed internal task text for releases 1.1.0 and 1.2.0 | Plain player-facing notes in `releases.json` | `credits` (see the runs below) |
+
+**Runs on beta (all 0 problems unless said)**
+
+| Scenario | Run | Verdict | Problems | Video |
+| --- | --- | --- | --- | --- |
+| `night-shift-signoff` (12 endings x 4 sizes, seeded 2 choices back) | `r_6ade0204d5e0` | fix-first (only because the review's quality bar names The Final Spark, which this scenario does not open; no finding) | 0 | https://studio.hawkesgen.com/gen/v1/files/a_a260e2fef4f5a1c5 |
+| `night-shift-signoff` `{"at":"whole","sizes":"desktop"}` (12 endings played whole, 79 to 84 choices each, 42.2 to 44.0 minutes of audio) | `r_89271af43e51` | played, 12 of 12, review skipped as unchanged | 0 | in the run |
+| `night-shift-signoff` whole at 390x844 | `r_a05410abfb6d` | 12 of 12 | 0 | in the run |
+| `night-shift-signoff` whole at 360x640 | `r_8375588a05cb` | 12 of 12 | 0 | in the run |
+| `night-shift-signoff` whole at 844x390 | `r_91e9c80b97ad` | 12 of 12 | 0 | in the run |
+| `console` (demo leg and the real Night Shift leg, three phone sizes, stress buttons) | `r_b5ca08f9a621` | fix-first (same quality-bar reason; 0 findings) | 0 | https://studio.hawkesgen.com/gen/v1/files/a_8c185b67d68e0c6e |
+| `stories` | `r_b93eb476e391` | ship | 0 | in the run |
+| `branches` | `r_a84d4d8a9367` | ship | 0 | in the run |
+| `pages` | `r_f4e2b45515e7` | ship | 2 (warnings) | https://studio.hawkesgen.com/gen/v1/files/a_4021ff44452758f4 |
+| `sound` | `r_99544a26e1ef` | ship | 0 | in the run |
+| `analytics` | `r_47bd81c925d7` | ship | 0 | in the run |
+| `cctv-art` | `r_a0f70ca4d72e` | fix-first (quality bar again; 0 findings, 22 camera states loaded) | 0 | https://studio.hawkesgen.com/gen/v1/files/a_5b5d6e377a86c16a |
+| `credits` | `r_6912729f0c73` | fix-first for the internal text on the older What's new entries, fixed in `releases.json` | 0 | in the run |
+
+The whole runs were split by screen size because Studio ends any run that goes over 45 minutes; each size took about 6 minutes. Each played the shortest way
+to every ending from a new run with real presses (`signoff-ending` x 12, `criterion`: "12 endings played to the end"), with the end screen checked for scroll, sideways
+scroll, 44 px targets and the newest subtitle line whole.
 
 ## Left
 

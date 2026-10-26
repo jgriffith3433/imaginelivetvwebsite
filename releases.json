@@ -58,23 +58,21 @@
       "version": "1.2.0",
       "date": "2026-10-18",
       "build": "250db32",
-      "title": "New in this update",
+      "title": "No going back, Start Over on finished stories",
       "notes": [
-        "Follow-up to change c_5dcf909cc2ea (no Back button, Start Over on completed cards). Build on top of it once it's on beta",
-        "J's request (2026-10-18), for every story (The Final Spark, The Water Road and any future one):"
+        "There is no Back button in a story any more: a choice stands. If you die, Try again; at an ending, Start Over.",
+        "Completed stories on the landing page show a Start Over button."
       ]
     },
     {
       "version": "1.1.0",
       "date": "2026-10-18",
       "build": "2376961",
-      "title": "New in this update",
+      "title": "A home page of stories",
       "notes": [
-        "J (q_e4bf2de725d8): \"Add it to the landing page and put a badge on it \"Not started\" instead of completed. Make it so if",
-        "Generate The Water Road's media and wire it into the story",
-        "New story for Imagine Live TV, J's direction (2026-10-18, on a call). Use the multi-story structure now on beta (story/s",
-        "Two changes to the Imagine Live TV landing page (the new \"Choose your story\" home page). J's words: \"The inventory part",
-        "\"let's also put a completed banner on The Final Spark on the landing page.\" After the multi-story landing page (c_519"
+        "The home page now lists every story as a card: choose one to play.",
+        "A new story, The Water Road, joins The Final Spark.",
+        "Each card shows whether you have not started, started or completed the story, and how much of it you have explored."
       ]
     },
     {
