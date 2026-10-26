@@ -1,0 +1,18 @@
+{
+  "_about": "Stage marks for the control-room plate (night-shift/media/stage/plate.webp, 1536x920, fixed camera). Pixels of the plate. 'foot' is where a standing person's feet land, 'seat' where a seated person's hips sit. Chosen plate: seed 1280705507 of job j_8f5a30178831.",
+  "plate": { "file": "media/stage/plate.webp", "width": 1536, "height": 920 },
+  "bigScreen": { "x": 560, "y": 180, "w": 405, "h": 235 },
+  "marks": {
+    "chair-dee": { "seat": [1045, 690], "note": "the worn beige swivel chair, right of the desk" },
+    "chair-good": { "seat": [490, 700], "note": "the good dark ergonomic chair, left of the desk" },
+    "door-lobby": { "foot": [110, 860], "door": [20, 130, 210, 900], "note": "left door" },
+    "door-corridor": { "foot": [1450, 880], "door": [1370, 150, 1536, 900], "note": "right door" },
+    "fire-panel": { "foot": [370, 790], "target": [365, 360] },
+    "counter": { "foot": [1200, 800], "target": [1175, 560], "note": "coffee machine, mini-fridge" },
+    "terminal": { "foot": [900, 800], "target": [1000, 500], "note": "the right-hand pc and desk monitors" },
+    "charger": { "foot": [380, 790], "target": [395, 520], "note": "radios on the wall charger, left of the desk" },
+    "shelf": { "target": [1170, 345], "note": "post-orders binder and extinguisher" },
+    "clock": { "target": [1148, 235] },
+    "tablet": { "target": [765, 560] }
+  }
+}
