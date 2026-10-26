@@ -1,0 +1,39 @@
+{
+  "_about": "The photographed control room (js/console-room.js, 'The photographed room'; story/README.md 'The control room'). Every layer is a full-plate WebP (1536x920) over the plate; people are black silhouettes cut from generated stills (tools/pose-bake.mjs). Pose keys, first found: posture.pose.arg, posture.pose, spot.pose, spot, door, posture, *. Recipes: night-shift/stage-recipes.json.",
+  "plate": "plate.webp",
+  "width": 1536,
+  "height": 920,
+  "clock": { "x": 1148, "y": 235 },
+  "bigScreen": { "x": 560, "y": 180, "w": 405, "h": 235 },
+  "overlays": {
+    "door-left": "ov-door-lobby.webp",
+    "door-right": "ov-door-corridor.webp",
+    "writing": "ov-tablet.webp",
+    "spill": "ov-spill.webp",
+    "buzz": "ov-fire-amber.webp"
+  },
+  "poses": {
+    "dee": {
+      "seated": "dee-sit.webp", "seated.phone": "dee-phone.webp", "seated.write": "dee-write.webp", "seated.eat": "dee-eat.webp",
+      "seated.drink": "dee-drink.webp", "seated.lean": "dee-lean.webp", "seated.angry": "dee-angry.webp",
+      "standing": "dee-stand-folded.webp", "standing.point": "dee-taps-screen.webp", "standing.touch": "dee-taps-screen.webp",
+      "standing.knock": "dee-taps-screen.webp", "standing.point.shelf": "dee-shelf.webp", "standing.point.panel": "dee-panel.webp",
+      "standing.press.panel": "dee-panel.webp", "standing.count": "dee-at-charger.webp", "standing.hand": "dee-hand.webp",
+      "standing.angry": "dee-angry.webp", "door": "dee-door-l.webp", "right": "dee-door-r.webp"
+    },
+    "you": {
+      "seated": "trainee-sit.webp", "seated.phone": "you-phone.webp", "seated.write": "you-write.webp", "seated.read": "you-write.webp",
+      "seated.eat": "you-eat.webp", "seated.lean": "you-lean.webp",
+      "standing": "trainee-stand-clock.webp", "standing.hand": "you-hand.webp", "standing.press": "you-press.webp", "door": "you-press.webp"
+    },
+    "okafor": {
+      "standing": "okafor-at-door.webp", "right": "okafor-right.webp", "standing.read": "okafor-read.webp", "standing.write": "okafor-read.webp",
+      "standing.hand": "okafor-read.webp", "standing.point": "okafor-shelf.webp", "standing.point.shelf": "okafor-shelf.webp", "door": "okafor-at-door.webp"
+    },
+    "terrell": { "standing": "terrell-left.webp" },
+    "marisol": { "standing": "marisol-left.webp" },
+    "dev": { "standing": "dev-left.webp" },
+    "adler": { "standing": "adler-right.webp", "standing.point": "adler-panel.webp", "standing.point.panel": "adler-panel.webp", "standing.write": "adler-right.webp" },
+    "pierce": { "standing": "pierce-left.webp" }
+  }
+}

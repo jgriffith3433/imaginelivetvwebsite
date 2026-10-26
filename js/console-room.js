@@ -62,6 +62,132 @@
   var trail = []; // everything said about the room since the scene opened (the playtest and the tests read it)
   var counter = 0;
 
+  /* ---------------- the photographed room ---------------- */
+
+  /* When night-shift/media/stage/stage.json loads, the room (place "room") is a photograph, not the SVG: the plate (the empty
+     control room, 1536 x 920), room-state overlays (the door open, the tablet lit, spilled coffee, the fire panel's lights) and
+     one black silhouette layer per person (a full-plate WebP with alpha, cut from a generated still: tools/pose-bake.mjs),
+     each crossfaded about 250 ms at the line its `act` is tied to. Layers are chosen by the same state the SVG people use
+     (who, posture, pose, spot): the first key found of  posture.pose.arg, posture.pose, spot.pose, spot, door, posture, *.
+     A person with no layer isn't drawn (the caption still says what they do). Other places (the tour, the lobby, the endings
+     by daylight) stay the SVG places until their stills are made. Only the layers a scene needs are ever requested. */
+  var STAGE_URL = "/night-shift/media/stage/";
+  var stage = null;
+  var photoEl = null;
+  var poseWraps = {}; // who -> the person's layer holder
+  var ovMade = {};
+
+  function photoOn(place) { return !!stage && (place || (state && state.place)) === "room"; }
+
+  function photoReset() {
+    if (photoEl && photoEl.parentNode) photoEl.parentNode.removeChild(photoEl);
+    photoEl = null;
+    poseWraps = {};
+    ovMade = {};
+  }
+
+  /** The photographed room's base: the plate and the clock's hands. Called whenever the room is (re)drawn. */
+  function photoBase() {
+    var on = photoOn();
+    host.setAttribute("data-art", on ? "photo" : "svg");
+    if (!on) { photoReset(); return; }
+    if (photoEl) return;
+    photoEl = document.createElement("div");
+    photoEl.className = "room-photo";
+    photoEl.setAttribute("aria-hidden", "true");
+    var plate = document.createElement("img");
+    plate.className = "room-plate";
+    plate.alt = "";
+    plate.decoding = "async";
+    plate.src = STAGE_URL + stage.plate;
+    photoEl.appendChild(plate);
+    var cx = stage.clock ? stage.clock.x / stage.width * 100 : 74.7, cy = stage.clock ? stage.clock.y / stage.height * 100 : 25.5;
+    var clock = document.createElement("div");
+    clock.className = "room-clock";
+    clock.style.left = cx + "%";
+    clock.style.top = cy + "%";
+    clock.innerHTML = '<svg viewBox="-50 -50 100 100" focusable="false"><circle r="46" fill="#dcd9cf" stroke="#15191b" stroke-width="5"/>'
+      + '<g stroke="#15191b" stroke-width="2.4"><line x1="0" y1="-40" x2="0" y2="-34"/><line x1="40" y1="0" x2="34" y2="0"/><line x1="0" y1="40" x2="0" y2="34"/><line x1="-40" y1="0" x2="-34" y2="0"/></g>'
+      + '<line class="hand-h" x1="0" y1="2" x2="0" y2="-22" stroke="#15191b" stroke-width="5" stroke-linecap="round"/>'
+      + '<line class="hand-m" x1="0" y1="3" x2="0" y2="-34" stroke="#15191b" stroke-width="3" stroke-linecap="round"/></svg>';
+    photoEl.appendChild(clock);
+    host.insertBefore(photoEl, artEl.nextSibling);
+    setClock();
+  }
+
+  /** An overlay (a layer over the plate) is requested the first time its flag is raised. */
+  function photoOverlay(name) {
+    if (!photoOn() || !photoEl || ovMade[name] || !stage.overlays || !stage.overlays[name]) return;
+    ovMade[name] = 1;
+    var im = document.createElement("img");
+    im.className = "room-ov ov-" + name;
+    im.alt = "";
+    im.decoding = "async";
+    im.src = STAGE_URL + stage.overlays[name];
+    photoEl.appendChild(im);
+  }
+
+  function poseFile(f) {
+    var table = stage && stage.poses && stage.poses[f.who];
+    if (!table) return null;
+    var base = f.posture === "seated" ? "seated" : "standing";
+    var keys = [base + "." + f.pose + "." + (f.arg || ""), base + "." + f.pose, f.spot + "." + f.pose, f.spot, base, "*"];
+    for (var i = 0; i < keys.length; i++) if (table[keys[i]]) return table[keys[i]];
+    return null;
+  }
+
+  /** The person's layer for the state they are in: crossfaded (or set at once for a resume and Skip). */
+  function photoFig(f, instant) {
+    if (!photoEl || !photoOn()) return;
+    var wrap = poseWraps[f.who];
+    if (!wrap) {
+      wrap = document.createElement("div");
+      wrap.className = "room-pose";
+      wrap.setAttribute("data-who", f.who);
+      photoEl.appendChild(wrap);
+      poseWraps[f.who] = wrap;
+    }
+    var file = here(f) ? poseFile(f) : null;
+    var cur = wrap.querySelector("img.on");
+    if ((cur ? cur.getAttribute("data-f") : "") === (file || "")) return;
+    wrap.setAttribute("data-file", file || "");
+    if (cur) {
+      cur.classList.remove("on");
+      var old = cur;
+      if (instant || reduced) { if (old.parentNode) old.parentNode.removeChild(old); }
+      else later(function () { if (old.parentNode) old.parentNode.removeChild(old); }, 320);
+    }
+    if (!file) return;
+    var im = document.createElement("img");
+    im.className = "pose";
+    im.alt = "";
+    im.decoding = "async";
+    im.setAttribute("data-f", file);
+    im.src = STAGE_URL + file;
+    wrap.appendChild(im);
+    if (instant || reduced) im.classList.add("on");
+    else (window.requestAnimationFrame || setTimeout)(function () { im.classList.add("on"); });
+  }
+
+  function photoView() {
+    var o = { on: photoOn(), plate: stage ? stage.plate : null, layers: {}, overlays: Object.keys(ovMade) };
+    Object.keys(poseWraps).forEach(function (k) { o.layers[k] = poseWraps[k].getAttribute("data-file") || ""; });
+    return o;
+  }
+
+  function loadStage(json) {
+    stage = json && json.plate && json.poses ? json : null;
+    if (state) { artEl.innerHTML = artFor(state.place); photoBase(); setClock(); render(true); }
+  }
+
+  function artFor(place) { return AWAY[place] ? placeArt(place, dawn()) : (photoOn(place) ? "" : roomArt()); }
+
+  if (typeof fetch === "function" && host.getAttribute("data-stage") !== "off") {
+    try {
+      fetch(STAGE_URL + "stage.json").then(function (r) { return r.ok ? r.json() : null; }).then(loadStage).catch(function () {});
+    } catch (e) { /* the SVG room stays */ }
+  }
+
   /* ---------------- the room, drawn ---------------- */
 
   function roomArt() {
@@ -348,6 +474,7 @@
     q.head.style.transform = f.pose === "write" ? "rotate(9deg)" : f.pose === "phone" ? "rotate(-6deg)" : "rotate(0deg)";
     q.tag.setAttribute("y", away ? "-150" : "24");
     q.tag.setAttribute("display", f.who === "you" || !away ? "inline" : "inline");
+    photoFig(f, f.instantPhoto);
   }
 
   function applyPos(f, instant) {
@@ -360,7 +487,9 @@
     el.setAttribute("data-posture", f.posture);
     el.setAttribute("data-pose", f.pose);
     el.setAttribute("data-present", f.present || f.leaving ? "1" : "0");
+    f.instantPhoto = !!instant;
     dress(f);
+    f.instantPhoto = false;
     if (instant) {
       void el.getBoundingClientRect();
       el.classList.remove("no-tx");
@@ -404,7 +533,7 @@
     dress(f);
     f.hold++;
     var token = f.hold;
-    if (ms) later(function () { if (f.hold === token) { f.pose = settled(f); f.el.setAttribute("data-pose", f.pose); dress(f); } }, ms);
+    if (ms) later(function () { if (f.hold === token) { f.pose = settled(f); f.arg = ""; f.el.setAttribute("data-pose", f.pose); dress(f); } }, ms);
   }
 
   function say(text) {
@@ -421,10 +550,12 @@
 
   function flag(name, ms) {
     host.setAttribute("data-" + name, "1");
+    if (name === "door") photoOverlay(host.getAttribute("data-door-side") === "right" ? "door-right" : "door-left");
+    else photoOverlay(name === "writing" ? "writing" : name === "buzz" ? "buzz" : name === "spill" ? "spill" : "");
     later(function () { host.removeAttribute("data-" + name); }, ms);
   }
 
-  function door(ms) { flag("door", ms || 1500); }
+  function door(ms, side) { host.setAttribute("data-door-side", side === "right" ? "right" : "left"); flag("door", ms || 1500); }
 
   /* ---------------- acts ---------------- */
 
@@ -449,7 +580,7 @@
       f.el.setAttribute("data-show", "0");
       applyPos(f, true);
       f.el.setAttribute("data-show", "1");
-      door(1900);
+      door(1900, arg === "right" ? "right" : "left");
       say(nameOf(who) + " comes in through the door");
       later(function () {
         f.spot = dest;
@@ -500,6 +631,7 @@
     }
     if (verb === "rest" || verb === "hangup") {
       f.pose = settled(f);
+      f.arg = "";
       f.hold++;
       f.el.setAttribute("data-pose", f.pose);
       dress(f);
@@ -507,6 +639,7 @@
       return;
     }
     if (instant) return; // the rest are moments, not states
+    f.arg = arg || "";
     var you = who === "you";
     var n = nameOf(who);
     if (verb === "phone") {
@@ -584,10 +717,11 @@
     if (!place || place === state.place) return;
     var toAway = !!AWAY[place];
     state.place = place;
-    if (instant) { artEl.innerHTML = AWAY[place] ? placeArt(place, dawn()) : roomArt(); render(true); setClock(); return; }
+    if (instant) { artEl.innerHTML = artFor(place); photoBase(); render(true); setClock(); return; }
     host.setAttribute("data-swap", "1");
     later(function () {
-      artEl.innerHTML = AWAY[place] ? placeArt(place, dawn()) : roomArt();
+      artEl.innerHTML = artFor(place);
+      photoBase();
       setClock();
       render(true);
       host.removeAttribute("data-swap");
@@ -602,12 +736,13 @@
 
   function setClock() {
     var t = state && state.time ? state.time.split(":") : null;
-    var svg = artEl.querySelector("svg");
+    var svg = photoOn() && photoEl ? photoEl.querySelector(".room-clock svg") : artEl.querySelector("svg");
     if (!t || !svg) return;
     var hh = (+t[0] % 12) + (+t[1]) / 60, mm = +t[1];
     var h = svg.querySelector(".hand-h"), m = svg.querySelector(".hand-m");
-    if (h) h.setAttribute("transform", "rotate(" + (hh * 30) + " 90 38)");
-    if (m) m.setAttribute("transform", "rotate(" + (mm * 6) + " 90 38)");
+    var pv = svg.parentNode && svg.parentNode.className === "room-clock" ? " 0 0)" : " 90 38)";
+    if (h) h.setAttribute("transform", "rotate(" + (hh * 30) + pv);
+    if (m) m.setAttribute("transform", "rotate(" + (mm * 6) + pv);
   }
 
   /* ---------------- the scene ---------------- */
@@ -622,7 +757,7 @@
     try {
       clearTimers();
       host.removeAttribute("data-door");
-      ["ring", "buzz", "writing", "touch", "spill", "knock", "count", "flicker", "swap"].forEach(function (k) { host.removeAttribute("data-" + k); });
+      ["ring", "buzz", "writing", "touch", "spill", "knock", "count", "flicker", "swap", "door-side"].forEach(function (k) { host.removeAttribute("data-" + k); });
       var cast = def.cast && def.cast.length ? def.cast : ["you", "dee"];
       var place = def.place || "room";
       state = { id: def.id, time: def.time, place: place, castList: cast, awayList: (def.away && def.away.length ? def.away : cast), lines: def.lines || [], at: -1, acted: {} };
@@ -638,7 +773,9 @@
         figsEl.querySelector("g.chairs").appendChild(c);
         chairs[w] = c;
       });
-      artEl.innerHTML = AWAY[place] ? placeArt(place, dawn()) : roomArt();
+      photoReset();
+      artEl.innerHTML = artFor(place);
+      photoBase();
       var spots = {};
       cast = cast.map(function (e) {
         var parts = String(e).split("@");
@@ -697,7 +834,11 @@
   function speaking(who) {
     try {
       Object.keys(figs).forEach(function (k) { figs[k].el.removeAttribute("data-speaking"); });
-      if (who && figs[who] && figs[who].present) figs[who].el.setAttribute("data-speaking", "1");
+      Object.keys(poseWraps).forEach(function (k) { poseWraps[k].removeAttribute("data-speaking"); });
+      if (who && figs[who] && figs[who].present) {
+        figs[who].el.setAttribute("data-speaking", "1");
+        if (poseWraps[who]) poseWraps[who].setAttribute("data-speaking", "1");
+      }
     } catch (e) { /* nothing to show */ }
   }
 
@@ -721,12 +862,14 @@
       var f = figs[k];
       o.actors[k] = { present: f.present, shown: !!state && here(f), posture: f.posture, spot: f.spot, pose: f.pose };
     });
+    o.photo = photoView();
     return o;
   }
 
   function close() {
     clearTimers();
     state = null;
+    photoReset();
     figs = {};
     figsEl.innerHTML = "";
     artEl.innerHTML = "";
@@ -740,6 +883,7 @@
     switched: switched,
     view: view,
     close: close,
+    useStage: loadStage,
     verbs: VERBS.slice(),
     places: Object.keys(PLACES),
     actors: Object.keys(LOOKS),

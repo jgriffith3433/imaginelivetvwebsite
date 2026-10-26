@@ -4663,7 +4663,25 @@ async function nightRoomRun(options, t) {
     if (!f) t.problem("bug", `the control room doesn't show ${who} at the handover`);
     else if (r.fill(f) !== SILHOUETTE) t.problem("bug", `${who} in the room isn't a black silhouette (skin fill ${r.fill(f)})`);
   }
-  for (const part of [".r-door", ".r-clock", ".r-fire", ".r-access", ".r-charger", ".r-coffee", ".r-tablet", ".r-phone", ".r-shelf"]) if (!r.host.querySelector(part)) t.problem("bug", `the room has no ${part.slice(3)} (door, clock, fire panel, access terminal, charger, coffee machine, tablet, phone, shelf)`);
+  // The room is a photograph (night-shift/media/stage/stage.json: the plate, overlays, one silhouette layer per person): wait for it, and see each image load.
+  const gotPhoto = (await roomWatch(() => r.host.getAttribute("data-art") === "photo" && !!r.host.querySelector(".room-plate"), 8000)) >= 0;
+  if (!gotPhoto) t.problem("bug", "the photographed room didn't start (stage.json, the plate): the SVG room is still showing");
+  r = roomStage(document);
+  if (gotPhoto) {
+    const plate = r.host.querySelector(".room-plate");
+    if (!plate.complete || !plate.naturalWidth) t.problem("bug", "the plate (media/stage/plate.webp) didn't load");
+    else if (plate.naturalWidth !== 1536 || plate.naturalHeight !== 920) t.problem("bug", `the plate is ${plate.naturalWidth}x${plate.naturalHeight}, not 1536x920`);
+    await roomWatch(() => [...r.host.querySelectorAll(".room-pose img.on")].length >= 2 && [...r.host.querySelectorAll(".room-pose img.on")].every((im) => im.complete), 8000);
+    const layers = [...r.host.querySelectorAll(".room-pose")].filter((w) => w.getAttribute("data-file"));
+    for (const who of ["you", "dee"]) {
+      const w = layers.find((el) => el.getAttribute("data-who") === who);
+      const im = w && w.querySelector("img.on");
+      if (!im) t.problem("bug", `the photographed room shows no layer for ${who} at the handover`);
+      else if (!im.complete || !im.naturalWidth) t.problem("bug", `${who}'s layer ${w.getAttribute("data-file")} didn't load`);
+      else if (im.naturalWidth !== 1536 || im.naturalHeight !== 920) t.problem("bug", `${who}'s layer is ${im.naturalWidth}x${im.naturalHeight}, not the plate's 1536x920`);
+    }
+    if (r.host.querySelectorAll(".room-photo img").length > 14) t.problem("bug", `${r.host.querySelectorAll(".room-photo img").length} images in the room at once: only what the scene needs should be loaded`);
+  } else for (const part of [".r-door", ".r-clock", ".r-fire", ".r-access", ".r-charger", ".r-coffee", ".r-tablet", ".r-phone", ".r-shelf"]) if (!r.host.querySelector(part)) t.problem("bug", `the room has no ${part.slice(3)} (door, clock, fire panel, access terminal, charger, coffee machine, tablet, phone, shelf)`);
   if (!r.host.querySelectorAll(".chair-seat").length) t.problem("bug", "the room shows no chairs");
   if (document.querySelectorAll("#console-wall button, #console-big button").length) t.problem("bug", "the camera strip or the big screen has buttons: it is not a grid to press");
   const tiles = document.querySelectorAll("#console-wall .feed");
@@ -4671,7 +4689,7 @@ async function nightRoomRun(options, t) {
   const hr = r.host.getBoundingClientRect();
   const br = byIdIn(document, "console-big").getBoundingClientRect();
   if (br.left < hr.left || br.right > hr.right || br.top < hr.top || br.bottom > hr.bottom) t.problem("bug", "the big screen is not inside the room");
-  if (br.width < hr.width * 0.3) t.problem("bug", `the big screen is only ${Math.round(br.width)} px of a ${Math.round(hr.width)} px room`);
+  if (br.width < hr.width * (r.host.getAttribute("data-art") === "photo" ? 0.24 : 0.3)) t.problem("bug", `the big screen is only ${Math.round(br.width)} px of a ${Math.round(hr.width)} px room`);
   const clock = r.host.querySelector(".hand-m")?.getAttribute("transform") || "";
   if (!clock.startsWith(`rotate(${+st.scenes[st.start].time.slice(3) * 6} `)) t.problem("bug", `the wall clock's minute hand doesn't say the scene's time (${st.scenes[st.start].time}): "${clock}"`);
   t.event("room", `${st.start}: ${r.figs.length} people (${r.figs.map((f) => f.getAttribute("data-who")).join(", ")}) in silhouette, the big screen ${Math.round(br.width)}x${Math.round(br.height)} in a ${Math.round(hr.width)}x${Math.round(hr.height)} room, ${tiles.length} cameras in the strip`);
