@@ -244,6 +244,41 @@
     clipUnlock = null;
   }
 
+  /** A scene video the host fails to serve (a 503): load it again twice, then say so with a Retry button. */
+  function watchVideo(video, src) {
+    let tries = 0;
+    video.addEventListener("error", function () {
+      if (activeClip !== video) return;
+      tries += 1;
+      if (tries <= 2) {
+        setTimeout(function () {
+          if (activeClip !== video) return;
+          video.src = src + "?retry=" + tries;
+          video.load();
+          playClip(video);
+        }, 1000 * tries);
+        return;
+      }
+      const note = document.createElement("div");
+      note.className = "spark-video-blank";
+      note.setAttribute("role", "alert");
+      note.textContent = "The video didn't load. ";
+      const again = document.createElement("button");
+      again.type = "button";
+      again.className = "choice";
+      again.textContent = "Retry";
+      again.addEventListener("click", function () {
+        tries = 0;
+        note.remove();
+        video.src = src + "?retry=" + Date.now();
+        video.load();
+        playClip(video);
+      });
+      note.appendChild(again);
+      videoBox.appendChild(note);
+    });
+  }
+
   function playClip(video) {
     activeClip = video;
     stopClipUnlock();
@@ -317,6 +352,7 @@
       video.title = STORY.title + " story video";
       videoBox.appendChild(video);
       playClip(video);
+      watchVideo(video, videoSrc);
     } else {
       // A draft story's scene before its media is made: its title on black, where the video will be.
       const blank = document.createElement("div");
