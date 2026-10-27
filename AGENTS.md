@@ -102,12 +102,12 @@ Hawkes Analytics is the only analytics here (J, 2026-10-18): never add another t
 `imaginelivetv`). Events go to `https://gen.hawkesgen.com/v1/analytics/collect`.
 
 **Loaded on every page people see**, at the end of `<body>`, in this order: `js/hawkes-build.js`,
-`js/hawkes-analytics.js` (`data-product="imaginelivetv"`), `js/analytics.js`. That's `index.html` (before
+Hawkes Gen's SDK `https://gen.hawkesgen.com/sdk/analytics@1.js` (`data-product="imaginelivetv"`), `js/analytics.js`. That's `index.html` (before
 `js/hawkes-sound.js` and `js/game.js`, so it hears the first scene), `whatsnew.html`, `privacy.html`, `404.html`,
 every blog post (`f/*/index.html`, by hand: a new post needs the three lines) and every branch page (the template in
 `tools/build-story.mjs`). Not on the `/<id>/` link pages: they forward to `/?story=<id>` at once, where the home page
-counts the visit. `js/hawkes-analytics.js` is a copy of `hawkesgen/clients/js/hawkes-analytics.js`: don't edit it,
-copy it again from Gen.
+counts the visit. The SDK is loaded from Gen, never copied here (J, 2026-10-27): a Gen deploy updates every site at
+once.
 
 **The build.** `js/hawkes-build.js` sets `window.HAWKES_BUILD = { version, commit, date }`: version from
 `releases.json`'s current, the commit and its date. The site has no build step, so `npm run stamp`

@@ -1,5 +1,5 @@
 /* The build these pages are, for Hawkes Analytics (AGENTS.md "Analytics"). Loaded right before
-   js/hawkes-analytics.js on every page people see. The HAWKES_BUILD line is written by `npm run stamp`
+   Gen's analytics SDK on every page people see. The HAWKES_BUILD line is written by `npm run stamp`
    (tools/stamp-build.mjs): don't edit it by hand. */
 window.HAWKES_BUILD = {"version":"1.7.0","commit":"010595e539","date":"2026-10-26T18:30:39Z"};
 
@@ -15,7 +15,7 @@ window.HAWKES_BUILD = {"version":"1.7.0","commit":"010595e539","date":"2026-10-2
     ["init", "config", "track", "screen", "setContext", "loadStart", "ready", "levelStart", "levelEnd", "death", "choice",
       "feature", "video", "feedback", "error", "optOut", "optIn", "internal", "flush"].forEach(function (m) { off[m] = function () {}; });
     off.ask = function () { return Promise.resolve(null); };
-    window.hawkesAnalytics = off; // js/hawkes-analytics.js sees it and stays out
+    window.hawkesAnalytics = off; // Gen's SDK sees it and stays out
     return;
   }
   try {
