@@ -1,8 +1,20 @@
 {
   "product": "imaginelivetv",
   "name": "Imagine Live TV",
-  "current": "1.7.0",
+  "current": "1.8.0",
   "releases": [
+    {
+      "version": "1.8.0",
+      "date": "2026-10-27",
+      "build": "64cceae",
+      "title": "Night Shift gets new art and characters",
+      "notes": [
+        "Characters now appear on screen during Night Shift's scenes.",
+        "Night Shift has new artwork throughout the story.",
+        "The room images in Night Shift look sharper and more consistent from scene to scene.",
+        "The Final Spark's opening video now loads and plays from the start."
+      ]
+    },
     {
       "version": "1.7.0",
       "date": "2026-10-26",
