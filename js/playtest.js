@@ -827,6 +827,9 @@ async function smoke(options, t) {
       checkHitTargets(t, document, st.title);
     }
     await toLanding(t);
+    // Checked now, while the run's own cookies are still set: the run's end puts the viewer's earlier progress back
+    // (restoreProgress), so a card photographed after it says Not started for a story the run played.
+    checkBadge(t, cardOf(st.id), st, "started", `after one choice in ${st.title}`);
     t.progress(0.5 + (0.5 * ++k) / others.length);
   }
   t.progress(1);
