@@ -3,8 +3,16 @@
   "plate": "plate.webp",
   "width": 1536,
   "height": 920,
-  "clock": { "x": 1148, "y": 235 },
-  "bigScreen": { "x": 560, "y": 180, "w": 405, "h": 235 },
+  "clock": {
+    "x": 1148,
+    "y": 235
+  },
+  "bigScreen": {
+    "x": 560,
+    "y": 180,
+    "w": 405,
+    "h": 235
+  },
   "overlays": {
     "door-left": "ov-door-lobby.webp",
     "door-right": "ov-door-corridor.webp",
@@ -36,26 +44,78 @@
   },
   "poses": {
     "dee": {
-      "seated": "dee-sit.webp", "seated.phone": "dee-phone.webp", "seated.write": "dee-write.webp", "seated.eat": "dee-eat.webp",
-      "seated.drink": "dee-drink.webp", "seated.lean": "dee-lean.webp", "seated.angry": "dee-angry.webp",
-      "standing": "dee-stand-folded.webp", "standing.point": "dee-taps-screen.webp", "standing.touch": "dee-taps-screen.webp",
-      "standing.knock": "dee-taps-screen.webp", "standing.point.shelf": "dee-shelf.webp", "standing.point.panel": "dee-panel.webp",
-      "standing.press.panel": "dee-panel.webp", "standing.count": "dee-at-charger.webp", "standing.hand": "dee-hand.webp",
-      "standing.angry": "dee-angry.webp", "door": "dee-door-l.webp", "right": "dee-at-charger.webp", "left": "dee-stand-folded.webp"
+    "seated": "dee-sit.webp",
+    "seated.phone": "dee-phone.webp",
+    "seated.write": "dee-write.webp",
+    "seated.eat": "dee-eat.webp",
+    "seated.drink": "dee-drink.webp",
+    "seated.lean": "dee-lean.webp",
+    "seated.angry": "dee-angry.webp",
+    "standing": "dee-stand-folded.webp",
+    "standing.point": "dee-taps-screen.webp",
+    "standing.touch": "dee-taps-screen.webp",
+    "standing.point.shelf": "dee-shelf.webp",
+    "standing.point.panel": "dee-panel.webp",
+    "standing.press.panel": "dee-panel.webp",
+    "standing.count": "dee-at-charger.webp",
+    "standing.hand": "dee-hand.webp",
+    "standing.angry": "dee-angry.webp",
+    "standing.charger": "dee-at-charger.webp",
+    "standing.knock": "dee-at-charger.webp",
+    "door": "dee-door-l.webp",
+    "right": "dee-at-charger.webp",
+      "left": "dee-stand-folded.webp"
     },
     "you": {
-      "seated": "trainee-sit.webp", "seated.phone": "you-phone.webp", "seated.write": "you-write.webp", "seated.read": "you-write.webp",
-      "seated.eat": "you-eat.webp", "seated.lean": "you-lean.webp",
-      "standing": "trainee-stand-clock.webp", "standing.hand": "you-hand.webp", "standing.press": "you-press.webp", "door": "you-press.webp"
+    "seated": "trainee-sit.webp",
+    "seated.phone": "you-phone.webp",
+    "seated.write": "you-write.webp",
+    "seated.read": "you-write.webp",
+    "seated.eat": "you-eat.webp",
+    "seated.lean": "you-lean.webp",
+    "standing": "trainee-stand-clock.webp",
+    "standing.hand": "you-hand.webp",
+    "standing.press": "you-press.webp",
+      "door": "you-press.webp"
     },
     "okafor": {
-      "standing": "okafor-right.webp", "left": "okafor-right.webp", "right": "okafor-at-door.webp", "standing.read": "okafor-read.webp", "standing.write": "okafor-read.webp",
-      "standing.hand": "okafor-read.webp", "standing.point": "okafor-shelf.webp", "standing.point.shelf": "okafor-shelf.webp", "door": "okafor-at-door.webp"
+    "standing": "okafor-right.webp",
+    "left": "okafor-right.webp",
+    "right": "okafor-at-door.webp",
+    "standing.read": "okafor-read.webp",
+    "standing.write": "okafor-read.webp",
+    "standing.hand": "okafor-read.webp",
+    "standing.point": "okafor-shelf.webp",
+    "standing.point.shelf": "okafor-shelf.webp",
+      "door": "okafor-at-door.webp"
     },
-    "terrell": { "standing": "terrell-left.webp" },
-    "marisol": { "standing": "marisol-left.webp" },
-    "dev": { "standing": "dev-left.webp" },
-    "adler": { "standing": "adler-right.webp", "standing.point": "adler-panel.webp", "standing.point.panel": "adler-panel.webp", "standing.write": "adler-right.webp" },
-    "pierce": { "standing": "pierce-left.webp" }
+    "terrell": {
+      "standing": "terrell-left.webp"
+    },
+    "marisol": {
+      "standing": "marisol-left.webp"
+    },
+    "dev": {
+      "standing": "dev-left.webp"
+    },
+    "adler": {
+    "standing": "adler-right.webp",
+    "standing.point": "adler-panel.webp",
+    "standing.point.panel": "adler-panel.webp",
+      "standing.write": "adler-right.webp"
+    },
+    "pierce": {
+      "standing": "pierce-left.webp"
+    }
+  },
+  "reg": {
+    "_about": "Pairs of one person's layers that line up (mask IoU >= 0.85 and centroid shift <= 20 px): they cross-fade; every other pair is a swap through the plate (fade out ~80 ms, in ~120 ms). Written by tools/room-art.mjs --write.",
+    "fade": [
+      "dee-drink.webp|dee-eat.webp",
+      "dee-drink.webp|dee-phone.webp",
+      "dee-eat.webp|dee-phone.webp",
+      "you-eat.webp|you-write.webp",
+      "you-phone.webp|you-write.webp"
+    ]
   }
 }

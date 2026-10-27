@@ -1,0 +1,97 @@
+{
+  "_comment": [
+    "Every defect J reports about Night Shift's photographed room is added here as a permanent case, in the same change that fixes it.",
+    "tools/room-art.mjs (npm run test:room-art) runs every entry below and fails when one comes back. Never delete an entry: if the room",
+    "changes so an entry no longer applies, change its check, not its meaning. Types: maskCovers, chairWhole, zOrder, goneAfter, noDoubleImage.",
+    "acceptedStoryConflicts: a line whose speaker is out of the room for a reason the story text gives and the checks cannot see (named with",
+    "the reason); the check fails if the entry stops being needed."
+  ],
+  "defects": [
+    {
+      "id": "okafor-bag-cut-out",
+      "reported": "2026-10-26 (J): Mr. Okafor is holding a thing that he writes on, but that is cut out",
+      "type": "maskCovers",
+      "cases": [
+        {
+          "layer": "okafor-right.webp",
+          "what": "the shoulder bag held at his side",
+          "region": [
+            1219,
+            476,
+            1309,
+            553
+          ],
+          "min": 0.5,
+          "samOnly": 0.12
+        },
+        {
+          "layer": "okafor-read.webp",
+          "what": "the tablet he reads and writes on, in his hands",
+          "region": [
+            674,
+            392,
+            723,
+            435
+          ],
+          "min": 0.45,
+          "samOnly": 0.03
+        },
+        {
+          "layer": "okafor-at-door.webp",
+          "what": "the bag on his shoulder at the door",
+          "region": [
+            371,
+            396,
+            398,
+            496
+          ],
+          "min": 0.8,
+          "samOnly": 0.28
+        }
+      ]
+    },
+    {
+      "id": "seated-back-cut-out",
+      "reported": "2026-10-26 (J): the person sitting in the chair has a portion of their back cut out",
+      "type": "chairWhole",
+      "chairs": {
+        "dee": "chair-dee",
+        "you": "chair-you"
+      },
+      "min": 0.97
+    },
+    {
+      "id": "figure-behind-big-screen",
+      "reported": "2026-10-26 (J): when Mr. Okafor went in front of the main monitor he ended up behind the monitor",
+      "type": "zOrder",
+      "scene": "okafor-out"
+    },
+    {
+      "id": "okafor-never-leaves-okafor-out",
+      "reported": "2026-10-26 (J): he opened and closed the door but he never left the room until the next page",
+      "type": "goneAfter",
+      "scene": "okafor-out",
+      "who": "okafor",
+      "line": 2,
+      "act": "okafor:gone"
+    },
+    {
+      "id": "okafor-never-leaves-okafor-out-fast",
+      "reported": "2026-10-26 (J): same moment, the fast route (\"Mr. Okafor takes his bag and goes. The door to the lobby swings shut behind him.\")",
+      "type": "goneAfter",
+      "scene": "okafor-out-fast",
+      "who": "okafor",
+      "line": 0,
+      "act": "okafor:gone"
+    },
+    {
+      "id": "dee-jangled-on-coffee-line",
+      "reported": "2026-10-26 (J): the picture of Dee looks all jangled up when \"Coffee's on the left. It's wrong. Don't tell me it's wrong.\" plays",
+      "type": "noDoubleImage",
+      "scene": "okafor-out",
+      "line": 5,
+      "who": "dee"
+    }
+  ],
+  "acceptedStoryConflicts": []
+}

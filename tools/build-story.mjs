@@ -702,7 +702,15 @@ function validateConsole(st) {
       if (l.sfx && !data.sfx?.[l.sfx]) problems.push(`${at(s)}: sfx cue ${l.sfx} isn't in sfx`);
       if (l.place != null && !ROOM_PLACES.includes(l.place)) problems.push(`${at(s)}: a line's place ${l.place} isn't one of ${ROOM_PLACES.join(', ')}`);
       for (const cam of l.feed == null ? [] : Array.isArray(l.feed) ? l.feed : [l.feed]) if (!cams.has(cam)) problems.push(`${at(s)}: a line's feed ${cam} isn't a camera`);
-      for (const a of l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]) {
+      let lastAt = 0;
+      for (const entry of l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]) {
+        // an act is "who:verb[:where]" (as the line starts) or a beat { act, at }: at is the fraction (0 to 1) of the line's own dur
+        const a = typeof entry === 'string' ? entry : entry?.act;
+        if (typeof entry !== 'string') {
+          if (typeof a !== 'string' || typeof entry.at !== 'number' || !(entry.at >= 0 && entry.at <= 1) || Object.keys(entry).some((k) => !['act', 'at'].includes(k))) { problems.push(`${at(s)}: a beat is { "act": "who:verb", "at": 0 to 1 } (got ${JSON.stringify(entry)})`); continue; }
+          if (entry.at < lastAt) problems.push(`${at(s)}: beat "${a}" at ${entry.at} comes before the one before it (beats are in order of \`at\`)`);
+          lastAt = Math.max(lastAt, entry.at);
+        }
         const [who, verb, where] = String(a).split(':');
         if (!(who === 'room' ? ROOM_OBJECT_VERBS : ROOM_VERBS).includes(verb) || (who !== 'room' && !ROOM_ACTORS.includes(who)) || (where != null && !(verb === 'enter' ? ['left', 'right'].includes(where) : ['point', 'touch', 'press'].includes(verb)))) problems.push(`${at(s)}: act "${a}" isn't who:verb (people ${ROOM_ACTORS.join(', ')}, or room; verbs ${ROOM_VERBS.join(', ')}; room: ${ROOM_OBJECT_VERBS.join(', ')}; enter takes left or right, point, touch and press a target)`);
       }
@@ -756,7 +764,7 @@ function validateConsole(st) {
 /** The control room of a console story (js/console-room.js): where scenes can be, who can be in them, what they can do. */
 const ROOM_PLACES = ['room', 'room-day', 'lobby', 'vestibule', 'dock', 'stairwell', 'corridor', 'roof'];
 const ROOM_ACTORS = ['you', 'dee', 'okafor', 'terrell', 'marisol', 'dev', 'adler', 'brandt', 'courier', 'sleeper', 'pierce'];
-const ROOM_VERBS = ['sit', 'stand', 'point', 'touch', 'write', 'phone', 'hangup', 'spill', 'angry', 'knock', 'count', 'lean', 'hand', 'drink', 'eat', 'press', 'read', 'enter', 'leave', 'rest'];
+const ROOM_VERBS = ['sit', 'stand', 'point', 'touch', 'write', 'phone', 'hangup', 'spill', 'angry', 'knock', 'count', 'lean', 'hand', 'drink', 'eat', 'press', 'read', 'enter', 'leave', 'gone', 'charger', 'rest'];
 const ROOM_OBJECT_VERBS = ['ring', 'buzz', 'door', 'flicker'];
 
 /** Where a console story's made media would be, and whether it is. */

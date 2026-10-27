@@ -4616,7 +4616,7 @@ function roomStage(doc) {
 
 /** The room's acts the data gives a scene, in line order (a line's place first), as the room records them. */
 function roomDataActs(st, id) {
-  return st.scenes[id].lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act])]);
+  return st.scenes[id].lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]).map((e) => (typeof e === 'string' ? e : e.act))]);
 }
 
 /** Plays a scene from a seeded run at its parent with a real press into it; returns the model. `hear`: skip to the end of its lines. */
@@ -4680,6 +4680,10 @@ async function nightRoomRun(options, t) {
       else if (!im.complete || !im.naturalWidth) t.problem("bug", `${who}'s layer ${w.getAttribute("data-file")} didn't load`);
       else if (im.naturalWidth !== 1536 || im.naturalHeight !== 920) t.problem("bug", `${who}'s layer is ${im.naturalWidth}x${im.naturalHeight}, not the plate's 1536x920`);
     }
+    // Z-order (J, 2026-10-26: Mr. Okafor ended up behind the big screen): the people's layers come after the big screen, which comes after the plate.
+    const kids = [...r.host.children];
+    const at = (sel) => kids.findIndex((k) => k.matches(sel));
+    if (!(at(".room-photo:not(.room-people)") >= 0 && at("#console-big") > at(".room-photo:not(.room-people)") && at(".room-people") > at("#console-big"))) t.problem("bug", `people are not drawn in front of the big screen: plate ${at(".room-photo:not(.room-people)")}, screen ${at("#console-big")}, people ${at(".room-people")}`);
     if (r.host.querySelectorAll(".room-photo img").length > 14) t.problem("bug", `${r.host.querySelectorAll(".room-photo img").length} images in the room at once: only what the scene needs should be loaded`);
   } else for (const part of [".r-door", ".r-clock", ".r-fire", ".r-access", ".r-charger", ".r-coffee", ".r-tablet", ".r-phone", ".r-shelf"]) if (!r.host.querySelector(part)) t.problem("bug", `the room has no ${part.slice(3)} (door, clock, fire panel, access terminal, charger, coffee machine, tablet, phone, shelf)`);
   if (!r.host.querySelectorAll(".chair-seat").length) t.problem("bug", "the room shows no chairs");

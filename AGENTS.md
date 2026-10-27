@@ -211,3 +211,9 @@ asset make writes the raw files, then `node tools/make-audio.mjs night-shift --m
 (voices -19 LUFS, effects -26, beds -38 so a bed never covers a line), `--dur` sets each line's `dur` to its recording
 (the player gives up on a recording after `dur` + 4 s), `--list` shows what is still unmade, `--ingest <folder>` takes
 files from `hawkesgen_run save_to`. Run `--mix` and `--dur`, then `npm run story`, after every batch. After a text edit, `node tools/make-audio.mjs night-shift --reuse` first: a line whose voice and text already have a recording keeps it, even when it moved, and it lists only the lines to make (`hawkesgen_run` `audio.voice`, then `--ingest`).
+
+**Room art quality (J, 2026-10-27).** `npm run test:room-art` must be green when the room, `night-shift/media/stage/` or any `act` changes (it plays all 256 scenes
+through `js/console-room.js` in jsdom, checks every silhouette mask, who is present, registration and the known defects). Beats: a line's `act` may hold
+`{ "act": "who:verb", "at": 0..1 }` (fraction of the line's own `dur`); `gone` ends a `leave`; `"offstage": true` marks a line spoken from outside the room.
+People are drawn above the big screen. Re-bake layers with `node tools/pose-bake.mjs --auto` (stills from Gen's `image.transform`, free); look at
+`node tools/room-art.mjs --sheets` with Read. Every defect J reports becomes an entry in `tests/room-art-known-defects.json`. Story doc: `story/README.md`, "The control room".

@@ -48,6 +48,7 @@ const play = (R, id, upTo) => {
   const said = [];
   for (let i = 0; i < (upTo ?? s.lines.length); i++) {
     R.line(i);
+    R.runBeats(); // the line's timed beats (act { act, at }) happen now: the tests never wait
   }
   said.push(...R.view().said);
   return said;
@@ -64,7 +65,7 @@ const play = (R, id, upTo) => {
       R.scene(def(id));
       s.lines.forEach((l, i) => {
         R.line(i);
-        for (const a of l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]) {
+        for (const a of (l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]).map((e) => (typeof e === 'string' ? e : e.act))) {
           acts++;
           const k = a.split(':').slice(0, 2).join(':').replace(/^[a-z]+:/, '');
           seen[k] = (seen[k] || 0) + 1;
