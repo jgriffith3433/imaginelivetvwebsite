@@ -674,6 +674,10 @@
           "act": [
             "okafor:leave",
             {
+              "act": "okafor:gone",
+              "at": 0.23
+            },
+            {
               "act": "dee:charger",
               "at": 0.47
             },
@@ -688,12 +692,7 @@
           "text": "It's customary to read it first.",
           "perform": "from the door, tired",
           "dur": 2.6,
-          "act": [
-            {
-              "act": "okafor:gone",
-              "at": 0.9
-            }
-          ]
+          "offstage": true
         },
         {
           "speaker": "dee",

@@ -2552,6 +2552,10 @@ window.ILTV_STORIES = {
        "act": [
         "okafor:leave",
         {
+         "act": "okafor:gone",
+         "at": 0.23
+        },
+        {
          "act": "dee:charger",
          "at": 0.47
         },
@@ -2566,12 +2570,6 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "It's customary to read it first.",
-       "act": [
-        {
-         "act": "okafor:gone",
-         "at": 0.9
-        }
-       ],
        "file": "/night-shift/okafor-out-fast/media/line-2.mp3",
        "dur": 2.6
       },

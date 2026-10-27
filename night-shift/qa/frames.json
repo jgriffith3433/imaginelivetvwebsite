@@ -1,0 +1,1493 @@
+{
+ "_about": "Every unique frame Night Shift's photographed room can show (tools/room-art.mjs --write): its layers, overlays, score (higher is worse; 0 passes every mask check) and where the story uses it. night-shift/storyboard.html sorts by it.",
+ "states": 3184,
+ "unique": 79,
+ "frames": [
+  {
+   "id": "f005",
+   "score": 42,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "okafor": "okafor-read.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "binder-44#1",
+    "binder-thu#1"
+   ],
+   "count": 2,
+   "issues": [
+    "dee and okafor overlap (13% of the smaller)"
+   ]
+  },
+  {
+   "id": "f061",
+   "score": 42,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "okafor": "okafor-read.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "okafor-reads-solid#0",
+    "okafor-reads-sloppy#0",
+    "okafor-reads-slips#0",
+    "okafor-reads-wall#0",
+    "okafor-reads-open#0",
+    "okafor-reads-lie#0"
+   ],
+   "count": 6,
+   "issues": [
+    "dee and okafor overlap (13% of the smaller)"
+   ]
+  },
+  {
+   "id": "f002",
+   "score": 29,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-at-charger.webp",
+    "okafor": "okafor-read.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "handover#1"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f003",
+   "score": 29,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-at-charger.webp",
+    "okafor": "okafor-read.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "handover#1",
+    "handover#2"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f008",
+   "score": 24,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "okafor": "okafor-at-door.webp",
+    "you": "you-write.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "okafor-out#2@0.12"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f009",
+   "score": 24,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "okafor": "okafor-at-door.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "okafor-out#2",
+    "okafor-out-fast#0"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f074",
+   "score": 20,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-taps-screen.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "cover-wall#0@0.49",
+    "cover-wall#0"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f055",
+   "score": 19,
+   "kind": "room",
+   "layers": {
+    "adler": "adler-right.webp",
+    "dee": "dee-sit.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-right"
+   ],
+   "uses": [
+    "adler-arrives-f#1",
+    "adler-arrives-o#2",
+    "adler-arrives-m#2",
+    "adler-arrives-l#2"
+   ],
+   "count": 4,
+   "issues": []
+  },
+  {
+   "id": "f056",
+   "score": 19,
+   "kind": "room",
+   "layers": {
+    "adler": "adler-right.webp",
+    "dee": "dee-sit.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "adler-arrives-f#1",
+    "adler-arrives-f#2",
+    "adler-arrives-f#2",
+    "adler-arrives-f#3",
+    "adler-arrives-f#3",
+    "adler-arrives-f#4"
+   ],
+   "count": 47,
+   "issues": []
+  },
+  {
+   "id": "f078",
+   "score": 19,
+   "kind": "room",
+   "layers": {
+    "adler": "adler-right.webp",
+    "dee": "dee-sit.webp",
+    "you": "you-write.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "adler-corrected#0",
+    "adler-initialed#0"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f079",
+   "score": 19,
+   "kind": "room",
+   "layers": {
+    "adler": "adler-right.webp",
+    "dee": "dee-sit.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "adler-corrected#2"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f044",
+   "score": 18,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-angry.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "laptop-opened#2",
+    "laptop-opened#2",
+    "laptop-opened#3"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f001",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-at-charger.webp",
+    "okafor": "okafor-right.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "handover#-1",
+    "handover#0",
+    "handover#0@0.59",
+    "handover#0",
+    "handover#0",
+    "handover#2"
+   ],
+   "count": 24,
+   "issues": []
+  },
+  {
+   "id": "f004",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "okafor": "okafor-right.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "binder-44#-1",
+    "binder-44#0",
+    "binder-44#0",
+    "binder-44#1",
+    "binder-44#2",
+    "binder-44#3"
+   ],
+   "count": 127,
+   "issues": []
+  },
+  {
+   "id": "f006",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "okafor": "okafor-right.webp",
+    "you": "you-write.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "binder-44#2",
+    "binder-thu#2",
+    "okafor-out#2"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f007",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "okafor": "okafor-right.webp",
+    "you": "you-lean.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "okafor-out#0"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f013",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "the-chairs#-1",
+    "the-chairs#0",
+    "the-chairs#0",
+    "the-chairs#1",
+    "the-chairs#1",
+    "the-chairs-knock#-1"
+   ],
+   "count": 57,
+   "issues": []
+  },
+  {
+   "id": "f022",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-stand-folded.webp",
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "w2-cam9#6",
+    "w2-cam9#6",
+    "w2-roof#6",
+    "w2-roof#6",
+    "w2-look#6",
+    "w2-look#6"
+   ],
+   "count": 6,
+   "issues": []
+  },
+  {
+   "id": "f033",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "visitor-desk#7"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f037",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "step-out#0",
+    "step-out#0",
+    "step-told#0",
+    "step-told#0"
+   ],
+   "count": 4,
+   "issues": []
+  },
+  {
+   "id": "f045",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "marisol": "marisol-left.webp",
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "awake-stand#3@0.29",
+    "awake-stand#3"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f046",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "marisol": "marisol-left.webp",
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "awake-stand#3",
+    "awake-stand#4",
+    "awake-stand#4",
+    "awake-stand#5",
+    "awake-stand#5",
+    "awake-stand#6"
+   ],
+   "count": 7,
+   "issues": []
+  },
+  {
+   "id": "f052",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "pierce": "pierce-left.webp",
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "pierce-signin#0@0.5",
+    "pierce-signin#0"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f053",
+   "score": 16,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "pierce": "pierce-left.webp",
+    "you": "trainee-stand-clock.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "pierce-signin#0",
+    "pierce-signin#1",
+    "pierce-signin#1",
+    "pierce-signin#2",
+    "pierce-signin#2"
+   ],
+   "count": 5,
+   "issues": []
+  },
+  {
+   "id": "f040",
+   "score": 14,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-phone.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "okafor-call-clean#3",
+    "okafor-call-clean#3",
+    "okafor-call-clean#4",
+    "okafor-call-clean#4"
+   ],
+   "count": 4,
+   "issues": []
+  },
+  {
+   "id": "f015",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-eat.webp",
+    "terrell": "terrell-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "radio-ok#1@0.5",
+    "radio-ok#1",
+    "radio-late#3@0.5",
+    "radio-late#3",
+    "radio-dee#3@0.5",
+    "radio-dee#3"
+   ],
+   "count": 6,
+   "issues": []
+  },
+  {
+   "id": "f017",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-write.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "radio-late#2@0.47",
+    "radio-late#2",
+    "sign-sample#0",
+    "sign-sample-44#0",
+    "birthdays-pencil#0@0.36",
+    "birthdays-pencil#0"
+   ],
+   "count": 11,
+   "issues": []
+  },
+  {
+   "id": "f018",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-write.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "radio-late#2"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f019",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-write.webp",
+    "terrell": "terrell-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "radio-late#3"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f020",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-eat.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "talk-sandwich#3",
+    "sandwich#0@0.2",
+    "sandwich#0",
+    "sandwich-ray#0@0.2",
+    "sandwich-ray#0",
+    "sandwich-career#4"
+   ],
+   "count": 6,
+   "issues": []
+  },
+  {
+   "id": "f041",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-eat.webp",
+    "you": "you-eat.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "sandwich-quiet#0",
+    "rice-split#2@0.27",
+    "rice-split#2@0.27",
+    "rice-split#2"
+   ],
+   "count": 4,
+   "issues": []
+  },
+  {
+   "id": "f076",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "dev": "dev-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "dev-signout#0",
+    "dev-out-sign#3",
+    "dev-out-ask#3"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f077",
+   "score": 13,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "dev": "dev-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "dev-signout#0",
+    "dev-signout#1",
+    "dev-signout#1",
+    "dev-signout#2",
+    "dev-signout#2",
+    "dev-out-sign#-1"
+   ],
+   "count": 19,
+   "issues": []
+  },
+  {
+   "id": "f029",
+   "score": 12,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-door-l.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "visitor-waved#3",
+    "visitor-waved#5",
+    "radio-23#3",
+    "terrell-door#8",
+    "terrell-ask#8",
+    "terrell-school#10"
+   ],
+   "count": 15,
+   "issues": []
+  },
+  {
+   "id": "f034",
+   "score": 12,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-door-l.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-right"
+   ],
+   "uses": [
+    "day-log#3",
+    "drawer-notice#4",
+    "wall-alone#3",
+    "step-told#3",
+    "wedge-missed#4",
+    "laptop-watch-f#0"
+   ],
+   "count": 14,
+   "issues": []
+  },
+  {
+   "id": "f010",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "okafor-out#2@0.3",
+    "okafor-out#2",
+    "okafor-out#2",
+    "okafor-out#3",
+    "okafor-out#3",
+    "okafor-out#4"
+   ],
+   "count": 1661,
+   "issues": []
+  },
+  {
+   "id": "f014",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "terrell": "terrell-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "radio-ok#1",
+    "radio-ok#4",
+    "radio-late#6",
+    "radio-dee#3",
+    "radio-dee#6",
+    "terrell-goodbye#5"
+   ],
+   "count": 10,
+   "issues": []
+  },
+  {
+   "id": "f016",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "terrell": "terrell-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "radio-ok#1",
+    "radio-ok#2",
+    "radio-ok#2",
+    "radio-ok#3",
+    "radio-ok#3",
+    "radio-late#3"
+   ],
+   "count": 42,
+   "issues": []
+  },
+  {
+   "id": "f023",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "you-phone.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "nephew-held#1",
+    "nephew-held#1",
+    "nephew-held#2",
+    "nephew-held#2",
+    "okafor-call#1",
+    "okafor-call#1"
+   ],
+   "count": 74,
+   "issues": []
+  },
+  {
+   "id": "f024",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "you-write.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "log-in-asked#5",
+    "log-in-watch#5",
+    "log-held#4",
+    "log-papers-read#4",
+    "log-papers-pass#3",
+    "okafor-call-opined#4"
+   ],
+   "count": 12,
+   "issues": []
+  },
+  {
+   "id": "f025",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "you-write.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "log-in-asked#5",
+    "log-in-watch#5",
+    "light#8"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f031",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "visitor-waved#5",
+    "visitor-waved#6"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f042",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-lean.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "sandwich-quiet#2@0.67",
+    "sandwich-quiet#2",
+    "sandwich-career#5@0.67",
+    "sandwich-career#5",
+    "birthdays-ask#4@0.6",
+    "birthdays-ask#4"
+   ],
+   "count": 30,
+   "issues": []
+  },
+  {
+   "id": "f047",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "marisol": "marisol-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "awake-bank#3@0.29",
+    "awake-bank#3",
+    "awake-coffee#3@0.29",
+    "awake-coffee#3",
+    "marisol-thanks#3",
+    "marisol-dee#3"
+   ],
+   "count": 7,
+   "issues": []
+  },
+  {
+   "id": "f048",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "marisol": "marisol-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "awake-bank#3",
+    "awake-bank#4",
+    "awake-bank#4",
+    "awake-bank#5",
+    "awake-bank#5",
+    "awake-bank#6"
+   ],
+   "count": 33,
+   "issues": []
+  },
+  {
+   "id": "f050",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "pierce": "pierce-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "coat-lobby#1"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f051",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "pierce": "pierce-left.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "coat-lobby#1",
+    "coat-lobby#2",
+    "coat-lobby#2"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f054",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "you-lean.webp"
+   },
+   "overlays": [
+    "buzz"
+   ],
+   "uses": [
+    "trouble-signal-f#1",
+    "trouble-signal-o#1",
+    "trouble-signal-m#1",
+    "trouble-signal-l#2"
+   ],
+   "count": 4,
+   "issues": []
+  },
+  {
+   "id": "f057",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "you-lean.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "courier-intercom#0",
+    "prep-drawer#0",
+    "prep-drawer-knew#0"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f075",
+   "score": 11,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-sit.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "spill"
+   ],
+   "uses": [
+    "flicker#0",
+    "flicker#0",
+    "flicker#1",
+    "flicker#1",
+    "flicker#2",
+    "flicker#2"
+   ],
+   "count": 8,
+   "issues": []
+  },
+  {
+   "id": "f035",
+   "score": 10,
+   "kind": "room",
+   "layers": {
+    "you": "you-lean.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "alone-ok#2",
+    "alone-late#4",
+    "alone-missed#5",
+    "drawer-notice#0",
+    "wedge-seen-badge#0",
+    "dev-stuck#0"
+   ],
+   "count": 7,
+   "issues": []
+  },
+  {
+   "id": "f038",
+   "score": 10,
+   "kind": "room",
+   "layers": {
+    "you": "you-press.webp"
+   },
+   "overlays": [
+    "door-left"
+   ],
+   "uses": [
+    "step-told#1",
+    "step-told#2"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f011",
+   "score": 9,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-at-charger.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "okafor-out#2@0.52",
+    "okafor-out#2",
+    "okafor-out#2@0.8",
+    "okafor-out#2",
+    "okafor-out-fast#0@0.47",
+    "okafor-out-fast#0"
+   ],
+   "count": 82,
+   "issues": []
+  },
+  {
+   "id": "f012",
+   "score": 9,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-drink.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "okafor-out#5",
+    "okafor-out-fast#5"
+   ],
+   "count": 2,
+   "issues": []
+  },
+  {
+   "id": "f021",
+   "score": 9,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-stand-folded.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "w2-cam9#2",
+    "w2-cam9#2",
+    "w2-cam9#3",
+    "w2-cam9#3",
+    "w2-cam9#4",
+    "w2-cam9#4"
+   ],
+   "count": 136,
+   "issues": []
+  },
+  {
+   "id": "f030",
+   "score": 9,
+   "kind": "room",
+   "layers": {
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "visitor-waved#3",
+    "visitor-waved#4",
+    "visitor-waved#4",
+    "radio-23#3@0.12",
+    "radio-23#3",
+    "radio-23#3"
+   ],
+   "count": 276,
+   "issues": []
+  },
+  {
+   "id": "f049",
+   "score": 9,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-at-charger.webp",
+    "you": "trainee-sit.webp"
+   },
+   "overlays": [
+    "door-right"
+   ],
+   "uses": [
+    "dev-dee#1"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f036",
+   "score": 8,
+   "kind": "room",
+   "layers": {
+    "dee": "dee-at-charger.webp",
+    "you": "you-write.webp"
+   },
+   "overlays": [
+    "writing"
+   ],
+   "uses": [
+    "wall-alone#6"
+   ],
+   "count": 1,
+   "issues": []
+  },
+  {
+   "id": "f026",
+   "score": 0,
+   "kind": "still",
+   "still": "places/stairwell.webp",
+   "uses": [
+    "tour1-door#-1",
+    "tour1-door#0",
+    "tour1-door#0",
+    "tour1-door#1",
+    "tour1-door#1",
+    "tour1-door#2"
+   ],
+   "count": 35,
+   "issues": []
+  },
+  {
+   "id": "f027",
+   "score": 0,
+   "kind": "still",
+   "still": "places/dock.webp",
+   "uses": [
+    "tour2-trucks#-1",
+    "tour2-trucks#0",
+    "tour2-trucks#0",
+    "tour2-trucks#1",
+    "tour2-trucks#1",
+    "tour2-trucks#2"
+   ],
+   "count": 33,
+   "issues": []
+  },
+  {
+   "id": "f028",
+   "score": 0,
+   "kind": "still",
+   "still": "places/roof.webp",
+   "uses": [
+    "tour3-test#-1",
+    "tour3-test#0",
+    "tour3-test#0",
+    "tour3-test#1",
+    "tour3-test#1",
+    "tour3-test#2"
+   ],
+   "count": 49,
+   "issues": []
+  },
+  {
+   "id": "f032",
+   "score": 0,
+   "kind": "still",
+   "still": "places/lobby-terrell.webp",
+   "uses": [
+    "visitor-desk#1",
+    "visitor-desk#1",
+    "visitor-desk#2",
+    "visitor-desk#2",
+    "visitor-desk#3",
+    "visitor-desk#3"
+   ],
+   "count": 29,
+   "issues": []
+  },
+  {
+   "id": "f039",
+   "score": 0,
+   "kind": "room",
+   "layers": {},
+   "overlays": [],
+   "uses": [
+    "step-told#1@0.15",
+    "step-told#1",
+    "step-told#1"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f043",
+   "score": 0,
+   "kind": "room",
+   "layers": {
+    "you": "you-phone.webp"
+   },
+   "overlays": [],
+   "uses": [
+    "wedge-called#1",
+    "wedge-called#1",
+    "wedge-called#2",
+    "wedge-called#2",
+    "dev-company#0",
+    "dev-company#0"
+   ],
+   "count": 22,
+   "issues": []
+  },
+  {
+   "id": "f058",
+   "score": 0,
+   "kind": "still",
+   "still": "places/dock-courier.webp",
+   "uses": [
+    "courier-signed#-1",
+    "courier-signed#0",
+    "courier-signed#0"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f059",
+   "score": 0,
+   "kind": "still",
+   "still": "places/vestibule.webp",
+   "uses": [
+    "sleeper-wake#-1",
+    "sleeper-wake#0",
+    "sleeper-wake#0",
+    "sleeper-wake#1",
+    "sleeper-wake#1",
+    "sleeper-wake#2"
+   ],
+   "count": 14,
+   "issues": []
+  },
+  {
+   "id": "f060",
+   "score": 0,
+   "kind": "still",
+   "still": "places/lobby-dee.webp",
+   "uses": [
+    "six-thirty#-1",
+    "six-thirty#0",
+    "six-thirty#0"
+   ],
+   "count": 3,
+   "issues": []
+  },
+  {
+   "id": "f062",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-clean.webp",
+   "uses": [
+    "end-clean#-1",
+    "end-clean#0",
+    "end-clean#0",
+    "end-clean#1",
+    "end-clean#1",
+    "end-clean#2"
+   ],
+   "count": 15,
+   "issues": []
+  },
+  {
+   "id": "f063",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-someone.webp",
+   "uses": [
+    "end-someone#-1",
+    "end-someone#0",
+    "end-someone#0",
+    "end-someone#1",
+    "end-someone#1",
+    "end-someone#2"
+   ],
+   "count": 13,
+   "issues": []
+  },
+  {
+   "id": "f064",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-she-knew.webp",
+   "uses": [
+    "end-she-knew#-1",
+    "end-she-knew#0",
+    "end-she-knew#0",
+    "end-she-knew#1",
+    "end-she-knew#1",
+    "end-she-knew#2"
+   ],
+   "count": 20,
+   "issues": []
+  },
+  {
+   "id": "f065",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-eat-something.webp",
+   "uses": [
+    "end-eat-something#-1",
+    "end-eat-something#0",
+    "end-eat-something#0",
+    "end-eat-something#1",
+    "end-eat-something#1",
+    "end-eat-something#2"
+   ],
+   "count": 15,
+   "issues": []
+  },
+  {
+   "id": "f066",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-by-the-book.webp",
+   "uses": [
+    "end-by-the-book#-1",
+    "end-by-the-book#0",
+    "end-by-the-book#0",
+    "end-by-the-book#1",
+    "end-by-the-book#1",
+    "end-by-the-book#2"
+   ],
+   "count": 13,
+   "issues": []
+  },
+  {
+   "id": "f067",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-friendly.webp",
+   "uses": [
+    "end-friendly#-1",
+    "end-friendly#0",
+    "end-friendly#0@0.82",
+    "end-friendly#0",
+    "end-friendly#0",
+    "end-friendly#1"
+   ],
+   "count": 19,
+   "issues": []
+  },
+  {
+   "id": "f068",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-opinions.webp",
+   "uses": [
+    "end-opinions#-1",
+    "end-opinions#0",
+    "end-opinions#0",
+    "end-opinions#1",
+    "end-opinions#1",
+    "end-opinions#2"
+   ],
+   "count": 13,
+   "issues": []
+  },
+  {
+   "id": "f069",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-four-hours.webp",
+   "uses": [
+    "end-four-hours#-1",
+    "end-four-hours#0",
+    "end-four-hours#0",
+    "end-four-hours#1",
+    "end-four-hours#1",
+    "end-four-hours#2"
+   ],
+   "count": 19,
+   "issues": []
+  },
+  {
+   "id": "f070",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-written-up.webp",
+   "uses": [
+    "end-written-up#-1",
+    "end-written-up#0",
+    "end-written-up#0",
+    "end-written-up#1",
+    "end-written-up#1",
+    "end-written-up#2"
+   ],
+   "count": 15,
+   "issues": []
+  },
+  {
+   "id": "f071",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-wedge.webp",
+   "uses": [
+    "end-wedge#-1",
+    "end-wedge#0",
+    "end-wedge#0",
+    "end-wedge#1",
+    "end-wedge#1",
+    "end-wedge#2"
+   ],
+   "count": 13,
+   "issues": []
+  },
+  {
+   "id": "f072",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-noted.webp",
+   "uses": [
+    "end-noted#-1",
+    "end-noted#0",
+    "end-noted#0",
+    "end-noted#1",
+    "end-noted#1",
+    "end-noted#2"
+   ],
+   "count": 13,
+   "issues": []
+  },
+  {
+   "id": "f073",
+   "score": 0,
+   "kind": "still",
+   "still": "places/end-under-review.webp",
+   "uses": [
+    "end-under-review#-1",
+    "end-under-review#0",
+    "end-under-review#0",
+    "end-under-review#1",
+    "end-under-review#1",
+    "end-under-review#2"
+   ],
+   "count": 13,
+   "issues": []
+  }
+ ],
+ "layerScore": {
+  "dee-sit.webp": 11,
+  "dee-phone.webp": 14,
+  "dee-write.webp": 13,
+  "dee-eat.webp": 13,
+  "dee-drink.webp": 8,
+  "dee-lean.webp": 11,
+  "dee-angry.webp": 18,
+  "dee-stand-folded.webp": 8,
+  "dee-taps-screen.webp": 20,
+  "dee-shelf.webp": 11,
+  "dee-panel.webp": 14,
+  "dee-at-charger.webp": 0,
+  "dee-hand.webp": 14,
+  "dee-door-l.webp": 12,
+  "trainee-sit.webp": 9,
+  "you-phone.webp": 0,
+  "you-write.webp": 8,
+  "you-eat.webp": 7,
+  "you-lean.webp": 10,
+  "trainee-stand-clock.webp": 16,
+  "you-hand.webp": 29,
+  "you-press.webp": 10,
+  "okafor-right.webp": 16,
+  "okafor-at-door.webp": 24,
+  "okafor-read.webp": 29,
+  "okafor-shelf.webp": 21,
+  "terrell-left.webp": 3,
+  "marisol-left.webp": 1,
+  "dev-left.webp": 13,
+  "adler-right.webp": 19,
+  "adler-panel.webp": 24,
+  "pierce-left.webp": 6
+ }
+}

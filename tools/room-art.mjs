@@ -126,10 +126,10 @@ const fadePairs = Object.entries(regs).filter(([, r]) => r.fade).map(([k]) => k)
 const stageFade = (stage.reg && stage.reg.fade) || [];
 if (JSON.stringify(stageFade) !== JSON.stringify(fadePairs)) {
   if (WRITE) {
-    const raw = fs.readFileSync(STAGE_DIR + 'stage.json', 'utf8');
-    const o = JSON.parse(raw);
-    o.reg = { _about: `Pairs of one person's layers that line up (mask IoU >= ${IOU_FADE} and centroid shift <= ${SHIFT_FADE} px): they cross-fade; every other pair is a swap through the plate (fade out ~80 ms, in ~120 ms). Written by tools/room-art.mjs --write.`, fade: fadePairs };
-    fs.writeFileSync(STAGE_DIR + 'stage.json', JSON.stringify(o, null, 2).replace(/\n {4,}"([^"]+)": "([^"]+)"(,?)(?=\n {4,}")/g, '\n    "$1": "$2"$3') + '\n');
+    let raw = fs.readFileSync(STAGE_DIR + 'stage.json', 'utf8');
+    const block = `  "reg": {\n    "_about": "Pairs of one person's layers that line up (mask IoU >= ${IOU_FADE} and centroid shift <= ${SHIFT_FADE} px): they cross-fade; every other pair is a swap through the plate (old out in ~80 ms, new in over ~120 ms). Written by tools/room-art.mjs --write.",\n    "fade": ${JSON.stringify(fadePairs)}\n  }`;
+    raw = /\n  "reg": \{[\s\S]*?\n  \}/.test(raw) ? raw.replace(/\n  "reg": \{[\s\S]*?\n  \}/, '\n' + block) : raw.replace(/\n\}\s*$/, ',\n' + block + '\n}\n');
+    fs.writeFileSync(STAGE_DIR + 'stage.json', raw);
     console.log(`wrote stage.json reg.fade (${fadePairs.length} pairs)`);
   } else fail('registration', 'stage.json reg', `stale: stage.reg.fade has ${stageFade.length} pairs, the layers say ${fadePairs.length} (node tools/room-art.mjs --write)`);
 }
@@ -230,43 +230,172 @@ for (const [k, n] of Object.entries(transitions)) {
   const r = regs[key];
   if (fadeSet.has(key) && r && (r.iou < IOU_FADE || r.shift > SHIFT_FADE)) fail('registration', k, `cross-fades but IoU ${r.iou} / shift ${r.shift}`);
 }
-// the room code itself: an unregistered pair is a swap (old out in 80 ms, new in after it), a registered one a cross-fade
-{
-  const r = makeRoom();
-  const pair = Object.keys(transitions).map((k) => k.split('|')).find(([who, a, b]) => who === 'dee' && !fadeSet.has(a < b ? `${a}|${b}` : `${b}|${a}`));
-  if (pair) {
-    const [, a, b] = pair;
-    const { R, doc } = r;
-    R.scene({ id: 'x', time: '23:00', cast: ['you', 'dee'], lines: [] });
-    const host = doc.getElementById('console-room');
-    const wrap = host.querySelector('.room-pose[data-who="dee"]');
-    // the layer the pose table gives dee for the second file: force the state by the table keys
-    const keyOf = (f) => Object.entries(stage.poses.dee).find(([, v]) => v === f)[0];
-    void keyOf;
-    if (!wrap) fail('registration', 'room code', 'no layer wrapper for Dee in the room to test the swap rule on');
-    else {
-      const first = wrap.querySelector('img');
-      if (!first) fail('registration', 'room code', 'Dee has no layer');
-    }
-    void a; void b;
-  }
-}
-
 /* ---------- 5. the known defects ---------- */
 
 const defectResults = [];
+const covered = (mask, [x0, y0, x1, y1]) => { let n = 0; for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) n += mask[y * W + x]; return n / ((x1 - x0 + 1) * (y1 - y0 + 1)); };
+const grayMask = (file) => { const im = load(file, W, H); const m = new Uint8Array(W * H); for (let i = 0; i < m.length; i++) m[i] = im.data[i * 4] > 127 ? 1 : 0; return m; };
 for (const d of fixtures.defects) {
-  const res = { id: d.id, ok: true, notes: [] };
-  const bad = (m) => { res.ok = false; res.notes.push(m); fail('known-defect', d.id, m); };
-  if (d.type === 'mask-keeps') {
-    const m = info[d.layer];
-    if (!m) bad(`layer ${d.layer} is not in stage.json`);
-    else {
-      const still = load(path.join(process.env.ROOM_ART_STILLS || path.join(os.tmpdir(), 'iltv-stills'), d.still), W, H);
-      void still;
+  const res = { id: d.id, ok: true };
+  const bad = (m) => { res.ok = false; fail('known-defect', d.id, m); };
+  if (d.type === 'maskCovers') {
+    for (const c of d.cases) {
+      const m = info[c.layer];
+      if (!m) { bad(`layer ${c.layer} is not in stage.json`); continue; }
+      const got = covered(m.mask, c.region);
+      if (got < c.min) bad(`${c.layer}: ${c.what} is ${(got * 100).toFixed(0)}% inside the silhouette (needs ${(c.min * 100).toFixed(0)}%; SAM alone gave ${(c.samOnly * 100).toFixed(0)}%)`);
     }
-  }
+  } else if (d.type === 'chairWhole') {
+    for (const [who, chairFile] of Object.entries(d.chairs)) {
+      const chair = grayMask(path.join(ROOT, 'night-shift/stage-src', chairFile + '.png'));
+      for (const [file, m] of Object.entries(info)) {
+        if (m.who !== who || !m.seated) continue;
+        let n = 0, k = 0;
+        for (let i = 0; i < chair.length; i++) if (chair[i]) { n++; k += m.mask[i]; }
+        if (k / n < d.min) bad(`${file}: only ${(k / n * 100).toFixed(0)}% of the chair they sit in is in the silhouette (needs ${(d.min * 100).toFixed(0)}%)`);
+      }
+    }
+  } else if (d.type === 'zOrder') {
+    const r = makeRoom();
+    const sc = story.scenes[d.scene];
+    r.R.scene({ id: d.scene, time: sc.time, place: sc.place, cast: sc.cast, away: sc.away, lines: sc.lines });
+    r.advance(10);
+    const host = r.doc.getElementById('console-room');
+    const kids = [...host.children];
+    const idx = (sel) => kids.findIndex((k) => k.matches(sel));
+    const [plate, big, people] = [idx('.room-photo:not(.room-people)'), idx('#console-big'), idx('.room-people')];
+    if (!(plate >= 0 && big > plate && people > big)) bad(`the room's layers are plate ${plate}, big screen ${big}, people ${people}: people must come after the big screen, which comes after the plate`);
+  } else if (d.type === 'goneAfter') {
+    const states = sims[d.scene];
+    const at = states.findIndex((st) => st.line === d.line && st.kind === 'beat' && st.acts.includes(d.act));
+    const plain = states.findIndex((st) => st.line === d.line && st.kind === 'line' && st.acts.includes(d.act));
+    const from = at >= 0 ? at : plain;
+    if (from < 0) bad(`${d.scene}: no ${d.act} at line ${d.line}`);
+    else for (const st of states.slice(from)) {
+      if (st.layers[d.who] || (st.actors[d.who] && st.actors[d.who].shown)) { bad(`${d.scene}: ${d.who} is still drawn at line ${st.line} (${st.kind}) after ${d.act}`); break; }
+      if (st.door) { bad(`${d.scene}: the door is still open at line ${st.line} (${st.kind}) after ${d.who} is gone`); break; }
+    }
+  } else if (d.type === 'noDoubleImage') {
+    const r = makeRoom();
+    const sc = story.scenes[d.scene];
+    r.R.scene({ id: d.scene, time: sc.time, place: sc.place, cast: sc.cast, away: sc.away, lines: sc.lines });
+    for (let i = 0; i < d.line; i++) { r.R.line(i); r.advance(((+sc.lines[i].dur || 3) * 1000) + 350); }
+    const wrap = r.doc.querySelector(`.room-pose[data-who="${d.who}"]`);
+    const before = wrap.querySelector('img.on');
+    r.R.line(d.line);
+    const imgs = [...wrap.querySelectorAll('img')];
+    const next = imgs.find((im) => im !== before);
+    if (!before || !next) bad(`${d.scene} line ${d.line}: ${d.who} does not change layer (nothing to check)`);
+    else {
+      const a = before.getAttribute('data-f'), b = next.getAttribute('data-f');
+      const reg = regs[a < b ? `${a}|${b}` : `${b}|${a}`];
+      if (reg && reg.fade) { if (reg.iou < IOU_FADE) bad(`${a} -> ${b} cross-fade but IoU ${reg.iou}`); }
+      else if (!(before.style.transitionDuration === '80ms' && next.style.transitionDelay === '80ms')) bad(`${a} -> ${b} do not register (IoU ${reg && reg.iou}, shift ${reg && reg.shift} px) but they are not swapped: old out in ${before.style.transitionDuration || 'default'}, new in after ${next.style.transitionDelay || '0'}`);
+      r.advance(400);
+      if (wrap.querySelectorAll('img').length !== 1) bad(`${d.who} still has ${wrap.querySelectorAll('img').length} layers in the DOM 400 ms after the change`);
+    }
+  } else bad(`unknown defect type ${d.type}`);
   defectResults.push(res);
+}
+
+/* ---------- 4. every unique frame the story can show ---------- */
+
+const OVERLAY_OF = { 'door-left': 'door-left', 'door-right': 'door-right' };
+const frames = new Map(); // key -> frame
+let statesSeen = 0;
+for (const [id, states] of Object.entries(sims)) {
+  let spilled = false;
+  for (const st of states) {
+    statesSeen++;
+    if (!st.on) continue;
+    const acts = st.acts || [];
+    if (acts.includes('room:spill') || acts.some((a) => /:spill$/.test(a))) spilled = true;
+    let key, f;
+    if (st.place === 'room') {
+      const ov = [];
+      if (st.door) ov.push('door-' + st.door);
+      if (acts.some((a) => /:(write|read)$/.test(a))) ov.push('writing');
+      if (spilled) ov.push('spill');
+      if (acts.includes('room:buzz')) ov.push('buzz');
+      const lay = Object.entries(st.layers).sort(([a], [b]) => a.localeCompare(b));
+      key = JSON.stringify(['room', lay, ov]);
+      f = { kind: 'room', layers: Object.fromEntries(lay), overlays: ov };
+    } else {
+      key = JSON.stringify(['still', st.still]);
+      f = { kind: 'still', still: st.still };
+    }
+    if (!frames.has(key)) { f.key = key; f.uses = []; frames.set(key, f); }
+    const fr = frames.get(key);
+    if (fr.uses.length < 6) fr.uses.push(`${id}#${st.line}${st.kind === 'beat' ? '@' + st.at : ''}`);
+    fr.count = (fr.count || 0) + 1;
+  }
+}
+// a frame's score (higher is worse): its worst layer, and two people's silhouettes running into each other
+let frameNo = 0;
+for (const f of frames.values()) {
+  f.id = 'f' + String(++frameNo).padStart(3, '0');
+  if (f.kind === 'still') { f.score = 0; f.issues = []; continue; }
+  const files = Object.values(f.layers);
+  f.score = Math.max(0, ...files.map((x) => layerScore[x] || 0));
+  f.issues = [];
+  for (const x of files) for (const p of info[x].problems) f.issues.push(`${x}: ${p}`);
+  const whos = Object.keys(f.layers);
+  for (let i = 0; i < whos.length; i++) for (let j = i + 1; j < whos.length; j++) {
+    const a = info[f.layers[whos[i]]], b = info[f.layers[whos[j]]];
+    let inter = 0;
+    for (let k = 0; k < a.mask.length; k++) inter += a.mask[k] & b.mask[k];
+    const share = inter / Math.min(a.area, b.area);
+    if (share > 0.12) { f.score += Math.round(share * 100); f.issues.push(`${whos[i]} and ${whos[j]} overlap (${(share * 100).toFixed(0)}% of the smaller)`); }
+  }
+}
+const ranked = [...frames.values()].sort((a, b) => b.score - a.score);
+
+if (WRITE) {
+  const out = { _about: 'Every unique frame Night Shift\'s photographed room can show (tools/room-art.mjs --write): its layers, overlays, score (higher is worse; 0 passes every mask check) and where the story uses it. night-shift/storyboard.html sorts by it.', states: statesSeen, unique: frames.size, frames: ranked.map((f) => ({ id: f.id, score: f.score, kind: f.kind, ...(f.kind === 'room' ? { layers: f.layers, overlays: f.overlays } : { still: f.still }), uses: f.uses, count: f.count, issues: f.issues })), layerScore };
+  fs.mkdirSync(path.join(ROOT, 'night-shift/qa'), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, 'night-shift/qa/frames.json'), JSON.stringify(out, null, 1) + '\n');
+  console.log(`wrote night-shift/qa/frames.json (${frames.size} unique frames from ${statesSeen} states)`);
+}
+
+if (SHEETS) {
+  // composite: plate, overlays, the big screen, then the people above it (the page's own order), captioned, 12 to a sheet, worst first
+  const CW = 384, CH = 230, CAP = 40, COLS = 4, PER = 12;
+  const cache = new Map();
+  const get = (file) => { if (!cache.has(file)) cache.set(file, load(STAGE_DIR + file, CW, CH)); return cache.get(file); };
+  const bs = stage.bigScreen;
+  const compose = (f) => {
+    const img = blank(CW, CH);
+    if (f.kind === 'still') { over(img, get(f.still)); return img; }
+    over(img, get(stage.plate));
+    for (const o of f.overlays) if (stage.overlays[o]) over(img, get(stage.overlays[o]));
+    const sx = CW / stage.width, sy = CH / stage.height;
+    for (let y = Math.round(bs.y * sy); y < Math.round((bs.y + bs.h) * sy); y++) for (let x = Math.round(bs.x * sx); x < Math.round((bs.x + bs.w) * sx); x++) { const i = (y * CW + x) * 4; img.data[i] = 34; img.data[i + 1] = 62; img.data[i + 2] = 74; }
+    for (const [, file] of Object.entries(f.layers)) over(img, get(file));
+    return img;
+  };
+  fs.mkdirSync(sheetDir, { recursive: true });
+  const font = ['/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', '/usr/share/fonts/dejavu/DejaVuSans.ttf'].find((p) => fs.existsSync(p));
+  for (let n = 0; n * PER < ranked.length; n++) {
+    const part = ranked.slice(n * PER, n * PER + PER);
+    const rows = Math.ceil(part.length / COLS);
+    const sheet = blank(CW * COLS, (CH + CAP) * rows, [16, 20, 22, 255]);
+    const filters = [];
+    part.forEach((f, k) => {
+      const cell = compose(f);
+      const ox = (k % COLS) * CW, oy = Math.floor(k / COLS) * (CH + CAP);
+      for (let y = 0; y < CH; y++) sheet.data.set(cell.data.subarray(y * CW * 4, (y + 1) * CW * 4), ((oy + y) * sheet.w + ox) * 4);
+      const cap = `${f.id} score ${f.score} | ${f.uses[0]}${f.count > 1 ? ` (+${f.count - 1})` : ''}\n${f.kind === 'room' ? Object.entries(f.layers).map(([w, x]) => `${w}:${x.replace('.webp', '')}`).join(' ') + (f.overlays.length ? ' +' + f.overlays.join(',') : '') : f.still}`;
+      const tf = path.join(sheetDir, `cap-${n}-${k}.txt`);
+      fs.writeFileSync(tf, cap);
+      filters.push(`drawtext=fontfile=${font}:textfile=${tf}:x=${ox + 4}:y=${oy + CH + 4}:fontsize=11:fontcolor=${f.score > 40 ? 'f2b36b' : 'd9d3c0'}:line_spacing=3`);
+    });
+    const raw = path.join(sheetDir, `raw-${n}.png`);
+    save(sheet, raw);
+    const out = path.join(sheetDir, `sheet-${String(n + 1).padStart(2, '0')}.png`);
+    execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', raw, '-vf', filters.join(','), out]);
+    fs.unlinkSync(raw);
+  }
+  console.log(`contact sheets: ${Math.ceil(ranked.length / PER)} sheets of ${PER} in ${sheetDir} (sheet-01.png is the worst)`);
 }
 
 /* ---------- report ---------- */
@@ -274,6 +403,7 @@ for (const d of fixtures.defects) {
 console.log(`room-art: ${layers.size} layers, ${Object.keys(sims).length} scenes, ${((Date.now() - t0) / 1000).toFixed(1)} s`);
 const worst = Object.entries(layerScore).sort((a, b) => b[1] - a[1]).slice(0, 12);
 console.log('worst layers:\n' + worst.map(([f, sc]) => `  ${String(sc).padStart(4)}  ${f.padEnd(26)} area ${String(info[f].area).padStart(6)}  solidity ${info[f].solidity.toFixed(2)}  holes ${info[f].holes.length}  chunks ${info[f].detached.length}`).join('\n'));
+console.log(`frames: ${frames.size} unique of ${statesSeen} states; worst ${ranked.slice(0, 3).map((f) => f.id + ' ' + f.score).join(', ')}`);
 console.log(`transitions: ${nFade} cross-fades, ${nSwap} swaps; acts with only the generic pose: ${fallbackActs.length ? fallbackActs.join(', ') : 'none'}; radio/phone lines with an absent speaker: ${propLines}`);
 if (warnings.length) console.log(`warnings (${warnings.length}):\n` + warnings.slice(0, 15).map((w) => `  ${w.check} ${w.where}: ${w.detail}`).join('\n'));
 if (failures.length) {

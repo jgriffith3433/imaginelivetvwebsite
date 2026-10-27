@@ -204,6 +204,19 @@ the room and by day, an inset elsewhere). The corridor upstairs (`tenant-go`, `l
 `night-shift/stage-recipes.json` holds every prompt, seed, chosen asset and segmentation prompt; `node tools/make-storyboard.mjs`
 writes `night-shift/storyboard.html` (every scene's lines beside its keyframes). Stills only: no 3D, no video, no SVG people in the photographed room.
 
+**Beats, the gone state, and the room-art checks (J, 2026-10-27).** An entry of a line's `act` is a plain string (it happens as the line starts) or a
+**beat**, `{ "act": "okafor:leave", "at": 0.25 }`: `at` is a fraction (0 to 1) of that line's own `dur` (the recording's length, so it stays right when
+a voice is re-recorded; never an audio timestamp). Beats are in order of `at`; `node tools/draft-beats.mjs` drafts them from where the action words
+fall in a narrator line. `leave` walks a person to the door (door open); `gone` takes them out (their layer is removed, the door closes) and they stay
+out until an `enter` or a scene's `cast` brings them back; a `leave` with a `gone` later in the scene waits for it. `charger` is Dee getting up to put a
+radio on the charger and sitting back. A line whose speaker is out of the room on purpose (a tile, the door, a call with no `treatment`) says `"offstage": true`.
+People are drawn **in front of** the big screen (DOM order: plate and overlays, the screen, the people). Two layers of one person cross-fade only
+when they register (`stage.json` `reg.fade`, measured); any other change is a dip through the plate (old out ~80 ms, new in ~120 ms).
+Cut-outs are built by `tools/pose-bake.mjs --auto`: SAM (`night-shift/stage-src/sam/`) plus the difference against the plate (what is held) plus the chair
+(`stage-src/chair-*.png`). **`npm run test:room-art`** (offline: node, ffmpeg, jsdom) checks every layer's mask, presence over every scene, registration,
+and `tests/room-art-known-defects.json`; `node tools/room-art.mjs --write --sheets` writes `night-shift/qa/frames.json` and captioned contact sheets
+(worst first) to read. **Every defect J reports about the room is added to `tests/room-art-known-defects.json` in the change that fixes it.**
+
 Scene fields: `place` (where the scene opens: `room` by default, `room-day`, or one of the places above), `cast` (who is in the
 room when it opens: `["you","dee"]` by default; `"okafor@left"` stands them at the left of the desk, `@right` at the
 charger side), `away` (who is on stage when the place isn't the room; default the cast).
