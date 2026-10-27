@@ -254,6 +254,35 @@ async function main() {
     r2.c.close();
   }
 
+  // --- a recording whose load fails once (a host 503) is tried again and heard; one that keeps failing is read on its timer
+  for (const always of [false, true]) {
+    const f = page();
+    const tries = {};
+    let heardByEnd = 0;
+    f.w.HTMLMediaElement.prototype.play = function () {
+      const el = this;
+      const src = el.getAttribute('src') || '';
+      const failing = /\/line-\d+\.mp3$/.test(src) && (always || !tries[src]);
+      tries[src] = (tries[src] || 0) + 1;
+      setTimeout(() => {
+        if (failing) { if (typeof el.onerror === 'function') el.onerror(); }
+        else if (typeof el.onended === 'function') { if (/\/line-\d+\.mp3$/.test(src)) heardByEnd++; el.onended(); }
+      }, 2);
+      return failing ? Promise.reject(new f.w.DOMException('Failed to load', 'NotSupportedError')) : Promise.resolve();
+    };
+    f.c.open(story, f.hooks, null);
+    const first = story.scenes[story.start].lines.filter((l) => l.file);
+    try {
+      await until(() => heard(f), always ? 'lines read on their timers' : 'lines after a retry');
+      const retried = first.every((l) => tries[l.file] >= 2);
+      if (always) check('a recording that keeps failing: tried twice, then the line is read on its timer', retried && heardByEnd === 0, { tries, heardByEnd });
+      else check('a recording whose load fails once is tried again and played to its end', retried && heardByEnd === first.length, { tries, heardByEnd, lines: first.length });
+    } catch (e) {
+      check(always ? 'a recording that keeps failing still lets the lines finish' : 'a recording that fails once still lets the lines finish', false, String(e && e.message || e));
+    }
+    f.c.close();
+  }
+
   // --- storage refusing every call
   let errors = [];
   const b = page({ blocked: true });

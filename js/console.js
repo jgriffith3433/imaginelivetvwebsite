@@ -219,7 +219,19 @@
     }
     if (!line.file) return byTimer(line.dur * 1000);
     el.onended = finish;
-    el.onerror = function () { byTimer(line.dur * 1000); };
+    var retried = false;
+    el.onerror = function () {
+      // A host hiccup (a 503 on a file that exists) gets one more try a moment later; then the line is read on its timer.
+      if (retried) return byTimer(line.dur * 1000);
+      retried = true;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        if (finished || at !== flow) return;
+        byTimer((line.dur + 4) * 1000);
+        el.src = line.file; // setting src loads it again, even the same file
+        playEl(el).catch(function () { if (!finished) byTimer(line.dur * 1000); });
+      }, 600);
+    };
     el.src = line.file;
     el.loop = false;
     byTimer((line.dur + 4) * 1000); // never stuck on a recording that stalls
@@ -235,7 +247,7 @@
           timer = setTimeout(wait, 250);
         };
         wait();
-      } else byTimer(line.dur * 1000);
+      } else if (!retried) byTimer(line.dur * 1000); // a failed load: onerror's retry owns the timer
     });
   }
 
