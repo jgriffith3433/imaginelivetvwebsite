@@ -8,7 +8,10 @@
      lobby, vestibule, dock, stairwell, corridor, roof) and `away` (who is with you when the place isn't the room);
    - a line's `act` (a string or a list of "who:verb[:where]", e.g. "dee:stand", "okafor:enter:left", "you:write",
      "room:ring"), its `place` (the place changes when the line starts) and its `feed` (a camera the characters switch the
-     screen to, js/console.js).
+     screen to, js/console.js). An entry of `act` may also be a beat, { "act": "okafor:leave", "at": 0.25 }: it happens
+     when that fraction (0 to 1) of the line's own `dur` (the recording's length, so it follows a new recording) has
+     passed; a plain string happens as the line starts. `leave` walks a person to the door; `gone` takes them out of the
+     room (their layer is removed, the door closes) and they stay out until an `enter` or a scene's `cast` brings them back.
 
    Silhouettes are the night shift in the room. When people are out of the room (the tour, a call-up to a floor, the
    lobby at dawn) they are drawn as people, in the place they are in, and the screen is a small inset; in the room by day
@@ -30,8 +33,8 @@
   var LABELS = { you: "YOU", dee: "DEE", okafor: "OKAFOR", terrell: "TERRELL", marisol: "MARISOL", dev: "DEV", adler: "ADLER", brandt: "BRANDT", courier: "COURIER", sleeper: "MAN", pierce: "PIERCE" };
   var PLACES = { room: "in the control room", "room-day": "in the control room, in daylight", lobby: "in the lobby", vestibule: "in the vestibule", dock: "on the loading dock", stairwell: "in stairwell C", corridor: "in a corridor upstairs", roof: "on the roof" };
   var AWAY = { lobby: 1, vestibule: 1, dock: 1, stairwell: 1, corridor: 1, roof: 1 };
-  var VERBS = ["sit", "stand", "point", "touch", "write", "phone", "hangup", "spill", "angry", "knock", "count", "lean", "hand", "drink", "eat", "press", "read", "enter", "leave", "rest", "ring", "buzz", "door", "flicker"];
-  var HOLD = { touch: 1900, write: 2800, spill: 2600, knock: 1700, count: 2800, angry: 2000, drink: 2000, eat: 2600, press: 1500, read: 3000, hand: 2000, point: 3000, lean: 2600, console: 700 };
+  var VERBS = ["sit", "stand", "point", "touch", "write", "phone", "hangup", "spill", "angry", "knock", "count", "lean", "hand", "drink", "eat", "press", "read", "enter", "leave", "gone", "charger", "rest", "ring", "buzz", "door", "flicker"];
+  var HOLD = { touch: 1900, write: 2800, spill: 2600, knock: 1700, count: 2800, charger: 3600, angry: 2000, drink: 2000, eat: 2600, press: 1500, read: 3000, hand: 2000, point: 3000, lean: 2600, console: 700 };
 
   /* What each person looks like. Silhouettes keep the shape (hair, hat, bag, coat, height); in daylight and out of the room the colours show. */
   var LOOKS = {
@@ -74,7 +77,10 @@
   var STAGE_URL = "/night-shift/media/stage/";
   var stage = null;
   var photoEl = null;
+  var peopleEl = null; // the people's layers: above the big screen, which is above the plate
   var poseWraps = {}; // who -> the person's layer holder
+  var pending = []; // beats of the line on stage that have not happened yet
+  var doorT = null;
   var ovMade = {};
 
   /** The still behind the people for a place, or null (the SVG place stays). The room is the plate; the other places are stills
@@ -94,7 +100,9 @@
 
   function photoReset() {
     if (photoEl && photoEl.parentNode) photoEl.parentNode.removeChild(photoEl);
+    if (peopleEl && peopleEl.parentNode) peopleEl.parentNode.removeChild(peopleEl);
     photoEl = null;
+    peopleEl = null;
     poseWraps = {};
     ovMade = {};
   }
@@ -129,6 +137,12 @@
       photoEl.appendChild(clock);
     }
     host.insertBefore(photoEl, artEl.nextSibling);
+    // People are drawn in front of the big screen (an element over the plate's screen), never behind it.
+    peopleEl = document.createElement("div");
+    peopleEl.className = "room-photo room-people";
+    peopleEl.setAttribute("aria-hidden", "true");
+    var big = document.getElementById("console-big");
+    host.insertBefore(peopleEl, big && big.parentNode === host ? big.nextSibling : photoEl.nextSibling);
     setClock();
   }
 
@@ -153,26 +167,41 @@
     return null;
   }
 
-  /** The person's layer for the state they are in: crossfaded (or set at once for a resume and Skip). */
+  /* Two layers of one person that line up (stage.reg.fade lists the pairs, measured by tools/room-art.mjs) cross-fade; any other
+     pair is a swap through the plate, because cross-fading two poses that don't register shows two people at once: the old one
+     fades out in about 80 ms, the new one in over about 120 ms after it. */
+  function fadesTogether(a, b) {
+    var list = stage && stage.reg && stage.reg.fade;
+    if (!list || !a || !b) return false;
+    return list.indexOf(a < b ? a + "|" + b : b + "|" + a) >= 0;
+  }
+
+  /** The person's layer for the state they are in: crossfaded or swapped (or set at once for a resume and Skip). */
   function photoFig(f, instant) {
-    if (!photoEl || !state || state.place !== "room") return;
+    if (!photoEl || !peopleEl || !state || state.place !== "room") return;
     var wrap = poseWraps[f.who];
     if (!wrap) {
       wrap = document.createElement("div");
       wrap.className = "room-pose";
       wrap.setAttribute("data-who", f.who);
-      photoEl.appendChild(wrap);
+      peopleEl.appendChild(wrap);
       poseWraps[f.who] = wrap;
     }
     var file = here(f) ? poseFile(f) : null;
     var cur = wrap.querySelector("img.on");
     if ((cur ? cur.getAttribute("data-f") : "") === (file || "")) return;
     wrap.setAttribute("data-file", file || "");
+    var quick = instant || reduced;
+    var together = !quick && cur && file && fadesTogether(cur.getAttribute("data-f"), file);
+    [].forEach.call(wrap.querySelectorAll("img"), function (stale) { if (stale !== cur && stale.parentNode) stale.parentNode.removeChild(stale); });
     if (cur) {
       cur.classList.remove("on");
       var old = cur;
-      if (instant || reduced) { if (old.parentNode) old.parentNode.removeChild(old); }
-      else later(function () { if (old.parentNode) old.parentNode.removeChild(old); }, 320);
+      if (quick) { if (old.parentNode) old.parentNode.removeChild(old); }
+      else {
+        old.style.transitionDuration = together ? "" : "80ms";
+        later(function () { if (old.parentNode) old.parentNode.removeChild(old); }, together ? 320 : 100);
+      }
     }
     if (!file) return;
     var im = document.createElement("img");
@@ -181,13 +210,14 @@
     im.decoding = "async";
     im.setAttribute("data-f", file);
     im.src = STAGE_URL + file;
+    if (!quick && cur && !together) { im.style.transitionDuration = "120ms"; im.style.transitionDelay = "80ms"; }
     wrap.appendChild(im);
-    if (instant || reduced) im.classList.add("on");
+    if (quick) im.classList.add("on");
     else (window.requestAnimationFrame || setTimeout)(function () { im.classList.add("on"); });
   }
 
   function photoView() {
-    var o = { on: photoOn(), plate: stage ? stage.plate : null, still: state ? stillFor(state.place) : null, layers: {}, overlays: Object.keys(ovMade) };
+    var o = { on: photoOn(), plate: stage ? stage.plate : null, still: state ? stillFor(state.place) : null, layers: {}, overlays: Object.keys(ovMade), door: host.hasAttribute("data-door") ? host.getAttribute("data-door-side") : "" };
     Object.keys(poseWraps).forEach(function (k) { o.layers[k] = poseWraps[k].getAttribute("data-file") || ""; });
     return o;
   }
@@ -416,6 +446,8 @@
   function clearTimers() {
     timers.forEach(function (t) { clearTimeout(t); });
     timers = [];
+    pending = [];
+    doorT = null;
   }
 
   function later(fn, ms) {
@@ -550,7 +582,17 @@
     dress(f);
     f.hold++;
     var token = f.hold;
-    if (ms) later(function () { if (f.hold === token) { f.pose = settled(f); f.arg = ""; f.el.setAttribute("data-pose", f.pose); dress(f); } }, ms);
+    if (ms) later(function () { if (f.hold === token) { f.pose = settled(f); f.arg = ""; f.el.setAttribute("data-pose", f.pose); dress(f); if (f.returnSeat) sitBack(f); } }, ms);
+  }
+
+  /** Back to their seat after getting up for a moment (the radio on the charger). */
+  function sitBack(f) {
+    f.returnSeat = false;
+    if (!seatOf(f.who) || !f.present) return;
+    f.posture = "seated";
+    f.spot = "seat";
+    f.pose = "desk";
+    applyPos(f, false);
   }
 
   function say(text) {
@@ -567,14 +609,44 @@
 
   function flag(name, ms) {
     host.setAttribute("data-" + name, "1");
-    if (name === "door") photoOverlay(host.getAttribute("data-door-side") === "right" ? "door-right" : "door-left");
-    else photoOverlay(name === "writing" ? "writing" : name === "buzz" ? "buzz" : name === "spill" ? "spill" : "");
+    photoOverlay(name === "writing" ? "writing" : name === "buzz" ? "buzz" : name === "spill" ? "spill" : "");
     later(function () { host.removeAttribute("data-" + name); }, ms);
   }
 
-  function door(ms, side) { host.setAttribute("data-door-side", side === "right" ? "right" : "left"); flag("door", ms || 1500); }
+  /** The door opens (and shuts again after `ms`, or stays open when ms is 0: `gone` shuts it). */
+  function door(ms, side) {
+    host.setAttribute("data-door-side", side === "right" ? "right" : "left");
+    host.setAttribute("data-door", "1");
+    photoOverlay(host.getAttribute("data-door-side") === "right" ? "door-right" : "door-left");
+    if (doorT) clearTimeout(doorT);
+    doorT = null;
+    if (ms) {
+      var t = setTimeout(function () { if (doorT === t) shut(); }, ms);
+      doorT = t;
+      timers.push(t);
+    }
+  }
+  function shut() {
+    if (doorT) clearTimeout(doorT);
+    doorT = null;
+    host.removeAttribute("data-door");
+  }
 
   /* ---------------- acts ---------------- */
+
+  /** Out of the room for good (until an `enter` or a scene's cast): no layer, the door shut. */
+  function goneNow(f) {
+    f.leaveToken = (f.leaveToken || 0) + 1;
+    f.leaving = false;
+    f.present = false;
+    f.el.classList.remove("is-walking");
+    f.el.setAttribute("data-show", "0");
+    f.el.setAttribute("data-present", "0");
+    shut();
+    photoFig(f, false);
+  }
+
+  var waits = {}; // who -> true while the line on stage has a `gone` beat for them still to come
 
   function act(spec, instant) {
     var parts = String(spec).split(":");
@@ -587,6 +659,8 @@
     if (verb === "enter") {
       var was = f.present;
       f.present = true;
+      f.leaving = false;
+      f.leaveToken = (f.leaveToken || 0) + 1;
       f.spot = arg && SPOTS[arg] && arg !== "door" ? arg : takeSpot(f);
       f.posture = seatOf(who) && !(arg && SPOTS[arg]) ? "seated" : "standing";
       f.pose = f.posture === "seated" ? "desk" : "rest";
@@ -611,7 +685,9 @@
       if (!f.present && !here(f)) return;
       if (instant || reduced || away) {
         f.present = false;
+        f.leaving = false;
         if (away) state.awayList = state.awayList.filter(function (w) { return w !== who; });
+        if (!instant) shut();
         render(true);
         if (!instant) say(nameOf(who) + " leaves");
         return;
@@ -620,14 +696,23 @@
       f.spot = "door";
       f.present = false;
       f.leaving = true;
+      f.leaveToken = (f.leaveToken || 0) + 1;
       f.el.classList.add("is-walking");
       applyPos(f, false);
-      door(1900);
+      // with a `gone` beat later in the line the door stays open until it; without one he is out of the room 1.4 s after
+      door(waits[who] ? 0 : 1900);
       say(nameOf(who) + " leaves the room");
-      later(function () { f.el.classList.remove("is-walking"); f.leaving = false; f.el.setAttribute("data-show", "0"); f.el.setAttribute("data-present", "0"); }, 1400);
+      if (!waits[who]) { var tok = f.leaveToken; later(function () { if (f.leaveToken === tok) goneNow(f); }, 1400); }
+      return;
+    }
+    if (verb === "gone") {
+      if (!f.leaving && f.present) return; // gone is only the end of a leave
+      goneNow(f);
+      if (!instant) say(nameOf(who) + " is out of the room");
       return;
     }
     if (!here(f)) return;
+    if (verb === "stand" || verb === "sit") f.returnSeat = false;
     if (verb === "stand") {
       if (f.posture === "standing") return;
       f.posture = "standing";
@@ -716,6 +801,12 @@
     } else if (verb === "hand") {
       setPose(f, "hand", HOLD.hand);
       say(n + (you ? " hand it over" : " hands it over"));
+    } else if (verb === "charger") {
+      if (f.posture === "seated" && seatOf(who)) { f.posture = "standing"; f.spot = "right"; f.returnSeat = true; }
+      setPose(f, "charger", f.returnSeat ? 0 : HOLD.charger);
+      applyPos(f, false);
+      if (f.returnSeat) { var tk = f.hold; later(function () { if (f.hold === tk && f.returnSeat) sitBack(f); }, HOLD.charger); }
+      say(n + (you ? " put the radio on the charger" : " puts the radio on the charger"));
     } else if (verb === "drink") {
       setPose(f, "drink", HOLD.drink);
       say(n + (you ? " drink the coffee" : " drinks the coffee"));
@@ -764,15 +855,19 @@
 
   /* ---------------- the scene ---------------- */
 
+  /** A line's beats, in the order the data gives them: { spec, at } (at 0 = as the line starts; a plain string has no `at`). */
   function actsOf(line) {
     if (!line || !line.act) return [];
-    return Array.isArray(line.act) ? line.act : [line.act];
+    return (Array.isArray(line.act) ? line.act : [line.act]).map(function (a) {
+      return typeof a === "string" ? { spec: a, at: 0 } : { spec: String(a.act), at: Math.max(0, Math.min(1, +a.at || 0)) };
+    });
   }
 
   /** A scene opens: who is where, in which place. `def` = { id, time, place, look, cast, away, lines }. */
   function scene(def) {
     try {
       clearTimers();
+      waits = {};
       host.removeAttribute("data-door");
       ["ring", "buzz", "writing", "touch", "spill", "knock", "count", "flicker", "swap", "door-side"].forEach(function (k) { host.removeAttribute("data-" + k); });
       var cast = def.cast && def.cast.length ? def.cast : ["you", "dee"];
@@ -825,16 +920,49 @@
     } catch (e) { /* the story plays without the room */ }
   }
 
-  /** The line `i` starts: its place, then its acts. */
+  /** Beats of earlier lines that have not happened yet happen now, with no motion (the line was skipped, or the next began). */
+  function flushBeats() {
+    var left = pending;
+    pending = [];
+    left.forEach(function (e) {
+      clearTimeout(e.t);
+      try { act(e.spec, true); } catch (e2) { /* the story plays without the room */ }
+    });
+  }
+
+  /** The beats still to come in the line on stage happen now, in order and with their motion (the tests and the storyboard use it instead of waiting). */
+  function runBeats() {
+    try {
+      var left = pending;
+      pending = [];
+      left.forEach(function (e) { clearTimeout(e.t); act(e.spec, false); });
+    } catch (e) { /* the story plays without the room */ }
+  }
+
+  /** The line `i` starts: its place, then its acts; a beat with an `at` happens that fraction of the line's `dur` later. */
   function line(i, instant) {
     try {
       if (!state) return;
       var l = state.lines[i];
       state.at = i;
+      flushBeats();
+      waits = {};
       if (!l) return;
-      state.acted[i] = actsOf(l).slice();
+      var beats = actsOf(l);
+      state.acted[i] = beats.map(function (b) { return b.spec; });
       if (l.place) { setPlace(l.place, instant); state.acted[i].unshift("place:" + l.place); }
-      actsOf(l).forEach(function (a) { act(a, instant); });
+      var ms = (+l.dur > 0 ? +l.dur : 3) * 1000;
+      beats.forEach(function (b) { var p = b.spec.split(":"); if (p[1] === "gone" && b.at > 0) waits[p[0]] = true; });
+      beats.forEach(function (b) {
+        if (instant || b.at <= 0) { act(b.spec, instant); return; }
+        var e = { spec: b.spec };
+        e.t = setTimeout(function () {
+          pending = pending.filter(function (x) { return x !== e; });
+          try { act(e.spec, false); } catch (e2) { /* the story plays without the room */ }
+        }, Math.round(b.at * ms));
+        pending.push(e);
+        timers.push(e.t);
+      });
     } catch (e) { /* the story plays without the room */ }
   }
 
@@ -896,6 +1024,7 @@
     scene: scene,
     line: line,
     catchUp: catchUp,
+    runBeats: runBeats,
     speaking: speaking,
     switched: switched,
     view: view,

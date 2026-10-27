@@ -4616,7 +4616,7 @@ function roomStage(doc) {
 
 /** The room's acts the data gives a scene, in line order (a line's place first), as the room records them. */
 function roomDataActs(st, id) {
-  return st.scenes[id].lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act])]);
+  return st.scenes[id].lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]).map((e) => (typeof e === 'string' ? e : e.act))]);
 }
 
 /** Plays a scene from a seeded run at its parent with a real press into it; returns the model. `hear`: skip to the end of its lines. */

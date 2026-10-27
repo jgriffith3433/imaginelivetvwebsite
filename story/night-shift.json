@@ -252,7 +252,12 @@
           "speaker": "narrator",
           "text": "Control room, behind the lobby desk. Mr. Okafor has the day's log open on the tablet. By the radio charger, a woman is counting under her breath.",
           "dur": 9.9,
-          "act": "dee:count"
+          "act": [
+            {
+              "act": "dee:count",
+              "at": 0.59
+            }
+          ]
         },
         {
           "speaker": "okafor",
@@ -570,8 +575,22 @@
           "dur": 11.7,
           "act": [
             "you:write",
-            "okafor:leave",
-            "dee:knock"
+            {
+              "act": "okafor:leave",
+              "at": 0.12
+            },
+            {
+              "act": "okafor:gone",
+              "at": 0.3
+            },
+            {
+              "act": "dee:charger",
+              "at": 0.52
+            },
+            {
+              "act": "dee:knock",
+              "at": 0.8
+            }
           ]
         },
         {
@@ -654,7 +673,18 @@
           "dur": 10.4,
           "act": [
             "okafor:leave",
-            "dee:knock"
+            {
+              "act": "okafor:gone",
+              "at": 0.23
+            },
+            {
+              "act": "dee:charger",
+              "at": 0.47
+            },
+            {
+              "act": "dee:knock",
+              "at": 0.78
+            }
           ]
         },
         {
@@ -903,7 +933,12 @@
           "speaker": "narrator",
           "text": "The good chair has a real back. You sit.",
           "dur": 3,
-          "act": "you:sit"
+          "act": [
+            {
+              "act": "you:sit",
+              "at": 0.8
+            }
+          ]
         },
         {
           "speaker": "narrator",
@@ -981,7 +1016,12 @@
           "speaker": "narrator",
           "text": "The cushion is flat, and still warm. You sit.",
           "dur": 3.9,
-          "act": "you:sit"
+          "act": [
+            {
+              "act": "you:sit",
+              "at": 0.82
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -1132,7 +1172,10 @@
           "dur": 8.2,
           "act": [
             "terrell:enter:left",
-            "dee:eat"
+            {
+              "act": "dee:eat",
+              "at": 0.5
+            }
           ]
         },
         {
@@ -1215,7 +1258,12 @@
           "speaker": "narrator",
           "text": "The radio goes quiet. She writes the time down.",
           "dur": 3.6,
-          "act": "dee:write"
+          "act": [
+            {
+              "act": "dee:write",
+              "at": 0.47
+            }
+          ]
         },
         {
           "speaker": "narrator",
@@ -1224,7 +1272,10 @@
           "dur": 8.2,
           "act": [
             "terrell:enter:left",
-            "dee:eat"
+            {
+              "act": "dee:eat",
+              "at": 0.5
+            }
           ]
         },
         {
@@ -1315,7 +1366,10 @@
           "dur": 8.2,
           "act": [
             "terrell:enter:left",
-            "dee:eat"
+            {
+              "act": "dee:eat",
+              "at": 0.5
+            }
           ]
         },
         {
@@ -1404,7 +1458,12 @@
           "speaker": "narrator",
           "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock.",
           "dur": 10,
-          "act": "dee:point"
+          "act": [
+            {
+              "act": "dee:point",
+              "at": 0.19
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -1489,7 +1548,12 @@
           "speaker": "narrator",
           "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock.",
           "dur": 10,
-          "act": "dee:point"
+          "act": [
+            {
+              "act": "dee:point",
+              "at": 0.19
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -1573,7 +1637,12 @@
           "speaker": "narrator",
           "text": "Two monitors, nine tiles. Dolores puts a pencil against the glass without touching it. The first row is the lobby, the vestibule, the dock.",
           "dur": 10,
-          "act": "dee:point"
+          "act": [
+            {
+              "act": "dee:point",
+              "at": 0.19
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -1838,7 +1907,12 @@
           "speaker": "narrator",
           "text": "She doesn't correct you. She taps the glass over tile two, where nothing moves.",
           "dur": 5.4,
-          "act": "dee:touch",
+          "act": [
+            {
+              "act": "dee:touch",
+              "at": 0.32
+            }
+          ],
           "feed": "c2"
         },
         {
@@ -2964,7 +3038,12 @@
           "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. The cursor blinks.",
           "sfx": "pencil",
           "dur": 7.6,
-          "act": "dee:hand"
+          "act": [
+            {
+              "act": "dee:hand",
+              "at": 0.49
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -3052,7 +3131,12 @@
           "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. The cursor blinks.",
           "sfx": "pencil",
           "dur": 7.6,
-          "act": "dee:hand"
+          "act": [
+            {
+              "act": "dee:hand",
+              "at": 0.49
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -3135,7 +3219,12 @@
           "text": "The tablet is open on the incident field for forty-four. Dolores puts the pencil down next to it. Marisol's walkie, far off on the floor, has gone quiet.",
           "sfx": "pencil",
           "dur": 10.4,
-          "act": "dee:hand"
+          "act": [
+            {
+              "act": "dee:hand",
+              "at": 0.37
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -3383,7 +3472,12 @@
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
           "dur": 7.2,
-          "act": "dee:hand"
+          "act": [
+            {
+              "act": "dee:hand",
+              "at": 0.18
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -3475,7 +3569,12 @@
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
           "dur": 7.2,
-          "act": "dee:hand"
+          "act": [
+            {
+              "act": "dee:hand",
+              "at": 0.18
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -3567,7 +3666,12 @@
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
           "dur": 7.2,
-          "act": "dee:hand"
+          "act": [
+            {
+              "act": "dee:hand",
+              "at": 0.18
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -3659,7 +3763,12 @@
           "text": "The line is saved. Dolores slides the pencil back across the desk. The radio on the charger is still green.",
           "sfx": "pencil",
           "dur": 7.2,
-          "act": "dee:hand"
+          "act": [
+            {
+              "act": "dee:hand",
+              "at": 0.18
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -5222,7 +5331,13 @@
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
           "dur": 8.2,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -5327,7 +5442,13 @@
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
           "dur": 8.2,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -5432,7 +5553,13 @@
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
           "dur": 8.2,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -5550,7 +5677,13 @@
           "speaker": "narrator",
           "text": "The door to the lobby swings shut behind her. The clock on the wall says 23:03. It is 23:01.",
           "dur": 8.2,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -6102,7 +6235,13 @@
           "text": "The restroom is cold and bright. When you come back, the wall is as you left it, and Dolores is in the doorway counting radios.",
           "sfx": "door-heavy",
           "dur": 8.6,
-          "act": "you:leave"
+          "act": [
+            "you:leave",
+            {
+              "act": "you:gone",
+              "at": 0.15
+            }
+          ]
         },
         {
           "speaker": "narrator",
@@ -6531,7 +6670,12 @@
           "text": "Half past midnight. Dolores unwraps the foil all the way this time and smooths it flat on her knee.",
           "sfx": "foil",
           "dur": 6.9,
-          "act": "dee:eat"
+          "act": [
+            {
+              "act": "dee:eat",
+              "at": 0.2
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -6586,7 +6730,12 @@
           "text": "Half past midnight. Dolores unwraps the foil all the way this time and smooths it flat on her knee.",
           "sfx": "foil",
           "dur": 6.9,
-          "act": "dee:eat"
+          "act": [
+            {
+              "act": "dee:eat",
+              "at": 0.2
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -6662,7 +6811,12 @@
           "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
           "sfx": "drawer",
           "dur": 12.2,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.67
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -6741,7 +6895,12 @@
           "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
           "sfx": "drawer",
           "dur": 12.2,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.67
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -6816,14 +6975,24 @@
           "speaker": "narrator",
           "text": "You taste what is left in your own cup. It is wrong. It is, with some effort, drinkable.",
           "dur": 7,
-          "act": "you:drink"
+          "act": [
+            {
+              "act": "you:drink",
+              "at": 0.6
+            }
+          ]
         },
         {
           "speaker": "narrator",
           "text": "At a quarter to one Dolores opens the bottom drawer of the desk, under the charger. It is full of index cards in rubber bands. She takes the top one out and looks at it as if it were a bill.",
           "sfx": "drawer",
           "dur": 12.2,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.67
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -6895,7 +7064,12 @@
           "speaker": "narrator",
           "text": "At 01:30 the access terminal beeps once. The after-hours list has a new line. Dolores reads it off the screen without leaning in.",
           "dur": 8.7,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.6
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -6949,7 +7123,12 @@
           "speaker": "narrator",
           "text": "She takes it without looking, the way she takes a radio. She writes a name on the top card, small, and the day under it, and puts a rubber band around the pile.",
           "dur": 10.4,
-          "act": "dee:write"
+          "act": [
+            {
+              "act": "dee:write",
+              "at": 0.36
+            }
+          ]
         },
         {
           "speaker": "narrator",
@@ -6965,7 +7144,12 @@
           "speaker": "narrator",
           "text": "At 01:30 the access terminal beeps once. The after-hours list has a new line. Dolores reads it off the screen without leaning in.",
           "dur": 8.7,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.6
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -7019,7 +7203,12 @@
           "speaker": "narrator",
           "text": "At 01:30 the access terminal beeps once. The after-hours list has a new line. Dolores reads it off the screen without leaning in.",
           "dur": 8.7,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.6
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -7081,7 +7270,13 @@
           "speaker": "narrator",
           "text": "The door swings shut. The clock says 01:37. It is 01:35. The wall is yours.",
           "dur": 8.1,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         }
       ],
       "choices": [
@@ -7124,7 +7319,13 @@
           "speaker": "narrator",
           "text": "The door swings shut. The clock says 01:37. It is 01:35. The wall is yours.",
           "dur": 8.1,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         }
       ],
       "choices": [
@@ -7167,7 +7368,13 @@
           "speaker": "narrator",
           "text": "The door swings shut. The clock says 01:37. It is 01:35. The wall is yours.",
           "dur": 8.1,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         }
       ],
       "choices": [
@@ -7794,7 +8001,10 @@
           "dur": 9.1,
           "act": [
             "dee:sit",
-            "dee:point"
+            {
+              "act": "dee:point",
+              "at": 0.47
+            }
           ],
           "feed": "c1"
         },
@@ -7878,7 +8088,10 @@
           "dur": 9.1,
           "act": [
             "dee:sit",
-            "dee:point"
+            {
+              "act": "dee:point",
+              "at": 0.47
+            }
           ],
           "feed": "c1"
         },
@@ -7962,7 +8175,10 @@
           "dur": 9.1,
           "act": [
             "dee:sit",
-            "dee:point"
+            {
+              "act": "dee:point",
+              "at": 0.47
+            }
           ],
           "feed": "c1"
         },
@@ -8046,7 +8262,10 @@
           "dur": 9.1,
           "act": [
             "dee:sit",
-            "dee:point"
+            {
+              "act": "dee:point",
+              "at": 0.47
+            }
           ],
           "feed": "c1"
         },
@@ -8409,7 +8628,12 @@
           "speaker": "narrator",
           "text": "The laptop wakes on a login screen and a photograph of a dog on a beach. Dolores is out of her chair before you have read the name.",
           "dur": 8,
-          "act": "dee:stand"
+          "act": [
+            {
+              "act": "dee:stand",
+              "at": 0.56
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -8487,8 +8711,14 @@
           "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee.",
           "dur": 8.3,
           "act": [
-            "dee:stand",
-            "dee:drink"
+            {
+              "act": "dee:stand",
+              "at": 0.48
+            },
+            {
+              "act": "dee:drink",
+              "at": 0.48
+            }
           ]
         },
         {
@@ -8550,8 +8780,14 @@
           "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee.",
           "dur": 8.3,
           "act": [
-            "dee:stand",
-            "dee:drink"
+            {
+              "act": "dee:stand",
+              "at": 0.48
+            },
+            {
+              "act": "dee:drink",
+              "at": 0.48
+            }
           ]
         },
         {
@@ -8613,8 +8849,14 @@
           "text": "02:25. The hour you could fall asleep standing up. Dolores gets up and stands at the wall with her coffee.",
           "dur": 8.3,
           "act": [
-            "dee:stand",
-            "dee:drink"
+            {
+              "act": "dee:stand",
+              "at": 0.48
+            },
+            {
+              "act": "dee:drink",
+              "at": 0.48
+            }
           ]
         },
         {
@@ -8698,7 +8940,12 @@
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
           "dur": 9.1,
-          "act": "marisol:enter:left"
+          "act": [
+            {
+              "act": "marisol:enter:left",
+              "at": 0.29
+            }
+          ]
         },
         {
           "speaker": "marisol",
@@ -8776,7 +9023,12 @@
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
           "dur": 9.1,
-          "act": "marisol:enter:left"
+          "act": [
+            {
+              "act": "marisol:enter:left",
+              "at": 0.29
+            }
+          ]
         },
         {
           "speaker": "marisol",
@@ -8853,7 +9105,12 @@
           "text": "Two knocks on the control-room door, and then the door, already open. Marisol, with a cart handle in one hand and a paper bag in the other.",
           "sfx": "door-heavy",
           "dur": 9.1,
-          "act": "marisol:enter:left"
+          "act": [
+            {
+              "act": "marisol:enter:left",
+              "at": 0.29
+            }
+          ]
         },
         {
           "speaker": "marisol",
@@ -9934,8 +10191,11 @@
           "text": "Two minutes to three by the wall clock. Dolores takes the keys off the hook and the radio off the charger. The fourth radio is the only one that clicks.",
           "dur": 9.7,
           "act": [
-            "dee:stand",
-            "dee:count"
+            "dee:count",
+            {
+              "act": "dee:stand",
+              "at": 0.26
+            }
           ]
         },
         {
@@ -9961,7 +10221,13 @@
           "speaker": "narrator",
           "text": "She goes. The door swings shut behind her and the room is very quiet.",
           "dur": 5.4,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.14
+            }
+          ]
         },
         {
           "speaker": "narrator",
@@ -10012,7 +10278,13 @@
           "speaker": "narrator",
           "text": "The door swings shut. The elevator chime rings once, far off.",
           "dur": 5,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
+          ]
         },
         {
           "speaker": "narrator",
@@ -10591,7 +10863,12 @@
           "speaker": "narrator",
           "text": "Her voice is rough. When she comes in at 03:12, her hands are cold, and she goes to the intercom before she takes off her coat.",
           "dur": 8.4,
-          "act": "dee:enter:right"
+          "act": [
+            {
+              "act": "dee:enter:right",
+              "at": 0.16
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -13266,7 +13543,11 @@
           "dur": 14.7,
           "act": [
             "dee:stand",
-            "dee:leave"
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
           ]
         }
       ],
@@ -13317,7 +13598,11 @@
           "dur": 14.7,
           "act": [
             "dee:stand",
-            "dee:leave"
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
           ]
         }
       ],
@@ -13368,7 +13653,11 @@
           "dur": 14.7,
           "act": [
             "dee:stand",
-            "dee:leave"
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.12
+            }
           ]
         }
       ],
@@ -13669,7 +13958,12 @@
           "speaker": "narrator",
           "text": "You open the shift log on the tablet. It is long. It is in your hand, and in Dolores's pencil in the margins.",
           "dur": 7.9,
-          "act": "you:write"
+          "act": [
+            {
+              "act": "you:write",
+              "at": 0.68
+            }
+          ]
         }
       ],
       "choices": [
@@ -15710,7 +16004,12 @@
           "text": "Thursday night. The charger. She counts four.",
           "sfx": "radio-charger",
           "dur": 4,
-          "act": "dee:count"
+          "act": [
+            {
+              "act": "dee:count",
+              "at": 0.64
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -15762,7 +16061,12 @@
           "speaker": "narrator",
           "text": "It is pepper and egg. It is cold. You eat it standing up at the wall while the day officer pretends not to watch.",
           "dur": 7.7,
-          "act": "you:eat"
+          "act": [
+            {
+              "act": "you:eat",
+              "at": 0.3
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -15863,7 +16167,12 @@
           "speaker": "narrator",
           "text": "07:02. The day officer is at the desk. Mr. Okafor turns the tablet to the light from the revolving door and reads the margins first.",
           "dur": 9.3,
-          "act": "okafor:read"
+          "act": [
+            {
+              "act": "okafor:read",
+              "at": 0.82
+            }
+          ]
         },
         {
           "speaker": "okafor",
@@ -16020,7 +16329,13 @@
           "speaker": "narrator",
           "text": "Mr. Okafor goes upstairs with the tablet. Dolores stands at the charger with her hand flat on it.",
           "dur": 6.3,
-          "act": "okafor:leave"
+          "act": [
+            "okafor:leave",
+            {
+              "act": "okafor:gone",
+              "at": 0.15
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -16205,7 +16520,13 @@
           "speaker": "narrator",
           "text": "She goes. The day officer takes the other chair. The clock on the wall says 07:06. It is 07:04.",
           "dur": 8.6,
-          "act": "dee:leave"
+          "act": [
+            "dee:leave",
+            {
+              "act": "dee:gone",
+              "at": 0.15
+            }
+          ]
         }
       ],
       "choices": [],
@@ -16231,13 +16552,23 @@
           "speaker": "narrator",
           "text": "You turn the good chair to face the wall, beside hers. She does not say sit. She does not say don't.",
           "dur": 7.5,
-          "act": "you:sit"
+          "act": [
+            {
+              "act": "you:sit",
+              "at": 0.55
+            }
+          ]
         },
         {
           "speaker": "narrator",
           "text": "You pour two coffees. They are wrong. She holds hers in both hands and drinks none of it.",
           "dur": 6.4,
-          "act": "you:hand"
+          "act": [
+            {
+              "act": "you:hand",
+              "at": 0.43
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -16272,7 +16603,12 @@
           "speaker": "narrator",
           "text": "You take the wall. She goes as far as the corridor door and stops there, one hand on the frame.",
           "dur": 6.4,
-          "act": "dee:stand"
+          "act": [
+            {
+              "act": "dee:stand",
+              "at": 0.2
+            }
+          ]
         },
         {
           "speaker": "narrator",
@@ -16289,7 +16625,12 @@
           "speaker": "narrator",
           "text": "It is a little longer than thirty seconds. When she comes back she sits, and picks up the pencil, and holds it without writing.",
           "dur": 8,
-          "act": "dee:sit"
+          "act": [
+            {
+              "act": "dee:sit",
+              "at": 0.34
+            }
+          ]
         }
       ],
       "choices": [
@@ -16642,7 +16983,10 @@
           "dur": 11.2,
           "act": [
             "dee:stand",
-            "dee:touch:glass"
+            {
+              "act": "dee:touch:glass",
+              "at": 0.49
+            }
           ],
           "feed": "c5"
         },
@@ -16750,7 +17094,12 @@
           "speaker": "narrator",
           "text": "You don't know. She holds the paper against the glass longer than she needs to and lets you not know it.",
           "dur": 6.5,
-          "act": "dee:touch:glass"
+          "act": [
+            {
+              "act": "dee:touch:glass",
+              "at": 0.15
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -17116,7 +17465,13 @@
           "speaker": "narrator",
           "text": "He goes out through the revolving door into the cold, and it carries him round and out. One line on the sheet is closed that was open for ten hours and seventeen minutes.",
           "dur": 10.8,
-          "act": "dev:leave"
+          "act": [
+            "dev:leave",
+            {
+              "act": "dev:gone",
+              "at": 0.34
+            }
+          ]
         }
       ],
       "choices": [
@@ -17161,7 +17516,13 @@
           "speaker": "narrator",
           "text": "At the door he turns back to say something else. He says sorry instead, and the revolving door takes him.",
           "dur": 7.3,
-          "act": "dev:leave"
+          "act": [
+            "dev:leave",
+            {
+              "act": "dev:gone",
+              "at": 0.72
+            }
+          ]
         }
       ],
       "choices": [
@@ -17249,8 +17610,14 @@
           "text": "The rice is cold and it is very good. She eats the way she does everything, to the edge, and leaves the last forkful where you can reach it.",
           "dur": 9.2,
           "act": [
-            "you:eat",
-            "dee:eat"
+            {
+              "act": "you:eat",
+              "at": 0.27
+            },
+            {
+              "act": "dee:eat",
+              "at": 0.27
+            }
           ]
         }
       ],
@@ -17303,7 +17670,12 @@
           "speaker": "narrator",
           "text": "You tell her it is hers and you will eat later. She takes the plate down and stands there holding it, as though the weight were something she had to read.",
           "dur": 9.6,
-          "act": "dee:stand"
+          "act": [
+            {
+              "act": "dee:stand",
+              "at": 0.31
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -17723,7 +18095,12 @@
           "speaker": "narrator",
           "text": "She takes the pen. She writes D.R. in the box and presses until the nib squeaks.",
           "dur": 6.2,
-          "act": "dee:write"
+          "act": [
+            {
+              "act": "dee:write",
+              "at": 0.24
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -17869,7 +18246,12 @@
           "speaker": "narrator",
           "text": "He is on the list: day post, 0545. The reader is wrong and the list is right. You release the door.",
           "dur": 8.2,
-          "act": "you:press:release"
+          "act": [
+            {
+              "act": "you:press:release",
+              "at": 0.79
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -18082,7 +18464,12 @@
           "speaker": "narrator",
           "text": "03:26. The incident field for car three has times in it, a floor, a name. Nothing else. Dolores reads it upside down from her chair.",
           "dur": 11.1,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.67
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -18116,7 +18503,12 @@
           "speaker": "narrator",
           "text": "03:26. The incident field for car three has a word in it that is not a time. Dolores reads it upside down from her chair.",
           "dur": 9.3,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.64
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -18150,7 +18542,12 @@
           "speaker": "narrator",
           "text": "03:26. The incident field for car three is empty. The cursor blinks in it. Dolores looks at it, then at you.",
           "dur": 9,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.69
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -18184,7 +18581,12 @@
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
           "dur": 10.1,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.74
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -18218,7 +18620,12 @@
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
           "dur": 8.2,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.73
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -18286,7 +18693,12 @@
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a time, a name, a floor and the camera. Dolores reads it upside down.",
           "dur": 9.8,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.74
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -18320,7 +18732,12 @@
           "speaker": "narrator",
           "text": "03:31. The incident field for the lobby has a word in it that is not a time. Dolores reads it upside down.",
           "dur": 8.4,
-          "act": "dee:lean"
+          "act": [
+            {
+              "act": "dee:lean",
+              "at": 0.73
+            }
+          ]
         },
         {
           "speaker": "dee",

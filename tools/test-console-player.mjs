@@ -238,7 +238,7 @@ async function main() {
     await until(() => heard(r), `lines of ${r.c.scene()}`);
     check('the room recorded exactly the acts of the scene it is in', (() => {
       const s = story.scenes[r.c.scene()];
-      const data = s.lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act])]);
+      const data = s.lines.flatMap((l) => [...(l.place ? [`place:${l.place}`] : []), ...(l.act == null ? [] : Array.isArray(l.act) ? l.act : [l.act]).map((e) => (typeof e === 'string' ? e : e.act))]);
       return same(r.c.room().acted, data);
     })(), r.c.room().acted);
     // Skip all: the room settles where the lines leave it, and a reload returns the same screen.

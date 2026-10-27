@@ -39,9 +39,9 @@
       "seated": "dee-sit.webp", "seated.phone": "dee-phone.webp", "seated.write": "dee-write.webp", "seated.eat": "dee-eat.webp",
       "seated.drink": "dee-drink.webp", "seated.lean": "dee-lean.webp", "seated.angry": "dee-angry.webp",
       "standing": "dee-stand-folded.webp", "standing.point": "dee-taps-screen.webp", "standing.touch": "dee-taps-screen.webp",
-      "standing.knock": "dee-taps-screen.webp", "standing.point.shelf": "dee-shelf.webp", "standing.point.panel": "dee-panel.webp",
+      "standing.point.shelf": "dee-shelf.webp", "standing.point.panel": "dee-panel.webp",
       "standing.press.panel": "dee-panel.webp", "standing.count": "dee-at-charger.webp", "standing.hand": "dee-hand.webp",
-      "standing.angry": "dee-angry.webp", "door": "dee-door-l.webp", "right": "dee-at-charger.webp", "left": "dee-stand-folded.webp"
+      "standing.angry": "dee-angry.webp", "standing.charger": "dee-at-charger.webp", "standing.knock": "dee-at-charger.webp", "door": "dee-door-l.webp", "right": "dee-at-charger.webp", "left": "dee-stand-folded.webp"
     },
     "you": {
       "seated": "trainee-sit.webp", "seated.phone": "you-phone.webp", "seated.write": "you-write.webp", "seated.read": "you-write.webp",
