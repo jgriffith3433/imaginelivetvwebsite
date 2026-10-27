@@ -2552,10 +2552,6 @@ window.ILTV_STORIES = {
        "act": [
         "okafor:leave",
         {
-         "act": "okafor:gone",
-         "at": 0.23
-        },
-        {
          "act": "dee:charger",
          "at": 0.47
         },
@@ -2570,6 +2566,12 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "It's customary to read it first.",
+       "act": [
+        {
+         "act": "okafor:gone",
+         "at": 0.9
+        }
+       ],
        "file": "/night-shift/okafor-out-fast/media/line-2.mp3",
        "dur": 2.6
       },
@@ -7867,6 +7869,12 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "Hey. You're good, you know? You're, uh. Night!",
+       "act": [
+        {
+         "act": "terrell:gone",
+         "at": 0.9
+        }
+       ],
        "file": "/night-shift/terrell-goodbye/media/line-7.mp3",
        "dur": 3.1
       }
@@ -8438,6 +8446,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "He's the best at it. Not the best at anything else.",
+       "act": "dee:enter:right",
        "file": "/night-shift/day-log/media/line-4.mp3",
        "dur": 8.7
       },
@@ -14744,7 +14753,13 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You stand. \"Sir. After hours, I need you to sign in.\" He stops. For a second he looks at you the way you look at a tile.",
-       "act": "you:stand",
+       "act": [
+        "you:stand",
+        {
+         "act": "pierce:enter:left",
+         "at": 0.5
+        }
+       ],
        "file": "/night-shift/pierce-signin/media/line-1.mp3",
        "dur": 9.4
       },

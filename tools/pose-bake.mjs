@@ -95,7 +95,9 @@ if (import.meta.url === 'file://' + process.argv[1]) {
     const recipes = JSON.parse(fs.readFileSync(path.join(ROOT, 'night-shift/stage-recipes.json'), 'utf8')).poses;
     const stage = JSON.parse(fs.readFileSync(STAGE + 'stage.json', 'utf8'));
     const seatedOf = {};
-    for (const [who, table] of Object.entries(stage.poses)) for (const [k, f] of Object.entries(table)) if (k.startsWith('seated')) seatedOf[f.replace(/\.webp$/, '')] = who;
+    const standingToo = new Set();
+    for (const [who, table] of Object.entries(stage.poses)) for (const [k, f] of Object.entries(table)) { const n = f.replace(/\.webp$/, ''); if (k.startsWith('seated')) seatedOf[n] = who; else standingToo.add(n); }
+    for (const n of standingToo) delete seatedOf[n]; // a layer used standing too (Dee angry beside her chair) keeps no chair
     const plate = load(STAGE + 'plate.webp', W, H);
     const marks = JSON.parse(fs.readFileSync(path.join(ROOT, 'night-shift/stage-marks.json'), 'utf8')).marks;
     const all = Object.keys(recipes).map((n) => n.replace(/\.webp$/, ''));

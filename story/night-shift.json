@@ -674,10 +674,6 @@
           "act": [
             "okafor:leave",
             {
-              "act": "okafor:gone",
-              "at": 0.23
-            },
-            {
               "act": "dee:charger",
               "at": 0.47
             },
@@ -691,7 +687,13 @@
           "speaker": "okafor",
           "text": "It's customary to read it first.",
           "perform": "from the door, tired",
-          "dur": 2.6
+          "dur": 2.6,
+          "act": [
+            {
+              "act": "okafor:gone",
+              "at": 0.9
+            }
+          ]
         },
         {
           "speaker": "dee",
@@ -1614,7 +1616,8 @@
           "speaker": "terrell",
           "text": "Hey, you see the game? Two points. Two. In the last…",
           "perform": "from the door, still talking",
-          "dur": 4.4
+          "dur": 4.4,
+          "offstage": true
         },
         {
           "speaker": "dee",
@@ -5019,7 +5022,8 @@
           "speaker": "terrell",
           "text": "Door's all you. You're good, you're good.",
           "perform": "warm, easy, off the radio",
-          "dur": 2.5
+          "dur": 2.5,
+          "offstage": true
         },
         {
           "speaker": "dee",
@@ -5081,13 +5085,15 @@
           "text": "Let me see what I can do.",
           "perform": "a beat of keyboard",
           "sfx": "radio-squelch",
-          "dur": 2.1
+          "dur": 2.1,
+          "offstage": true
         },
         {
           "speaker": "terrell",
           "text": "Huh. Forty's got, uh. Nothing for him, man. Let me see what I can do.",
           "perform": "to the vest, not the radio",
-          "dur": 5.3
+          "dur": 5.3,
+          "offstage": true
         },
         {
           "speaker": "narrator",
@@ -5262,7 +5268,13 @@
           "speaker": "terrell",
           "text": "Hey. You're good, you know? You're, uh. Night!",
           "perform": "quick, over his shoulder",
-          "dur": 3.1
+          "dur": 3.1,
+          "act": [
+            {
+              "act": "terrell:gone",
+              "at": 0.9
+            }
+          ]
         }
       ],
       "choices": [
@@ -5752,7 +5764,8 @@
           "speaker": "dee",
           "text": "He's the best at it. Not the best at anything else.",
           "perform": "from the doorway, taking off her coat, not asking what you are reading",
-          "dur": 8.7
+          "dur": 8.7,
+          "act": "dee:enter:right"
         },
         {
           "speaker": "dee",
@@ -11050,7 +11063,13 @@
           "speaker": "narrator",
           "text": "You stand. \"Sir. After hours, I need you to sign in.\" He stops. For a second he looks at you the way you look at a tile.",
           "dur": 9.4,
-          "act": "you:stand"
+          "act": [
+            "you:stand",
+            {
+              "act": "pierce:enter:left",
+              "at": 0.5
+            }
+          ]
         },
         {
           "speaker": "pierce",
@@ -12209,7 +12228,8 @@
           "speaker": "adler",
           "text": "That word is not on the display. Please cross it out and write what the display said.",
           "perform": "formal, a pen stopping",
-          "dur": 5.5
+          "dur": 5.5,
+          "offstage": true
         },
         {
           "speaker": "narrator",
@@ -12271,7 +12291,8 @@
           "speaker": "adler",
           "text": "I will wait. Please write it now, in the same words.",
           "perform": "formal, patient as a stone",
-          "dur": 4
+          "dur": 4,
+          "offstage": true
         },
         {
           "speaker": "narrator",
@@ -12333,7 +12354,8 @@
           "speaker": "adler",
           "text": "The panel has not been reset. I am looking at it. Please correct the entry.",
           "perform": "formal, quiet",
-          "dur": 5.1
+          "dur": 5.1,
+          "offstage": true
         },
         {
           "speaker": "narrator",
@@ -16788,7 +16810,8 @@
           "text": "Hey, hey, evening! Cold one, huh? Cold out, you know?",
           "perform": "bright, already waving, from the desk",
           "sfx": "radio-squelch",
-          "dur": 4.2
+          "dur": 4.2,
+          "offstage": true
         },
         {
           "speaker": "dee",
@@ -16848,7 +16871,8 @@
           "text": "Post one, hey. The guy behind her? I figured he was hers. You know?",
           "perform": "caught, running it together",
           "sfx": "radio-squelch",
-          "dur": 4.6
+          "dur": 4.6,
+          "offstage": true
         },
         {
           "speaker": "narrator",
@@ -16861,7 +16885,8 @@
           "text": "Okay. Okay! Thirty-four? Who for? Let me see what I can do.",
           "perform": "fast, reading the card twice",
           "sfx": "phone-ring",
-          "dur": 4.2
+          "dur": 4.2,
+          "offstage": true
         },
         {
           "speaker": "dee",

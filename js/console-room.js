@@ -646,7 +646,19 @@
     photoFig(f, false);
   }
 
-  var waits = {}; // who -> true while the line on stage has a `gone` beat for them still to come
+  /** Does a `gone` for this person still come in the scene (a later beat of this line or a later line, before they enter again)? Then the leave waits for it. */
+  function goneComing(who) {
+    for (var i = state.at; i < state.lines.length; i++) {
+      var list = actsOf(state.lines[i]);
+      for (var k = 0; k < list.length; k++) {
+        var p = list[k].spec.split(":");
+        if (p[0] !== who || (i === state.at && list[k].at <= 0)) continue;
+        if (p[1] === "gone") return true;
+        if (p[1] === "enter") return false;
+      }
+    }
+    return false;
+  }
 
   function act(spec, instant) {
     var parts = String(spec).split(":");
@@ -700,9 +712,10 @@
       f.el.classList.add("is-walking");
       applyPos(f, false);
       // with a `gone` beat later in the line the door stays open until it; without one he is out of the room 1.4 s after
-      door(waits[who] ? 0 : 1900);
+      var held = goneComing(who);
+      door(held ? 0 : 1900);
       say(nameOf(who) + " leaves the room");
-      if (!waits[who]) { var tok = f.leaveToken; later(function () { if (f.leaveToken === tok) goneNow(f); }, 1400); }
+      if (!held) { var tok = f.leaveToken; later(function () { if (f.leaveToken === tok) goneNow(f); }, 1400); }
       return;
     }
     if (verb === "gone") {
@@ -867,7 +880,6 @@
   function scene(def) {
     try {
       clearTimers();
-      waits = {};
       host.removeAttribute("data-door");
       ["ring", "buzz", "writing", "touch", "spill", "knock", "count", "flicker", "swap", "door-side"].forEach(function (k) { host.removeAttribute("data-" + k); });
       var cast = def.cast && def.cast.length ? def.cast : ["you", "dee"];
@@ -946,13 +958,11 @@
       var l = state.lines[i];
       state.at = i;
       flushBeats();
-      waits = {};
       if (!l) return;
       var beats = actsOf(l);
       state.acted[i] = beats.map(function (b) { return b.spec; });
       if (l.place) { setPlace(l.place, instant); state.acted[i].unshift("place:" + l.place); }
       var ms = (+l.dur > 0 ? +l.dur : 3) * 1000;
-      beats.forEach(function (b) { var p = b.spec.split(":"); if (p[1] === "gone" && b.at > 0) waits[p[0]] = true; });
       beats.forEach(function (b) {
         if (instant || b.at <= 0) { act(b.spec, instant); return; }
         var e = { spec: b.spec };
