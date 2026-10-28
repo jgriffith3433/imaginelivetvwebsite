@@ -154,18 +154,18 @@ gets no GPU server is marked "inconclusive" by Studio and is not counted (they w
 
 | Scenario | Run | Verdict | Problems | Video |
 | --- | --- | --- | --- | --- |
-| `night-shift-signoff` (12 endings x 4 sizes, seeded 2 choices back) | `r_6ade0204d5e0` | fix-first (only because the review's quality bar names The Final Spark, which this scenario does not open; no finding) | 0 | https://studio.hawkesgen.com/gen/v1/files/a_a260e2fef4f5a1c5 |
+| `night-shift-signoff` (12 endings x 4 sizes, seeded 2 choices back) | `r_6ade0204d5e0` | fix-first (only because the review's quality bar names The Final Spark, which this scenario does not open; no finding) | 0 | https://studio.hawkesgen.ai/gen/v1/files/a_a260e2fef4f5a1c5 |
 | `night-shift-signoff` `{"at":"whole","sizes":"desktop"}` (12 endings played whole, 79 to 84 choices each, 42.2 to 44.0 minutes of audio) | `r_89271af43e51` | played, 12 of 12, review skipped as unchanged | 0 | in the run |
 | `night-shift-signoff` whole at 390x844 | `r_a05410abfb6d` | 12 of 12 | 0 | in the run |
 | `night-shift-signoff` whole at 360x640 | `r_8375588a05cb` | 12 of 12 | 0 | in the run |
 | `night-shift-signoff` whole at 844x390 | `r_91e9c80b97ad` | 12 of 12 | 0 | in the run |
-| `console` (demo leg and the real Night Shift leg, three phone sizes, stress buttons) | `r_b5ca08f9a621` | fix-first (same quality-bar reason; 0 findings) | 0 | https://studio.hawkesgen.com/gen/v1/files/a_8c185b67d68e0c6e |
+| `console` (demo leg and the real Night Shift leg, three phone sizes, stress buttons) | `r_b5ca08f9a621` | fix-first (same quality-bar reason; 0 findings) | 0 | https://studio.hawkesgen.ai/gen/v1/files/a_8c185b67d68e0c6e |
 | `stories` | `r_b93eb476e391` | ship | 0 | in the run |
 | `branches` | `r_a84d4d8a9367` | ship | 0 | in the run |
-| `pages` | `r_f4e2b45515e7` | ship | 2 (warnings) | https://studio.hawkesgen.com/gen/v1/files/a_4021ff44452758f4 |
+| `pages` | `r_f4e2b45515e7` | ship | 2 (warnings) | https://studio.hawkesgen.ai/gen/v1/files/a_4021ff44452758f4 |
 | `sound` | `r_99544a26e1ef` | ship | 0 | in the run |
 | `analytics` | `r_47bd81c925d7` | ship | 0 | in the run |
-| `cctv-art` | `r_a0f70ca4d72e` | fix-first (quality bar again; 0 findings, 22 camera states loaded) | 0 | https://studio.hawkesgen.com/gen/v1/files/a_5b5d6e377a86c16a |
+| `cctv-art` | `r_a0f70ca4d72e` | fix-first (quality bar again; 0 findings, 22 camera states loaded) | 0 | https://studio.hawkesgen.ai/gen/v1/files/a_5b5d6e377a86c16a |
 | `credits` | `r_6912729f0c73` (found the internal text on the older What's new entries), then after the `releases.json` fix `r_9086f92d36a8` | fix-first, then **ship** (0 findings) | 0 | in the run |
 
 The whole runs were split by screen size because Studio ends any run that goes over 45 minutes; each size took about 6 minutes. Each played the shortest way

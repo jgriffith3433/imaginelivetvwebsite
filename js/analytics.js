@@ -1,6 +1,6 @@
 /* ==========================================================================
    Hawkes Analytics on Imagine Live TV: what viewers watch, choose, leave and like.
-   The SDK is Hawkes Gen's, https://gen.hawkesgen.com/sdk/analytics@1.js (never a copy here; the contract is
+   The SDK is Hawkes Gen's, https://gen.hawkesgen.ai/sdk/analytics@1.js (never a copy here; the contract is
    hawkesgen/docs/analytics.md). How it's wired here, every event and its props, is in AGENTS.md "Analytics":
    keep the two in step.
 

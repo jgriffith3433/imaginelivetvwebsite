@@ -1551,7 +1551,7 @@ async function cctvStates(t, st, used) {
 
 /* ---------------- credits: "Powered by HAWKES GEN" on every page, the parent company on the home page ---------------- */
 
-const GEN_URL = "https://hawkesgen.com";
+const GEN_URL = "https://hawkesgen.ai";
 const PARENT_URL = "https://hawkesbiomedical.com";
 const sameUrl = (a, b) => {
   try {
@@ -1591,7 +1591,7 @@ async function checkLink(t, doc, find, url, label, where) {
   return link;
 }
 
-/** The mark: "Powered by HAWKES GEN" linking to hawkesgen.com, and never over the page's story video. */
+/** The mark: "Powered by HAWKES GEN" linking to hawkesgen.ai, and never over the page's story video. */
 async function checkMark(t, doc, where) {
   const link = await checkLink(t, doc, (a) => /powered by\s+hawkes gen/i.test(((a.parentElement || a).textContent || "").replace(/\s+/g, " ")) && /^HAWKES GEN$/i.test(a.textContent.trim()), GEN_URL, "Powered by HAWKES GEN", where);
   if (!link) return;
@@ -2034,7 +2034,7 @@ async function analyticsNight(t, A, pump, st) {
 async function analyticsRun(options, t) {
   const A = window.hawkesAnalytics;
   if (!A || !A.config) {
-    t.problem("bug", "Hawkes Analytics didn't load on the home page (gen.hawkesgen.com/sdk/analytics@1.js)");
+    t.problem("bug", "Hawkes Analytics didn't load on the home page (gen.hawkesgen.ai/sdk/analytics@1.js)");
     return;
   }
   const fromLoad = A.config().debug; // the bot's tab has it from the URL (js/hawkes-build.js)
@@ -2049,7 +2049,7 @@ async function analyticsRun(options, t) {
   t.metric("analyticsBuild", (c.build && c.build.version) || "none");
   if (c.product !== "imaginelivetv") t.problem("bug", `Analytics product is "${c.product}", not imaginelivetv`);
   if (!c.build || !c.build.version || !c.build.commit) t.problem("bug", `Analytics has no build with a commit (HAWKES_BUILD is ${JSON.stringify(c.build)}): run npm run stamp (js/hawkes-build.js)`);
-  if (/\.hawkesgen\.com$/.test(location.hostname) && c.env !== "beta" && c.env !== "preview") t.problem("bug", `On ${location.hostname} the analytics env is ${c.env}, not beta`);
+  if (/\.hawkesgen\.ai$/.test(location.hostname) && c.env !== "beta" && c.env !== "preview") t.problem("bug", `On ${location.hostname} the analytics env is ${c.env}, not beta`);
 
   // Every sent event goes on the timeline as it goes out.
   const shownSeqs = new Set();
@@ -4982,7 +4982,7 @@ installPlaytest({
       title: "Powered by HAWKES GEN on every kind of page, Hawkes Biomedical on the home page",
       seconds: 45,
       tags: ["full"],
-      description: "Waits for the landing page's title splash to fade, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.com and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before tapping The Final Spark's Tap to play it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back. Then Night Shift, opened from its card: its Tap to play prompt says what the saved Sound setting says, and the footer mark is visible and not covered under the console player.",
+      description: "Waits for the landing page's title splash to fade, scrolls to the home page (landing page) footer and checks \"Powered by HAWKES GEN\" links to https://hawkesgen.ai and the parent company link goes to https://hawkesbiomedical.com (visible, hit-tested, not covered), and the mark again with The Final Spark open in the player. Then opens a blog post, the start's branch page and What's new and checks the mark in each footer, and that nothing lies over the story video (the mark never overlaps it). Before tapping The Final Spark's Tap to play it turns Sound off with the prompt's own Settings button: the prompt's line must then say \"Sound off.\", and so must the branch page's prompt, which loads with Sound off saved. The viewer's own hawkes.sound is put back. Then Night Shift, opened from its card: its Tap to play prompt says what the saved Sound setting says, and the footer mark is visible and not covered under the console player.",
     },
     {
       id: "sound",
