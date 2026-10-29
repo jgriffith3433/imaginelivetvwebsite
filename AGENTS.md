@@ -1,5 +1,7 @@
 # Imagine Live TV website — agent notes
 
+**Lanes, local dev and deploys:** `LANES.md` (branches dev -> beta -> main; `dev.bat`, `deploy-beta.bat`, `deploy-prod.bat`, `status.bat`, `links.bat`, `sync.bat`; beta and live links).
+
 The site for **Imagine Live TV** (imaginelivetv.com), static on GitHub Pages. In the Hawkes Biomedical line
 it is sold as *live medical education*. It is a home for choose-your-path video stories: the home page is the
 landing page (a card per story, from `story/stories.json`), and choosing one opens its player on the same page
