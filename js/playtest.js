@@ -2034,7 +2034,7 @@ async function analyticsNight(t, A, pump, st) {
 async function analyticsRun(options, t) {
   const A = window.hawkesAnalytics;
   if (!A || !A.config) {
-    t.problem("bug", "Hawkes Analytics didn't load on the home page (gen.hawkesgen.ai/sdk/analytics@1.js)");
+    t.problem("bug", "Hawkes Analytics didn't load on the home page (hawkesgen.ai/sdk/analytics@1.js)");
     return;
   }
   const fromLoad = A.config().debug; // the bot's tab has it from the URL (js/hawkes-build.js)

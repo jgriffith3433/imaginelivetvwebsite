@@ -423,7 +423,7 @@ function page(st, s, counts) {
   </footer>
 ${inv ? `  <div class="inventory kit" data-kit="${esc(JSON.stringify({ inventory: inv, counts }))}"></div>
 ` : ''}  <script src="/js/hawkes-build.js"></script>
-  <script src="https://gen.hawkesgen.ai/sdk/analytics@1.js" data-product="imaginelivetv"></script>
+  <script src="https://hawkesgen.ai/sdk/analytics@1.js" data-product="imaginelivetv"></script>
   <script src="/js/analytics.js"></script>
   <script src="/js/hawkes-sound.js"></script>
   <script src="/js/${inv ? 'kit' : 'spot'}.js"></script>
@@ -910,7 +910,7 @@ function consolePage(st, s) {
     <p class="stats-note">Anonymous viewing statistics (no cookies, no personal data, no IP stored) help us improve the stories. <a href="/privacy.html">Privacy</a></p>
   </footer>
   <script src="/js/hawkes-build.js"></script>
-  <script src="https://gen.hawkesgen.ai/sdk/analytics@1.js" data-product="imaginelivetv"></script>
+  <script src="https://hawkesgen.ai/sdk/analytics@1.js" data-product="imaginelivetv"></script>
   <script src="/js/analytics.js"></script>
   <script src="/js/hawkes-sound.js"></script>
 </body>

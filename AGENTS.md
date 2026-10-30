@@ -101,10 +101,10 @@ by hand; a typo in old notes can be fixed in the file on beta.
 
 Hawkes Analytics is the only analytics here (J, 2026-10-18): never add another tracker. The contract is
 `hawkesgen/docs/analytics.md`; the product id is `imaginelivetv` (`hawkesgen/analytics/products.json`, beta
-`imaginelivetv`). Events go to `https://gen.hawkesgen.ai/v1/analytics/collect`.
+`imaginelivetv`). Events go to `https://hawkesgen.ai/v1/analytics/collect`.
 
 **Loaded on every page people see**, at the end of `<body>`, in this order: `js/hawkes-build.js`,
-Hawkes Gen's SDK `https://gen.hawkesgen.ai/sdk/analytics@1.js` (`data-product="imaginelivetv"`), `js/analytics.js`. That's `index.html` (before
+Hawkes Gen's SDK `https://hawkesgen.ai/sdk/analytics@1.js` (`data-product="imaginelivetv"`), `js/analytics.js`. That's `index.html` (before
 `js/hawkes-sound.js` and `js/game.js`, so it hears the first scene), `whatsnew.html`, `privacy.html`, `404.html`,
 every blog post (`f/*/index.html`, by hand: a new post needs the three lines) and every branch page (the template in
 `tools/build-story.mjs`). Not on the `/<id>/` link pages: they forward to `/?story=<id>` at once, where the home page
