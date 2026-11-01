@@ -1354,6 +1354,32 @@ body.is-holding { touch-action: none; }
 /* The standard sound setup (js/hawkes-sound.js): the Tap to play prompt and the Settings panel. */
 html.is-tap-waiting, html.is-tap-waiting body { overflow: hidden; }
 
+/* Before the title splash is up (index.html's head script sets is-splash-pending, js/hawkes-sound.js lifts it):
+   the page stays hidden under a cover that looks like the splash, so nothing flashes before it. */
+html.is-splash-pending, html.is-splash-pending body { overflow: hidden; }
+html.is-splash-pending body { visibility: hidden; }
+html.is-splash-pending::after {
+  content: attr(data-tap-title);
+  position: fixed;
+  inset: 0;
+  z-index: 8999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 170, 70, 0.16), transparent 34vmax),
+    #070807;
+  color: var(--green-soft);
+  font-family: var(--sans);
+  font-size: clamp(1.3rem, 6.2vmin, 3.4rem);
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-align: center;
+}
+
 .tap-to-play {
   position: fixed;
   inset: 0;

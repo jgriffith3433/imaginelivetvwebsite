@@ -276,17 +276,29 @@
     decided = true;
     markSplashed();
     if (!unlocked) showPrompt();
+    lift();
   }
 
   // Back on the landing page before the tap: the story's prompt goes, sound stays locked.
   function dismiss() {
     decided = true;
     if (overlay && !unlocked) hidePrompt();
+    lift();
   }
 
   // ─── The title splash (the landing page) ───────────────────────
 
+  // index.html's first-paint cover (html.is-splash-pending) comes off once the splash or a prompt is up, or there's none.
+  function lift() {
+    document.documentElement.classList.remove("is-splash-pending");
+  }
+
   function splash(title) {
+    showSplash(title);
+    lift();
+  }
+
+  function showSplash(title) {
     decided = true;
     if (splashEl || overlay || !document.body) return;
     if (isPostRoute || location.hash === "#blog" || splashedInSession()) {
