@@ -7,6 +7,23 @@
   <meta name="description" content="Imagine Live TV. Choose-your-path video stories, and the blog.">
   <link rel="canonical" href="https://imaginelivetv.com/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script>
+    /* First paint: when the title splash (or a story's Tap to play) is coming, cover the page with the splash's
+       look so the story cards never flash before it. js/hawkes-sound.js lifts the cover the moment the real splash
+       or prompt is up (or decides there is none); the timer is a fallback so the page can never stay covered.
+       Without JavaScript this never runs and the page shows as usual. */
+    (function () {
+      var d = document.documentElement, q = location.search, story = /[?&]story=/.test(q), seen = false;
+      if (location.hash === "#blog" || /^\/f(\/|$)/.test(location.pathname)) return;
+      try {
+        var freshRun = window.top === window && /[?&]playtest=/.test(q) && !story;
+        seen = !freshRun && sessionStorage.getItem("iltv.splashed") === "1";
+      } catch (e) { /* storage blocked */ }
+      if (seen && !story) return;
+      d.classList.add("is-splash-pending");
+      setTimeout(function () { d.classList.remove("is-splash-pending"); }, 4000);
+    })();
+  </script>
   <link rel="stylesheet" href="/css/site.css">
   <meta name="theme-color" content="#0c0d0f">
 </head>
