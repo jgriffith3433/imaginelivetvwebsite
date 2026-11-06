@@ -2439,7 +2439,8 @@ figure.feed { cursor: default; }
    Desktop: the video sits in a 2.39:1 letterbox (black bars), the choices wait dimmed while the clip plays and come up
    with a thin countdown when it ends, and the bar and title fade away after 3 s without movement. */
 .choice-timer { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.45rem; min-height: 14px; transition: opacity 0.4s ease; }
-.choice-timer[hidden] { display: none; }
+/* Hidden keeps its row: the video stage must not resize when the countdown appears. */
+.choice-timer[hidden] { display: flex; visibility: hidden; }
 .choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
 .choice-timer-bar { display: block; height: 100%; width: 100%; background: #c8c4be; transform-origin: left center; animation: choice-timer linear forwards; }
 .choice-timer-label { min-width: 3.6em; text-align: right; color: #8e8b86; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }

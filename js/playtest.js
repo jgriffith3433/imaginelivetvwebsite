@@ -2172,6 +2172,9 @@ async function cinemaRun(options, t) {
     while (box.dataset.phase !== "ready" && Date.now() < limit) await sleep(200);
     if (box.dataset.phase !== "ready") throw new Error(`${id}: the clip never ended (${video() && video().currentTime}s of ${video() && video().duration}s)`);
     t.event("clip-ended", `${(video().duration || 0).toFixed(1)}s clip, choices ready`);
+    const r2 = frame.getBoundingClientRect();
+    t.event("frame-stable", `stage ${Math.round(r.width)}x${Math.round(r.height)} -> ${Math.round(r2.width)}x${Math.round(r2.height)}, top ${Math.round(r.top)} -> ${Math.round(r2.top)}`);
+    if (Math.abs(r2.height - r.height) > 1 || Math.abs(r2.width - r.width) > 1 || Math.abs(r2.top - r.top) > 1) t.problem("bug", `${id}: the video stage resized or moved when the countdown appeared (${Math.round(r.width)}x${Math.round(r.height)} -> ${Math.round(r2.width)}x${Math.round(r2.height)})`);
     t.scene(`${id}: choices and timer`);
     const timer = $("spark-timer");
     const label = () => (timer.querySelector(".choice-timer-label").textContent || "").trim();
