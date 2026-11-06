@@ -2130,6 +2130,104 @@ async function endingsRun(options, t) {
   }
 }
 
+/** Cinematic player chrome (J, 2026-11-06): the video letterboxed to 2.39:1 on desktop, the choices dimmed while the clip
+    plays and faded in at its end with a visible countdown, and the bar and title fading after 3 s idle. Real presses
+    (the card, Tap to play); the clip is watched to its end. No setup shortcut. */
+async function cinemaRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
+  clearProgress();
+  try {
+    const id = options.story || FIRST;
+    if (!landingShown()) await toLanding(t);
+    await openStory(t, id);
+    await toStart(t, { quiet: true });
+    const desktop = innerWidth >= 900 && innerHeight >= 560;
+    const frame = document.querySelector("#spark-video");
+    const video = () => document.querySelector("#spark-video video");
+    const box = $("spark-choices");
+    t.scene(`${id}: letterbox`);
+    // 1. 2.39:1 on desktop
+    const r = frame.getBoundingClientRect();
+    const ratio = r.width / r.height;
+    const fit = getComputedStyle(video()).objectFit;
+    t.metric("videoFrameRatio", Math.round(ratio * 100) / 100);
+    t.event("letterbox", `${Math.round(r.width)}x${Math.round(r.height)} (${ratio.toFixed(2)}:1), object-fit ${fit}, viewport ${innerWidth}x${innerHeight}`);
+    if (desktop) {
+      if (Math.abs(ratio - 2.39) > 0.04) t.problem("bug", `${id}: on desktop the video frame is ${ratio.toFixed(2)}:1, not 2.39:1`);
+      if (fit !== "contain") t.problem("bug", `${id}: the video is ${fit}, not contained (it would be cropped, not letterboxed)`);
+    } else t.problem("warning", `${innerWidth}x${innerHeight} is not a desktop size: the 2.39:1 frame is desktop only`);
+    // 2. choices dimmed while the clip plays
+    const first = choiceButtons()[0];
+    if (!first) throw new Error(`${id}: no choices on the first page`);
+    if (!video().ended && box.dataset.phase !== "waiting") t.problem("bug", `${id}: the choices aren't waiting while the clip plays (phase ${box.dataset.phase})`);
+    const dim = parseFloat(getComputedStyle(first).opacity);
+    t.event("choices-waiting", `phase ${box.dataset.phase}, opacity ${dim.toFixed(2)} while the clip plays`);
+    if (box.dataset.phase === "waiting" && dim > 0.5) t.problem("bug", `${id}: the choices are at ${dim.toFixed(2)} opacity while the clip plays`);
+    if ($("spark-timer") && !$("spark-timer").hidden) t.problem("bug", `${id}: the countdown shows before the clip ends`);
+    // 3. wait for the clip's end (watched, not skipped)
+    t.scene(`${id}: watching the clip`);
+    const limit = Date.now() + 90000;
+    while (box.dataset.phase !== "ready" && Date.now() < limit) await sleep(200);
+    if (box.dataset.phase !== "ready") throw new Error(`${id}: the clip never ended (${video() && video().currentTime}s of ${video() && video().duration}s)`);
+    t.event("clip-ended", `${(video().duration || 0).toFixed(1)}s clip, choices ready`);
+    t.scene(`${id}: choices and timer`);
+    const timer = $("spark-timer");
+    const label = () => (timer.querySelector(".choice-timer-label").textContent || "").trim();
+    if (!timer || timer.hidden || getComputedStyle(timer).display === "none") throw new Error(`${id}: no visible countdown at the end of the clip`);
+    const tr = timer.getBoundingClientRect();
+    if (tr.height < 1 || tr.width < 40) t.problem("bug", `${id}: the countdown is ${Math.round(tr.width)}x${Math.round(tr.height)}`);
+    const bar = timer.querySelector(".choice-timer-bar");
+    const scaleOf = () => parseFloat((getComputedStyle(bar).transform.match(/matrix\(([-\d.e]+)/) || [0, 1])[1]);
+    const s1 = scaleOf();
+    const l1 = label();
+    await sleep(1600);
+    const s2 = scaleOf();
+    const l2 = label();
+    t.event("countdown", `${l1} -> ${l2}, bar ${s1.toFixed(2)} -> ${s2.toFixed(2)}`);
+    if (!(s2 < s1)) t.problem("bug", `${id}: the countdown bar isn't shrinking (${s1.toFixed(2)} -> ${s2.toFixed(2)})`);
+    if (l1 === l2) t.problem("bug", `${id}: the countdown label stays at ${l1}`);
+    const lit = parseFloat(getComputedStyle(choiceButtons()[0]).opacity);
+    t.event("choices-faded-in", `opacity ${lit.toFixed(2)}`);
+    if (lit < 0.95) t.problem("bug", `${id}: the choices are at ${lit.toFixed(2)} opacity after the clip ended`);
+    t.metric("choiceWindowSeconds", 15);
+    // 4. controls hide after 3 s idle and come back on movement
+    t.scene(`${id}: controls idle`);
+    const bar0 = document.querySelector("#spark .spark-bar");
+    const wake = () => document.dispatchEvent(new PointerEvent("pointermove", { pointerType: "mouse", pointerId: 1, isPrimary: true, bubbles: true, clientX: 300 + Math.random() * 50, clientY: 300, view: window }));
+    wake();
+    const t0 = Date.now();
+    await sleep(2000);
+    const early = $("spark").classList.contains("is-idle");
+    t.event("controls", `2 s idle: ${early ? "hidden (too early)" : "shown"}, opacity ${getComputedStyle(bar0).opacity}`);
+    if (early) t.problem("bug", `${id}: the controls hid after 2 s, before the 3 s idle`);
+    while (!$("spark").classList.contains("is-idle") && Date.now() - t0 < 6000) await sleep(100);
+    const after = Date.now() - t0;
+    await sleep(900);
+    const op = parseFloat(getComputedStyle(bar0).opacity);
+    t.event("controls-hidden", `hidden after ${(after / 1000).toFixed(1)} s idle, bar opacity ${op.toFixed(2)}`);
+    t.metric("controlsHideSeconds", Math.round(after / 100) / 10);
+    if (!$("spark").classList.contains("is-idle") || op > 0.1) t.problem("bug", `${id}: the controls didn't hide after 3 s idle (opacity ${op.toFixed(2)})`);
+    else if (after < 2900 || after > 3600) t.problem("bug", `${id}: the controls hid after ${(after / 1000).toFixed(1)} s, not 3 s`);
+    wake();
+    await sleep(900);
+    const back = parseFloat(getComputedStyle(bar0).opacity);
+    t.event("controls-back", `bar opacity ${back.toFixed(2)} after movement`);
+    if (back < 0.95) t.problem("bug", `${id}: the controls didn't come back on movement (opacity ${back.toFixed(2)})`);
+    // 5. a choice still works, and the next page starts dimmed again
+    const next = choiceButtons()[0];
+    await tapAt(t, next, `"${enText(next)}"`);
+    await sleep(400);
+    if (!(video() && !video().ended) || $("spark-choices").dataset.phase !== "waiting") t.problem("bug", `${id}: the next page's choices don't wait for its clip (phase ${$("spark-choices").dataset.phase})`);
+    if (!$("spark-timer").hidden) t.problem("bug", `${id}: the old countdown carried into the next page`);
+    t.event("next-page", `phase ${$("spark-choices").dataset.phase}, countdown ${$("spark-timer").hidden ? "gone" : "showing"}`);
+    t.progress(1);
+  } finally {
+    restoreProgress();
+  }
+}
+
 async function analyticsRun(options, t) {
   const A = window.hawkesAnalytics;
   if (!A || !A.config) {
@@ -5153,6 +5251,13 @@ installPlaytest({
       tags: ["full"],
       description: "Then plays real presses to scenes that show every camera state and checks each one's tile in the strip (and the big screen, for the focus) from its own picture (option {\"at\":\"wall\"} skips that). Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
     },
+    {
+      id: "cinema",
+      title: "Cinematic player chrome: the video letterboxed to 2.39:1 on desktop, the choices fading in at the end of the clip with a visible countdown, the controls hiding after 3 s idle",
+      seconds: 90,
+      tags: ["full"],
+      description: "Opens The Final Spark from its card (real presses, Tap to play) at the page's own size. Checks the video frame is 2.39:1 with the clip contained (desktop sizes: 900x560 and up). The choices are dimmed while the clip plays and no countdown shows; the clip is watched to its end, then the choices fade to full and a countdown (a thin bar and the seconds left) shows and runs down. Then, with no input, the bar and title controls stay for 2 s, are hidden by 3 s idle, and come back on pointer movement. A choice is pressed and the next page's choices wait for its clip again. Options: {\"story\":\"<id>\"}.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -5215,6 +5320,7 @@ installPlaytest({
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
       else if (id === "endings") await endingsRun(options, t);
+      else if (id === "cinema") await cinemaRun(options, t);
     } finally {
       endQuiet();
       probeStop(t);
