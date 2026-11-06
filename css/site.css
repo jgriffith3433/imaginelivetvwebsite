@@ -1428,6 +1428,9 @@ body.is-holding .torch-slot { cursor: grabbing; }
 
 /* The inventory belongs to the stories: the landing page (js/game.js sets <html data-view>) has none. */
 html[data-view="landing"] { --inventory-h: 0px; }
+/* The blog belongs to the landing page: while a story is open it is not on the page, so no scroll position
+   (a #blog link, scroll restoration) can show it under the story's inventory bar. */
+html[data-view="story"] body > main { display: none; }
 html[data-view="landing"] .inventory,
 html[data-view="landing"] .torch,
 html[data-view="landing"] .torch-beam { display: none; }
