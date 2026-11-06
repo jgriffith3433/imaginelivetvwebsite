@@ -445,6 +445,9 @@ function savedUnlocks(st) {
   return readJsonCookie(unlocksCookie(st));
 }
 
+/** The percent explored for n of all scenes: rounded down, never 0 once one is seen, 100 only at all. */
+const pctOf = (n, all) => (!n ? 0 : n >= all ? 100 : Math.min(99, Math.max(1, Math.floor((n * 100) / all))));
+
 /** The percent explored the data and the unlocks cookie give: unlocked scenes / all, rounded down. */
 function exploredWant(st) {
   const u = savedUnlocks(st);
@@ -453,7 +456,7 @@ function exploredWant(st) {
   const bits = (u && u.ix) || "";
   const packed = ids.filter((id, i) => (parseInt(bits.charAt(Math.floor(i / 4)) || "0", 16) & (1 << (i % 4))) !== 0);
   const seen = new Set((isConsole(st) ? packed : u?.seen || []).filter((id) => st.scenes[id]));
-  return Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
+  return pctOf(seen.size, Object.keys(st.scenes).length);
 }
 
 /** Where the run cookie says the story's run is: start (none, or at the first page), mid or end (an ending). */
@@ -892,7 +895,7 @@ async function walkStory(t, st, sums, total) {
     const info = { state: root.dataset.state, choices: choiceButtons().map(enText), to: [] };
     seen.set(id, info);
     t.scene(at(id));
-    checkExplored(t, st, Math.floor((seen.size * 100) / all.length), at(id));
+    checkExplored(t, st, pctOf(seen.size, all.length), at(id));
     if (spark().unlocked().length !== seen.size) t.problem("bug", `${at(id)}: ${spark().unlocked().length} scenes unlocked, the bot has reached ${seen.size}`);
     if (seen.size === 1) await checkTree(t, st, `${st.title}'s Tree at the start`);
     t.note(`${st.title}: ${path.join(" > ")}`);
@@ -1018,7 +1021,7 @@ async function storiesRun(options, t) {
     checkHitTargets(t, document, st.title);
     await toStart(t);
     // Only the first page is found: the Tree is it and a "?" per choice, and the percent is one scene's worth.
-    checkExplored(t, st, Math.floor(100 / Object.keys(st.scenes).length), `${st.id}: ${st.start}`);
+    checkExplored(t, st, pctOf(1, Object.keys(st.scenes).length), `${st.id}: ${st.start}`);
     await checkTree(t, st, `${st.title}'s Tree on its first page`);
     const first = st.scenes[st.start];
     if (enText($("spark-story")) !== first.story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
@@ -2461,7 +2464,7 @@ function consoleCheck(t, st, m, doc, where, seen) {
   }
   if (seen) {
     seen.add(m.scene);
-    const want = Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
+    const want = pctOf(seen.size, Object.keys(st.scenes).length);
     const text = (byIdIn(doc, "console-explored").textContent || "").trim();
     if (text !== `${want}% explored`) t.problem("bug", `${where}: the player says "${text}", the scenes reached give ${want}%`);
   }
@@ -3491,7 +3494,7 @@ async function consoleListedOpen(t, st) {
   checkHitTargets(t, document, st.title);
   // Only the first scene is found: its percent is one scene's worth.
   const text = (byIdIn(document, "console-explored").textContent || "").trim();
-  const want = Math.floor(100 / Object.keys(st.scenes).length);
+  const want = pctOf(1, Object.keys(st.scenes).length);
   if (text !== `${want}% explored`) t.problem("bug", `${st.id}: the first scene says "${text}", not ${want}% explored`);
   t.add("storiesOpened");
   await sleep(800);
@@ -4894,8 +4897,79 @@ async function nightRoomRun(options, t) {
   await toLanding(t);
 }
 
+/* ---------------- progress: one choice in each story raises the percent explored; opening a story keeps the page at the top ---------------- */
+
+/** Samples every animation frame: the page's scroll and whether the site header is fully in view. */
+function frameWatch() {
+  const w = { frames: 0, scrolled: 0, hidden: 0, worst: 0, on: true };
+  const tick = () => {
+    if (!w.on) return;
+    w.frames++;
+    const top = Math.max(window.scrollY || 0, document.scrollingElement?.scrollTop || 0, $("first-screen")?.scrollTop || 0);
+    if (top > 0) { w.scrolled++; w.worst = Math.max(w.worst, top); }
+    const h = document.querySelector(".site-header")?.getBoundingClientRect();
+    if (!h || h.top < -0.5 || h.bottom <= 0 || h.height === 0) w.hidden++;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  return w;
+}
+
+async function progressRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  const list = listedStories();
+  let k = 0;
+  for (const info of list) {
+    const st = story(info.id);
+    t.scene(`${st.title}: one choice`);
+    window.scrollTo(0, 0);
+    const watch = frameWatch();
+    if (isConsole(st)) await consoleOpen(t, st);
+    else await openStory(t, st.id);
+    await sleep(600);
+    watch.on = false;
+    t.event("open-frames", `${st.id}: ${watch.frames} frames, ${watch.scrolled} scrolled (worst ${Math.round(watch.worst)} px), ${watch.hidden} without the header`);
+    if (watch.scrolled) t.problem("bug", `${st.title}: the page was scrolled in ${watch.scrolled} of ${watch.frames} frames while it opened (up to ${Math.round(watch.worst)} px)`);
+    if (watch.hidden) t.problem("bug", `${st.title}: the site header was out of view in ${watch.hidden} of ${watch.frames} frames while it opened`);
+    const box = () => ($(isConsole(st) ? "console-explored" : "spark-explored")?.textContent || "").trim();
+    const before = stories().explored(st.id);
+    const textBefore = box();
+    if (isConsole(st)) {
+      await consoleFresh(t, st);
+      await consoleHeard(t, document, st.id);
+      const m = consoleModel(st);
+      if (!m.open().length) t.problem("bug", `${st.title}: no choices to press on its first scene`);
+      else await consoleChoose(t, st, m, m.open()[0][1], document, st.id, null);
+    } else {
+      await toStart(t);
+      const btns = choiceButtons();
+      if (!btns.length) t.problem("bug", `${st.title}: no choices on its first page`);
+      else {
+        const watchChoice = frameWatch();
+        btns[0].click();
+        await sleep(500);
+        watchChoice.on = false;
+        if (watchChoice.scrolled || watchChoice.hidden) t.problem("bug", `${st.title}: a choice moved the page (${watchChoice.scrolled} frames scrolled up to ${Math.round(watchChoice.worst)} px, ${watchChoice.hidden} without the header)`);
+      }
+    }
+    const after = stories().explored(st.id);
+    t.event("progress", `${st.id}: ${before}% -> ${after}% (${textBefore} -> ${box()}) after one choice`);
+    if (!(after > 0)) t.problem("bug", `${st.title}: ${after}% explored after one choice`);
+    if (!(after > before)) t.problem("bug", `${st.title}: explored went from ${before}% to ${after}% with a choice taken`);
+    if (box() !== `${after}% explored`) t.problem("bug", `${st.title}: the player says "${box()}", explored() says ${after}%`);
+    t.metric(`explored_${st.id}`, after);
+    await toLanding(t);
+    checkBadge(t, cardOf(st.id), st, "started", `after one choice in ${st.title}`);
+    t.progress(++k / list.length);
+  }
+}
+
 // The scenarios that use a console story's state explorer: it is worked out before they play (consoleWarm).
-const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics"];
+const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics", "progress"];
 
 installPlaytest({
   product: "imaginelivetv",
@@ -4907,6 +4981,13 @@ installPlaytest({
       seconds: 80,
       tags: ["full"],
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Start Over (a Completed card always offers Start Over, the same in all three stories; only an ending sets Completed). Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
+    },
+    {
+      id: "progress",
+      title: "One choice in each story raises the percent explored (Night Shift above 0), and opening a story never moves the page",
+      seconds: 90,
+      tags: ["full"],
+      description: "From a fresh browser, each listed story (The Final Spark, The Water Road, Night Shift) is opened from its card while every animation frame is sampled: the page stays at the top and the site header stays in view (open-frames event). One choice is pressed in each (a real press); the percent explored must go up and be above 0 (Night Shift is 1 of 228 scenes: at least 1%), the player's text matching explored(), and the card says Started. Event progress per story, metrics explored_<id>.",
     },
     {
       id: "night-shift-card",
@@ -5025,6 +5106,7 @@ installPlaytest({
       else if (id === "pages") await pages(options, t);
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
+      else if (id === "progress") await progressRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
       else if (id === "night-shift-treatment") await nightTreatmentRun(options, t);

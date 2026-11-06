@@ -64,7 +64,7 @@ function page({ store, blocked, fakeRO, room } = {}) {
   w.eval(playerSrc);
   const hooks = {
     place: null,
-    visit: (id) => { hooks.place = id; hooks.seen.add(id); return Math.floor((hooks.seen.size * 100) / Object.keys(story.scenes).length); },
+    visit: (id) => { hooks.place = id; hooks.seen.add(id); return (() => { const n = hooks.seen.size, all = Object.keys(story.scenes).length; return n >= all ? 100 : Math.min(99, Math.max(1, Math.floor((n * 100) / all))); })(); },
     history: () => {},
     tell: () => {},
     seen: new Set(),
