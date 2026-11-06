@@ -319,6 +319,9 @@
     });
   }
 
+  // A reload or Back must not restore an old scroll position (down in the blog) under an opening story.
+  try { if ("scrollRestoration" in history && !location.hash) history.scrollRestoration = "manual"; } catch (e) { /* ignore */ }
+
   /** The story screen never scrolls: the page at the top (header in view) and the screen itself at 0. */
   function keepAtTop() {
     if (firstScreen) { firstScreen.scrollTop = 0; firstScreen.scrollLeft = 0; }
