@@ -445,6 +445,9 @@ function savedUnlocks(st) {
   return readJsonCookie(unlocksCookie(st));
 }
 
+/** The percent explored for n of all scenes: rounded down, never 0 once one is seen, 100 only at all. */
+const pctOf = (n, all) => (!n ? 0 : n >= all ? 100 : Math.min(99, Math.max(1, Math.floor((n * 100) / all))));
+
 /** The percent explored the data and the unlocks cookie give: unlocked scenes / all, rounded down. */
 function exploredWant(st) {
   const u = savedUnlocks(st);
@@ -453,7 +456,7 @@ function exploredWant(st) {
   const bits = (u && u.ix) || "";
   const packed = ids.filter((id, i) => (parseInt(bits.charAt(Math.floor(i / 4)) || "0", 16) & (1 << (i % 4))) !== 0);
   const seen = new Set((isConsole(st) ? packed : u?.seen || []).filter((id) => st.scenes[id]));
-  return Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
+  return pctOf(seen.size, Object.keys(st.scenes).length);
 }
 
 /** Where the run cookie says the story's run is: start (none, or at the first page), mid or end (an ending). */
@@ -892,7 +895,7 @@ async function walkStory(t, st, sums, total) {
     const info = { state: root.dataset.state, choices: choiceButtons().map(enText), to: [] };
     seen.set(id, info);
     t.scene(at(id));
-    checkExplored(t, st, Math.floor((seen.size * 100) / all.length), at(id));
+    checkExplored(t, st, pctOf(seen.size, all.length), at(id));
     if (spark().unlocked().length !== seen.size) t.problem("bug", `${at(id)}: ${spark().unlocked().length} scenes unlocked, the bot has reached ${seen.size}`);
     if (seen.size === 1) await checkTree(t, st, `${st.title}'s Tree at the start`);
     t.note(`${st.title}: ${path.join(" > ")}`);
@@ -1018,7 +1021,7 @@ async function storiesRun(options, t) {
     checkHitTargets(t, document, st.title);
     await toStart(t);
     // Only the first page is found: the Tree is it and a "?" per choice, and the percent is one scene's worth.
-    checkExplored(t, st, Math.floor(100 / Object.keys(st.scenes).length), `${st.id}: ${st.start}`);
+    checkExplored(t, st, pctOf(1, Object.keys(st.scenes).length), `${st.id}: ${st.start}`);
     await checkTree(t, st, `${st.title}'s Tree on its first page`);
     const first = st.scenes[st.start];
     if (enText($("spark-story")) !== first.story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
@@ -2031,6 +2034,203 @@ async function analyticsNight(t, A, pump, st) {
   t.note(`${st.title}: ${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
 }
 
+/** Cinematic ending cards (J, 2026-11-06): at each ending the card shows its name, the choices made (the recap) and
+    Try another path, which starts a new run with that way marked (the choice taken last time on each page of it and its
+    nodes in the Tree). Real presses all the way; no setup shortcut. Stories: The Final Spark, The Water Road (two endings). */
+async function endingsRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
+  clearProgress();
+  const ids = options.story ? [options.story] : [FIRST, "water-road"];
+  let k = 0;
+  const press = async (st, to) => {
+    const i = st.scenes[sceneId()].choices.findIndex((c) => c[2] === to);
+    const button = choiceButtons()[i];
+    if (i < 0 || !button) throw new Error(`${st.id}: no choice from ${sceneId()} to ${to}`);
+    button.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, button, `"${enText(button)}"`);
+    await sleep(250);
+    if (sceneId() !== to) throw new Error(`${st.id}: "${enText(button)}" didn't open ${to} (on ${sceneId()})`);
+  };
+  try {
+    for (const id of ids) {
+      const st = story(id);
+      if (!landingShown()) await toLanding(t);
+      await openStory(t, id);
+      await toStart(t, { quiet: true });
+      const endings = Object.keys(st.scenes).filter((sid) => st.scenes[sid].ending);
+      const names = [];
+      let marked = null;
+      for (const end of endings) {
+        const way = wayTo(st, (sc) => sc === st.scenes[end]);
+        if (!way) throw new Error(`${id}: no way to ${end}`);
+        t.scene(`${id}: the way to ${end}`);
+        const trail = [st.start, ...way];
+        for (const to of way) {
+          // A restarted run marks, on each page still on the last way, the choice taken there.
+          if (marked) {
+            const here = spark().depth();
+            const hit = choiceButtons().filter((b) => b.classList.contains("was-taken"));
+            const expect = marked[here] === sceneId() ? marked[here + 1] : null;
+            const wasIdx = expect ? st.scenes[sceneId()].choices.findIndex((c) => c[2] === expect) : -1;
+            const gotIdx = hit.length ? choiceButtons().indexOf(hit[0]) : -1;
+            if (wasIdx !== gotIdx || hit.length > 1) t.problem("bug", `${id}: on ${sceneId()} the marked choice is #${gotIdx} (${hit.length} marked), the last way took #${wasIdx}`);
+          }
+          await press(st, to);
+        }
+        await sleep(500);
+        const card = $("spark-ending");
+        const endScene = st.scenes[end];
+        t.event("ending", `${id}/${endScene.folder}: ${enText(card.querySelector(".ending-kicker"))}`);
+        // 1. the card, with the ending's name
+        if (card.hidden || !card.classList.contains("ending-card")) { t.problem("bug", `${id}: reaching ${end} shows no ending card`); continue; }
+        const name = enText(card.querySelector(".ending-name"));
+        const want = String(endScene.title[1]).trim();
+        t.event("ending-card", `${id}/${endScene.folder}: "${name}"`);
+        if (name !== want) t.problem("bug", `${id}: the ending card says "${name}", the ending is "${want}"`);
+        if (names.includes(name)) t.problem("bug", `${id}: two endings share the card name "${name}"`);
+        names.push(name);
+        if (!card.getBoundingClientRect().height || card.getBoundingClientRect().bottom > innerHeight + 1) t.problem("bug", `${id}/${end}: the ending card isn't fully on screen`);
+        // 2. the choices made
+        const items = [...card.querySelectorAll(".ending-recap li")].map(enText);
+        const made = trail.slice(0, -1).map((from, i) => st.scenes[from].choices.find((c) => c[2] === trail[i + 1])[1].replace(/^\d+\.\s*/, ""));
+        t.event("recap", `${id}/${endScene.folder}: ${items.join(" | ")}`);
+        if (items.length !== way.length) t.problem("bug", `${id}/${end}: the recap lists ${items.length} choices, ${way.length} were made`);
+        else items.forEach((txt, i) => { if (txt !== made[i]) t.problem("bug", `${id}/${end}: recap step ${i + 1} says "${txt}", the choice was "${made[i]}"`); });
+        // 3. Try another path
+        const btn = $("spark-try-another");
+        if (!btn || !/try another path/i.test(btn.textContent)) { t.problem("bug", `${id}/${end}: no "Try another path" button on the ending card`); continue; }
+        if (btn.getBoundingClientRect().height < 44) t.problem("bug", `${id}/${end}: "Try another path" is under 44px high`);
+        btn.scrollIntoView({ block: "center", behavior: "instant" });
+        await sleep(1200);
+        const before = spark().unlocked().length;
+        await tapAt(t, btn, "Try another path");
+        await sleep(400);
+        if (sceneId() !== st.start || spark().depth() !== 0) t.problem("bug", `${id}: Try another path opened ${sceneId()} (${spark().depth()} steps in), not the start`);
+        if (spark().unlocked().length < before) t.problem("bug", `${id}: Try another path lost unlocked scenes`);
+        if (savedPlace(st)?.history?.length) t.problem("bug", `${id}: the saved run still holds the old way`);
+        marked = trail;
+        const first = choiceButtons().filter((b) => b.classList.contains("was-taken"));
+        t.event("path-marked", `${id}: ${first.length} choice marked on the first page (last time: ${enText(first[0])})`);
+        if (first.length !== 1 || !/last time/i.test(getComputedStyle(first[0], "::after").content)) t.problem("bug", `${id}: after Try another path the first page doesn't mark last time's choice`);
+        $("tab-tree").click();
+        await sleep(300);
+        const walked = [...$("spark-tree").querySelectorAll(".tree-node.is-walked")].length;
+        t.event("path-marked", `${id}: ${walked} Tree nodes marked as the last path`);
+        if (walked < 1) t.problem("bug", `${id}: the Tree marks nothing of the last path`);
+        await sleep(600);
+        $("tab-play").click();
+        await sleep(200);
+        t.progress(++k / (ids.length * 2));
+      }
+    }
+  } finally {
+    restoreProgress();
+  }
+}
+
+/** Cinematic player chrome (J, 2026-11-06): the video letterboxed to 2.39:1 on desktop, the choices dimmed while the clip
+    plays and faded in at its end with a visible countdown, and the bar and title fading after 3 s idle. Real presses
+    (the card, Tap to play); the clip is watched to its end. No setup shortcut. */
+async function cinemaRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
+  clearProgress();
+  try {
+    const id = options.story || FIRST;
+    if (!landingShown()) await toLanding(t);
+    await openStory(t, id);
+    await toStart(t, { quiet: true });
+    const desktop = innerWidth >= 900 && innerHeight >= 560;
+    const frame = document.querySelector("#spark-video");
+    const video = () => document.querySelector("#spark-video video");
+    const box = $("spark-choices");
+    t.scene(`${id}: letterbox`);
+    // 1. 2.39:1 on desktop
+    const r = frame.getBoundingClientRect();
+    const ratio = r.width / r.height;
+    const fit = getComputedStyle(video()).objectFit;
+    t.metric("videoFrameRatio", Math.round(ratio * 100) / 100);
+    t.event("letterbox", `${Math.round(r.width)}x${Math.round(r.height)} (${ratio.toFixed(2)}:1), object-fit ${fit}, viewport ${innerWidth}x${innerHeight}`);
+    if (desktop) {
+      if (Math.abs(ratio - 2.39) > 0.04) t.problem("bug", `${id}: on desktop the video frame is ${ratio.toFixed(2)}:1, not 2.39:1`);
+      if (fit !== "contain") t.problem("bug", `${id}: the video is ${fit}, not contained (it would be cropped, not letterboxed)`);
+    } else t.problem("warning", `${innerWidth}x${innerHeight} is not a desktop size: the 2.39:1 frame is desktop only`);
+    // 2. choices dimmed while the clip plays
+    const first = choiceButtons()[0];
+    if (!first) throw new Error(`${id}: no choices on the first page`);
+    if (!video().ended && box.dataset.phase !== "waiting") t.problem("bug", `${id}: the choices aren't waiting while the clip plays (phase ${box.dataset.phase})`);
+    const dim = parseFloat(getComputedStyle(first).opacity);
+    t.event("choices-waiting", `phase ${box.dataset.phase}, opacity ${dim.toFixed(2)} while the clip plays`);
+    if (box.dataset.phase === "waiting" && dim > 0.5) t.problem("bug", `${id}: the choices are at ${dim.toFixed(2)} opacity while the clip plays`);
+    if ($("spark-timer") && !$("spark-timer").hidden) t.problem("bug", `${id}: the countdown shows before the clip ends`);
+    // 3. wait for the clip's end (watched, not skipped)
+    t.scene(`${id}: watching the clip`);
+    const limit = Date.now() + 90000;
+    while (box.dataset.phase !== "ready" && Date.now() < limit) await sleep(200);
+    if (box.dataset.phase !== "ready") throw new Error(`${id}: the clip never ended (${video() && video().currentTime}s of ${video() && video().duration}s)`);
+    t.event("clip-ended", `${(video().duration || 0).toFixed(1)}s clip, choices ready`);
+    const r2 = frame.getBoundingClientRect();
+    t.event("frame-stable", `stage ${Math.round(r.width)}x${Math.round(r.height)} -> ${Math.round(r2.width)}x${Math.round(r2.height)}, top ${Math.round(r.top)} -> ${Math.round(r2.top)}`);
+    if (Math.abs(r2.height - r.height) > 1 || Math.abs(r2.width - r.width) > 1 || Math.abs(r2.top - r.top) > 1) t.problem("bug", `${id}: the video stage resized or moved when the countdown appeared (${Math.round(r.width)}x${Math.round(r.height)} -> ${Math.round(r2.width)}x${Math.round(r2.height)})`);
+    t.scene(`${id}: choices and timer`);
+    const timer = $("spark-timer");
+    const label = () => (timer.querySelector(".choice-timer-label").textContent || "").trim();
+    if (!timer || timer.hidden || getComputedStyle(timer).display === "none") throw new Error(`${id}: no visible countdown at the end of the clip`);
+    const tr = timer.getBoundingClientRect();
+    if (tr.height < 1 || tr.width < 40) t.problem("bug", `${id}: the countdown is ${Math.round(tr.width)}x${Math.round(tr.height)}`);
+    const bar = timer.querySelector(".choice-timer-bar");
+    const scaleOf = () => parseFloat((getComputedStyle(bar).transform.match(/matrix\(([-\d.e]+)/) || [0, 1])[1]);
+    const s1 = scaleOf();
+    const l1 = label();
+    await sleep(1600);
+    const s2 = scaleOf();
+    const l2 = label();
+    t.event("countdown", `${l1} -> ${l2}, bar ${s1.toFixed(2)} -> ${s2.toFixed(2)}`);
+    if (!(s2 < s1)) t.problem("bug", `${id}: the countdown bar isn't shrinking (${s1.toFixed(2)} -> ${s2.toFixed(2)})`);
+    if (l1 === l2) t.problem("bug", `${id}: the countdown label stays at ${l1}`);
+    const lit = parseFloat(getComputedStyle(choiceButtons()[0]).opacity);
+    t.event("choices-faded-in", `opacity ${lit.toFixed(2)}`);
+    if (lit < 0.95) t.problem("bug", `${id}: the choices are at ${lit.toFixed(2)} opacity after the clip ended`);
+    t.metric("choiceWindowSeconds", 15);
+    // 4. controls hide after 3 s idle and come back on movement
+    t.scene(`${id}: controls idle`);
+    const bar0 = document.querySelector("#spark .spark-bar");
+    const wake = () => document.dispatchEvent(new PointerEvent("pointermove", { pointerType: "mouse", pointerId: 1, isPrimary: true, bubbles: true, clientX: 300 + Math.random() * 50, clientY: 300, view: window }));
+    wake();
+    const t0 = Date.now();
+    await sleep(2000);
+    const early = $("spark").classList.contains("is-idle");
+    t.event("controls", `2 s idle: ${early ? "hidden (too early)" : "shown"}, opacity ${getComputedStyle(bar0).opacity}`);
+    if (early) t.problem("bug", `${id}: the controls hid after 2 s, before the 3 s idle`);
+    while (!$("spark").classList.contains("is-idle") && Date.now() - t0 < 6000) await sleep(100);
+    const after = Date.now() - t0;
+    await sleep(900);
+    const op = parseFloat(getComputedStyle(bar0).opacity);
+    t.event("controls-hidden", `hidden after ${(after / 1000).toFixed(1)} s idle, bar opacity ${op.toFixed(2)}`);
+    t.metric("controlsHideSeconds", Math.round(after / 100) / 10);
+    if (!$("spark").classList.contains("is-idle") || op > 0.1) t.problem("bug", `${id}: the controls didn't hide after 3 s idle (opacity ${op.toFixed(2)})`);
+    else if (after < 2900 || after > 3600) t.problem("bug", `${id}: the controls hid after ${(after / 1000).toFixed(1)} s, not 3 s`);
+    wake();
+    await sleep(900);
+    const back = parseFloat(getComputedStyle(bar0).opacity);
+    t.event("controls-back", `bar opacity ${back.toFixed(2)} after movement`);
+    if (back < 0.95) t.problem("bug", `${id}: the controls didn't come back on movement (opacity ${back.toFixed(2)})`);
+    // 5. a choice still works, and the next page starts dimmed again
+    const next = choiceButtons()[0];
+    await tapAt(t, next, `"${enText(next)}"`);
+    await sleep(400);
+    if (!(video() && !video().ended) || $("spark-choices").dataset.phase !== "waiting") t.problem("bug", `${id}: the next page's choices don't wait for its clip (phase ${$("spark-choices").dataset.phase})`);
+    if (!$("spark-timer").hidden) t.problem("bug", `${id}: the old countdown carried into the next page`);
+    t.event("next-page", `phase ${$("spark-choices").dataset.phase}, countdown ${$("spark-timer").hidden ? "gone" : "showing"}`);
+    t.progress(1);
+  } finally {
+    restoreProgress();
+  }
+}
+
 async function analyticsRun(options, t) {
   const A = window.hawkesAnalytics;
   if (!A || !A.config) {
@@ -2461,7 +2661,7 @@ function consoleCheck(t, st, m, doc, where, seen) {
   }
   if (seen) {
     seen.add(m.scene);
-    const want = Math.floor((seen.size * 100) / Object.keys(st.scenes).length);
+    const want = pctOf(seen.size, Object.keys(st.scenes).length);
     const text = (byIdIn(doc, "console-explored").textContent || "").trim();
     if (text !== `${want}% explored`) t.problem("bug", `${where}: the player says "${text}", the scenes reached give ${want}%`);
   }
@@ -3491,7 +3691,7 @@ async function consoleListedOpen(t, st) {
   checkHitTargets(t, document, st.title);
   // Only the first scene is found: its percent is one scene's worth.
   const text = (byIdIn(document, "console-explored").textContent || "").trim();
-  const want = Math.floor(100 / Object.keys(st.scenes).length);
+  const want = pctOf(1, Object.keys(st.scenes).length);
   if (text !== `${want}% explored`) t.problem("bug", `${st.id}: the first scene says "${text}", not ${want}% explored`);
   t.add("storiesOpened");
   await sleep(800);
@@ -4009,6 +4209,46 @@ async function nightGapsRun(options, t) {
     await sleep(200);
     if (!only) await toLanding(t).catch(() => {});
     restoreProgress();
+  }
+}
+
+/* ---------------- Writing pass: each story's voice guide (docs/<id>/voice.md) and the diff summary (docs/voice-diff.md) ---------------- */
+
+/** Reads docs/<id>/voice.md for every story (a "Style note: 5 rules" with exactly 5 numbered rules), checks every node's
+    choices lead to a node that exists (nothing removed by the writing pass), no listed story's choice says a bare "Continue",
+    and docs/voice-diff.md lists a "Changed nodes" count per story and each changed node by name. No story is played. */
+async function voiceRun(options, t) {
+  await passPrompt(t);
+  const stories = allStories();
+  for (const st of stories.filter((s) => s.listed !== false)) {
+    t.scene(`${st.id}: docs/${st.id}/voice.md`);
+    const res = await fetch(`/docs/${st.id}/voice.md`, { cache: "no-store" });
+    if (!res.ok) { t.problem("bug", `docs/${st.id}/voice.md: HTTP ${res.status}`); continue; }
+    const doc = await res.text();
+    const sec = (doc.split(/^## Style note: 5 rules\s*$/m)[1] || "").split(/^## /m)[0];
+    const rules = sec.split("\n").filter((l) => /^\d+\. /.test(l));
+    if (!sec) t.problem("bug", `docs/${st.id}/voice.md has no "Style note: 5 rules" section`);
+    else if (rules.length !== 5) t.problem("bug", `docs/${st.id}/voice.md has ${rules.length} rules, not 5`);
+    else t.event("criterion", `${st.id}: a style note with 5 rules`);
+    for (const h of ["Tone", "Pacing", "Choice design"]) if (!new RegExp(`^## ${h}\\s*$`, "m").test(doc)) t.problem("bug", `docs/${st.id}/voice.md has no "${h}" section`);
+    const scenes = Object.values(st.scenes);
+    const ids = new Set(Object.keys(st.scenes));
+    let missing = 0;
+    for (const s of scenes) for (const c of s.choices || []) if (!ids.has(c[2])) missing++;
+    if (missing) t.problem("bug", `${st.id}: ${missing} choices lead to a node that doesn't exist`);
+    else t.event("criterion", `${st.id}: ${scenes.length} nodes, every choice leads to one`);
+    t.metric(`nodes_${st.id}`, scenes.length);
+  }
+  t.scene("docs/voice-diff.md");
+  const res = await fetch("/docs/voice-diff.md", { cache: "no-store" });
+  if (!res.ok) { t.problem("bug", `docs/voice-diff.md: HTTP ${res.status}`); return; }
+  const diff = await res.text();
+  for (const st of stories.filter((s) => s.listed !== false)) {
+    const part = (diff.split(new RegExp(`^## ${st.id}\\s*$`, "m"))[1] || "").split(/^## /m)[0];
+    const m = part.match(/Changed nodes: (\d+)/);
+    if (!m) t.problem("bug", `docs/voice-diff.md has no changed-nodes list for ${st.id}`);
+    else if ((part.match(/^\s+- `[^`]+`/gm) || []).length !== +m[1]) t.problem("bug", `docs/voice-diff.md: ${st.id} says ${m[1]} changed nodes but lists ${(part.match(/^\s+- `[^`]+`/gm) || []).length}`);
+    else t.event("criterion", `${st.id}: diff summary lists ${m[1]} changed nodes`);
   }
 }
 
@@ -4894,8 +5134,197 @@ async function nightRoomRun(options, t) {
   await toLanding(t);
 }
 
+/* ---------------- front-door: the landing page as a streaming service's front door ---------------- */
+
+/** A page's width: nothing wider than the screen, and every press target on it at least 44 px each way. */
+function frontDoorFit(t, doc, w, where) {
+  const win = doc.defaultView;
+  const wide = Math.max(doc.documentElement.scrollWidth, doc.body.scrollWidth);
+  if (wide > w + 1) t.problem("bug", `${where}: the page is ${wide}px wide in a ${w}px screen (sideways scroll)`);
+  const small = [...doc.querySelectorAll("#stories .hero-go, #stories .continue-go, #stories .story-card-go")].filter((el) => el.getClientRects().length && (el.getBoundingClientRect().height < 30));
+  for (const el of small) t.problem("bug", `${where}: "${(el.textContent || "").trim()}" is ${Math.round(el.getBoundingClientRect().height)}px tall`);
+  for (const el of doc.querySelectorAll("#stories a.hero, #stories a.story-card, #stories a.continue-card")) {
+    const r = el.getBoundingClientRect();
+    if (r.width < 44 || r.height < 44) t.problem("bug", `${where}: a ${el.className} is ${Math.round(r.width)}x${Math.round(r.height)}px`);
+    if (r.right > w + 1 && !el.closest("#continue-list")) t.problem("bug", `${where}: a ${el.className} runs past the screen (right edge ${Math.round(r.right)}px of ${w})`);
+  }
+  return win.innerWidth;
+}
+
+/** The criteria of J's front door, played: every card has poster, runtime, mood and percent explored (and the hero
+    the same); no Continue row before anything is started; one real choice in a story, then the row shows it with its
+    percent, and its button opens the story where it was left; the page fits at 390 px. */
+async function frontDoorRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passSplash(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  await sleep(300);
+  const list = listedStories();
+  const row = () => document.getElementById("continue-row");
+  const rowCards = () => [...document.querySelectorAll("#continue-list a.continue-card")];
+  const checkFront = async (doc, where) => {
+    for (const st of list) {
+      const card = doc.querySelector(`#story-list a.story-card[data-story="${st.id}"]`);
+      if (!card) { t.problem("bug", `${where}: no card for ${st.id}`); continue; }
+      const img = card.querySelector("img, video");
+      const poster = !!img && (img.tagName === "VIDEO" || (img.complete && img.naturalWidth > 0));
+      const runtime = (card.querySelector(".meta-runtime")?.textContent || "").trim();
+      const mood = (card.querySelector(".meta-mood")?.textContent || "").trim();
+      const explored = (card.querySelector(".story-card-explored")?.textContent || "").trim();
+      t.event("front-card", `${where}: ${st.id}: poster ${poster ? "loads" : "MISSING"}, runtime "${runtime}", mood "${mood}", "${explored}"`);
+      if (!poster) t.problem("bug", `${where}: ${st.id}'s card has no poster that loads`);
+      if (!/\d+\s*min/i.test(runtime)) t.problem("bug", `${where}: ${st.id}'s card has no runtime ("${runtime}")`);
+      if (!mood) t.problem("bug", `${where}: ${st.id}'s card has no mood`);
+      if (!/^\d+% explored$/.test(explored)) t.problem("bug", `${where}: ${st.id}'s card says "${explored}", not a percent explored`);
+    }
+    const hero = doc.querySelector("#stories a.hero");
+    if (!hero) t.problem("bug", `${where}: the landing page has no hero`);
+    else {
+      const himg = hero.querySelector("img");
+      const ok = (himg && himg.complete && himg.naturalWidth > 0) && (hero.querySelector(".meta-runtime")?.textContent || "").trim() && (hero.querySelector(".meta-mood")?.textContent || "").trim() && (hero.querySelector("h2")?.textContent || "").trim();
+      t.event("front-hero", `${where}: ${hero.dataset.story}: ${ok ? "poster, title, runtime and mood" : "INCOMPLETE"}`);
+      if (!ok) t.problem("bug", `${where}: the hero lacks its poster, title, runtime or mood`);
+    }
+  };
+  t.scene("Front door: fresh browser");
+  await checkFront(document, "fresh");
+  if (row() && !row().hidden) t.problem("bug", "a Continue row shows before any story is started");
+  t.event("continue-row", `fresh: ${row() && !row().hidden ? "shown" : "hidden"} (${rowCards().length} cards)`);
+  t.progress(0.25);
+
+  t.scene("Front door: a choice in The Final Spark");
+  await openStory(t, FIRST);
+  await toStart(t);
+  const btns = choiceButtons();
+  if (!btns.length) throw new Error("no choices on The Final Spark's first page");
+  await tapAt(t, btns[0], "the first choice");
+  await sleep(500);
+  const pct = stories().explored(FIRST);
+  await toLanding(t);
+  await sleep(300);
+  const cards = rowCards();
+  const shown = row() && !row().hidden;
+  t.event("continue-row", `after one choice in ${FIRST}: ${shown ? "shown" : "hidden"}, ${cards.map((c) => c.dataset.story).join(", ")}`);
+  if (!shown || cards.length !== 1 || cards[0].dataset.story !== FIRST) t.problem("bug", `after a choice in ${FIRST} the Continue row should show it alone (shown: ${shown}, cards: ${cards.length})`);
+  else {
+    const c = cards[0];
+    const says = (c.querySelector(".continue-meta")?.textContent || "").trim();
+    t.event("continue-card", `${FIRST}: "${says}", ${c.querySelector("img, video") ? "poster" : "no poster"}, button "${(c.querySelector(".continue-go")?.textContent || "").trim()}"`);
+    if (says !== `${pct}% explored`) t.problem("bug", `the Continue card says "${says}", explored() says ${pct}%`);
+    if (!c.querySelector("img, video")) t.problem("bug", "the Continue card has no poster");
+    const bar = c.querySelector(".continue-bar span");
+    if (!bar || Math.abs(parseFloat(bar.style.width) - pct) > 0.5) t.problem("bug", `the Continue card's bar is ${bar?.style.width}, not ${pct}%`);
+  }
+  t.progress(0.55);
+
+  t.scene("Front door: 390 px");
+  const doc = await viewFrameLoad(t, "/", 390, 844);
+  await waitFor(() => doc.querySelector("#story-list a.story-card[data-progress]") && doc.getElementById("continue-row"), 8000);
+  await sleep(600);
+  await checkFront(doc, "390px");
+  const frow = doc.getElementById("continue-row");
+  t.event("continue-row", `390px frame: ${frow && !frow.hidden ? "shown" : "hidden"} (${doc.querySelectorAll("#continue-list a.continue-card").length} cards)`);
+  if (!frow || frow.hidden) t.problem("bug", "390px: the Continue row doesn't show after a story is started");
+  frontDoorFit(t, doc, 390, "390px");
+  closeViewFrame();
+  t.progress(0.8);
+
+  t.scene("Front door: Continue opens where it was left");
+  const before = stories().explored(FIRST);
+  const cont = rowCards()[0];
+  if (cont) {
+    cont.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(200);
+    await tapAt(t, cont.querySelector("h3") || cont, "the Continue card");
+    await sleep(500);
+    if (stories().current() !== FIRST) t.problem("bug", `the Continue card didn't open ${FIRST} (open: ${stories().current()})`);
+    else {
+      const sound = soundOf();
+      if (sound.prompt()) await passPrompt(t, document, FIRST);
+      if (window.finalSpark.depth() < 1) t.problem("bug", "the Continue card opened the story at its start, not where it was left");
+      t.event("continue-opened", `${FIRST} at ${window.finalSpark.scene()}, depth ${window.finalSpark.depth()}, ${stories().explored(FIRST)}% (was ${before}%)`);
+    }
+    await toLanding(t);
+  }
+  t.metric("continue_cards", rowCards().length);
+  t.progress(1);
+}
+
+/* ---------------- progress: one choice in each story raises the percent explored; opening a story keeps the page at the top ---------------- */
+
+/** Samples every animation frame: the page's scroll and whether the site header is fully in view. */
+function frameWatch() {
+  const w = { frames: 0, scrolled: 0, hidden: 0, worst: 0, on: true };
+  const tick = () => {
+    if (!w.on) return;
+    w.frames++;
+    const top = Math.max(window.scrollY || 0, document.scrollingElement?.scrollTop || 0, $("first-screen")?.scrollTop || 0);
+    if (top > 0) { w.scrolled++; w.worst = Math.max(w.worst, top); }
+    const h = document.querySelector(".site-header")?.getBoundingClientRect();
+    if (!h || h.top < -0.5 || h.bottom <= 0 || h.height === 0) w.hidden++;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  return w;
+}
+
+async function progressRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  const list = listedStories();
+  let k = 0;
+  for (const info of list) {
+    const st = story(info.id);
+    t.scene(`${st.title}: one choice`);
+    window.scrollTo(0, 0);
+    const watch = frameWatch();
+    if (isConsole(st)) await consoleOpen(t, st);
+    else await openStory(t, st.id);
+    await sleep(600);
+    watch.on = false;
+    t.event("open-frames", `${st.id}: ${watch.frames} frames, ${watch.scrolled} scrolled (worst ${Math.round(watch.worst)} px), ${watch.hidden} without the header`);
+    if (watch.scrolled) t.problem("bug", `${st.title}: the page was scrolled in ${watch.scrolled} of ${watch.frames} frames while it opened (up to ${Math.round(watch.worst)} px)`);
+    if (watch.hidden) t.problem("bug", `${st.title}: the site header was out of view in ${watch.hidden} of ${watch.frames} frames while it opened`);
+    const box = () => ($(isConsole(st) ? "console-explored" : "spark-explored")?.textContent || "").trim();
+    const before = stories().explored(st.id);
+    const textBefore = box();
+    if (isConsole(st)) {
+      await consoleFresh(t, st);
+      await consoleHeard(t, document, st.id);
+      const m = consoleModel(st);
+      if (!m.open().length) t.problem("bug", `${st.title}: no choices to press on its first scene`);
+      else await consoleChoose(t, st, m, m.open()[0][1], document, st.id, null);
+    } else {
+      await toStart(t);
+      const btns = choiceButtons();
+      if (!btns.length) t.problem("bug", `${st.title}: no choices on its first page`);
+      else {
+        const watchChoice = frameWatch();
+        btns[0].click();
+        await sleep(500);
+        watchChoice.on = false;
+        if (watchChoice.scrolled || watchChoice.hidden) t.problem("bug", `${st.title}: a choice moved the page (${watchChoice.scrolled} frames scrolled up to ${Math.round(watchChoice.worst)} px, ${watchChoice.hidden} without the header)`);
+      }
+    }
+    const after = stories().explored(st.id);
+    t.event("progress", `${st.id}: ${before}% -> ${after}% (${textBefore} -> ${box()}) after one choice`);
+    if (!(after > 0)) t.problem("bug", `${st.title}: ${after}% explored after one choice`);
+    if (!(after > before)) t.problem("bug", `${st.title}: explored went from ${before}% to ${after}% with a choice taken`);
+    if (box() !== `${after}% explored`) t.problem("bug", `${st.title}: the player says "${box()}", explored() says ${after}%`);
+    t.metric(`explored_${st.id}`, after);
+    await toLanding(t);
+    checkBadge(t, cardOf(st.id), st, "started", `after one choice in ${st.title}`);
+    t.progress(++k / list.length);
+  }
+}
+
 // The scenarios that use a console story's state explorer: it is worked out before they play (consoleWarm).
-const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics"];
+const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics", "progress"];
 
 installPlaytest({
   product: "imaginelivetv",
@@ -4907,6 +5336,20 @@ installPlaytest({
       seconds: 80,
       tags: ["full"],
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Start Over (a Completed card always offers Start Over, the same in all three stories; only an ending sets Completed). Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
+    },
+    {
+      id: "progress",
+      title: "One choice in each story raises the percent explored (Night Shift above 0), and opening a story never moves the page",
+      seconds: 90,
+      tags: ["full"],
+      description: "From a fresh browser, each listed story (The Final Spark, The Water Road, Night Shift) is opened from its card while every animation frame is sampled: the page stays at the top and the site header stays in view (open-frames event). One choice is pressed in each (a real press); the percent explored must go up and be above 0 (Night Shift is 1 of 228 scenes: at least 1%), the player's text matching explored(), and the card says Started. Event progress per story, metrics explored_<id>.",
+    },
+    {
+      id: "front-door",
+      title: "The landing page as a front door: a hero, every card with poster, runtime, mood and percent explored, a Continue row once a story is started, and it fits at 390 px",
+      seconds: 60,
+      tags: ["full"],
+      description: "From a fresh browser (the splash passed, saved places cleared): the hero shows the featured story's poster, title, runtime and mood; every listed story's card shows a poster that loads, a runtime (\"About 45 min\"), a mood and its percent explored; no Continue row is on the page. Then a real press on The Final Spark's card and its first choice, and All stories: the Continue watching row shows that story alone, with its poster, a bar and the same percent explored as the player says. The home page in a 390x844 frame shows the same (row, cards, hero), with nothing wider than the screen and tap targets of 44 px or more. A real press on the Continue card reopens the story where it was left (not at its start). Events front-card, front-hero, continue-row, continue-card, continue-opened.",
     },
     {
       id: "night-shift-card",
@@ -4954,6 +5397,13 @@ installPlaytest({
       description: "Opens Night Shift (night-shift) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45 (a warning outside 40 to 50), and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged. Options: {\"at\":\"numbers\"} runs only the data's checks (about 10 s); {\"at\":\"four-hours\"} (any scene on the way through every layer) opens a seeded run (named setup shortcut, event seeded-run) at that scene and plays the rest of the way, to \"Someone to leave it to\", with real presses, then the last six choices to \"The wedge\" (about 3 minutes).",
     },
     {
+      id: "voice",
+      title: "The writing pass: each story has a voice guide with a style note of 5 rules, every node still has its choices, and the diff summary lists the changed nodes per story",
+      seconds: 15,
+      tags: ["full"],
+      description: "Waits for the landing page's splash, then reads docs/<id>/voice.md for every listed story (a \"Style note: 5 rules\" with exactly five numbered rules, plus Tone, Pacing and Choice design), checks from the story data that every choice leads to a node that exists, and reads docs/voice-diff.md (made by tools/voice-diff.mjs): each story has its changed-nodes count and the nodes named. No story is played.",
+    },
+    {
       id: "night-shift-gaps",
       title: "Night Shift's gaps audit: the story opened with real presses, then story/night-shift-gaps.md checked: groups a to f numbered, its counts and the shortest and typical minutes against the data, the output of npm run story -- --check and the console, stories and sound playtests",
       seconds: 10,
@@ -4975,6 +5425,13 @@ installPlaytest({
       seconds: 100,
       tags: ["full"],
       description: "Then plays real presses to scenes that show every camera state and checks each one's tile in the strip (and the big screen, for the focus) from its own picture (option {\"at\":\"wall\"} skips that). Reads Night Shift's data (draft, by its link). For each of the nine cameras it loads the picture of every state the scenes use (normal plus the changes: someone there, something off, offline) and checks they all load in one picture format, so the same room frames the same. Then every ending's end card and the landing card's image must load. Opens the story under its Tap to play and checks every tile of the wall shows its picture. Stand-in art (media/standin) counts until the real stills are made.",
+    },
+    {
+      id: "cinema",
+      title: "Cinematic player chrome: the video letterboxed to 2.39:1 on desktop, the choices fading in at the end of the clip with a visible countdown, the controls hiding after 3 s idle",
+      seconds: 90,
+      tags: ["full"],
+      description: "Opens The Final Spark from its card (real presses, Tap to play) at the page's own size. Checks the video frame is 2.39:1 with the clip contained (desktop sizes: 900x560 and up). The choices are dimmed while the clip plays and no countdown shows; the clip is watched to its end, then the choices fade to full and a countdown (a thin bar and the seconds left) shows and runs down. Then, with no input, the bar and title controls stay for 2 s, are hidden by 3 s idle, and come back on pointer movement. A choice is pressed and the next page's choices wait for its clip again. Options: {\"story\":\"<id>\"}.",
     },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
@@ -5025,10 +5482,13 @@ installPlaytest({
       else if (id === "pages") await pages(options, t);
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
+      else if (id === "progress") await progressRun(options, t);
+      else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
       else if (id === "night-shift-treatment") await nightTreatmentRun(options, t);
       else if (id === "night-shift-gaps") await nightGapsRun(options, t);
+      else if (id === "voice") await voiceRun(options, t);
       else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "room") await nightRoomRun(options, t);
@@ -5036,6 +5496,8 @@ installPlaytest({
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
+      else if (id === "endings") await endingsRun(options, t);
+      else if (id === "cinema") await cinemaRun(options, t);
     } finally {
       endQuiet();
       probeStop(t);

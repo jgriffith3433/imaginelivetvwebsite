@@ -22,7 +22,7 @@ function build(name, change) {
   const story = structuredClone(demo);
   change(story);
   fs.writeFileSync(path.join(dir, 'story/night-shift-demo.json'), JSON.stringify(story, null, 2));
-  fs.writeFileSync(path.join(dir, 'story/stories.json'), JSON.stringify({ stories: [{ id: 'night-shift-demo', logline: 'A test night.' }] }));
+  fs.writeFileSync(path.join(dir, 'story/stories.json'), JSON.stringify({ stories: [{ id: 'night-shift-demo', logline: 'A test night.', runtime: 'About 1 min', mood: 'Test' }] }));
   const run = spawnSync(process.execPath, [path.join(dir, 'tools/build-story.mjs')], { env: { ...process.env, ILTV_ROOT: dir }, encoding: 'utf8' });
   fs.rmSync(dir, { recursive: true, force: true });
   return { code: run.status, out: run.stdout + run.stderr };

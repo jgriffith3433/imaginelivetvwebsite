@@ -59,6 +59,7 @@ a { color: var(--green); }
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overflow-anchor: none;
 }
 
 .spark-main {
@@ -818,6 +819,185 @@ a { color: var(--green); }
   background: #0b0c0e;
 }
 
+.story-card-meta,
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+  margin: 0 0 0.45rem !important;
+  color: var(--muted) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.meta-runtime { color: var(--green); font-weight: 700; }
+.meta-mood::before { content: "\00b7"; margin-right: 0.6rem; }
+
+.row-title {
+  margin: 1.3rem 0 0.7rem;
+  color: #d9d3c6;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+/* The hero: the featured story, wide on a desktop, stacked on a phone. */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  overflow: hidden;
+  min-height: 15rem;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  background: #121417;
+  border: 1px solid #3a3d42;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.hero:hover,
+.hero:focus-visible { border-color: #8d9096; }
+
+.hero img,
+.hero-blank {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 22rem;
+  min-height: 15rem;
+  object-fit: cover;
+  object-position: center 35%;
+  background: #0b0c0e;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 1.2rem 1.4rem;
+}
+
+.hero-kicker {
+  color: var(--green);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.hero h2 {
+  margin: 0.1rem 0 0.4rem;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  font-weight: 560;
+}
+
+.hero-text p { margin: 0 0 0.5rem; color: #d9d3c6; line-height: 1.45; }
+
+.hero-go,
+.continue-go {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.3rem;
+  color: #f4f2ee;
+  background: #1c1e22;
+  border: 1px solid #5c6066;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero:hover .hero-go,
+.continue-card:hover .continue-go { color: #fff; border-color: #8d9096; }
+
+/* Continue watching: a row that scrolls sideways inside itself, a progress bar per story. */
+.continue-row[hidden] { display: none; }
+
+.continue-list {
+  display: flex;
+  gap: 0.8rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  scroll-snap-type: x proximity;
+}
+
+.continue-card {
+  flex: 0 0 min(100%, 300px);
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  overflow: hidden;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  background: #121417;
+  border: 1px solid #3a3d42;
+  border-radius: 14px;
+  scroll-snap-align: start;
+}
+
+.continue-card:hover,
+.continue-card:focus-visible { border-color: #8d9096; }
+
+.continue-card img,
+.continue-card video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 7.5rem;
+  object-fit: cover;
+}
+
+.continue-card-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.7rem 0.8rem;
+}
+
+.continue-card h3 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 560;
+}
+
+.continue-bar {
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: #2a2d32;
+  border-radius: 2px;
+}
+
+.continue-bar span { display: block; height: 100%; background: var(--green); border-radius: 2px; }
+
+.continue-meta {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero img,
+  .hero-blank { min-height: 0; max-height: 14rem; aspect-ratio: 16 / 10; }
+  .continue-card { flex-basis: 100%; }
+}
+
 .story-card-text { padding: 0.8rem 1rem 1rem; }
 
 .story-card h2 {
@@ -1248,6 +1428,9 @@ body.is-holding .torch-slot { cursor: grabbing; }
 
 /* The inventory belongs to the stories: the landing page (js/game.js sets <html data-view>) has none. */
 html[data-view="landing"] { --inventory-h: 0px; }
+/* The blog belongs to the landing page: while a story is open it is not on the page, so no scroll position
+   (a #blog link, scroll restoration) can show it under the story's inventory bar. */
+html[data-view="story"] body > main { display: none; }
 html[data-view="landing"] .inventory,
 html[data-view="landing"] .torch,
 html[data-view="landing"] .torch-beam { display: none; }
@@ -2187,4 +2370,118 @@ figure.feed { cursor: default; }
 @media (prefers-reduced-motion: reduce) {
   .room-photo .room-pose img.pose, .room-photo .room-ov { transition-duration: 0.01ms; }
   .console-room[data-buzz] .ov-buzz { animation: none; opacity: 1; }
+}
+
+/* The ending card (js/game.js showEndingCard): the ending's own name, the choices made, Try another path. */
+.spark-ending.ending-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 0;
+  text-align: center;
+  color: #f2f0eb;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.09), rgba(12, 13, 15, 0.94) 70%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 12px;
+  animation: ending-in 0.8s ease both;
+}
+.ending-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #c8c4be;
+}
+.ending-name {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 5.5vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+.ending-count { margin: 0; font-size: 0.78rem; color: #a9a59f; }
+.ending-recap-head {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a9a59f;
+}
+.ending-recap {
+  margin: 0;
+  padding: 0 0 0 1.4rem;
+  max-height: 7.5rem;
+  overflow-y: auto;
+  text-align: left;
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+.ending-recap li { margin: 0.1rem 0; }
+.ending-again { margin-top: 0.4rem; min-height: 44px; text-align: center; font-weight: 700; }
+@keyframes ending-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .spark-ending.ending-card { animation: none; } }
+@media (max-height: 560px) { .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
+
+/* Try another path: where the last run went (the choice you took, the nodes in the Tree). */
+.choice.was-taken { border-color: #f4f2ee; }
+.choice.was-taken::after {
+  content: "Last time";
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a9a59f;
+}
+.tree-node.is-walked { border-color: #d8b45a; }
+
+/* ---------------- Cinematic player chrome (J, 2026-11-06) ----------------
+   Desktop: the video sits in a 2.39:1 letterbox (black bars), the choices wait dimmed while the clip plays and come up
+   with a thin countdown when it ends, and the bar and title fade away after 3 s without movement. */
+.choice-timer { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.45rem; min-height: 14px; transition: opacity 0.4s ease; }
+/* Hidden keeps its row: the video stage must not resize when the countdown appears. */
+.choice-timer[hidden] { display: flex; visibility: hidden; }
+.choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
+.choice-timer-bar { display: block; height: 100%; width: 100%; background: #c8c4be; transform-origin: left center; animation: choice-timer linear forwards; }
+.choice-timer-label { min-width: 3.6em; text-align: right; color: #8e8b86; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.choice-timer[data-state="done"] { opacity: 0.55; }
+.choice-timer[data-state="done"] .choice-timer-bar { animation: none; transform: scaleX(0); }
+@keyframes choice-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+.spark-choices[data-phase="waiting"] .choice { opacity: 0.22; }
+.spark-choices[data-phase="ready"] .choice { animation: choice-in 0.7s ease both; }
+.spark-choices[data-phase="ready"] .choice:nth-child(2) { animation-delay: 0.12s; }
+.spark-choices[data-phase="ready"] .choice:nth-child(3) { animation-delay: 0.24s; }
+.spark-choices[data-phase="ready"] .choice:nth-child(n+4) { animation-delay: 0.36s; }
+@keyframes choice-in { from { opacity: 0.22; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.spark-bar, .spark-copy { transition: opacity 0.6s ease; }
+.spark.is-idle:not(.is-tree) .spark-bar,
+.spark.is-idle:not(.is-tree) .spark-copy { opacity: 0; }
+.spark.is-idle .spark-bar:focus-within { opacity: 1; }
+
+@media (min-width: 900px) and (min-height: 560px) {
+  #spark-play {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "head"
+      "stage"
+      "panel";
+  }
+  .spark-stage { background: #000; border-radius: 12px; }
+  .spark-video {
+    width: min(100cqw, calc(100cqh * 2.39));
+    height: min(100cqh, calc(100cqw / 2.39));
+    aspect-ratio: 2.39 / 1;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .spark-video video, .spark-video iframe { object-fit: contain; }
+  .spark-panel { justify-content: flex-start; min-height: min-content; max-width: 760px; margin: 0 auto; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark-choices[data-phase="ready"] .choice { animation: none; }
+  .spark-bar, .spark-copy { transition: none; }
 }

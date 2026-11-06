@@ -171,7 +171,11 @@
       100 only once every scene has been seen). */
   function exploredOf(story, seen) {
     const all = Object.keys(story.scenes).length;
-    return all ? Math.floor((Object.keys(seen).length * 100) / all) : 0;
+    const n = Object.keys(seen).length;
+    if (!all || !n) return 0;
+    // Whole percent, rounded down, but never 0 once a scene is seen (one of Night Shift's 228 is 0.4%) and 100 only
+    // with every scene.
+    return n >= all ? 100 : Math.min(99, Math.max(1, Math.floor((n * 100) / all)));
   }
 
   let completed = false;
@@ -315,6 +319,163 @@
     });
   }
 
+  // A reload or Back must not restore an old scroll position (down in the blog) under an opening story.
+  try { if ("scrollRestoration" in history && !location.hash) history.scrollRestoration = "manual"; } catch (e) { /* ignore */ }
+
+  /** The story screen never scrolls: the page at the top (header in view) and the screen itself at 0. */
+  function keepAtTop() {
+    if (firstScreen) { firstScreen.scrollTop = 0; firstScreen.scrollLeft = 0; }
+    if (window.scrollY || (document.scrollingElement && document.scrollingElement.scrollTop)) window.scrollTo(0, 0);
+  }
+
+  // The path of the run you just finished, kept for "Try another path": the next run marks where it went last time
+  // (the choice you took on each page of that path, and its nodes in the Tree). sessionStorage only.
+  let lastWay = null;
+  const lastWayKey = function (story) { return "iltv.lastpath." + story.cookie; };
+
+  function readLastWay(story, scenes) {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(lastWayKey(story)));
+      if (Array.isArray(saved) && saved.length > 1 && saved.every(function (id) { return !!scenes[id]; })) return saved;
+    } catch (error) {
+      // No session storage, no marks.
+    }
+    return null;
+  }
+
+  function writeLastWay(story, way) {
+    try {
+      sessionStorage.setItem(lastWayKey(story), JSON.stringify(way));
+    } catch (error) {
+      // The game stays playable.
+    }
+  }
+
+  /** The recap of a run: for each step of the way, the page it was on and the choice taken there. */
+  function recapOf(way) {
+    const steps = [];
+    for (let i = 0; i + 1 < way.length; i++) {
+      const from = SCENES[way[i]];
+      const choice = from.choices.filter(function (c) { return c.next === way[i + 1]; })[0];
+      if (choice) steps.push({ from: from, choice: choice });
+    }
+    return steps;
+  }
+
+  /** The card at an ending: its kicker (THE END), its own name, the choices made, how many endings are found, and
+      Try another path (a new run from the start with this way marked). */
+  function showEndingCard(sceneId, scene) {
+    const way = history.concat(sceneId);
+    const steps = recapOf(way);
+    const ends = Object.keys(SCENES).filter(function (id) { return !!SCENES[id].ending; });
+    const found = ends.filter(function (id) { return unlocked[id]; }).length;
+    endingBox.className = "spark-ending ending-card";
+    endingBox.dataset.ending = sceneId;
+    endingBox.replaceChildren();
+
+    const kicker = document.createElement("p");
+    kicker.className = "ending-kicker";
+    fillSpot(kicker, scene.ending, scene.endingEn, scene.lang, scene.dir);
+    const name = document.createElement("h2");
+    name.className = "ending-name";
+    fillSpot(name, scene.title, scene.titleEn, scene.lang, scene.dir);
+    const count = document.createElement("p");
+    count.className = "ending-count";
+    count.textContent = "Ending " + found + " of " + ends.length + " found";
+    endingBox.append(kicker, name, count);
+
+    const head = document.createElement("p");
+    head.className = "ending-recap-head";
+    head.textContent = steps.length ? "The choices you made" : "You made no choices";
+    endingBox.appendChild(head);
+    const list = document.createElement("ol");
+    list.className = "ending-recap";
+    steps.forEach(function (step) {
+      const li = document.createElement("li");
+      fillSpot(li, choiceLabel(step.choice.say), choiceLabel(step.choice.en), step.from.lang, step.from.dir);
+      list.appendChild(li);
+    });
+    endingBox.appendChild(list);
+
+    const again = document.createElement("button");
+    again.type = "button";
+    again.className = "choice ending-again";
+    again.id = "spark-try-another";
+    again.textContent = "Try another path";
+    again.addEventListener("click", function () {
+      writeLastWay(STORY, way);
+      lastWay = way;
+      clearProgress(STORY);
+      tell("restart", { story: STORY.id, via: "start_over", from: "ending_card" });
+      history = [];
+      fromPlayer = true;
+      if (treeRoot) treeRoot.replaceChildren();
+      show(STORY.start);
+    });
+    endingBox.appendChild(again);
+  }
+
+  // Cinema chrome (J, 2026-11-06): the choices wait dimmed while the clip plays, fade in when it ends with a thin
+  // countdown (a window to decide: nothing is chosen for you), and the bar and title controls fade away after 3 s idle.
+  const CHOICE_WINDOW = 15;
+  const IDLE_MS = 3000;
+  const timerBox = document.getElementById("spark-timer");
+  let windowTick = null;
+  let idleTimer = null;
+
+  function stopChoiceWindow() {
+    if (windowTick) clearTimeout(windowTick);
+    windowTick = null;
+    if (timerBox) { timerBox.hidden = true; timerBox.dataset.state = "off"; }
+  }
+
+  function setChoicePhase(phase) {
+    choicesBox.dataset.phase = phase;
+    root.dataset.choices = phase;
+  }
+
+  /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
+  function revealChoices(hasChoices) {
+    setChoicePhase("ready");
+    stopChoiceWindow();
+    if (!hasChoices || !timerBox) return;
+    const label = timerBox.querySelector(".choice-timer-label");
+    const bar = timerBox.querySelector(".choice-timer-bar");
+    timerBox.hidden = false;
+    timerBox.dataset.state = "running";
+    bar.style.animation = "none";
+    void bar.offsetWidth;
+    bar.style.animation = "";
+    bar.style.animationDuration = CHOICE_WINDOW + "s";
+    let left = CHOICE_WINDOW;
+    label.textContent = left + "s";
+    const tick = function () {
+      left -= 1;
+      if (left <= 0) {
+        timerBox.dataset.state = "done";
+        label.textContent = "Take your time";
+        windowTick = null;
+        return;
+      }
+      label.textContent = left + "s";
+      windowTick = setTimeout(tick, 1000);
+    };
+    windowTick = setTimeout(tick, 1000);
+  }
+
+  /** Any movement brings the controls back; 3 s without any hides them (never in the Tree). */
+  function wakeChrome() {
+    root.classList.remove("is-idle");
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () {
+      if (root.hidden || root.classList.contains("is-tree")) return;
+      root.classList.add("is-idle");
+    }, IDLE_MS);
+  }
+  ["pointermove", "pointerdown", "keydown", "wheel", "touchstart"].forEach(function (name) {
+    document.addEventListener(name, function () { if (!root.hidden) wakeChrome(); }, { passive: true, capture: true });
+  });
+
   function show(sceneId) {
     const scene = SCENES[sceneId];
     if (!scene) return;
@@ -335,6 +496,8 @@
     );
 
     showKit();
+    wakeChrome();
+    stopChoiceWindow();
 
     videoBox.replaceChildren();
     const videoSrc = scene.video || null;
@@ -353,7 +516,16 @@
       videoBox.appendChild(video);
       playClip(video);
       watchVideo(video, videoSrc);
+      setChoicePhase("waiting");
+      video.addEventListener("ended", function () {
+        if (activeClip === video && currentScene === sceneId) revealChoices(scene.choices.length > 0);
+      });
+      video.addEventListener("error", function () {
+        // A clip that won't load must not keep the choices dim (watchVideo retries and then offers Retry).
+        if (activeClip === video && choicesBox.dataset.phase === "waiting") setChoicePhase("ready");
+      });
     } else {
+      setChoicePhase("ready");
       // A draft story's scene before its media is made: its title on black, where the video will be.
       const blank = document.createElement("div");
       blank.className = "spark-video-blank";
@@ -370,6 +542,10 @@
       button.type = "button";
       button.className = "choice";
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
+      if (lastWay && lastWay[history.length] === sceneId && lastWay[history.length + 1] === choice.next) {
+        button.classList.add("was-taken");
+        button.dataset.lastTime = "true";
+      }
       button.addEventListener("click", function () {
         if (!SCENES[choice.next]) return;
         tell("choice", { story: STORY.id, from: currentScene, to: choice.next, option: choiceLabel(choice.en) });
@@ -381,7 +557,7 @@
     });
 
     if (scene.choices.length === 0) {
-      fillSpot(endingBox, scene.ending, scene.endingEn, scene.lang, scene.dir);
+      showEndingCard(sceneId, scene);
       endingBox.hidden = false;
     } else {
       endingBox.hidden = true;
@@ -389,10 +565,9 @@
     }
 
     if (fromPlayer) {
-      const rect = root.getBoundingClientRect();
-      if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        root.scrollIntoView({ block: "nearest" });
-      }
+      // The player is a fixed-height, overflow-hidden screen: scrollIntoView would scroll it inside itself and push
+      // the header out of sight, so only the page moves, back to the top.
+      keepAtTop();
       fromPlayer = false;
     }
 
@@ -589,6 +764,7 @@
         ? via
         : null;
       return '<div class="tree-node' +
+        (lastWay && lastWay.indexOf(id) >= 0 ? " is-walked" : "") +
         (scene.dead ? " is-dead" : "") +
         (id === currentScene ? " is-current" : "") +
         '" data-scene="' + id + '"' + at + '>' +
@@ -598,7 +774,7 @@
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -767,6 +943,63 @@
       const go = card.querySelector(".story-card-go");
       if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
     });
+    markHero();
+    markContinue();
+  }
+
+  /** The hero's button follows the run the way a card's does. */
+  function markHero() {
+    const hero = landing.querySelector(".hero");
+    const story = hero && STORIES[hero.dataset.story];
+    if (!story) return;
+    const progress = progressOf(story);
+    const run = runOf(story);
+    hero.dataset.progress = progress;
+    hero.dataset.run = run;
+    const go = hero.querySelector(".hero-go");
+    if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
+  }
+
+  /** Continue watching: a card for every listed story whose run is somewhere in the middle (in the catalogue's
+      order), with its percent explored. Hidden when there is none. */
+  function markContinue() {
+    const row = document.getElementById("continue-row");
+    const list = document.getElementById("continue-list");
+    if (!row || !list) return;
+    list.replaceChildren();
+    DATA.stories.filter(function (story) { return story.listed && runOf(story) === "mid"; }).forEach(function (story) {
+      const src = storyList.querySelector('.story-card[data-story="' + story.id + '"]');
+      if (!src) return;
+      const a = document.createElement("a");
+      a.className = "continue-card";
+      a.href = "/?story=" + story.id;
+      a.dataset.story = story.id;
+      a.dataset.run = "mid";
+      const img = src.querySelector("img, video");
+      if (img) a.appendChild(img.cloneNode(true));
+      const text = document.createElement("div");
+      text.className = "continue-card-text";
+      const h = document.createElement("h3");
+      h.textContent = story.title;
+      const pct = exploredOf(story, readUnlocks(story).seen);
+      const bar = document.createElement("span");
+      bar.className = "continue-bar";
+      bar.setAttribute("role", "img");
+      bar.setAttribute("aria-label", pct + "% explored");
+      const fill = document.createElement("span");
+      fill.style.width = pct + "%";
+      bar.appendChild(fill);
+      const meta = document.createElement("span");
+      meta.className = "continue-meta";
+      meta.textContent = pct + "% explored";
+      const go = document.createElement("span");
+      go.className = "continue-go";
+      go.textContent = "Continue";
+      text.append(h, bar, meta, go);
+      a.appendChild(text);
+      list.appendChild(a);
+    });
+    row.hidden = !list.children.length;
   }
 
   /** A console story (js/console.js) has its own player, not the video one. */
@@ -843,14 +1076,18 @@
     else delete document.documentElement.dataset.kit;
     setView("play");
     window.scrollTo(0, 0);
+    keepAtTop();
 
     const saved = readProgress(story, SCENES);
     const unlocks = readUnlocks(story);
     history = saved ? saved.history : [];
+    lastWay = readLastWay(story, SCENES);
     unlocked = unlocks.seen;
     completed = unlocks.completed;
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
     show(saved ? saved.scene : story.start);
+    keepAtTop();
+    requestAnimationFrame(function () { requestAnimationFrame(keepAtTop); });
   }
 
   function showLanding(push) {
@@ -882,8 +1119,8 @@
   }
 
   if (storyList) {
-    storyList.addEventListener("click", function (event) {
-      const card = event.target.closest && event.target.closest("a.story-card");
+    landing.addEventListener("click", function (event) {
+      const card = event.target.closest && event.target.closest("a.story-card, a.hero, a.continue-card");
       if (!card || !STORIES[card.dataset.story]) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
       event.preventDefault();
