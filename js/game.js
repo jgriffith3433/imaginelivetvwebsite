@@ -412,6 +412,67 @@
     endingBox.appendChild(again);
   }
 
+  // Cinema chrome (J, 2026-11-06): the choices wait dimmed while the clip plays, fade in when it ends with a thin
+  // countdown (a window to decide: nothing is chosen for you), and the bar and title controls fade away after 3 s idle.
+  const CHOICE_WINDOW = 15;
+  const IDLE_MS = 3000;
+  const timerBox = document.getElementById("spark-timer");
+  let windowTick = null;
+  let idleTimer = null;
+
+  function stopChoiceWindow() {
+    if (windowTick) clearTimeout(windowTick);
+    windowTick = null;
+    if (timerBox) { timerBox.hidden = true; timerBox.dataset.state = "off"; }
+  }
+
+  function setChoicePhase(phase) {
+    choicesBox.dataset.phase = phase;
+    root.dataset.choices = phase;
+  }
+
+  /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
+  function revealChoices(hasChoices) {
+    setChoicePhase("ready");
+    stopChoiceWindow();
+    if (!hasChoices || !timerBox) return;
+    const label = timerBox.querySelector(".choice-timer-label");
+    const bar = timerBox.querySelector(".choice-timer-bar");
+    timerBox.hidden = false;
+    timerBox.dataset.state = "running";
+    bar.style.animation = "none";
+    void bar.offsetWidth;
+    bar.style.animation = "";
+    bar.style.animationDuration = CHOICE_WINDOW + "s";
+    let left = CHOICE_WINDOW;
+    label.textContent = left + "s";
+    const tick = function () {
+      left -= 1;
+      if (left <= 0) {
+        timerBox.dataset.state = "done";
+        label.textContent = "Take your time";
+        windowTick = null;
+        return;
+      }
+      label.textContent = left + "s";
+      windowTick = setTimeout(tick, 1000);
+    };
+    windowTick = setTimeout(tick, 1000);
+  }
+
+  /** Any movement brings the controls back; 3 s without any hides them (never in the Tree). */
+  function wakeChrome() {
+    root.classList.remove("is-idle");
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () {
+      if (root.hidden || root.classList.contains("is-tree")) return;
+      root.classList.add("is-idle");
+    }, IDLE_MS);
+  }
+  ["pointermove", "pointerdown", "keydown", "wheel", "touchstart"].forEach(function (name) {
+    document.addEventListener(name, function () { if (!root.hidden) wakeChrome(); }, { passive: true, capture: true });
+  });
+
   function show(sceneId) {
     const scene = SCENES[sceneId];
     if (!scene) return;
@@ -432,6 +493,8 @@
     );
 
     showKit();
+    wakeChrome();
+    stopChoiceWindow();
 
     videoBox.replaceChildren();
     const videoSrc = scene.video || null;
@@ -450,7 +513,16 @@
       videoBox.appendChild(video);
       playClip(video);
       watchVideo(video, videoSrc);
+      setChoicePhase("waiting");
+      video.addEventListener("ended", function () {
+        if (activeClip === video && currentScene === sceneId) revealChoices(scene.choices.length > 0);
+      });
+      video.addEventListener("error", function () {
+        // A clip that won't load must not keep the choices dim (watchVideo retries and then offers Retry).
+        if (activeClip === video && choicesBox.dataset.phase === "waiting") setChoicePhase("ready");
+      });
     } else {
+      setChoicePhase("ready");
       // A draft story's scene before its media is made: its title on black, where the video will be.
       const blank = document.createElement("div");
       blank.className = "spark-video-blank";

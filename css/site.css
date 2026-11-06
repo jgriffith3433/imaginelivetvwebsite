@@ -2252,3 +2252,53 @@ figure.feed { cursor: default; }
   color: #a9a59f;
 }
 .tree-node.is-walked { border-color: #d8b45a; }
+
+/* ---------------- Cinematic player chrome (J, 2026-11-06) ----------------
+   Desktop: the video sits in a 2.39:1 letterbox (black bars), the choices wait dimmed while the clip plays and come up
+   with a thin countdown when it ends, and the bar and title fade away after 3 s without movement. */
+.choice-timer { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.45rem; min-height: 14px; transition: opacity 0.4s ease; }
+.choice-timer[hidden] { display: none; }
+.choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
+.choice-timer-bar { display: block; height: 100%; width: 100%; background: #c8c4be; transform-origin: left center; animation: choice-timer linear forwards; }
+.choice-timer-label { min-width: 3.6em; text-align: right; color: #8e8b86; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.choice-timer[data-state="done"] { opacity: 0.55; }
+.choice-timer[data-state="done"] .choice-timer-bar { animation: none; transform: scaleX(0); }
+@keyframes choice-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+.spark-choices[data-phase="waiting"] .choice { opacity: 0.22; }
+.spark-choices[data-phase="ready"] .choice { animation: choice-in 0.7s ease both; }
+.spark-choices[data-phase="ready"] .choice:nth-child(2) { animation-delay: 0.12s; }
+.spark-choices[data-phase="ready"] .choice:nth-child(3) { animation-delay: 0.24s; }
+.spark-choices[data-phase="ready"] .choice:nth-child(n+4) { animation-delay: 0.36s; }
+@keyframes choice-in { from { opacity: 0.22; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.spark-bar, .spark-copy { transition: opacity 0.6s ease; }
+.spark.is-idle:not(.is-tree) .spark-bar,
+.spark.is-idle:not(.is-tree) .spark-copy { opacity: 0; }
+.spark.is-idle .spark-bar:focus-within { opacity: 1; }
+
+@media (min-width: 900px) and (min-height: 560px) {
+  #spark-play {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "head"
+      "stage"
+      "panel";
+  }
+  .spark-stage { background: #000; border-radius: 12px; }
+  .spark-video {
+    width: min(100cqw, calc(100cqh * 2.39));
+    height: min(100cqh, calc(100cqw / 2.39));
+    aspect-ratio: 2.39 / 1;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .spark-video video, .spark-video iframe { object-fit: contain; }
+  .spark-panel { justify-content: flex-start; min-height: min-content; max-width: 760px; margin: 0 auto; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark-choices[data-phase="ready"] .choice { animation: none; }
+  .spark-bar, .spark-copy { transition: none; }
+}
