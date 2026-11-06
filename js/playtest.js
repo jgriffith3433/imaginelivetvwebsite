@@ -5091,6 +5091,124 @@ async function nightRoomRun(options, t) {
   await toLanding(t);
 }
 
+/* ---------------- front-door: the landing page as a streaming service's front door ---------------- */
+
+/** A page's width: nothing wider than the screen, and every press target on it at least 44 px each way. */
+function frontDoorFit(t, doc, w, where) {
+  const win = doc.defaultView;
+  const wide = Math.max(doc.documentElement.scrollWidth, doc.body.scrollWidth);
+  if (wide > w + 1) t.problem("bug", `${where}: the page is ${wide}px wide in a ${w}px screen (sideways scroll)`);
+  const small = [...doc.querySelectorAll("#stories .hero-go, #stories .continue-go, #stories .story-card-go")].filter((el) => el.getClientRects().length && (el.getBoundingClientRect().height < 30));
+  for (const el of small) t.problem("bug", `${where}: "${(el.textContent || "").trim()}" is ${Math.round(el.getBoundingClientRect().height)}px tall`);
+  for (const el of doc.querySelectorAll("#stories a.hero, #stories a.story-card, #stories a.continue-card")) {
+    const r = el.getBoundingClientRect();
+    if (r.width < 44 || r.height < 44) t.problem("bug", `${where}: a ${el.className} is ${Math.round(r.width)}x${Math.round(r.height)}px`);
+    if (r.right > w + 1 && !el.closest("#continue-list")) t.problem("bug", `${where}: a ${el.className} runs past the screen (right edge ${Math.round(r.right)}px of ${w})`);
+  }
+  return win.innerWidth;
+}
+
+/** The criteria of J's front door, played: every card has poster, runtime, mood and percent explored (and the hero
+    the same); no Continue row before anything is started; one real choice in a story, then the row shows it with its
+    percent, and its button opens the story where it was left; the page fits at 390 px. */
+async function frontDoorRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passSplash(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  await sleep(300);
+  const list = listedStories();
+  const row = () => document.getElementById("continue-row");
+  const rowCards = () => [...document.querySelectorAll("#continue-list a.continue-card")];
+  const checkFront = async (doc, where) => {
+    for (const st of list) {
+      const card = doc.querySelector(`#story-list a.story-card[data-story="${st.id}"]`);
+      if (!card) { t.problem("bug", `${where}: no card for ${st.id}`); continue; }
+      const img = card.querySelector("img, video");
+      const poster = !!img && (img.tagName === "VIDEO" || (img.complete && img.naturalWidth > 0));
+      const runtime = (card.querySelector(".meta-runtime")?.textContent || "").trim();
+      const mood = (card.querySelector(".meta-mood")?.textContent || "").trim();
+      const explored = (card.querySelector(".story-card-explored")?.textContent || "").trim();
+      t.event("front-card", `${where}: ${st.id}: poster ${poster ? "loads" : "MISSING"}, runtime "${runtime}", mood "${mood}", "${explored}"`);
+      if (!poster) t.problem("bug", `${where}: ${st.id}'s card has no poster that loads`);
+      if (!/\d+\s*min/i.test(runtime)) t.problem("bug", `${where}: ${st.id}'s card has no runtime ("${runtime}")`);
+      if (!mood) t.problem("bug", `${where}: ${st.id}'s card has no mood`);
+      if (!/^\d+% explored$/.test(explored)) t.problem("bug", `${where}: ${st.id}'s card says "${explored}", not a percent explored`);
+    }
+    const hero = doc.querySelector("#stories a.hero");
+    if (!hero) t.problem("bug", `${where}: the landing page has no hero`);
+    else {
+      const himg = hero.querySelector("img");
+      const ok = (himg && himg.complete && himg.naturalWidth > 0) && (hero.querySelector(".meta-runtime")?.textContent || "").trim() && (hero.querySelector(".meta-mood")?.textContent || "").trim() && (hero.querySelector("h2")?.textContent || "").trim();
+      t.event("front-hero", `${where}: ${hero.dataset.story}: ${ok ? "poster, title, runtime and mood" : "INCOMPLETE"}`);
+      if (!ok) t.problem("bug", `${where}: the hero lacks its poster, title, runtime or mood`);
+    }
+  };
+  t.scene("Front door: fresh browser");
+  await checkFront(document, "fresh");
+  if (row() && !row().hidden) t.problem("bug", "a Continue row shows before any story is started");
+  t.event("continue-row", `fresh: ${row() && !row().hidden ? "shown" : "hidden"} (${rowCards().length} cards)`);
+  t.progress(0.25);
+
+  t.scene("Front door: a choice in The Final Spark");
+  await openStory(t, FIRST);
+  await toStart(t);
+  const btns = choiceButtons();
+  if (!btns.length) throw new Error("no choices on The Final Spark's first page");
+  await tapAt(t, btns[0], "the first choice");
+  await sleep(500);
+  const pct = stories().explored(FIRST);
+  await toLanding(t);
+  await sleep(300);
+  const cards = rowCards();
+  const shown = row() && !row().hidden;
+  t.event("continue-row", `after one choice in ${FIRST}: ${shown ? "shown" : "hidden"}, ${cards.map((c) => c.dataset.story).join(", ")}`);
+  if (!shown || cards.length !== 1 || cards[0].dataset.story !== FIRST) t.problem("bug", `after a choice in ${FIRST} the Continue row should show it alone (shown: ${shown}, cards: ${cards.length})`);
+  else {
+    const c = cards[0];
+    const says = (c.querySelector(".continue-meta")?.textContent || "").trim();
+    t.event("continue-card", `${FIRST}: "${says}", ${c.querySelector("img, video") ? "poster" : "no poster"}, button "${(c.querySelector(".continue-go")?.textContent || "").trim()}"`);
+    if (says !== `${pct}% explored`) t.problem("bug", `the Continue card says "${says}", explored() says ${pct}%`);
+    if (!c.querySelector("img, video")) t.problem("bug", "the Continue card has no poster");
+    const bar = c.querySelector(".continue-bar span");
+    if (!bar || Math.abs(parseFloat(bar.style.width) - pct) > 0.5) t.problem("bug", `the Continue card's bar is ${bar?.style.width}, not ${pct}%`);
+  }
+  t.progress(0.55);
+
+  t.scene("Front door: 390 px");
+  const doc = await viewFrameLoad(t, "/", 390, 844);
+  await waitFor(() => doc.querySelector("#story-list a.story-card[data-progress]") && doc.getElementById("continue-row"), 8000);
+  await sleep(600);
+  await checkFront(doc, "390px");
+  const frow = doc.getElementById("continue-row");
+  t.event("continue-row", `390px frame: ${frow && !frow.hidden ? "shown" : "hidden"} (${doc.querySelectorAll("#continue-list a.continue-card").length} cards)`);
+  if (!frow || frow.hidden) t.problem("bug", "390px: the Continue row doesn't show after a story is started");
+  frontDoorFit(t, doc, 390, "390px");
+  closeViewFrame();
+  t.progress(0.8);
+
+  t.scene("Front door: Continue opens where it was left");
+  const before = stories().explored(FIRST);
+  const cont = rowCards()[0];
+  if (cont) {
+    cont.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(200);
+    await tapAt(t, cont.querySelector("h3") || cont, "the Continue card");
+    await sleep(500);
+    if (stories().current() !== FIRST) t.problem("bug", `the Continue card didn't open ${FIRST} (open: ${stories().current()})`);
+    else {
+      const sound = soundOf();
+      if (sound.prompt()) await passPrompt(t, document, FIRST);
+      if (window.finalSpark.depth() < 1) t.problem("bug", "the Continue card opened the story at its start, not where it was left");
+      t.event("continue-opened", `${FIRST} at ${window.finalSpark.scene()}, depth ${window.finalSpark.depth()}, ${stories().explored(FIRST)}% (was ${before}%)`);
+    }
+    await toLanding(t);
+  }
+  t.metric("continue_cards", rowCards().length);
+  t.progress(1);
+}
+
 /* ---------------- progress: one choice in each story raises the percent explored; opening a story keeps the page at the top ---------------- */
 
 /** Samples every animation frame: the page's scroll and whether the site header is fully in view. */
@@ -5182,6 +5300,13 @@ installPlaytest({
       seconds: 90,
       tags: ["full"],
       description: "From a fresh browser, each listed story (The Final Spark, The Water Road, Night Shift) is opened from its card while every animation frame is sampled: the page stays at the top and the site header stays in view (open-frames event). One choice is pressed in each (a real press); the percent explored must go up and be above 0 (Night Shift is 1 of 228 scenes: at least 1%), the player's text matching explored(), and the card says Started. Event progress per story, metrics explored_<id>.",
+    },
+    {
+      id: "front-door",
+      title: "The landing page as a front door: a hero, every card with poster, runtime, mood and percent explored, a Continue row once a story is started, and it fits at 390 px",
+      seconds: 60,
+      tags: ["full"],
+      description: "From a fresh browser (the splash passed, saved places cleared): the hero shows the featured story's poster, title, runtime and mood; every listed story's card shows a poster that loads, a runtime (\"About 45 min\"), a mood and its percent explored; no Continue row is on the page. Then a real press on The Final Spark's card and its first choice, and All stories: the Continue watching row shows that story alone, with its poster, a bar and the same percent explored as the player says. The home page in a 390x844 frame shows the same (row, cards, hero), with nothing wider than the screen and tap targets of 44 px or more. A real press on the Continue card reopens the story where it was left (not at its start). Events front-card, front-hero, continue-row, continue-card, continue-opened.",
     },
     {
       id: "night-shift-card",
@@ -5308,6 +5433,7 @@ installPlaytest({
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "progress") await progressRun(options, t);
+      else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
       else if (id === "night-shift-treatment") await nightTreatmentRun(options, t);

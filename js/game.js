@@ -940,6 +940,63 @@
       const go = card.querySelector(".story-card-go");
       if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
     });
+    markHero();
+    markContinue();
+  }
+
+  /** The hero's button follows the run the way a card's does. */
+  function markHero() {
+    const hero = landing.querySelector(".hero");
+    const story = hero && STORIES[hero.dataset.story];
+    if (!story) return;
+    const progress = progressOf(story);
+    const run = runOf(story);
+    hero.dataset.progress = progress;
+    hero.dataset.run = run;
+    const go = hero.querySelector(".hero-go");
+    if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
+  }
+
+  /** Continue watching: a card for every listed story whose run is somewhere in the middle (in the catalogue's
+      order), with its percent explored. Hidden when there is none. */
+  function markContinue() {
+    const row = document.getElementById("continue-row");
+    const list = document.getElementById("continue-list");
+    if (!row || !list) return;
+    list.replaceChildren();
+    DATA.stories.filter(function (story) { return story.listed && runOf(story) === "mid"; }).forEach(function (story) {
+      const src = storyList.querySelector('.story-card[data-story="' + story.id + '"]');
+      if (!src) return;
+      const a = document.createElement("a");
+      a.className = "continue-card";
+      a.href = "/?story=" + story.id;
+      a.dataset.story = story.id;
+      a.dataset.run = "mid";
+      const img = src.querySelector("img, video");
+      if (img) a.appendChild(img.cloneNode(true));
+      const text = document.createElement("div");
+      text.className = "continue-card-text";
+      const h = document.createElement("h3");
+      h.textContent = story.title;
+      const pct = exploredOf(story, readUnlocks(story).seen);
+      const bar = document.createElement("span");
+      bar.className = "continue-bar";
+      bar.setAttribute("role", "img");
+      bar.setAttribute("aria-label", pct + "% explored");
+      const fill = document.createElement("span");
+      fill.style.width = pct + "%";
+      bar.appendChild(fill);
+      const meta = document.createElement("span");
+      meta.className = "continue-meta";
+      meta.textContent = pct + "% explored";
+      const go = document.createElement("span");
+      go.className = "continue-go";
+      go.textContent = "Continue";
+      text.append(h, bar, meta, go);
+      a.appendChild(text);
+      list.appendChild(a);
+    });
+    row.hidden = !list.children.length;
   }
 
   /** A console story (js/console.js) has its own player, not the video one. */
@@ -1059,8 +1116,8 @@
   }
 
   if (storyList) {
-    storyList.addEventListener("click", function (event) {
-      const card = event.target.closest && event.target.closest("a.story-card");
+    landing.addEventListener("click", function (event) {
+      const card = event.target.closest && event.target.closest("a.story-card, a.hero, a.continue-card");
       if (!card || !STORIES[card.dataset.story]) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
       event.preventDefault();
