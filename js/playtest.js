@@ -2034,6 +2034,102 @@ async function analyticsNight(t, A, pump, st) {
   t.note(`${st.title}: ${sent.length} analytics events sent: ${[...new Set(sent.map((e) => e.name))].join(", ")}`);
 }
 
+/** Cinematic ending cards (J, 2026-11-06): at each ending the card shows its name, the choices made (the recap) and
+    Try another path, which starts a new run with that way marked (the choice taken last time on each page of it and its
+    nodes in the Tree). Real presses all the way; no setup shortcut. Stories: The Final Spark, The Water Road (two endings). */
+async function endingsRun(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
+  clearProgress();
+  const ids = options.story ? [options.story] : [FIRST, "water-road"];
+  let k = 0;
+  const press = async (st, to) => {
+    const i = st.scenes[sceneId()].choices.findIndex((c) => c[2] === to);
+    const button = choiceButtons()[i];
+    if (i < 0 || !button) throw new Error(`${st.id}: no choice from ${sceneId()} to ${to}`);
+    button.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, button, `"${enText(button)}"`);
+    await sleep(250);
+    if (sceneId() !== to) throw new Error(`${st.id}: "${enText(button)}" didn't open ${to} (on ${sceneId()})`);
+  };
+  try {
+    for (const id of ids) {
+      const st = story(id);
+      if (!landingShown()) await toLanding(t);
+      await openStory(t, id);
+      await toStart(t, { quiet: true });
+      const endings = Object.keys(st.scenes).filter((sid) => st.scenes[sid].ending);
+      const names = [];
+      let marked = null;
+      for (const end of endings) {
+        const way = wayTo(st, (sc) => sc === st.scenes[end]);
+        if (!way) throw new Error(`${id}: no way to ${end}`);
+        t.scene(`${id}: the way to ${end}`);
+        const trail = [st.start, ...way];
+        for (const to of way) {
+          // A restarted run marks, on each page still on the last way, the choice taken there.
+          if (marked) {
+            const here = spark().depth();
+            const hit = choiceButtons().filter((b) => b.classList.contains("was-taken"));
+            const expect = marked[here] === sceneId() ? marked[here + 1] : null;
+            const wasIdx = expect ? st.scenes[sceneId()].choices.findIndex((c) => c[2] === expect) : -1;
+            const gotIdx = hit.length ? choiceButtons().indexOf(hit[0]) : -1;
+            if (wasIdx !== gotIdx || hit.length > 1) t.problem("bug", `${id}: on ${sceneId()} the marked choice is #${gotIdx} (${hit.length} marked), the last way took #${wasIdx}`);
+          }
+          await press(st, to);
+        }
+        await sleep(500);
+        const card = $("spark-ending");
+        const endScene = st.scenes[end];
+        t.event("ending", `${id}/${endScene.folder}: ${enText(card.querySelector(".ending-kicker"))}`);
+        // 1. the card, with the ending's name
+        if (card.hidden || !card.classList.contains("ending-card")) { t.problem("bug", `${id}: reaching ${end} shows no ending card`); continue; }
+        const name = enText(card.querySelector(".ending-name"));
+        const want = String(endScene.title[1]).trim();
+        t.event("ending-card", `${id}/${endScene.folder}: "${name}"`);
+        if (name !== want) t.problem("bug", `${id}: the ending card says "${name}", the ending is "${want}"`);
+        if (names.includes(name)) t.problem("bug", `${id}: two endings share the card name "${name}"`);
+        names.push(name);
+        if (!card.getBoundingClientRect().height || card.getBoundingClientRect().bottom > innerHeight + 1) t.problem("bug", `${id}/${end}: the ending card isn't fully on screen`);
+        // 2. the choices made
+        const items = [...card.querySelectorAll(".ending-recap li")].map(enText);
+        const made = trail.slice(0, -1).map((from, i) => st.scenes[from].choices.find((c) => c[2] === trail[i + 1])[1].replace(/^\d+\.\s*/, ""));
+        t.event("recap", `${id}/${endScene.folder}: ${items.join(" | ")}`);
+        if (items.length !== way.length) t.problem("bug", `${id}/${end}: the recap lists ${items.length} choices, ${way.length} were made`);
+        else items.forEach((txt, i) => { if (txt !== made[i]) t.problem("bug", `${id}/${end}: recap step ${i + 1} says "${txt}", the choice was "${made[i]}"`); });
+        // 3. Try another path
+        const btn = $("spark-try-another");
+        if (!btn || !/try another path/i.test(btn.textContent)) { t.problem("bug", `${id}/${end}: no "Try another path" button on the ending card`); continue; }
+        if (btn.getBoundingClientRect().height < 44) t.problem("bug", `${id}/${end}: "Try another path" is under 44px high`);
+        btn.scrollIntoView({ block: "center", behavior: "instant" });
+        await sleep(1200);
+        const before = spark().unlocked().length;
+        await tapAt(t, btn, "Try another path");
+        await sleep(400);
+        if (sceneId() !== st.start || spark().depth() !== 0) t.problem("bug", `${id}: Try another path opened ${sceneId()} (${spark().depth()} steps in), not the start`);
+        if (spark().unlocked().length < before) t.problem("bug", `${id}: Try another path lost unlocked scenes`);
+        if (savedPlace(st)?.history?.length) t.problem("bug", `${id}: the saved run still holds the old way`);
+        marked = trail;
+        const first = choiceButtons().filter((b) => b.classList.contains("was-taken"));
+        t.event("path-marked", `${id}: ${first.length} choice marked on the first page (last time: ${enText(first[0])})`);
+        if (first.length !== 1 || !/last time/i.test(getComputedStyle(first[0], "::after").content)) t.problem("bug", `${id}: after Try another path the first page doesn't mark last time's choice`);
+        $("tab-tree").click();
+        await sleep(300);
+        const walked = [...$("spark-tree").querySelectorAll(".tree-node.is-walked")].length;
+        t.event("path-marked", `${id}: ${walked} Tree nodes marked as the last path`);
+        if (walked < 1) t.problem("bug", `${id}: the Tree marks nothing of the last path`);
+        await sleep(600);
+        $("tab-play").click();
+        await sleep(200);
+        t.progress(++k / (ids.length * 2));
+      }
+    }
+  } finally {
+    restoreProgress();
+  }
+}
+
 async function analyticsRun(options, t) {
   const A = window.hawkesAnalytics;
   if (!A || !A.config) {
@@ -5118,6 +5214,7 @@ installPlaytest({
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
+      else if (id === "endings") await endingsRun(options, t);
     } finally {
       endQuiet();
       probeStop(t);
