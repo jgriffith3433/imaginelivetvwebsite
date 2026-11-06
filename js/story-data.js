@@ -118,8 +118,8 @@ window.ILTV_STORIES = {
       "The sewer"
      ],
      "story": [
-      "你在黑暗的下水道里醒来。空气很难闻，黑暗里不知哪里在滴水。",
-      "You wake up in a dark sewer. The air smells terrible, and water drips somewhere in the darkness."
+      "你在下水道里醒来。空气恶臭，黑暗深处有水在滴。",
+      "You wake in a sewer. The air stinks. Somewhere in the dark, water drips."
      ],
      "question": [
       "你要做什么？",
@@ -148,8 +148,8 @@ window.ILTV_STORIES = {
       "Dead end"
      ],
      "story": [
-      "तुम एक बंद सिरे पर पहुँच गए। फर्श पर कुछ काला और घिनौना पसरा है।",
-      "You reach a dead end. Something dark and disgusting is covering the floor."
+      "आगे बंद दीवार है। फर्श पर कुछ काला और घिनौना पसरा है।",
+      "A dead end. Something black and foul is smeared across the floor."
      ],
      "question": [
       "तुम क्या करोगे?",
@@ -178,8 +178,8 @@ window.ILTV_STORIES = {
       "The passage"
      ],
      "story": [
-      "Vuelves al pasadizo. La cloaca se alarga hacia la oscuridad.",
-      "You return to the passage. The sewer stretches into the darkness."
+      "Vuelves al pasadizo. La cloaca sigue hacia la oscuridad.",
+      "Back in the passage. The sewer runs on into the dark."
      ],
      "question": [
       "¿Hacia dónde irás?",
@@ -234,8 +234,8 @@ window.ILTV_STORIES = {
       "Sewer water"
      ],
      "story": [
-      "تدخل قسمًا مغمورًا من المجاري. الماء يبدو قذرًا.",
-      "You enter a flooded section of the sewer. The water looks filthy."
+      "تصل إلى جزء مغمور من المجاري. الماء قذر.",
+      "You reach a flooded stretch. The water is filthy."
      ],
      "question": [
       "ماذا ستفعل؟",
@@ -249,8 +249,8 @@ window.ILTV_STORIES = {
        "getOutWater"
       ],
       [
-       "2. تجاهله وتابع",
-       "2. Ignore it and continue",
+       "2. تابع خوض الماء",
+       "2. Wade on",
        "disease"
       ]
      ]
@@ -264,18 +264,18 @@ window.ILTV_STORIES = {
       "Out of the water"
      ],
      "story": [
-      "Você consegue sair da água e continua pela cloaca.",
-      "You manage to get out of the water and continue through the sewer."
+      "Você sai da água e segue pela cloaca.",
+      "You haul yourself out and follow the sewer on."
      ],
      "question": [
-      "Você descobre um portão trancado à frente.",
-      "You discover a locked gate ahead."
+      "À frente, um portão trancado.",
+      "Ahead: a locked gate."
      ],
      "video": "/assets/video/out-of-water.mp4",
      "choices": [
       [
-       "Continuar",
-       "Continue",
+       "1. Ir até o portão",
+       "1. Go to the gate",
        "gate"
       ]
      ]
@@ -289,8 +289,8 @@ window.ILTV_STORIES = {
       "Trench foot"
      ],
      "story": [
-      "Пробыв слишком долго в грязной воде, ты заболеваешь окопной стопой. Тебе становится всё хуже, пока ты уже не можешь идти дальше.",
-      "After spending too long in the contaminated water, you develop trench foot. Your condition worsens until you can no longer continue."
+      "Ты слишком долго стоял в грязной воде. Окопная стопа. Ноги отказывают, и дальше ты не идёшь.",
+      "Too long in the filthy water. Trench foot. Your legs give out, and you go no further."
      ],
      "question": [
       "Ты умер.",
@@ -315,8 +315,8 @@ window.ILTV_STORIES = {
       "The gate"
      ],
      "story": [
-      "錠のかかった門が道をふさいでいる。通り抜ける方法を見つけなければならない。",
-      "A locked gate blocks your way. You need to find a way through."
+      "錠のかかった鉄の門が道をふさいでいる。",
+      "A locked iron gate blocks the way."
      ],
      "question": [
       "どうする？",
@@ -345,8 +345,8 @@ window.ILTV_STORIES = {
       "Break the gate"
      ],
      "story": [
-      "তুমি গেট ভাঙতে চেষ্টা করো, কিন্তু পার হওয়া সহজ হবে না।",
-      "You try to break the gate, but getting through won't be easy."
+      "তুমি গেটে কাঁধ দিয়ে ধাক্কা দাও। গেট নড়ে না।",
+      "You throw your shoulder against the gate. It doesn't move."
      ],
      "question": [
       "এরপর কী করবে?",
@@ -370,8 +370,8 @@ window.ILTV_STORIES = {
       "Pick the lock"
      ],
      "story": [
-      "Du versuchst, das Schloss zu knacken. Mit bloßen Händen reicht es vielleicht nicht.",
-      "You try to pick the lock. You may need something more than your bare hands."
+      "Du fummelst am Schloss herum. Mit bloßen Fingern ist da nichts zu machen.",
+      "You work at the lock. Bare fingers aren't enough."
      ],
      "question": [
       "Was machst du als Nächstes?",
@@ -395,8 +395,8 @@ window.ILTV_STORIES = {
       "The key"
      ],
      "story": [
-      "열쇠를 찾았다!",
-      "You found a key!"
+      "벽에 묶인 해골의 손에 열쇠가 걸려 있다.",
+      "A key hangs from the hand of a skeleton chained to the wall."
      ],
      "question": [
       "그걸로 무엇을 할 거야?",
@@ -420,8 +420,8 @@ window.ILTV_STORIES = {
       "Unlock"
      ],
      "story": [
-      "Anahtarla kapının kilidini açarsın. Ötesini kalın bir sis doldurur.",
-      "You use the key to unlock the gate. Beyond it, a thick fog fills the passage."
+      "Anahtar kilide uyar. Kapının ardında kalın bir sis var.",
+      "The key fits. Behind the gate, thick fog."
      ],
      "question": [
       "Sisin içine girecek misin?",
@@ -430,8 +430,8 @@ window.ILTV_STORIES = {
      "video": "/assets/video/use-key.mp4",
      "choices": [
       [
-       "Siste devam et",
-       "Continue in the fog",
+       "1. Sise gir",
+       "1. Enter the fog",
        "fog"
       ]
      ]
@@ -445,8 +445,8 @@ window.ILTV_STORIES = {
       "The fog"
      ],
      "story": [
-      "Bạn bước qua cổng và đi vào sương mù. Bạn hầu như không thấy phía trước có gì.",
-      "You step through the gate and enter the fog. You can barely see what lies ahead."
+      "Bạn bước qua cổng vào sương mù. Gần như không thấy gì phía trước.",
+      "You step through the gate into the fog. You can barely see ahead."
      ],
      "question": [
       "Bạn sẽ làm gì?",
@@ -475,8 +475,8 @@ window.ILTV_STORIES = {
       "Burn the door"
      ],
      "story": [
-      "Decidi di dare fuoco alla porta.",
-      "You decide to set the door on fire."
+      "Accosti la fiamma alla porta. Il legno vecchio prende fuoco subito.",
+      "You hold the flame to the door. The old wood catches at once."
      ],
      "question": [
       "Che cosa succede dopo?",
@@ -485,8 +485,8 @@ window.ILTV_STORIES = {
      "video": "/assets/video/fire-door.mp4",
      "choices": [
       [
-       "Continua",
-       "Continue",
+       "1. Esci in strada",
+       "1. Step into the street",
        "uponTruck"
       ]
      ]
@@ -500,8 +500,8 @@ window.ILTV_STORIES = {
       "Knock"
      ],
      "story": [
-      "Kamu mendekati pintu dan mengetuk.",
-      "You approach the door and knock."
+      "Kamu mengetuk pintu. Seorang lelaki tua membuka, lalu menyuruhmu pergi.",
+      "You knock. An old man opens the door and sends you away."
      ],
      "question": [
       "Apa yang terjadi selanjutnya?",
@@ -510,8 +510,8 @@ window.ILTV_STORIES = {
      "video": "/assets/video/knock.mp4",
      "choices": [
       [
-       "Lanjutkan",
-       "Continue",
+       "1. Kembali ke jalan",
+       "1. Turn back to the street",
        "uponTruck"
       ]
      ]
@@ -525,8 +525,8 @@ window.ILTV_STORIES = {
       "The truck"
      ],
      "story": [
-      "تم اپنے آپ کو ایک ٹرک کے سامنے کھڑا پاتے ہو۔",
-      "You find yourself standing before a truck."
+      "ایک سفید ٹرک گلی میں کھلا کھڑا ہے۔",
+      "A white truck stands open in the street."
      ],
      "question": [
       "تم کیا کرو گے؟",
@@ -535,13 +535,13 @@ window.ILTV_STORIES = {
      "video": "/assets/video/truck.mp4",
      "choices": [
       [
-       "1. ٹرک کے اندر جاؤ",
-       "1. Get inside truck",
+       "1. اندر چڑھ جاؤ",
+       "1. Climb in",
        "insideTruck"
       ],
       [
-       "2. ٹرک سے دور چل دو",
-       "2. Walk away from truck",
+       "2. چل دو",
+       "2. Walk away",
        "walkAway"
       ]
      ]
@@ -555,8 +555,8 @@ window.ILTV_STORIES = {
       "Inside"
      ],
      "story": [
-      "Subes a la camioneta.",
-      "You get inside the truck."
+      "Subes a la camioneta. En la oscuridad de la cabina, algo se mueve.",
+      "You climb in. In the dark of the cab, something moves."
      ],
      "question": [
       "¿Qué pasa ahora?",
@@ -580,8 +580,8 @@ window.ILTV_STORIES = {
       "Walk away"
      ],
      "story": [
-      "เจ้าตัดสินใจเดินหนีจากรถบรรทุก",
-      "You decide to walk away from the truck."
+      "เจ้าหันหลังให้รถบรรทุกแล้วเดินจากไป แต่เงาตามมา",
+      "You turn your back on the truck and walk. The shadow follows."
      ],
      "question": [
       "เจ้าจะทำอะไร?",
@@ -605,8 +605,8 @@ window.ILTV_STORIES = {
       "Shadow dance"
      ],
      "story": [
-      "Unacheza na kivuli. Mnapoenda pamoja, kitu kinaamka ndani yako. Mwanguko wa nguvu ya ajabu unapita mwilini mwako, na unagundua umepata nguvu mpya.",
-      "You dance with the shadow. As you move together, something awakens within you. A surge of strange energy courses through your body, and you discover that you have gained new powers."
+      "Unacheza na kivuli. Kitu kinaamka ndani yako, na nguvu ya ajabu inakimbia mwilini mwako. Una nguvu mpya.",
+      "You dance with the shadow. Something wakes in you, and a strange power runs through your body. You have new powers."
      ],
      "question": [
       "Nguvu zako mpya zimeamka.",
@@ -710,8 +710,8 @@ window.ILTV_STORIES = {
       "Destroy town"
      ],
      "story": [
-      "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ।",
-      "You decided to destroy the whole town."
+      "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰ ਦਿੰਦਾ ਹੈਂ। ਇੱਕ-ਇੱਕ ਕਰਕੇ ਹਰ ਬੱਤੀ ਬੁਝ ਜਾਂਦੀ ਹੈ।",
+      "You destroy the whole town. One by one, every light goes out."
      ],
      "question": [
       "",
