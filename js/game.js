@@ -325,6 +325,93 @@
     if (window.scrollY || (document.scrollingElement && document.scrollingElement.scrollTop)) window.scrollTo(0, 0);
   }
 
+  // The path of the run you just finished, kept for "Try another path": the next run marks where it went last time
+  // (the choice you took on each page of that path, and its nodes in the Tree). sessionStorage only.
+  let lastWay = null;
+  const lastWayKey = function (story) { return "iltv.lastpath." + story.cookie; };
+
+  function readLastWay(story, scenes) {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(lastWayKey(story)));
+      if (Array.isArray(saved) && saved.length > 1 && saved.every(function (id) { return !!scenes[id]; })) return saved;
+    } catch (error) {
+      // No session storage, no marks.
+    }
+    return null;
+  }
+
+  function writeLastWay(story, way) {
+    try {
+      sessionStorage.setItem(lastWayKey(story), JSON.stringify(way));
+    } catch (error) {
+      // The game stays playable.
+    }
+  }
+
+  /** The recap of a run: for each step of the way, the page it was on and the choice taken there. */
+  function recapOf(way) {
+    const steps = [];
+    for (let i = 0; i + 1 < way.length; i++) {
+      const from = SCENES[way[i]];
+      const choice = from.choices.filter(function (c) { return c.next === way[i + 1]; })[0];
+      if (choice) steps.push({ from: from, choice: choice });
+    }
+    return steps;
+  }
+
+  /** The card at an ending: its kicker (THE END), its own name, the choices made, how many endings are found, and
+      Try another path (a new run from the start with this way marked). */
+  function showEndingCard(sceneId, scene) {
+    const way = history.concat(sceneId);
+    const steps = recapOf(way);
+    const ends = Object.keys(SCENES).filter(function (id) { return !!SCENES[id].ending; });
+    const found = ends.filter(function (id) { return unlocked[id]; }).length;
+    endingBox.className = "spark-ending ending-card";
+    endingBox.dataset.ending = sceneId;
+    endingBox.replaceChildren();
+
+    const kicker = document.createElement("p");
+    kicker.className = "ending-kicker";
+    fillSpot(kicker, scene.ending, scene.endingEn, scene.lang, scene.dir);
+    const name = document.createElement("h2");
+    name.className = "ending-name";
+    fillSpot(name, scene.title, scene.titleEn, scene.lang, scene.dir);
+    const count = document.createElement("p");
+    count.className = "ending-count";
+    count.textContent = "Ending " + found + " of " + ends.length + " found";
+    endingBox.append(kicker, name, count);
+
+    const head = document.createElement("p");
+    head.className = "ending-recap-head";
+    head.textContent = steps.length ? "The choices you made" : "You made no choices";
+    endingBox.appendChild(head);
+    const list = document.createElement("ol");
+    list.className = "ending-recap";
+    steps.forEach(function (step) {
+      const li = document.createElement("li");
+      fillSpot(li, choiceLabel(step.choice.say), choiceLabel(step.choice.en), step.from.lang, step.from.dir);
+      list.appendChild(li);
+    });
+    endingBox.appendChild(list);
+
+    const again = document.createElement("button");
+    again.type = "button";
+    again.className = "choice ending-again";
+    again.id = "spark-try-another";
+    again.textContent = "Try another path";
+    again.addEventListener("click", function () {
+      writeLastWay(STORY, way);
+      lastWay = way;
+      clearProgress(STORY);
+      tell("restart", { story: STORY.id, via: "start_over", from: "ending_card" });
+      history = [];
+      fromPlayer = true;
+      if (treeRoot) treeRoot.replaceChildren();
+      show(STORY.start);
+    });
+    endingBox.appendChild(again);
+  }
+
   function show(sceneId) {
     const scene = SCENES[sceneId];
     if (!scene) return;
@@ -380,6 +467,10 @@
       button.type = "button";
       button.className = "choice";
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
+      if (lastWay && lastWay[history.length] === sceneId && lastWay[history.length + 1] === choice.next) {
+        button.classList.add("was-taken");
+        button.dataset.lastTime = "true";
+      }
       button.addEventListener("click", function () {
         if (!SCENES[choice.next]) return;
         tell("choice", { story: STORY.id, from: currentScene, to: choice.next, option: choiceLabel(choice.en) });
@@ -391,7 +482,7 @@
     });
 
     if (scene.choices.length === 0) {
-      fillSpot(endingBox, scene.ending, scene.endingEn, scene.lang, scene.dir);
+      showEndingCard(sceneId, scene);
       endingBox.hidden = false;
     } else {
       endingBox.hidden = true;
@@ -598,6 +689,7 @@
         ? via
         : null;
       return '<div class="tree-node' +
+        (lastWay && lastWay.indexOf(id) >= 0 ? " is-walked" : "") +
         (scene.dead ? " is-dead" : "") +
         (id === currentScene ? " is-current" : "") +
         '" data-scene="' + id + '"' + at + '>' +
@@ -607,7 +699,7 @@
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -857,6 +949,7 @@
     const saved = readProgress(story, SCENES);
     const unlocks = readUnlocks(story);
     history = saved ? saved.history : [];
+    lastWay = readLastWay(story, SCENES);
     unlocked = unlocks.seen;
     completed = unlocks.completed;
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
