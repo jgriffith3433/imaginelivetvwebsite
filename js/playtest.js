@@ -4209,6 +4209,46 @@ async function nightGapsRun(options, t) {
   }
 }
 
+/* ---------------- Writing pass: each story's voice guide (docs/<id>/voice.md) and the diff summary (docs/voice-diff.md) ---------------- */
+
+/** Reads docs/<id>/voice.md for every story (a "Style note: 5 rules" with exactly 5 numbered rules), checks every node's
+    choices lead to a node that exists (nothing removed by the writing pass), no listed story's choice says a bare "Continue",
+    and docs/voice-diff.md lists a "Changed nodes" count per story and each changed node by name. No story is played. */
+async function voiceRun(options, t) {
+  await passPrompt(t);
+  const stories = allStories();
+  for (const st of stories.filter((s) => s.listed !== false)) {
+    t.scene(`${st.id}: docs/${st.id}/voice.md`);
+    const res = await fetch(`/docs/${st.id}/voice.md`, { cache: "no-store" });
+    if (!res.ok) { t.problem("bug", `docs/${st.id}/voice.md: HTTP ${res.status}`); continue; }
+    const doc = await res.text();
+    const sec = (doc.split(/^## Style note: 5 rules\s*$/m)[1] || "").split(/^## /m)[0];
+    const rules = sec.split("\n").filter((l) => /^\d+\. /.test(l));
+    if (!sec) t.problem("bug", `docs/${st.id}/voice.md has no "Style note: 5 rules" section`);
+    else if (rules.length !== 5) t.problem("bug", `docs/${st.id}/voice.md has ${rules.length} rules, not 5`);
+    else t.event("criterion", `${st.id}: a style note with 5 rules`);
+    for (const h of ["Tone", "Pacing", "Choice design"]) if (!new RegExp(`^## ${h}\\s*$`, "m").test(doc)) t.problem("bug", `docs/${st.id}/voice.md has no "${h}" section`);
+    const scenes = Object.values(st.scenes);
+    const ids = new Set(Object.keys(st.scenes));
+    let missing = 0;
+    for (const s of scenes) for (const c of s.choices || []) if (!ids.has(c[2])) missing++;
+    if (missing) t.problem("bug", `${st.id}: ${missing} choices lead to a node that doesn't exist`);
+    else t.event("criterion", `${st.id}: ${scenes.length} nodes, every choice leads to one`);
+    t.metric(`nodes_${st.id}`, scenes.length);
+  }
+  t.scene("docs/voice-diff.md");
+  const res = await fetch("/docs/voice-diff.md", { cache: "no-store" });
+  if (!res.ok) { t.problem("bug", `docs/voice-diff.md: HTTP ${res.status}`); return; }
+  const diff = await res.text();
+  for (const st of stories.filter((s) => s.listed !== false)) {
+    const part = (diff.split(new RegExp(`^## ${st.id}\\s*$`, "m"))[1] || "").split(/^## /m)[0];
+    const m = part.match(/Changed nodes: (\d+)/);
+    if (!m) t.problem("bug", `docs/voice-diff.md has no changed-nodes list for ${st.id}`);
+    else if ((part.match(/^\s+- `[^`]+`/gm) || []).length !== +m[1]) t.problem("bug", `docs/voice-diff.md: ${st.id} says ${m[1]} changed nodes but lists ${(part.match(/^\s+- `[^`]+`/gm) || []).length}`);
+    else t.event("criterion", `${st.id}: diff summary lists ${m[1]} changed nodes`);
+  }
+}
+
 /* ---------------- Night Shift sign-off: every ending, played to the end with real presses, at the desktop size and at three phone sizes ---------------- */
 
 /** Every ending of the night, by its shortest way, played with real presses (Skip line moves the lines along) at the
@@ -5354,6 +5394,13 @@ installPlaytest({
       description: "Opens Night Shift (night-shift) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45 (a warning outside 40 to 50), and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged. Options: {\"at\":\"numbers\"} runs only the data's checks (about 10 s); {\"at\":\"four-hours\"} (any scene on the way through every layer) opens a seeded run (named setup shortcut, event seeded-run) at that scene and plays the rest of the way, to \"Someone to leave it to\", with real presses, then the last six choices to \"The wedge\" (about 3 minutes).",
     },
     {
+      id: "voice",
+      title: "The writing pass: each story has a voice guide with a style note of 5 rules, every node still has its choices, and the diff summary lists the changed nodes per story",
+      seconds: 15,
+      tags: ["full"],
+      description: "Waits for the landing page's splash, then reads docs/<id>/voice.md for every listed story (a \"Style note: 5 rules\" with exactly five numbered rules, plus Tone, Pacing and Choice design), checks from the story data that every choice leads to a node that exists, and reads docs/voice-diff.md (made by tools/voice-diff.mjs): each story has its changed-nodes count and the nodes named. No story is played.",
+    },
+    {
       id: "night-shift-gaps",
       title: "Night Shift's gaps audit: the story opened with real presses, then story/night-shift-gaps.md checked: groups a to f numbered, its counts and the shortest and typical minutes against the data, the output of npm run story -- --check and the console, stories and sound playtests",
       seconds: 10,
@@ -5438,6 +5485,7 @@ installPlaytest({
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
       else if (id === "night-shift-treatment") await nightTreatmentRun(options, t);
       else if (id === "night-shift-gaps") await nightGapsRun(options, t);
+      else if (id === "voice") await voiceRun(options, t);
       else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "room") await nightRoomRun(options, t);

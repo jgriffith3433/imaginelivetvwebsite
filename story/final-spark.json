@@ -153,8 +153,8 @@
         "The sewer"
       ],
       "story": [
-        "你在黑暗的下水道里醒来。空气很难闻，黑暗里不知哪里在滴水。",
-        "You wake up in a dark sewer. The air smells terrible, and water drips somewhere in the darkness."
+        "你在下水道里醒来。空气恶臭，黑暗深处有水在滴。",
+        "You wake in a sewer. The air stinks. Somewhere in the dark, water drips."
       ],
       "question": [
         "你要做什么？",
@@ -192,8 +192,8 @@
         "Dead end"
       ],
       "story": [
-        "तुम एक बंद सिरे पर पहुँच गए। फर्श पर कुछ काला और घिनौना पसरा है।",
-        "You reach a dead end. Something dark and disgusting is covering the floor."
+        "आगे बंद दीवार है। फर्श पर कुछ काला और घिनौना पसरा है।",
+        "A dead end. Something black and foul is smeared across the floor."
       ],
       "question": [
         "तुम क्या करोगे?",
@@ -230,8 +230,8 @@
         "The passage"
       ],
       "story": [
-        "Vuelves al pasadizo. La cloaca se alarga hacia la oscuridad.",
-        "You return to the passage. The sewer stretches into the darkness."
+        "Vuelves al pasadizo. La cloaca sigue hacia la oscuridad.",
+        "Back in the passage. The sewer runs on into the dark."
       ],
       "question": [
         "¿Hacia dónde irás?",
@@ -303,8 +303,8 @@
         "Sewer water"
       ],
       "story": [
-        "تدخل قسمًا مغمورًا من المجاري. الماء يبدو قذرًا.",
-        "You enter a flooded section of the sewer. The water looks filthy."
+        "تصل إلى جزء مغمور من المجاري. الماء قذر.",
+        "You reach a flooded stretch. The water is filthy."
       ],
       "question": [
         "ماذا ستفعل؟",
@@ -317,8 +317,8 @@
           "next": "getOutWater"
         },
         {
-          "say": "2. تجاهله وتابع",
-          "en": "2. Ignore it and continue",
+          "say": "2. تابع خوض الماء",
+          "en": "2. Wade on",
           "next": "disease"
         }
       ],
@@ -341,17 +341,17 @@
         "Out of the water"
       ],
       "story": [
-        "Você consegue sair da água e continua pela cloaca.",
-        "You manage to get out of the water and continue through the sewer."
+        "Você sai da água e segue pela cloaca.",
+        "You haul yourself out and follow the sewer on."
       ],
       "question": [
-        "Você descobre um portão trancado à frente.",
-        "You discover a locked gate ahead."
+        "À frente, um portão trancado.",
+        "Ahead: a locked gate."
       ],
       "choices": [
         {
-          "say": "Continuar",
-          "en": "Continue",
+          "say": "1. Ir até o portão",
+          "en": "1. Go to the gate",
           "next": "gate"
         }
       ],
@@ -374,8 +374,8 @@
         "Trench foot"
       ],
       "story": [
-        "Пробыв слишком долго в грязной воде, ты заболеваешь окопной стопой. Тебе становится всё хуже, пока ты уже не можешь идти дальше.",
-        "After spending too long in the contaminated water, you develop trench foot. Your condition worsens until you can no longer continue."
+        "Ты слишком долго стоял в грязной воде. Окопная стопа. Ноги отказывают, и дальше ты не идёшь.",
+        "Too long in the filthy water. Trench foot. Your legs give out, and you go no further."
       ],
       "question": [
         "Ты умер.",
@@ -408,8 +408,8 @@
         "The gate"
       ],
       "story": [
-        "錠のかかった門が道をふさいでいる。通り抜ける方法を見つけなければならない。",
-        "A locked gate blocks your way. You need to find a way through."
+        "錠のかかった鉄の門が道をふさいでいる。",
+        "A locked iron gate blocks the way."
       ],
       "question": [
         "どうする？",
@@ -446,8 +446,8 @@
         "Break the gate"
       ],
       "story": [
-        "তুমি গেট ভাঙতে চেষ্টা করো, কিন্তু পার হওয়া সহজ হবে না।",
-        "You try to break the gate, but getting through won't be easy."
+        "তুমি গেটে কাঁধ দিয়ে ধাক্কা দাও। গেট নড়ে না।",
+        "You throw your shoulder against the gate. It doesn't move."
       ],
       "question": [
         "এরপর কী করবে?",
@@ -479,8 +479,8 @@
         "Pick the lock"
       ],
       "story": [
-        "Du versuchst, das Schloss zu knacken. Mit bloßen Händen reicht es vielleicht nicht.",
-        "You try to pick the lock. You may need something more than your bare hands."
+        "Du fummelst am Schloss herum. Mit bloßen Fingern ist da nichts zu machen.",
+        "You work at the lock. Bare fingers aren't enough."
       ],
       "question": [
         "Was machst du als Nächstes?",
@@ -512,8 +512,8 @@
         "The key"
       ],
       "story": [
-        "열쇠를 찾았다!",
-        "You found a key!"
+        "벽에 묶인 해골의 손에 열쇠가 걸려 있다.",
+        "A key hangs from the hand of a skeleton chained to the wall."
       ],
       "question": [
         "그걸로 무엇을 할 거야?",
@@ -545,8 +545,8 @@
         "Unlock"
       ],
       "story": [
-        "Anahtarla kapının kilidini açarsın. Ötesini kalın bir sis doldurur.",
-        "You use the key to unlock the gate. Beyond it, a thick fog fills the passage."
+        "Anahtar kilide uyar. Kapının ardında kalın bir sis var.",
+        "The key fits. Behind the gate, thick fog."
       ],
       "question": [
         "Sisin içine girecek misin?",
@@ -554,8 +554,8 @@
       ],
       "choices": [
         {
-          "say": "Siste devam et",
-          "en": "Continue in the fog",
+          "say": "1. Sise gir",
+          "en": "1. Enter the fog",
           "next": "fog"
         }
       ],
@@ -578,8 +578,8 @@
         "The fog"
       ],
       "story": [
-        "Bạn bước qua cổng và đi vào sương mù. Bạn hầu như không thấy phía trước có gì.",
-        "You step through the gate and enter the fog. You can barely see what lies ahead."
+        "Bạn bước qua cổng vào sương mù. Gần như không thấy gì phía trước.",
+        "You step through the gate into the fog. You can barely see ahead."
       ],
       "question": [
         "Bạn sẽ làm gì?",
@@ -616,8 +616,8 @@
         "Burn the door"
       ],
       "story": [
-        "Decidi di dare fuoco alla porta.",
-        "You decide to set the door on fire."
+        "Accosti la fiamma alla porta. Il legno vecchio prende fuoco subito.",
+        "You hold the flame to the door. The old wood catches at once."
       ],
       "question": [
         "Che cosa succede dopo?",
@@ -625,8 +625,8 @@
       ],
       "choices": [
         {
-          "say": "Continua",
-          "en": "Continue",
+          "say": "1. Esci in strada",
+          "en": "1. Step into the street",
           "next": "uponTruck"
         }
       ],
@@ -649,8 +649,8 @@
         "Knock"
       ],
       "story": [
-        "Kamu mendekati pintu dan mengetuk.",
-        "You approach the door and knock."
+        "Kamu mengetuk pintu. Seorang lelaki tua membuka, lalu menyuruhmu pergi.",
+        "You knock. An old man opens the door and sends you away."
       ],
       "question": [
         "Apa yang terjadi selanjutnya?",
@@ -658,8 +658,8 @@
       ],
       "choices": [
         {
-          "say": "Lanjutkan",
-          "en": "Continue",
+          "say": "1. Kembali ke jalan",
+          "en": "1. Turn back to the street",
           "next": "uponTruck"
         }
       ],
@@ -690,8 +690,8 @@
         "The truck"
       ],
       "story": [
-        "تم اپنے آپ کو ایک ٹرک کے سامنے کھڑا پاتے ہو۔",
-        "You find yourself standing before a truck."
+        "ایک سفید ٹرک گلی میں کھلا کھڑا ہے۔",
+        "A white truck stands open in the street."
       ],
       "question": [
         "تم کیا کرو گے؟",
@@ -699,13 +699,13 @@
       ],
       "choices": [
         {
-          "say": "1. ٹرک کے اندر جاؤ",
-          "en": "1. Get inside truck",
+          "say": "1. اندر چڑھ جاؤ",
+          "en": "1. Climb in",
           "next": "insideTruck"
         },
         {
-          "say": "2. ٹرک سے دور چل دو",
-          "en": "2. Walk away from truck",
+          "say": "2. چل دو",
+          "en": "2. Walk away",
           "next": "walkAway"
         }
       ],
@@ -728,8 +728,8 @@
         "Inside"
       ],
       "story": [
-        "Subes a la camioneta.",
-        "You get inside the truck."
+        "Subes a la camioneta. En la oscuridad de la cabina, algo se mueve.",
+        "You climb in. In the dark of the cab, something moves."
       ],
       "question": [
         "¿Qué pasa ahora?",
@@ -761,8 +761,8 @@
         "Walk away"
       ],
       "story": [
-        "เจ้าตัดสินใจเดินหนีจากรถบรรทุก",
-        "You decide to walk away from the truck."
+        "เจ้าหันหลังให้รถบรรทุกแล้วเดินจากไป แต่เงาตามมา",
+        "You turn your back on the truck and walk. The shadow follows."
       ],
       "question": [
         "เจ้าจะทำอะไร?",
@@ -794,8 +794,8 @@
         "Shadow dance"
       ],
       "story": [
-        "Unacheza na kivuli. Mnapoenda pamoja, kitu kinaamka ndani yako. Mwanguko wa nguvu ya ajabu unapita mwilini mwako, na unagundua umepata nguvu mpya.",
-        "You dance with the shadow. As you move together, something awakens within you. A surge of strange energy courses through your body, and you discover that you have gained new powers."
+        "Unacheza na kivuli. Kitu kinaamka ndani yako, na nguvu ya ajabu inakimbia mwilini mwako. Una nguvu mpya.",
+        "You dance with the shadow. Something wakes in you, and a strange power runs through your body. You have new powers."
       ],
       "question": [
         "Nguvu zako mpya zimeamka.",
@@ -932,8 +932,8 @@
         "Destroy town"
       ],
       "story": [
-        "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ।",
-        "You decided to destroy the whole town."
+        "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰ ਦਿੰਦਾ ਹੈਂ। ਇੱਕ-ਇੱਕ ਕਰਕੇ ਹਰ ਬੱਤੀ ਬੁਝ ਜਾਂਦੀ ਹੈ।",
+        "You destroy the whole town. One by one, every light goes out."
       ],
       "question": [
         "",
