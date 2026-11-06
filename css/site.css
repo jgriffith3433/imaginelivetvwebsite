@@ -59,6 +59,7 @@ a { color: var(--green); }
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overflow-anchor: none;
 }
 
 .spark-main {

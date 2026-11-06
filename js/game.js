@@ -171,7 +171,11 @@
       100 only once every scene has been seen). */
   function exploredOf(story, seen) {
     const all = Object.keys(story.scenes).length;
-    return all ? Math.floor((Object.keys(seen).length * 100) / all) : 0;
+    const n = Object.keys(seen).length;
+    if (!all || !n) return 0;
+    // Whole percent, rounded down, but never 0 once a scene is seen (one of Night Shift's 228 is 0.4%) and 100 only
+    // with every scene.
+    return n >= all ? 100 : Math.min(99, Math.max(1, Math.floor((n * 100) / all)));
   }
 
   let completed = false;
@@ -315,6 +319,12 @@
     });
   }
 
+  /** The story screen never scrolls: the page at the top (header in view) and the screen itself at 0. */
+  function keepAtTop() {
+    if (firstScreen) { firstScreen.scrollTop = 0; firstScreen.scrollLeft = 0; }
+    if (window.scrollY || (document.scrollingElement && document.scrollingElement.scrollTop)) window.scrollTo(0, 0);
+  }
+
   function show(sceneId) {
     const scene = SCENES[sceneId];
     if (!scene) return;
@@ -389,10 +399,9 @@
     }
 
     if (fromPlayer) {
-      const rect = root.getBoundingClientRect();
-      if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        root.scrollIntoView({ block: "nearest" });
-      }
+      // The player is a fixed-height, overflow-hidden screen: scrollIntoView would scroll it inside itself and push
+      // the header out of sight, so only the page moves, back to the top.
+      keepAtTop();
       fromPlayer = false;
     }
 
@@ -843,6 +852,7 @@
     else delete document.documentElement.dataset.kit;
     setView("play");
     window.scrollTo(0, 0);
+    keepAtTop();
 
     const saved = readProgress(story, SCENES);
     const unlocks = readUnlocks(story);
@@ -851,6 +861,8 @@
     completed = unlocks.completed;
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
     show(saved ? saved.scene : story.start);
+    keepAtTop();
+    requestAnimationFrame(function () { requestAnimationFrame(keepAtTop); });
   }
 
   function showLanding(push) {
