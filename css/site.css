@@ -1570,6 +1570,8 @@ html.is-splash-pending::after {
 .tap-to-play {
   position: fixed;
   inset: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
   z-index: 9000;
   display: flex;
   flex-direction: column;
@@ -2464,25 +2466,12 @@ figure.feed { cursor: default; }
 .spark.is-idle:not(.is-tree) .spark-copy { opacity: 0; }
 .spark.is-idle .spark-bar:focus-within { opacity: 1; }
 
+/* Wide screens: the portrait clip fills the stage's height beside the text (the two-column layout above), on a
+   black stage, instead of a tiny pillarboxed strip in a cinema-wide box. */
 @media (min-width: 900px) and (min-height: 560px) {
-  #spark-play {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    grid-template-areas:
-      "head"
-      "stage"
-      "panel";
-  }
+  #spark-play { gap: 0.55rem 1.5rem; }
   .spark-stage { background: #000; border-radius: 12px; }
-  .spark-video {
-    width: min(100cqw, calc(100cqh * 2.39));
-    height: min(100cqh, calc(100cqw / 2.39));
-    aspect-ratio: 2.39 / 1;
-    border-radius: 0;
-    box-shadow: none;
-  }
-  .spark-video video, .spark-video iframe { object-fit: contain; }
-  .spark-panel { justify-content: flex-start; min-height: min-content; max-width: 760px; margin: 0 auto; width: 100%; }
+  .spark-panel { justify-content: center; max-width: 760px; width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
