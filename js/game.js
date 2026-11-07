@@ -283,6 +283,114 @@
     });
   }
 
+  /* ---- Phones: loading state, tap to unmute, fullscreen, next clips ready (media events only, no polling) ---- */
+
+  var preloaded = {};
+
+  /** The clips the choices lead to are fetched while this one plays, so a tap goes straight into the next. */
+  function preloadNext(scene) {
+    var want = {};
+    scene.choices.forEach(function (c) {
+      var next = SCENES[c.next];
+      if (next && next.video) want[c.next] = next.video;
+    });
+    Object.keys(preloaded).forEach(function (id) {
+      if (want[id]) return;
+      preloaded[id].removeAttribute("src");
+      preloaded[id].load();
+      delete preloaded[id];
+    });
+    Object.keys(want).slice(0, 3).forEach(function (id) {
+      if (preloaded[id]) return;
+      var v = document.createElement("video");
+      v.preload = "auto";
+      v.muted = true;
+      v.playsInline = true;
+      v.src = want[id];
+      v.load();
+      preloaded[id] = v;
+    });
+  }
+
+  function fullscreenElement() {
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+
+  /** Loading ring, Tap for sound and Full screen over the clip. */
+  function addClipControls(video) {
+    var ring = document.createElement("div");
+    ring.className = "spark-video-loading";
+    ring.setAttribute("role", "status");
+    ring.setAttribute("aria-label", "Loading");
+    ring.hidden = true;
+    var unmute = document.createElement("button");
+    unmute.type = "button";
+    unmute.className = "spark-unmute";
+    unmute.hidden = true;
+    unmute.textContent = "Tap for sound";
+    var full = document.createElement("button");
+    full.type = "button";
+    full.className = "spark-fullscreen";
+    full.setAttribute("aria-label", "Full screen");
+    full.textContent = "\u26F6";
+    videoBox.appendChild(ring);
+    videoBox.appendChild(unmute);
+    videoBox.appendChild(full);
+
+    function loading(on) {
+      if (ring.hidden === !on) return;
+      ring.hidden = !on;
+      root.dataset.loading = on ? "true" : "false";
+      tell("loading", { story: STORY.id, scene: currentScene, on: on });
+    }
+    function sync() {
+      unmute.hidden = !(video.muted && !video.paused && !video.ended);
+    }
+    ["waiting", "stalled", "loadstart"].forEach(function (type) {
+      video.addEventListener(type, function () { if (!video.ended && video.readyState < 3) loading(true); });
+    });
+    ["playing", "canplay", "seeked", "ended", "error"].forEach(function (type) {
+      video.addEventListener(type, function () { loading(false); });
+    });
+    ["playing", "pause", "volumechange", "ended"].forEach(function (type) { video.addEventListener(type, sync); });
+    video.addEventListener("loadeddata", function () {
+      if (activeClip === video && SCENES[currentScene]) preloadNext(SCENES[currentScene]);
+    });
+    unmute.addEventListener("click", function () {
+      if (window.hawkesSound) window.hawkesSound.set({ on: true });
+      video.muted = false;
+      if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+      sync();
+    });
+    full.addEventListener("click", function () {
+      if (fullscreenElement()) {
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        return;
+      }
+      // Android and desktop: the whole player, so the choices stay on screen. iPhone has no element fullscreen: the video's own.
+      var ask = root.requestFullscreen || root.webkitRequestFullscreen;
+      if (ask) {
+        var r = ask.call(root);
+        if (r && r.catch) r.catch(function () { if (video.webkitEnterFullscreen) video.webkitEnterFullscreen(); });
+      } else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+    });
+    sync();
+  }
+
+  /** Turning the phone must not leave the clip frozen: when the screen changes shape the clip carries on. */
+  function onTurned() {
+    var v = activeClip;
+    if (!v || !v.isConnected || v.ended || !v.paused) return;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  window.addEventListener("orientationchange", onTurned);
+  if (window.matchMedia) {
+    var turn = window.matchMedia("(orientation: landscape)");
+    if (turn.addEventListener) turn.addEventListener("change", onTurned);
+  }
+  document.addEventListener("fullscreenchange", function () { root.dataset.fullscreen = fullscreenElement() ? "true" : "false"; });
+
   function playClip(video) {
     activeClip = video;
     stopClipUnlock();
@@ -514,6 +622,7 @@
       video.preload = "auto";
       video.title = STORY.title + " story video";
       videoBox.appendChild(video);
+      addClipControls(video);
       playClip(video);
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
