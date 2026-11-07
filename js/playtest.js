@@ -3092,6 +3092,90 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   return scrolled;
 }
 
+/** Phone player: the first clip plays after one tap, a loading ring shows while a clip buffers, and turned on its side
+    the clip fills the screen, keeps playing and the choices stay visible. A frame at 390x844 turned to 844x390. */
+async function phonePlayerRun(options, t) {
+  rememberProgress();
+  clearProgress();
+  const id = options.story || FIRST;
+  const st = story(id);
+  t.scene(`${id}: phone upright`);
+  const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+  const win = doc.defaultView;
+  const loadingLog = [];
+  doc.addEventListener("iltv:loading", (e) => { loadingLog.push(e.detail.on); t.event("loading", `${e.detail.scene}: ${e.detail.on ? "ring on" : "ring off"}`); });
+  t.progress(0.1);
+  // 1. One tap on Tap to play and the first clip plays.
+  await passPrompt(t, doc, `${id} (phone)`);
+  const video = () => doc.querySelector("#spark-video video");
+  const ok = await waitFor(() => video() && !video().paused && video().currentTime > 0.3, 8000);
+  if (!ok) t.problem("bug", `${id}: after one tap the first clip isn't playing (paused ${video() && video().paused}, ${video() && video().currentTime}s)`);
+  else t.event("first-clip-playing", `after one tap: ${video().currentTime.toFixed(1)}s, muted ${video().muted}, playsinline ${video().hasAttribute("playsinline")}`);
+  if (video() && !video().hasAttribute("playsinline")) t.problem("bug", `${id}: the clip has no playsinline (iPhone would take it full screen)`);
+  t.progress(0.3);
+  // Controls over the clip: Full screen (44px), Tap for sound when it plays muted.
+  const full = doc.querySelector(".spark-fullscreen");
+  if (!full) t.problem("bug", `${id}: no Full screen button on the clip`);
+  else {
+    const r = full.getBoundingClientRect();
+    if (r.width < 43.5 || r.height < 43.5) t.problem("bug", `${id}: the Full screen button is ${Math.round(r.width)}x${Math.round(r.height)}, under 44px`);
+    t.event("fullscreen-button", `${Math.round(r.width)}x${Math.round(r.height)}, element fullscreen ${!!(doc.documentElement.requestFullscreen || doc.documentElement.webkitRequestFullscreen)}, video fullscreen ${!!(video() && video().webkitEnterFullscreen)}`);
+  }
+  // The choices are on screen (waiting, dimmed) beside / below the clip.
+  const inView = (els) => els.length && els.every((b) => { const r = b.getBoundingClientRect(); return r.bottom <= win.innerHeight + 1 && r.top >= -1 && r.right <= win.innerWidth + 1; });
+  const choices = () => [...doc.querySelectorAll("#spark-choices .choice")];
+  t.event("choices", `upright: ${choices().length} choices, all on screen: ${inView(choices())}`);
+  // The next clips are fetched while this one plays.
+  const next = Object.values(st.scenes[st.start].choices || []).map((c) => st.scenes[c.next] && st.scenes[c.next].video).filter(Boolean);
+  await waitFor(() => next.every((v) => win.performance.getEntriesByType("resource").some((e) => e.name.includes(v))), 6000);
+  const fetched = next.filter((v) => win.performance.getEntriesByType("resource").some((e) => e.name.includes(v)));
+  t.event("preload", `${fetched.length} of ${next.length} next clips requested while the first plays`);
+  if (next.length && !fetched.length) t.problem("bug", `${id}: the next clips weren't preloaded`);
+  t.progress(0.45);
+  // 2. A loading ring while a clip buffers: the next clip starts from nothing (loadstart) and the ring comes and goes.
+  // Skip to the end of the first clip is not a viewer's move; the choices come when it ends, so wait for them (the clip is short).
+  const ready = await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", Math.max(15000, ((video() && video().duration) || 20) * 1000 + 8000));
+  if (!ready) t.problem("bug", `${id}: the choices never came up`);
+  else {
+    await tapAt(t, choices()[0], "the first choice");
+    await waitFor(() => loadingLog.includes(true) && loadingLog[loadingLog.length - 1] === false, 6000);
+    if (!loadingLog.includes(true)) t.problem("bug", `${id}: no loading indicator while the next clip buffered`);
+    else if (loadingLog[loadingLog.length - 1] !== false) t.problem("bug", `${id}: the loading indicator never went away`);
+    else t.event("loading-ring", `shown and cleared (${loadingLog.join(", ")})`);
+  }
+  const playing2 = await waitFor(() => video() && !video().paused && video().currentTime > 0.2, 8000);
+  if (!playing2) t.problem("bug", `${id}: the second clip isn't playing`);
+  t.progress(0.6);
+  // 3. Turn the phone: the frame becomes 844x390 while the clip plays.
+  t.scene(`${id}: phone on its side`);
+  const f = viewFrame;
+  const before = video().currentTime;
+  f.style.width = "844px";
+  f.style.height = "390px";
+  f.style.transform = `scale(${Math.min(1, innerWidth / 844, innerHeight / 390)})`;
+  win.dispatchEvent(new win.Event("orientationchange"));
+  await sleep(1200);
+  const v = video();
+  const turned = win.matchMedia("(orientation: landscape)").matches;
+  if (!turned) t.problem("bug", "the frame didn't turn landscape");
+  const moved = v.currentTime > before || v.ended;
+  if (v.paused && !v.ended) t.problem("bug", `${id}: the clip stopped when the phone turned`);
+  else if (!moved) t.problem("bug", `${id}: the clip froze after turning (${before.toFixed(2)}s -> ${v.currentTime.toFixed(2)}s)`);
+  const box = doc.getElementById("spark-video").getBoundingClientRect();
+  const fill = box.height / win.innerHeight;
+  t.metric("landscapeVideoFill", Math.round(fill * 100) / 100);
+  t.event("landscape", `${win.innerWidth}x${win.innerHeight}: video ${Math.round(box.width)}x${Math.round(box.height)} (${Math.round(fill * 100)}% of the height), playing ${!v.paused}`);
+  if (fill < 0.8) t.problem("bug", `${id}: in landscape the video is ${Math.round(fill * 100)}% of the screen's height`);
+  const cs = choices();
+  const first = cs[0] && cs[0].getBoundingClientRect();
+  if (!cs.length || !first || first.bottom > win.innerHeight + 1 || first.right > win.innerWidth + 1 || first.top < 0) t.problem("bug", `${id}: in landscape the choices aren't on screen`);
+  else t.event("choices", `landscape: first choice at ${Math.round(first.left)},${Math.round(first.top)} ${Math.round(first.width)}x${Math.round(first.height)}, ${cs.length} choices`);
+  if (doc.documentElement.scrollWidth > win.innerWidth + 1) t.problem("bug", `${id}: landscape scrolls sideways`);
+  t.progress(1);
+  closeViewFrame();
+  restoreProgress();
+}
+
 /** The console at one screen size: the room and its big screen, subtitles while a line plays, the choices. */
 async function consoleView(t, st, [w, h, name]) {
   const where = `${name} ${w}x${h}`;
@@ -5433,6 +5517,13 @@ installPlaytest({
       tags: ["full"],
       description: "Opens The Final Spark from its card (real presses, Tap to play) at the page's own size. Checks the video frame is 2.39:1 with the clip contained (desktop sizes: 900x560 and up). The choices are dimmed while the clip plays and no countdown shows; the clip is watched to its end, then the choices fade to full and a countdown (a thin bar and the seconds left) shows and runs down. Then, with no input, the bar and title controls stay for 2 s, are hidden by 3 s idle, and come back on pointer movement. A choice is pressed and the next page's choices wait for its clip again. Options: {\"story\":\"<id>\"}.",
     },
+    {
+      id: "phone-player",
+      title: "The player on a phone: the first clip plays after one tap, a loading ring shows while a clip buffers, turned on its side the clip fills the screen and the choices stay visible",
+      seconds: 90,
+      tags: ["full"],
+      description: "A frame at 390x844 (a phone upright) opens The Final Spark by its link. One real press on Tap to play and the first clip plays (playsinline), the Full screen button is 44px, the choices are on screen and the next clips are requested while it plays. The choices come when the clip ends; pressing one starts the next clip from nothing and the loading ring comes on (iltv:loading, from the video's loadstart/waiting/stalled events) and goes off at playing. Then the frame is turned to 844x390 (a resize and an orientationchange event): the clip keeps playing, the video fills at least 80% of the height, the choices stay on screen, no sideways scroll. Events first-clip-playing, loading-ring, landscape; metric landscapeVideoFill.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -5498,6 +5589,7 @@ installPlaytest({
       else if (id === "analytics") await analyticsRun(options, t);
       else if (id === "endings") await endingsRun(options, t);
       else if (id === "cinema") await cinemaRun(options, t);
+      else if (id === "phone-player") await phonePlayerRun(options, t);
     } finally {
       endQuiet();
       probeStop(t);
