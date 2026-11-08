@@ -69,7 +69,9 @@
   var wasPlaying = [];
   var words = {
     title: document.documentElement.getAttribute("data-tap-title") || "THE FINAL SPARK",
-    line: document.documentElement.getAttribute("data-tap-line") || "Strike the first match."
+    line: document.documentElement.getAttribute("data-tap-line") || "Strike the first match.",
+    // The picture behind the prompt: the story's poster (js/game.js), or on a branch page its clip's poster.
+    poster: ""
   };
 
   // iOS: video.volume is read-only (always 1).
@@ -227,7 +229,24 @@
     try { overlay.focus({ preventScroll: true }); } catch (e) { /* old browsers */ }
   }
 
+  function renderPoster() {
+    if (!overlay) return;
+    var src = words.poster;
+    if (!src) {
+      var clip = document.querySelector("video[poster]");
+      src = clip ? clip.getAttribute("poster") : "";
+    }
+    if (src) {
+      overlay.style.setProperty("--tap-poster", 'url("' + src + '")');
+      overlay.setAttribute("data-poster", src);
+    } else {
+      overlay.style.removeProperty("--tap-poster");
+      overlay.removeAttribute("data-poster");
+    }
+  }
+
   function renderNote() {
+    renderPoster();
     var title = overlay && overlay.querySelector(".tap-title");
     if (title) title.textContent = words.title;
     var note = overlay && overlay.querySelector(".tap-note");
@@ -235,9 +254,10 @@
   }
 
   // The prompt's words for the story that's open (js/game.js, when the home page opens straight into one).
-  function label(title, line) {
+  function label(title, line, poster) {
     if (title) words.title = String(title);
     if (line != null) words.line = String(line);
+    if (poster !== undefined) words.poster = String(poster || "");
     renderNote();
   }
 

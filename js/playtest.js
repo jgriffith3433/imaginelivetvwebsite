@@ -3482,7 +3482,21 @@ async function phoneMediaRun(options, t) {
   for (const id of ids) {
     const st = story(id);
     const first = st.scenes[st.start];
-    if (!first.video) continue;
+    if (!first.video) {
+      // A console story has no clip: its card picture is behind its Tap to play.
+      if (st.type === "console" && st.image) {
+        t.scene(`${id}: prompt picture`);
+        closeViewFrame();
+        clearProgress();
+        const cdoc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+        const shown = await waitFor(() => { const p = cdoc.querySelector(".tap-to-play[data-poster]"); return p && p.getAttribute("data-poster"); }, 6000);
+        t.event("poster-visible", `${id}: Tap to play shows ${shown || "NO picture"}`);
+        if (!shown || !shown.endsWith(st.image.replace(/\.jpg$/, ".webp"))) t.problem("bug", `${id}: the Tap to play prompt doesn't show the story's picture (${shown || "none"})`);
+        else t.add("postersShown");
+        await sleep(1500);
+      }
+      continue;
+    }
     for (const [w, h, label] of [[390, 844, "phone"], [1280, 800, "desktop"]]) {
       t.scene(`${id}: ${label} ${w}x${h}`);
       closeViewFrame();
@@ -3501,6 +3515,16 @@ async function phoneMediaRun(options, t) {
         else t.event("poster", `${id} (${label}): the clip shows ${poster} (${loaded}px wide), readyState ${video().readyState} before Tap to play`);
         t.add("postersShown");
       }
+      // The poster is what the viewer sees: behind Tap to play (dimmed, the prompt's own picture) and as the clip box's own
+      // picture, under the loading ring, so it is never a plain black box.
+      const prompt = doc.querySelector(".tap-to-play");
+      const behind = prompt ? prompt.getAttribute("data-poster") : "";
+      const boxPic = doc.querySelector("#spark-video").style.backgroundImage;
+      const clipBg = win.getComputedStyle(video()).backgroundColor;
+      t.event("poster-visible", `${id} (${label}): Tap to play shows ${behind || "NO picture"}; the clip box's picture is ${boxPic || "NONE"}; the clip element's own background is ${clipBg}`);
+      if (!behind || !behind.endsWith(first.poster)) t.problem("bug", `${id} (${label}): the Tap to play prompt doesn't show the clip's poster (${behind || "none"})`);
+      if (!boxPic || !boxPic.includes(first.poster)) t.problem("bug", `${id} (${label}): the clip box has no poster picture under the clip`);
+      if (clipBg !== "rgba(0, 0, 0, 0)") t.problem("bug", `${id} (${label}): the clip element paints ${clipBg} over the poster before it has loaded`);
       // The clip waits behind Tap to play with its poster and nothing loaded: hold there so the footage shows it.
       t.event("poster-waiting", `${id} (${label}): clip readyState ${video().readyState}, networkState ${video().networkState}, paused ${video().paused}, poster ${poster ? "set" : "MISSING"}; held 2 s`);
       await sleep(2000);
@@ -5914,7 +5938,7 @@ installPlaytest({
       title: "Posters and the phone rendition: cards and clips show a poster before the video loads, a phone plays the smaller clip, the landing page's content shows within 2 s on a phone",
       seconds: 90,
       tags: ["full"],
-      description: "A frame at 390x844 loads the landing page: first content within 2000 ms (metric phoneFirstContentMs), the hero's picture eager, every card with a picture that loads and the ones below the fold lazy-loaded. Then each clip story (The Final Spark, The Water Road) opens by its link: the clip has its poster (loaded) before Tap to play, and after one real press the player plays the clip's smaller rendition (<dir>/sm/<name>.mp4, 9:16) and has not fetched the full clip; a 1280x800 frame plays the full clip. Events first-content, card-picture, poster, rendition; metrics phoneClipKB_<story>, postersShown, phoneRenditions. Options: {\"story\":\"<id>\"}.",
+      description: "A frame at 390x844 loads the landing page: first content within 2000 ms (metric phoneFirstContentMs), the hero's picture eager, every card with a picture that loads and the ones below the fold lazy-loaded. Then each clip story (The Final Spark, The Water Road) opens by its link: the clip has its poster (loaded) before Tap to play, the same poster is the picture behind the Tap to play prompt and the clip box's own picture (never a black box; Night Shift's prompt shows its card picture; event poster-visible), and after one real press the player plays the clip's smaller rendition (<dir>/sm/<name>.mp4, 9:16) and has not fetched the full clip; a 1280x800 frame plays the full clip. Events first-content, card-picture, poster, rendition; metrics phoneClipKB_<story>, postersShown, phoneRenditions. Options: {\"story\":\"<id>\"}.",
     },
     {
       id: "language",
