@@ -80,6 +80,9 @@
     root.dataset.reading = reading;
     root.querySelectorAll(".spot-src").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "true" : "false"); });
     root.querySelectorAll(".spot-en").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "false" : "true"); });
+    // The blog list on the home page follows too: each title is in one language at a time.
+    document.querySelectorAll("#blog .spot-src").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "true" : "false"); });
+    document.querySelectorAll("#blog .spot-en").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "false" : "true"); });
     document.documentElement.dataset.reading = reading;
     if (langSelect) langSelect.value = reading;
   }
