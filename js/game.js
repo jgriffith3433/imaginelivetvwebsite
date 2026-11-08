@@ -375,7 +375,7 @@
       if (ring.hidden === !on) return;
       ring.hidden = !on;
       root.dataset.loading = on ? "true" : "false";
-      tell("loading", { story: STORY.id, scene: currentScene, on: on });
+      tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: on });
     }
     function sync() {
       unmute.hidden = !(video.muted && !video.paused && !video.ended);
