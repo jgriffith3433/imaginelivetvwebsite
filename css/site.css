@@ -2660,3 +2660,18 @@ figure.feed { cursor: default; }
 
 /* A title's English is drawn from data-en, so the title's own text is in one language (the post's main one). */
 .spot-en[data-en]::before { content: attr(data-en); }
+
+/* The blog list: each title (and its line) is in ONE language at a time, never the flashlight's two layers. As written
+   (the post's main language) by default; the English plainly once the viewer picked English (html[data-reading]). */
+.post-card .spot-src,
+.post-card .spot-en {
+  grid-area: auto;
+  -webkit-mask-image: none;
+  mask-image: none;
+  color: inherit;
+  text-shadow: none;
+  font-size: inherit;
+}
+.post-card .spot-en { display: none; }
+html[data-reading="en"] .post-card .spot-src { display: none; }
+html[data-reading="en"] .post-card .spot-en { display: inline; }

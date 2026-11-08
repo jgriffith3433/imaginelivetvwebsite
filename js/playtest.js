@@ -3182,14 +3182,44 @@ async function languageRun(options, t) {
     }
     return [...found];
   };
+  // What the viewer sees of a title: the pieces that are shown (display, not the flashlight's mask), their text and language.
+  const shown = (el) => el && win2(el).getComputedStyle(el).display !== "none";
+  const win2 = (el) => el.ownerDocument.defaultView;
+  const visibleTitle = (h, reading) => {
+    const src = h.querySelector(".spot-src");
+    const en = h.querySelector(".spot-en");
+    const parts = [];
+    if (shown(src)) parts.push({ lang: src.lang || "x", text: (src.textContent || "").replace(/\s+/g, " ").trim() });
+    if (shown(en)) parts.push({ lang: "en", text: (win2(en).getComputedStyle(en, "::before").content.replace(/^"|"$/g, "") || en.textContent || "").replace(/\s+/g, " ").trim() });
+    return parts;
+  };
+  const langs = new Set();
   for (const card of cards) {
     const h = card.querySelector("h3");
     const text = (h.innerText || "").replace(/\s+/g, " ").trim();
     const content = (h.textContent || "").replace(/\s+/g, " ").trim();
     const scripts = scriptsOf(content);
+    const parts = visibleTitle(h, "mixed");
+    const mask = h.querySelector(".spot-src") && win2(h).getComputedStyle(h.querySelector(".spot-src")).maskImage;
     if (scripts.length > 1 || content !== text) t.problem("bug", `blog title "${content}" mixes languages (${scripts.join(", ")})`);
-    else t.event("blog-title", `${card.getAttribute("href")}: "${content}" (${scripts[0] || "none"}, lang ${h.querySelector(".spot-src")?.lang || "?"})`);
+    else if (parts.length !== 1 || (mask && mask !== "none")) t.problem("bug", `blog title "${content}" shows ${parts.length} languages at once (${parts.map((p) => p.lang).join("+")}${mask && mask !== "none" ? ", flashlight mask" : ""})`);
+    else {
+      langs.add(parts[0].lang);
+      t.event("blog-title", `${card.getAttribute("href")}: "${content}" is all in ${parts[0].lang} (${scripts[0] || "none"}); no second language shown`);
+    }
   }
+  t.event("blog-titles-one-language", `${cards.length} titles, each in a single language (its post's own: ${[...langs].join(", ")}); none shows a second language`);
+  // Picked English: the same titles, each wholly English.
+  try { win.localStorage.setItem("iltv.reading", "en"); } catch (e) { /* none */ }
+  const homeEn = await viewFrameLoad(t, "/", 390, 844);
+  for (const card of [...homeEn.querySelectorAll("#blog .post-card")]) {
+    const h = card.querySelector("h3");
+    const parts = visibleTitle(h, "en");
+    const txt = parts.map((p) => p.text).join(" ");
+    if (parts.length !== 1 || parts[0].lang !== "en" || /[^\x00-\x7f\u2019]/.test(txt)) t.problem("bug", `with English picked a blog title reads "${txt}" (${parts.map((p) => p.lang).join("+")}), not English alone`);
+    else t.event("blog-title-en", `${card.getAttribute("href")}: "${txt}"`);
+  }
+  try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
   t.metric("blogTitles", cards.length);
   t.progress(1);
 }
