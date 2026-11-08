@@ -2594,3 +2594,40 @@ figure.feed { cursor: default; }
     text-transform: uppercase;
   }
 }
+
+/* Language picker (The Final Spark: every page is in another language). "English" shows the English plainly,
+   with no flashlight needed; "As written" is the default. Shown only for a story whose pages use several languages. */
+.spark-bar { flex-wrap: wrap; }
+.spark-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 100%;
+  order: 3;
+  color: #b7b3ad;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.spark-lang[hidden] { display: none; }
+.spark-lang select {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  font: inherit;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: #fffaf2;
+  background: #15130f;
+  border: 1px solid #5a5348;
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+}
+.spark[data-reading="en"] .spot-src { display: none; }
+.spark[data-reading="en"] .spot-en {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* A title's English is drawn from data-en, so the title's own text is in one language (the post's main one). */
+.spot-en[data-en]::before { content: attr(data-en); }

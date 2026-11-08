@@ -3095,6 +3095,105 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
 /** Choices on a phone (J, 2026-11-08, finding f_32e426e8a75b): in a 390x844 frame, each of the three stories shows its
     choices as full-width buttons at least 48px tall, near-white text with a visible border, whole (nothing cut off),
     clear of the video controls, and (the clip stories) the countdown "Choose in N s" above them. */
+/** Language picker (J, 2026-11-08): The Final Spark's pages are each in another language by design; the picker at
+    390px, a switch mid-story that keeps the scene and puts the screen's text in the picked language, and every blog
+    title on the list in one language. */
+async function languageRun(options, t) {
+  rememberProgress();
+  clearProgress();
+  const id = options.story || FIRST;
+  t.scene(`${id}: language picker at 390px`);
+  const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+  const win = doc.defaultView;
+  try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  await passPrompt(t, doc, `${id} (language)`);
+  const sel = doc.getElementById("spark-lang");
+  const box = doc.getElementById("spark-lang-box");
+  if (!sel || !box || box.hidden) t.problem("bug", `${id}: no language picker at 390px`);
+  else {
+    sel.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(200);
+    const r = sel.getBoundingClientRect();
+    const hit = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    const visible = r.width > 100 && r.height >= 43.5 && r.left >= 0 && r.right <= win.innerWidth + 1 && getComputedStyle(box).visibility !== "hidden";
+    if (!visible) t.problem("bug", `${id}: the language picker is ${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.left)},${Math.round(r.top)} (needs 44px tall and on screen)`);
+    if (!hit || !(hit === sel || sel.contains(hit) || box.contains(hit))) t.problem("bug", `${id}: something covers the language picker`);
+    t.event("language-picker", `${Math.round(r.width)}x${Math.round(r.height)}, options ${[...sel.options].map((o) => o.value).join("/")}, hit-tested ${!!hit}`);
+  }
+  t.progress(0.25);
+  // One choice in, so the switch is mid-story.
+  const choices = () => [...doc.querySelectorAll("#spark-choices .choice")];
+  const ready = await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 40000);
+  if (!ready) t.problem("bug", `${id}: the choices never came up`);
+  else await tapAt(t, choices()[0], "the first choice");
+  await waitFor(() => win.finalSpark && win.finalSpark.scene() !== story(id).start, 4000);
+  await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 40000);
+  const sceneBefore = win.finalSpark.scene();
+  const depthBefore = win.finalSpark.depth();
+  const srcBefore = doc.querySelector("#spark-video video")?.currentSrc || "";
+  t.scene(`${id}: switching to English at ${sceneBefore}`);
+  // A native select can't be opened by a synthetic press: set it and fire change, as the browser does on a pick.
+  sel.value = "en";
+  sel.dispatchEvent(new win.Event("change", { bubbles: true }));
+  await sleep(500);
+  const now = win.finalSpark.scene();
+  if (now !== sceneBefore || win.finalSpark.depth() !== depthBefore) t.problem("bug", `${id}: switching language moved the story (${sceneBefore} -> ${now}, depth ${depthBefore} -> ${win.finalSpark.depth()})`);
+  const srcAfter = doc.querySelector("#spark-video video")?.currentSrc || "";
+  if (srcBefore && srcAfter !== srcBefore) t.problem("bug", `${id}: switching language reloaded the clip`);
+  const sc = story(id).scenes[sceneBefore];
+  const seen = (sel2) => (doc.querySelector(sel2)?.innerText || "").replace(/\s+/g, " ").trim();
+  const want = (s) => String(s || "").replace(/\s+/g, " ").trim();
+  const checks = [
+    ["story text", seen("#spark-story"), want(sc.story[1])],
+    ["question", seen("#spark-question"), want(sc.question[1])],
+  ];
+  (sc.choices || []).forEach((c, i) => checks.push([`choice ${i + 1}`, seen(`#spark-choices .choice:nth-child(${i + 1})`).replace(/^\d+\.\s*/, ""), want(String(c.en || c[1]).replace(/^\d+\.\s*/, ""))]));
+  for (const [name, got, exp] of checks) {
+    if (exp && got !== exp) t.problem("bug", `${id}: after picking English the ${name} reads "${got}", not "${exp}"`);
+  }
+  const timer = seen("#spark-timer");
+  if (timer && /[^\x00-\x7f]/.test(timer)) t.problem("bug", `${id}: the timer reads "${timer}" (not English)`);
+  const chrome = [seen("#spark-stories"), seen("#tab-play"), seen("#tab-tree"), timer].join(" | ");
+  if (/[^\x00-\x7f\u2190]/.test(chrome)) t.problem("bug", `${id}: buttons not in English: ${chrome}`);
+  t.event("language-switched", `${sceneBefore}, depth ${depthBefore}: scene kept, clip kept ${srcBefore === srcAfter}, texts ${checks.map((c) => c[1] === c[2]).join("/")}; chrome "${chrome}"`);
+  if (win.localStorage.getItem("iltv.reading") !== "en") t.problem("bug", `${id}: the picked language wasn't saved`);
+  // The Tree and its words follow too.
+  await tapAt(t, doc.getElementById("tab-tree"), "Tree");
+  await sleep(300);
+  const treeSrc = [...doc.querySelectorAll("#spark-tree .spot-src")].filter((e) => e.offsetParent !== null);
+  if (treeSrc.length) t.problem("bug", `${id}: the Tree still shows ${treeSrc.length} words in the page's own language after picking English`);
+  await tapAt(t, doc.getElementById("tab-play"), "Play");
+  try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  t.progress(0.7);
+  // Blog titles on the list: each in one language.
+  t.scene("blog titles");
+  const home = await viewFrameLoad(t, "/", 390, 844);
+  const cards = [...home.querySelectorAll("#blog .post-card")];
+  if (!cards.length) t.problem("bug", "the blog list has no posts");
+  const scriptsOf = (text) => {
+    const found = new Set();
+    for (const ch of text) {
+      if (/\p{Script=Latin}/u.test(ch)) found.add("Latin");
+      else if (/\p{Script=Cyrillic}/u.test(ch)) found.add("Cyrillic");
+      else if (/\p{Script=Arabic}/u.test(ch)) found.add("Arabic");
+      else if (/\p{Script=Devanagari}/u.test(ch)) found.add("Devanagari");
+      else if (/\p{Script=Bengali}/u.test(ch)) found.add("Bengali");
+      else if (/\p{Script=Han}|\p{Script=Hiragana}|\p{Script=Katakana}/u.test(ch)) found.add("CJK");
+    }
+    return [...found];
+  };
+  for (const card of cards) {
+    const h = card.querySelector("h3");
+    const text = (h.innerText || "").replace(/\s+/g, " ").trim();
+    const content = (h.textContent || "").replace(/\s+/g, " ").trim();
+    const scripts = scriptsOf(content);
+    if (scripts.length > 1 || content !== text) t.problem("bug", `blog title "${content}" mixes languages (${scripts.join(", ")})`);
+    else t.event("blog-title", `${card.getAttribute("href")}: "${content}" (${scripts[0] || "none"}, lang ${h.querySelector(".spot-src")?.lang || "?"})`);
+  }
+  t.metric("blogTitles", cards.length);
+  t.progress(1);
+}
+
 async function phoneChoicesRun(options, t) {
   rememberProgress();
   clearProgress();
@@ -5737,6 +5836,13 @@ installPlaytest({
       tags: ["full"],
       description: "A frame at 390x844 loads the landing page: first content within 2000 ms (metric phoneFirstContentMs), the hero's picture eager, every card with a picture that loads and the ones below the fold lazy-loaded. Then each clip story (The Final Spark, The Water Road) opens by its link: the clip has its poster (loaded) before Tap to play, and after one real press the player plays the clip's smaller rendition (<dir>/sm/<name>.mp4, 9:16) and has not fetched the full clip; a 1280x800 frame plays the full clip. Events first-content, card-picture, poster, rendition; metrics phoneClipKB_<story>, postersShown, phoneRenditions. Options: {\"story\":\"<id>\"}.",
     },
+    {
+      id: "language",
+      title: "The Final Spark's language picker at 390px, a switch mid-story that keeps the scene and puts the screen's text in the picked language, and every blog title in one language",
+      seconds: 90,
+      tags: ["full"],
+      description: "A frame at 390x844 opens The Final Spark by its link (Tap to play pressed): the language picker is shown, on screen, 44px tall and hit-tested. One real choice in, the picker is set to English (a native select can't be opened by a press, so the bot sets it and fires change): the scene and depth are the same, the clip was not reloaded, and the story text, question, choices, timer, buttons and the Tree show the English only; the pick is saved. Then the home page's blog list in a 390px frame: each post's title holds one language (one script, its own text has no English beside it). Events language-picker, language-switched, blog-title; metric blogTitles. Options: {\"story\":\"<id>\"}.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -5805,6 +5911,7 @@ installPlaytest({
       else if (id === "phone-player") await phonePlayerRun(options, t);
       else if (id === "phone-media") await phoneMediaRun(options, t);
       else if (id === "phone-choices") await phoneChoicesRun(options, t);
+      else if (id === "language") await languageRun(options, t);
     } finally {
       endQuiet();
       probeStop(t);
