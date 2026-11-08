@@ -657,6 +657,8 @@
     stopChoiceWindow();
 
     videoBox.replaceChildren();
+    // The poster is also the box's own picture, so it stays under the loading ring and between clips: never a black box.
+    videoBox.style.backgroundImage = scene.poster ? 'url("' + scene.poster + '")' : "";
     const videoSrc = scene.video ? clipSrc(scene) : null;
     let video = null;
 
@@ -1055,8 +1057,15 @@
     return url.pathname + url.search;
   }
 
-  function prompt(words) {
-    if (window.hawkesSound && window.hawkesSound.label) window.hawkesSound.label(words.title, words.line);
+  function prompt(words, poster) {
+    if (window.hawkesSound && window.hawkesSound.label) window.hawkesSound.label(words.title, words.line, poster || "");
+  }
+
+  /** The picture behind a story's Tap to play: its first clip's poster, or (a console story has no clip) its card image. */
+  function posterOfStory(story) {
+    const first = story.scenes && story.scenes[story.start];
+    if (first && first.poster) return first.poster;
+    return story.image ? story.image.replace(/\.jpg$/, ".webp") : "";
   }
 
   // js/hawkes-sound.js on the home page (<html data-tap-splash>): a story asks for its own Tap to play (that tap
@@ -1204,7 +1213,7 @@
     STORY = story;
     SCENES = story.scenes;
     document.title = story.title + " · " + SITE_TITLE;
-    prompt(story.tap);
+    prompt(story.tap, posterOfStory(story));
     sound("ask");
     markSplashed();
     landing.hidden = true;
@@ -1248,7 +1257,7 @@
     }
     syncReading();
     document.title = story.title + " · " + SITE_TITLE;
-    prompt(story.tap);
+    prompt(story.tap, posterOfStory(story));
     sound("ask");
     markSplashed();
 
