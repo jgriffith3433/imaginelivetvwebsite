@@ -3092,6 +3092,87 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   return scrolled;
 }
 
+/** Choices on a phone (J, 2026-11-08, finding f_32e426e8a75b): in a 390x844 frame, each of the three stories shows its
+    choices as full-width buttons at least 48px tall, near-white text with a visible border, whole (nothing cut off),
+    clear of the video controls, and (the clip stories) the countdown "Choose in N s" above them. */
+async function phoneChoicesRun(options, t) {
+  rememberProgress();
+  clearProgress();
+  const lum = (css) => { const m = (css || "").match(/[\d.]+/g) || []; return 0.2126 * +m[0] + 0.7152 * +m[1] + 0.0722 * +m[2]; };
+  const ids = options.story ? [options.story] : ["final-spark", "water-road", "night-shift"];
+  try {
+    let n = 0;
+    for (const id of ids) {
+      n += 1;
+      const st = story(id);
+      t.scene(`${id}: choices at 390px`);
+      const console_ = st.type === "console";
+      if (console_) consoleSeedWrite(st, [], null); // setup shortcut: the first scene's lines already heard
+      const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+      const win = doc.defaultView;
+      if (console_) {
+        await consolePrompt(t, doc, `${id} (phone)`);
+        t.event("seeded-run", `${id}: first scene's lines counted as heard (setup shortcut)`);
+        if (!(await waitFor(() => doc.querySelectorAll("#console-choices .choice").length > 0, 15000))) throw new Error(`${id}: no choices at the first scene`);
+      } else {
+        await passPrompt(t, doc, `${id} (phone)`);
+        const box = doc.getElementById("spark-choices");
+        const v = () => doc.querySelector("#spark-video video");
+        if (!(await waitFor(() => box.dataset.phase === "ready", Math.max(20000, ((v() && v().duration) || 30) * 1000 + 10000)))) throw new Error(`${id}: the choices never came up`);
+      }
+      await sleep(900); // the choices fade in
+      const sel = console_ ? "#console-choices .choice" : "#spark-choices .choice";
+      const btns = [...doc.querySelectorAll(sel)];
+      if (!btns.length) throw new Error(`${id}: no choices on screen`);
+      const wrap = btns[0].parentElement.getBoundingClientRect();
+      const bad = [];
+      const ctl = [".spark-unmute", ".spark-fullscreen"].map((q) => doc.querySelector(q)).filter((e) => e && !e.hidden && getComputedStyle(e).display !== "none").map((e) => e.getBoundingClientRect());
+      for (const b of btns) {
+        const r = b.getBoundingClientRect();
+        const cs = getComputedStyle(b);
+        const label = (b.textContent || "").trim().slice(0, 40);
+        const cut = b.scrollWidth > b.clientWidth + 1 || b.scrollHeight > b.clientHeight + 1 || r.left < -1 || r.right > win.innerWidth + 1;
+        const over = ctl.some((c) => r.left < c.right && r.right > c.left && r.top < c.bottom && r.bottom > c.top);
+        const bw = parseFloat(cs.borderTopWidth);
+        const txt = lum(cs.color);
+        const edge = lum(cs.borderTopColor);
+        t.event("choice-button", `${id}: "${label}" ${Math.round(r.width)}x${Math.round(r.height)} (column ${Math.round(wrap.width)}), text luminance ${Math.round(txt)}, border ${bw}px luminance ${Math.round(edge)}, cut ${cut}, over video controls ${over}`);
+        if (r.height < 47.5) bad.push(`"${label}" is ${Math.round(r.height)}px tall`);
+        if (r.width < wrap.width - 1) bad.push(`"${label}" is ${Math.round(r.width)}px wide in a ${Math.round(wrap.width)}px column`);
+        if (cut) bad.push(`"${label}" is cut off`);
+        if (over) bad.push(`"${label}" overlaps the video controls`);
+        if (txt < 220) bad.push(`"${label}" text is dim (luminance ${Math.round(txt)})`);
+        if (bw < 1 || edge < 150) bad.push(`"${label}" has no visible border (${bw}px, luminance ${Math.round(edge)})`);
+      }
+      if (!console_) {
+        const timer = doc.getElementById("spark-timer");
+        const tr = timer.getBoundingClientRect();
+        const lab = (timer.querySelector(".choice-timer-label").textContent || "").trim();
+        const shown = !timer.hidden && getComputedStyle(timer).visibility !== "hidden" && tr.height > 4;
+        const above = tr.bottom <= btns[0].getBoundingClientRect().top + 1;
+        t.event("timer", `${id}: "${lab}" ${Math.round(tr.width)}x${Math.round(tr.height)}, shown ${shown}, above the first choice ${above}`);
+        if (!shown) bad.push("the timer isn't visible");
+        if (!above) bad.push("the timer isn't above the choices");
+        if (!/^Choose in \d+ s$/.test(lab)) bad.push(`the timer says "${lab}", not "Choose in N s"`);
+      } else {
+        const cue = getComputedStyle(doc.getElementById("console-choices"), "::before").content;
+        t.event("cue", `${id}: choices cue ${cue}`);
+        if (!/Your move/.test(cue)) bad.push("no cue above the choices");
+      }
+      if (doc.documentElement.scrollWidth > win.innerWidth + 1) bad.push("the page scrolls sideways");
+      for (const b of bad) t.problem("bug", `${id} at 390px: ${b}`);
+      t.event("phone-choices", `${id}: ${btns.length} choice(s) checked, ${bad.length} problem(s)`);
+      await tapAt(t, btns[0], `the first choice (${id})`);
+      await sleep(500);
+      closeViewFrame();
+      t.progress(n / ids.length);
+    }
+  } finally {
+    closeViewFrame();
+    restoreProgress();
+  }
+}
+
 /** Phone player: the first clip plays after one tap, a loading ring shows while a clip buffers, and turned on its side
     the clip fills the screen, keeps playing and the choices stay visible. A frame at 390x844 turned to 844x390. */
 async function phonePlayerRun(options, t) {
@@ -5432,7 +5513,7 @@ async function progressRun(options, t) {
 }
 
 // The scenarios that use a console story's state explorer: it is worked out before they play (consoleWarm).
-const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics", "progress"];
+const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics", "progress", "phone-choices"];
 
 installPlaytest({
   product: "imaginelivetv",
@@ -5548,6 +5629,13 @@ installPlaytest({
       tags: ["full"],
       description: "A frame at 390x844 (a phone upright) opens The Final Spark by its link. One real press on Tap to play and the first clip plays (playsinline), the Full screen button is 44px, the choices are on screen and the next clips are requested while it plays. The choices come when the clip ends; pressing one starts the next clip from nothing and the loading ring comes on (iltv:loading, from the video's loadstart/waiting/stalled events) and goes off at playing. Then the frame is turned to 844x390 (a resize and an orientationchange event): the clip keeps playing, the video fills at least 80% of the height, the choices stay on screen, no sideways scroll. Events first-clip-playing, loading-ring, landscape; metric landscapeVideoFill.",
     },
+    {
+      id: "phone-choices",
+      title: "Choices on a phone (390px): full-width buttons 48px tall, bright text and a visible border, the countdown above them, nothing cut off, in all three stories",
+      seconds: 150,
+      tags: ["full"],
+      description: "A frame at 390x844 opens each of The Final Spark and The Water Road by its link (Tap to play pressed, the clip watched to its end) and Night Shift (a seeded run at its first scene: setup shortcut, event seeded-run). For every choice button: full width of its column, at least 48px tall, near-white text, a visible border, whole (no scroll inside it, inside the screen), clear of the Tap for sound and Full screen buttons. The clip stories show the countdown \"Choose in N s\" visible and above the first choice; Night Shift shows a \"Your move\" cue above its choices. No sideways scroll. Then a real press on the first choice. Events choice-button, timer, cue, phone-choices. Options: {\"story\":\"<id>\"}.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -5614,6 +5702,7 @@ installPlaytest({
       else if (id === "endings") await endingsRun(options, t);
       else if (id === "cinema") await cinemaRun(options, t);
       else if (id === "phone-player") await phonePlayerRun(options, t);
+      else if (id === "phone-choices") await phoneChoicesRun(options, t);
     } finally {
       endQuiet();
       probeStop(t);
