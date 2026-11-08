@@ -5288,19 +5288,16 @@ async function frontDoorRun(options, t) {
   const pct = stories().explored(FIRST);
   await toLanding(t);
   await sleep(300);
-  const cards = rowCards();
-  const shown = row() && !row().hidden;
-  t.event("continue-row", `after one choice in ${FIRST}: ${shown ? "shown" : "hidden"}, ${cards.map((c) => c.dataset.story).join(", ")}`);
-  if (!shown || cards.length !== 1 || cards[0].dataset.story !== FIRST) t.problem("bug", `after a choice in ${FIRST} the Continue row should show it alone (shown: ${shown}, cards: ${cards.length})`);
-  else {
-    const c = cards[0];
-    const says = (c.querySelector(".continue-meta")?.textContent || "").trim();
-    t.event("continue-card", `${FIRST}: "${says}", ${c.querySelector("img, video") ? "poster" : "no poster"}, button "${(c.querySelector(".continue-go")?.textContent || "").trim()}"`);
-    if (says !== `${pct}% explored`) t.problem("bug", `the Continue card says "${says}", explored() says ${pct}%`);
-    if (!c.querySelector("img, video")) t.problem("bug", "the Continue card has no poster");
-    const bar = c.querySelector(".continue-bar span");
-    if (!bar || Math.abs(parseFloat(bar.style.width) - pct) > 0.5) t.problem("bug", `the Continue card's bar is ${bar?.style.width}, not ${pct}%`);
-  }
+  // The featured story is the hero: it says Continue once, and appears neither in the Continue row nor twice in the catalogue.
+  const heroGo = (document.querySelector("#stories a.hero .hero-go")?.textContent || "").trim();
+  const visible = (el) => !!el && el.getClientRects().length > 0;
+  const goes = [...document.querySelectorAll("#stories .hero-go, #stories .continue-go, #stories .story-card-go")]
+    .filter((el) => visible(el) && /continue/i.test(el.textContent || ""));
+  const dupes = [...document.querySelectorAll(`#stories [data-story="${FIRST}"]`)].filter(visible);
+  t.event("continue-once", `after one choice in ${FIRST}: hero "${heroGo}", ${dupes.length} visible element(s) for it, ${goes.length} Continue button(s), row ${row() && !row().hidden ? "shown" : "hidden"}`);
+  if (dupes.length !== 1) t.problem("bug", `after a choice in ${FIRST} it appears ${dupes.length} times on the landing page, not once`);
+  if (goes.length !== 1 || !/continue/i.test(heroGo)) t.problem("bug", `after a choice in ${FIRST} there should be one Continue button, on the hero (found ${goes.length}, hero says "${heroGo}")`);
+  if (rowCards().some((c) => c.dataset.story === FIRST)) t.problem("bug", `${FIRST} is in the Continue row as well as the hero`);
   t.progress(0.55);
 
   t.scene("Front door: 390 px");
@@ -5308,20 +5305,47 @@ async function frontDoorRun(options, t) {
   await waitFor(() => doc.querySelector("#story-list a.story-card[data-progress]") && doc.getElementById("continue-row"), 8000);
   await sleep(600);
   await checkFront(doc, "390px");
-  const frow = doc.getElementById("continue-row");
-  t.event("continue-row", `390px frame: ${frow && !frow.hidden ? "shown" : "hidden"} (${doc.querySelectorAll("#continue-list a.continue-card").length} cards)`);
-  if (!frow || frow.hidden) t.problem("bug", "390px: the Continue row doesn't show after a story is started");
   frontDoorFit(t, doc, 390, "390px");
+  // Every visible card is as wide as the Featured card and its ribbon sits inside it.
+  const heroBox = doc.querySelector("#stories a.hero").getBoundingClientRect();
+  const wide = [...doc.querySelectorAll("#stories a.story-card, #stories a.continue-card")].filter((c) => c.getClientRects().length);
+  for (const c of wide) {
+    const r = c.getBoundingClientRect();
+    const rb = c.querySelector(".story-card-ribbon")?.getBoundingClientRect();
+    const inside = !rb || (rb.left >= r.left - 0.5 && rb.right <= r.right + 0.5 && rb.top >= r.top - 0.5 && rb.bottom <= r.bottom + 0.5);
+    t.event("card-width", `390px: ${c.dataset.story} ${Math.round(r.width)}px (hero ${Math.round(heroBox.width)}px, left ${Math.round(r.left)} vs ${Math.round(heroBox.left)}), ribbon ${inside ? "inside" : "CLIPPED"}`);
+    if (Math.abs(r.width - heroBox.width) > 1 || Math.abs(r.left - heroBox.left) > 1) t.problem("bug", `390px: ${c.dataset.story}'s card is ${Math.round(r.width)}px wide at ${Math.round(r.left)}, the Featured card ${Math.round(heroBox.width)}px at ${Math.round(heroBox.left)}`);
+    if (!inside) t.problem("bug", `390px: ${c.dataset.story}'s ribbon runs outside its card`);
+  }
+  closeViewFrame();
+  // The Tree at 390: the root and its first choices fully in view, on a dark field, labels inside their nodes.
+  t.scene("Front door: the Tree at 390 px");
+  const tdoc = await viewFrameLoad(t, `/?story=${FIRST}`, 390, 844);
+  await passPrompt(t, tdoc, "tree (390px)");
+  await tapAt(t, tdoc.getElementById("tab-tree"), "the Tree tab");
+  await sleep(500);
+  const scroller = tdoc.querySelector("#spark-tree .tree-scroll");
+  const sr = scroller && scroller.getBoundingClientRect();
+  const nodes = [...tdoc.querySelectorAll("#spark-tree .tree-node")];
+  const cut = nodes.slice(0, 1 + (story(FIRST).scenes[story(FIRST).start].choices.length)).filter((n) => { const r = n.getBoundingClientRect(); return r.left < sr.left - 0.5 || r.right > sr.right + 0.5; });
+  const bg = scroller ? tdoc.defaultView.getComputedStyle(scroller).backgroundColor : "";
+  const lum = (bg.match(/\d+/g) || [255, 255, 255]).slice(0, 3).map(Number).reduce((x, y) => x + y, 0) / 3;
+  const spill = nodes.filter((n) => [...n.children].some((c) => c.scrollWidth > n.clientWidth + 1));
+  t.event("tree-390", `${nodes.length} nodes, ${cut.length} of the first ones cut off, backdrop ${bg} (luminance ${Math.round(lum)}), ${spill.length} labels spill`);
+  if (!scroller || !nodes.length) t.problem("bug", "390px: the Tree shows no nodes");
+  if (cut.length) t.problem("bug", `390px: ${cut.length} of the root and first choices are cut off at the edge of the Tree`);
+  if (lum > 60) t.problem("bug", `390px: the Tree's backdrop is ${bg}, not dark`);
+  if (spill.length) t.problem("bug", `390px: ${spill.length} Tree labels run outside their node`);
   closeViewFrame();
   t.progress(0.8);
 
   t.scene("Front door: Continue opens where it was left");
   const before = stories().explored(FIRST);
-  const cont = rowCards()[0];
+  const cont = document.querySelector("#stories a.hero");
   if (cont) {
     cont.scrollIntoView({ block: "center", behavior: "instant" });
     await sleep(200);
-    await tapAt(t, cont.querySelector("h3") || cont, "the Continue card");
+    await tapAt(t, cont.querySelector(".hero-go") || cont, "the hero's Continue");
     await sleep(500);
     if (stories().current() !== FIRST) t.problem("bug", `the Continue card didn't open ${FIRST} (open: ${stories().current()})`);
     else {

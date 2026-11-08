@@ -1002,6 +1002,7 @@ a { color: var(--green); }
   .continue-card { flex-basis: 100%; }
 }
 
+
 .story-card-text { padding: 0.8rem 1rem 1rem; }
 
 .story-card h2 {
@@ -1084,6 +1085,28 @@ a { color: var(--green); }
   border-color: #a9acb1;
 }
 
+@media (max-width: 640px) {
+  /* Cards as wide as the Featured card; the ribbon becomes a pill inside the card's corner. */
+  .story-list { grid-template-columns: minmax(0, 1fr); }
+  .story-card img,
+  .story-card video,
+  .story-card-blank { aspect-ratio: 16 / 10; }
+  .story-card-ribbon {
+    top: 0.6rem;
+    right: 0.6rem;
+    width: auto;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--green-soft);
+    border-radius: 999px;
+    transform: none;
+  }
+  .story-card[data-progress="new"] .story-card-ribbon { border-color: #4a4d53; }
+  .story-card[data-progress="started"] .story-card-ribbon { border-color: #a9acb1; }
+}
+
+/* The featured story's catalogue card steps aside while the hero says Continue (one button for it). */
+.story-card[data-featured][data-run="mid"] { display: none; }
+
 #spark-tree {
   flex: 1;
   min-height: 0;
@@ -1147,9 +1170,9 @@ a { color: var(--green); }
   max-height: none;
   border-radius: 14px;
   background:
-    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.28), transparent 55%),
-    linear-gradient(180deg, #c5c6c3 0%, #9ea09c 42%, #7d7f7c 100%);
-  box-shadow: inset 0 0 80px rgba(40, 42, 46, 0.35);
+    radial-gradient(ellipse at 30% 40%, rgba(255, 255, 255, 0.05), transparent 60%),
+    #0b0c0e;
+  border: 1px solid #3a3d42;
   cursor: grab;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -1183,16 +1206,15 @@ a { color: var(--green); }
 
 .tendril {
   fill: none;
-  stroke: #141416;
-  stroke-width: 9;
+  stroke: #3a3d42;
+  stroke-width: 6;
   stroke-linecap: round;
-  filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.28));
 }
 
 .tendril-return {
   fill: none;
-  stroke: #101113;
-  stroke-width: 5;
+  stroke: #5c6066;
+  stroke-width: 3;
   stroke-linecap: round;
   opacity: 0.9;
 }
@@ -1210,6 +1232,8 @@ a { color: var(--green); }
   border-radius: 12px;
   box-shadow: 0 12px 22px rgba(0, 0, 0, 0.28);
   font: inherit;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* The tree is a map, not a way around: nothing in it can be pressed. */
@@ -1235,6 +1259,12 @@ a { color: var(--green); }
   font-size: 0.92rem;
   font-weight: 650;
   line-height: 1.2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 
 .tree-node-via {
@@ -1243,6 +1273,12 @@ a { color: var(--green); }
   color: #b7b3ad;
   font-size: 0.72rem;
   line-height: 1.25;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 
 .tree-edge-label {
