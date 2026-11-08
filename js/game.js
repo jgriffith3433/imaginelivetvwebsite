@@ -556,7 +556,7 @@
     bar.style.animation = "";
     bar.style.animationDuration = CHOICE_WINDOW + "s";
     let left = CHOICE_WINDOW;
-    label.textContent = left + "s";
+    label.textContent = "Choose in " + left + " s";
     const tick = function () {
       left -= 1;
       if (left <= 0) {
@@ -565,7 +565,7 @@
         windowTick = null;
         return;
       }
-      label.textContent = left + "s";
+      label.textContent = "Choose in " + left + " s";
       windowTick = setTimeout(tick, 1000);
     };
     windowTick = setTimeout(tick, 1000);
