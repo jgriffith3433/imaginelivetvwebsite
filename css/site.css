@@ -2459,6 +2459,12 @@ figure.feed { cursor: default; }
   line-height: 1.35;
 }
 .ending-recap li { margin: 0.1rem 0; }
+/* .spot makes an element inline-grid, which drops the list item (no number, no line break): keep it a block. */
+.ending-recap li.spot { display: list-item; width: auto; }
+.ending-recap li.spot > .spot-src,
+.ending-recap li.spot > .spot-en { display: block; }
+.ending-recap li.spot { position: relative; }
+.ending-recap li.spot > .spot-en { position: absolute; inset: 0; }
 .ending-again { margin-top: 0.4rem; min-height: 44px; text-align: center; font-weight: 700; }
 @keyframes ending-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .spark-ending.ending-card { animation: none; } }
