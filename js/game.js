@@ -789,8 +789,8 @@
     const nodeH = 68;
     const colGap = 92;
     const rowGap = 34;
-    const padX = 48;
-    const padY = 160;
+    const padX = 24;
+    const padY = 56;
     let maxRows = 1;
     columns.forEach(function (col) {
       if (col && col.length > maxRows) maxRows = col.length;
@@ -891,7 +891,16 @@
       nodes +
       "</div></div>";
 
-    bindTreePan(treeRoot.querySelector(".tree-scroll"));
+    const scroller = treeRoot.querySelector(".tree-scroll");
+    // Open fitted: the root and its first children (two columns) always fully in view, however narrow the screen
+    // (a phone shrinks the map, at most to 60%); the viewer pans from there.
+    const canvas = scroller.querySelector(".tree-canvas");
+    const firstTwo = padX * 2 + 2 * nodeW + colGap;
+    const room = scroller.clientWidth;
+    if (room > 0 && room < firstTwo) canvas.style.zoom = String(Math.max(0.6, room / firstTwo));
+    scroller.scrollLeft = 0;
+    scroller.scrollTop = 0;
+    bindTreePan(scroller);
   }
 
   function bindTreePan(scroller) {
@@ -1045,6 +1054,8 @@
       const run = runOf(story);
       card.dataset.progress = progress;
       card.dataset.run = run;
+      const heroEl = landing.querySelector(".hero");
+      if (heroEl && heroEl.dataset.story === story.id) card.dataset.featured = "";
       const badge = card.querySelector(".story-card-ribbon");
       if (badge) badge.textContent = BADGES[progress];
       const explored = card.querySelector(".story-card-explored");
@@ -1054,6 +1065,12 @@
     });
     markHero();
     markContinue();
+  }
+
+  /** The hero already shows the featured story (and its Continue button). */
+  function isFeatured(story) {
+    const hero = landing.querySelector(".hero");
+    return !!hero && hero.dataset.story === story.id;
   }
 
   /** The hero's button follows the run the way a card's does. */
@@ -1076,7 +1093,7 @@
     const list = document.getElementById("continue-list");
     if (!row || !list) return;
     list.replaceChildren();
-    DATA.stories.filter(function (story) { return story.listed && runOf(story) === "mid"; }).forEach(function (story) {
+    DATA.stories.filter(function (story) { return story.listed && runOf(story) === "mid" && !isFeatured(story); }).forEach(function (story) {
       const src = storyList.querySelector('.story-card[data-story="' + story.id + '"]');
       if (!src) return;
       const a = document.createElement("a");
