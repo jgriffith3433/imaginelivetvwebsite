@@ -66,6 +66,33 @@
     return;
   }
 
+  // Language picker (the story's pages are each in another language): "mixed" = as written, the English under the
+  // flashlight; "en" = the English plainly. Kept in localStorage; switching re-renders nothing, so the scene, its
+  // video and the run carry on.
+  const READING_KEY = "iltv.reading";
+  const langBox = document.getElementById("spark-lang-box");
+  const langSelect = document.getElementById("spark-lang");
+  let reading = "mixed";
+  try { if (localStorage.getItem(READING_KEY) === "en") reading = "en"; } catch (error) { /* no saved choice */ }
+
+  /** What the screen reader hears follows the picked language (the hidden half is aria-hidden). */
+  function syncReading() {
+    root.dataset.reading = reading;
+    root.querySelectorAll(".spot-src").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "true" : "false"); });
+    root.querySelectorAll(".spot-en").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "false" : "true"); });
+    document.documentElement.dataset.reading = reading;
+    if (langSelect) langSelect.value = reading;
+  }
+  new MutationObserver(syncReading).observe(root, { childList: true, subtree: true });
+  if (langSelect) {
+    langSelect.addEventListener("change", function () {
+      reading = langSelect.value === "en" ? "en" : "mixed";
+      try { localStorage.setItem(READING_KEY, reading); } catch (error) { /* not saved */ }
+      syncReading();
+      tell("feature", { feature: "language", story: STORY ? STORY.id : null, value: reading, scene: currentScene });
+    });
+  }
+
   let currentScene = null;
   let history = [];
   let fromPlayer = false;
@@ -1198,6 +1225,12 @@
     taglineBox.hidden = !story.tagline;
     const tabs = root.querySelector(".spark-tabs");
     if (tabs) tabs.setAttribute("aria-label", story.title);
+    if (langBox) {
+      const langs = {};
+      Object.keys(SCENES).forEach(function (id) { langs[SCENES[id].lang] = true; });
+      langBox.hidden = Object.keys(langs).filter(function (l) { return l && l !== "en"; }).length < 1;
+    }
+    syncReading();
     document.title = story.title + " · " + SITE_TITLE;
     prompt(story.tap);
     sound("ask");
