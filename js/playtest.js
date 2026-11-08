@@ -3397,6 +3397,16 @@ async function phoneMediaRun(options, t) {
       if (video.preload === "auto") t.problem("bug", `${card.dataset.story}: the card's video preloads the clip`);
     } else t.problem("bug", `${card.dataset.story}: the card has no picture and no poster`);
   }
+  // Scroll down the cards, a beat on each, so the footage shows every card's poster (the lazy ones load as they come near).
+  for (const card of cards) {
+    card.scrollIntoView({ block: "center", behavior: "instant" });
+    const img = card.querySelector("img");
+    const ok = img ? await waitFor(() => img.complete && img.naturalWidth > 0, 4000) : !!card.querySelector("video[poster]");
+    t.event("card-poster-seen", `${card.dataset.story}: scrolled into view, poster ${ok ? "shown" : "NOT shown"}`);
+    if (!ok) t.problem("bug", `${card.dataset.story}: the card's poster didn't show once scrolled into view`);
+    await sleep(500);
+  }
+  doc.defaultView.scrollTo(0, 0);
   const heroImg = doc.querySelector(".hero img");
   if (heroImg && heroImg.loading === "lazy") t.problem("bug", "the hero's picture (the first thing seen) is lazy-loaded");
   t.progress(0.2);
@@ -3425,8 +3435,12 @@ async function phoneMediaRun(options, t) {
         else t.event("poster", `${id} (${label}): the clip shows ${poster} (${loaded}px wide), readyState ${video().readyState} before Tap to play`);
         t.add("postersShown");
       }
+      // The clip waits behind Tap to play with its poster and nothing loaded: hold there so the footage shows it.
+      t.event("poster-waiting", `${id} (${label}): clip readyState ${video().readyState}, networkState ${video().networkState}, paused ${video().paused}, poster ${poster ? "set" : "MISSING"}; held 2 s`);
+      await sleep(2000);
       // 2. After one tap the right rendition is requested.
       await passPrompt(t, doc, `${id} (${label})`);
+      t.event("poster-until-playing", `${id} (${label}): right after the tap readyState ${video().readyState}, the poster ${video().readyState < 2 ? "is still what shows" : "was replaced by the first frame"}`);
       const want = label === "phone" ? first.small : first.video;
       const other = label === "phone" ? first.video : first.small;
       if (label === "phone" && !first.small) t.problem("bug", `${id}: no phone rendition in the data for the first scene`);
