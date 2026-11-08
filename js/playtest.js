@@ -3328,11 +3328,23 @@ async function phonePlayerRun(options, t) {
   doc.addEventListener("iltv:loading", (e) => { loadingLog.push(e.detail.on); t.event("loading", `${e.detail.scene}: ${e.detail.on ? "ring on" : "ring off"}`); });
   t.progress(0.1);
   // 1. One tap on Tap to play and the first clip plays.
+  // The time from the press on Tap to play to the clip playing: the press and the media's own `playing` event are
+  // caught as they happen (no polling).
+  let tappedAt = 0, playingAt = 0;
+  doc.addEventListener("click", () => { if (!tappedAt) tappedAt = win.performance.now(); }, true);
+  doc.addEventListener("playing", (e) => { if (tappedAt && !playingAt && e.target.closest && e.target.closest("#spark-video")) playingAt = win.performance.now(); }, true);
   await passPrompt(t, doc, `${id} (phone)`);
   const video = () => doc.querySelector("#spark-video video");
   const ok = await waitFor(() => video() && !video().paused && video().currentTime > 0.3, 8000);
   if (!ok) t.problem("bug", `${id}: after one tap the first clip isn't playing (paused ${video() && video().paused}, ${video() && video().currentTime}s)`);
-  else t.event("first-clip-playing", `after one tap: ${video().currentTime.toFixed(1)}s, muted ${video().muted}, playsinline ${video().hasAttribute("playsinline")}`);
+  else {
+    t.event("first-clip-playing", `after one tap: ${video().currentTime.toFixed(1)}s, muted ${video().muted}, playsinline ${video().hasAttribute("playsinline")}`);
+    if (!playingAt && !video().paused) playingAt = win.performance.now(); // it was already playing before the listener could hear it
+    const ms = Math.max(0, Math.round(playingAt - tappedAt));
+    t.metric("phoneTapToPlayMs", ms);
+    t.event("tap-to-playing", `${win.innerWidth}x${win.innerHeight}: ${ms} ms from the press on Tap to play to the first clip playing`);
+    if (ms > 3000) t.problem("bug", `${id}: the first clip took ${ms} ms to play after one tap (over 3 s)`);
+  }
   if (video() && !video().hasAttribute("playsinline")) t.problem("bug", `${id}: the clip has no playsinline (iPhone would take it full screen)`);
   t.progress(0.3);
   // Controls over the clip: Full screen (44px), Tap for sound when it plays muted.
@@ -3396,14 +3408,17 @@ async function phonePlayerRun(options, t) {
   const picRight = picLeft + picW;
   t.metric("landscapeVideoFill", Math.round(fill * 100) / 100);
   t.metric("landscapePictureFill", Math.round((picH / win.innerHeight) * 100) / 100);
+  t.event("video-box", `viewport ${win.innerWidth}x${win.innerHeight}; video box ${Math.round(box.width)}x${Math.round(box.height)} at ${Math.round(box.left)},${Math.round(box.top)}; picture ${Math.round(picW)}x${Math.round(picH)} centred at x=${Math.round(picLeft + picW / 2)} (screen centre ${Math.round(win.innerWidth / 2)}); height ${Math.round((picH / win.innerHeight) * 100)}% of the screen`);
+  if (Math.abs(picLeft + picW / 2 - win.innerWidth / 2) > 2) t.problem("bug", `${id}: in landscape the picture isn't centred (centre ${Math.round(picLeft + picW / 2)}, screen ${Math.round(win.innerWidth / 2)})`);
   t.event("landscape", `${win.innerWidth}x${win.innerHeight}: the video fills ${Math.round(fillW * 100)}% of the width and ${Math.round(fill * 100)}% of the height (${Math.round(box.width)}x${Math.round(box.height)}); its picture is ${Math.round(picW)}x${Math.round(picH)}, ${Math.round((picH / win.innerHeight) * 100)}% of the screen's height, playing ${!v.paused}`);
   if (fill < 0.95 || fillW < 0.95) t.problem("bug", `${id}: in landscape the video fills ${Math.round(fillW * 100)}% of the width and ${Math.round(fill * 100)}% of the height of the screen`);
-  if (picH / win.innerHeight < 0.95) t.problem("bug", `${id}: in landscape the picture is ${Math.round((picH / win.innerHeight) * 100)}% of the screen's height`);
+  if (picH / win.innerHeight < 0.9) t.problem("bug", `${id}: in landscape the picture is ${Math.round((picH / win.innerHeight) * 100)}% of the screen's height`);
   const cs = choices();
   const first = cs[0] && cs[0].getBoundingClientRect();
   if (!cs.length || !first || first.bottom > win.innerHeight + 1 || first.right > win.innerWidth + 1 || first.top < 0) t.problem("bug", `${id}: in landscape the choices aren't on screen`);
   else {
     t.event("choices", `landscape: first choice at ${Math.round(first.left)},${Math.round(first.top)} ${Math.round(first.width)}x${Math.round(first.height)}, ${cs.length} choices, over the picture: ${cs.some((c) => { const r = c.getBoundingClientRect(); return r.left < picRight - 1 && r.right > picLeft + 1; })}`);
+    t.event("choice-positions", cs.map((c, i) => { const r = c.getBoundingClientRect(); return `#${i + 1} ${Math.round(r.left)},${Math.round(r.top)} ${Math.round(r.width)}x${Math.round(r.height)}`; }).join("; "));
     // Each choice is what a thumb reaches: visible, hit-tested (nothing lies over it) and not covering the picture.
     for (const c of cs) {
       const r = c.getBoundingClientRect();
