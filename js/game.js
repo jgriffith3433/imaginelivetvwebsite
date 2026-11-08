@@ -27,6 +27,9 @@
       question: spec.question[0],
       questionEn: spec.question[1],
       video: spec.video,
+      // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
+      poster: spec.poster || "",
+      small: spec.small || "",
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
