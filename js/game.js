@@ -576,6 +576,15 @@
     root.dataset.choices = phase;
   }
 
+  /** While the clip plays, the cue row says the choices are live (a phone shows it and its choices at full strength;
+      a wide screen keeps its row hidden and the choices dimmed). Pressing one is allowed at any time. */
+  function showWaitingCue(hasChoices) {
+    if (!hasChoices || !timerBox) return;
+    timerBox.querySelector(".choice-timer-label").textContent = "Choose any time";
+    timerBox.hidden = false;
+    timerBox.dataset.state = "waiting";
+  }
+
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
   function revealChoices(hasChoices) {
     setChoicePhase("ready");
@@ -662,12 +671,13 @@
       playClip(video);
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
+      showWaitingCue(scene.choices.length > 0);
       video.addEventListener("ended", function () {
         if (activeClip === video && currentScene === sceneId) revealChoices(scene.choices.length > 0);
       });
       video.addEventListener("error", function () {
         // A clip that won't load must not keep the choices dim (watchVideo retries and then offers Retry).
-        if (activeClip === video && choicesBox.dataset.phase === "waiting") setChoicePhase("ready");
+        if (activeClip === video && choicesBox.dataset.phase === "waiting") { setChoicePhase("ready"); stopChoiceWindow(); }
       });
     } else {
       setChoicePhase("ready");
