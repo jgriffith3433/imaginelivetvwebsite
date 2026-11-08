@@ -1087,18 +1087,21 @@ a { color: var(--green); }
 }
 
 @media (max-width: 640px) {
-  /* Cards as wide as the Featured card; the ribbon becomes a pill inside the card's corner. */
+  /* Cards as wide as the Featured card; the ribbon becomes a tab in the card's corner. */
   .story-list { grid-template-columns: minmax(0, 1fr); }
   .story-card img,
   .story-card video,
   .story-card-blank { aspect-ratio: 16 / 10; }
   .story-card-ribbon {
-    top: 0.6rem;
-    right: 0.6rem;
+    top: 0;
+    right: 0;
     width: auto;
-    padding: 0.3rem 0.7rem;
+    padding: 0.3rem 0.8rem;
     border: 1px solid var(--green-soft);
-    border-radius: 999px;
+    border-top: 0;
+    border-right: 0;
+    /* A tab in the card's top right corner: it follows the card's own rounding (18px) and touches both edges. */
+    border-radius: 0 17px 0 14px;
     transform: none;
   }
   .story-card[data-progress="new"] .story-card-ribbon { border-color: #4a4d53; }
