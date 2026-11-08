@@ -3387,13 +3387,37 @@ async function phonePlayerRun(options, t) {
   else if (!moved) t.problem("bug", `${id}: the clip froze after turning (${before.toFixed(2)}s -> ${v.currentTime.toFixed(2)}s)`);
   const box = doc.getElementById("spark-video").getBoundingClientRect();
   const fill = box.height / win.innerHeight;
+  const fillW = box.width / win.innerWidth;
+  // The picture inside the video box (object-fit: contain keeps the clip's own shape, 9:16, so it is centred with black either side).
+  const ar = v.videoWidth && v.videoHeight ? v.videoWidth / v.videoHeight : 9 / 16;
+  const picH = Math.min(box.height, box.width / ar);
+  const picW = picH * ar;
+  const picLeft = box.left + (box.width - picW) / 2;
+  const picRight = picLeft + picW;
   t.metric("landscapeVideoFill", Math.round(fill * 100) / 100);
-  t.event("landscape", `${win.innerWidth}x${win.innerHeight}: video ${Math.round(box.width)}x${Math.round(box.height)} (${Math.round(fill * 100)}% of the height), playing ${!v.paused}`);
-  if (fill < 0.8) t.problem("bug", `${id}: in landscape the video is ${Math.round(fill * 100)}% of the screen's height`);
+  t.metric("landscapePictureFill", Math.round((picH / win.innerHeight) * 100) / 100);
+  t.event("landscape", `${win.innerWidth}x${win.innerHeight}: the video fills ${Math.round(fillW * 100)}% of the width and ${Math.round(fill * 100)}% of the height (${Math.round(box.width)}x${Math.round(box.height)}); its picture is ${Math.round(picW)}x${Math.round(picH)}, ${Math.round((picH / win.innerHeight) * 100)}% of the screen's height, playing ${!v.paused}`);
+  if (fill < 0.95 || fillW < 0.95) t.problem("bug", `${id}: in landscape the video fills ${Math.round(fillW * 100)}% of the width and ${Math.round(fill * 100)}% of the height of the screen`);
+  if (picH / win.innerHeight < 0.95) t.problem("bug", `${id}: in landscape the picture is ${Math.round((picH / win.innerHeight) * 100)}% of the screen's height`);
   const cs = choices();
   const first = cs[0] && cs[0].getBoundingClientRect();
   if (!cs.length || !first || first.bottom > win.innerHeight + 1 || first.right > win.innerWidth + 1 || first.top < 0) t.problem("bug", `${id}: in landscape the choices aren't on screen`);
-  else t.event("choices", `landscape: first choice at ${Math.round(first.left)},${Math.round(first.top)} ${Math.round(first.width)}x${Math.round(first.height)}, ${cs.length} choices`);
+  else {
+    t.event("choices", `landscape: first choice at ${Math.round(first.left)},${Math.round(first.top)} ${Math.round(first.width)}x${Math.round(first.height)}, ${cs.length} choices, over the picture: ${cs.some((c) => { const r = c.getBoundingClientRect(); return r.left < picRight - 1 && r.right > picLeft + 1; })}`);
+    // Each choice is what a thumb reaches: visible, hit-tested (nothing lies over it) and not covering the picture.
+    for (const c of cs) {
+      const r = c.getBoundingClientRect();
+      if (r.left < picRight - 1 && r.right > picLeft + 1) t.problem("bug", `${id}: in landscape a choice covers the picture (${Math.round(r.left)}-${Math.round(r.right)} over ${Math.round(picLeft)}-${Math.round(picRight)})`);
+      if (r.bottom > win.innerHeight + 1) continue; // below the panel's own scroll: reachable by scrolling it
+      const hit = doc.elementFromPoint(Math.min(r.right - 2, Math.max(r.left + 2, r.left + r.width / 2)), Math.min(r.bottom - 2, Math.max(r.top + 2, r.top + r.height / 2)));
+      if (hit && !c.contains(hit)) t.problem("bug", `${id}: in landscape something lies over a choice (${hit.id || hit.className || hit.tagName})`);
+    }
+  }
+  for (const sel of [".spark-fullscreen", ".spark-bar", ".spark-tab"]) {
+    const el = doc.querySelector(sel);
+    const r = el && el.getBoundingClientRect();
+    if (r && r.width && (r.left < picRight - 1 && r.right > picLeft + 1) && r.top < win.innerHeight) t.problem("bug", `${id}: in landscape ${sel} sits over the picture`);
+  }
   if (doc.documentElement.scrollWidth > win.innerWidth + 1) t.problem("bug", `${id}: landscape scrolls sideways`);
   t.progress(1);
   closeViewFrame();
