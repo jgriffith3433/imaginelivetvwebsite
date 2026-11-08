@@ -287,12 +287,19 @@
 
   var preloaded = {};
 
+  /** A phone-sized screen (or a phone on its side) plays the smaller rendition of a clip (<dir>/sm/<name>.mp4, made by
+      tools/make-posters.mjs); everything else plays the clip. The branch pages make the same choice (build-story.mjs). */
+  var PHONE = window.matchMedia("(max-width: 600px), (max-height: 500px) and (pointer: coarse)");
+  function clipSrc(scene) {
+    return (PHONE.matches && scene.small) || scene.video;
+  }
+
   /** The clips the choices lead to are fetched while this one plays, so a tap goes straight into the next. */
   function preloadNext(scene) {
     var want = {};
     scene.choices.forEach(function (c) {
       var next = SCENES[c.next];
-      if (next && next.video) want[c.next] = next.video;
+      if (next && next.video) want[c.next] = clipSrc(next);
     });
     Object.keys(preloaded).forEach(function (id) {
       if (want[id]) return;
@@ -608,11 +615,13 @@
     stopChoiceWindow();
 
     videoBox.replaceChildren();
-    const videoSrc = scene.video || null;
+    const videoSrc = scene.video ? clipSrc(scene) : null;
     let video = null;
 
     if (videoSrc) {
       video = document.createElement("video");
+      // The poster shows from the first paint, before any of the clip has loaded.
+      if (scene.poster) video.poster = scene.poster;
       video.src = videoSrc;
       // With the sound prompt, playClip starts it (autoplay would start it behind the prompt).
       video.autoplay = !window.hawkesSound;

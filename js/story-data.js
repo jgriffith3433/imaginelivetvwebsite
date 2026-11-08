@@ -126,6 +126,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/the-sewer/scene.mp4",
+     "poster": "/the-sewer/poster/scene.webp",
+     "small": "/the-sewer/sm/scene.mp4",
      "choices": [
       [
        "1. 往回走",
@@ -156,6 +158,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/dead-end.mp4",
+     "poster": "/assets/video/poster/dead-end.webp",
+     "small": "/assets/video/sm/dead-end.mp4",
      "choices": [
       [
        "1. वापस जाओ",
@@ -186,6 +190,8 @@ window.ILTV_STORIES = {
       "Which way will you go?"
      ],
      "video": "/assets/video/direction.mp4",
+     "poster": "/assets/video/poster/direction.webp",
+     "small": "/assets/video/sm/direction.mp4",
      "choices": [
       [
        "1. Vuelve atrás",
@@ -216,6 +222,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/assets/video/sludge.mp4",
+     "poster": "/assets/video/poster/sludge.webp",
+     "small": "/assets/video/sm/sludge.mp4",
      "dead": true,
      "choices": [
       [
@@ -242,6 +250,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/sewer-water.mp4",
+     "poster": "/assets/video/poster/sewer-water.webp",
+     "small": "/assets/video/sm/sewer-water.mp4",
      "choices": [
       [
        "1. اخرج من الماء",
@@ -272,6 +282,8 @@ window.ILTV_STORIES = {
       "Ahead: a locked gate."
      ],
      "video": "/assets/video/out-of-water.mp4",
+     "poster": "/assets/video/poster/out-of-water.webp",
+     "small": "/assets/video/sm/out-of-water.mp4",
      "choices": [
       [
        "1. Ir até o portão",
@@ -297,6 +309,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/assets/video/trench-foot.mp4",
+     "poster": "/assets/video/poster/trench-foot.webp",
+     "small": "/assets/video/sm/trench-foot.mp4",
      "dead": true,
      "choices": [
       [
@@ -323,6 +337,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/gate.mp4",
+     "poster": "/assets/video/poster/gate.webp",
+     "small": "/assets/video/sm/gate.mp4",
      "choices": [
       [
        "1. 門を壊す",
@@ -353,6 +369,8 @@ window.ILTV_STORIES = {
       "What will you do next?"
      ],
      "video": "/assets/video/break-gate.mp4",
+     "poster": "/assets/video/poster/break-gate.webp",
+     "small": "/assets/video/sm/break-gate.mp4",
      "choices": [
       [
        "1. একটা চাবি খোঁজো",
@@ -378,6 +396,8 @@ window.ILTV_STORIES = {
       "What will you do next?"
      ],
      "video": "/assets/video/pick-lock.mp4",
+     "poster": "/assets/video/poster/pick-lock.webp",
+     "small": "/assets/video/sm/pick-lock.mp4",
      "choices": [
       [
        "1. Nach einem Schlüssel suchen",
@@ -403,6 +423,8 @@ window.ILTV_STORIES = {
       "What will you do with it?"
      ],
      "video": "/assets/video/got-key.mp4",
+     "poster": "/assets/video/poster/got-key.webp",
+     "small": "/assets/video/sm/got-key.mp4",
      "choices": [
       [
        "1. 열쇠를 쓴다",
@@ -428,6 +450,8 @@ window.ILTV_STORIES = {
       "Will you enter the fog?"
      ],
      "video": "/assets/video/use-key.mp4",
+     "poster": "/assets/video/poster/use-key.webp",
+     "small": "/assets/video/sm/use-key.mp4",
      "choices": [
       [
        "1. Sise gir",
@@ -453,6 +477,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/fog.mp4",
+     "poster": "/assets/video/poster/fog.webp",
+     "small": "/assets/video/sm/fog.mp4",
      "choices": [
       [
        "1. Đốt cánh cửa",
@@ -483,6 +509,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/fire-door.mp4",
+     "poster": "/assets/video/poster/fire-door.webp",
+     "small": "/assets/video/sm/fire-door.mp4",
      "choices": [
       [
        "1. Esci in strada",
@@ -508,6 +536,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/knock.mp4",
+     "poster": "/assets/video/poster/knock.webp",
+     "small": "/assets/video/sm/knock.mp4",
      "choices": [
       [
        "1. Kembali ke jalan",
@@ -533,6 +563,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/truck.mp4",
+     "poster": "/assets/video/poster/truck.webp",
+     "small": "/assets/video/sm/truck.mp4",
      "choices": [
       [
        "1. اندر چڑھ جاؤ",
@@ -563,6 +595,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/inside-truck.mp4",
+     "poster": "/assets/video/poster/inside-truck.webp",
+     "small": "/assets/video/sm/inside-truck.mp4",
      "choices": [
       [
        "Baila con la sombra",
@@ -588,6 +622,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/walk-away.mp4",
+     "poster": "/assets/video/poster/walk-away.webp",
+     "small": "/assets/video/sm/walk-away.mp4",
      "choices": [
       [
        "เต้นกับเงา",
@@ -613,6 +649,8 @@ window.ILTV_STORIES = {
       "Your new powers have awakened."
      ],
      "video": "/assets/video/shadow-dance.mp4",
+     "poster": "/assets/video/poster/shadow-dance.webp",
+     "small": "/assets/video/sm/shadow-dance.mp4",
      "choices": [
       [
        "Chunguza nguvu mpya",
@@ -638,6 +676,8 @@ window.ILTV_STORIES = {
       "Which power will you explore?"
      ],
      "video": "/assets/video/explore-powers.mp4",
+     "poster": "/assets/video/poster/explore-powers.webp",
+     "small": "/assets/video/sm/explore-powers.mp4",
      "choices": [
       [
        "1. ஒளியை விழுங்கு",
@@ -668,6 +708,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/consume-light.mp4",
+     "poster": "/assets/video/poster/consume-light.webp",
+     "small": "/assets/video/sm/consume-light.mp4",
      "choices": [
       [
        "పట్టణాన్ని నాశనం చేయి",
@@ -693,6 +735,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/shadow-stitch.mp4",
+     "poster": "/assets/video/poster/shadow-stitch.webp",
+     "small": "/assets/video/sm/shadow-stitch.mp4",
      "choices": [
       [
        "शहर उद्ध्वस्त कर",
@@ -718,6 +762,8 @@ window.ILTV_STORIES = {
       ""
      ],
      "video": "/assets/video/destroy-town.mp4",
+     "poster": "/assets/video/poster/destroy-town.webp",
+     "small": "/assets/video/sm/destroy-town.mp4",
      "ending": [
       "ਅੰਤ",
       "THE END"
@@ -795,6 +841,8 @@ window.ILTV_STORIES = {
       "Which way does the caravan go?"
      ],
      "video": "/water-road/the-water-road/scene.mp4",
+     "poster": "/water-road/the-water-road/poster/scene.webp",
+     "small": "/water-road/the-water-road/sm/scene.mp4",
      "choices": [
       [
        "1. Cut across the salt flats",
@@ -825,6 +873,8 @@ window.ILTV_STORIES = {
       "What do you do?"
      ],
      "video": "/water-road/the-salt-flats/scene.mp4",
+     "poster": "/water-road/the-salt-flats/poster/scene.webp",
+     "small": "/water-road/the-salt-flats/sm/scene.mp4",
      "inventory": {
       "water": -1
      },
@@ -858,6 +908,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/water-road/the-heat/scene.mp4",
+     "poster": "/water-road/the-heat/poster/scene.webp",
+     "small": "/water-road/the-heat/sm/scene.mp4",
      "dead": true,
      "inventory": {
       "water": -3
@@ -887,6 +939,8 @@ window.ILTV_STORIES = {
       "Do you stop?"
      ],
      "video": "/water-road/under-the-stars/scene.mp4",
+     "poster": "/water-road/under-the-stars/poster/scene.webp",
+     "small": "/water-road/under-the-stars/sm/scene.mp4",
      "choices": [
       [
        "1. Ride over to it",
@@ -917,6 +971,8 @@ window.ILTV_STORIES = {
       "What do you do?"
      ],
      "video": "/water-road/under-the-mesa/scene.mp4",
+     "poster": "/water-road/under-the-mesa/poster/scene.webp",
+     "small": "/water-road/under-the-mesa/sm/scene.mp4",
      "inventory": {
       "water": -1
      },
@@ -950,6 +1006,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/water-road/the-rockslide/scene.mp4",
+     "poster": "/water-road/the-rockslide/poster/scene.webp",
+     "small": "/water-road/the-rockslide/sm/scene.mp4",
      "dead": true,
      "inventory": {
       "bullets": -1
@@ -979,6 +1037,8 @@ window.ILTV_STORIES = {
       "What do you do?"
      ],
      "video": "/water-road/the-lookout/scene.mp4",
+     "poster": "/water-road/the-lookout/poster/scene.webp",
+     "small": "/water-road/the-lookout/sm/scene.mp4",
      "choices": [
       [
        "1. Follow him",
@@ -1009,6 +1069,8 @@ window.ILTV_STORIES = {
       "What do you do?"
      ],
      "video": "/water-road/the-broken-wagon/scene.mp4",
+     "poster": "/water-road/the-broken-wagon/poster/scene.webp",
+     "small": "/water-road/the-broken-wagon/sm/scene.mp4",
      "choices": [
       [
        "1. Give them your flask",
@@ -1039,6 +1101,8 @@ window.ILTV_STORIES = {
       "What's ahead?"
      ],
      "video": "/water-road/your-flask/scene.mp4",
+     "poster": "/water-road/your-flask/poster/scene.webp",
+     "small": "/water-road/your-flask/sm/scene.mp4",
      "inventory": {
       "water": -2
      },
@@ -1067,6 +1131,8 @@ window.ILTV_STORIES = {
       "Do you look back?"
      ],
      "video": "/water-road/ride-on-by/scene.mp4",
+     "poster": "/water-road/ride-on-by/poster/scene.webp",
+     "small": "/water-road/ride-on-by/sm/scene.mp4",
      "choices": [
       [
        "1. Turn around",
@@ -1097,6 +1163,8 @@ window.ILTV_STORIES = {
       "Which way?"
      ],
      "video": "/water-road/the-dust/scene.mp4",
+     "poster": "/water-road/the-dust/poster/scene.webp",
+     "small": "/water-road/the-dust/sm/scene.mp4",
      "choices": [
       [
        "1. Follow the dry wash",
@@ -1127,6 +1195,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/water-road/the-high-ground/scene.mp4",
+     "poster": "/water-road/the-high-ground/poster/scene.webp",
+     "small": "/water-road/the-high-ground/sm/scene.mp4",
      "dead": true,
      "inventory": {
       "water": -3
@@ -1156,6 +1226,8 @@ window.ILTV_STORIES = {
       "What do you do?"
      ],
      "video": "/water-road/the-dry-wash/scene.mp4",
+     "poster": "/water-road/the-dry-wash/poster/scene.webp",
+     "small": "/water-road/the-dry-wash/sm/scene.mp4",
      "choices": [
       [
        "1. Draw your revolver",
@@ -1191,6 +1263,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/water-road/the-gunfight/scene.mp4",
+     "poster": "/water-road/the-gunfight/poster/scene.webp",
+     "small": "/water-road/the-gunfight/sm/scene.mp4",
      "dead": true,
      "inventory": {
       "bullets": -6
@@ -1220,6 +1294,8 @@ window.ILTV_STORIES = {
       "What now?"
      ],
      "video": "/water-road/over-their-heads/scene.mp4",
+     "poster": "/water-road/over-their-heads/poster/scene.webp",
+     "small": "/water-road/over-their-heads/sm/scene.mp4",
      "inventory": {
       "bullets": -2
      },
@@ -1248,6 +1324,8 @@ window.ILTV_STORIES = {
       "What do you do?"
      ],
      "video": "/water-road/they-come-back/scene.mp4",
+     "poster": "/water-road/they-come-back/poster/scene.webp",
+     "small": "/water-road/they-come-back/sm/scene.mp4",
      "choices": [
       [
        "1. Shoot it out",
@@ -1278,6 +1356,8 @@ window.ILTV_STORIES = {
       "Where does the wash go?"
      ],
      "video": "/water-road/a-drink-for-strangers/scene.mp4",
+     "poster": "/water-road/a-drink-for-strangers/poster/scene.webp",
+     "small": "/water-road/a-drink-for-strangers/sm/scene.mp4",
      "choices": [
       [
        "1. Follow it to the end",
@@ -1303,6 +1383,8 @@ window.ILTV_STORIES = {
       "What do you do with it?"
      ],
      "video": "/water-road/the-cottonwoods/scene.mp4",
+     "poster": "/water-road/the-cottonwoods/poster/scene.webp",
+     "small": "/water-road/the-cottonwoods/sm/scene.mp4",
      "inventory": {
       "water": {
        "set": 4
@@ -1338,6 +1420,8 @@ window.ILTV_STORIES = {
       ""
      ],
      "video": "/water-road/dry-fork/scene.mp4",
+     "poster": "/water-road/dry-fork/poster/scene.webp",
+     "small": "/water-road/dry-fork/sm/scene.mp4",
      "ending": [
       "THE END. This is how it started.",
       "THE END. This is how it started."
@@ -1361,6 +1445,8 @@ window.ILTV_STORIES = {
       ""
      ],
      "video": "/water-road/the-price-of-water/scene.mp4",
+     "poster": "/water-road/the-price-of-water/poster/scene.webp",
+     "small": "/water-road/the-price-of-water/sm/scene.mp4",
      "ending": [
       "THE END. Not every story makes a hero.",
       "THE END. Not every story makes a hero."
