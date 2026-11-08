@@ -18,7 +18,8 @@
 
   <main class="passage" data-story="water-road" data-node="the-rockslide" data-state="dead">
     <h1 class="spot"><span class="spot-src" lang="en">The rockslide</span><span class="spot-en" aria-hidden="true">The rockslide</span></h1>
-    <video src="/water-road/the-rockslide/scene.mp4" controls playsinline preload="auto" data-sound-start></video>
+    <video data-src="/water-road/the-rockslide/scene.mp4" data-small="/water-road/the-rockslide/sm/scene.mp4" poster="/water-road/the-rockslide/poster/scene.webp" controls playsinline preload="auto" data-sound-start></video>
+    <script>(function(){var v=document.currentScript.previousElementSibling,m=matchMedia("(max-width: 600px), (max-height: 500px) and (pointer: coarse)").matches;v.src=m?v.dataset.small:v.dataset.src})()</script>
     <p class="passage-note spot"><span class="spot-src" lang="en">Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock.</span><span class="spot-en" aria-hidden="true">Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock.</span></p>
     <p class="passage-prompt spot"><span class="spot-src" lang="en">You have died.</span><span class="spot-en" aria-hidden="true">You have died.</span></p>
     <div class="spark-choices"><a class="choice spot" href="/water-road/the-water-road/"><span class="spot-src" lang="en">1. Try again</span><span class="spot-en" aria-hidden="true">1. Try again</span></a></div>

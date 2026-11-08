@@ -3207,9 +3207,11 @@ async function phonePlayerRun(options, t) {
   const choices = () => [...doc.querySelectorAll("#spark-choices .choice")];
   t.event("choices", `upright: ${choices().length} choices, all on screen: ${inView(choices())}`);
   // The next clips are fetched while this one plays.
-  const next = Object.values(st.scenes[st.start].choices || []).map((c) => st.scenes[c.next] && st.scenes[c.next].video).filter(Boolean);
-  await waitFor(() => next.every((v) => win.performance.getEntriesByType("resource").some((e) => e.name.includes(v))), 6000);
-  const fetched = next.filter((v) => win.performance.getEntriesByType("resource").some((e) => e.name.includes(v)));
+  // (at phone size the player asks for each clip's smaller rendition: scene.small)
+  const next = Object.values(st.scenes[st.start].choices || []).map((c) => st.scenes[c.next] && [st.scenes[c.next].video, st.scenes[c.next].small]).filter((p) => p && p[0]);
+  const wasAsked = (p) => win.performance.getEntriesByType("resource").some((e) => p.some((v) => v && e.name.includes(v)));
+  await waitFor(() => next.every(wasAsked), 6000);
+  const fetched = next.filter(wasAsked);
   t.event("preload", `${fetched.length} of ${next.length} next clips requested while the first plays`);
   if (next.length && !fetched.length) t.problem("bug", `${id}: the next clips weren't preloaded`);
   t.progress(0.45);
@@ -3253,6 +3255,98 @@ async function phonePlayerRun(options, t) {
   else t.event("choices", `landscape: first choice at ${Math.round(first.left)},${Math.round(first.top)} ${Math.round(first.width)}x${Math.round(first.height)}, ${cs.length} choices`);
   if (doc.documentElement.scrollWidth > win.innerWidth + 1) t.problem("bug", `${id}: landscape scrolls sideways`);
   t.progress(1);
+  closeViewFrame();
+  restoreProgress();
+}
+
+/** Posters and the phone rendition (J: 'a poster for every card and clip, a smaller clip for phones'). A phone frame
+    (390x844) loads the landing page: content shows within 2 s, the hero's picture loads first and the cards below the
+    fold are lazy, every card has a picture. Then each clip story is opened by its link: the clip's poster is on the
+    video (and loads) before the clip does, and after Tap to play the player has requested the smaller rendition and
+    not the full clip. A desktop frame (1280x800) must still play the full clip. */
+async function phoneMediaRun(options, t) {
+  rememberProgress();
+  clearProgress();
+  const fetchedBy = (win, url) => win.performance.getEntriesByType("resource").filter((e) => e.name.endsWith(url));
+  t.scene("Landing page at phone size");
+  let doc = await viewFrameLoad(t, "/", 390, 844);
+  let win = doc.defaultView;
+  const paint = win.performance.getEntriesByName("first-contentful-paint")[0];
+  const nav = win.performance.getEntriesByType("navigation")[0];
+  const shown = paint ? paint.startTime : nav ? nav.domContentLoadedEventEnd : 0;
+  t.metric("phoneFirstContentMs", Math.round(shown));
+  t.event("first-content", `390x844: first content at ${Math.round(shown)} ms (DOMContentLoaded ${nav ? Math.round(nav.domContentLoadedEventEnd) : "?"} ms, load ${nav ? Math.round(nav.loadEventEnd) : "?"} ms)`);
+  if (!shown || shown > 2000) t.problem("bug", `the landing page's first content shows at ${Math.round(shown)} ms on a phone (limit 2000 ms)`);
+  const imgs = [...doc.querySelectorAll(".story-card img, .hero img")];
+  if (!imgs.length) t.problem("bug", "no picture on the landing page's cards");
+  const cards = [...doc.querySelectorAll(".story-card")];
+  const listed = stories().listed();
+  if (cards.length !== listed.length) t.problem("bug", `${cards.length} cards for ${listed.length} listed stories`);
+  for (const card of cards) {
+    const img = card.querySelector("img");
+    const video = card.querySelector("video");
+    if (img) {
+      const lazy = img.loading === "lazy";
+      const r = img.getBoundingClientRect();
+      const below = r.top > win.innerHeight;
+      if (below && !lazy) t.problem("bug", `${card.dataset.story}: the card's picture is below the fold and isn't lazy-loaded`);
+      const typed = (img.currentSrc || img.src).endsWith(".webp");
+      t.event("card-picture", `${card.dataset.story}: ${(img.currentSrc || img.src).split("/").pop()}, ${below ? "below the fold" : "in view"}, loading=${img.loading || "eager"}, ${typed ? "webp" : "jpg"}${img.complete && img.naturalWidth ? ", loaded" : ", not loaded yet"}`);
+      if (!below && !(await waitFor(() => img.complete && img.naturalWidth > 0, 4000))) t.problem("bug", `${card.dataset.story}: the card's picture in view didn't load`);
+    } else if (video) {
+      if (!video.getAttribute("poster")) t.problem("bug", `${card.dataset.story}: the card shows a video with no poster`);
+      if (video.preload === "auto") t.problem("bug", `${card.dataset.story}: the card's video preloads the clip`);
+    } else t.problem("bug", `${card.dataset.story}: the card has no picture and no poster`);
+  }
+  const heroImg = doc.querySelector(".hero img");
+  if (heroImg && heroImg.loading === "lazy") t.problem("bug", "the hero's picture (the first thing seen) is lazy-loaded");
+  t.progress(0.2);
+
+  const ids = options.story ? [options.story] : stories().listed();
+  let k = 0;
+  for (const id of ids) {
+    const st = story(id);
+    const first = st.scenes[st.start];
+    if (!first.video) continue;
+    for (const [w, h, label] of [[390, 844, "phone"], [1280, 800, "desktop"]]) {
+      t.scene(`${id}: ${label} ${w}x${h}`);
+      closeViewFrame();
+      clearProgress();
+      doc = await viewFrameLoad(t, `/?story=${id}`, w, h);
+      win = doc.defaultView;
+      const video = () => doc.querySelector("#spark-video video");
+      if (!(await waitFor(() => video(), 6000))) { t.problem("bug", `${id} (${label}): no video in the player`); continue; }
+      // 1. The poster is on the clip before it has loaded anything, and it loads.
+      const poster = video().getAttribute("poster");
+      if (!first.poster) t.problem("bug", `${id}: the first scene has no poster in the data (run node tools/make-posters.mjs, then npm run story)`);
+      else if (!poster || !poster.endsWith(first.poster)) t.problem("bug", `${id} (${label}): the clip's poster is ${poster}, not ${first.poster}`);
+      else {
+        const loaded = await new Promise((resolve) => { const im = new win.Image(); im.onload = () => resolve(im.naturalWidth); im.onerror = () => resolve(0); im.src = poster; });
+        if (!loaded) t.problem("bug", `${id} (${label}): the poster ${poster} didn't load`);
+        else t.event("poster", `${id} (${label}): the clip shows ${poster} (${loaded}px wide), readyState ${video().readyState} before Tap to play`);
+        t.add("postersShown");
+      }
+      // 2. After one tap the right rendition is requested.
+      await passPrompt(t, doc, `${id} (${label})`);
+      const want = label === "phone" ? first.small : first.video;
+      const other = label === "phone" ? first.video : first.small;
+      if (label === "phone" && !first.small) t.problem("bug", `${id}: no phone rendition in the data for the first scene`);
+      await waitFor(() => fetchedBy(win, want).length > 0 && video().currentSrc, 8000);
+      const src = decodeURI(new URL(video().currentSrc || video().src, win.location.href).pathname);
+      const bytes = fetchedBy(win, want).reduce((n, e) => n + (e.encodedBodySize || e.transferSize || 0), 0);
+      t.event("rendition", `${id} (${label}): plays ${src}${bytes ? ` (${Math.round(bytes / 1024)} KB fetched so far)` : ""}`);
+      if (src !== want) t.problem("bug", `${id} (${label}): the player plays ${src}, not ${want}`);
+      if (other && fetchedBy(win, other).length) t.problem("bug", `${id} (${label}): the player also fetched ${other}`);
+      if (label === "phone") {
+        t.metric(`phoneClipKB_${id}`, Math.round(bytes / 1024));
+        const ok = await waitFor(() => video().readyState >= 2 && !video().error, 15000);
+        if (!ok) t.problem("bug", `${id}: the phone rendition ${want} didn't load`);
+        else if (Math.abs(video().videoWidth / video().videoHeight - 9 / 16) > 0.01) t.problem("bug", `${id}: the phone rendition is ${video().videoWidth}x${video().videoHeight}, not 9:16`);
+        t.add("phoneRenditions");
+      }
+    }
+    t.progress(0.2 + (0.8 * ++k) / ids.length);
+  }
   closeViewFrame();
   restoreProgress();
 }
@@ -5636,6 +5730,13 @@ installPlaytest({
       tags: ["full"],
       description: "A frame at 390x844 opens each of The Final Spark and The Water Road by its link (Tap to play pressed, the clip watched to its end) and Night Shift (a seeded run at its first scene: setup shortcut, event seeded-run). For every choice button: full width of its column, at least 48px tall, near-white text, a visible border, whole (no scroll inside it, inside the screen), clear of the Tap for sound and Full screen buttons. The clip stories show the countdown \"Choose in N s\" visible and above the first choice; Night Shift shows a \"Your move\" cue above its choices. No sideways scroll. Then a real press on the first choice. Events choice-button, timer, cue, phone-choices. Options: {\"story\":\"<id>\"}.",
     },
+    {
+      id: "phone-media",
+      title: "Posters and the phone rendition: cards and clips show a poster before the video loads, a phone plays the smaller clip, the landing page's content shows within 2 s on a phone",
+      seconds: 90,
+      tags: ["full"],
+      description: "A frame at 390x844 loads the landing page: first content within 2000 ms (metric phoneFirstContentMs), the hero's picture eager, every card with a picture that loads and the ones below the fold lazy-loaded. Then each clip story (The Final Spark, The Water Road) opens by its link: the clip has its poster (loaded) before Tap to play, and after one real press the player plays the clip's smaller rendition (<dir>/sm/<name>.mp4, 9:16) and has not fetched the full clip; a 1280x800 frame plays the full clip. Events first-content, card-picture, poster, rendition; metrics phoneClipKB_<story>, postersShown, phoneRenditions. Options: {\"story\":\"<id>\"}.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -5702,6 +5803,7 @@ installPlaytest({
       else if (id === "endings") await endingsRun(options, t);
       else if (id === "cinema") await cinemaRun(options, t);
       else if (id === "phone-player") await phonePlayerRun(options, t);
+      else if (id === "phone-media") await phoneMediaRun(options, t);
       else if (id === "phone-choices") await phoneChoicesRun(options, t);
     } finally {
       endQuiet();
