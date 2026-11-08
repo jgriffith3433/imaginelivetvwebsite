@@ -3217,6 +3217,17 @@ async function phoneChoicesRun(options, t) {
         await passPrompt(t, doc, `${id} (phone)`);
         const box = doc.getElementById("spark-choices");
         const v = () => doc.querySelector("#spark-video video");
+        // While the clip still plays the choices are live too: full strength (not the dim wait), the cue says so.
+        if (box.dataset.phase === "waiting") {
+          await sleep(900);
+          const early = [...box.querySelectorAll(".choice")];
+          const tb = doc.getElementById("spark-timer");
+          const cueOn = !tb.hidden && getComputedStyle(tb).visibility !== "hidden";
+          const dim = early.filter((b) => +getComputedStyle(b).opacity < 0.99 || lum(getComputedStyle(b).color) < 220);
+          t.event("waiting-choices", `${id}: ${early.length} choice(s) while the clip plays, ${dim.length} dim, cue "${(tb.querySelector(".choice-timer-label").textContent || "").trim()}" shown ${cueOn}`);
+          if (dim.length) t.problem("bug", `${id} at 390px: ${dim.length} choice(s) look dim while the clip plays (opacity ${getComputedStyle(dim[0]).opacity})`);
+          if (early.length && !cueOn) t.problem("bug", `${id} at 390px: no cue that the choices are live while the clip plays`);
+        }
         if (!(await waitFor(() => box.dataset.phase === "ready", Math.max(20000, ((v() && v().duration) || 30) * 1000 + 10000)))) throw new Error(`${id}: the choices never came up`);
       }
       await sleep(900); // the choices fade in
@@ -3240,6 +3251,7 @@ async function phoneChoicesRun(options, t) {
         if (r.width < wrap.width - 1) bad.push(`"${label}" is ${Math.round(r.width)}px wide in a ${Math.round(wrap.width)}px column`);
         if (cut) bad.push(`"${label}" is cut off`);
         if (over) bad.push(`"${label}" overlaps the video controls`);
+        if (+cs.opacity < 0.99) bad.push(`"${label}" is faded (opacity ${cs.opacity})`);
         if (txt < 220) bad.push(`"${label}" text is dim (luminance ${Math.round(txt)})`);
         if (bw < 1 || edge < 150) bad.push(`"${label}" has no visible border (${bw}px, luminance ${Math.round(edge)})`);
       }

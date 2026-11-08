@@ -2486,6 +2486,8 @@ figure.feed { cursor: default; }
 .choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
 .choice-timer-bar { display: block; height: 100%; width: 100%; background: #c8c4be; transform-origin: left center; animation: choice-timer linear forwards; }
 .choice-timer-label { min-width: 3.6em; text-align: right; color: #8e8b86; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.choice-timer[data-state="waiting"] { visibility: hidden; }
+.choice-timer[data-state="waiting"] .choice-timer-bar { animation: none; }
 .choice-timer[data-state="done"] { opacity: 0.55; }
 .choice-timer[data-state="done"] .choice-timer-bar { animation: none; transform: scaleX(0); }
 @keyframes choice-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
@@ -2609,6 +2611,10 @@ figure.feed { cursor: default; }
   .choice-timer-track { height: 5px; background: rgba(255, 255, 255, 0.2); }
   .choice-timer-bar { background: #f4f2ee; }
   .choice-timer-label { min-width: 7.5em; color: #f4f2ee; font-size: 0.85rem; }
+  /* While the clip plays the choices are live too (they work): full strength, no fade-in from dim, the cue says so. */
+  .choice-timer[data-state="waiting"] { visibility: visible; }
+  .spark-choices[data-phase="waiting"] .choice { opacity: 1; }
+  .spark-choices[data-phase="ready"] .choice { animation: none; }
   .console-choices:not(:empty)::before {
     content: "Your move";
     color: #f4f2ee;
