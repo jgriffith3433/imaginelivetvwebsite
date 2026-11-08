@@ -405,6 +405,7 @@ function storyLink(st) {
   <meta name="description" content="${esc(st.entry.logline)}">
   <link rel="canonical" href="https://imaginelivetv.com${to}">
   <meta http-equiv="refresh" content="0; url=${to}">
+  <style>html,body{background:#070807;color:#d8e6dc;margin:0}</style>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/site.css">
   <meta name="theme-color" content="#070807">
