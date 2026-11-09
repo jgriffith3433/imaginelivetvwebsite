@@ -596,6 +596,8 @@ async function openStory(t, id, { tap = true } = {}) {
     t.log(`open ${id} by its link (a draft: no card)`);
   } else throw new Error(`the landing page has no card for ${id}`);
   await sleep(300);
+  // Opening a story puts the page at the top at once (an animated scroll left the card cut off and the footer over the inventory bar).
+  if (card && stories().current() === id && Math.round(window.scrollY) !== 0) t.problem("bug", `${id}: opening the story left the page scrolled (${Math.round(window.scrollY)}px): the card top is cut off and the footer shows over the inventory bar`);
   if (stories().current() !== id) throw new Error(`${card ? `the ${story(id).title} card` : `/?story=${id}`} didn't open the story (open: ${stories().current()})`);
   if ($("spark").hidden) t.problem("bug", `${id}: the card opened the story but the player is hidden`);
   if (new URL(location.href).searchParams.get("story") !== id) t.problem("bug", `${id}: the address doesn't say ?story=${id} (a reload would lose the story)`);

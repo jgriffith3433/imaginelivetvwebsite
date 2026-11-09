@@ -473,7 +473,7 @@
   /** The story screen never scrolls: the page at the top (header in view) and the screen itself at 0. */
   function keepAtTop() {
     if (firstScreen) { firstScreen.scrollTop = 0; firstScreen.scrollLeft = 0; }
-    if (window.scrollY || (document.scrollingElement && document.scrollingElement.scrollTop)) window.scrollTo(0, 0);
+    if (window.scrollY || (document.scrollingElement && document.scrollingElement.scrollTop)) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }
 
   // The path of the run you just finished, kept for "Try another path": the next run marks where it went last time
@@ -1223,7 +1223,7 @@
     document.documentElement.dataset.type = "console";
     delete document.documentElement.dataset.kit;
     showKit();
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const saved = readProgress(story, story.scenes);
     const unlocks = readUnlocks(story);
     history = [];
@@ -1268,7 +1268,7 @@
     if (story.inventory) document.documentElement.dataset.kit = story.id;
     else delete document.documentElement.dataset.kit;
     setView("play");
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     keepAtTop();
 
     const saved = readProgress(story, SCENES);
