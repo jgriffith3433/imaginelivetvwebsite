@@ -3233,8 +3233,11 @@ async function languageRun(options, t) {
   }
   t.event("blog-titles-one-language", `${cards.length} titles, each in a single language (its post's own: ${[...langs].join(", ")}); none shows a second language`);
   // Picked English: the same titles, each wholly English.
-  try { win.localStorage.setItem("iltv.reading", "en"); } catch (e) { /* none */ }
+  // The story frame above is gone by now (viewFrameLoad closes it), so its window can't save anything: use this page's
+  // own localStorage (same origin), and say so loudly if English can't be saved.
+  try { localStorage.setItem("iltv.reading", "en"); } catch (e) { t.problem("bug", `blog titles: couldn't save English (${e.message})`); }
   const homeEn = await viewFrameLoad(t, "/", 390, 844);
+  if (homeEn.documentElement.dataset.reading !== "en") t.problem("bug", `blog titles: with iltv.reading="en" saved the home page's data-reading is "${homeEn.documentElement.dataset.reading}", not "en"`);
   for (const card of [...homeEn.querySelectorAll("#blog .post-card")]) {
     const h = card.querySelector("h3");
     const parts = visibleTitle(h, "en");
@@ -3242,7 +3245,7 @@ async function languageRun(options, t) {
     if (parts.length !== 1 || parts[0].lang !== "en" || /[^\x00-\x7f\u2019]/.test(txt)) t.problem("bug", `with English picked a blog title reads "${txt}" (${parts.map((p) => p.lang).join("+")}), not English alone`);
     else t.event("blog-title-en", `${card.getAttribute("href")}: "${txt}"`);
   }
-  try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  try { localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
   t.metric("blogTitles", cards.length);
   t.progress(1);
 }
