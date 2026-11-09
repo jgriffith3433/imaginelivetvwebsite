@@ -90,6 +90,8 @@
     if (langSelect) langSelect.value = reading;
   }
   new MutationObserver(syncReading).observe(root, { childList: true, subtree: true });
+  // At load too: the landing page's blog list must follow a saved English before any story is opened.
+  syncReading();
   if (langSelect) {
     langSelect.addEventListener("change", function () {
       reading = langSelect.value === "en" ? "en" : "mixed";
