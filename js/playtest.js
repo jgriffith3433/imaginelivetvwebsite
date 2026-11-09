@@ -255,7 +255,7 @@ async function passPrompt(t, doc = document, where = "home") {
   return gone;
 }
 
-const SPLASH_WAIT = 6000; // the splash holds about 1.6 s and fades in 0.9 s
+const SPLASH_WAIT = 6000; // the splash holds about 0.7 s and fades in 0.4 s (cards visible well under 2 s, J phone criterion)
 
 /** The landing page's title splash: the site's title alone (no Tap to play, no sound line) on the prompt's
     background, covering the screen; nothing to tap: it fades away by itself and leaves the stories. A run that
@@ -843,6 +843,10 @@ async function smoke(options, t) {
   t.scene("Phone: language picker and blog titles");
   t.event("smoke-language", "the language leg at 390x844 (the `language` scenario)");
   await languageRun({}, { ...t, progress: (p) => t.progress(0.8 + 0.2 * p) });
+  // Phone media (J, 2026-11-09): beta judges smoke, so it also shows, at 390x844, the landing's cards within 2 s, The Water
+  // Road's poster under the clip before it loads and its smaller rendition after Tap to play (the `phone-media` leg).
+  t.scene("Phone: landing within 2 s, poster, smaller clip");
+  await phoneMediaRun({ story: "water-road", landingOnly: false }, { ...t, progress: (p) => t.progress(0.9 + 0.1 * p) });
   closeViewFrame();
   t.progress(1);
 }
@@ -3476,6 +3480,20 @@ async function phoneMediaRun(options, t) {
   t.metric("phoneFirstContentMs", Math.round(shown));
   t.event("first-content", `390x844: first content at ${Math.round(shown)} ms (DOMContentLoaded ${nav ? Math.round(nav.domContentLoadedEventEnd) : "?"} ms, load ${nav ? Math.round(nav.loadEventEnd) : "?"} ms)`);
   if (!shown || shown > 2000) t.problem("bug", `the landing page's first content shows at ${Math.round(shown)} ms on a phone (limit 2000 ms)`);
+  // The splash is content too, so first-contentful-paint passes while a viewer sees only the title: the stories count as
+  // shown when a card is in the viewport and no splash (or one faded to nothing) lies over it.
+  const landingShownAt = () => {
+    const card = doc.querySelector(".story-card");
+    const sp = doc.getElementById("title-splash");
+    if (!card || (sp && parseFloat(win.getComputedStyle(sp).opacity) > 0.05)) return 0;
+    const r = card.getBoundingClientRect();
+    const cs = win.getComputedStyle(card);
+    return r.width > 0 && r.top < win.innerHeight && r.bottom > 0 && cs.visibility !== "hidden" && !doc.documentElement.classList.contains("is-splash-pending") ? Math.round(win.performance.now()) : 0;
+  };
+  const visibleAt = await new Promise((resolve) => { const tick = () => { const n = landingShownAt(); if (n) resolve(n); else if (win.performance.now() > 8000) resolve(0); else setTimeout(tick, 25); }; tick(); });
+  t.metric("landingVisibleMs", visibleAt);
+  t.event("landing-visible", `390x844: the first story card is in view with no splash over it at ${visibleAt} ms after load`);
+  if (!visibleAt || visibleAt > 2000) t.problem("bug", `the landing page's story cards aren't visible until ${visibleAt || "after 8000"} ms on a phone (limit 2000 ms)`);
   const imgs = [...doc.querySelectorAll(".story-card img, .hero img")];
   if (!imgs.length) t.problem("bug", "no picture on the landing page's cards");
   const cards = [...doc.querySelectorAll(".story-card")];
@@ -5849,7 +5867,7 @@ const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories; then at 390x844 The Final Spark's language picker, a switch to English mid-story (same scene), and the blog list's titles, each in one language", seconds: 180, tags: ["smoke"] },
+    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories; then at 390x844 The Final Spark's language picker, a switch to English mid-story (same scene), and the blog list's titles, each in one language; then at 390x844 The Water Road's poster before its clip, the smaller rendition after Tap to play, and the cards visible within 2 s", seconds: 260, tags: ["smoke"] },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
