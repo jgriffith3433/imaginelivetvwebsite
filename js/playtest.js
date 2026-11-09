@@ -835,8 +835,15 @@ async function smoke(options, t) {
     // Checked now, while the run's own cookies are still set: the run's end puts the viewer's earlier progress back
     // (restoreProgress), so a card photographed after it says Not started for a story the run played.
     checkBadge(t, cardOf(st.id), st, "started", `after one choice in ${st.title}`);
-    t.progress(0.5 + (0.5 * ++k) / others.length);
+    t.progress(0.5 + (0.3 * ++k) / others.length);
   }
+  // Phone-ready (J, 2026-11-09): beta's run plays smoke, so smoke also shows The Final Spark's language picker at
+  // 390x844, a switch mid-story (same scene, the screen's text in the picked language) and the blog list's titles,
+  // each in one language: the `language` scenario's own leg, its progress mapped onto the last part of this run.
+  t.scene("Phone: language picker and blog titles");
+  t.event("smoke-language", "the language leg at 390x844 (the `language` scenario)");
+  await languageRun({}, { ...t, progress: (p) => t.progress(0.8 + 0.2 * p) });
+  closeViewFrame();
   t.progress(1);
 }
 
@@ -3101,7 +3108,8 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
     390px, a switch mid-story that keeps the scene and puts the screen's text in the picked language, and every blog
     title on the list in one language. */
 async function languageRun(options, t) {
-  rememberProgress();
+  // As a leg of smoke the viewer's progress is already kept: remembering again would keep the run's own instead.
+  if (!savedRuns && savedCookie == null) rememberProgress();
   clearProgress();
   const id = options.story || FIRST;
   t.scene(`${id}: language picker at 390px`);
@@ -3172,8 +3180,14 @@ async function languageRun(options, t) {
   // Blog titles on the list: each in one language.
   t.scene("blog titles");
   const home = await viewFrameLoad(t, "/", 390, 844);
+  // The home page's title splash fades by itself; the list is looked at once it has gone.
+  await waitFor(() => { const sp = home.getElementById("title-splash"); return !sp || sp.hidden || home.defaultView.getComputedStyle(sp).display === "none" || +home.defaultView.getComputedStyle(sp).opacity === 0; }, 6000);
   const cards = [...home.querySelectorAll("#blog .post-card")];
   if (!cards.length) t.problem("bug", "the blog list has no posts");
+  // Back home, the blog list brought into view the way a viewer scrolls to it, so the footage shows its titles.
+  const blogList = home.getElementById("blog");
+  if (blogList) { blogList.scrollIntoView({ block: "start", behavior: "instant" }); await sleep(1200); }
+  t.event("blog-list", `home page at 390x844, the blog list in view: ${cards.length} posts`);
   const scriptsOf = (text) => {
     const found = new Set();
     for (const ch of text) {
@@ -5835,7 +5849,7 @@ const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories", seconds: 90, tags: ["smoke"] },
+    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories; then at 390x844 The Final Spark's language picker, a switch to English mid-story (same scene), and the blog list's titles, each in one language", seconds: 180, tags: ["smoke"] },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
