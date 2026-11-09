@@ -27,6 +27,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 // A story's own inventory (counts per scene): the same code the player and the branch pages run.
 import '../js/kit.js';
+import { posterPath, smallPath, webpPath } from './lib/media-paths.mjs';
 // A console story's state rules (flags, meters, conditions, the state explorer): the same code the player runs.
 import '../js/console-rules.js';
 
@@ -247,6 +248,32 @@ function videoOf(st, s) {
   return s.film ?? null;
 }
 
+/** The poster and the phone rendition of a clip, when tools/make-posters.mjs has made them. */
+function clipExtras(video) {
+  if (!video) return {};
+  const poster = posterPath(video);
+  const small = smallPath(video);
+  return { ...(exists(poster.slice(1)) ? { poster } : {}), ...(exists(small.slice(1)) ? { small } : {}) };
+}
+
+/** A card's or the hero's picture: WebP when made, lazy below the fold (\`eager\`: the first picture of the page). */
+function pictureTag(src, alt, cls, eager) {
+  const attrs = `alt="${esc(alt)}" width="540" height="960" decoding="async"${eager ? ' fetchpriority="high"' : ' loading="lazy"'}`;
+  const webp = src.endsWith('.jpg') && exists(webpPath(src).slice(1)) ? webpPath(src) : null;
+  const img = `<img src="${esc(src)}" ${attrs}>`;
+  return webp ? `<picture><source type="image/webp" srcset="${esc(webp)}">${img}</picture>` : img;
+}
+
+/** A branch page's <video>: its poster, and on a phone-sized screen the smaller rendition (an inline script sets the
+    src before the browser fetches anything; the player's own rule is in js/game.js, PHONE). */
+function branchVideo(video) {
+  const { poster, small } = clipExtras(video);
+  const p = poster ? ` poster="${esc(poster)}"` : '';
+  if (!small) return `<video src="${esc(video)}"${p} controls playsinline preload="auto" data-sound-start></video>`;
+  return `<video data-src="${esc(video)}" data-small="${esc(small)}"${p} controls playsinline preload="auto" data-sound-start></video>
+    <script>(function(){var v=document.currentScript.previousElementSibling,m=matchMedia("(max-width: 600px), (max-height: 500px) and (pointer: coarse)").matches;v.src=m?v.dataset.small:v.dataset.src})()</script>`;
+}
+
 /* ---------------- js/story-data.js ---------------- */
 
 function storyData() {
@@ -262,6 +289,7 @@ function storyData() {
         story: s.story,
         question: s.question,
         video: videoOf(st, s),
+        ...clipExtras(videoOf(st, s)),
         ...(s.dead ? { dead: true } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
@@ -295,12 +323,12 @@ function storyData() {
 
 const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
 
-function card(st) {
+function card(st, i = 1) {
   const first = videoOf(st, st.byId.get(st.data.start));
   const picture = st.entry.image
-    ? `<img src="${esc(st.entry.image)}" alt="${esc(st.entry.alt ?? titleOf(st))}">`
+    ? pictureTag(st.entry.image, st.entry.alt ?? titleOf(st), 'card', i === 0)
     : first
-      ? `<video src="${esc(first)}#t=0.5" muted playsinline preload="metadata" aria-hidden="true"></video>`
+      ? `<video src="${esc(first)}#t=0.5" ${exists(posterPath(first).slice(1)) ? `poster="${esc(posterPath(first))}" ` : ''}muted playsinline preload="none" aria-hidden="true"></video>`
       : `<span class="story-card-blank" aria-hidden="true"></span>`;
   // The badge, the percent explored and the button are the player's own progress: js/game.js sets them from the
   // story's cookies (its run and its unlocks).
@@ -323,9 +351,9 @@ function card(st) {
     key image; a trailer clip (needs GPU: hawkes.assets.json has no recipe yet) would replace it. js/game.js sets its
     button and progress like a card's. */
 function hero(st) {
-  const picture = st.entry.image ? `<img src="${esc(st.entry.image)}" alt="${esc(st.entry.alt ?? titleOf(st))}">` : `<span class="hero-blank" aria-hidden="true"></span>`;
+  const pic = st.entry.image ? pictureTag(st.entry.image, st.entry.alt ?? titleOf(st), 'hero', true) : `<span class="hero-blank" aria-hidden="true"></span>`;
   return `      <a class="hero" href="/?story=${st.id}" data-story="${st.id}" data-progress="new">
-        ${picture}
+        ${pic}
         <div class="hero-text">
           <span class="hero-kicker">Featured</span>
           <h2>${esc(titleOf(st))}</h2>
@@ -349,7 +377,7 @@ function landing() {
     problems.push(`index.html: the story cards' markers are missing (${CARDS_START} … ${CARDS_END})`);
     return html;
   }
-  const cards = stories.filter((st) => st.listed).map(card).join('\n');
+  const cards = stories.filter((st) => st.listed).map((st, i) => card(st, i)).join('\n');
   const out = html.slice(0, a + CARDS_START.length) + '\n' + cards + '\n      ' + html.slice(b);
   const ha = out.indexOf(HERO_START);
   const hb = out.indexOf(HERO_END);
@@ -377,6 +405,7 @@ function storyLink(st) {
   <meta name="description" content="${esc(st.entry.logline)}">
   <link rel="canonical" href="https://imaginelivetv.com${to}">
   <meta http-equiv="refresh" content="0; url=${to}">
+  <style>html,body{background:#070807;color:#d8e6dc;margin:0}</style>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/site.css">
   <meta name="theme-color" content="#070807">
@@ -442,7 +471,7 @@ function page(st, s, counts) {
 
   <main class="passage" data-story="${st.id}" data-node="${s.folder}"${s.dead ? ' data-state="dead"' : s.ending ? ' data-state="soon"' : ''}>
     ${spot(s, s.title, 'h1')}
-    ${video ? `<video src="${esc(video)}" controls playsinline preload="auto" data-sound-start></video>` : `<div class="passage-blank" aria-hidden="true"><span>${esc(s.title[1])}</span></div>`}
+    ${video ? branchVideo(video) : `<div class="passage-blank" aria-hidden="true"><span>${esc(s.title[1])}</span></div>`}
     ${spot(s, s.story, 'p', 'passage-note')}
     ${s.question[1] ? spot(s, s.question, 'p', 'passage-prompt') : ''}
     ${choices ? `<div class="spark-choices">${choices}</div>` : ''}${s.ending ? `\n    ${spot(s, s.ending, 'p', 'passage-prompt')}` : ''}

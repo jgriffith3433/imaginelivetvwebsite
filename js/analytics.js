@@ -256,6 +256,7 @@
       var props = { story: d.story };
       if (d.camera != null) props.camera = d.camera;
       if (d.entries != null) props.entries = d.entries;
+      if (d.value != null) props.value = d.value;
       A.feature(d.feature, props);
     }));
 

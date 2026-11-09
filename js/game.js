@@ -27,6 +27,9 @@
       question: spec.question[0],
       questionEn: spec.question[1],
       video: spec.video,
+      // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
+      poster: spec.poster || "",
+      small: spec.small || "",
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
@@ -64,6 +67,38 @@
 
   if (!root || !videoBox || !storyBox || !questionBox || !choicesBox || !endingBox || !landing) {
     return;
+  }
+
+  // Language picker (the story's pages are each in another language): "mixed" = as written, the English under the
+  // flashlight; "en" = the English plainly. Kept in localStorage; switching re-renders nothing, so the scene, its
+  // video and the run carry on.
+  const READING_KEY = "iltv.reading";
+  const langBox = document.getElementById("spark-lang-box");
+  const langSelect = document.getElementById("spark-lang");
+  let reading = "mixed";
+  try { if (localStorage.getItem(READING_KEY) === "en") reading = "en"; } catch (error) { /* no saved choice */ }
+
+  /** What the screen reader hears follows the picked language (the hidden half is aria-hidden). */
+  function syncReading() {
+    root.dataset.reading = reading;
+    root.querySelectorAll(".spot-src").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "true" : "false"); });
+    root.querySelectorAll(".spot-en").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "false" : "true"); });
+    // The blog list on the home page follows too: each title is in one language at a time.
+    document.querySelectorAll("#blog .spot-src").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "true" : "false"); });
+    document.querySelectorAll("#blog .spot-en").forEach(function (el) { el.setAttribute("aria-hidden", reading === "en" ? "false" : "true"); });
+    document.documentElement.dataset.reading = reading;
+    if (langSelect) langSelect.value = reading;
+  }
+  new MutationObserver(syncReading).observe(root, { childList: true, subtree: true });
+  // At load too: the landing page's blog list must follow a saved English before any story is opened.
+  syncReading();
+  if (langSelect) {
+    langSelect.addEventListener("change", function () {
+      reading = langSelect.value === "en" ? "en" : "mixed";
+      try { localStorage.setItem(READING_KEY, reading); } catch (error) { /* not saved */ }
+      syncReading();
+      tell("feature", { feature: "language", story: STORY ? STORY.id : null, value: reading, scene: currentScene });
+    });
   }
 
   let currentScene = null;
@@ -283,6 +318,129 @@
     });
   }
 
+  /* ---- Phones: loading state, tap to unmute, fullscreen, next clips ready (media events only, no polling) ---- */
+
+  var preloaded = {};
+
+  /** A phone-sized screen (or a phone on its side) plays the smaller rendition of a clip (<dir>/sm/<name>.mp4, made by
+      tools/make-posters.mjs); everything else plays the clip. The branch pages make the same choice (build-story.mjs). */
+  var COARSE = window.matchMedia("(pointer: coarse)");
+  /** Reads the page's own laid-out size (documentElement.clientWidth/Height), not the width media queries: a 1280x800
+      frame inside a phone browser (the playtest's desktop view, or device emulation) must count as desktop, and a
+      media query there can answer for the outer phone screen. Same rule as the branch pages' inline script. */
+  function isPhone() {
+    var el = document.documentElement;
+    var w = el.clientWidth, h = el.clientHeight;
+    return w <= 600 || (h <= 500 && COARSE.matches);
+  }
+  function clipSrc(scene) {
+    return (isPhone() && scene.small) || scene.video;
+  }
+
+  /** The clips the choices lead to are fetched while this one plays, so a tap goes straight into the next. */
+  function preloadNext(scene) {
+    var want = {};
+    scene.choices.forEach(function (c) {
+      var next = SCENES[c.next];
+      if (next && next.video) want[c.next] = clipSrc(next);
+    });
+    Object.keys(preloaded).forEach(function (id) {
+      if (want[id]) return;
+      preloaded[id].removeAttribute("src");
+      preloaded[id].load();
+      delete preloaded[id];
+    });
+    Object.keys(want).slice(0, 3).forEach(function (id) {
+      if (preloaded[id]) return;
+      var v = document.createElement("video");
+      v.preload = "auto";
+      v.muted = true;
+      v.playsInline = true;
+      v.src = want[id];
+      v.load();
+      preloaded[id] = v;
+    });
+  }
+
+  function fullscreenElement() {
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+
+  /** Loading ring, Tap for sound and Full screen over the clip. */
+  function addClipControls(video) {
+    var ring = document.createElement("div");
+    ring.className = "spark-video-loading";
+    ring.setAttribute("role", "status");
+    ring.setAttribute("aria-label", "Loading");
+    ring.hidden = true;
+    var unmute = document.createElement("button");
+    unmute.type = "button";
+    unmute.className = "spark-unmute";
+    unmute.hidden = true;
+    unmute.textContent = "Tap for sound";
+    var full = document.createElement("button");
+    full.type = "button";
+    full.className = "spark-fullscreen";
+    full.setAttribute("aria-label", "Full screen");
+    full.textContent = "\u26F6";
+    videoBox.appendChild(ring);
+    videoBox.appendChild(unmute);
+    videoBox.appendChild(full);
+
+    function loading(on) {
+      if (ring.hidden === !on) return;
+      ring.hidden = !on;
+      root.dataset.loading = on ? "true" : "false";
+      tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: on });
+    }
+    function sync() {
+      unmute.hidden = !(video.muted && !video.paused && !video.ended);
+    }
+    ["waiting", "stalled", "loadstart"].forEach(function (type) {
+      video.addEventListener(type, function () { if (!video.ended && video.readyState < 3) loading(true); });
+    });
+    ["playing", "canplay", "seeked", "ended", "error"].forEach(function (type) {
+      video.addEventListener(type, function () { loading(false); });
+    });
+    ["playing", "pause", "volumechange", "ended"].forEach(function (type) { video.addEventListener(type, sync); });
+    video.addEventListener("loadeddata", function () {
+      if (activeClip === video && SCENES[currentScene]) preloadNext(SCENES[currentScene]);
+    });
+    unmute.addEventListener("click", function () {
+      if (window.hawkesSound) window.hawkesSound.set({ on: true });
+      video.muted = false;
+      if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+      sync();
+    });
+    full.addEventListener("click", function () {
+      if (fullscreenElement()) {
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        return;
+      }
+      // Android and desktop: the whole player, so the choices stay on screen. iPhone has no element fullscreen: the video's own.
+      var ask = root.requestFullscreen || root.webkitRequestFullscreen;
+      if (ask) {
+        var r = ask.call(root);
+        if (r && r.catch) r.catch(function () { if (video.webkitEnterFullscreen) video.webkitEnterFullscreen(); });
+      } else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+    });
+    sync();
+  }
+
+  /** Turning the phone must not leave the clip frozen: when the screen changes shape the clip carries on. */
+  function onTurned() {
+    var v = activeClip;
+    if (!v || !v.isConnected || v.ended || !v.paused) return;
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  window.addEventListener("orientationchange", onTurned);
+  if (window.matchMedia) {
+    var turn = window.matchMedia("(orientation: landscape)");
+    if (turn.addEventListener) turn.addEventListener("change", onTurned);
+  }
+  document.addEventListener("fullscreenchange", function () { root.dataset.fullscreen = fullscreenElement() ? "true" : "false"; });
+
   function playClip(video) {
     activeClip = video;
     stopClipUnlock();
@@ -325,7 +483,7 @@
   /** The story screen never scrolls: the page at the top (header in view) and the screen itself at 0. */
   function keepAtTop() {
     if (firstScreen) { firstScreen.scrollTop = 0; firstScreen.scrollLeft = 0; }
-    if (window.scrollY || (document.scrollingElement && document.scrollingElement.scrollTop)) window.scrollTo(0, 0);
+    if (window.scrollY || (document.scrollingElement && document.scrollingElement.scrollTop)) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }
 
   // The path of the run you just finished, kept for "Try another path": the next run marks where it went last time
@@ -434,6 +592,15 @@
     root.dataset.choices = phase;
   }
 
+  /** While the clip plays, the cue row says the choices are live (a phone shows it and its choices at full strength;
+      a wide screen keeps its row hidden and the choices dimmed). Pressing one is allowed at any time. */
+  function showWaitingCue(hasChoices) {
+    if (!hasChoices || !timerBox) return;
+    timerBox.querySelector(".choice-timer-label").textContent = "Choose any time";
+    timerBox.hidden = false;
+    timerBox.dataset.state = "waiting";
+  }
+
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
   function revealChoices(hasChoices) {
     setChoicePhase("ready");
@@ -448,7 +615,7 @@
     bar.style.animation = "";
     bar.style.animationDuration = CHOICE_WINDOW + "s";
     let left = CHOICE_WINDOW;
-    label.textContent = left + "s";
+    label.textContent = "Choose in " + left + " s";
     const tick = function () {
       left -= 1;
       if (left <= 0) {
@@ -457,7 +624,7 @@
         windowTick = null;
         return;
       }
-      label.textContent = left + "s";
+      label.textContent = "Choose in " + left + " s";
       windowTick = setTimeout(tick, 1000);
     };
     windowTick = setTimeout(tick, 1000);
@@ -500,11 +667,15 @@
     stopChoiceWindow();
 
     videoBox.replaceChildren();
-    const videoSrc = scene.video || null;
+    // The poster is also the box's own picture, so it stays under the loading ring and between clips: never a black box.
+    videoBox.style.backgroundImage = scene.poster ? 'url("' + scene.poster + '")' : "";
+    const videoSrc = scene.video ? clipSrc(scene) : null;
     let video = null;
 
     if (videoSrc) {
       video = document.createElement("video");
+      // The poster shows from the first paint, before any of the clip has loaded.
+      if (scene.poster) video.poster = scene.poster;
       video.src = videoSrc;
       // With the sound prompt, playClip starts it (autoplay would start it behind the prompt).
       video.autoplay = !window.hawkesSound;
@@ -514,15 +685,17 @@
       video.preload = "auto";
       video.title = STORY.title + " story video";
       videoBox.appendChild(video);
+      addClipControls(video);
       playClip(video);
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
+      showWaitingCue(scene.choices.length > 0);
       video.addEventListener("ended", function () {
         if (activeClip === video && currentScene === sceneId) revealChoices(scene.choices.length > 0);
       });
       video.addEventListener("error", function () {
         // A clip that won't load must not keep the choices dim (watchVideo retries and then offers Retry).
-        if (activeClip === video && choicesBox.dataset.phase === "waiting") setChoicePhase("ready");
+        if (activeClip === video && choicesBox.dataset.phase === "waiting") { setChoicePhase("ready"); stopChoiceWindow(); }
       });
     } else {
       setChoicePhase("ready");
@@ -680,8 +853,8 @@
     const nodeH = 68;
     const colGap = 92;
     const rowGap = 34;
-    const padX = 48;
-    const padY = 160;
+    const padX = 24;
+    const padY = 56;
     let maxRows = 1;
     columns.forEach(function (col) {
       if (col && col.length > maxRows) maxRows = col.length;
@@ -782,7 +955,16 @@
       nodes +
       "</div></div>";
 
-    bindTreePan(treeRoot.querySelector(".tree-scroll"));
+    const scroller = treeRoot.querySelector(".tree-scroll");
+    // Open fitted: the root and its first children (two columns) always fully in view, however narrow the screen
+    // (a phone shrinks the map, at most to 60%); the viewer pans from there.
+    const canvas = scroller.querySelector(".tree-canvas");
+    const firstTwo = padX * 2 + 2 * nodeW + colGap;
+    const room = scroller.clientWidth;
+    if (room > 0 && room < firstTwo) canvas.style.zoom = String(Math.max(0.6, room / firstTwo));
+    scroller.scrollLeft = 0;
+    scroller.scrollTop = 0;
+    bindTreePan(scroller);
   }
 
   function bindTreePan(scroller) {
@@ -885,8 +1067,15 @@
     return url.pathname + url.search;
   }
 
-  function prompt(words) {
-    if (window.hawkesSound && window.hawkesSound.label) window.hawkesSound.label(words.title, words.line);
+  function prompt(words, poster) {
+    if (window.hawkesSound && window.hawkesSound.label) window.hawkesSound.label(words.title, words.line, poster || "");
+  }
+
+  /** The picture behind a story's Tap to play: its first clip's poster, or (a console story has no clip) its card image. */
+  function posterOfStory(story) {
+    const first = story.scenes && story.scenes[story.start];
+    if (first && first.poster) return first.poster;
+    return story.image ? story.image.replace(/\.jpg$/, ".webp") : "";
   }
 
   // js/hawkes-sound.js on the home page (<html data-tap-splash>): a story asks for its own Tap to play (that tap
@@ -936,6 +1125,8 @@
       const run = runOf(story);
       card.dataset.progress = progress;
       card.dataset.run = run;
+      const heroEl = landing.querySelector(".hero");
+      if (heroEl && heroEl.dataset.story === story.id) card.dataset.featured = "";
       const badge = card.querySelector(".story-card-ribbon");
       if (badge) badge.textContent = BADGES[progress];
       const explored = card.querySelector(".story-card-explored");
@@ -945,6 +1136,12 @@
     });
     markHero();
     markContinue();
+  }
+
+  /** The hero already shows the featured story (and its Continue button). */
+  function isFeatured(story) {
+    const hero = landing.querySelector(".hero");
+    return !!hero && hero.dataset.story === story.id;
   }
 
   /** The hero's button follows the run the way a card's does. */
@@ -967,7 +1164,7 @@
     const list = document.getElementById("continue-list");
     if (!row || !list) return;
     list.replaceChildren();
-    DATA.stories.filter(function (story) { return story.listed && runOf(story) === "mid"; }).forEach(function (story) {
+    DATA.stories.filter(function (story) { return story.listed && runOf(story) === "mid" && !isFeatured(story); }).forEach(function (story) {
       const src = storyList.querySelector('.story-card[data-story="' + story.id + '"]');
       if (!src) return;
       const a = document.createElement("a");
@@ -1026,7 +1223,7 @@
     STORY = story;
     SCENES = story.scenes;
     document.title = story.title + " · " + SITE_TITLE;
-    prompt(story.tap);
+    prompt(story.tap, posterOfStory(story));
     sound("ask");
     markSplashed();
     landing.hidden = true;
@@ -1036,7 +1233,7 @@
     document.documentElement.dataset.type = "console";
     delete document.documentElement.dataset.kit;
     showKit();
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     const saved = readProgress(story, story.scenes);
     const unlocks = readUnlocks(story);
     history = [];
@@ -1063,8 +1260,14 @@
     taglineBox.hidden = !story.tagline;
     const tabs = root.querySelector(".spark-tabs");
     if (tabs) tabs.setAttribute("aria-label", story.title);
+    if (langBox) {
+      const langs = {};
+      Object.keys(SCENES).forEach(function (id) { langs[SCENES[id].lang] = true; });
+      langBox.hidden = Object.keys(langs).filter(function (l) { return l && l !== "en"; }).length < 1;
+    }
+    syncReading();
     document.title = story.title + " · " + SITE_TITLE;
-    prompt(story.tap);
+    prompt(story.tap, posterOfStory(story));
     sound("ask");
     markSplashed();
 
@@ -1075,7 +1278,7 @@
     if (story.inventory) document.documentElement.dataset.kit = story.id;
     else delete document.documentElement.dataset.kit;
     setView("play");
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     keepAtTop();
 
     const saved = readProgress(story, SCENES);

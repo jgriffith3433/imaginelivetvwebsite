@@ -255,7 +255,7 @@ async function passPrompt(t, doc = document, where = "home") {
   return gone;
 }
 
-const SPLASH_WAIT = 6000; // the splash holds about 1.6 s and fades in 0.9 s
+const SPLASH_WAIT = 6000; // the splash holds about 0.7 s and fades in 0.4 s (cards visible well under 2 s, J phone criterion)
 
 /** The landing page's title splash: the site's title alone (no Tap to play, no sound line) on the prompt's
     background, covering the screen; nothing to tap: it fades away by itself and leaves the stories. A run that
@@ -596,6 +596,8 @@ async function openStory(t, id, { tap = true } = {}) {
     t.log(`open ${id} by its link (a draft: no card)`);
   } else throw new Error(`the landing page has no card for ${id}`);
   await sleep(300);
+  // Opening a story puts the page at the top at once (an animated scroll left the card cut off and the footer over the inventory bar).
+  if (card && stories().current() === id && Math.round(window.scrollY) !== 0) t.problem("bug", `${id}: opening the story left the page scrolled (${Math.round(window.scrollY)}px): the card top is cut off and the footer shows over the inventory bar`);
   if (stories().current() !== id) throw new Error(`${card ? `the ${story(id).title} card` : `/?story=${id}`} didn't open the story (open: ${stories().current()})`);
   if ($("spark").hidden) t.problem("bug", `${id}: the card opened the story but the player is hidden`);
   if (new URL(location.href).searchParams.get("story") !== id) t.problem("bug", `${id}: the address doesn't say ?story=${id} (a reload would lose the story)`);
@@ -833,8 +835,19 @@ async function smoke(options, t) {
     // Checked now, while the run's own cookies are still set: the run's end puts the viewer's earlier progress back
     // (restoreProgress), so a card photographed after it says Not started for a story the run played.
     checkBadge(t, cardOf(st.id), st, "started", `after one choice in ${st.title}`);
-    t.progress(0.5 + (0.5 * ++k) / others.length);
+    t.progress(0.5 + (0.3 * ++k) / others.length);
   }
+  // Phone-ready (J, 2026-11-09): beta's run plays smoke, so smoke also shows The Final Spark's language picker at
+  // 390x844, a switch mid-story (same scene, the screen's text in the picked language) and the blog list's titles,
+  // each in one language: the `language` scenario's own leg, its progress mapped onto the last part of this run.
+  t.scene("Phone: language picker and blog titles");
+  t.event("smoke-language", "the language leg at 390x844 (the `language` scenario)");
+  await languageRun({}, { ...t, progress: (p) => t.progress(0.8 + 0.2 * p) });
+  // Phone media (J, 2026-11-09): beta judges smoke, so it also shows, at 390x844, the landing's cards within 2 s, The Water
+  // Road's poster under the clip before it loads and its smaller rendition after Tap to play (the `phone-media` leg).
+  t.scene("Phone: landing within 2 s, poster, smaller clip");
+  await phoneMediaRun({ story: "water-road", landingOnly: false }, { ...t, progress: (p) => t.progress(0.9 + 0.1 * p) });
+  closeViewFrame();
   t.progress(1);
 }
 
@@ -3092,6 +3105,510 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
   return scrolled;
 }
 
+/** Choices on a phone (J, 2026-11-08, finding f_32e426e8a75b): in a 390x844 frame, each of the three stories shows its
+    choices as full-width buttons at least 48px tall, near-white text with a visible border, whole (nothing cut off),
+    clear of the video controls, and (the clip stories) the countdown "Choose in N s" above them. */
+/** Language picker (J, 2026-11-08): The Final Spark's pages are each in another language by design; the picker at
+    390px, a switch mid-story that keeps the scene and puts the screen's text in the picked language, and every blog
+    title on the list in one language. */
+async function languageRun(options, t) {
+  // As a leg of smoke the viewer's progress is already kept: remembering again would keep the run's own instead.
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  clearProgress();
+  const id = options.story || FIRST;
+  t.scene(`${id}: language picker at 390px`);
+  const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+  const win = doc.defaultView;
+  try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  await passPrompt(t, doc, `${id} (language)`);
+  const sel = doc.getElementById("spark-lang");
+  const box = doc.getElementById("spark-lang-box");
+  if (!sel || !box || box.hidden) t.problem("bug", `${id}: no language picker at 390px`);
+  else {
+    sel.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(200);
+    const r = sel.getBoundingClientRect();
+    const hit = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    const visible = r.width > 100 && r.height >= 43.5 && r.left >= 0 && r.right <= win.innerWidth + 1 && getComputedStyle(box).visibility !== "hidden";
+    if (!visible) t.problem("bug", `${id}: the language picker is ${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.left)},${Math.round(r.top)} (needs 44px tall and on screen)`);
+    if (!hit || !(hit === sel || sel.contains(hit) || box.contains(hit))) t.problem("bug", `${id}: something covers the language picker`);
+    t.event("language-picker", `${Math.round(r.width)}x${Math.round(r.height)}, options ${[...sel.options].map((o) => o.value).join("/")}, hit-tested ${!!hit}`);
+  }
+  t.progress(0.25);
+  // One choice in, so the switch is mid-story.
+  const choices = () => [...doc.querySelectorAll("#spark-choices .choice")];
+  const ready = await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 40000);
+  if (!ready) t.problem("bug", `${id}: the choices never came up`);
+  else await tapAt(t, choices()[0], "the first choice");
+  await waitFor(() => win.finalSpark && win.finalSpark.scene() !== story(id).start, 4000);
+  await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 40000);
+  const sceneBefore = win.finalSpark.scene();
+  const depthBefore = win.finalSpark.depth();
+  const srcBefore = doc.querySelector("#spark-video video")?.currentSrc || "";
+  t.scene(`${id}: switching to English at ${sceneBefore}`);
+  // A native select can't be opened by a synthetic press: set it and fire change, as the browser does on a pick.
+  sel.value = "en";
+  sel.dispatchEvent(new win.Event("change", { bubbles: true }));
+  await sleep(500);
+  const now = win.finalSpark.scene();
+  if (now !== sceneBefore || win.finalSpark.depth() !== depthBefore) t.problem("bug", `${id}: switching language moved the story (${sceneBefore} -> ${now}, depth ${depthBefore} -> ${win.finalSpark.depth()})`);
+  const srcAfter = doc.querySelector("#spark-video video")?.currentSrc || "";
+  if (srcBefore && srcAfter !== srcBefore) t.problem("bug", `${id}: switching language reloaded the clip`);
+  const sc = story(id).scenes[sceneBefore];
+  const seen = (sel2) => (doc.querySelector(sel2)?.innerText || "").replace(/\s+/g, " ").trim();
+  const want = (s) => String(s || "").replace(/\s+/g, " ").trim();
+  const checks = [
+    ["story text", seen("#spark-story"), want(sc.story[1])],
+    ["question", seen("#spark-question"), want(sc.question[1])],
+  ];
+  (sc.choices || []).forEach((c, i) => checks.push([`choice ${i + 1}`, seen(`#spark-choices .choice:nth-child(${i + 1})`).replace(/^\d+\.\s*/, ""), want(String(c.en || c[1]).replace(/^\d+\.\s*/, ""))]));
+  for (const [name, got, exp] of checks) {
+    if (exp && got !== exp) t.problem("bug", `${id}: after picking English the ${name} reads "${got}", not "${exp}"`);
+  }
+  const timer = seen("#spark-timer");
+  if (timer && /[^\x00-\x7f]/.test(timer)) t.problem("bug", `${id}: the timer reads "${timer}" (not English)`);
+  const chrome = [seen("#spark-stories"), seen("#tab-play"), seen("#tab-tree"), timer].join(" | ");
+  if (/[^\x00-\x7f\u2190]/.test(chrome)) t.problem("bug", `${id}: buttons not in English: ${chrome}`);
+  t.event("language-scene", `scene id before ${sceneBefore}, after ${now}: ${now === sceneBefore ? "same scene" : "CHANGED"}; reading ${win.localStorage.getItem("iltv.reading")}`);
+  t.event("language-ui-sample", `story "${checks[0][1].slice(0, 60)}"; question "${checks[1][1].slice(0, 60)}"; buttons "${chrome}"`);
+  t.event("language-switched", `${sceneBefore}, depth ${depthBefore}: scene kept, clip kept ${srcBefore === srcAfter}, texts ${checks.map((c) => c[1] === c[2]).join("/")}; chrome "${chrome}"`);
+  if (win.localStorage.getItem("iltv.reading") !== "en") t.problem("bug", `${id}: the picked language wasn't saved`);
+  // The Tree and its words follow too.
+  await tapAt(t, doc.getElementById("tab-tree"), "Tree");
+  await sleep(300);
+  const treeSrc = [...doc.querySelectorAll("#spark-tree .spot-src")].filter((e) => e.offsetParent !== null);
+  if (treeSrc.length) t.problem("bug", `${id}: the Tree still shows ${treeSrc.length} words in the page's own language after picking English`);
+  await tapAt(t, doc.getElementById("tab-play"), "Play");
+  try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  t.progress(0.7);
+  // Blog titles on the list: each in one language.
+  t.scene("blog titles");
+  const home = await viewFrameLoad(t, "/", 390, 844);
+  // The home page's title splash fades by itself; the list is looked at once it has gone.
+  await waitFor(() => { const sp = home.getElementById("title-splash"); return !sp || sp.hidden || home.defaultView.getComputedStyle(sp).display === "none" || +home.defaultView.getComputedStyle(sp).opacity === 0; }, 6000);
+  const cards = [...home.querySelectorAll("#blog .post-card")];
+  if (!cards.length) t.problem("bug", "the blog list has no posts");
+  // Back home, the blog list brought into view the way a viewer scrolls to it, so the footage shows its titles.
+  const blogList = home.getElementById("blog");
+  if (blogList) { blogList.scrollIntoView({ block: "start", behavior: "instant" }); await sleep(1200); }
+  t.event("blog-list", `home page at 390x844, the blog list in view: ${cards.length} posts`);
+  const scriptsOf = (text) => {
+    const found = new Set();
+    for (const ch of text) {
+      if (/\p{Script=Latin}/u.test(ch)) found.add("Latin");
+      else if (/\p{Script=Cyrillic}/u.test(ch)) found.add("Cyrillic");
+      else if (/\p{Script=Arabic}/u.test(ch)) found.add("Arabic");
+      else if (/\p{Script=Devanagari}/u.test(ch)) found.add("Devanagari");
+      else if (/\p{Script=Bengali}/u.test(ch)) found.add("Bengali");
+      else if (/\p{Script=Han}|\p{Script=Hiragana}|\p{Script=Katakana}/u.test(ch)) found.add("CJK");
+    }
+    return [...found];
+  };
+  // What the viewer sees of a title: the pieces that are shown (display, not the flashlight's mask), their text and language.
+  const shown = (el) => el && win2(el).getComputedStyle(el).display !== "none";
+  const win2 = (el) => el.ownerDocument.defaultView;
+  const visibleTitle = (h, reading) => {
+    const src = h.querySelector(".spot-src");
+    const en = h.querySelector(".spot-en");
+    const parts = [];
+    if (shown(src)) parts.push({ lang: src.lang || "x", text: (src.textContent || "").replace(/\s+/g, " ").trim() });
+    if (shown(en)) parts.push({ lang: "en", text: (win2(en).getComputedStyle(en, "::before").content.replace(/^"|"$/g, "") || en.textContent || "").replace(/\s+/g, " ").trim() });
+    return parts;
+  };
+  const langs = new Set();
+  for (const card of cards) {
+    const h = card.querySelector("h3");
+    const text = (h.innerText || "").replace(/\s+/g, " ").trim();
+    const content = (h.textContent || "").replace(/\s+/g, " ").trim();
+    const scripts = scriptsOf(content);
+    const parts = visibleTitle(h, "mixed");
+    const mask = h.querySelector(".spot-src") && win2(h).getComputedStyle(h.querySelector(".spot-src")).maskImage;
+    if (scripts.length > 1 || content !== text) t.problem("bug", `blog title "${content}" mixes languages (${scripts.join(", ")})`);
+    else if (parts.length !== 1 || (mask && mask !== "none")) t.problem("bug", `blog title "${content}" shows ${parts.length} languages at once (${parts.map((p) => p.lang).join("+")}${mask && mask !== "none" ? ", flashlight mask" : ""})`);
+    else {
+      langs.add(parts[0].lang);
+      t.event("blog-title", `${card.getAttribute("href")}: "${content}" is all in ${parts[0].lang} (${scripts[0] || "none"}); no second language shown`);
+      t.event("blog-title-language", `"${content}" script ${scripts[0] || "none"}, language ${parts[0].lang}`);
+    }
+  }
+  t.event("blog-titles-one-language", `${cards.length} titles, each in a single language (its post's own: ${[...langs].join(", ")}); none shows a second language`);
+  // Picked English: the same titles, each wholly English.
+  // The story frame above is gone by now (viewFrameLoad closes it), so its window can't save anything: use this page's
+  // own localStorage (same origin), and say so loudly if English can't be saved.
+  try { localStorage.setItem("iltv.reading", "en"); } catch (e) { t.problem("bug", `blog titles: couldn't save English (${e.message})`); }
+  const homeEn = await viewFrameLoad(t, "/", 390, 844);
+  if (homeEn.documentElement.dataset.reading !== "en") t.problem("bug", `blog titles: with iltv.reading="en" saved the home page's data-reading is "${homeEn.documentElement.dataset.reading}", not "en"`);
+  for (const card of [...homeEn.querySelectorAll("#blog .post-card")]) {
+    const h = card.querySelector("h3");
+    const parts = visibleTitle(h, "en");
+    const txt = parts.map((p) => p.text).join(" ");
+    if (parts.length !== 1 || parts[0].lang !== "en" || /[^\x00-\x7f\u2019]/.test(txt)) t.problem("bug", `with English picked a blog title reads "${txt}" (${parts.map((p) => p.lang).join("+")}), not English alone`);
+    else t.event("blog-title-en", `${card.getAttribute("href")}: "${txt}"`);
+  }
+  try { localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  t.metric("blogTitles", cards.length);
+  t.progress(1);
+}
+
+async function phoneChoicesRun(options, t) {
+  rememberProgress();
+  clearProgress();
+  const lum = (css) => { const m = (css || "").match(/[\d.]+/g) || []; return 0.2126 * +m[0] + 0.7152 * +m[1] + 0.0722 * +m[2]; };
+  const ids = options.story ? [options.story] : ["final-spark", "water-road", "night-shift"];
+  try {
+    let n = 0;
+    for (const id of ids) {
+      n += 1;
+      const st = story(id);
+      t.scene(`${id}: choices at 390px`);
+      const console_ = st.type === "console";
+      if (console_) consoleSeedWrite(st, [], null); // setup shortcut: the first scene's lines already heard
+      const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+      const win = doc.defaultView;
+      if (console_) {
+        await consolePrompt(t, doc, `${id} (phone)`);
+        t.event("seeded-run", `${id}: first scene's lines counted as heard (setup shortcut)`);
+        if (!(await waitFor(() => doc.querySelectorAll("#console-choices .choice").length > 0, 15000))) throw new Error(`${id}: no choices at the first scene`);
+      } else {
+        await passPrompt(t, doc, `${id} (phone)`);
+        const box = doc.getElementById("spark-choices");
+        const v = () => doc.querySelector("#spark-video video");
+        // While the clip still plays the choices are live too: full strength (not the dim wait), the cue says so.
+        if (box.dataset.phase === "waiting") {
+          await sleep(900);
+          const early = [...box.querySelectorAll(".choice")];
+          const tb = doc.getElementById("spark-timer");
+          const cueOn = !tb.hidden && getComputedStyle(tb).visibility !== "hidden";
+          const dim = early.filter((b) => +getComputedStyle(b).opacity < 0.99 || lum(getComputedStyle(b).color) < 220);
+          t.event("waiting-choices", `${id}: ${early.length} choice(s) while the clip plays, ${dim.length} dim, cue "${(tb.querySelector(".choice-timer-label").textContent || "").trim()}" shown ${cueOn}`);
+          if (dim.length) t.problem("bug", `${id} at 390px: ${dim.length} choice(s) look dim while the clip plays (opacity ${getComputedStyle(dim[0]).opacity})`);
+          if (early.length && !cueOn) t.problem("bug", `${id} at 390px: no cue that the choices are live while the clip plays`);
+        }
+        if (!(await waitFor(() => box.dataset.phase === "ready", Math.max(20000, ((v() && v().duration) || 30) * 1000 + 10000)))) throw new Error(`${id}: the choices never came up`);
+      }
+      await sleep(900); // the choices fade in
+      const sel = console_ ? "#console-choices .choice" : "#spark-choices .choice";
+      const btns = [...doc.querySelectorAll(sel)];
+      if (!btns.length) throw new Error(`${id}: no choices on screen`);
+      const wrap = btns[0].parentElement.getBoundingClientRect();
+      const bad = [];
+      const ctl = [".spark-unmute", ".spark-fullscreen"].map((q) => doc.querySelector(q)).filter((e) => e && !e.hidden && getComputedStyle(e).display !== "none").map((e) => e.getBoundingClientRect());
+      for (const b of btns) {
+        const r = b.getBoundingClientRect();
+        const cs = getComputedStyle(b);
+        const label = (b.textContent || "").trim().slice(0, 40);
+        const cut = b.scrollWidth > b.clientWidth + 1 || b.scrollHeight > b.clientHeight + 1 || r.left < -1 || r.right > win.innerWidth + 1;
+        const over = ctl.some((c) => r.left < c.right && r.right > c.left && r.top < c.bottom && r.bottom > c.top);
+        const bw = parseFloat(cs.borderTopWidth);
+        const txt = lum(cs.color);
+        const edge = lum(cs.borderTopColor);
+        t.event("choice-button", `${id}: "${label}" ${Math.round(r.width)}x${Math.round(r.height)} (column ${Math.round(wrap.width)}), text luminance ${Math.round(txt)}, border ${bw}px luminance ${Math.round(edge)}, cut ${cut}, over video controls ${over}`);
+        if (r.height < 47.5) bad.push(`"${label}" is ${Math.round(r.height)}px tall`);
+        if (r.width < wrap.width - 1) bad.push(`"${label}" is ${Math.round(r.width)}px wide in a ${Math.round(wrap.width)}px column`);
+        if (cut) bad.push(`"${label}" is cut off`);
+        if (over) bad.push(`"${label}" overlaps the video controls`);
+        if (+cs.opacity < 0.99) bad.push(`"${label}" is faded (opacity ${cs.opacity})`);
+        if (txt < 220) bad.push(`"${label}" text is dim (luminance ${Math.round(txt)})`);
+        if (bw < 1 || edge < 150) bad.push(`"${label}" has no visible border (${bw}px, luminance ${Math.round(edge)})`);
+      }
+      if (!console_) {
+        const timer = doc.getElementById("spark-timer");
+        const tr = timer.getBoundingClientRect();
+        const lab = (timer.querySelector(".choice-timer-label").textContent || "").trim();
+        const shown = !timer.hidden && getComputedStyle(timer).visibility !== "hidden" && tr.height > 4;
+        const above = tr.bottom <= btns[0].getBoundingClientRect().top + 1;
+        t.event("timer", `${id}: "${lab}" ${Math.round(tr.width)}x${Math.round(tr.height)}, shown ${shown}, above the first choice ${above}`);
+        if (!shown) bad.push("the timer isn't visible");
+        if (!above) bad.push("the timer isn't above the choices");
+        if (!/^Choose in \d+ s$/.test(lab)) bad.push(`the timer says "${lab}", not "Choose in N s"`);
+      } else {
+        const cue = getComputedStyle(doc.getElementById("console-choices"), "::before").content;
+        t.event("cue", `${id}: choices cue ${cue}`);
+        if (!/Your move/.test(cue)) bad.push("no cue above the choices");
+      }
+      if (doc.documentElement.scrollWidth > win.innerWidth + 1) bad.push("the page scrolls sideways");
+      for (const b of bad) t.problem("bug", `${id} at 390px: ${b}`);
+      t.event("phone-choices", `${id}: ${btns.length} choice(s) checked, ${bad.length} problem(s)`);
+      await tapAt(t, btns[0], `the first choice (${id})`);
+      await sleep(500);
+      closeViewFrame();
+      t.progress(n / ids.length);
+    }
+  } finally {
+    closeViewFrame();
+    restoreProgress();
+  }
+}
+
+/** Phone player: the first clip plays after one tap, a loading ring shows while a clip buffers, and turned on its side
+    the clip fills the screen, keeps playing and the choices stay visible. A frame at 390x844 turned to 844x390. */
+async function phonePlayerRun(options, t) {
+  rememberProgress();
+  clearProgress();
+  const id = options.story || FIRST;
+  const st = story(id);
+  t.scene(`${id}: phone upright`);
+  const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+  const win = doc.defaultView;
+  const loadingLog = [];
+  doc.addEventListener("iltv:loading", (e) => { loadingLog.push(e.detail.on); t.event("loading", `${e.detail.scene}: ${e.detail.on ? "ring on" : "ring off"}`); });
+  t.progress(0.1);
+  // 1. One tap on Tap to play and the first clip plays.
+  // The time from the press on Tap to play to the clip playing: the press and the media's own `playing` event are
+  // caught as they happen (no polling).
+  let tappedAt = 0, playingAt = 0;
+  doc.addEventListener("click", () => { if (!tappedAt) tappedAt = win.performance.now(); }, true);
+  doc.addEventListener("playing", (e) => { if (tappedAt && !playingAt && e.target.closest && e.target.closest("#spark-video")) playingAt = win.performance.now(); }, true);
+  await passPrompt(t, doc, `${id} (phone)`);
+  const video = () => doc.querySelector("#spark-video video");
+  const ok = await waitFor(() => video() && !video().paused && video().currentTime > 0.3, 8000);
+  if (!ok) t.problem("bug", `${id}: after one tap the first clip isn't playing (paused ${video() && video().paused}, ${video() && video().currentTime}s)`);
+  else {
+    t.event("first-clip-playing", `after one tap: ${video().currentTime.toFixed(1)}s, muted ${video().muted}, playsinline ${video().hasAttribute("playsinline")}`);
+    if (!playingAt && !video().paused) playingAt = win.performance.now(); // it was already playing before the listener could hear it
+    const ms = Math.max(0, Math.round(playingAt - tappedAt));
+    t.metric("phoneTapToPlayMs", ms);
+    t.event("tap-to-playing", `${win.innerWidth}x${win.innerHeight}: ${ms} ms from the press on Tap to play to the first clip playing`);
+    if (ms > 3000) t.problem("bug", `${id}: the first clip took ${ms} ms to play after one tap (over 3 s)`);
+  }
+  if (video() && !video().hasAttribute("playsinline")) t.problem("bug", `${id}: the clip has no playsinline (iPhone would take it full screen)`);
+  t.progress(0.3);
+  // Controls over the clip: Full screen (44px), Tap for sound when it plays muted.
+  const full = doc.querySelector(".spark-fullscreen");
+  if (!full) t.problem("bug", `${id}: no Full screen button on the clip`);
+  else {
+    const r = full.getBoundingClientRect();
+    if (r.width < 43.5 || r.height < 43.5) t.problem("bug", `${id}: the Full screen button is ${Math.round(r.width)}x${Math.round(r.height)}, under 44px`);
+    t.event("fullscreen-button", `${Math.round(r.width)}x${Math.round(r.height)}, element fullscreen ${!!(doc.documentElement.requestFullscreen || doc.documentElement.webkitRequestFullscreen)}, video fullscreen ${!!(video() && video().webkitEnterFullscreen)}`);
+  }
+  // The choices are on screen (waiting, dimmed) beside / below the clip.
+  const inView = (els) => els.length && els.every((b) => { const r = b.getBoundingClientRect(); return r.bottom <= win.innerHeight + 1 && r.top >= -1 && r.right <= win.innerWidth + 1; });
+  const choices = () => [...doc.querySelectorAll("#spark-choices .choice")];
+  t.event("choices", `upright: ${choices().length} choices, all on screen: ${inView(choices())}`);
+  // The next clips are fetched while this one plays.
+  // (at phone size the player asks for each clip's smaller rendition: scene.small)
+  const next = Object.values(st.scenes[st.start].choices || []).map((c) => st.scenes[c.next] && [st.scenes[c.next].video, st.scenes[c.next].small]).filter((p) => p && p[0]);
+  const wasAsked = (p) => win.performance.getEntriesByType("resource").some((e) => p.some((v) => v && e.name.includes(v)));
+  await waitFor(() => next.every(wasAsked), 6000);
+  const fetched = next.filter(wasAsked);
+  t.event("preload", `${fetched.length} of ${next.length} next clips requested while the first plays`);
+  if (next.length && !fetched.length) t.problem("bug", `${id}: the next clips weren't preloaded`);
+  t.progress(0.45);
+  // 2. A loading ring while a clip buffers: the next clip starts from nothing (loadstart) and the ring comes and goes.
+  // Skip to the end of the first clip is not a viewer's move; the choices come when it ends, so wait for them (the clip is short).
+  const ready = await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", Math.max(15000, ((video() && video().duration) || 20) * 1000 + 8000));
+  if (!ready) t.problem("bug", `${id}: the choices never came up`);
+  else {
+    await tapAt(t, choices()[0], "the first choice");
+    await waitFor(() => loadingLog.includes(true) && loadingLog[loadingLog.length - 1] === false, 6000);
+    if (!loadingLog.includes(true)) t.problem("bug", `${id}: no loading indicator while the next clip buffered`);
+    else if (loadingLog[loadingLog.length - 1] !== false) t.problem("bug", `${id}: the loading indicator never went away`);
+    else t.event("loading-ring", `shown and cleared (${loadingLog.join(", ")})`);
+  }
+  const playing2 = await waitFor(() => video() && !video().paused && video().currentTime > 0.2, 8000);
+  if (!playing2) t.problem("bug", `${id}: the second clip isn't playing`);
+  t.progress(0.6);
+  // 3. Turn the phone: the frame becomes 844x390 while the clip plays.
+  t.scene(`${id}: phone on its side`);
+  const f = viewFrame;
+  const before = video().currentTime;
+  f.style.width = "844px";
+  f.style.height = "390px";
+  f.style.transform = `scale(${Math.min(1, innerWidth / 844, innerHeight / 390)})`;
+  win.dispatchEvent(new win.Event("orientationchange"));
+  await sleep(1200);
+  const v = video();
+  const turned = win.matchMedia("(orientation: landscape)").matches;
+  if (!turned) t.problem("bug", "the frame didn't turn landscape");
+  const moved = v.currentTime > before || v.ended;
+  if (v.paused && !v.ended) t.problem("bug", `${id}: the clip stopped when the phone turned`);
+  else if (!moved) t.problem("bug", `${id}: the clip froze after turning (${before.toFixed(2)}s -> ${v.currentTime.toFixed(2)}s)`);
+  const box = doc.getElementById("spark-video").getBoundingClientRect();
+  const fill = box.height / win.innerHeight;
+  const fillW = box.width / win.innerWidth;
+  // The picture inside the video box (object-fit: contain keeps the clip's own shape, 9:16, so it is centred with black either side).
+  const ar = v.videoWidth && v.videoHeight ? v.videoWidth / v.videoHeight : 9 / 16;
+  const picH = Math.min(box.height, box.width / ar);
+  const picW = picH * ar;
+  const picLeft = box.left + (box.width - picW) / 2;
+  const picRight = picLeft + picW;
+  t.metric("landscapeVideoFill", Math.round(fill * 100) / 100);
+  t.metric("landscapePictureFill", Math.round((picH / win.innerHeight) * 100) / 100);
+  t.event("video-box", `viewport ${win.innerWidth}x${win.innerHeight}; video box ${Math.round(box.width)}x${Math.round(box.height)} at ${Math.round(box.left)},${Math.round(box.top)}; picture ${Math.round(picW)}x${Math.round(picH)} centred at x=${Math.round(picLeft + picW / 2)} (screen centre ${Math.round(win.innerWidth / 2)}); height ${Math.round((picH / win.innerHeight) * 100)}% of the screen`);
+  if (Math.abs(picLeft + picW / 2 - win.innerWidth / 2) > 2) t.problem("bug", `${id}: in landscape the picture isn't centred (centre ${Math.round(picLeft + picW / 2)}, screen ${Math.round(win.innerWidth / 2)})`);
+  t.event("landscape", `${win.innerWidth}x${win.innerHeight}: the video fills ${Math.round(fillW * 100)}% of the width and ${Math.round(fill * 100)}% of the height (${Math.round(box.width)}x${Math.round(box.height)}); its picture is ${Math.round(picW)}x${Math.round(picH)}, ${Math.round((picH / win.innerHeight) * 100)}% of the screen's height, playing ${!v.paused}`);
+  if (fill < 0.95 || fillW < 0.95) t.problem("bug", `${id}: in landscape the video fills ${Math.round(fillW * 100)}% of the width and ${Math.round(fill * 100)}% of the height of the screen`);
+  if (picH / win.innerHeight < 0.9) t.problem("bug", `${id}: in landscape the picture is ${Math.round((picH / win.innerHeight) * 100)}% of the screen's height`);
+  const cs = choices();
+  const first = cs[0] && cs[0].getBoundingClientRect();
+  if (!cs.length || !first || first.bottom > win.innerHeight + 1 || first.right > win.innerWidth + 1 || first.top < 0) t.problem("bug", `${id}: in landscape the choices aren't on screen`);
+  else {
+    t.event("choices", `landscape: first choice at ${Math.round(first.left)},${Math.round(first.top)} ${Math.round(first.width)}x${Math.round(first.height)}, ${cs.length} choices, over the picture: ${cs.some((c) => { const r = c.getBoundingClientRect(); return r.left < picRight - 1 && r.right > picLeft + 1; })}`);
+    t.event("choice-positions", cs.map((c, i) => { const r = c.getBoundingClientRect(); return `#${i + 1} ${Math.round(r.left)},${Math.round(r.top)} ${Math.round(r.width)}x${Math.round(r.height)}`; }).join("; "));
+    // Each choice is what a thumb reaches: visible, hit-tested (nothing lies over it) and not covering the picture.
+    for (const c of cs) {
+      const r = c.getBoundingClientRect();
+      if (r.left < picRight - 1 && r.right > picLeft + 1) t.problem("bug", `${id}: in landscape a choice covers the picture (${Math.round(r.left)}-${Math.round(r.right)} over ${Math.round(picLeft)}-${Math.round(picRight)})`);
+      if (r.bottom > win.innerHeight + 1) continue; // below the panel's own scroll: reachable by scrolling it
+      const hit = doc.elementFromPoint(Math.min(r.right - 2, Math.max(r.left + 2, r.left + r.width / 2)), Math.min(r.bottom - 2, Math.max(r.top + 2, r.top + r.height / 2)));
+      if (hit && !c.contains(hit)) t.problem("bug", `${id}: in landscape something lies over a choice (${hit.id || hit.className || hit.tagName})`);
+    }
+  }
+  for (const sel of [".spark-fullscreen", ".spark-bar", ".spark-tab"]) {
+    const el = doc.querySelector(sel);
+    const r = el && el.getBoundingClientRect();
+    if (r && r.width && (r.left < picRight - 1 && r.right > picLeft + 1) && r.top < win.innerHeight) t.problem("bug", `${id}: in landscape ${sel} sits over the picture`);
+  }
+  if (doc.documentElement.scrollWidth > win.innerWidth + 1) t.problem("bug", `${id}: landscape scrolls sideways`);
+  t.progress(1);
+  closeViewFrame();
+  restoreProgress();
+}
+
+/** Posters and the phone rendition (J: 'a poster for every card and clip, a smaller clip for phones'). A phone frame
+    (390x844) loads the landing page: content shows within 2 s, the hero's picture loads first and the cards below the
+    fold are lazy, every card has a picture. Then each clip story is opened by its link: the clip's poster is on the
+    video (and loads) before the clip does, and after Tap to play the player has requested the smaller rendition and
+    not the full clip. A desktop frame (1280x800) must still play the full clip. */
+async function phoneMediaRun(options, t) {
+  rememberProgress();
+  clearProgress();
+  const fetchedBy = (win, url) => win.performance.getEntriesByType("resource").filter((e) => e.name.endsWith(url));
+  t.scene("Landing page at phone size");
+  let doc = await viewFrameLoad(t, "/", 390, 844);
+  let win = doc.defaultView;
+  const paint = win.performance.getEntriesByName("first-contentful-paint")[0];
+  const nav = win.performance.getEntriesByType("navigation")[0];
+  const shown = paint ? paint.startTime : nav ? nav.domContentLoadedEventEnd : 0;
+  t.metric("phoneFirstContentMs", Math.round(shown));
+  t.event("first-content", `390x844: first content at ${Math.round(shown)} ms (DOMContentLoaded ${nav ? Math.round(nav.domContentLoadedEventEnd) : "?"} ms, load ${nav ? Math.round(nav.loadEventEnd) : "?"} ms)`);
+  if (!shown || shown > 2000) t.problem("bug", `the landing page's first content shows at ${Math.round(shown)} ms on a phone (limit 2000 ms)`);
+  // The splash is content too, so first-contentful-paint passes while a viewer sees only the title: the stories count as
+  // shown when a card is in the viewport and no splash (or one faded to nothing) lies over it.
+  const landingShownAt = () => {
+    const card = doc.querySelector(".story-card");
+    const sp = doc.getElementById("title-splash");
+    if (!card || (sp && parseFloat(win.getComputedStyle(sp).opacity) > 0.05)) return 0;
+    const r = card.getBoundingClientRect();
+    const cs = win.getComputedStyle(card);
+    return r.width > 0 && r.top < win.innerHeight && r.bottom > 0 && cs.visibility !== "hidden" && !doc.documentElement.classList.contains("is-splash-pending") ? Math.round(win.performance.now()) : 0;
+  };
+  const visibleAt = await new Promise((resolve) => { const tick = () => { const n = landingShownAt(); if (n) resolve(n); else if (win.performance.now() > 8000) resolve(0); else setTimeout(tick, 25); }; tick(); });
+  t.metric("landingVisibleMs", visibleAt);
+  t.event("landing-visible", `390x844: the first story card is in view with no splash over it at ${visibleAt} ms after load`);
+  if (!visibleAt || visibleAt > 2000) t.problem("bug", `the landing page's story cards aren't visible until ${visibleAt || "after 8000"} ms on a phone (limit 2000 ms)`);
+  const imgs = [...doc.querySelectorAll(".story-card img, .hero img")];
+  if (!imgs.length) t.problem("bug", "no picture on the landing page's cards");
+  const cards = [...doc.querySelectorAll(".story-card")];
+  const listed = stories().listed();
+  if (cards.length !== listed.length) t.problem("bug", `${cards.length} cards for ${listed.length} listed stories`);
+  for (const card of cards) {
+    const img = card.querySelector("img");
+    const video = card.querySelector("video");
+    if (img) {
+      const lazy = img.loading === "lazy";
+      const r = img.getBoundingClientRect();
+      const below = r.top > win.innerHeight;
+      if (below && !lazy) t.problem("bug", `${card.dataset.story}: the card's picture is below the fold and isn't lazy-loaded`);
+      const typed = (img.currentSrc || img.src).endsWith(".webp");
+      t.event("card-picture", `${card.dataset.story}: ${(img.currentSrc || img.src).split("/").pop()}, ${below ? "below the fold" : "in view"}, loading=${img.loading || "eager"}, ${typed ? "webp" : "jpg"}${img.complete && img.naturalWidth ? ", loaded" : ", not loaded yet"}`);
+      if (!below && !(await waitFor(() => img.complete && img.naturalWidth > 0, 4000))) t.problem("bug", `${card.dataset.story}: the card's picture in view didn't load`);
+    } else if (video) {
+      if (!video.getAttribute("poster")) t.problem("bug", `${card.dataset.story}: the card shows a video with no poster`);
+      if (video.preload === "auto") t.problem("bug", `${card.dataset.story}: the card's video preloads the clip`);
+    } else t.problem("bug", `${card.dataset.story}: the card has no picture and no poster`);
+  }
+  // Scroll down the cards, a beat on each, so the footage shows every card's poster (the lazy ones load as they come near).
+  for (const card of cards) {
+    card.scrollIntoView({ block: "center", behavior: "instant" });
+    const img = card.querySelector("img");
+    const ok = img ? await waitFor(() => img.complete && img.naturalWidth > 0, 4000) : !!card.querySelector("video[poster]");
+    t.event("card-poster-seen", `${card.dataset.story}: scrolled into view, poster ${ok ? "shown" : "NOT shown"}`);
+    if (!ok) t.problem("bug", `${card.dataset.story}: the card's poster didn't show once scrolled into view`);
+    await sleep(500);
+  }
+  doc.defaultView.scrollTo(0, 0);
+  const heroImg = doc.querySelector(".hero img");
+  if (heroImg && heroImg.loading === "lazy") t.problem("bug", "the hero's picture (the first thing seen) is lazy-loaded");
+  t.progress(0.2);
+
+  const ids = options.story ? [options.story] : stories().listed();
+  let k = 0;
+  for (const id of ids) {
+    const st = story(id);
+    const first = st.scenes[st.start];
+    if (!first.video) {
+      // A console story has no clip: its card picture is behind its Tap to play.
+      if (st.type === "console" && st.image) {
+        t.scene(`${id}: prompt picture`);
+        closeViewFrame();
+        clearProgress();
+        const cdoc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+        const shown = await waitFor(() => { const p = cdoc.querySelector(".tap-to-play[data-poster]"); return p && p.getAttribute("data-poster"); }, 6000);
+        t.event("poster-visible", `${id}: Tap to play shows ${shown || "NO picture"}`);
+        if (!shown || !shown.endsWith(st.image.replace(/\.jpg$/, ".webp"))) t.problem("bug", `${id}: the Tap to play prompt doesn't show the story's picture (${shown || "none"})`);
+        else t.add("postersShown");
+        await sleep(1500);
+      }
+      continue;
+    }
+    for (const [w, h, label] of [[390, 844, "phone"], [1280, 800, "desktop"]]) {
+      t.scene(`${id}: ${label} ${w}x${h}`);
+      closeViewFrame();
+      clearProgress();
+      doc = await viewFrameLoad(t, `/?story=${id}`, w, h);
+      win = doc.defaultView;
+      const video = () => doc.querySelector("#spark-video video");
+      if (!(await waitFor(() => video(), 6000))) { t.problem("bug", `${id} (${label}): no video in the player`); continue; }
+      // 1. The poster is on the clip before it has loaded anything, and it loads.
+      const poster = video().getAttribute("poster");
+      if (!first.poster) t.problem("bug", `${id}: the first scene has no poster in the data (run node tools/make-posters.mjs, then npm run story)`);
+      else if (!poster || !poster.endsWith(first.poster)) t.problem("bug", `${id} (${label}): the clip's poster is ${poster}, not ${first.poster}`);
+      else {
+        const loaded = await new Promise((resolve) => { const im = new win.Image(); im.onload = () => resolve(im.naturalWidth); im.onerror = () => resolve(0); im.src = poster; });
+        if (!loaded) t.problem("bug", `${id} (${label}): the poster ${poster} didn't load`);
+        else t.event("poster", `${id} (${label}): the clip shows ${poster} (${loaded}px wide), readyState ${video().readyState} before Tap to play`);
+        t.add("postersShown");
+      }
+      // The poster is what the viewer sees: behind Tap to play (dimmed, the prompt's own picture) and as the clip box's own
+      // picture, under the loading ring, so it is never a plain black box.
+      const prompt = doc.querySelector(".tap-to-play");
+      const behind = prompt ? prompt.getAttribute("data-poster") : "";
+      const boxPic = doc.querySelector("#spark-video").style.backgroundImage;
+      const clipBg = win.getComputedStyle(video()).backgroundColor;
+      t.event("poster-visible", `${id} (${label}): Tap to play shows ${behind || "NO picture"}; the clip box's picture is ${boxPic || "NONE"}; the clip element's own background is ${clipBg}`);
+      if (!behind || !behind.endsWith(first.poster)) t.problem("bug", `${id} (${label}): the Tap to play prompt doesn't show the clip's poster (${behind || "none"})`);
+      if (!boxPic || !boxPic.includes(first.poster)) t.problem("bug", `${id} (${label}): the clip box has no poster picture under the clip`);
+      if (clipBg !== "rgba(0, 0, 0, 0)") t.problem("bug", `${id} (${label}): the clip element paints ${clipBg} over the poster before it has loaded`);
+      // The clip waits behind Tap to play with its poster and nothing loaded: hold there so the footage shows it.
+      t.event("poster-waiting", `${id} (${label}): clip readyState ${video().readyState}, networkState ${video().networkState}, paused ${video().paused}, poster ${poster ? "set" : "MISSING"}; held 2 s`);
+      await sleep(2000);
+      // 2. After one tap the right rendition is requested.
+      await passPrompt(t, doc, `${id} (${label})`);
+      t.event("poster-until-playing", `${id} (${label}): right after the tap readyState ${video().readyState}, the poster ${video().readyState < 2 ? "is still what shows" : "was replaced by the first frame"}`);
+      const want = label === "phone" ? first.small : first.video;
+      const other = label === "phone" ? first.video : first.small;
+      if (label === "phone" && !first.small) t.problem("bug", `${id}: no phone rendition in the data for the first scene`);
+      await waitFor(() => fetchedBy(win, want).length > 0 && video().currentSrc, 8000);
+      const src = decodeURI(new URL(video().currentSrc || video().src, win.location.href).pathname);
+      const bytes = fetchedBy(win, want).reduce((n, e) => n + (e.encodedBodySize || e.transferSize || 0), 0);
+      t.event("rendition", `${id} (${label}): plays ${src}${bytes ? ` (${Math.round(bytes / 1024)} KB fetched so far)` : ""}`);
+      if (src !== want) t.problem("bug", `${id} (${label}): the player plays ${src}, not ${want}`);
+      if (other && fetchedBy(win, other).length) t.problem("bug", `${id} (${label}): the player also fetched ${other}`);
+      if (label === "phone") {
+        t.metric(`phoneClipKB_${id}`, Math.round(bytes / 1024));
+        const ok = await waitFor(() => video().readyState >= 2 && !video().error, 15000);
+        if (!ok) t.problem("bug", `${id}: the phone rendition ${want} didn't load`);
+        else if (Math.abs(video().videoWidth / video().videoHeight - 9 / 16) > 0.01) t.problem("bug", `${id}: the phone rendition is ${video().videoWidth}x${video().videoHeight}, not 9:16`);
+        t.add("phoneRenditions");
+      }
+    }
+    t.progress(0.2 + (0.8 * ++k) / ids.length);
+  }
+  closeViewFrame();
+  restoreProgress();
+}
+
 /** The console at one screen size: the room and its big screen, subtitles while a line plays, the choices. */
 async function consoleView(t, st, [w, h, name]) {
   const where = `${name} ${w}x${h}`;
@@ -5204,19 +5721,16 @@ async function frontDoorRun(options, t) {
   const pct = stories().explored(FIRST);
   await toLanding(t);
   await sleep(300);
-  const cards = rowCards();
-  const shown = row() && !row().hidden;
-  t.event("continue-row", `after one choice in ${FIRST}: ${shown ? "shown" : "hidden"}, ${cards.map((c) => c.dataset.story).join(", ")}`);
-  if (!shown || cards.length !== 1 || cards[0].dataset.story !== FIRST) t.problem("bug", `after a choice in ${FIRST} the Continue row should show it alone (shown: ${shown}, cards: ${cards.length})`);
-  else {
-    const c = cards[0];
-    const says = (c.querySelector(".continue-meta")?.textContent || "").trim();
-    t.event("continue-card", `${FIRST}: "${says}", ${c.querySelector("img, video") ? "poster" : "no poster"}, button "${(c.querySelector(".continue-go")?.textContent || "").trim()}"`);
-    if (says !== `${pct}% explored`) t.problem("bug", `the Continue card says "${says}", explored() says ${pct}%`);
-    if (!c.querySelector("img, video")) t.problem("bug", "the Continue card has no poster");
-    const bar = c.querySelector(".continue-bar span");
-    if (!bar || Math.abs(parseFloat(bar.style.width) - pct) > 0.5) t.problem("bug", `the Continue card's bar is ${bar?.style.width}, not ${pct}%`);
-  }
+  // The featured story is the hero: it says Continue once, and appears neither in the Continue row nor twice in the catalogue.
+  const heroGo = (document.querySelector("#stories a.hero .hero-go")?.textContent || "").trim();
+  const visible = (el) => !!el && el.getClientRects().length > 0;
+  const goes = [...document.querySelectorAll("#stories .hero-go, #stories .continue-go, #stories .story-card-go")]
+    .filter((el) => visible(el) && /continue/i.test(el.textContent || ""));
+  const dupes = [...document.querySelectorAll(`#stories [data-story="${FIRST}"]`)].filter(visible);
+  t.event("continue-once", `after one choice in ${FIRST}: hero "${heroGo}", ${dupes.length} visible element(s) for it, ${goes.length} Continue button(s), row ${row() && !row().hidden ? "shown" : "hidden"}`);
+  if (dupes.length !== 1) t.problem("bug", `after a choice in ${FIRST} it appears ${dupes.length} times on the landing page, not once`);
+  if (goes.length !== 1 || !/continue/i.test(heroGo)) t.problem("bug", `after a choice in ${FIRST} there should be one Continue button, on the hero (found ${goes.length}, hero says "${heroGo}")`);
+  if (rowCards().some((c) => c.dataset.story === FIRST)) t.problem("bug", `${FIRST} is in the Continue row as well as the hero`);
   t.progress(0.55);
 
   t.scene("Front door: 390 px");
@@ -5224,20 +5738,47 @@ async function frontDoorRun(options, t) {
   await waitFor(() => doc.querySelector("#story-list a.story-card[data-progress]") && doc.getElementById("continue-row"), 8000);
   await sleep(600);
   await checkFront(doc, "390px");
-  const frow = doc.getElementById("continue-row");
-  t.event("continue-row", `390px frame: ${frow && !frow.hidden ? "shown" : "hidden"} (${doc.querySelectorAll("#continue-list a.continue-card").length} cards)`);
-  if (!frow || frow.hidden) t.problem("bug", "390px: the Continue row doesn't show after a story is started");
   frontDoorFit(t, doc, 390, "390px");
+  // Every visible card is as wide as the Featured card and its ribbon sits inside it.
+  const heroBox = doc.querySelector("#stories a.hero").getBoundingClientRect();
+  const wide = [...doc.querySelectorAll("#stories a.story-card, #stories a.continue-card")].filter((c) => c.getClientRects().length);
+  for (const c of wide) {
+    const r = c.getBoundingClientRect();
+    const rb = c.querySelector(".story-card-ribbon")?.getBoundingClientRect();
+    const inside = !rb || (rb.left >= r.left - 0.5 && rb.right <= r.right + 0.5 && rb.top >= r.top - 0.5 && rb.bottom <= r.bottom + 0.5);
+    t.event("card-width", `390px: ${c.dataset.story} ${Math.round(r.width)}px (hero ${Math.round(heroBox.width)}px, left ${Math.round(r.left)} vs ${Math.round(heroBox.left)}), ribbon ${inside ? "inside" : "CLIPPED"}`);
+    if (Math.abs(r.width - heroBox.width) > 1 || Math.abs(r.left - heroBox.left) > 1) t.problem("bug", `390px: ${c.dataset.story}'s card is ${Math.round(r.width)}px wide at ${Math.round(r.left)}, the Featured card ${Math.round(heroBox.width)}px at ${Math.round(heroBox.left)}`);
+    if (!inside) t.problem("bug", `390px: ${c.dataset.story}'s ribbon runs outside its card`);
+  }
+  closeViewFrame();
+  // The Tree at 390: the root and its first choices fully in view, on a dark field, labels inside their nodes.
+  t.scene("Front door: the Tree at 390 px");
+  const tdoc = await viewFrameLoad(t, `/?story=${FIRST}`, 390, 844);
+  await passPrompt(t, tdoc, "tree (390px)");
+  await tapAt(t, tdoc.getElementById("tab-tree"), "the Tree tab");
+  await sleep(500);
+  const scroller = tdoc.querySelector("#spark-tree .tree-scroll");
+  const sr = scroller && scroller.getBoundingClientRect();
+  const nodes = [...tdoc.querySelectorAll("#spark-tree .tree-node")];
+  const cut = nodes.slice(0, 1 + (story(FIRST).scenes[story(FIRST).start].choices.length)).filter((n) => { const r = n.getBoundingClientRect(); return r.left < sr.left - 0.5 || r.right > sr.right + 0.5; });
+  const bg = scroller ? tdoc.defaultView.getComputedStyle(scroller).backgroundColor : "";
+  const lum = (bg.match(/\d+/g) || [255, 255, 255]).slice(0, 3).map(Number).reduce((x, y) => x + y, 0) / 3;
+  const spill = nodes.filter((n) => [...n.children].some((c) => c.scrollWidth > n.clientWidth + 1));
+  t.event("tree-390", `${nodes.length} nodes, ${cut.length} of the first ones cut off, backdrop ${bg} (luminance ${Math.round(lum)}), ${spill.length} labels spill`);
+  if (!scroller || !nodes.length) t.problem("bug", "390px: the Tree shows no nodes");
+  if (cut.length) t.problem("bug", `390px: ${cut.length} of the root and first choices are cut off at the edge of the Tree`);
+  if (lum > 60) t.problem("bug", `390px: the Tree's backdrop is ${bg}, not dark`);
+  if (spill.length) t.problem("bug", `390px: ${spill.length} Tree labels run outside their node`);
   closeViewFrame();
   t.progress(0.8);
 
   t.scene("Front door: Continue opens where it was left");
   const before = stories().explored(FIRST);
-  const cont = rowCards()[0];
+  const cont = document.querySelector("#stories a.hero");
   if (cont) {
     cont.scrollIntoView({ block: "center", behavior: "instant" });
     await sleep(200);
-    await tapAt(t, cont.querySelector("h3") || cont, "the Continue card");
+    await tapAt(t, cont.querySelector(".hero-go") || cont, "the hero's Continue");
     await sleep(500);
     if (stories().current() !== FIRST) t.problem("bug", `the Continue card didn't open ${FIRST} (open: ${stories().current()})`);
     else {
@@ -5324,12 +5865,12 @@ async function progressRun(options, t) {
 }
 
 // The scenarios that use a console story's state explorer: it is worked out before they play (consoleWarm).
-const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics", "progress"];
+const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-shift", "night-shift-card", "night-shift-audio", "night-shift-signoff", "cctv-art", "analytics", "progress", "phone-choices"];
 
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories", seconds: 90, tags: ["smoke"] },
+    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories; then at 390x844 The Final Spark's language picker, a switch to English mid-story (same scene), and the blog list's titles, each in one language; then at 390x844 The Water Road's poster before its clip, the smaller rendition after Tap to play, and the cards visible within 2 s", seconds: 260, tags: ["smoke"] },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
@@ -5433,6 +5974,34 @@ installPlaytest({
       tags: ["full"],
       description: "Opens The Final Spark from its card (real presses, Tap to play) at the page's own size. Checks the video frame is 2.39:1 with the clip contained (desktop sizes: 900x560 and up). The choices are dimmed while the clip plays and no countdown shows; the clip is watched to its end, then the choices fade to full and a countdown (a thin bar and the seconds left) shows and runs down. Then, with no input, the bar and title controls stay for 2 s, are hidden by 3 s idle, and come back on pointer movement. A choice is pressed and the next page's choices wait for its clip again. Options: {\"story\":\"<id>\"}.",
     },
+    {
+      id: "phone-player",
+      title: "The player on a phone: the first clip plays after one tap, a loading ring shows while a clip buffers, turned on its side the clip fills the screen and the choices stay visible",
+      seconds: 90,
+      tags: ["full"],
+      description: "A frame at 390x844 (a phone upright) opens The Final Spark by its link. One real press on Tap to play and the first clip plays (playsinline), the Full screen button is 44px, the choices are on screen and the next clips are requested while it plays. The choices come when the clip ends; pressing one starts the next clip from nothing and the loading ring comes on (iltv:loading, from the video's loadstart/waiting/stalled events) and goes off at playing. Then the frame is turned to 844x390 (a resize and an orientationchange event): the clip keeps playing, the video fills at least 80% of the height, the choices stay on screen, no sideways scroll. Events first-clip-playing, loading-ring, landscape; metric landscapeVideoFill.",
+    },
+    {
+      id: "phone-choices",
+      title: "Choices on a phone (390px): full-width buttons 48px tall, bright text and a visible border, the countdown above them, nothing cut off, in all three stories",
+      seconds: 150,
+      tags: ["full"],
+      description: "A frame at 390x844 opens each of The Final Spark and The Water Road by its link (Tap to play pressed, the clip watched to its end) and Night Shift (a seeded run at its first scene: setup shortcut, event seeded-run). For every choice button: full width of its column, at least 48px tall, near-white text, a visible border, whole (no scroll inside it, inside the screen), clear of the Tap for sound and Full screen buttons. The clip stories show the countdown \"Choose in N s\" visible and above the first choice; Night Shift shows a \"Your move\" cue above its choices. No sideways scroll. Then a real press on the first choice. Events choice-button, timer, cue, phone-choices. Options: {\"story\":\"<id>\"}.",
+    },
+    {
+      id: "phone-media",
+      title: "Posters and the phone rendition: cards and clips show a poster before the video loads, a phone plays the smaller clip, the landing page's content shows within 2 s on a phone",
+      seconds: 90,
+      tags: ["full"],
+      description: "A frame at 390x844 loads the landing page: first content within 2000 ms (metric phoneFirstContentMs), the hero's picture eager, every card with a picture that loads and the ones below the fold lazy-loaded. Then each clip story (The Final Spark, The Water Road) opens by its link: the clip has its poster (loaded) before Tap to play, the same poster is the picture behind the Tap to play prompt and the clip box's own picture (never a black box; Night Shift's prompt shows its card picture; event poster-visible), and after one real press the player plays the clip's smaller rendition (<dir>/sm/<name>.mp4, 9:16) and has not fetched the full clip; a 1280x800 frame plays the full clip. Events first-content, card-picture, poster, rendition; metrics phoneClipKB_<story>, postersShown, phoneRenditions. Options: {\"story\":\"<id>\"}.",
+    },
+    {
+      id: "language",
+      title: "The Final Spark's language picker at 390px, a switch mid-story that keeps the scene and puts the screen's text in the picked language, and every blog title in one language",
+      seconds: 90,
+      tags: ["full"],
+      description: "A frame at 390x844 opens The Final Spark by its link (Tap to play pressed): the language picker is shown, on screen, 44px tall and hit-tested. One real choice in, the picker is set to English (a native select can't be opened by a press, so the bot sets it and fires change): the scene and depth are the same, the clip was not reloaded, and the story text, question, choices, timer, buttons and the Tree show the English only; the pick is saved. Then the home page's blog list in a 390px frame: each post's title holds one language (one script, its own text has no English beside it). Events language-picker, language-switched, blog-title; metric blogTitles. Options: {\"story\":\"<id>\"}.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -5498,6 +6067,10 @@ installPlaytest({
       else if (id === "analytics") await analyticsRun(options, t);
       else if (id === "endings") await endingsRun(options, t);
       else if (id === "cinema") await cinemaRun(options, t);
+      else if (id === "phone-player") await phonePlayerRun(options, t);
+      else if (id === "phone-media") await phoneMediaRun(options, t);
+      else if (id === "phone-choices") await phoneChoicesRun(options, t);
+      else if (id === "language") await languageRun(options, t);
     } finally {
       endQuiet();
       probeStop(t);
