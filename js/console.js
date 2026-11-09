@@ -577,7 +577,7 @@
     run.history.push(run.scene);
     hooks.history(run.history);
     enter(c[2], false);
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }
 
   /* ---------------- the shift log (the Tree of this story type) ---------------- */
