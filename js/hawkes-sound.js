@@ -41,8 +41,8 @@
   var splashes = 0;
   var splashLog = null; // the last splash, for the playtest: { title, shown, fading, gone } (ms, performance.now())
   var deferred = document.documentElement.hasAttribute("data-tap-splash");
-  var SPLASH_HOLD = 1600;
-  var SPLASH_FADE = 900;
+  var SPLASH_HOLD = 700;
+  var SPLASH_FADE = 400;
 
   // A fresh playtest run on the top-level landing page starts with its own splash; framed pages and post navigations keep the session flag.
   try {

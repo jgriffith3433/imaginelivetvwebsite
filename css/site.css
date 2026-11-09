@@ -1649,7 +1649,7 @@ html.is-splash-pending::after {
 
 /* The landing page's title splash (splash() in js/hawkes-sound.js): the prompt's background and title, nothing to
    tap; it fades away by itself (SPLASH_FADE there matches this transition). */
-.tap-splash { cursor: default; transition: opacity 0.9s ease; }
+.tap-splash { cursor: default; transition: opacity 0.4s ease; }
 .tap-to-play:focus { outline: none; }
 
 .tap-title {
