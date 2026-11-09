@@ -3155,6 +3155,8 @@ async function languageRun(options, t) {
   if (timer && /[^\x00-\x7f]/.test(timer)) t.problem("bug", `${id}: the timer reads "${timer}" (not English)`);
   const chrome = [seen("#spark-stories"), seen("#tab-play"), seen("#tab-tree"), timer].join(" | ");
   if (/[^\x00-\x7f\u2190]/.test(chrome)) t.problem("bug", `${id}: buttons not in English: ${chrome}`);
+  t.event("language-scene", `scene id before ${sceneBefore}, after ${now}: ${now === sceneBefore ? "same scene" : "CHANGED"}; reading ${win.localStorage.getItem("iltv.reading")}`);
+  t.event("language-ui-sample", `story "${checks[0][1].slice(0, 60)}"; question "${checks[1][1].slice(0, 60)}"; buttons "${chrome}"`);
   t.event("language-switched", `${sceneBefore}, depth ${depthBefore}: scene kept, clip kept ${srcBefore === srcAfter}, texts ${checks.map((c) => c[1] === c[2]).join("/")}; chrome "${chrome}"`);
   if (win.localStorage.getItem("iltv.reading") !== "en") t.problem("bug", `${id}: the picked language wasn't saved`);
   // The Tree and its words follow too.
@@ -3206,6 +3208,7 @@ async function languageRun(options, t) {
     else {
       langs.add(parts[0].lang);
       t.event("blog-title", `${card.getAttribute("href")}: "${content}" is all in ${parts[0].lang} (${scripts[0] || "none"}); no second language shown`);
+      t.event("blog-title-language", `"${content}" script ${scripts[0] || "none"}, language ${parts[0].lang}`);
     }
   }
   t.event("blog-titles-one-language", `${cards.length} titles, each in a single language (its post's own: ${[...langs].join(", ")}); none shows a second language`);
