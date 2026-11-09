@@ -324,9 +324,17 @@
 
   /** A phone-sized screen (or a phone on its side) plays the smaller rendition of a clip (<dir>/sm/<name>.mp4, made by
       tools/make-posters.mjs); everything else plays the clip. The branch pages make the same choice (build-story.mjs). */
-  var PHONE = window.matchMedia("(max-width: 600px), (max-height: 500px) and (pointer: coarse)");
+  var COARSE = window.matchMedia("(pointer: coarse)");
+  /** Reads the page's own laid-out size (documentElement.clientWidth/Height), not the width media queries: a 1280x800
+      frame inside a phone browser (the playtest's desktop view, or device emulation) must count as desktop, and a
+      media query there can answer for the outer phone screen. Same rule as the branch pages' inline script. */
+  function isPhone() {
+    var el = document.documentElement;
+    var w = el.clientWidth, h = el.clientHeight;
+    return w <= 600 || (h <= 500 && COARSE.matches);
+  }
   function clipSrc(scene) {
-    return (PHONE.matches && scene.small) || scene.video;
+    return (isPhone() && scene.small) || scene.video;
   }
 
   /** The clips the choices lead to are fetched while this one plays, so a tap goes straight into the next. */
