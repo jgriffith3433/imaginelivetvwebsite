@@ -15,6 +15,9 @@
        Without JavaScript this never runs and the page shows as usual. */
     (function () {
       var d = document.documentElement, q = location.search, story = /[?&]story=/.test(q), seen = false;
+      /* The picked language (js/game.js owns the picker) is on <html> from the first paint, so the blog list's titles
+         follow it by CSS alone and never wait for, or depend on, the player script. */
+      try { d.setAttribute("data-reading", localStorage.getItem("iltv.reading") === "en" ? "en" : "mixed"); } catch (e) { /* storage blocked */ }
       if (location.hash === "#blog" || /^\/f(\/|$)/.test(location.pathname)) return;
       /* A story's own link opens the story, not the landing page: the blog is hidden from the first paint, so
          nothing (a restored scroll position, the blog under the inventory bar) can show before js/game.js runs. */
