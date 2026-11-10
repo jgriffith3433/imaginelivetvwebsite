@@ -106,13 +106,35 @@
   let fromPlayer = false;
 
   /** Tells js/analytics.js (Hawkes Analytics) what just happened: "iltv:<what>" on the document. The player never
-      waits for it or depends on anyone listening. */
+      waits for it or depends on anyone listening. A choice also remembers the recap for Continue (last scene, label,
+      poster), saved with the run. */
+  let lastRecap = null; // { from, choice, poster }
+  let wantRecap = false; // set when the viewer presses Continue on the landing page
+  let recapTimer = null;
+  let recapRaf = null;
+
   function tell(what, detail) {
+    if (what === "choice" && detail && STORY && detail.from && detail.option) {
+      lastRecap = {
+        from: detail.from,
+        choice: String(detail.option),
+        poster: posterOfScene(STORY, detail.from)
+      };
+    }
     try {
       document.dispatchEvent(new CustomEvent("iltv:" + what, { detail: detail }));
     } catch (error) {
       // Nothing listening, or an old browser: the story plays on.
     }
+  }
+
+  /** The picture for a Continue recap: a video scene's poster, else the story's card image. */
+  function posterOfScene(story, sceneId) {
+    if (!story) return "";
+    const raw = story.scenes && story.scenes[sceneId];
+    if (raw && raw.poster) return raw.poster;
+    if (STORY === story && SCENES[sceneId] && SCENES[sceneId].poster) return SCENES[sceneId].poster;
+    return story.image ? story.image.replace(/\.jpg$/, ".webp") : "";
   }
 
   /** One of a story's cookies, parsed (JSON), or null. */
@@ -146,17 +168,26 @@
     return story.cookie + "Unlocked";
   }
 
-  /** A story's current run ({ scene, history }), or null. */
+  /** A story's current run ({ scene, history, from, choice, poster }), or null. from/choice/poster are the Continue
+      recap (the last scene left, the choice that led here, its poster); older cookies omit them. */
   function readProgress(story, scenes) {
     const saved = readCookie(story.cookie);
     if (!saved || !scenes[saved.scene]) return null;
+    const from = typeof saved.from === "string" && scenes[saved.from] ? saved.from : null;
+    const choice = typeof saved.choice === "string" && saved.choice ? saved.choice : null;
+    const poster = typeof saved.poster === "string" && saved.poster
+      ? saved.poster
+      : (from ? posterOfScene(story, from) : "");
     return {
       scene: saved.scene,
       history: Array.isArray(saved.history)
         ? saved.history.filter(function (id) {
             return typeof id === "string" && !!scenes[id];
           })
-        : []
+        : [],
+      from: from,
+      choice: choice,
+      poster: poster
     };
   }
 
@@ -219,6 +250,7 @@
   /** Start Over: forgets one story's current run (its run cookie only; its unlocks and the other stories stay). */
   function clearProgress(story) {
     if (story.type === "console" && window.iltvConsole) window.iltvConsole.forget(story);
+    if (STORY === story) lastRecap = null;
     try {
       document.cookie = story.cookie + "=; Max-Age=0; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
     } catch (error) {
@@ -226,15 +258,26 @@
     }
   }
 
+  /** The run cookie payload, including the Continue recap fields when a choice has been made. */
+  function runPayload(historyIds) {
+    const payload = { scene: currentScene, history: historyIds };
+    if (lastRecap && lastRecap.from && lastRecap.choice) {
+      payload.from = lastRecap.from;
+      payload.choice = lastRecap.choice;
+      payload.poster = lastRecap.poster || posterOfScene(STORY, lastRecap.from);
+    }
+    return payload;
+  }
+
   function saveProgress() {
     if (STORY.type === "console") {
       // The run itself (the state, the log, the lines heard) is in localStorage (js/console.js); the cookies keep the
-      // card's badge, the place and the unlocks, small.
-      writeCookie(STORY.cookie, { scene: currentScene, history: [] });
+      // card's badge, the place, the Continue recap and the unlocks, small.
+      writeCookie(STORY.cookie, runPayload([]));
       writeCookie(unlocksCookie(STORY), { ix: packSeen(STORY, unlocked), completed: completed });
       return;
     }
-    writeCookie(STORY.cookie, { scene: currentScene, history: history });
+    writeCookie(STORY.cookie, runPayload(history));
     writeCookie(unlocksCookie(STORY), { seen: Object.keys(unlocked), completed: completed });
   }
 
@@ -1096,6 +1139,134 @@
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 350;
   }
 
+  const RECAP_MS = 3000;
+
+  /** The Continue "Previously" overlay: built once, shown over the player for ~3 s (tap skips). */
+  function recapEl() {
+    let el = document.getElementById("story-recap");
+    if (el) return el;
+    el = document.createElement("div");
+    el.id = "story-recap";
+    el.className = "story-recap";
+    el.hidden = true;
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", "Previously");
+    el.innerHTML =
+      '<div class="story-recap-stage" aria-hidden="true"><img class="story-recap-poster" alt=""></div>' +
+      '<div class="story-recap-copy">' +
+      '<p class="story-recap-kicker">Previously</p>' +
+      '<h2 class="story-recap-title"></h2>' +
+      '<p class="story-recap-line"></p>' +
+      "</div>" +
+      '<p class="story-recap-skip">Tap to skip</p>';
+    document.body.appendChild(el);
+    return el;
+  }
+
+  function canRecap(saved) {
+    return !!(saved && saved.from && saved.choice && (saved.poster || posterOfScene(STORY, saved.from)));
+  }
+
+  /** Runs after the Tap to play prompt is gone (or at once if sound is already unlocked). */
+  function afterPrompt(fn) {
+    if (!window.hawkesSound || !window.hawkesSound.prompt()) {
+      fn();
+      return;
+    }
+    const obs = new MutationObserver(function () {
+      if (!window.hawkesSound.prompt()) {
+        obs.disconnect();
+        fn();
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function stopRecapTimers() {
+    if (recapTimer) { clearTimeout(recapTimer); recapTimer = null; }
+    if (recapRaf) { cancelAnimationFrame(recapRaf); recapRaf = null; }
+  }
+
+  function pauseClipsForRecap() {
+    videoBox.querySelectorAll("video").forEach(function (video) {
+      try { video.pause(); } catch (error) { /* gone */ }
+    });
+  }
+
+  function resumeClipsAfterRecap() {
+    videoBox.querySelectorAll("video:not(.spark-leave)").forEach(function (video) {
+      if (video.ended) return;
+      const play = video.play();
+      if (play && play.catch) play.catch(function () {});
+    });
+  }
+
+  /** 3 s Previously moment on Continue: last scene's poster with a slow push-in, the story title, one short line
+      naming the last choice; a tap skips; then a cross-fade into the scene already waiting underneath. */
+  function playRecap(story, saved, then) {
+    stopRecapTimers();
+    const el = recapEl();
+    const img = el.querySelector(".story-recap-poster");
+    const title = el.querySelector(".story-recap-title");
+    const line = el.querySelector(".story-recap-line");
+    const poster = saved.poster || posterOfScene(story, saved.from);
+    img.removeAttribute("src");
+    if (poster) img.src = poster;
+    title.textContent = story.title;
+    line.textContent = saved.choice;
+    el.dataset.story = story.id;
+    el.dataset.from = saved.from;
+    el.dataset.choice = saved.choice;
+    el.dataset.poster = poster || "";
+    el.classList.remove("is-leaving");
+    el.hidden = false;
+    document.documentElement.dataset.recap = "1";
+    pauseClipsForRecap();
+    tell("feature", { feature: "recap", story: story.id, from: saved.from, choice: saved.choice });
+
+    const ms = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1200 : RECAP_MS;
+    const fade = fadeMs();
+    el.style.setProperty("--recap-ms", ms + "ms");
+    el.style.setProperty("--fade-ms", fade + "ms");
+
+    let done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      stopRecapTimers();
+      el.removeEventListener("click", skip);
+      el.classList.add("is-leaving");
+      recapTimer = setTimeout(function () {
+        el.hidden = true;
+        el.classList.remove("is-leaving");
+        delete document.documentElement.dataset.recap;
+        delete el.dataset.story;
+        delete el.dataset.from;
+        delete el.dataset.choice;
+        delete el.dataset.poster;
+        resumeClipsAfterRecap();
+        tell("feature", { feature: "recap_done", story: story.id, skipped: finish.skipped || false });
+        if (typeof then === "function") then();
+      }, fade + 20);
+    }
+    function skip() {
+      finish.skipped = true;
+      finish();
+    }
+    el.addEventListener("click", skip);
+    recapTimer = setTimeout(finish, ms);
+  }
+
+  function queueRecap(story, saved, then) {
+    if (!canRecap(saved)) {
+      if (typeof then === "function") then();
+      return;
+    }
+    afterPrompt(function () {
+      playRecap(story, saved, then);
+    });
+  }
+
   function crossfadeOut() {
     const ms = fadeMs();
     const old = Array.prototype.slice.call(videoBox.children);
@@ -1289,7 +1460,7 @@
     tell: tell
   };
 
-  function openConsole(story) {
+  function openConsole(story, withRecap) {
     stopVideo();
     STORY = story;
     SCENES = story.scenes;
@@ -1310,16 +1481,26 @@
     history = [];
     unlocked = unlocks.seen;
     completed = unlocks.completed;
+    if (saved && saved.from && saved.choice) {
+      lastRecap = { from: saved.from, choice: saved.choice, poster: saved.poster || posterOfScene(story, saved.from) };
+    } else {
+      lastRecap = null;
+    }
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
-    window.iltvConsole.open(story, consoleHooks, saved ? saved.scene : null);
+    function startConsole() {
+      window.iltvConsole.open(story, consoleHooks, saved ? saved.scene : null);
+    }
+    // Continue: Previously first (lines wait), then the console opens at the left-off scene.
+    if (withRecap && canRecap(saved)) queueRecap(story, saved, startConsole);
+    else startConsole();
   }
 
-  function openStory(storyId, push) {
+  function openStory(storyId, push, withRecap) {
     const story = STORIES[storyId];
     if (!story) return showLanding(false);
     if (push) window.history.pushState({ story: storyId }, "", urlFor(storyId));
     closeConsole();
-    if (story.type === "console" && window.iltvConsole) return openConsole(story);
+    if (story.type === "console" && window.iltvConsole) return openConsole(story, withRecap);
     if (STORY !== story) {
       stopVideo();
       STORY = story;
@@ -1358,25 +1539,50 @@
     lastWay = readLastWay(story, SCENES);
     unlocked = unlocks.seen;
     completed = unlocks.completed;
+    if (saved && saved.from && saved.choice) {
+      lastRecap = { from: saved.from, choice: saved.choice, poster: saved.poster || posterOfScene(story, saved.from) };
+    } else if (!(saved && saved.scene !== story.start)) {
+      lastRecap = null;
+    }
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
     show(saved ? saved.scene : story.start);
     keepAtTop();
     requestAnimationFrame(function () { requestAnimationFrame(keepAtTop); });
+    // Continue: the scene is already under the overlay; Previously holds 3 s (or a tap), then reveals it.
+    if (withRecap && canRecap(saved)) queueRecap(story, saved, null);
+  }
+
+  function hideRecap() {
+    stopRecapTimers();
+    const el = document.getElementById("story-recap");
+    if (el) {
+      el.hidden = true;
+      el.classList.remove("is-leaving");
+      delete el.dataset.story;
+      delete el.dataset.from;
+      delete el.dataset.choice;
+      delete el.dataset.poster;
+    }
+    delete document.documentElement.dataset.recap;
   }
 
   function showLanding(push) {
     tell("landing", { story: STORY ? STORY.id : null, scene: currentScene });
+    hideRecap();
     closeConsole();
     if (push) window.history.pushState({}, "", urlFor(null));
     else if (new URL(location.href).searchParams.has("story")) window.history.replaceState({}, "", urlFor(null));
     stopVideo();
     STORY = null;
     currentScene = null;
+    lastRecap = null;
+    wantRecap = false;
     root.hidden = true;
     landing.hidden = false;
     if (firstScreen) firstScreen.classList.add("is-landing");
     document.documentElement.dataset.view = "landing";
     delete document.documentElement.dataset.kit;
+    delete document.documentElement.dataset.type;
     showKit();
     document.title = SITE_TITLE;
     prompt(SITE_TAP);
@@ -1404,8 +1610,12 @@
         clearProgress(STORIES[card.dataset.story]);
         tell("restart", { story: card.dataset.story, via: "start_over" });
       }
-      tell("card", { story: card.dataset.story, go: startOver ? "end" : card.dataset.run, progress: card.dataset.progress });
-      openStory(card.dataset.story, true);
+      const go = startOver ? "end" : card.dataset.run;
+      // Continue (mid-run) opens with a short Previously recap; Play and Start Over go straight in.
+      wantRecap = go === "mid";
+      tell("card", { story: card.dataset.story, go: go, progress: card.dataset.progress });
+      openStory(card.dataset.story, true, wantRecap);
+      wantRecap = false;
     });
   }
 
@@ -1450,7 +1660,13 @@
     progress: function (id) { return STORIES[id] ? progressOf(STORIES[id]) : null; },
     run: function (id) { return STORIES[id] ? runOf(STORIES[id]) : null; },
     explored: function (id) { return STORIES[id] ? exploredOf(STORIES[id], readUnlocks(STORIES[id]).seen) : null; },
-    view: function () { return STORY ? "story" : "landing"; }
+    view: function () { return STORY ? "story" : "landing"; },
+    /** The Continue Previously overlay while it is up: { story, from, choice, poster }, or null. */
+    recap: function () {
+      const el = document.getElementById("story-recap");
+      if (!el || el.hidden || !el.dataset.story) return null;
+      return { story: el.dataset.story, from: el.dataset.from, choice: el.dataset.choice, poster: el.dataset.poster || "" };
+    }
   };
 
   route();
