@@ -628,7 +628,7 @@ async function toLanding(t) {
   await tapAt(t, $("console") && !$("console").hidden ? $("console-stories") : $("spark-stories"), "All stories");
   await sleep(300);
   if (!landingShown()) throw new Error("All stories didn't bring the landing page back");
-  if (document.querySelector("#spark-video video")) t.problem("bug", "the story's video is still on the page after All stories");
+  if (document.querySelector("#spark-video video:not(.spark-leave)")) t.problem("bug", "the story's video is still on the page after All stories");
   t.event("landing", "All stories");
 }
 
@@ -785,7 +785,7 @@ async function smoke(options, t) {
   await checkTree(t, story(FIRST), "The Final Spark's Tree");
   t.scene("The sewer");
   t.progress(0.2);
-  const ok = await checkVideo(t, document.querySelector("#spark-video video"), "start", 3, { autoplay: true });
+  const ok = await checkVideo(t, document.querySelector("#spark-video video:not(.spark-leave)"), "start", 3, { autoplay: true });
   t.progress(0.6);
   const buttons = choiceButtons();
   if (!buttons.length || buttons.some((b) => b.offsetParent === null)) t.problem("bug", "start: no visible choices");
@@ -799,7 +799,7 @@ async function smoke(options, t) {
     t.event("choice", `${enText(buttons[0])} -> ${sceneId()}`);
     if (sceneId() === "start") t.problem("bug", `start: "${enText(buttons[0])}" goes nowhere`);
     else if ($("spark-story").textContent === storyBefore) t.problem("bug", `${sceneId()}: the page text didn't change after "${enText(buttons[0])}"`);
-    else await checkVideo(t, document.querySelector("#spark-video video"), sceneId(), 1, { autoplay: true });
+    else await checkVideo(t, document.querySelector("#spark-video video:not(.spark-leave)"), sceneId(), 1, { autoplay: true });
   }
   checkNoBack(t, "The Final Spark");
   checkHitTargets(t, document, "The Final Spark");
@@ -828,7 +828,7 @@ async function smoke(options, t) {
     } else {
       await openStory(t, st.id);
       await toStart(t);
-      const played = await checkVideo(t, document.querySelector("#spark-video video"), `${st.id} start`, 3, { autoplay: true });
+      const played = await checkVideo(t, document.querySelector("#spark-video video:not(.spark-leave)"), `${st.id} start`, 3, { autoplay: true });
       const btns = choiceButtons();
       if (!btns.length) t.problem("bug", `${st.title}: no choices on its first page`);
       if (played && btns.length) {
@@ -837,7 +837,7 @@ async function smoke(options, t) {
         await sleep(300);
         t.event("choice", `${st.title}: ${enText(btns[0])} -> ${sceneId()}`);
         if ($("spark-story").textContent === before) t.problem("bug", `${st.title}: the page text didn't change after "${enText(btns[0])}"`);
-        else await checkVideo(t, document.querySelector("#spark-video video"), `${st.id} ${sceneId()}`, 1, { autoplay: true });
+        else await checkVideo(t, document.querySelector("#spark-video video:not(.spark-leave)"), `${st.id} ${sceneId()}`, 1, { autoplay: true });
       }
       checkNoBack(t, st.title);
       checkHitTargets(t, document, st.title);
@@ -1035,7 +1035,7 @@ async function walkStory(t, st, sums, total) {
     t.note(`${st.title}: ${path.join(" > ")}`);
     t.event("scene", `${at(id)} (${info.state}, ${info.choices.length} choices)`);
     t.progress((sums.scenes + seen.size) / total);
-    const video = document.querySelector("#spark-video video");
+    const video = document.querySelector("#spark-video video:not(.spark-leave)");
     if (video || st.scenes[id].video || mustPlay(st)) {
       if ((await checkVideo(t, video, at(id), 2, { autoplay: true })) && MADE.includes(st.id)) checkCut(t, video, at(id));
     } else noVideo++;
@@ -1159,7 +1159,7 @@ async function storiesRun(options, t) {
     await checkTree(t, st, `${st.title}'s Tree on its first page`);
     const first = st.scenes[st.start];
     if (enText($("spark-story")) !== first.story[1]) t.problem("bug", `${st.id}: the first page says "${enText($("spark-story"))}"`);
-    if (first.video || document.querySelector("#spark-video video")) await checkVideo(t, document.querySelector("#spark-video video"), `${st.id}: ${st.start}`, 2, { autoplay: true });
+    if (first.video || document.querySelector("#spark-video video:not(.spark-leave)")) await checkVideo(t, document.querySelector("#spark-video video:not(.spark-leave)"), `${st.id}: ${st.start}`, 2, { autoplay: true });
     const buttons = choiceButtons();
     if (!buttons.length || buttons.some((b) => b.offsetParent === null)) t.problem("bug", `${st.id}: no visible choices on the first page`);
     t.note(`${st.title}: ${buttons.map(enText).join(" / ")}`);
@@ -1290,7 +1290,7 @@ async function storiesRun(options, t) {
     if (!choiceButtons().length) t.problem("bug", `${st.id}: no choices on the first page`);
     if (MADE.includes(st.id)) {
       // Its media is made: the first page plays its cut (still no card until J lists it).
-      const video = document.querySelector("#spark-video video");
+      const video = document.querySelector("#spark-video video:not(.spark-leave)");
       if (await checkVideo(t, video, `${st.id}: ${st.start}`, 3, { autoplay: true })) checkCut(t, video, `${st.id}: ${st.start}`);
     }
     checkInventory(t, st.title);
@@ -1517,7 +1517,7 @@ async function crossfade(options, t) {
     if (!story(id)) continue;
     await openStory(t, id);
     await sleep(1500);
-    const first = document.querySelector("#spark-video video");
+    const first = document.querySelector("#spark-video video:not(.spark-leave)");
     const vol0 = first ? first.volume : 1;
     const btn = choiceButtons()[0];
     if (!btn) { t.problem("bug", `${id}: no choice to press`); continue; }
@@ -2107,7 +2107,7 @@ async function sound(options, t) {
     t.scene("Tap to play");
     if (!soundOf().prompt()) t.problem("bug", "no Tap to play prompt when The Final Spark opens");
     await sleep(1200);
-    const firstVideo = document.querySelector("#spark-video video");
+    const firstVideo = document.querySelector("#spark-video video:not(.spark-leave)");
     if (firstVideo && !firstVideo.paused) t.problem("bug", "the video plays behind the prompt, before the tap");
     await passPrompt(t, document, "The Final Spark");
     const st = soundOf().state();
@@ -2115,7 +2115,7 @@ async function sound(options, t) {
     if (st.audio !== "running") t.problem("bug", `the AudioContext is "${st.audio}" after the tap, not running`);
     t.scene("The Final Spark (sound on)");
     checkHitTargets(t, document, "The Final Spark (sound on)");
-    await checkSound(t, document.querySelector("#spark-video video"), "after the tap", { on: true, volume: 1 });
+    await checkSound(t, document.querySelector("#spark-video video:not(.spark-leave)"), "after the tap", { on: true, volume: 1 });
     t.progress(0.2);
 
     // A choice: the next scene's video starts with sound too, no extra tap.
@@ -2125,7 +2125,7 @@ async function sound(options, t) {
       await tapAt(t, button, `choice "${enText(button)}"`);
       await sleep(300);
       t.scene(`${sceneId()} (sound on)`);
-      await checkSound(t, document.querySelector("#spark-video video"), `${sceneId()}, after a choice`, { on: true, volume: 1 });
+      await checkSound(t, document.querySelector("#spark-video video:not(.spark-leave)"), `${sceneId()}, after a choice`, { on: true, volume: 1 });
     }
     t.progress(0.35);
 
@@ -2136,7 +2136,7 @@ async function sound(options, t) {
     const now = savedSound();
     if (!now || now.on !== false || !near(now.music, 0.4) || !near(now.sfx, 0.4)) t.problem("bug", `hawkes.sound didn't save Sound off and Volume 40%: ${JSON.stringify(now)}`);
     else t.event("setting-saved", JSON.stringify(now));
-    if (!document.querySelector("#spark-video video").muted) t.problem("bug", "Sound off didn't mute the video right away");
+    if (!document.querySelector("#spark-video video:not(.spark-leave)").muted) t.problem("bug", "Sound off didn't mute the video right away");
     await tapAt(t, $("sound-done"), "Done");
     await sleep(300);
     if (soundOf().state().settingsOpen) t.problem("bug", "Done didn't close Settings");
@@ -2179,7 +2179,7 @@ async function sound(options, t) {
     await passPrompt(t, document, "home, after the reload");
     await openStory(t, FIRST);
     t.scene("The Final Spark (sound off)");
-    await checkSound(t, document.querySelector("#spark-video video"), "after the reload", { on: false, volume: 0.4 });
+    await checkSound(t, document.querySelector("#spark-video video:not(.spark-leave)"), "after the reload", { on: false, volume: 0.4 });
     t.progress(0.7);
 
     await openSettings(t, "after the reload");
@@ -2189,7 +2189,7 @@ async function sound(options, t) {
     await sleep(400);
     await tapAt(t, $("sound-done"), "Done");
     t.scene("The Final Spark (sound on, 40%)");
-    await checkSound(t, document.querySelector("#spark-video video"), "Sound on at 40%", { on: true, volume: 0.4 });
+    await checkSound(t, document.querySelector("#spark-video video:not(.spark-leave)"), "Sound on at 40%", { on: true, volume: 0.4 });
     t.progress(0.85);
 
     // A branch page (its own page load): the prompt, then its video with the same saved sound.
@@ -2208,7 +2208,7 @@ async function sound(options, t) {
       if (!other || isConsole(other)) continue;
       t.scene(`${other.title} (sound)`);
       await openStory(t, other.id);
-      await checkSound(t, document.querySelector("#spark-video video"), `${other.title}, after its tap`, { on: true, volume: 0.4 });
+      await checkSound(t, document.querySelector("#spark-video video:not(.spark-leave)"), `${other.title}, after its tap`, { on: true, volume: 0.4 });
       await toLanding(t);
     }
     // A console story's audio (voice, ambience, effects) follows the same Settings: Night Shift, from its card.
@@ -2258,7 +2258,7 @@ async function audioBusesAt(t, doc, where) {
   else t.event("audio-unlock", `${where}: ${unlocks[unlocks.length - 1].audio || "running"}`);
   t.metric("audioUnlocked", audio.unlocked() ? 1 : 0);
 
-  const video = doc.querySelector("#spark-video video");
+  const video = doc.querySelector("#spark-video video:not(.spark-leave)");
   if (!video) {
     t.problem("bug", `${where}: no story video`);
     return;
@@ -2428,7 +2428,7 @@ async function analyticsVideoStory(t, A, pump, st) {
   const mark = (A.debugLog || []).length;
   await openStory(t, st.id);
   await toStart(t);
-  await checkVideo(t, document.querySelector("#spark-video video"), `${st.id} start`, 2, { autoplay: true });
+  await checkVideo(t, document.querySelector("#spark-video video:not(.spark-leave)"), `${st.id} start`, 2, { autoplay: true });
   const button = choiceButtons()[0];
   if (button) {
     await tapAt(t, button, `choice "${enText(button)}"`);
@@ -2822,7 +2822,7 @@ async function cinemaRun(options, t) {
     await toStart(t, { quiet: true });
     const desktop = innerWidth >= 900 && innerHeight >= 560;
     const frame = document.querySelector("#spark-video");
-    const video = () => document.querySelector("#spark-video video");
+    const video = () => document.querySelector("#spark-video video:not(.spark-leave)");
     const box = $("spark-choices");
     t.scene(`${id}: letterbox`);
     // 1. 2.39:1 on desktop
@@ -2961,7 +2961,7 @@ async function analyticsRun(options, t) {
     if (sceneId() !== to) throw new Error(`"${enText(button)}" didn't open ${to} (on ${sceneId()})`);
     t.scene(`${FIRST}/${st.scenes[to].folder}`);
     // A moment on each page, so its video plays (and is skipped by the next choice).
-    await waitFor(() => !document.querySelector("#spark-video video")?.paused, 4000);
+    await waitFor(() => !document.querySelector("#spark-video video:not(.spark-leave)")?.paused, 4000);
     await sleep(900);
   };
 
@@ -3810,7 +3810,7 @@ async function languageRun(options, t) {
   await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 40000);
   const sceneBefore = win.finalSpark.scene();
   const depthBefore = win.finalSpark.depth();
-  const srcBefore = doc.querySelector("#spark-video video")?.currentSrc || "";
+  const srcBefore = doc.querySelector("#spark-video video:not(.spark-leave)")?.currentSrc || "";
   t.scene(`${id}: switching to English at ${sceneBefore}`);
   // A native select can't be opened by a synthetic press: set it and fire change, as the browser does on a pick.
   sel.value = "en";
@@ -3818,7 +3818,7 @@ async function languageRun(options, t) {
   await sleep(500);
   const now = win.finalSpark.scene();
   if (now !== sceneBefore || win.finalSpark.depth() !== depthBefore) t.problem("bug", `${id}: switching language moved the story (${sceneBefore} -> ${now}, depth ${depthBefore} -> ${win.finalSpark.depth()})`);
-  const srcAfter = doc.querySelector("#spark-video video")?.currentSrc || "";
+  const srcAfter = doc.querySelector("#spark-video video:not(.spark-leave)")?.currentSrc || "";
   if (srcBefore && srcAfter !== srcBefore) t.problem("bug", `${id}: switching language reloaded the clip`);
   const sc = story(id).scenes[sceneBefore];
   const seen = (sel2) => (doc.querySelector(sel2)?.innerText || "").replace(/\s+/g, " ").trim();
@@ -3944,7 +3944,7 @@ async function phoneChoicesRun(options, t) {
         } else {
           await passPrompt(t, doc, `${id} (${sizeTag})`);
           const box = doc.getElementById("spark-choices");
-          const v = () => doc.querySelector("#spark-video video");
+          const v = () => doc.querySelector("#spark-video video:not(.spark-leave)");
           // Criterion 3: while the clip still plays, choices show an "up next" preview state (soft glow, thin progress line,
           // bright text, never greyed-out disabled text).
           await waitFor(() => v() && !v().paused && v().currentTime > 0.15, 6000);
@@ -4065,7 +4065,7 @@ async function phonePlayerRun(options, t) {
   doc.addEventListener("click", () => { if (!tappedAt) tappedAt = win.performance.now(); }, true);
   doc.addEventListener("playing", (e) => { if (tappedAt && !playingAt && e.target.closest && e.target.closest("#spark-video")) playingAt = win.performance.now(); }, true);
   await passPrompt(t, doc, `${id} (phone)`);
-  const video = () => doc.querySelector("#spark-video video");
+  const video = () => doc.querySelector("#spark-video video:not(.spark-leave)");
   const ok = await waitFor(() => video() && !video().paused && video().currentTime > 0.3, 8000);
   if (!ok) t.problem("bug", `${id}: after one tap the first clip isn't playing (paused ${video() && video().paused}, ${video() && video().currentTime}s)`);
   else {
@@ -4263,7 +4263,7 @@ async function phoneMediaRun(options, t) {
       clearProgress();
       doc = await viewFrameLoad(t, `/?story=${id}`, w, h);
       win = doc.defaultView;
-      const video = () => doc.querySelector("#spark-video video");
+      const video = () => doc.querySelector("#spark-video video:not(.spark-leave)");
       if (!(await waitFor(() => video(), 6000))) { t.problem("bug", `${id} (${label}): no video in the player`); continue; }
       // 1. The poster is on the clip before it has loaded anything, and it loads.
       const poster = video().getAttribute("poster");
