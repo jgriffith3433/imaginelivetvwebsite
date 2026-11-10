@@ -707,7 +707,7 @@
     wakeChrome();
     stopChoiceWindow();
 
-    videoBox.replaceChildren();
+    crossfadeOut();
     // The poster is also the box's own picture, so it stays under the loading ring and between clips: never a black box.
     videoBox.style.backgroundImage = scene.poster ? 'url("' + scene.poster + '")' : "";
     const videoSrc = scene.video ? clipSrc(scene) : null;
@@ -1089,6 +1089,37 @@
     title: document.documentElement.getAttribute("data-tap-title") || "",
     line: document.documentElement.getAttribute("data-tap-line") || ""
   };
+
+  /** Scene changes cross-fade (J, 2026-11-10): the outgoing clip or card stays as a layer above the incoming one,
+      fading out over FADE ms while its audio fades with it; the incoming clip is already playing under it. */
+  function fadeMs() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 350;
+  }
+
+  function crossfadeOut() {
+    const ms = fadeMs();
+    const old = Array.prototype.slice.call(videoBox.children);
+    old.forEach(function (node) {
+      const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank");
+      if (!keep || node.classList.contains("spark-leave")) { node.remove(); return; }
+      node.classList.add("spark-leave");
+      node.style.setProperty("--fade-ms", ms + "ms");
+      node.removeAttribute("data-sound-start");
+      const started = performance.now();
+      const from = node.tagName === "VIDEO" ? node.volume : 0;
+      (function step(now) {
+        const t = Math.min(1, ((now || performance.now()) - started) / ms);
+        if (node.tagName === "VIDEO") { try { node.volume = from * (1 - t); } catch (error) { /* ignore */ } }
+        if (t < 1 && node.isConnected) requestAnimationFrame(step);
+      })();
+      setTimeout(function () {
+        if (node.tagName === "VIDEO") { try { node.pause(); } catch (error) { /* gone */ } }
+        node.remove();
+      }, ms + 40);
+    });
+    videoBox.dataset.fadeMs = String(ms);
+    videoBox.dataset.fadedAt = String(Math.round(performance.now()));
+  }
 
   function stopVideo() {
     stopClipUnlock();

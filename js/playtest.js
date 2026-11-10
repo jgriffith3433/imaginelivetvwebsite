@@ -1485,6 +1485,38 @@ async function crawlPages(t, st, done, total) {
   if ((await status(`/${st.id}/`)) !== 200) t.problem("bug", `/${st.id}/ (${st.title}'s link) is missing`);
 }
 
+async function crossfade(options, t) {
+  t.scene("Cross-fade");
+  await passPrompt(t);
+  for (const id of options.story ? [options.story] : ["final-spark", "water-road"]) {
+    if (!story(id)) continue;
+    await openStory(t, id);
+    await sleep(1500);
+    const first = document.querySelector("#spark-video video");
+    const vol0 = first ? first.volume : 1;
+    const btn = choiceButtons()[0];
+    if (!btn) { t.problem("bug", `${id}: no choice to press`); continue; }
+    btn.disabled = false;
+    await tapAt(t, btn, "the first choice");
+    const seen = [];
+    for (let i = 0; i < 8; i++) {
+      await sleep(50);
+      const box = document.getElementById("spark-video");
+      const layers = [...box.querySelectorAll("video, .spark-video-blank")];
+      const out = layers.find((l) => l.classList.contains("spark-leave"));
+      const inn = layers.find((l) => !l.classList.contains("spark-leave"));
+      seen.push({ layers: layers.length, outOpacity: out ? +getComputedStyle(out).opacity : null, outVol: out && out.tagName === "VIDEO" ? out.volume : null, inPlaying: inn && inn.tagName === "VIDEO" ? !inn.paused && inn.currentTime > 0 : null });
+    }
+    const during = seen.filter((x) => x.layers > 1);
+    t.event("crossfade", `${id}: ${during.length} samples with both layers`, { vol0, seen });
+    if (!during.length) t.problem("bug", `${id}: the scene change did not cross-fade (never two layers)`);
+    else if (during.some((x) => x.outOpacity === 0)) t.problem("bug", `${id}: outgoing layer cut to nothing`);
+    if (first && during.length > 1 && !during.some((x) => x.outVol != null && x.outVol < vol0)) t.problem("bug", `${id}: outgoing audio did not fade`);
+    if (during.some((x) => x.inPlaying === false)) t.problem("bug", `${id}: incoming clip was not moving under the fade`);
+    await sleep(600);
+  }
+}
+
 async function blog(options, t) {
   t.scene("Blog");
   await passPrompt(t); // like a viewer: the home page's title splash goes first, so none is left behind the post frame
@@ -6150,6 +6182,7 @@ installPlaytest({
       tags: ["full"],
       description: "A frame at 390x844 opens The Final Spark by its link (Tap to play pressed): the language picker is shown, on screen, 44px tall and hit-tested. One real choice in, the picker is set to English (a native select can't be opened by a press, so the bot sets it and fires change): the scene and depth are the same, the clip was not reloaded, and the story text, question, choices, timer, buttons and the Tree show the English only; the pick is saved. Then the home page's blog list in a 390px frame: each post's title holds one language (one script, its own text has no English beside it). Events language-picker, language-switched, blog-title; metric blogTitles. Options: {\"story\":\"<id>\"}.",
     },
+    { id: "crossfade", title: "Scene changes cross-fade with audio fading and the clip already moving", seconds: 40, tags: ["full"] },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -6210,6 +6243,7 @@ installPlaytest({
       else if (id === "night-shift-signoff") await nightSignoffRun(options, t);
       else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "room") await nightRoomRun(options, t);
+      else if (id === "crossfade") await crossfade(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
