@@ -2767,3 +2767,19 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
 .post-card.sleepy { opacity: .4; transform: translateY(10px); transition: opacity .6s, transform .6s; }
 .post-card.sleepy.awake { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .hero.lit, .story-card.lit, .tile-screen.flick, .hero.lit picture { animation: none; } }
+
+/* Scene cross-fade (js/game.js crossfadeOut): the outgoing layer sits above the incoming one and fades out;
+   the choices and timer are outside the video box, so nothing covers them. */
+.spark-video > .spark-leave {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  animation: spark-leave var(--fade-ms, 350ms) ease-in-out forwards;
+}
+.spark-video > video:not(.spark-leave),
+.spark-video > .spark-video-blank:not(.spark-leave) {
+  animation: spark-enter var(--fade-ms, 350ms) ease-in-out;
+}
+@keyframes spark-leave { from { opacity: 1; } to { opacity: 0; } }
+@keyframes spark-enter { from { opacity: 0.6; } to { opacity: 1; } }
