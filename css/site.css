@@ -2783,3 +2783,97 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
 }
 @keyframes spark-leave { from { opacity: 1; } to { opacity: 0; } }
 @keyframes spark-enter { from { opacity: 0.6; } to { opacity: 1; } }
+
+/* Continue "Previously" (js/game.js playRecap): last scene's poster with a slow push-in, the story title,
+   one short line for the last choice; tap skips; then fades into the left-off scene. */
+.story-recap {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  padding: 1.5rem;
+  background: #070807;
+  color: #f2f0eb;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.story-recap[hidden] { display: none !important; }
+.story-recap.is-leaving {
+  animation: story-recap-out var(--fade-ms, 350ms) ease-in-out forwards;
+  pointer-events: none;
+}
+.story-recap-stage {
+  position: relative;
+  width: min(72vw, 22rem);
+  aspect-ratio: 9 / 16;
+  max-height: min(58vh, 28rem);
+  overflow: hidden;
+  border-radius: 4px;
+  background: #0c0d0f;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+.story-recap-poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transform-origin: 50% 45%;
+  animation: story-recap-push var(--recap-ms, 3s) linear forwards;
+}
+.story-recap-copy {
+  max-width: 22rem;
+  text-align: center;
+}
+.story-recap-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #c8c4be;
+}
+.story-recap-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 5vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+.story-recap-line {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: #e8e4dc;
+}
+.story-recap-skip {
+  margin: 0.6rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a8680;
+}
+@keyframes story-recap-push {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes story-recap-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-recap-poster { animation: none; }
+  .story-recap.is-leaving { animation-duration: 120ms; }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .story-recap { flex-direction: row; flex-wrap: wrap; gap: 1rem 1.5rem; }
+  .story-recap-stage {
+    width: min(36vw, 14rem);
+    max-height: 78vh;
+  }
+  .story-recap-copy { text-align: left; max-width: 18rem; }
+}

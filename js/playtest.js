@@ -1517,6 +1517,165 @@ async function crossfade(options, t) {
   }
 }
 
+/** The Continue control for a mid-run story: the hero's Continue, else a Continue-watching card, else the catalogue card. */
+function continueControl(doc, id) {
+  const hero = doc.querySelector(`#stories a.hero[data-story="${id}"]`);
+  const heroGo = hero && (hero.querySelector(".hero-go")?.textContent || "").trim();
+  if (hero && /continue/i.test(heroGo)) return hero.querySelector(".hero-go") || hero;
+  const row = doc.querySelector(`#continue-list a.continue-card[data-story="${id}"]`);
+  if (row) return row.querySelector(".continue-go") || row;
+  const card = doc.querySelector(`#story-list a.story-card[data-story="${id}"]`);
+  const go = card && (card.querySelector(".story-card-go")?.textContent || "").trim();
+  if (card && /continue/i.test(go)) return card.querySelector(".story-card-go") || card;
+  return null;
+}
+
+/** Continue opens with a Previously recap (criteria for k_e502567d7d4e): each listed story, one choice in, All stories,
+    Continue; the recap shows the last scene's poster, the title and one short line; a tap skips; then the left-off
+    scene with its choices. Checked on the page and in frames at 390x844 and 1280x720. */
+async function continueRecap(options, t) {
+  rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passSplash(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  const ids = options.story ? [options.story] : listedStories().map((s) => s.id);
+  const leftAt = {};
+  const choiceOf = {};
+
+  t.scene("Continue recap: set mid-run for each story");
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i];
+    const st = story(id);
+    if (!st) { t.problem("bug", `${id}: no story data`); continue; }
+    t.progress((i / ids.length) * 0.35);
+    if (isConsole(st)) {
+      await consoleOpen(t, st);
+      await consoleFresh(t, st);
+      await consoleHeard(t, document, id);
+      const open = openChoices();
+      if (!open.length) { t.problem("bug", `${id}: no choices on the first scene`); await toLanding(t); continue; }
+      choiceOf[id] = (open[0].textContent || "").trim().replace(/^\d+\.\s*/, "");
+      const m = consoleModel(st);
+      await consoleChoose(t, st, m, m.open()[0][1], document, id, null);
+      leftAt[id] = window.iltvConsole ? window.iltvConsole.scene() : null;
+    } else {
+      await openStory(t, id);
+      await toStart(t);
+      const btns = choiceButtons();
+      if (!btns.length) { t.problem("bug", `${id}: no choices on the first page`); await toLanding(t); continue; }
+      choiceOf[id] = enText(btns[0]).replace(/^\d+\.\s*/, "");
+      await tapAt(t, btns[0], `${id}: the first choice`);
+      await sleep(400);
+      leftAt[id] = window.finalSpark.scene();
+    }
+    t.event("recap-armed", `${id}: left at ${leftAt[id]}, last choice "${choiceOf[id]}"`);
+    await toLanding(t);
+    await sleep(200);
+    if (stories().run(id) !== "mid") t.problem("bug", `${id}: after one choice the run is "${stories().run(id)}", not mid (Continue)`);
+  }
+
+  const checkRecapAt = async (doc, win, id, where, { skip }) => {
+    const st = story(id);
+    const go = continueControl(doc, id);
+    if (!go) {
+      t.problem("bug", `${where}: no Continue control for ${id}`);
+      return;
+    }
+    go.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(150);
+    await tapAt(t, go, `${where}: Continue for ${id}`);
+    await sleep(300);
+    const sound = win.hawkesSound;
+    if (sound && sound.prompt && sound.prompt()) await passPrompt(t, doc, `${where} ${id}`);
+    const recapEl = () => doc.getElementById("story-recap");
+    const up = await waitFor(() => {
+      const el = recapEl();
+      return el && !el.hidden && el.dataset.story === id;
+    }, 4000);
+    if (!up) {
+      t.problem("bug", `${where}: Continue for ${id} showed no Previously recap`);
+      return;
+    }
+    const el = recapEl();
+    const poster = el.querySelector(".story-recap-poster");
+    const title = (el.querySelector(".story-recap-title")?.textContent || "").trim();
+    const line = (el.querySelector(".story-recap-line")?.textContent || "").trim();
+    const posterOk = !!(poster && poster.getAttribute("src") && (poster.complete ? poster.naturalWidth > 0 : true));
+    t.event("previously", `${where}: ${id}: title "${title}", line "${line}", poster ${posterOk ? "yes" : "MISSING"}, skip=${skip}`);
+    if (title !== st.title) t.problem("bug", `${where}: ${id} recap title is "${title}", not "${st.title}"`);
+    if (!line) t.problem("bug", `${where}: ${id} recap has no choice line`);
+    else if (choiceOf[id] && line !== choiceOf[id] && !choiceOf[id].includes(line) && !line.includes(choiceOf[id].replace(/^\d+\.\s*/, ""))) {
+      t.problem("bug", `${where}: ${id} recap line is "${line}", the choice was "${choiceOf[id]}"`);
+    }
+    if (!posterOk) t.problem("bug", `${where}: ${id} recap has no poster`);
+    if ([...el.querySelectorAll("p, h2")].filter((n) => (n.textContent || "").trim()).length > 4) {
+      t.problem("warning", `${where}: ${id} recap has more copy blocks than expected (keep to title + one line)`);
+    }
+    if (skip) {
+      await tapAt(t, el, `${where}: skip Previously for ${id}`);
+      await sleep(500);
+    } else {
+      await waitFor(() => { const e = recapEl(); return !e || e.hidden; }, 4500);
+      await sleep(200);
+    }
+    const still = recapEl();
+    if (still && !still.hidden) t.problem("bug", `${where}: ${id} Previously stayed up after ${skip ? "a tap" : "3 s"}`);
+    const api = win.iltvStories;
+    if (api.current() !== id) t.problem("bug", `${where}: after the recap open is ${api.current()}, not ${id}`);
+    if (isConsole(st)) {
+      const scene = win.iltvConsole && win.iltvConsole.scene();
+      if (leftAt[id] && scene !== leftAt[id]) t.problem("bug", `${where}: ${id} after recap is at ${scene}, left at ${leftAt[id]}`);
+      await consoleHeard(t, doc, `${where} ${id} after recap`);
+      if (!openChoices(doc).length) t.problem("bug", `${where}: ${id} after recap has no choices`);
+    } else {
+      const scene = win.finalSpark && win.finalSpark.scene();
+      if (leftAt[id] && scene !== leftAt[id]) t.problem("bug", `${where}: ${id} after recap is at ${scene}, left at ${leftAt[id]}`);
+      if (!doc.querySelectorAll("#spark-choices .choice").length) t.problem("bug", `${where}: ${id} after recap has no choices`);
+    }
+    t.event("recap-landed", `${where}: ${id} at ${leftAt[id]} with choices`);
+  };
+
+  // On the page (desktop): each story, skip the first, wait out the rest.
+  t.scene("Continue recap: desktop");
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i];
+    if (!leftAt[id]) continue;
+    t.progress(0.35 + (i / ids.length) * 0.25);
+    await checkRecapAt(document, window, id, "desktop", { skip: i === 0 });
+    await toLanding(t);
+    await sleep(200);
+  }
+
+  // Phone and desktop frames share the cookies, so Continue still opens mid-run with the same recap.
+  for (const [w, h, label] of [[390, 844, "phone"], [1280, 720, "wide"]]) {
+    t.scene(`Continue recap: ${label} ${w}x${h}`);
+    const doc = await viewFrameLoad(t, "/", w, h);
+    const win = doc.defaultView;
+    await waitFor(() => !doc.getElementById("title-splash") && doc.querySelector("#story-list a.story-card"), 5000);
+    await sleep(400);
+    for (let i = 0; i < ids.length; i++) {
+      const id = ids[i];
+      if (!leftAt[id]) continue;
+      t.progress(0.6 + (label === "phone" ? 0 : 0.2) + (i / ids.length) * 0.2);
+      // Landing in the frame: open Continue without leaving the frame between stories (reload cookies each time).
+      if (!doc.getElementById("stories") || doc.getElementById("stories").hidden) {
+        const back = doc.getElementById("spark-stories") || doc.getElementById("console-stories");
+        if (back) await tapAt(t, back, `${label}: All stories`);
+        await sleep(300);
+      }
+      await checkRecapAt(doc, win, id, label, { skip: true });
+      const back = doc.getElementById("spark-stories") || doc.getElementById("console-stories");
+      if (back && !(doc.getElementById("stories") && !doc.getElementById("stories").hidden)) {
+        await tapAt(t, back, `${label}: All stories after ${id}`);
+        await sleep(300);
+      }
+    }
+    closeViewFrame();
+  }
+  t.progress(1);
+}
+
 async function blog(options, t) {
   t.scene("Blog");
   await passPrompt(t); // like a viewer: the home page's title splash goes first, so none is left behind the post frame
@@ -6183,6 +6342,13 @@ installPlaytest({
       description: "A frame at 390x844 opens The Final Spark by its link (Tap to play pressed): the language picker is shown, on screen, 44px tall and hit-tested. One real choice in, the picker is set to English (a native select can't be opened by a press, so the bot sets it and fires change): the scene and depth are the same, the clip was not reloaded, and the story text, question, choices, timer, buttons and the Tree show the English only; the pick is saved. Then the home page's blog list in a 390px frame: each post's title holds one language (one script, its own text has no English beside it). Events language-picker, language-switched, blog-title; metric blogTitles. Options: {\"story\":\"<id>\"}.",
     },
     { id: "crossfade", title: "Scene changes cross-fade with audio fading and the clip already moving", seconds: 40, tags: ["full"] },
+    {
+      id: "continue-recap",
+      title: "Continue opens with a 3 s Previously recap of the last scene (poster, title, one choice line), skippable, then the left-off scene with its choices — all three stories at desktop, 390x844 and 1280x720",
+      seconds: 180,
+      tags: ["full"],
+      description: "From a fresh browser: each listed story is opened, one real choice is made, then All stories. Pressing Continue (hero or card) shows a Previously overlay with the last scene's poster (push-in), the story title and one short line naming that choice; a tap skips it (checked on the first story) or it ends after ~3 s. After the recap the viewer is at the same scene they left, with its choices ready. The same Continue path is checked in frames at 390x844 and 1280x720. Events recap-armed, previously, recap-landed. Options: {\"story\":\"<id>\"}.",
+    },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
       id: "credits",
@@ -6244,6 +6410,7 @@ installPlaytest({
       else if (id === "cctv-art") await cctvArt(options, t);
       else if (id === "room") await nightRoomRun(options, t);
       else if (id === "crossfade") await crossfade(options, t);
+      else if (id === "continue-recap") await continueRecap(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "credits") await credits(options, t);
