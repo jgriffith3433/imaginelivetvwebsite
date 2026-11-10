@@ -2743,7 +2743,13 @@ button.ending-tile:focus-visible {
   transition: width 0.25s linear;
 }
 .choice-timer[data-state="done"] { opacity: 0.55; }
+.choice-timer[data-state="done"] .choice-timer-track { animation: none; }
 .choice-timer[data-state="done"] .choice-timer-bar { animation: none; transform: scaleX(0); }
+.choice-timer[data-urgent="true"] .choice-timer-bar { background: #f0a35e; box-shadow: 0 0 10px rgba(240, 163, 94, 0.7); }
+.choice-timer[data-urgent="true"] .choice-timer-track { animation: choice-timer-pulse 0.5s ease-in-out infinite alternate; }
+.choice-timer[data-urgent="true"] .choice-timer-label { color: #f0a35e; }
+@keyframes choice-timer-pulse { from { opacity: 0.6; } to { opacity: 1; } }
+.choice.is-default-pick { outline: 2px solid #f0a35e; outline-offset: 2px; box-shadow: 0 0 18px rgba(240, 163, 94, 0.6); }
 @keyframes choice-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 
 /* "Up next" preview state while a clip plays: soft glow and thin progress line, never dim grey disabled text. */

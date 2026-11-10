@@ -786,6 +786,7 @@
   const timerBox = document.getElementById("spark-timer");
   const consoleChoicesBox = document.getElementById("console-choices");
   let windowTick = null;
+  let defaultTimer = null;
   let idleTimer = null;
 
   function tagChoiceStagger(container) {
@@ -818,8 +819,12 @@
   }
 
   function stopChoiceWindow() {
-    if (windowTick) clearTimeout(windowTick);
+    if (windowTick) cancelAnimationFrame(windowTick);
     windowTick = null;
+    if (defaultTimer) clearTimeout(defaultTimer);
+    defaultTimer = null;
+    choicesBox.querySelectorAll(".is-default-pick").forEach(function (b) { b.classList.remove("is-default-pick"); });
+    if (timerBox) timerBox.dataset.urgent = "false";
     if (timerBox) { timerBox.hidden = true; timerBox.dataset.state = "off"; }
   }
 
@@ -872,20 +877,44 @@
     void bar.offsetWidth;
     bar.style.animation = "";
     bar.style.animationDuration = CHOICE_WINDOW + "s";
-    let left = CHOICE_WINDOW;
-    label.textContent = "Choose in " + left + " s";
-    const tick = function () {
-      left -= 1;
-      if (left <= 0) {
-        timerBox.dataset.state = "done";
-        label.textContent = "Take your time";
-        windowTick = null;
-        return;
+    const total = CHOICE_WINDOW * 1000;
+    const t0 = performance.now();
+    const scene = currentScene;
+    let shown = -1;
+    timerBox.dataset.urgent = "false";
+    label.textContent = "Choose in " + CHOICE_WINDOW + " s";
+    const frame = function (now) {
+      if (currentScene !== scene) return;
+      const left = Math.max(0, total - (now - t0));
+      const secs = Math.ceil(left / 1000);
+      if (secs !== shown) {
+        shown = secs;
+        label.textContent = "Choose in " + secs + " s";
+        if (secs <= 3) timerBox.dataset.urgent = "true";
       }
-      label.textContent = "Choose in " + left + " s";
-      windowTick = setTimeout(tick, 1000);
+      if (left > 0) { windowTick = requestAnimationFrame(frame); return; }
+      windowTick = null;
+      timerBox.dataset.state = "done";
+      label.textContent = "Choosing\u2026";
+      pickDefault(scene);
     };
-    windowTick = setTimeout(tick, 1000);
+    windowTick = requestAnimationFrame(frame);
+  }
+
+  /** Time ran out: the first choice (or the one marked default) is lit for a moment, then played. */
+  function pickDefault(scene) {
+    const sc = SCENES[scene];
+    if (!sc || !sc.choices.length) return;
+    let idx = sc.choices.findIndex(function (c) { return c.default; });
+    if (idx < 0) idx = 0;
+    const btn = choicesBox.querySelectorAll(".choice")[idx];
+    if (!btn) return;
+    btn.classList.add("is-default-pick");
+    tell("feature", { feature: "timeout_default", story: STORY.id, node: scene });
+    defaultTimer = setTimeout(function () {
+      defaultTimer = null;
+      if (currentScene === scene && !pendingTap) goTo(sc.choices[idx]);
+    }, 1100);
   }
 
   /** Any movement brings the controls back; 3 s without any hides them (never in the Tree). */
