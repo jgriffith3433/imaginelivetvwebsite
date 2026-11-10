@@ -350,3 +350,12 @@ here for an agent to build next, within the existing scene data.
   58th floor; the Spark and the Water Road are separate universes; Night Shift shows nothing of the restricted work
   (no B3, no vat, no creature); the dove is only in pictures.
 - Every beat is carried by a clip, an event, a sound or a voice. A new beat told only in text is rejected.
+
+## Vertical slice: the home's landing page (built, `js/living.js`)
+
+The slice is the home's landing page (the world bible's first area). **Landmark:** the hero card, with a slow light drift.
+**Life:** the house lights come up card by card (beat 1); a wall of three screens flickers on its own every 2.5 to 5 s;
+blog cards wake as they scroll in. **Interactions:** a card under the pointer glows and ticks; a press clicks and opens the
+story; scroll to the blog. **Ambient sound:** synthesized ticks and tones (no assets), only after the first press and
+never when Sound is off. **Beat as an event:** the house lights come up with a rising tone, no text. Playtest `living-home`
+reports quality.maxQuietSeconds and quality.textOnlyBeats. Left: hover loops of each world, voice lines for the Spark.
