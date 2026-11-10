@@ -112,6 +112,7 @@
   let wantRecap = false; // set when the viewer presses Continue on the landing page
   let recapTimer = null;
   let recapRaf = null;
+  let recapGuard = null;
 
   function tell(what, detail) {
     if (what === "choice" && detail && STORY && detail.from && detail.option) {
@@ -1520,24 +1521,50 @@
     return !!(saved && saved.from && saved.choice && (saved.poster || posterOfScene(STORY, saved.from)));
   }
 
-  /** Runs after the Tap to play prompt is gone (or at once if sound is already unlocked). */
+  /** Runs after the Tap to play prompt is gone (or at once if sound is already unlocked).
+      Failsafe: if the prompt never clears (observer miss, stuck overlay), dismiss it and continue so
+      Continue never leaves a blank page under a forever-waiting handoff. */
   function afterPrompt(fn) {
     if (!window.hawkesSound || !window.hawkesSound.prompt()) {
       fn();
       return;
     }
+    let done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      try { obs.disconnect(); } catch (error) { /* gone */ }
+      document.body.removeEventListener("click", onAct, true);
+      document.body.removeEventListener("keydown", onAct, true);
+      clearTimeout(fail);
+      fn();
+    }
+    function ready() {
+      return !window.hawkesSound || !window.hawkesSound.prompt();
+    }
+    function onAct() {
+      if (ready()) go();
+    }
     const obs = new MutationObserver(function () {
-      if (!window.hawkesSound.prompt()) {
-        obs.disconnect();
-        fn();
-      }
+      if (ready()) go();
     });
-    obs.observe(document.body, { childList: true, subtree: true });
+    // class "is-gone" is set before the node is removed; overlay is nulled on tap before either.
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+    document.body.addEventListener("click", onAct, true);
+    document.body.addEventListener("keydown", onAct, true);
+    const fail = setTimeout(function () {
+      const prompt = window.hawkesSound && window.hawkesSound.prompt();
+      if (prompt) {
+        try { prompt.click(); } catch (error) { /* ignore */ }
+      }
+      go();
+    }, 8000);
   }
 
   function stopRecapTimers() {
     if (recapTimer) { clearTimeout(recapTimer); recapTimer = null; }
     if (recapRaf) { cancelAnimationFrame(recapRaf); recapRaf = null; }
+    if (recapGuard) { clearTimeout(recapGuard); recapGuard = null; }
   }
 
   function pauseClipsForRecap() {
@@ -1608,14 +1635,27 @@
     }
     el.addEventListener("click", skip);
     recapTimer = setTimeout(finish, ms);
+    // Hard cap: never leave Previously up (or data-recap held) if a timer is lost — show the scene underneath.
+    recapGuard = setTimeout(function () {
+      if (!done) {
+        finish.skipped = true;
+        finish();
+      }
+    }, ms + fade + 1500);
   }
 
   function queueRecap(story, saved, then) {
     if (!canRecap(saved)) {
+      delete document.documentElement.dataset.recap;
       if (typeof then === "function") then();
       return;
     }
     afterPrompt(function () {
+      // Failsafe may fire after All stories: never show Previously over the landing page.
+      if (STORY !== story || document.documentElement.dataset.view !== "story") {
+        delete document.documentElement.dataset.recap;
+        return;
+      }
       playRecap(story, saved, then);
     });
   }
@@ -1849,9 +1889,16 @@
     function startConsole() {
       window.iltvConsole.open(story, consoleHooks, saved ? saved.scene : null);
     }
-    // Continue: Previously first (lines wait), then the console opens at the left-off scene.
-    if (withRecap && canRecap(saved)) queueRecap(story, saved, startConsole);
-    else startConsole();
+    // Continue: open the left-off scene under the overlay (same as video stories), hold voiced lines while
+    // Previously is up (html[data-recap], js/console.js), then cross-fade the overlay away. Opening only after
+    // the overlay left a blank body at short landscape sizes (844x390) once it faded.
+    if (withRecap && canRecap(saved)) {
+      document.documentElement.dataset.recap = "1";
+      startConsole();
+      queueRecap(story, saved, null);
+    } else {
+      startConsole();
+    }
   }
 
   function openStory(storyId, push, withRecap) {

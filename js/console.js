@@ -497,6 +497,11 @@
         renderChoices();
         return;
       }
+      // Continue Previously (js/game.js): the room is already under the overlay; wait to speak until it clears.
+      if (document.documentElement.getAttribute("data-recap") === "1") {
+        setTimeout(again, 100);
+        return;
+      }
       if (!soundReady()) {
         setTimeout(again, 250);
         return;
