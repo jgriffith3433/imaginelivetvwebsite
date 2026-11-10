@@ -863,7 +863,7 @@ function sceneArt(doc, console_) {
   if (!box) return { painted: false, black: false };
   const r = box.getBoundingClientRect();
   if (r.width < 10 || r.height < 10) return { painted: false, black: false };
-  const v = box.querySelector("video");
+  const v = box.querySelector("video:not(.spark-leave)");
   if (v && v.readyState >= 2 && v.videoWidth) {
     try {
       const c = doc.createElement("canvas");
@@ -892,7 +892,7 @@ function sceneArt(doc, console_) {
     and the time until the next scene's art shows. Two choices in each story at 1280x720 and at 390x844. */
 async function swapRun(options, t) {
   if (!savedRuns && savedCookie == null) rememberProgress();
-  const sizes = [[1280, 720, "desktop"], [390, 844, "phone"]];
+  const sizes = [[1280, 720, "desktop"], [390, 844, "phone"], [844, 390, "landscape"]];
   const ids = [FIRST, ...listedStories().map((x) => x.id).filter((x) => x !== FIRST)];
   let n = 0;
   for (const id of ids) {
@@ -6344,7 +6344,7 @@ installPlaytest({
       tags: ["full"],
       description: "A frame at 390x844 opens The Final Spark by its link (Tap to play pressed): the language picker is shown, on screen, 44px tall and hit-tested. One real choice in, the picker is set to English (a native select can't be opened by a press, so the bot sets it and fires change): the scene and depth are the same, the clip was not reloaded, and the story text, question, choices, timer, buttons and the Tree show the English only; the pick is saved. Then the home page's blog list in a 390px frame: each post's title holds one language (one script, its own text has no English beside it). Events language-picker, language-switched, blog-title; metric blogTitles. Options: {\"story\":\"<id>\"}.",
     },
-    { id: "crossfade", title: "Scene changes cross-fade with audio fading and the clip already moving", seconds: 40, tags: ["full"] },
+    { id: "crossfade", title: "Scene changes cross-fade with audio fading and the clip already moving", seconds: 40, tags: ["full", "smoke"] },
     {
       id: "continue-recap",
       title: "Continue opens with a 3 s Previously recap of the last scene (poster, title, one choice line), skippable, then the left-off scene with its choices — all three stories at desktop, 390x844 and 1280x720",
