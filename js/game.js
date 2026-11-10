@@ -337,12 +337,16 @@
     return (isPhone() && scene.small) || scene.video;
   }
 
-  /** The clips the choices lead to are fetched while this one plays, so a tap goes straight into the next. */
+  var posters = {};
+  var pendingTap = null;
+
+  /** Choices shown: every target's poster is decoded and its clip rendition (sm on phones, via clipSrc) buffered;
+      those no longer offered are cancelled. A tap then swaps to a scene that is ready (see goTo). */
   function preloadNext(scene) {
     var want = {};
     scene.choices.forEach(function (c) {
       var next = SCENES[c.next];
-      if (next && next.video) want[c.next] = clipSrc(next);
+      if (next) want[c.next] = next;
     });
     Object.keys(preloaded).forEach(function (id) {
       if (want[id]) return;
@@ -350,16 +354,56 @@
       preloaded[id].load();
       delete preloaded[id];
     });
-    Object.keys(want).slice(0, 3).forEach(function (id) {
-      if (preloaded[id]) return;
-      var v = document.createElement("video");
-      v.preload = "auto";
-      v.muted = true;
-      v.playsInline = true;
-      v.src = want[id];
-      v.load();
-      preloaded[id] = v;
+    Object.keys(posters).forEach(function (id) { if (!want[id]) delete posters[id]; });
+    Object.keys(want).forEach(function (id) {
+      var next = want[id];
+      if (next.poster && !posters[id]) {
+        var img = new Image();
+        img.src = next.poster;
+        var done = { ready: false };
+        posters[id] = done;
+        var fin = function () { done.ready = true; };
+        if (img.decode) img.decode().then(fin, fin); else img.onload = img.onerror = fin;
+      }
+      if (next.video && !preloaded[id]) {
+        var v = document.createElement("video");
+        v.preload = "auto";
+        v.muted = true;
+        v.playsInline = true;
+        v.src = clipSrc(next);
+        v.load();
+        preloaded[id] = v;
+      }
     });
+  }
+
+  function targetReady(id) {
+    var p = posters[id], v = preloaded[id];
+    return (!p || p.ready) && (!v || v.readyState >= 3 || v.error);
+  }
+
+  /** The current scene stays up until the target can show; after 300 ms it swaps anyway (the box paints the
+      target's poster, never black). Taps during the wait are ignored, so the scene shown is always the one chosen. */
+  function goTo(choice) {
+    if (pendingTap || !SCENES[choice.next]) return;
+    var from = currentScene, story = STORY;
+    var token = pendingTap = {};
+    var t0 = performance.now();
+    var go = function () {
+      if (pendingTap !== token) return;
+      pendingTap = null;
+      if (STORY !== story || currentScene !== from) return;
+      tell("choice", { story: STORY.id, from: from, to: choice.next, option: choiceLabel(choice.en), waited: Math.round(performance.now() - t0), ready: targetReady(choice.next) });
+      history.push(from);
+      fromPlayer = true;
+      show(choice.next);
+    };
+    var poll = function () {
+      if (pendingTap !== token) return;
+      if (targetReady(choice.next) || performance.now() - t0 >= 300) go();
+      else setTimeout(poll, 20);
+    };
+    poll();
   }
 
   function fullscreenElement() {
@@ -403,9 +447,6 @@
       video.addEventListener(type, function () { loading(false); });
     });
     ["playing", "pause", "volumechange", "ended"].forEach(function (type) { video.addEventListener(type, sync); });
-    video.addEventListener("loadeddata", function () {
-      if (activeClip === video && SCENES[currentScene]) preloadNext(SCENES[currentScene]);
-    });
     unmute.addEventListener("click", function () {
       if (window.hawkesSound) window.hawkesSound.set({ on: true });
       video.muted = false;
@@ -720,14 +761,13 @@
         button.dataset.lastTime = "true";
       }
       button.addEventListener("click", function () {
-        if (!SCENES[choice.next]) return;
-        tell("choice", { story: STORY.id, from: currentScene, to: choice.next, option: choiceLabel(choice.en) });
-        history.push(currentScene);
-        fromPlayer = true;
-        show(choice.next);
+        goTo(choice);
       });
       choicesBox.appendChild(button);
     });
+
+    pendingTap = null;
+    preloadNext(scene);
 
     if (scene.choices.length === 0) {
       showEndingCard(sceneId, scene);
