@@ -4022,7 +4022,7 @@ async function phoneChoicesRun(options, t) {
           t.event("timer", `${id} ${sizeTag}: "${lab}" ${Math.round(tr.width)}x${Math.round(tr.height)}, shown ${shown}, above the first choice ${above}`);
           if (!shown) bad.push("the timer isn't visible");
           if (!above) bad.push("the timer isn't above the choices");
-          if (!/^(Choose in \d+ s|Take your time)$/.test(lab)) bad.push(`the timer says "${lab}", not "Choose in N s"`);
+          if (!/^(Choose in \d+ s|Choosing…)$/.test(lab)) bad.push(`the timer says "${lab}", not "Choose in N s"`);
         } else {
           const cue = win.getComputedStyle(doc.getElementById("console-choices"), "::before").content;
           t.event("cue", `${id} ${sizeTag}: choices cue ${cue}`);
