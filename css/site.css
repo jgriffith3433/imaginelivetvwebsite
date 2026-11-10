@@ -1718,6 +1718,30 @@ html.is-splash-pending::after {
   60% { opacity: 0.95; transform: scale(1.05); }
 }
 
+/* Sound toggle (js/audio.js) sits just left of the Settings gear. */
+.iltv-sound-toggle {
+  position: absolute;
+  top: 50%;
+  right: calc(2.75rem + max(0.5rem, env(safe-area-inset-right)));
+  transform: translateY(-50%);
+  min-width: 44px;
+  min-height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.iltv-sound-toggle svg { width: 1.35rem; height: 1.35rem; }
+.iltv-sound-toggle:hover, .iltv-sound-toggle:focus-visible { color: var(--green-soft); background: rgba(255, 255, 255, 0.06); }
+.iltv-sound-toggle.is-off { color: var(--muted); opacity: 0.72; }
+.iltv-sound-toggle.is-floating { position: fixed; top: 0.5rem; right: calc(2.75rem + 0.5rem); transform: none; z-index: 70; }
+
 .sound-gear {
   position: absolute;
   top: 50%;
