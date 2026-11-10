@@ -385,8 +385,14 @@ const unlocksCookie = (st) => `${st.cookie}Unlocked`;
 const cookiesOf = (st) => [st.cookie, unlocksCookie(st)];
 let savedCookie = null; // { name: "name=value" or "" }
 let savedRuns = null; // a console story's saved run (localStorage "iltv.run.<cookie>"): { key: text or null }
+function endingsStorageKey(st) {
+  return `iltv.endings.${st.cookie}`;
+}
 function rememberProgress() {
-  savedRuns = Object.fromEntries(allStories().filter((st) => st.type === "console").map((st) => [`iltv.run.${st.cookie}`, localStorage.getItem(`iltv.run.${st.cookie}`)]));
+  savedRuns = Object.fromEntries([
+    ...allStories().filter((st) => st.type === "console").map((st) => [`iltv.run.${st.cookie}`, localStorage.getItem(`iltv.run.${st.cookie}`)]),
+    ...allStories().map((st) => [endingsStorageKey(st), localStorage.getItem(endingsStorageKey(st))]),
+  ]);
   const jar = document.cookie.split(";").map((s) => s.trim());
   savedCookie = Object.fromEntries(allStories().flatMap(cookiesOf).map((name) => [name, jar.find((c) => c.startsWith(name + "=")) ?? ""]));
 }
@@ -434,10 +440,13 @@ function restoreProgress() {
 // the button follows the run: Play (none, or at the start), Continue (mid-run), Start Over (at an ending).
 const BADGE = { new: "Not started", started: "Started", completed: "Completed" };
 const GO = { start: "Play", mid: "Continue", end: "Start Over" };
-/** A fresh browser: every story's run and unlocks forgotten. */
+/** A fresh browser: every story's run, unlocks and found endings forgotten. */
 function clearProgress() {
   for (const name of allStories().flatMap(cookiesOf)) document.cookie = `${name}=; Max-Age=0; Path=/`;
-  for (const st of allStories()) if (st.type === "console") localStorage.removeItem(`iltv.run.${st.cookie}`);
+  for (const st of allStories()) {
+    if (st.type === "console") localStorage.removeItem(`iltv.run.${st.cookie}`);
+    localStorage.removeItem(endingsStorageKey(st));
+  }
 }
 
 /** What a story's unlocks cookie holds ({ seen, completed }), or null. */
@@ -852,7 +861,11 @@ async function smoke(options, t) {
   // Continue Previously (beta plays smoke only): one choice in each story already happened above, but language /
   // phone-media / swap may have cleared mid-run state, so the trimmed continue-recap leg re-arms and presses Continue.
   t.scene("Continue recap after a choice");
-  await continueRecap({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.97 + 0.03 * p) });
+  await continueRecap({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.96 + 0.02 * p) });
+  // Endings gallery (beta plays smoke): seed one found ending on The Water Road, open the Endings tab, check count
+  // and a locked silhouette, and that it fits at 390x844.
+  t.scene("Endings gallery (seeded one found)");
+  await endingsGalleryRun({ at: "smoke", story: "water-road" }, { ...t, progress: (p) => t.progress(0.98 + 0.02 * p) });
   closeViewFrame();
   t.progress(1);
 }
@@ -2439,6 +2452,205 @@ async function endingsRun(options, t) {
     }
   } finally {
     restoreProgress();
+  }
+}
+
+/** Endings gallery (J, 2026-11-10): after reaching endings, the gallery shows found posters/names and locked
+    silhouettes with "???", a "N of M found" count, and tapping a found ending shows its card again. Reachable from
+    the ending card and the Endings tab. Checks at 390x844 and 1280x720. Default story: The Water Road (two endings).
+    Options: {"story":"<id>"}; {"at":"smoke"} is a short UI leg for smoke (seeds one found ending, opens the gallery). */
+async function endingsGalleryRun(options, t) {
+  // When run as a leg of smoke (or another scenario), don't overwrite the outer rememberProgress.
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  if (!stories()) throw new Error("the player (js/game.js) didn't start");
+  await passPrompt(t);
+  clearProgress();
+  const id = options.story || "water-road";
+  const st = story(id);
+  if (!st) throw new Error(`no story ${id}`);
+  const ends = Object.keys(st.scenes).filter((sid) => st.scenes[sid].ending);
+  if (ends.length < 1) throw new Error(`${id}: no endings`);
+  const pressTo = async (to) => {
+    const i = st.scenes[sceneId()].choices.findIndex((c) => c[2] === to);
+    const button = choiceButtons()[i];
+    if (i < 0 || !button) throw new Error(`${id}: no choice from ${sceneId()} to ${to}`);
+    button.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, button, `"${enText(button)}"`);
+    await sleep(250);
+    if (sceneId() !== to) throw new Error(`${id}: "${enText(button)}" didn't open ${to} (on ${sceneId()})`);
+  };
+  const checkGallery = (pane, foundWant, label) => {
+    if (!pane || pane.hidden) { t.problem("bug", `${label}: endings gallery is not open`); return; }
+    const count = pane.querySelector(".endings-count");
+    const want = `${foundWant} of ${ends.length} found`;
+    t.event("endings-count", `${label}: ${count ? count.textContent.trim() : "(none)"}`);
+    if (!count || count.textContent.trim() !== want) t.problem("bug", `${label}: count says "${count ? count.textContent.trim() : ""}", want "${want}"`);
+    const tiles = [...pane.querySelectorAll(".ending-tile")];
+    if (tiles.length !== ends.length) t.problem("bug", `${label}: gallery has ${tiles.length} tiles, story has ${ends.length} endings`);
+    const foundTiles = tiles.filter((el) => el.classList.contains("is-found"));
+    const locked = tiles.filter((el) => el.classList.contains("is-locked"));
+    if (foundTiles.length !== foundWant) t.problem("bug", `${label}: ${foundTiles.length} found tiles, want ${foundWant}`);
+    if (locked.length !== ends.length - foundWant) t.problem("bug", `${label}: ${locked.length} locked tiles, want ${ends.length - foundWant}`);
+    for (const tile of foundTiles) {
+      const name = tile.querySelector(".ending-tile-name")?.textContent.trim() || "";
+      const img = tile.querySelector(".ending-tile-media img");
+      if (!name || name === "???") t.problem("bug", `${label}: a found tile shows "${name}"`);
+      if (!img || !img.getAttribute("src")) t.problem("bug", `${label}: found ending "${name}" has no poster`);
+    }
+    for (const tile of locked) {
+      const name = tile.querySelector(".ending-tile-name")?.textContent.trim() || "";
+      if (name !== "???") t.problem("bug", `${label}: a locked tile says "${name}", want "???"`);
+      const img = tile.querySelector(".ending-tile-media img");
+      if (img && img.getAttribute("src")) {
+        const blur = getComputedStyle(img).filter || "";
+        if (!/blur\(/i.test(blur)) t.problem("bug", `${label}: locked poster is not blurred`);
+      }
+    }
+    const box = pane.getBoundingClientRect();
+    if (box.bottom > innerHeight + 2 || box.right > innerWidth + 2) t.problem("bug", `${label}: gallery runs off the screen (${Math.round(box.width)}x${Math.round(box.height)} in ${innerWidth}x${innerHeight})`);
+    t.event("endings-gallery", `${label}: ${foundWant} of ${ends.length}, ${foundTiles.length} named, ${locked.length} locked`);
+  };
+  const openTab = async (label) => {
+    const tab = $("tab-endings");
+    if (!tab) throw new Error(`${id}: no Endings tab`);
+    tab.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, tab, "Endings tab");
+    await sleep(300);
+    checkGallery($("spark-endings"), stories().foundEndings(id)?.length || 0, label);
+  };
+  try {
+    // Smoke leg: seed one found ending, open the gallery from the story page, check locked silhouette + count.
+    if (options.at === "smoke") {
+      const first = ends[0];
+      localStorage.setItem(endingsStorageKey(st), JSON.stringify({ ids: [first] }));
+      if (!landingShown()) await toLanding(t);
+      await openStory(t, id);
+      await toStart(t, { quiet: true });
+      t.scene(`${id}: Endings gallery (smoke)`);
+      await openTab(`${id} smoke`);
+      const foundName = String(st.scenes[first].title[1] || st.scenes[first].title[0]).trim();
+      const named = [...document.querySelectorAll("#spark-endings .ending-tile.is-found .ending-tile-name")].map((n) => n.textContent.trim());
+      if (!named.includes(foundName)) t.problem("bug", `${id} smoke: found tile should say "${foundName}"`);
+      t.metric("endingsFound", 1);
+      t.metric("endingsTotal", ends.length);
+      {
+        const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+        const sound = doc.defaultView && doc.defaultView.hawkesSound;
+        if (sound && sound.prompt && sound.prompt()) await passPrompt(t, doc, "endings-gallery phone");
+        await sleep(400);
+        const tab = doc.getElementById("tab-endings");
+        if (tab) { tab.click(); await sleep(300); }
+        const pane = doc.getElementById("spark-endings");
+        if (pane && !pane.hidden) {
+          const count = pane.querySelector(".endings-count")?.textContent.trim();
+          t.event("screenshot", `endings gallery at 390x844: ${count || "no count"}`);
+          if (pane.getBoundingClientRect().bottom > 844 + 2) t.problem("bug", `${id}: gallery cut off at 390x844`);
+        } else t.event("screenshot", "endings gallery at 390x844 (tab open attempted)");
+        closeViewFrame();
+      }
+      t.progress(1);
+      return;
+    }
+
+    if (!landingShown()) await toLanding(t);
+    await openStory(t, id);
+    await toStart(t, { quiet: true });
+    let reached = 0;
+    for (const end of ends) {
+      t.scene(`${id}: way to ${end}`);
+      const way = wayTo(st, (sc) => sc === st.scenes[end]);
+      if (!way) throw new Error(`${id}: no way to ${end}`);
+      if (sceneId() !== st.start || spark().depth() !== 0) {
+        // New run from the ending card or a restart.
+        if ($("spark-try-another")) {
+          await tapAt(t, $("spark-try-another"), "Try another path");
+          await sleep(400);
+        } else await toStart(t, { quiet: true });
+      }
+      for (const to of way) await pressTo(to);
+      await sleep(400);
+      reached += 1;
+      const card = $("spark-ending");
+      if (card.hidden || !card.classList.contains("ending-card")) t.problem("bug", `${id}: reaching ${end} shows no ending card`);
+      const countEl = $("spark-ending-count") || card.querySelector(".ending-count");
+      const want = `${reached} of ${ends.length} found`;
+      t.event("ending-count", `${id}/${end}: ${countEl ? countEl.textContent.trim() : "(none)"}`);
+      if (!countEl || countEl.textContent.trim() !== want) t.problem("bug", `${id}: ending card count "${countEl ? countEl.textContent.trim() : ""}", want "${want}"`);
+      const openBtn = $("spark-endings-open");
+      if (!openBtn) t.problem("bug", `${id}: ending card has no Endings button`);
+      else {
+        await tapAt(t, openBtn, "Endings from card");
+        await sleep(300);
+        checkGallery($("spark-endings"), reached, `${id} from ending card (${reached})`);
+      }
+      t.progress(reached / (ends.length + 2));
+    }
+    // Tapping a found ending shows its card again.
+    const firstFound = ends[0];
+    const tile = document.querySelector(`#spark-endings .ending-tile.is-found[data-ending="${firstFound}"]`);
+    if (!tile) t.problem("bug", `${id}: no found tile for ${firstFound} to tap`);
+    else {
+      await tapAt(t, tile, `found ending ${firstFound}`);
+      await sleep(350);
+      const recall = $("spark-ending");
+      t.event("ending-recall", `${id}/${firstFound}: card ${recall && !recall.hidden ? "shown" : "missing"}`);
+      if (!recall || recall.hidden || recall.dataset.ending !== firstFound) t.problem("bug", `${id}: tapping found ending did not show its card`);
+      else if (!recall.querySelector(".ending-name")) t.problem("bug", `${id}: recalled ending card has no name`);
+    }
+    // Story page tab still works once both are found.
+    await openTab(`${id} Endings tab`);
+    t.metric("endingsFound", stories().foundEndings(id)?.length || 0);
+    t.metric("endingsTotal", ends.length);
+    // Fit checks at the two sizes the brief asks for.
+    for (const [w, h, name] of [[390, 844, "phone"], [1280, 720, "desktop"]]) {
+      const doc = await viewFrameLoad(t, `/?story=${id}`, w, h);
+      const sound = doc.defaultView && doc.defaultView.hawkesSound;
+      if (sound && sound.prompt && sound.prompt()) await passPrompt(t, doc, `endings-gallery ${name}`);
+      await sleep(400);
+      const tab = doc.getElementById("tab-endings");
+      if (tab) { tab.click(); await sleep(300); }
+      const pane = doc.getElementById("spark-endings");
+      if (!pane || pane.hidden) t.problem("bug", `${id}: gallery not open at ${w}x${h}`);
+      else {
+        const box = pane.getBoundingClientRect();
+        t.event("screenshot", `endings gallery at ${w}x${h}: ${pane.querySelector(".endings-count")?.textContent.trim() || ""}`);
+        if (box.bottom > h + 2 || box.right > w + 2) t.problem("bug", `${id}: gallery cut off at ${w}x${h}`);
+        const locked = pane.querySelectorAll(".ending-tile.is-locked").length;
+        if (locked !== 0) t.problem("bug", `${id}: at ${w}x${h} still has ${locked} locked tiles after both endings`);
+      }
+      closeViewFrame();
+    }
+    t.event("criterion", `${id}: endings gallery shows found posters/names, locked ???, count up to ${ends.length} of ${ends.length}, recall works, fits 390x844 and 1280x720`);
+    // Night Shift's twelve tiles must scroll inside the player at 390x844 (flex shell like the Tree).
+    const night = story("night-shift");
+    if (night && Array.isArray(night.endings) && night.endings.length > 4) {
+      t.scene("Night Shift: Endings gallery scrolls at 390x844");
+      localStorage.setItem(endingsStorageKey(night), JSON.stringify({ ids: night.endings.slice(0, 2).map((e) => e.id) }));
+      const doc = await viewFrameLoad(t, "/?story=night-shift", 390, 844);
+      const sound = doc.defaultView && doc.defaultView.hawkesSound;
+      if (sound && sound.prompt && sound.prompt()) await passPrompt(t, doc, "night-shift endings");
+      await sleep(500);
+      const btn = doc.getElementById("console-endings-btn");
+      if (!btn) t.problem("bug", "night-shift: no Endings button");
+      else {
+        btn.click();
+        await sleep(350);
+        const pane = doc.getElementById("console-endings");
+        if (!pane || pane.hidden) t.problem("bug", "night-shift: Endings gallery did not open");
+        else {
+          const tiles = pane.querySelectorAll(".ending-tile").length;
+          t.event("screenshot", `night-shift endings at 390x844: ${tiles} tiles, ${pane.querySelector(".endings-count")?.textContent.trim() || ""}`);
+          if (tiles !== night.endings.length) t.problem("bug", `night-shift: gallery shows ${tiles} tiles, want ${night.endings.length}`);
+          if (pane.scrollHeight <= pane.clientHeight + 1 && tiles > 6) t.problem("warning", "night-shift: gallery did not need to scroll at 390x844 (tiles may be too small)");
+          if (pane.getBoundingClientRect().right > 390 + 2) t.problem("bug", "night-shift: gallery wider than 390px");
+        }
+      }
+      closeViewFrame();
+    }
+    t.progress(1);
+  } finally {
+    closeViewFrame();
+    // Outer smoke (or another parent) owns restoreProgress when this ran as a leg.
   }
 }
 
@@ -5977,7 +6189,7 @@ async function livingHomeRun(options, t) {
   const posts = document.querySelectorAll(".post-card");
   if (posts.length) { posts[0].scrollIntoView({ block: "center" }); await sleep(1500); }
   t.event("blog", `${document.querySelectorAll(".post-card.awake").length} of ${posts.length} post cards awake`);
-  scrollTo(0, 0);
+  window.scrollTo(0, 0);
   await sleep(8000);
   const log = L.log().filter((e) => e.at >= 0);
   const times = log.map((e) => e.at / 1000).sort((a, b) => a - b);
@@ -6216,10 +6428,17 @@ installPlaytest({
   scenarios: [
     {
       id: "smoke",
-      title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): Tree, first video, one choice, All stories; language and phone-media at 390x844; scene-swap blackFrames; then Continue Previously for every story (poster, title, one choice line, tap skips) on the page and at 390x844 and 1280x720",
-      seconds: 400,
+      title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): Tree, first video, one choice, All stories; language and phone-media at 390x844; scene-swap blackFrames; Continue Previously; then Endings gallery (one found, locked silhouette) at 390x844",
+      seconds: 420,
       tags: ["smoke"],
-      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Last, the trimmed Continue Previously leg (`continueRecap` with at:smoke): each story is re-armed mid-run, Continue (hero or card) shows #story-recap (poster push-in, title, one short choice line), a tap skips it, and the left-off scene has its choices; checked on the page and in frames at 390x844 and 1280x720. Events recap-armed, previously, recap-landed, screenshot.",
+      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Then the trimmed Continue Previously leg (`continueRecap` with at:smoke). Last, the trimmed Endings gallery leg (`endingsGalleryRun` with at:smoke): one Water Road ending seeded as found, Endings tab shows \"1 of 2 found\", a named poster and a locked ??? silhouette, fit check at 390x844.",
+    },
+    {
+      id: "endings-gallery",
+      title: "Endings gallery: reach two Water Road endings, found posters and names, locked silhouettes, count, recall, fit at 390x844 and 1280x720",
+      seconds: 180,
+      tags: ["full"],
+      description: "Clears progress, opens The Water Road (or {\"story\":\"<id>\"}), walks the shortest way to each ending with real presses. At each ending the card shows \"N of M found\" and an Endings button; the gallery lists found endings with poster and name and locked ones as a blurred darkened silhouette with \"???\". Tapping a found ending shows its card again. The Endings tab on the story page shows the same gallery. Fit checks in frames at 390x844 and 1280x720 after both are found. Events endings-count, endings-gallery, ending-recall, screenshot; metrics endingsFound, endingsTotal.",
     },
     {
       id: "stories",
@@ -6434,6 +6653,7 @@ installPlaytest({
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
       else if (id === "endings") await endingsRun(options, t);
+      else if (id === "endings-gallery") await endingsGalleryRun(options, t);
       else if (id === "cinema") await cinemaRun(options, t);
       else if (id === "phone-player") await phonePlayerRun(options, t);
       else if (id === "phone-media") await phoneMediaRun(options, t);

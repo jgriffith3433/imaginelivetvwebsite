@@ -431,13 +431,41 @@
     els.choices.replaceChildren();
     els.choices.hidden = !finished || !!s.ending;
     els.ending.hidden = !(finished && s.ending);
-    els.ending.textContent = s.ending ? s.ending[0] : "";
-    if (s.ending && s.endcard) {
-      var card = document.createElement("img");
-      card.className = "console-endcard";
-      card.src = s.endcard;
-      card.alt = "";
-      els.ending.prepend(card);
+    els.ending.replaceChildren();
+    if (finished && s.ending) {
+      if (s.endcard) {
+        var card = document.createElement("img");
+        card.className = "console-endcard";
+        card.src = s.endcard;
+        card.alt = "";
+        els.ending.appendChild(card);
+      }
+      els.ending.appendChild(document.createTextNode(s.ending[0]));
+      var ends = Array.isArray(story.endings) ? story.endings : [];
+      var foundN = 0;
+      try {
+        var raw = localStorage.getItem("iltv.endings." + story.cookie);
+        var saved = raw ? JSON.parse(raw) : null;
+        var ids = Array.isArray(saved) ? saved : (saved && Array.isArray(saved.ids) ? saved.ids : []);
+        foundN = ids.length;
+      } catch (e) { foundN = 0; }
+      if (!foundN && ends.length) foundN = 1; // this ending was just reached; game.js writes the key
+      if (ends.length) {
+        var count = document.createElement("p");
+        count.className = "ending-count";
+        count.id = "console-ending-count";
+        count.textContent = foundN + " of " + ends.length + " found";
+        els.ending.appendChild(count);
+      }
+      var galleryBtn = document.createElement("button");
+      galleryBtn.type = "button";
+      galleryBtn.className = "console-btn ending-gallery-btn";
+      galleryBtn.id = "console-ending-open";
+      galleryBtn.textContent = "Endings";
+      galleryBtn.addEventListener("click", function () {
+        if (hooks && hooks.endingsGallery) hooks.endingsGallery();
+      });
+      els.ending.appendChild(galleryBtn);
     }
     box.dataset.state = s.ending ? "soon" : "play";
     if (!finished || s.ending) return;
@@ -724,6 +752,11 @@
     run = null;
     story = null;
     box.hidden = true;
+    var endingsPane = $("console-endings");
+    if (endingsPane) endingsPane.hidden = true;
+    if (els.logBtn) { /* keep */ }
+    var endingsBtn = $("console-endings-btn");
+    if (endingsBtn) endingsBtn.setAttribute("aria-pressed", "false");
   }
 
   /** Start Over / a card's reset: forgets the saved run (the cookies are game.js's). */

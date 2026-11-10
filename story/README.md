@@ -301,6 +301,12 @@ cheat"). Every story keeps two cookies, both named from `cookie` in its data:
   omitted on older cookies and at the start. Start Over clears the run.
 - the **unlocks**, `<cookie>Unlocked`: `{ seen, completed }`, every scene ever reached in the player (by id, once)
   and whether an ending was. Nothing in the game clears it: deaths, Try again and Start Over keep it.
+- the **found endings**, localStorage `iltv.endings.<cookie>`: `{ ids: [...] }`, every ending scene reached once.
+  `npm run story` lists each story's ending nodes into `endings` on `js/story-data.js` (id, title, poster or
+  endcard). The Endings gallery (Endings tab on a video story, Endings on a console story and on the ending card)
+  shows found tiles with poster and name, locked ones as a blurred darkened silhouette with "???", and a count
+  like "2 of 5 found". Tapping a found ending shows its card again. Nothing clears found endings. Playtest
+  `endings-gallery` (smoke's trimmed leg seeds one found ending).
 
 **Continue Previously (J, 2026-11-10):** pressing Continue on a mid-run (hero, Continue row or card) shows a ~3 s
 overlay after Tap to play: the last scene's poster with a slow push-in, the story title and one short line naming the

@@ -87,7 +87,12 @@ function validate(st) {
   if (st.listed && !st.entry.runtime) problems.push(`${id}: no runtime in ${LISTING} (its card says how long one way through takes, e.g. "About 10 min")`);
   if (st.listed && !st.entry.mood) problems.push(`${id}: no mood in ${LISTING} (its card's few words of tone)`);
   if (st.entry.status != null) problems.push(`${id}: status is gone from ${LISTING}: every card wears the player's own progress badge (Not started, Started, Completed), and a story is completed at a scene with an "ending"`);
-  if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) problems.push(`${id}: card image ${st.entry.image} doesn't exist`);
+  // Card JPGs are often absent in a sparse / fresh agent checkout (m_edb2ba8ccb87). Warn and fall back to the
+  // first video's frame on the landing card so `npm run story` still builds; production clones keep the image.
+  if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) {
+    warnings.push(`${id}: card image ${st.entry.image} missing (landing card uses the first video's frame until it is there)`);
+    st.entry.image = null;
+  }
   if (!data.cookie || !/^[A-Za-z0-9_-]+$/.test(data.cookie)) problems.push(`${id}: cookie (the name its progress is saved under) must be letters, digits, - or _`);
   if (st.console) return validateConsole(st);
   if (!data.ui || !data.ui.en) problems.push(`${id}: ui.en (the English under the player's labels) is missing`);
@@ -256,6 +261,30 @@ function clipExtras(video) {
   return { ...(exists(poster.slice(1)) ? { poster } : {}), ...(exists(small.slice(1)) ? { small } : {}) };
 }
 
+/** Every ending node of a story for the Endings gallery (id, title, poster or endcard). Deaths are not endings. */
+function endingsList(st) {
+  return st.scenes.filter((s) => s.ending).map((s) => {
+    if (st.console) {
+      const card = urlIfMade(consoleFiles(st).endcard(s.id));
+      return {
+        id: s.id,
+        title: [s.title, s.title],
+        ending: [s.ending, s.ending],
+        ...(card ? { poster: card, endcard: card } : {}),
+      };
+    }
+    const video = videoOf(st, s);
+    const extras = clipExtras(video);
+    return {
+      id: s.id,
+      title: s.title,
+      ending: s.ending,
+      ...(extras.poster ? { poster: extras.poster } : {}),
+      ...(video ? { video } : {}),
+    };
+  });
+}
+
 /** A card's or the hero's picture: WebP when made, lazy below the fold (\`eager\`: the first picture of the page). */
 function pictureTag(src, alt, cls, eager) {
   const attrs = `alt="${esc(alt)}" width="540" height="960" decoding="async"${eager ? ' fetchpriority="high"' : ' loading="lazy"'}`;
@@ -297,6 +326,7 @@ function storyData() {
       };
     }
     const langs = new Set(['en', ...st.scenes.map((s) => s.lang)]);
+    const endings = endingsList(st);
     return {
       id: st.id,
       title: titleOf(st),
@@ -310,6 +340,7 @@ function storyData() {
       ui: Object.fromEntries(Object.entries(st.data.ui).filter(([lang]) => langs.has(lang))),
       ...(st.data.inventory ? { inventory: st.data.inventory } : {}),
       ...(st.data.unspoken ? { unspoken: st.data.unspoken } : {}),
+      endings,
       scenes: out,
     };
   });
@@ -897,6 +928,7 @@ function consoleData(st) {
     music: Object.fromEntries(Object.keys(d.music ?? {}).map((cue) => [cue, urlIfMade(f.music(cue))])),
     ...(d.unspoken ? { unspoken: d.unspoken } : {}),
     ...(d.stateCap ? { stateCap: d.stateCap } : {}),
+    endings: endingsList(st),
     scenes,
   };
 }
@@ -1114,7 +1146,11 @@ if (CHECK) {
   for (const c of changed) console.log(`wrote    ${c}`);
   for (const st of stories) {
     const gen = st.scenes.filter((s) => useOf(st, s) === 'gen').length;
-    console.log(`${st.id}: ${st.scenes.length} scenes (${st.console ? `console story, ${st.explored?.states ?? 0} states explored` : `${gen} on generated media`})${st.listed ? '' : ', not on the landing page'}`);
+    const ends = endingsList(st);
+    const endNote = ends.length
+      ? `, ${ends.length} ending${ends.length === 1 ? '' : 's'}: ${ends.map((e) => e.id).join(', ')}`
+      : ', no endings yet';
+    console.log(`${st.id}: ${st.scenes.length} scenes (${st.console ? `console story, ${st.explored?.states ?? 0} states explored` : `${gen} on generated media`})${endNote}${st.listed ? '' : ', not on the landing page'}`);
   }
   console.log(`${changed.length} file(s) changed`);
 }

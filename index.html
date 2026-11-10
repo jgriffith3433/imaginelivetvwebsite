@@ -113,6 +113,7 @@
         <div class="spark-tabs" role="tablist" aria-label="The story">
           <button type="button" class="spark-tab is-active" id="tab-play" role="tab" aria-selected="true" aria-controls="spark-play">Play</button>
           <button type="button" class="spark-tab" id="tab-tree" role="tab" aria-selected="false" aria-controls="spark-tree">Tree</button>
+          <button type="button" class="spark-tab" id="tab-endings" role="tab" aria-selected="false" aria-controls="spark-endings">Endings</button>
         </div>
         <label class="spark-lang" id="spark-lang-box" hidden>
           <span class="spark-lang-label">Language</span>
@@ -143,6 +144,7 @@
         </div>
       </div>
       <div id="spark-tree" class="tree-view" hidden></div>
+      <div id="spark-endings" class="endings-gallery" hidden aria-label="Endings"></div>
     </section>
     <section class="console" id="console" data-state="play" data-subs="on" hidden aria-label="Console story">
       <div class="console-bar">
@@ -152,7 +154,9 @@
         <span class="console-explored" id="console-explored"></span>
         <button type="button" class="console-btn" id="console-cc" aria-pressed="true" title="Subtitles">CC</button>
         <button type="button" class="console-btn" id="console-log-btn" aria-pressed="false">Log</button>
+        <button type="button" class="console-btn" id="console-endings-btn" aria-pressed="false">Endings</button>
       </div>
+      <div id="console-endings" class="endings-gallery" hidden aria-label="Endings"></div>
       <div class="console-body">
         <div class="console-stage" id="console-stage">
           <div class="console-room" id="console-room" data-place="room" data-look="sil" data-mode="room" role="group" aria-label="Control room">

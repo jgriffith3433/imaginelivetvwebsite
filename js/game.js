@@ -164,8 +164,82 @@
   // Every story keeps two cookies: its run (`cookie` in its data: { scene, history }, the place you're at and the
   // way you came) and its unlocks (`<cookie>Unlocked`: { seen, completed }, every scene ever reached in the player
   // and whether an ending was). Start Over clears the run only; deaths, Try again and Start Over keep the unlocks.
+  // Found endings live in localStorage "iltv.endings.<cookie>" (ids once found), next to the unlocks; nothing clears them.
   function unlocksCookie(story) {
     return story.cookie + "Unlocked";
+  }
+
+  function endingsKey(story) {
+    return "iltv.endings." + story.cookie;
+  }
+
+  /** Ending nodes listed by the build (`story.endings`), or derived from scenes that carry an `ending` line. */
+  function endingsOf(story) {
+    if (Array.isArray(story.endings) && story.endings.length) return story.endings;
+    return Object.keys(story.scenes).filter(function (id) {
+      return !!story.scenes[id].ending;
+    }).map(function (id) {
+      const s = story.scenes[id];
+      return {
+        id: id,
+        title: s.title,
+        ending: s.ending,
+        poster: s.poster || s.endcard || "",
+        endcard: s.endcard || ""
+      };
+    });
+  }
+
+  /** Found ending ids for a story (localStorage). Seeds from unlocks.seen when the key is empty so older runs count. */
+  function readFoundEndings(story) {
+    const found = {};
+    const ends = endingsOf(story);
+    const endIds = {};
+    ends.forEach(function (e) { endIds[e.id] = true; });
+    try {
+      const raw = localStorage.getItem(endingsKey(story));
+      const saved = raw ? JSON.parse(raw) : null;
+      const list = Array.isArray(saved) ? saved : (saved && Array.isArray(saved.ids) ? saved.ids : []);
+      list.forEach(function (id) { if (typeof id === "string" && endIds[id]) found[id] = true; });
+    } catch (error) { /* storage blocked or bad JSON */ }
+    if (!Object.keys(found).length) {
+      const unlocks = readUnlocks(story);
+      ends.forEach(function (e) { if (unlocks.seen[e.id]) found[e.id] = true; });
+      if (Object.keys(found).length) writeFoundEndings(story, found);
+    }
+    return found;
+  }
+
+  function writeFoundEndings(story, found) {
+    try {
+      localStorage.setItem(endingsKey(story), JSON.stringify({ ids: Object.keys(found) }));
+    } catch (error) { /* storage blocked: gallery still works for this page load */ }
+  }
+
+  function markEndingFound(story, sceneId) {
+    if (!story || !sceneId) return;
+    const ends = endingsOf(story);
+    if (!ends.some(function (e) { return e.id === sceneId; })) return;
+    const found = readFoundEndings(story);
+    if (found[sceneId]) return;
+    found[sceneId] = true;
+    writeFoundEndings(story, found);
+  }
+
+  function endingTitleOf(entry) {
+    if (!entry) return "";
+    const t = entry.title;
+    if (Array.isArray(t)) return String(t[1] || t[0] || "");
+    return String(t || "");
+  }
+
+  function endingPosterOf(entry, story) {
+    if (!entry) return "";
+    return entry.poster || entry.endcard || (story && story.image) || "";
+  }
+
+  function endingsCountText(foundN, total) {
+    return foundN + " of " + total + " found";
   }
 
   /** A story's current run ({ scene, history, from, choice, poster }), or null. from/choice/poster are the Continue
@@ -604,13 +678,17 @@
     return steps;
   }
 
-  /** The card at an ending: its kicker (THE END), its own name, the choices made, how many endings are found, and
-      Try another path (a new run from the start with this way marked). */
-  function showEndingCard(sceneId, scene) {
-    const way = history.concat(sceneId);
-    const steps = recapOf(way);
-    const ends = Object.keys(SCENES).filter(function (id) { return !!SCENES[id].ending; });
-    const found = ends.filter(function (id) { return unlocked[id]; }).length;
+  /** The card at an ending: its kicker (THE END), its own name, the choices made, how many endings are found,
+      a link into the Endings gallery, and Try another path (a new run from the start with this way marked). */
+  function showEndingCard(sceneId, scene, opts) {
+    const options = opts || {};
+    const way = options.way || history.concat(sceneId);
+    const steps = options.skipRecap ? [] : recapOf(way);
+    const ends = endingsOf(STORY);
+    const foundMap = readFoundEndings(STORY);
+    markEndingFound(STORY, sceneId);
+    foundMap[sceneId] = true;
+    const foundN = Object.keys(foundMap).length;
     endingBox.className = "spark-ending ending-card";
     endingBox.dataset.ending = sceneId;
     endingBox.replaceChildren();
@@ -623,38 +701,52 @@
     fillSpot(name, scene.title, scene.titleEn, scene.lang, scene.dir);
     const count = document.createElement("p");
     count.className = "ending-count";
-    count.textContent = "Ending " + found + " of " + ends.length + " found";
+    count.id = "spark-ending-count";
+    count.textContent = endingsCountText(foundN, ends.length);
     endingBox.append(kicker, name, count);
 
-    const head = document.createElement("p");
-    head.className = "ending-recap-head";
-    head.textContent = steps.length ? "The choices you made" : "You made no choices";
-    endingBox.appendChild(head);
-    const list = document.createElement("ol");
-    list.className = "ending-recap";
-    steps.forEach(function (step) {
-      const li = document.createElement("li");
-      fillSpot(li, choiceLabel(step.choice.say), choiceLabel(step.choice.en), step.from.lang, step.from.dir);
-      list.appendChild(li);
-    });
-    endingBox.appendChild(list);
+    if (!options.skipRecap) {
+      const head = document.createElement("p");
+      head.className = "ending-recap-head";
+      head.textContent = steps.length ? "The choices you made" : "You made no choices";
+      endingBox.appendChild(head);
+      const list = document.createElement("ol");
+      list.className = "ending-recap";
+      steps.forEach(function (step) {
+        const li = document.createElement("li");
+        fillSpot(li, choiceLabel(step.choice.say), choiceLabel(step.choice.en), step.from.lang, step.from.dir);
+        list.appendChild(li);
+      });
+      endingBox.appendChild(list);
+    }
 
-    const again = document.createElement("button");
-    again.type = "button";
-    again.className = "choice ending-again";
-    again.id = "spark-try-another";
-    again.textContent = "Try another path";
-    again.addEventListener("click", function () {
-      writeLastWay(STORY, way);
-      lastWay = way;
-      clearProgress(STORY);
-      tell("restart", { story: STORY.id, via: "start_over", from: "ending_card" });
-      history = [];
-      fromPlayer = true;
-      if (treeRoot) treeRoot.replaceChildren();
-      show(STORY.start);
-    });
-    endingBox.appendChild(again);
+    const galleryBtn = document.createElement("button");
+    galleryBtn.type = "button";
+    galleryBtn.className = "choice ending-gallery-btn";
+    galleryBtn.id = "spark-endings-open";
+    galleryBtn.textContent = "Endings";
+    galleryBtn.addEventListener("click", function () { openEndingsGallery(STORY); });
+    endingBox.appendChild(galleryBtn);
+
+    if (!options.skipAgain) {
+      const again = document.createElement("button");
+      again.type = "button";
+      again.className = "choice ending-again";
+      again.id = "spark-try-another";
+      again.textContent = "Try another path";
+      again.addEventListener("click", function () {
+        writeLastWay(STORY, way);
+        lastWay = way;
+        clearProgress(STORY);
+        tell("restart", { story: STORY.id, via: "start_over", from: "ending_card" });
+        history = [];
+        fromPlayer = true;
+        if (treeRoot) treeRoot.replaceChildren();
+        setView("play");
+        show(STORY.start);
+      });
+      endingBox.appendChild(again);
+    }
   }
 
   // Cinema chrome (J, 2026-11-06): the choices wait dimmed while the clip plays, fade in when it ends with a thin
@@ -719,7 +811,7 @@
     root.classList.remove("is-idle");
     if (idleTimer) clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
-      if (root.hidden || root.classList.contains("is-tree")) return;
+      if (root.hidden || root.classList.contains("is-tree") || root.classList.contains("is-endings")) return;
       root.classList.add("is-idle");
     }, IDLE_MS);
   }
@@ -734,7 +826,10 @@
     currentScene = sceneId;
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
     unlocked[sceneId] = true;
-    if (scene.ending) completed = true;
+    if (scene.ending) {
+      completed = true;
+      markEndingFound(STORY, sceneId);
+    }
     saveProgress();
     showExplored();
     root.dataset.state = sceneState(scene);
@@ -851,27 +946,187 @@
   }
 
   const treeRoot = document.getElementById("spark-tree");
+  const endingsRoot = document.getElementById("spark-endings");
   const tabPlay = document.getElementById("tab-play");
   const tabTree = document.getElementById("tab-tree");
+  const tabEndings = document.getElementById("tab-endings");
 
   function choiceLabel(text) {
     return String(text).replace(/^\d+\.\s*/, "");
   }
 
   function setView(view) {
-    const playing = view !== "tree";
     const playPane = document.getElementById("spark-play");
     if (!playPane || !treeRoot || !tabPlay || !tabTree) return;
+    const mode = view === "tree" ? "tree" : (view === "endings" ? "endings" : "play");
 
-    playPane.hidden = !playing;
-    treeRoot.hidden = playing;
-    root.classList.toggle("is-tree", !playing);
-    tabPlay.classList.toggle("is-active", playing);
-    tabTree.classList.toggle("is-active", !playing);
-    tabPlay.setAttribute("aria-selected", playing ? "true" : "false");
-    tabTree.setAttribute("aria-selected", playing ? "false" : "true");
+    playPane.hidden = mode !== "play";
+    treeRoot.hidden = mode !== "tree";
+    if (endingsRoot) endingsRoot.hidden = mode !== "endings";
+    root.classList.toggle("is-tree", mode === "tree");
+    root.classList.toggle("is-endings", mode === "endings");
+    tabPlay.classList.toggle("is-active", mode === "play");
+    tabTree.classList.toggle("is-active", mode === "tree");
+    if (tabEndings) {
+      tabEndings.classList.toggle("is-active", mode === "endings");
+      tabEndings.setAttribute("aria-selected", mode === "endings" ? "true" : "false");
+    }
+    tabPlay.setAttribute("aria-selected", mode === "play" ? "true" : "false");
+    tabTree.setAttribute("aria-selected", mode === "tree" ? "true" : "false");
 
-    if (!playing) renderTree();
+    if (mode === "tree") renderTree();
+    if (mode === "endings") renderEndingsGallery(endingsRoot, STORY);
+  }
+
+  /** Fill an Endings gallery pane: found tiles show poster + name; locked ones a blurred poster and "???". */
+  function renderEndingsGallery(pane, story) {
+    if (!pane || !story) return;
+    const ends = endingsOf(story);
+    const found = readFoundEndings(story);
+    const foundN = Object.keys(found).length;
+    pane.replaceChildren();
+    pane.dataset.story = story.id;
+
+    const head = document.createElement("div");
+    head.className = "endings-head";
+    const title = document.createElement("h2");
+    title.className = "endings-title";
+    title.textContent = "Endings";
+    const count = document.createElement("p");
+    count.className = "endings-count";
+    count.id = pane.id === "console-endings" ? "console-endings-count" : "spark-endings-count";
+    count.textContent = endingsCountText(foundN, ends.length);
+    head.append(title, count);
+    pane.appendChild(head);
+
+    const grid = document.createElement("div");
+    grid.className = "endings-grid";
+    grid.setAttribute("role", "list");
+    ends.forEach(function (entry) {
+      const known = !!found[entry.id];
+      const tile = document.createElement(known ? "button" : "div");
+      tile.className = "ending-tile" + (known ? " is-found" : " is-locked");
+      tile.dataset.ending = entry.id;
+      tile.setAttribute("role", "listitem");
+      if (known) {
+        tile.type = "button";
+        tile.setAttribute("aria-label", endingTitleOf(entry));
+      } else {
+        tile.setAttribute("aria-label", "Locked ending");
+      }
+
+      const media = document.createElement("div");
+      media.className = "ending-tile-media";
+      const poster = endingPosterOf(entry, story);
+      if (poster) {
+        const img = document.createElement("img");
+        img.src = poster;
+        img.alt = "";
+        img.loading = "lazy";
+        img.decoding = "async";
+        media.appendChild(img);
+      } else {
+        media.classList.add("is-blank");
+      }
+      const label = document.createElement("span");
+      label.className = "ending-tile-name";
+      label.textContent = known ? endingTitleOf(entry) : "???";
+      tile.append(media, label);
+      if (known) {
+        tile.addEventListener("click", function () {
+          showFoundEndingCard(story, entry.id);
+        });
+      }
+      grid.appendChild(tile);
+    });
+    pane.appendChild(grid);
+    // Quiet lobby tick when the wall opens (no GPU: a short oscillator), skipped under reduced motion.
+    try {
+      if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) {
+          const ctx = new Ctx();
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.type = "sine";
+          o.frequency.value = 660;
+          g.gain.value = 0.0001;
+          g.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18);
+          o.connect(g);
+          g.connect(ctx.destination);
+          o.start();
+          o.stop(ctx.currentTime + 0.2);
+          setTimeout(function () { try { ctx.close(); } catch (e) { /* gone */ } }, 280);
+        }
+      }
+    } catch (e) { /* autoplay / blocked */ }
+    tell("feature", { name: "endings_gallery", story: story.id, found: foundN, total: ends.length });
+  }
+
+  function openEndingsGallery(story) {
+    if (!story) return;
+    if (story.type === "console") {
+      const pane = document.getElementById("console-endings");
+      const btn = document.getElementById("console-endings-btn");
+      if (!pane) return;
+      const open = pane.hidden;
+      pane.hidden = !open;
+      if (btn) btn.setAttribute("aria-pressed", open ? "true" : "false");
+      if (open) renderEndingsGallery(pane, story);
+      return;
+    }
+    setView("endings");
+  }
+
+  /** Tapping a found ending: show its ending card again (no teleport; recap of the live run only when it is the current scene). */
+  function showFoundEndingCard(story, endingId) {
+    const entry = endingsOf(story).filter(function (e) { return e.id === endingId; })[0];
+    if (!entry || !readFoundEndings(story)[endingId]) return;
+    tell("feature", { name: "ending_recall", story: story.id, ending: endingId });
+    if (story.type === "console") {
+      const pane = document.getElementById("console-endings");
+      if (!pane) return;
+      pane.replaceChildren();
+      const card = document.createElement("div");
+      card.className = "ending-card endings-recall";
+      card.dataset.ending = endingId;
+      const poster = endingPosterOf(entry, story);
+      if (poster) {
+        const img = document.createElement("img");
+        img.className = "console-endcard";
+        img.src = poster;
+        img.alt = "";
+        card.appendChild(img);
+      }
+      const kicker = document.createElement("p");
+      kicker.className = "ending-kicker";
+      const kick = Array.isArray(entry.ending) ? entry.ending[0] : entry.ending;
+      kicker.textContent = kick || "THE END";
+      const name = document.createElement("h2");
+      name.className = "ending-name";
+      name.textContent = endingTitleOf(entry);
+      const found = readFoundEndings(story);
+      const count = document.createElement("p");
+      count.className = "ending-count";
+      count.textContent = endingsCountText(Object.keys(found).length, endingsOf(story).length);
+      const back = document.createElement("button");
+      back.type = "button";
+      back.className = "choice ending-gallery-btn";
+      back.textContent = "Back to Endings";
+      back.addEventListener("click", function () { renderEndingsGallery(pane, story); });
+      card.append(kicker, name, count, back);
+      pane.appendChild(card);
+      return;
+    }
+    // Video story: switch to Play and show the card (live recap only when this ending is the current scene).
+    setView("play");
+    endingBox.hidden = false;
+    const scene = SCENES[endingId];
+    if (scene) {
+      const live = currentScene === endingId;
+      showEndingCard(endingId, scene, { skipRecap: !live, skipAgain: !live, way: live ? history.concat(endingId) : [endingId] });
+    }
   }
 
   function markTreeCurrent() {
@@ -1125,6 +1380,7 @@
   if (tabPlay && tabTree) {
     tabPlay.addEventListener("click", function () { setView("play"); });
     tabTree.addEventListener("click", function () { setView("tree"); });
+    if (tabEndings) tabEndings.addEventListener("click", function () { setView("endings"); });
   }
 
   /* ---------------- the landing page and the stories ---------------- */
@@ -1454,12 +1710,16 @@
     visit: function (sceneId) {
       currentScene = sceneId;
       unlocked[sceneId] = true;
-      if (STORY.scenes[sceneId].ending) completed = true;
+      if (STORY.scenes[sceneId].ending) {
+        completed = true;
+        markEndingFound(STORY, sceneId);
+      }
       saveProgress();
       return exploredOf(STORY, unlocked);
     },
     history: function (ids) { history = ids.slice(); },
-    tell: tell
+    tell: tell,
+    endingsGallery: function () { openEndingsGallery(STORY); }
   };
 
   function openConsole(story, withRecap) {
@@ -1653,7 +1913,10 @@
     path: function () { return currentScene ? history.concat(currentScene) : []; },
     unlocked: function () { return STORY ? Object.keys(unlocked) : []; },
     explored: function () { return STORY ? exploredOf(STORY, unlocked) : null; },
-    inventory: function () { return kitCounts(); }
+    inventory: function () { return kitCounts(); },
+    /** Ending nodes from the build, and which of them this browser has found. */
+    endings: function () { return STORY ? endingsOf(STORY).map(function (e) { return e.id; }) : []; },
+    foundEndings: function () { return STORY ? Object.keys(readFoundEndings(STORY)) : []; }
   };
   window.iltvStories = {
     list: function () { return DATA.stories.map(function (story) { return story.id; }); },
@@ -1663,6 +1926,15 @@
     run: function (id) { return STORIES[id] ? runOf(STORIES[id]) : null; },
     explored: function (id) { return STORIES[id] ? exploredOf(STORIES[id], readUnlocks(STORIES[id]).seen) : null; },
     view: function () { return STORY ? "story" : "landing"; },
+    endings: function (id) {
+      const story = STORIES[id];
+      return story ? endingsOf(story).map(function (e) {
+        return { id: e.id, title: endingTitleOf(e), poster: endingPosterOf(e, story) || "", found: !!readFoundEndings(story)[e.id] };
+      }) : null;
+    },
+    foundEndings: function (id) {
+      return STORIES[id] ? Object.keys(readFoundEndings(STORIES[id])) : null;
+    },
     /** The Continue Previously overlay while it is up: { story, from, choice, poster }, or null. */
     recap: function () {
       const el = document.getElementById("story-recap");
@@ -1670,6 +1942,14 @@
       return { story: el.dataset.story, from: el.dataset.from, choice: el.dataset.choice, poster: el.dataset.poster || "" };
     }
   };
+
+  // Console Endings button (same gallery as the video player's Endings tab).
+  const consoleEndingsBtn = document.getElementById("console-endings-btn");
+  if (consoleEndingsBtn) {
+    consoleEndingsBtn.addEventListener("click", function () {
+      if (STORY && STORY.type === "console") openEndingsGallery(STORY);
+    });
+  }
 
   route();
 })();
