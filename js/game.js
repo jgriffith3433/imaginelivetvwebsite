@@ -34,7 +34,7 @@
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
       choices: (spec.choices || []).map(function (choice) {
-        return { say: choice[0], en: choice[1], next: choice[2] };
+        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3] };
       })
     };
   }
@@ -504,6 +504,7 @@
       target's poster, never black). Taps during the wait are ignored, so the scene shown is always the one chosen. */
   function goTo(choice) {
     if (pendingTap || !SCENES[choice.next]) return;
+    stopChoiceWindow();
     var from = currentScene, story = STORY;
     var token = pendingTap = {};
     var t0 = performance.now();
@@ -823,9 +824,20 @@
     windowTick = null;
     if (defaultTimer) clearTimeout(defaultTimer);
     defaultTimer = null;
-    choicesBox.querySelectorAll(".is-default-pick").forEach(function (b) { b.classList.remove("is-default-pick"); });
-    if (timerBox) timerBox.dataset.urgent = "false";
-    if (timerBox) { timerBox.hidden = true; timerBox.dataset.state = "off"; }
+    choicesBox.querySelectorAll(".is-default-pick").forEach(function (b) {
+      b.classList.remove("is-default-pick");
+      delete b.dataset.defaultPick;
+    });
+    if (timerBox) {
+      const bar = timerBox.querySelector(".choice-timer-bar");
+      if (bar) {
+        bar.style.animation = "";
+        bar.style.transform = "";
+      }
+      timerBox.dataset.urgent = "false";
+      timerBox.hidden = true;
+      timerBox.dataset.state = "off";
+    }
   }
 
   function setChoicePhase(phase) {
@@ -850,7 +862,11 @@
     const label = timerBox.querySelector(".choice-timer-label");
     const bar = timerBox.querySelector(".choice-timer-bar");
     if (label) label.textContent = "Up next";
-    if (bar) bar.style.animation = "none";
+    if (bar) {
+      bar.style.animation = "none";
+      bar.style.transform = "";
+    }
+    timerBox.dataset.urgent = "false";
     timerBox.hidden = false;
     timerBox.dataset.state = "waiting";
     syncWaitingProgress(video);
@@ -873,29 +889,31 @@
     const bar = timerBox.querySelector(".choice-timer-bar");
     timerBox.hidden = false;
     timerBox.dataset.state = "running";
-    bar.style.animation = "none";
-    void bar.offsetWidth;
+    timerBox.dataset.urgent = "false";
     bar.style.animation = "";
-    bar.style.animationDuration = CHOICE_WINDOW + "s";
+    bar.style.transform = "scaleX(1)";
     const total = CHOICE_WINDOW * 1000;
     const t0 = performance.now();
     const scene = currentScene;
-    let shown = -1;
-    timerBox.dataset.urgent = "false";
+    let shown = CHOICE_WINDOW;
     label.textContent = "Choose in " + CHOICE_WINDOW + " s";
     const frame = function (now) {
-      if (currentScene !== scene) return;
+      if (currentScene !== scene || root.hidden) return;
       const left = Math.max(0, total - (now - t0));
+      const ratio = left / total;
+      bar.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
       const secs = Math.ceil(left / 1000);
-      if (secs !== shown) {
+      if (secs > 0 && secs !== shown) {
         shown = secs;
         label.textContent = "Choose in " + secs + " s";
         if (secs <= 3) timerBox.dataset.urgent = "true";
       }
       if (left > 0) { windowTick = requestAnimationFrame(frame); return; }
       windowTick = null;
+      bar.style.transform = "scaleX(0)";
+      timerBox.dataset.urgent = "false";
       timerBox.dataset.state = "done";
-      label.textContent = "Choosing\u2026";
+      label.textContent = "Choosing...";
       pickDefault(scene);
     };
     windowTick = requestAnimationFrame(frame);
@@ -910,7 +928,8 @@
     const btn = choicesBox.querySelectorAll(".choice")[idx];
     if (!btn) return;
     btn.classList.add("is-default-pick");
-    tell("feature", { feature: "timeout_default", story: STORY.id, node: scene });
+    btn.dataset.defaultPick = "true";
+    tell("feature", { feature: "timeout_default", story: STORY.id, node: scene, choice: choiceLabel(sc.choices[idx].en) });
     defaultTimer = setTimeout(function () {
       defaultTimer = null;
       if (currentScene === scene && !pendingTap) goTo(sc.choices[idx]);
@@ -1888,6 +1907,7 @@
   };
 
   function openConsole(story, withRecap) {
+    stopChoiceWindow();
     stopVideo();
     STORY = story;
     SCENES = story.scenes;
@@ -2008,6 +2028,7 @@
     closeConsole();
     if (push) window.history.pushState({}, "", urlFor(null));
     else if (new URL(location.href).searchParams.has("story")) window.history.replaceState({}, "", urlFor(null));
+    stopChoiceWindow();
     stopVideo();
     if (window.iltvAudio) {
       window.iltvAudio.unwatch();

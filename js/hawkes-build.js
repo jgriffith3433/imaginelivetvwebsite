@@ -1,7 +1,7 @@
 /* The build these pages are, for Hawkes Analytics (AGENTS.md "Analytics"). Loaded right before
    Gen's analytics SDK on every page people see. The HAWKES_BUILD line is written by `npm run stamp`
    (tools/stamp-build.mjs): don't edit it by hand. */
-window.HAWKES_BUILD = {"version":"1.9.1","commit":"e998a3522e","date":"2026-11-06T03:28:49Z"};
+window.HAWKES_BUILD = {"version":"1.9.1","commit":"70de03f5fc","date":"2026-11-10T21:33:12Z"};
 
 (function () {
   var framed = false;
