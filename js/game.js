@@ -949,6 +949,16 @@
       videoBox.appendChild(video);
       addClipControls(video);
       playClip(video);
+      // The incoming clip must never sit paused under the cross-fade: resume it when it can play and when the fade ends.
+      const resume = function () {
+        if (activeClip !== video || !video.isConnected || video.ended || !video.paused) return;
+        const p = video.play();
+        if (p && p.catch) p.catch(function () { video.muted = true; const q = video.play(); if (q && q.catch) q.catch(function () {}); });
+      };
+      if (!(window.hawkesSound && window.hawkesSound.prompt())) {
+        video.addEventListener("canplay", resume, { once: true });
+        setTimeout(resume, fadeMs() + 60);
+      }
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
       showWaitingCue(scene.choices.length > 0, video);
