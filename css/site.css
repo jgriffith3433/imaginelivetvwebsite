@@ -1111,7 +1111,8 @@ a { color: var(--green); }
 /* The featured story's catalogue card steps aside while the hero says Continue (one button for it). */
 .story-card[data-featured][data-run="mid"] { display: none; }
 
-#spark-tree {
+#spark-tree,
+#spark-endings {
   flex: 1;
   min-height: 0;
   display: flex;
@@ -1119,7 +1120,8 @@ a { color: var(--green); }
 }
 
 #spark-play[hidden],
-#spark-tree[hidden] { display: none; }
+#spark-tree[hidden],
+#spark-endings[hidden] { display: none; }
 
 .tree-scroll {
   flex: 1;
@@ -2482,10 +2484,153 @@ figure.feed { cursor: default; }
 .ending-recap li.spot > .spot-en { display: block; }
 .ending-recap li.spot { position: relative; }
 .ending-recap li.spot > .spot-en { position: absolute; inset: 0; }
-.ending-again { margin-top: 0.4rem; min-height: 44px; text-align: center; font-weight: 700; }
+.ending-again,
+.ending-gallery-btn { margin-top: 0.4rem; min-height: 44px; text-align: center; font-weight: 700; }
+.ending-gallery-btn { font-weight: 600; }
 @keyframes ending-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .spark-ending.ending-card { animation: none; } }
 @media (max-height: 560px) { .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
+
+/* Endings gallery (js/game.js): found tiles show poster + name; locked ones a blurred, darkened silhouette + ???. */
+.spark.is-endings #spark-play,
+.spark.is-endings #spark-tree { display: none; }
+.endings-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+  padding: 0.6rem 0.75rem 1.2rem;
+  color: #f2f0eb;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.endings-gallery[hidden] { display: none; }
+.endings-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+}
+.endings-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 4.5vw, 1.7rem);
+  letter-spacing: 0.02em;
+}
+.endings-count {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #a9a59f;
+}
+.endings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.65rem;
+}
+.ending-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background: #121317;
+  color: inherit;
+  text-align: left;
+  overflow: hidden;
+  min-height: 44px;
+  cursor: default;
+}
+button.ending-tile {
+  cursor: pointer;
+  font: inherit;
+}
+button.ending-tile:focus-visible {
+  outline: 2px solid #f2f0eb;
+  outline-offset: 2px;
+}
+.ending-tile-media {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  background: #0a0b0d;
+  overflow: hidden;
+}
+.ending-tile-media.is-blank { background: linear-gradient(160deg, #1a1c22, #0a0b0d 70%); }
+.ending-tile-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ending-tile.is-locked .ending-tile-media img {
+  filter: blur(10px) brightness(0.35) saturate(0.4);
+  transform: scale(1.08);
+}
+.ending-tile.is-locked .ending-tile-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 7, 9, 0.45);
+}
+/* Soft lobby drift across the wall so the gallery isn't a dead grid (fun-reviewer). */
+.ending-tile-media::before {
+  content: "";
+  position: absolute;
+  inset: -20% -40%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.07) 48%, transparent 62%);
+  animation: endings-drift 7s ease-in-out infinite alternate;
+}
+.ending-tile.is-locked .ending-tile-media::before { opacity: 0.35; }
+@keyframes endings-drift {
+  from { transform: translateX(-8%); }
+  to { transform: translateX(12%); }
+}
+.ending-tile-name {
+  display: block;
+  padding: 0 0.55rem 0.55rem;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+.ending-tile.is-locked .ending-tile-name {
+  letter-spacing: 0.2em;
+  color: #8e8a84;
+}
+.endings-recall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem 0.25rem 1rem;
+}
+#console-endings {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: rgba(8, 9, 11, 0.96);
+}
+.console { position: relative; }
+.console-ending .ending-count,
+.console-ending .ending-gallery-btn { display: block; margin: 0.45rem auto 0; }
+.console-ending .ending-gallery-btn { min-height: 44px; }
+@media (max-width: 420px) {
+  .endings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+  .ending-tile-name { font-size: 0.75rem; }
+}
+@media (max-height: 560px) {
+  .ending-tile-media { aspect-ratio: 3 / 4; max-height: 28dvh; }
+  .endings-gallery { padding-bottom: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ending-tile.is-locked .ending-tile-media img { transform: none; }
+  .ending-tile-media::before { animation: none; }
+}
 
 /* Try another path: where the last run went (the choice you took, the nodes in the Tree). */
 .choice.was-taken {
@@ -2627,8 +2772,8 @@ figure.feed { cursor: default; }
 }
 
 .spark-bar, .spark-copy { transition: opacity 0.6s ease; }
-.spark.is-idle:not(.is-tree) .spark-bar,
-.spark.is-idle:not(.is-tree) .spark-copy { opacity: 0; }
+.spark.is-idle:not(.is-tree):not(.is-endings) .spark-bar,
+.spark.is-idle:not(.is-tree):not(.is-endings) .spark-copy { opacity: 0; }
 .spark.is-idle .spark-bar:focus-within { opacity: 1; }
 
 /* Wide screens: the portrait clip fills the stage's height beside the text (the two-column layout above), on a

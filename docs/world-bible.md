@@ -51,7 +51,13 @@ ending. There is **no Back button** (canon: a choice stands).
 **C. The Tree.** A map of the story as found: only unlocked scenes show, a locked "?" per way not taken, nothing pressable.
 It is the home's one *map*: it is how a player sees how big a world they have not seen.
 
-**D. The blog.** The studio's lobby noticeboard: posts, each with its own images and videos, in the player's language list.
+**D. The Endings gallery (new).** Each story's found endings, reachable from the ending card and from an Endings tab
+(or Night Shift's Endings button). Found tiles show that ending's poster and name; unfound ones show a blurred,
+darkened silhouette of the same poster and "???". A count reads "2 of 5 found" and rises when a new ending is
+reached (kept in localStorage `iltv.endings.<cookie>` next to the unlocks). Tapping a found ending shows its card
+again. Playtest `endings-gallery` (and smoke's trimmed leg) checks it at 390x844 and 1280x720.
+
+**E. The blog.** The studio's lobby noticeboard: posts, each with its own images and videos, in the player's language list.
 
 ### The Final Spark: the sewer and the town
 
