@@ -695,10 +695,10 @@ a { color: var(--green); }
   .spark h1 { font-size: 0.95rem; }
   .spark-sub { display: none; }
   .spark-tabs { margin-bottom: 0.1rem; }
-  .choice { padding: 0.28rem 0.5rem; }
+  .choice { min-height: 48px; padding: 0.35rem 0.75rem; }
   .spark-story { font-size: 0.78rem; line-height: 1.25; margin-bottom: 0.2rem; }
   .spark-question { margin: 0.05rem 0 0.25rem; font-size: 0.86rem; }
-  .spark-choices { gap: 0.25rem; }
+  .spark-choices { gap: 0.3rem; }
 }
 
 @media (max-width: 860px) {
@@ -2253,9 +2253,9 @@ figure.feed { cursor: default; }
 .console-controls { flex: none; display: flex; gap: 0.4rem; }
 .console-controls .console-btn { flex: 1; }
 
-.console-choices { flex: none; display: flex; flex-direction: column; gap: 0.35rem; }
+.console-choices { flex: none; display: flex; flex-direction: column; gap: 0.45rem; padding-bottom: 0.4rem; }
 .console-choices[hidden], .console-ending[hidden] { display: none; }
-.console-choices .choice { min-height: 44px; overflow-wrap: anywhere; }
+.console-choices .choice { min-height: 48px; overflow-wrap: anywhere; }
 
 .console-ending {
   flex: none;
@@ -2301,7 +2301,7 @@ figure.feed { cursor: default; }
 /* A phone on its side (844x390): the words column scrolls by itself, so many choices (up to fifteen) never push the
    Log button or the subtitles off the screen; once the lines are heard the subtitles give room to the choices. */
 @media (orientation: landscape) and (max-height: 520px) {
-  .console-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+  .console-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scroll-padding-bottom: 0.5rem; }
   /* The strip takes all the room the choices leave (it was a fixed 6rem box with half the screen empty) and shrinks, to the newest line at least, when the choices need it. */
   .console[data-lines="done"] .console-subs { flex: 1 1 auto; min-height: 2.6rem; max-height: none; }
   .console .console-endcard { width: auto; max-width: 100%; max-height: 32dvh; }
@@ -2312,9 +2312,9 @@ figure.feed { cursor: default; }
   .console[data-state="soon"] .console-panel { gap: 0.25rem; }
   /* The stage's width follows the height that is left under the site bar and the console bar, so it never pushes the page into a scroll. */
   .console-stage { width: min(100%, calc((100dvh - 7.6rem - 2.4rem) / 0.6625)); }
-  /* Many choices (up to twelve) scroll inside the words column; each stays whole and 44px tall. */
-  .console-choices { padding-bottom: 0.15rem; }
-  .console-choices .choice { flex: none; }
+  /* Many choices (up to twelve) scroll inside the words column; each stays whole and at least 48px tall. */
+  .console-choices { gap: 0.3rem; padding-bottom: 0.4rem; }
+  .console-choices .choice { flex: none; min-height: 48px; }
 }
 
 @media (min-width: 1000px) and (min-height: 700px) {
@@ -2327,9 +2327,9 @@ figure.feed { cursor: default; }
    choices never push the page into a scroll; once the lines are heard the subtitles give room to the choices. */
 @media (max-width: 559px) and (orientation: portrait) {
   .console-body { overflow-y: hidden; }
-  .console-panel { min-height: 8rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+  .console-panel { min-height: 8rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scroll-padding-bottom: 0.5rem; }
   .console[data-lines="done"] .console-subs { flex: 1 1 auto; min-height: 2.6rem; max-height: none; }
-  .console-choices { padding-bottom: 0.15rem; }
+  .console-choices { padding-bottom: 0.4rem; }
 }
 
 @media (max-width: 559px) {
@@ -2488,7 +2488,12 @@ figure.feed { cursor: default; }
 @media (max-height: 560px) { .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
 
 /* Try another path: where the last run went (the choice you took, the nodes in the Tree). */
-.choice.was-taken { border-color: #f4f2ee; }
+.choice.was-taken {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  border-color: #f4f2ee;
+}
 .choice.was-taken::after {
   content: "Last time";
   display: block;
@@ -2500,27 +2505,126 @@ figure.feed { cursor: default; }
 }
 .tree-node.is-walked { border-color: #d8b45a; }
 
-/* ---------------- Cinematic player chrome (J, 2026-11-06) ----------------
-   Desktop: the video sits in a 2.39:1 letterbox (black bars), the choices wait dimmed while the clip plays and come up
-   with a thin countdown when it ends, and the bar and title fade away after 3 s without movement. */
-.choice-timer { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.45rem; min-height: 14px; transition: opacity 0.4s ease; }
+/* ---------------- Unified choice-card & cinematic player chrome (J, 2026-11-06 / f_32e426e8a75b) ----------------
+   All three stories share one choice-card system: while a clip plays, choices show an "Up next" preview state (soft
+   glow, thin progress line, never dim grey disabled text); once active, near-white text (#e8e4dc) with a visible
+   border, staggered slide and fade-in (70 ms apart), and a desktop hover/focus state. 48 px minimum height and full
+   width across viewports. */
+.spark-choices, .console-choices {
+  width: 100%;
+  gap: 0.45rem;
+  padding-bottom: 0.4rem;
+  --clip-progress: 24%;
+}
+.spark-choices .choice, .console-choices .choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #e8e4dc;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 65%), #2a2f37;
+  border: 1.5px solid #d8d4cd;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  text-align: left;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  opacity: 1;
+  transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease, color 0.16s ease;
+}
+.spark-choices .choice:hover,
+.console-choices .choice:hover,
+.spark-choices .choice:focus-visible,
+.console-choices .choice:focus-visible {
+  color: #fbfaf7;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0) 65%), #383f4a;
+  border-color: #f4f2ee;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.42), 0 0 14px rgba(232, 228, 220, 0.22);
+  transform: translateY(-1px);
+}
+.spark-choices .choice:active,
+.console-choices .choice:active {
+  background: #444a53;
+  transform: translateY(0);
+}
+.spark-choices .choice:focus-visible,
+.console-choices .choice:focus-visible {
+  outline: 2px solid #f4f2ee;
+  outline-offset: 2px;
+}
+
+.choice-timer { display: flex; align-items: center; gap: 0.65rem; margin: 0 0 0.45rem; min-height: 18px; transition: opacity 0.4s ease; }
 /* Hidden keeps its row: the video stage must not resize when the countdown appears. */
 .choice-timer[hidden] { display: flex; visibility: hidden; }
-.choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
-.choice-timer-bar { display: block; height: 100%; width: 100%; background: #c8c4be; transform-origin: left center; animation: choice-timer linear forwards; }
-.choice-timer-label { min-width: 3.6em; text-align: right; color: #8e8b86; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
-.choice-timer[data-state="waiting"] { visibility: hidden; }
-.choice-timer[data-state="waiting"] .choice-timer-bar { animation: none; }
+.choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.16); border-radius: 2px; overflow: hidden; }
+.choice-timer-bar { display: block; height: 100%; width: 100%; background: #e8e4dc; transform-origin: left center; animation: choice-timer linear forwards; }
+.choice-timer-label { min-width: 5.5em; text-align: right; color: #e8e4dc; font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.choice-timer[data-state="waiting"] { visibility: visible; opacity: 0.96; }
+.choice-timer[data-state="waiting"] .choice-timer-bar {
+  animation: none;
+  transform: none;
+  width: var(--clip-progress, 24%);
+  background: linear-gradient(90deg, rgba(232, 228, 220, 0.55), #e8e4dc);
+  box-shadow: 0 0 8px rgba(232, 228, 220, 0.5);
+  transition: width 0.25s linear;
+}
 .choice-timer[data-state="done"] { opacity: 0.55; }
 .choice-timer[data-state="done"] .choice-timer-bar { animation: none; transform: scaleX(0); }
 @keyframes choice-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 
-.spark-choices[data-phase="waiting"] .choice { opacity: 0.4; }
-.spark-choices[data-phase="ready"] .choice { animation: choice-in 0.7s ease both; }
-.spark-choices[data-phase="ready"] .choice:nth-child(2) { animation-delay: 0.12s; }
-.spark-choices[data-phase="ready"] .choice:nth-child(3) { animation-delay: 0.24s; }
-.spark-choices[data-phase="ready"] .choice:nth-child(n+4) { animation-delay: 0.36s; }
-@keyframes choice-in { from { opacity: 0.22; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* "Up next" preview state while a clip plays: soft glow and thin progress line, never dim grey disabled text. */
+.spark-choices[data-phase="waiting"] .choice {
+  opacity: 1;
+  color: #e8e4dc;
+  background: linear-gradient(180deg, rgba(232, 228, 220, 0.1), rgba(232, 228, 220, 0.02)), #242931;
+  border-color: #cbc6be;
+  box-shadow: 0 0 16px rgba(232, 228, 220, 0.18), inset 0 0 10px rgba(232, 228, 220, 0.07);
+  overflow: hidden;
+}
+.spark-choices[data-phase="waiting"] .choice::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: var(--clip-progress, 24%);
+  background: linear-gradient(90deg, rgba(232, 228, 220, 0.55), #e8e4dc);
+  box-shadow: 0 0 8px rgba(232, 228, 220, 0.55);
+  transition: width 0.25s linear;
+  pointer-events: none;
+}
+
+/* Active state: staggered slide and fade-in (70 ms apart, within 60-80 ms) across all three stories. */
+.spark-choices .choice:nth-child(1), .console-choices .choice:nth-child(1) { --choice-i: 0; }
+.spark-choices .choice:nth-child(2), .console-choices .choice:nth-child(2) { --choice-i: 1; }
+.spark-choices .choice:nth-child(3), .console-choices .choice:nth-child(3) { --choice-i: 2; }
+.spark-choices .choice:nth-child(4), .console-choices .choice:nth-child(4) { --choice-i: 3; }
+.spark-choices .choice:nth-child(5), .console-choices .choice:nth-child(5) { --choice-i: 4; }
+.spark-choices .choice:nth-child(6), .console-choices .choice:nth-child(6) { --choice-i: 5; }
+.spark-choices .choice:nth-child(7), .console-choices .choice:nth-child(7) { --choice-i: 6; }
+.spark-choices .choice:nth-child(8), .console-choices .choice:nth-child(8) { --choice-i: 7; }
+.spark-choices .choice:nth-child(n+9), .console-choices .choice:nth-child(n+9) { --choice-i: 8; }
+.spark-choices[data-phase="ready"] .choice,
+.console[data-lines="done"] .console-choices .choice,
+.console-choices[data-phase="ready"] .choice {
+  animation: choice-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--choice-i, 0) * 70ms);
+}
+.console-choices .choice[data-stress] { animation: none; }
+@keyframes choice-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.console-choices:not(:empty)::before {
+  content: "Your move";
+  color: #e8e4dc;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
 .spark-bar, .spark-copy { transition: opacity 0.6s ease; }
 .spark.is-idle:not(.is-tree) .spark-bar,
@@ -2536,7 +2640,17 @@ figure.feed { cursor: default; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spark-choices[data-phase="ready"] .choice { animation: none; }
+  .spark-choices .choice,
+  .console-choices .choice,
+  .spark-choices[data-phase="ready"] .choice,
+  .console[data-lines="done"] .console-choices .choice,
+  .console-choices[data-phase="ready"] .choice,
+  .spark-choices[data-phase="waiting"] .choice::before,
+  .choice-timer[data-state="waiting"] .choice-timer-bar {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
   .spark-bar, .spark-copy { transition: none; }
 }
 
@@ -2577,7 +2691,7 @@ figure.feed { cursor: default; }
 @media (orientation: landscape) and (max-height: 500px) {
   .spark-copy { display: none; }
   #spark-play { grid-template-rows: minmax(0, 1fr); grid-template-areas: "stage panel"; }
-  .spark-panel { overflow-y: auto; overscroll-behavior: contain; }
+  .spark-panel { overflow-y: auto; overscroll-behavior: contain; scroll-padding-bottom: 0.5rem; }
 }
 
 /* A phone on its side, a story open (J, 2026-11-08; attempts 1 and 2 left the clip a 9:16 column, 89x159 then 184x327 of a
@@ -2642,7 +2756,7 @@ figure.feed { cursor: default; }
   }
   .spark:not(.is-tree) .spark-unmute { left: 0.6rem; bottom: calc(var(--inventory-h) + 0.3rem); }
   .spark:not(.is-tree) .spark-fullscreen { left: calc(var(--lp-col) - 2.75rem + 0.6rem); right: auto; bottom: calc(var(--inventory-h) + 0.3rem); }
-  /* Right black: the question and the choices, scrolling by themselves if there are many. */
+  /* Right black: the question and the choices, sized so every choice is at least 48px tall and fully visible. */
   .spark:not(.is-tree) .spark-panel {
     position: fixed;
     top: 0;
@@ -2650,8 +2764,38 @@ figure.feed { cursor: default; }
     bottom: var(--inventory-h);
     z-index: 50;
     width: var(--lp-col);
-    padding: 0.4rem 0.6rem 0.4rem 0;
+    padding: 0.3rem 0.6rem 0.3rem 0;
     justify-content: safe center;
+  }
+  .spark:not(.is-tree) .spark-story {
+    max-height: 4.5rem;
+    overflow-y: auto;
+    margin-bottom: 0.15rem;
+    font-size: 0.76rem;
+    line-height: 1.22;
+  }
+  .spark:not(.is-tree) .spark-question {
+    margin: 0.05rem 0 0.2rem;
+    font-size: 0.84rem;
+    line-height: 1.2;
+  }
+  .spark:not(.is-tree) .choice-timer {
+    margin: 0 0 0.2rem;
+    min-height: 16px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .spark-choices, .console-choices { gap: 0.3rem; }
+  .spark-choices .choice, .console-choices .choice {
+    min-height: 48px;
+    padding: 0.32rem 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.2;
+  }
+  .console-choices:not(:empty)::before {
+    font-size: 0.7rem;
+    line-height: 1.1;
   }
 }
 
@@ -2661,42 +2805,19 @@ figure.feed { cursor: default; }
 
 /* ---------------- Choices on a phone (J, 2026-11-08; playtest finding f_32e426e8a75b) ----------------
    Up to 480px wide every choice is a full-width button at least 48px tall with 1rem text, near-white on a lifted
-   fill with a visible border (the dim look stays for the truly disabled: waiting for the clip, locked). The countdown
-   sits right above them, readable, and says "Choose in N s". Night Shift's choices get the same, under a "Your move" cue. */
+   fill with a visible border, staggered entrance when active, and the countdown / Up next cue above them. */
 @media (max-width: 480px) {
   .spark-choices, .console-choices { width: 100%; gap: 0.5rem; }
   .spark-choices .choice, .console-choices .choice {
-    display: flex;
-    align-items: center;
     width: 100%;
     min-height: 48px;
-    box-sizing: border-box;
-    padding: 0.7rem 1rem;
+    padding: 0.65rem 1rem;
     font-size: 1rem;
     line-height: 1.3;
-    color: #fbfaf7;
-    background: #2f343b;
-    border: 1.5px solid #d8d4cd;
-    overflow-wrap: anywhere;
-    white-space: normal;
   }
-  .spark-choices .choice:active, .console-choices .choice:active { background: #444a53; }
-  .spark-choices .choice:focus-visible, .console-choices .choice:focus-visible { outline: 2px solid #f4f2ee; outline-offset: 2px; }
-  .choice-timer { gap: 0.7rem; margin: 0 0 0.6rem; min-height: 24px; }
+  .choice-timer { gap: 0.7rem; margin: 0 0 0.55rem; min-height: 22px; }
   .choice-timer-track { height: 5px; background: rgba(255, 255, 255, 0.2); }
-  .choice-timer-bar { background: #f4f2ee; }
-  .choice-timer-label { min-width: 7.5em; color: #f4f2ee; font-size: 0.85rem; }
-  /* While the clip plays the choices are live too (they work): full strength, no fade-in from dim, the cue says so. */
-  .choice-timer[data-state="waiting"] { visibility: visible; }
-  .spark-choices[data-phase="waiting"] .choice { opacity: 1; }
-  .spark-choices[data-phase="ready"] .choice { animation: none; }
-  .console-choices:not(:empty)::before {
-    content: "Your move";
-    color: #f4f2ee;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  .choice-timer-label { min-width: 7.5em; font-size: 0.85rem; }
 }
 
 /* Language picker (The Final Spark: every page is in another language). "English" shows the English plainly,
