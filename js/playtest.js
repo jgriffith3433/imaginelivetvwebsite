@@ -849,6 +849,8 @@ async function smoke(options, t) {
   await phoneMediaRun({ story: "water-road", landingOnly: false }, { ...t, progress: (p) => t.progress(0.9 + 0.1 * p) });
   t.scene("Scene swap after a choice, 1280x720 and 390x844");
   await swapRun({}, { ...t, progress: (p) => t.progress(0.95 + 0.05 * p) });
+  t.scene("Continue recap after a choice");
+  await continueRecap({}, { ...t, progress: (p) => t.progress(0.97 + 0.03 * p) });
   closeViewFrame();
   t.progress(1);
 }
@@ -908,6 +910,7 @@ async function swapRun(options, t) {
       const buttons = () => (con ? openChoices(doc) : [...doc.querySelectorAll("#spark-choices .choice")]);
       let blackFrames = 0, worstSwap = 0, frames = 0;
       for (let k = 0; k < 2; k++) {
+        if (con) await consoleHeard(t, doc, `${id} ${label} swap ${k + 1}`);
         if (!(await waitFor(() => buttons().length && (con || doc.getElementById("spark-choices").dataset.phase === "ready"), 40000))) { t.problem("bug", `${id} ${label}: no choice to press for the swap check`); break; }
         await sleep(400);
         const before = sceneNow();
@@ -1534,7 +1537,7 @@ function continueControl(doc, id) {
     Continue; the recap shows the last scene's poster, the title and one short line; a tap skips; then the left-off
     scene with its choices. Checked on the page and in frames at 390x844 and 1280x720. */
 async function continueRecap(options, t) {
-  rememberProgress();
+  if (!savedRuns && savedCookie == null) rememberProgress();
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
   await passSplash(t);
   clearProgress();
