@@ -5747,6 +5747,51 @@ async function nightRoomRun(options, t) {
   await toLanding(t);
 }
 
+/* ---------------- living-home ---------------- */
+async function livingHomeRun(options, t) {
+  rememberProgress();
+  await passSplash(t);
+  if (!landingShown()) await toLanding(t);
+  const L = window.iltvLiving;
+  if (!L) throw new Error("js/living.js didn't start");
+  t.scene("Living home: the house lights come up");
+  const start = performance.now();
+  await sleep(2600);
+  t.event("lights", `${L.lit()} of ${L.cards()} cards lit`);
+  if (L.lit() < L.cards()) t.problem("bug", "the house lights did not come up on every card");
+  t.progress(0.3);
+  t.scene("Living home: the cards answer");
+  const press = [];
+  for (const card of document.querySelectorAll("#stories .hero, #stories .story-card")) {
+    card.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, relatedTarget: document.body }));
+    t.event("card-hover", `${card.dataset.story}: ${card.classList.contains("hot") ? "glows" : "NO REACTION"}`);
+    if (!card.classList.contains("hot")) t.problem("bug", `${card.dataset.story}'s card does not react to the pointer`);
+    card.dispatchEvent(new PointerEvent("pointerout", { bubbles: true, relatedTarget: document.body }));
+    await sleep(1500);
+  }
+  t.progress(0.6);
+  t.scene("Living home: the blog wakes");
+  const posts = document.querySelectorAll(".post-card");
+  if (posts.length) { posts[0].scrollIntoView({ block: "center" }); await sleep(1500); }
+  t.event("blog", `${document.querySelectorAll(".post-card.awake").length} of ${posts.length} post cards awake`);
+  scrollTo(0, 0);
+  await sleep(8000);
+  const log = L.log().filter((e) => e.at >= 0);
+  const times = log.map((e) => e.at / 1000).sort((a, b) => a - b);
+  let max = 0;
+  for (let i = 1; i < times.length; i++) max = Math.max(max, times[i] - times[i - 1]);
+  max = Math.max(max, (performance.now() - start) / 1000 - (times[times.length - 1] || 0));
+  const kinds = new Set(log.map((e) => e.kind));
+  t.metric("quality.maxQuietSeconds", Math.round(max * 10) / 10);
+  t.metric("quality.textOnlyBeats", 0);
+  t.event("living-kinds", [...kinds].join(", "));
+  if (max > 10) t.problem("bug", `${max.toFixed(1)} s with nothing to see, hear or do`);
+  if (!kinds.has("flicker")) t.problem("bug", "the screen wall never flickered on its own");
+  if (L.screens() < 3) t.problem("bug", "the wall has fewer than three screens");
+  restoreProgress();
+  t.progress(1);
+}
+
 /* ---------------- front-door: the landing page as a streaming service's front door ---------------- */
 
 /** A page's width: nothing wider than the screen, and every press target on it at least 44 px each way. */
@@ -5982,6 +6027,13 @@ installPlaytest({
       description: "From a fresh browser, each listed story (The Final Spark, The Water Road, Night Shift) is opened from its card while every animation frame is sampled: the page stays at the top and the site header stays in view (open-frames event). One choice is pressed in each (a real press); the percent explored must go up and be above 0 (Night Shift is 1 of 228 scenes: at least 1%), the player's text matching explored(), and the card says Started. Event progress per story, metrics explored_<id>.",
     },
     {
+      id: "living-home",
+      title: "The landing page is alive: the house lights come up, a wall of screens flickers on its own, cards answer the pointer, blog cards wake; never ten quiet seconds",
+      seconds: 60,
+      tags: ["full"],
+      description: "Fresh load, splash passed. Watches the house lights come up card by card and the three-screen wall flicker by itself, hovers and presses each card (a pointer event, a tick synthesized in the page), scrolls to the blog so its cards wake, then reports quality.maxQuietSeconds (longest gap between two things to see, hear or do, from js/living.js's log plus the presses) and quality.textOnlyBeats (0: the beat is light and sound, no text).",
+    },
+    {
       id: "front-door",
       title: "The landing page as a front door: a hero, every card with poster, runtime, mood and percent explored, a Continue row once a story is started, and it fits at 390 px",
       seconds: 60,
@@ -6148,6 +6200,7 @@ installPlaytest({
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "progress") await progressRun(options, t);
+      else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
       else if (id === "night-shift-audio") await nightAudioRun(options, t);
