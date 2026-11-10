@@ -248,7 +248,9 @@ function videoOf(st, s) {
     if (s.film) warnings.push(`${why}; playing the film`);
     // A story off the landing page can be drafted before its media exists: its pages show no video until then.
     else if (!st.listed) warnings.push(`${st.id}: a draft (not on the landing page) whose media isn't made yet: its scenes show no video until it is`);
-    else problems.push(`${st.id}/${s.id}: uses "gen", has no film, and its media isn't made yet`);
+    // A clean clone may not hold the generated media: the build still works; STRICT_MEDIA=1 makes it a problem.
+    else if (process.env.STRICT_MEDIA) problems.push(`${st.id}/${s.id}: uses "gen", has no film, and its media isn't made yet`);
+    else warnings.push(`${st.id}/${s.id}: uses "gen", has no film, and its media isn't made yet`);
   }
   return s.film ?? null;
 }
