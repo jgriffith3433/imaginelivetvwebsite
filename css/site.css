@@ -2730,9 +2730,9 @@ button.ending-tile:focus-visible {
 .choice-timer { display: flex; align-items: center; gap: 0.65rem; margin: 0 0 0.45rem; min-height: 18px; transition: opacity 0.4s ease; }
 /* Hidden keeps its row: the video stage must not resize when the countdown appears. */
 .choice-timer[hidden] { display: flex; visibility: hidden; }
-.choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.16); border-radius: 2px; overflow: hidden; }
-.choice-timer-bar { display: block; height: 100%; width: 100%; background: #e8e4dc; transform-origin: left center; animation: choice-timer linear forwards; }
-.choice-timer-label { min-width: 5.5em; text-align: right; color: #e8e4dc; font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.choice-timer-track { flex: 1; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 999px; overflow: hidden; }
+.choice-timer-bar { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #d8d4cd, #f4f2ee); border-radius: inherit; transform-origin: left center; box-shadow: 0 0 8px rgba(232, 228, 220, 0.35); transition: background 0.2s ease, box-shadow 0.2s ease; }
+.choice-timer-label { min-width: 6.5em; flex-shrink: 0; white-space: nowrap; text-align: right; color: #e8e4dc; font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; transition: color 0.2s ease; }
 .choice-timer[data-state="waiting"] { visibility: visible; opacity: 0.96; }
 .choice-timer[data-state="waiting"] .choice-timer-bar {
   animation: none;
@@ -2742,14 +2742,40 @@ button.ending-tile:focus-visible {
   box-shadow: 0 0 8px rgba(232, 228, 220, 0.5);
   transition: width 0.25s linear;
 }
-.choice-timer[data-state="done"] { opacity: 0.55; }
-.choice-timer[data-state="done"] .choice-timer-track { animation: none; }
-.choice-timer[data-state="done"] .choice-timer-bar { animation: none; transform: scaleX(0); }
-.choice-timer[data-urgent="true"] .choice-timer-bar { background: #f0a35e; box-shadow: 0 0 10px rgba(240, 163, 94, 0.7); }
-.choice-timer[data-urgent="true"] .choice-timer-track { animation: choice-timer-pulse 0.5s ease-in-out infinite alternate; }
-.choice-timer[data-urgent="true"] .choice-timer-label { color: #f0a35e; }
-@keyframes choice-timer-pulse { from { opacity: 0.6; } to { opacity: 1; } }
-.choice.is-default-pick { outline: 2px solid #f0a35e; outline-offset: 2px; box-shadow: 0 0 18px rgba(240, 163, 94, 0.6); }
+.choice-timer[data-urgent="true"] .choice-timer-bar {
+  background: linear-gradient(90deg, #e07a3c, #ffb36b);
+  box-shadow: 0 0 12px rgba(240, 163, 94, 0.85);
+  animation: choice-timer-pulse 0.45s ease-in-out infinite alternate;
+}
+.choice-timer[data-urgent="true"] .choice-timer-track {
+  background: rgba(240, 163, 94, 0.28);
+  box-shadow: 0 0 10px rgba(240, 163, 94, 0.35);
+  animation: choice-timer-pulse 0.45s ease-in-out infinite alternate;
+}
+.choice-timer[data-urgent="true"] .choice-timer-label {
+  color: #ffb36b;
+  text-shadow: 0 0 8px rgba(240, 163, 94, 0.55);
+  animation: choice-timer-pulse 0.45s ease-in-out infinite alternate;
+}
+.choice-timer[data-state="done"] { opacity: 0.75; }
+.choice-timer[data-state="done"] .choice-timer-track,
+.choice-timer[data-state="done"] .choice-timer-bar,
+.choice-timer[data-state="done"] .choice-timer-label { animation: none; }
+.choice-timer[data-state="done"] .choice-timer-bar { transform: scaleX(0); }
+@keyframes choice-timer-pulse {
+  from { opacity: 0.55; filter: brightness(0.92); }
+  to { opacity: 1; filter: brightness(1.18); }
+}
+.spark-choices .choice.is-default-pick,
+.choice.is-default-pick {
+  color: #fffaf2;
+  border-color: #ffb36b;
+  background: linear-gradient(180deg, rgba(240, 163, 94, 0.28), rgba(240, 163, 94, 0.1)), #3a2e22;
+  outline: 2px solid #f0a35e;
+  outline-offset: 2px;
+  box-shadow: 0 0 22px rgba(240, 163, 94, 0.72), inset 0 0 12px rgba(240, 163, 94, 0.22);
+  transform: translateY(-1px);
+}
 @keyframes choice-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 
 /* "Up next" preview state while a clip plays: soft glow and thin progress line, never dim grey disabled text. */

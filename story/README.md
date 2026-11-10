@@ -148,7 +148,10 @@ play** press starts them (and unlocks them on iOS); Settings (Sound on/off, Volu
 only once sound is unlocked, then follow each other. **Replay line** plays the current (or last) line again, **Skip
 line** moves on. **Subtitles are on by default** (CC in the bar turns them off, kept in `localStorage["iltv.subtitles"]`;
 off, they stay for screen readers). Nothing on the screen or in the strip of cameras can be pressed (there is no
-click-to-enlarge): the people in the room choose what the big screen shows.
+click-to-enlarge): the people in the room choose what the big screen shows. **Choices are untimed by design:** when a
+scene's voiced lines finish, its choices slide in under a `"Your move"` cue with no countdown bar and never auto-pick
+(unlike the video stories *The Final Spark* and *The Water Road*, whose choices show a 15 s draining timer bar and
+`"Choose in N s"` label, pulsing warmer in the last 3 s and briefly highlighting the default choice before playing it).
 
 **Saving.** The whole run is in `localStorage["iltv.run.<cookie>"]`: the scene, the way there, the flags and meters, the
 log and how many lines were heard, so a returning player resumes in the same scene with the same state. The two

@@ -193,8 +193,10 @@ what fills any hold longer than ten seconds.
   moves from Not started to Started to Completed; percent explored climbs. Continue opens beat 3b (Previously), not a
   cold jump into the left-off scene.
 - **Player.** *Interactions:* choose; Tree tab; flashlight (Spark); Settings; CC; subtitles; skip Previously. *Self-running:*
-  video plays, a timer ticks where a choice has one; the Previously poster pushes in for 3 s. *Changes:* the inventory
-  bar loses water/bullets/matches; the Tree fills in.
+  video plays; in video stories (*The Final Spark*, *The Water Road*) a 15 s draining timer bar (`"Choose in N s"`) runs across
+  the top of the choice group once the clip ends, pulses warmer in the last 3 s, and briefly highlights the default choice
+  before playing it when time runs out (*Night Shift* choices are untimed by design); the Previously poster pushes in for 3 s.
+  *Changes:* the inventory bar loses water/bullets/matches; the Tree fills in.
 - **Blog.** *Interactions:* open a post, play its video, scroll. *Self-running:* none. *Falls short:* a bare document list;
   **(new)** each post card shows a still that animates once on scroll-in.
 

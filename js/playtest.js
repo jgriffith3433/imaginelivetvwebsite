@@ -3964,15 +3964,13 @@ async function phoneChoicesRun(options, t) {
             if (early.length && !cueOn) bad.push(`no "Up next" preview cue while the clip plays (label "${cueLabel}", state ${tb.dataset.state})`);
             if (early.length && !/Up next/i.test(cueLabel)) bad.push(`preview cue says "${cueLabel}", not "Up next"`);
             if (early.length && (!glow || lineH < 1.5)) bad.push(`preview state missing soft glow (${glow}) or thin progress line (${lineH}px)`);
-            // On secondary viewports or inside smoke's fast leg, seek near the end of the clip after verifying the preview state
-            // so the natural ended event triggers revealChoices without waiting 30 s three times per story.
-            if (inSmoke || w !== 390) {
-              const vid = v();
-              if (vid && vid.duration > 0.5 && isFinite(vid.duration)) {
-                vid.currentTime = Math.max(0, vid.duration - 0.12);
-              } else if (vid) {
-                vid.dispatchEvent(new win.Event("ended"));
-              }
+            // After verifying the preview state, seek near the end of the clip so the natural ended event triggers
+            // revealChoices without waiting 30 s three times per story.
+            const vid = v();
+            if (vid && vid.duration > 0.5 && isFinite(vid.duration)) {
+              vid.currentTime = Math.max(0, vid.duration - 0.12);
+            } else if (vid) {
+              vid.dispatchEvent(new win.Event("ended"));
             }
           }
           if (!(await waitFor(() => box.dataset.phase === "ready", Math.max(20000, ((v() && v().duration) || 30) * 1000 + 10000)))) throw new Error(`${id} at ${sizeTag}: the choices never came up`);
@@ -3990,7 +3988,19 @@ async function phoneChoicesRun(options, t) {
         t.event("choice-stagger", `${id} ${sizeTag}: animation ${animNames[0]}, delays [${delays.map((d) => Math.round(d) + "ms").join(", ")}] (${stepMs}ms apart)`);
         if (!animNames.every((n) => n.includes("choice-in"))) bad.push(`active choices don't use choice-in animation (${animNames.join(", ")})`);
         if (delays.length > 1 && (stepMs < 60 || stepMs > 80)) bad.push(`stagger delay is ${stepMs}ms apart, not 60 to 80 ms`);
-        await sleep(650); // let the staggered slide and fade-in finish before measuring resting opacity and bounds
+        const timerEl = !console_ ? doc.getElementById("spark-timer") : null;
+        const timerBar = timerEl ? timerEl.querySelector(".choice-timer-bar") : null;
+        const timerTrack = timerEl ? timerEl.querySelector(".choice-timer-track") : null;
+        const scaleOf = () => {
+          if (!timerBar) return 1;
+          const m = (win.getComputedStyle(timerBar).transform || "").match(/matrix\(([-\d.e]+)/);
+          return m ? parseFloat(m[1]) : 1;
+        };
+        const labOf = () => (timerEl?.querySelector(".choice-timer-label")?.textContent || "").trim();
+        if (!console_) await new Promise((r) => win.requestAnimationFrame(() => win.requestAnimationFrame(r)));
+        const s1 = !console_ ? scaleOf() : 1;
+        const lab1 = !console_ ? labOf() : "";
+        await sleep(!console_ ? 1100 : 650); // let staggered slide/fade-in finish and timer drain 1s
         const wrap = btns[0].parentElement.getBoundingClientRect();
         const ctl = [".spark-unmute", ".spark-fullscreen"].map((q) => doc.querySelector(q)).filter((e) => e && !e.hidden && win.getComputedStyle(e).display !== "none").map((e) => e.getBoundingClientRect());
         for (const b of btns) {
@@ -4014,28 +4024,56 @@ async function phoneChoicesRun(options, t) {
           if (bw < 1 || edge < 150) bad.push(`"${label}" has no visible border (${bw}px, luminance ${Math.round(edge)})`);
         }
         if (!console_) {
-          const timer = doc.getElementById("spark-timer");
+          const timer = timerEl;
           const tr = timer.getBoundingClientRect();
-          const lab = (timer.querySelector(".choice-timer-label").textContent || "").trim();
-          const shown = !timer.hidden && win.getComputedStyle(timer).visibility !== "hidden" && tr.height > 4;
+          const trackR = timerTrack.getBoundingClientRect();
+          const lab = labOf();
+          const s2 = scaleOf();
+          const shown = !timer.hidden && win.getComputedStyle(timer).visibility !== "hidden" && tr.height > 4 && trackR.width > 40 && trackR.height >= 3;
           const above = tr.bottom <= btns[0].getBoundingClientRect().top + 1;
-          t.event("timer", `${id} ${sizeTag}: "${lab}" ${Math.round(tr.width)}x${Math.round(tr.height)}, shown ${shown}, above the first choice ${above}`);
+          const draining = s2 < s1 - 0.02 && s1 <= 1 && s2 > 0;
+          t.event("timer", `${id} ${sizeTag}: "${lab1}" -> "${lab}", bar scaleX ${s1.toFixed(2)} -> ${s2.toFixed(2)}, track ${Math.round(trackR.width)}x${Math.round(trackR.height)}px, shown ${shown}, draining ${draining}, above the first choice ${above}`);
           if (!shown) bad.push("the timer isn't visible");
           if (!above) bad.push("the timer isn't above the choices");
-          if (!/^(Choose in \d+ s|Choosing…)$/.test(lab)) bad.push(`the timer says "${lab}", not "Choose in N s"`);
+          if (!draining) bad.push(`the timer bar isn't draining (${s1.toFixed(2)} -> ${s2.toFixed(2)})`);
+          if (!/^(Choose in \d+ s|Choosing\.\.\.)$/.test(lab)) bad.push(`the timer says "${lab}", not "Choose in N s"`);
         } else {
           const cue = win.getComputedStyle(doc.getElementById("console-choices"), "::before").content;
-          t.event("cue", `${id} ${sizeTag}: choices cue ${cue}`);
+          const noTimer = !doc.querySelector("#console .choice-timer");
+          t.event("cue", `${id} ${sizeTag}: choices cue ${cue}, untimed by design (no timer bar: ${noTimer})`);
           if (!/Your move/.test(cue)) bad.push("no cue above the choices");
+          if (!noTimer) bad.push("Night Shift showed a timer bar (its choices are untimed by design)");
         }
         if (doc.documentElement.scrollWidth > win.innerWidth + 1) bad.push("the page scrolls sideways");
-        for (const b of bad) t.problem("bug", `${id} at ${sizeTag}: ${b}`);
-        t.event("phone-choices", `${id} ${sizeTag}: ${btns.length} choice(s) checked, ${bad.length} problem(s)`);
         t.event("screenshot", `${id} ${sizeTag}: active choices (${btns.length} cards)`);
-        if (w === 390 && h === 844) {
+        const checkTimeout = !console_ && (w === 390 || w === 1280) && (!inSmoke || id === "final-spark");
+        if (checkTimeout) {
+          const sceneBefore = win.finalSpark.scene();
+          const gotUrgent = await waitFor(() => timerEl.dataset.urgent === "true", 15000);
+          const urgentLab = labOf();
+          const barCs = win.getComputedStyle(timerBar);
+          const trackCs = win.getComputedStyle(timerTrack);
+          const pulseAnim = `${barCs.animationName || ""},${trackCs.animationName || ""}`;
+          const pulsing = gotUrgent && pulseAnim.includes("choice-timer-pulse");
+          t.event("timer-urgent-pulse", `${id} ${sizeTag}: "${urgentLab}", urgent=${timerEl.dataset.urgent}, pulse=${pulsing} (${pulseAnim}), scaleX=${scaleOf().toFixed(2)}`);
+          t.event("screenshot", `${id} ${sizeTag}: timer bar pulsing warmer in last 3 s (${urgentLab})`);
+          if (!pulsing) bad.push(`in the last 3 s the timer bar did not pulse (urgent=${timerEl.dataset.urgent}, anim=${pulseAnim})`);
+          const gotDone = await waitFor(() => timerEl.dataset.state === "done", 5000);
+          const defBtn = doc.querySelector("#spark-choices .choice.is-default-pick");
+          const defText = (defBtn?.textContent || "").trim().slice(0, 40);
+          const heldAtScene = win.finalSpark.scene() === sceneBefore;
+          t.event("timer-default-highlight", `${id} ${sizeTag}: label "${labOf()}", default choice "${defText}" highlighted=${!!defBtn}, held before playing=${heldAtScene}`);
+          t.event("screenshot", `${id} ${sizeTag}: default choice highlighted before playing`);
+          if (!gotDone || !defBtn || !heldAtScene) bad.push(`when time ran out the default choice was not highlighted before playing (done=${gotDone}, defaultPick=${!!defBtn}, held=${heldAtScene})`);
+          const played = await waitFor(() => win.finalSpark.scene() !== sceneBefore, 3000);
+          t.event("timer-default-played", `${id} ${sizeTag}: default choice played (${sceneBefore} -> ${win.finalSpark.scene()})`);
+          if (!played) bad.push(`the default choice did not play after being highlighted (still at ${win.finalSpark.scene()})`);
+        } else if (w === 390 && h === 844) {
           await tapAt(t, btns[0], `the first choice (${id})`);
           await sleep(400);
         }
+        for (const b of bad) t.problem("bug", `${id} at ${sizeTag}: ${b}`);
+        t.event("phone-choices", `${id} ${sizeTag}: ${btns.length} choice(s) checked, ${bad.length} problem(s)`);
         closeViewFrame();
         t.progress(step / totalSteps);
       }
@@ -6754,10 +6792,10 @@ installPlaytest({
     },
     {
       id: "phone-choices",
-      title: "Unified choice cards in all three stories at 390x844, 844x390 and 1280x720: Up next preview while clip plays, staggered slide/fade-in when active, bright text, visible border, 48px tall and fully visible",
+      title: "Unified choice cards and draining timer bar in all three stories at 390x844, 844x390 and 1280x720: Up next preview, draining Choose in N s bar with last-3-s warm pulse, default choice highlighted before playing, and Night Shift untimed by design",
       seconds: 150,
       tags: ["full"],
-      description: "Frames at 390x844, 844x390 and 1280x720 open each of The Final Spark and The Water Road by its link (Tap to play pressed, the Up next preview state with soft glow and thin progress line checked while the clip plays, then active choices checked) and Night Shift (a seeded run at its first scene: setup shortcut, event seeded-run). Checks active choices slide and fade in one after another (60 to 80 ms apart), have near-white text, a visible border, full width of their column, at least 48px height, and are fully visible on screen clear of video controls. Screenshots active choices in all three stories at 390x844, 844x390 and 1280x720. Events waiting-choices, choice-stagger, choice-button, timer, cue, phone-choices, screenshot. Options: {\"story\":\"<id>\"}, {\"at\":\"smoke\"}.",
+      description: "Frames at 390x844, 844x390 and 1280x720 open each of The Final Spark and The Water Road by its link (Tap to play pressed, the Up next preview state with soft glow and thin progress line checked while the clip plays, then active choices and the draining Choose in N s timer bar checked) and Night Shift (a seeded run at its first scene: setup shortcut, event seeded-run; choices are untimed by design with a Your move cue and no countdown bar). At 390x844 and 1280x720 in the timed stories, watches the timer enter the last 3 s (visibly pulsing warmer) and run out (highlighting the default choice for a moment before playing it). Screenshots active choices, urgent pulse, and default-choice highlight. Events waiting-choices, choice-stagger, choice-button, timer, timer-urgent-pulse, timer-default-highlight, timer-default-played, cue, phone-choices, screenshot. Options: {\"story\":\"<id>\"}, {\"at\":\"smoke\"}.",
     },
     {
       id: "phone-media",
