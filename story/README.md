@@ -305,7 +305,8 @@ cheat"). Every story keeps two cookies, both named from `cookie` in its data:
 **Continue Previously (J, 2026-11-10):** pressing Continue on a mid-run (hero, Continue row or card) shows a ~3 s
 overlay after Tap to play: the last scene's poster with a slow push-in, the story title and one short line naming the
 last choice; a tap skips it; then a cross-fade into the left-off scene with its choices ready. Play and Start Over
-skip the overlay. Playtest `continue-recap` checks all three stories at desktop, 390x844 and 1280x720.
+skip the overlay. Playtest `continue-recap` checks all three stories at desktop, 390x844 and 1280x720; beta's `smoke`
+ends with the same check (`{"at":"smoke"}`, always skip, with screenshot events).
 
 Only the player unlocks a scene: the branch pages (`/<folder>/`) never touch the cookies. A story's percent explored
 is its unlocked scenes over all its scenes, rounded down, so it is 100% only when every scene has been seen (a new

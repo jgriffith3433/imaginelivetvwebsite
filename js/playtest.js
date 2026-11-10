@@ -849,8 +849,10 @@ async function smoke(options, t) {
   await phoneMediaRun({ story: "water-road", landingOnly: false }, { ...t, progress: (p) => t.progress(0.9 + 0.1 * p) });
   t.scene("Scene swap after a choice, 1280x720 and 390x844");
   await swapRun({}, { ...t, progress: (p) => t.progress(0.95 + 0.05 * p) });
+  // Continue Previously (beta plays smoke only): one choice in each story already happened above, but language /
+  // phone-media / swap may have cleared mid-run state, so the trimmed continue-recap leg re-arms and presses Continue.
   t.scene("Continue recap after a choice");
-  await continueRecap({}, { ...t, progress: (p) => t.progress(0.97 + 0.03 * p) });
+  await continueRecap({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.97 + 0.03 * p) });
   closeViewFrame();
   t.progress(1);
 }
@@ -1535,7 +1537,9 @@ function continueControl(doc, id) {
 
 /** Continue opens with a Previously recap (criteria for k_e502567d7d4e): each listed story, one choice in, All stories,
     Continue; the recap shows the last scene's poster, the title and one short line; a tap skips; then the left-off
-    scene with its choices. Checked on the page and in frames at 390x844 and 1280x720. */
+    scene with its choices. Checked on the page and in frames at 390x844 and 1280x720.
+    Options: {"story":"<id>"}; {"at":"smoke"} is the short smoke leg (always skip, desktop page + phone + wide frames,
+    screenshot events so beta's review sees the overlay). */
 async function continueRecap(options, t) {
   if (!savedRuns && savedCookie == null) rememberProgress();
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
@@ -1543,6 +1547,7 @@ async function continueRecap(options, t) {
   clearProgress();
   if (!landingShown()) await toLanding(t);
   const ids = options.story ? [options.story] : listedStories().map((s) => s.id);
+  const smoke = options.at === "smoke";
   const leftAt = {};
   const choiceOf = {};
 
@@ -1605,6 +1610,8 @@ async function continueRecap(options, t) {
     const title = (el.querySelector(".story-recap-title")?.textContent || "").trim();
     const line = (el.querySelector(".story-recap-line")?.textContent || "").trim();
     const posterOk = !!(poster && poster.getAttribute("src") && (poster.complete ? poster.naturalWidth > 0 : true));
+    // Screenshot while the overlay is up so beta's review footage shows poster, title and the choice line.
+    t.event("screenshot", `${where}: Previously for ${id} (title "${title}", line "${line}")`);
     t.event("previously", `${where}: ${id}: title "${title}", line "${line}", poster ${posterOk ? "yes" : "MISSING"}, skip=${skip}`);
     if (title !== st.title) t.problem("bug", `${where}: ${id} recap title is "${title}", not "${st.title}"`);
     if (!line) t.problem("bug", `${where}: ${id} recap has no choice line`);
@@ -1636,21 +1643,23 @@ async function continueRecap(options, t) {
       if (leftAt[id] && scene !== leftAt[id]) t.problem("bug", `${where}: ${id} after recap is at ${scene}, left at ${leftAt[id]}`);
       if (!doc.querySelectorAll("#spark-choices .choice").length) t.problem("bug", `${where}: ${id} after recap has no choices`);
     }
+    t.event("screenshot", `${where}: after Previously ${id} at ${leftAt[id]} with choices`);
     t.event("recap-landed", `${where}: ${id} at ${leftAt[id]} with choices`);
   };
 
-  // On the page (desktop): each story, skip the first, wait out the rest.
+  // On the page (desktop): smoke always skips (budget); full continue-recap skips the first, waits out the rest.
   t.scene("Continue recap: desktop");
   for (let i = 0; i < ids.length; i++) {
     const id = ids[i];
     if (!leftAt[id]) continue;
     t.progress(0.35 + (i / ids.length) * 0.25);
-    await checkRecapAt(document, window, id, "desktop", { skip: i === 0 });
+    await checkRecapAt(document, window, id, "desktop", { skip: smoke || i === 0 });
     await toLanding(t);
     await sleep(200);
   }
 
   // Phone and desktop frames share the cookies, so Continue still opens mid-run with the same recap.
+  // Smoke keeps both sizes the criteria name (390x844 and 1280x720); always skip to stay inside the 400 s budget.
   for (const [w, h, label] of [[390, 844, "phone"], [1280, 720, "wide"]]) {
     t.scene(`Continue recap: ${label} ${w}x${h}`);
     const doc = await viewFrameLoad(t, "/", w, h);
@@ -6205,7 +6214,13 @@ const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories; then at 390x844 The Final Spark's language picker, a switch to English mid-story (same scene), and the blog list's titles, each in one language; then at 390x844 The Water Road's poster before its clip, the smaller rendition after Tap to play, and the cards visible within 2 s; then two choices in each story at 1280x720 and 390x844 with blackFrames and sceneSwapMs reported", seconds: 400, tags: ["smoke"] },
+    {
+      id: "smoke",
+      title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): Tree, first video, one choice, All stories; language and phone-media at 390x844; scene-swap blackFrames; then Continue Previously for every story (poster, title, one choice line, tap skips) on the page and at 390x844 and 1280x720",
+      seconds: 400,
+      tags: ["smoke"],
+      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Last, the trimmed Continue Previously leg (`continueRecap` with at:smoke): each story is re-armed mid-run, Continue (hero or card) shows #story-recap (poster push-in, title, one short choice line), a tap skips it, and the left-off scene has its choices; checked on the page and in frames at 390x844 and 1280x720. Events recap-armed, previously, recap-landed, screenshot.",
+    },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
@@ -6350,7 +6365,7 @@ installPlaytest({
       title: "Continue opens with a 3 s Previously recap of the last scene (poster, title, one choice line), skippable, then the left-off scene with its choices — all three stories at desktop, 390x844 and 1280x720",
       seconds: 180,
       tags: ["full"],
-      description: "From a fresh browser: each listed story is opened, one real choice is made, then All stories. Pressing Continue (hero or card) shows a Previously overlay with the last scene's poster (push-in), the story title and one short line naming that choice; a tap skips it (checked on the first story) or it ends after ~3 s. After the recap the viewer is at the same scene they left, with its choices ready. The same Continue path is checked in frames at 390x844 and 1280x720. Events recap-armed, previously, recap-landed. Options: {\"story\":\"<id>\"}.",
+      description: "From a fresh browser: each listed story is opened, one real choice is made, then All stories. Pressing Continue (hero or card) shows a Previously overlay with the last scene's poster (push-in), the story title and one short line naming that choice; a tap skips it (checked on the first story) or it ends after ~3 s. After the recap the viewer is at the same scene they left, with its choices ready. The same Continue path is checked in frames at 390x844 and 1280x720. Screenshot events while the overlay is up and after it lands. Also run as smoke's last leg with {\"at\":\"smoke\"} (always skip, same sizes). Events recap-armed, previously, recap-landed, screenshot. Options: {\"story\":\"<id>\"}, {\"at\":\"smoke\"}.",
     },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
