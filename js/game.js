@@ -752,7 +752,9 @@
 
     crossfadeOut();
     // The poster is also the box's own picture, so it stays under the loading ring and between clips: never a black box.
-    videoBox.style.backgroundImage = scene.poster ? 'url("' + scene.poster + '")' : "";
+    const newBg = scene.poster ? 'url("' + scene.poster + '")' : "";
+    if (videoBox.querySelector(".spark-leave")) setTimeout(function () { videoBox.style.backgroundImage = newBg; }, fadeMs() + 40);
+    else videoBox.style.backgroundImage = newBg;
     const videoSrc = scene.video ? clipSrc(scene) : null;
     let video = null;
 

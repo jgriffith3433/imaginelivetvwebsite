@@ -323,14 +323,23 @@
     els.big.dataset.camera = cam.id;
     els.big.dataset.state = state;
     if (!changed && els.big.firstChild) return;
+    var oldPic = els.big.querySelector(".big-pic:not(.big-leave)");
     els.big.replaceChildren();
+    if (oldPic && shown && !quiet) {
+      var fms = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 350;
+      oldPic.classList.add("big-leave");
+      oldPic.style.setProperty("--fade-ms", fms + "ms");
+      els.big.appendChild(oldPic);
+      setTimeout(function () { oldPic.remove(); }, fms + 40);
+    }
     var pic = text("div", "big-pic");
     pic.appendChild(picture(info, cam, state));
     var tag = text("span", "big-tag", cam.id.toUpperCase() + " " + cam.name);
     var cap = text("p", "big-cap");
     cap.appendChild(text("b", "", cam.id.toUpperCase() + " " + cam.name + (state === "normal" ? "" : " · " + state)));
     cap.appendChild(document.createTextNode(" " + info.desc));
-    els.big.append(pic, text("span", "big-crt"), tag, cap);
+    els.big.insertBefore(pic, els.big.firstChild);
+    els.big.append(text("span", "big-crt"), tag, cap);
     if (state !== "normal") els.big.appendChild(text("span", "big-mark", state));
     if (changed && shown && !quiet) flash();
     else if (changed && shown) changes++;

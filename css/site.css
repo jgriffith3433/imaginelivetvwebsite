@@ -2083,7 +2083,7 @@ figure.feed { cursor: default; }
     linear-gradient(90deg, rgba(120, 140, 130, 0.5), rgba(235, 245, 240, 0.85) 50%, rgba(120, 140, 130, 0.5));
 }
 .console-big.is-flash .big-crt { animation: crt-static 0.26s ease-out; }
-.console-big.is-flash .big-pic { animation: crt-pic 0.26s ease-out; }
+.console-big.is-flash .big-pic:not(.big-leave) { animation: crt-pic 0.26s ease-out; }
 @keyframes crt-static {
   0% { opacity: 1; transform: translateY(-18%); }
   45% { opacity: 0.75; transform: translateY(6%); }
@@ -2782,7 +2782,10 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
   animation: spark-enter var(--fade-ms, 350ms) ease-in-out;
 }
 @keyframes spark-leave { from { opacity: 1; } to { opacity: 0; } }
-@keyframes spark-enter { from { opacity: 0.6; } to { opacity: 1; } }
+@keyframes spark-enter { from { opacity: 1; } to { opacity: 1; } }
+
+/* Console big screen: the old picture stays as a fading layer above the new one (js/console.js renderBig). */
+.console-big > .big-pic.big-leave { z-index: 2; pointer-events: none; animation: spark-leave var(--fade-ms, 350ms) ease-in-out forwards; }
 
 /* Continue "Previously" (js/game.js playRecap): last scene's poster with a slow push-in, the story title,
    one short line for the last choice; tap skips; then fades into the left-off scene. */
