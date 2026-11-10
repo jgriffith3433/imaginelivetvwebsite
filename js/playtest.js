@@ -847,8 +847,104 @@ async function smoke(options, t) {
   // Road's poster under the clip before it loads and its smaller rendition after Tap to play (the `phone-media` leg).
   t.scene("Phone: landing within 2 s, poster, smaller clip");
   await phoneMediaRun({ story: "water-road", landingOnly: false }, { ...t, progress: (p) => t.progress(0.9 + 0.1 * p) });
+  t.scene("Scene swap after a choice, 1280x720 and 390x844");
+  await swapRun({}, { ...t, progress: (p) => t.progress(0.95 + 0.05 * p) });
   closeViewFrame();
   t.progress(1);
+}
+
+/** Is the scene area painted with art right now (sampled in the frame's own window)? Clips are drawn to a small canvas
+    and must not be near-uniform black; a poster/background picture or a console room counts when its image is loaded. */
+function sceneArt(doc, console_) {
+  const win = doc.defaultView;
+  const box = doc.getElementById(console_ ? "console-room" : "spark-video");
+  if (!box) return { painted: false, black: false };
+  const r = box.getBoundingClientRect();
+  if (r.width < 10 || r.height < 10) return { painted: false, black: false };
+  const v = box.querySelector("video");
+  if (v && v.readyState >= 2 && v.videoWidth) {
+    try {
+      const c = doc.createElement("canvas");
+      c.width = 16; c.height = 16;
+      const g = c.getContext("2d", { willReadFrequently: true });
+      g.drawImage(v, 0, 0, 16, 16);
+      const d = g.getImageData(0, 0, 16, 16).data;
+      let max = 0;
+      for (let i = 0; i < d.length; i += 4) max = Math.max(max, d[i], d[i + 1], d[i + 2]);
+      return { painted: max > 24, black: max <= 24 };
+    } catch (e) { /* tainted: fall through */ }
+  }
+  const imgs = [...box.querySelectorAll("img")];
+  if (imgs.length) return { painted: imgs.some((i) => i.complete && i.naturalWidth > 0), black: false };
+  const bg = win.getComputedStyle(box).backgroundImage;
+  const m = /url\("?([^")]+)"?\)/.exec(bg || "");
+  if (m) {
+    const cache = (win.__swapImgs = win.__swapImgs || {});
+    if (!cache[m[1]]) { cache[m[1]] = new win.Image(); cache[m[1]].src = m[1]; }
+    return { painted: cache[m[1]].complete && cache[m[1]].naturalWidth > 0, black: false };
+  }
+  return { painted: !!console_ && !!box.querySelector(".fig, .room-art > *"), black: false };
+}
+
+/** After a choice: every painted frame for 1 s (requestAnimationFrame only) counts near-black frames of the scene area
+    and the time until the next scene's art shows. Two choices in each story at 1280x720 and at 390x844. */
+async function swapRun(options, t) {
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const sizes = [[1280, 720, "desktop"], [390, 844, "phone"]];
+  const ids = [FIRST, ...listedStories().map((x) => x.id).filter((x) => x !== FIRST)];
+  let n = 0;
+  for (const id of ids) {
+    const st = story(id);
+    if (!st) continue;
+    const con = isConsole(st);
+    for (const [w, h, label] of sizes) {
+      clearProgress();
+      t.scene(`${st.title}: scene swap at ${w}x${h}`);
+      const doc = await viewFrameLoad(t, `/?story=${id}`, w, h);
+      const win = doc.defaultView;
+      if (con) await consolePrompt(t, doc, `${id} (swap)`);
+      else await passPrompt(t, doc, `${id} (swap)`);
+      const sceneNow = () => (con ? win.iltvConsole.scene() : win.finalSpark.scene());
+      const buttons = () => (con ? openChoices(doc) : [...doc.querySelectorAll("#spark-choices .choice")]);
+      let blackFrames = 0, worstSwap = 0, frames = 0;
+      for (let k = 0; k < 2; k++) {
+        if (!(await waitFor(() => buttons().length && (con || doc.getElementById("spark-choices").dataset.phase === "ready"), 40000))) { t.problem("bug", `${id} ${label}: no choice to press for the swap check`); break; }
+        await sleep(400);
+        const before = sceneNow();
+        const result = new Promise((resolve) => {
+          const t0 = win.performance.now();
+          const o = { black: 0, frames: 0, swap: null, changedAt: null };
+          const tick = () => {
+            const dt = win.performance.now() - t0;
+            o.frames++;
+            const now = sceneNow();
+            const art = sceneArt(doc, con);
+            if (art.black) o.black++;
+            if (now !== before && o.changedAt == null) o.changedAt = dt;
+            if (o.changedAt != null && o.swap == null && art.painted) o.swap = dt;
+            if (dt < 1000) win.requestAnimationFrame(tick); else resolve(o);
+          };
+          win.requestAnimationFrame(tick);
+        });
+        await tapAt(t, buttons()[0], `swap choice ${k + 1}`, { quick: true });
+        t.event("screenshot", `${id} ${label} ${w}x${h}: right after choice ${k + 1} (from ${before})`);
+        const o = await result;
+        if (sceneNow() === before) { t.problem("bug", `${id} ${label}: choice ${k + 1} went nowhere`); continue; }
+        const swap = o.swap == null ? 1000 : Math.round(o.swap);
+        blackFrames += o.black; frames += o.frames; worstSwap = Math.max(worstSwap, swap);
+        t.event("scene-swap", `${id} ${label} choice ${k + 1} -> ${sceneNow()}: blackFrames ${o.black}/${o.frames}, sceneSwapMs ${swap}`);
+        t.event("screenshot", `${id} ${label} ${w}x${h}: scene ${sceneNow()} after 1 s`);
+        n++;
+      }
+      t.metric(`blackFrames-${id}-${label}`, blackFrames);
+      t.metric(`sceneSwapMs-${id}-${label}`, worstSwap);
+      t.event("scene-swap-report", `${id} ${label}: blackFrames ${blackFrames} of ${frames}, sceneSwapMs ${worstSwap}`);
+      if (blackFrames > 0) t.problem("bug", `${id} ${label}: the scene area went black for ${blackFrames} frames after a choice`);
+      if (worstSwap > 300) t.problem("bug", `${id} ${label}: the next scene's art took ${worstSwap} ms to show after a choice (over 300)`);
+    }
+  }
+  t.metric("sceneSwapChecks", n);
+  closeViewFrame();
 }
 
 async function branches(options, t) {
@@ -5870,7 +5966,7 @@ const NEEDS_STATES = ["stories", "branches", "pages", "console", "room", "night-
 installPlaytest({
   product: "imaginelivetv",
   scenarios: [
-    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories; then at 390x844 The Final Spark's language picker, a switch to English mid-story (same scene), and the blog list's titles, each in one language; then at 390x844 The Water Road's poster before its clip, the smaller rendition after Tap to play, and the cards visible within 2 s", seconds: 260, tags: ["smoke"] },
+    { id: "smoke", title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): The Final Spark's Tree shows only what's found (nothing to press), the first video plays, a choice appears, one step in (no Back button), All stories; then at 390x844 The Final Spark's language picker, a switch to English mid-story (same scene), and the blog list's titles, each in one language; then at 390x844 The Water Road's poster before its clip, the smaller rendition after Tap to play, and the cards visible within 2 s; then two choices in each story at 1280x720 and 390x844 with blackFrames and sceneSwapMs reported", seconds: 400, tags: ["smoke"] },
     {
       id: "stories",
       title: "The landing page opens every story: its card, its player, its first page, All stories, its link",
