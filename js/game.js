@@ -566,6 +566,10 @@
     ["playing", "pause", "volumechange", "ended"].forEach(function (type) { video.addEventListener(type, sync); });
     unmute.addEventListener("click", function () {
       if (window.hawkesSound) window.hawkesSound.set({ on: true });
+      if (window.iltvAudio) {
+        window.iltvAudio.unlock();
+        window.iltvAudio.setEnabled(true);
+      }
       video.muted = false;
       if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
       sync();
@@ -599,16 +603,38 @@
   }
   document.addEventListener("fullscreenchange", function () { root.dataset.fullscreen = fullscreenElement() ? "true" : "false"; });
 
+  /** Short bed mood per story for js/audio.js setBed(story, mood). Files live at /assets/audio/<id>/<mood>.mp3 when made. */
+  function storyMood(story) {
+    if (!story) return "default";
+    if (story.id === "final-spark") return "sewer";
+    if (story.id === "water-road") return "dust";
+    if (story.id === "night-shift" || story.id === "night-shift-demo") return "room";
+    return "default";
+  }
+
+  function audioBed(story) {
+    if (!window.iltvAudio || !story) return;
+    // Console stories already loop their own ambience beds in js/console.js — don't stack a second house bed.
+    if (story.type === "console") {
+      window.iltvAudio.setBed(null, null);
+      return;
+    }
+    window.iltvAudio.setBed(story.id, storyMood(story));
+  }
+
   function playClip(video) {
     activeClip = video;
     stopClipUnlock();
+    if (window.iltvAudio) window.iltvAudio.watch(video);
     // js/hawkes-sound.js: the first video waits for the Tap to play prompt, which starts it with sound. The next
     // ones start here, inside the viewer's click, with the saved Settings.
     var sound = window.hawkesSound;
     if (sound) {
       video.setAttribute("data-sound-start", "");
-      if (sound.unlocked()) sound.play(video);
-      else sound.apply(video);
+      if (sound.unlocked()) {
+        if (window.iltvAudio) window.iltvAudio.unlock();
+        sound.play(video);
+      } else sound.apply(video);
       return;
     }
     video.muted = false;
@@ -625,6 +651,7 @@
         if (el.closest && el.closest(".choice, .spark-tab, .stories-back")) return;
         stopClipUnlock();
         if (activeClip !== video) return;
+        if (window.iltvAudio) window.iltvAudio.unlock();
         video.muted = false;
         if (video.paused) {
           var again = video.play();
@@ -957,6 +984,7 @@
         button.dataset.lastTime = "true";
       }
       button.addEventListener("click", function () {
+        if (window.iltvAudio) window.iltvAudio.playUi("choice");
         goTo(choice);
       });
       choicesBox.appendChild(button);
@@ -1610,6 +1638,7 @@
   function stopVideo() {
     stopClipUnlock();
     activeClip = null;
+    if (window.iltvAudio) window.iltvAudio.unwatch();
     videoBox.querySelectorAll("video").forEach(function (video) {
       try { video.pause(); } catch (error) { /* already gone */ }
     });
@@ -1792,6 +1821,7 @@
     if (firstScreen) firstScreen.classList.remove("is-landing");
     document.documentElement.dataset.view = "story";
     document.documentElement.dataset.type = "console";
+    audioBed(story);
     delete document.documentElement.dataset.kit;
     showKit();
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -1864,6 +1894,7 @@
       lastRecap = null;
     }
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
+    audioBed(story);
     show(saved ? saved.scene : story.start);
     keepAtTop();
     requestAnimationFrame(function () { requestAnimationFrame(keepAtTop); });
@@ -1892,6 +1923,10 @@
     if (push) window.history.pushState({}, "", urlFor(null));
     else if (new URL(location.href).searchParams.has("story")) window.history.replaceState({}, "", urlFor(null));
     stopVideo();
+    if (window.iltvAudio) {
+      window.iltvAudio.unwatch();
+      window.iltvAudio.setBed(null, null);
+    }
     STORY = null;
     currentScene = null;
     lastRecap = null;

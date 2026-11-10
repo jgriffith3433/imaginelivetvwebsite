@@ -134,8 +134,10 @@ function waitFor(test, ms) {
 /* ---------------- the Tap to play prompt and Settings (js/hawkes-sound.js) ---------------- */
 
 const SOUND_KEY = "hawkes.sound";
+const AUDIO_KEY = "iltv.sound";
 const SOUND_RUN = "iltv.playtest.sound"; // sessionStorage: the sound scenario carries on after its reload
 const soundOf = (doc = document) => doc.defaultView && doc.defaultView.hawkesSound;
+const audioOf = (doc = document) => doc.defaultView && doc.defaultView.iltvAudio;
 
 /** A press where a viewer's finger or mouse would go: whatever is on top there gets it, so a covered control fails. */
 async function tapAt(t, el, label, { quick = false } = {}) {
@@ -867,7 +869,10 @@ async function smoke(options, t) {
   // Endings gallery (beta plays smoke): seed one found ending on The Water Road, open the Endings tab, check count
   // and a locked silhouette, and that it fits at 390x844.
   t.scene("Endings gallery (seeded one found)");
-  await endingsGalleryRun({ at: "smoke", story: "water-road" }, { ...t, progress: (p) => t.progress(0.99 + 0.01 * p) });
+  await endingsGalleryRun({ at: "smoke", story: "water-road" }, { ...t, progress: (p) => t.progress(0.99 + 0.005 * p) });
+  // Audio buses (beta plays smoke): unlock on first tap, duck under a clip, header toggle saves iltv.sound; 390x844.
+  t.scene("Audio buses: unlock, duck, header toggle");
+  await audioBusesRun({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.995 + 0.005 * p) });
   closeViewFrame();
   t.progress(1);
 }
@@ -2218,6 +2223,152 @@ async function sound(options, t) {
   } finally {
     if (carried.original == null) localStorage.removeItem(SOUND_KEY);
     else localStorage.setItem(SOUND_KEY, carried.original);
+  }
+}
+
+/* ---------------- audio-buses: Web Audio unlock, duck under a clip, header toggle (iltv.sound) ---------------- */
+
+const savedAudio = () => {
+  try {
+    return JSON.parse(localStorage.getItem(AUDIO_KEY));
+  } catch {
+    return null;
+  }
+};
+
+/** One size: unlock on Tap to play, duck while the clip has sound, header toggle mutes clips and saves iltv.sound. */
+async function audioBusesAt(t, doc, where) {
+  const win = doc.defaultView;
+  const audio = audioOf(doc);
+  const sound = soundOf(doc);
+  if (!audio) {
+    t.problem("bug", `${where}: no js/audio.js (window.iltvAudio)`);
+    return;
+  }
+  if (!sound) {
+    t.problem("bug", `${where}: no js/hawkes-sound.js`);
+    return;
+  }
+  if (sound.prompt()) await passPrompt(t, doc, where);
+  else if (!sound.unlocked()) t.problem("bug", `${where}: sound still locked with no Tap to play prompt`);
+  await sleep(400);
+  if (!audio.unlocked()) t.problem("bug", `${where}: iltvAudio stayed locked after the first tap`);
+  const unlocks = audio.events().filter((e) => e.what === "unlock");
+  if (!unlocks.length) t.problem("bug", `${where}: no unlock playtest event on the first tap`);
+  else t.event("audio-unlock", `${where}: ${unlocks[unlocks.length - 1].audio || "running"}`);
+  t.metric("audioUnlocked", audio.unlocked() ? 1 : 0);
+
+  const video = doc.querySelector("#spark-video video");
+  if (!video) {
+    t.problem("bug", `${where}: no story video`);
+    return;
+  }
+  // Clip with sound: duck ambience/music buses (event-driven from play/volumechange).
+  if (win.hawkesSound) win.hawkesSound.set({ on: true });
+  if (!audio.enabled()) audio.setEnabled(true);
+  video.muted = false;
+  try { if (video.paused) await video.play(); } catch (e) { /* autoplay */ }
+  await waitFor(() => !video.paused && video.currentTime > 0.2, 6000);
+  await sleep(350);
+  if (!audio.ducked()) t.problem("bug", `${where}: ambience/music did not duck while the unmuted clip played`);
+  else t.event("audio-duck", `${where}: ducked under the clip (ambience ${audio.buses().ambience.toFixed(2)})`);
+  t.metric("audioDucked", audio.ducked() ? 1 : 0);
+
+  video.pause();
+  await sleep(400);
+  if (audio.ducked()) t.problem("bug", `${where}: duck stayed on after the clip paused`);
+  else t.event("audio-duck", `${where}: duck lifted after pause`);
+
+  // Header toggle: mutes everything including the clip; saved in iltv.sound.
+  const toggle = audio.toggle() || doc.getElementById("iltv-sound-toggle");
+  if (!toggle) {
+    t.problem("bug", `${where}: no header sound toggle`);
+    return;
+  }
+  const r = toggle.getBoundingClientRect();
+  if (r.width < 44 || r.height < 44) t.problem("bug", `${where}: sound toggle is ${Math.round(r.width)}x${Math.round(r.height)}, under 44px`);
+  await tapAt(t, toggle, `Sound off (${where})`);
+  await sleep(200);
+  if (audio.enabled()) t.problem("bug", `${where}: header toggle did not turn sound off`);
+  const saved = savedAudio();
+  if (!saved || saved.on !== false) t.problem("bug", `${where}: iltv.sound did not save Sound off: ${JSON.stringify(saved)}`);
+  if (sound.settings().on !== false) t.problem("bug", `${where}: hawkes.sound stayed on after the header toggle`);
+  try { await video.play(); } catch (e) { /* ignore */ }
+  await sleep(200);
+  if (!video.muted) t.problem("bug", `${where}: clip still has sound after the header toggle`);
+  t.event("audio-toggle", `${where}: off, clip muted, iltv.sound saved`);
+
+  // Tap for sound still works: turns sound back on.
+  const unmute = doc.querySelector(".spark-unmute");
+  if (unmute && !unmute.hidden) {
+    await tapAt(t, unmute, `Tap for sound (${where})`);
+    await sleep(200);
+    if (!audio.enabled() || sound.settings().on !== true) t.problem("bug", `${where}: Tap for sound did not turn sound back on`);
+    if (video.muted) t.problem("bug", `${where}: Tap for sound left the clip muted`);
+    t.event("tap-for-sound", `${where}: sound back on`);
+  } else {
+    await tapAt(t, toggle, `Sound on (${where})`);
+    await sleep(200);
+    if (!audio.enabled()) t.problem("bug", `${where}: header toggle did not turn sound back on`);
+  }
+  t.event("audio-buses", `${where}: unlock, duck, toggle checked`);
+}
+
+async function audioBusesRun(options, t) {
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const originalSound = localStorage.getItem(SOUND_KEY);
+  const originalAudio = localStorage.getItem(AUDIO_KEY);
+  const putBack = () => {
+    if (originalSound == null) localStorage.removeItem(SOUND_KEY);
+    else localStorage.setItem(SOUND_KEY, originalSound);
+    if (originalAudio == null) localStorage.removeItem(AUDIO_KEY);
+    else localStorage.setItem(AUDIO_KEY, originalAudio);
+  };
+  try {
+    localStorage.setItem(SOUND_KEY, JSON.stringify({ on: true, music: 1, sfx: 1 }));
+    localStorage.setItem(AUDIO_KEY, JSON.stringify({ on: true }));
+    if (!stories()) throw new Error("the player (js/game.js) didn't start");
+    await passPrompt(t);
+    if (!landingShown()) await toLanding(t);
+
+    // Smoke leg: one path on the page, then a 390x844 frame (beta plays smoke).
+    if (options.at === "smoke") {
+      t.scene("Audio buses (smoke)");
+      await openStory(t, FIRST);
+      await toStart(t, { quiet: true });
+      await audioBusesAt(t, document, "desktop smoke");
+      t.progress(0.6);
+      {
+        const doc = await viewFrameLoad(t, `/?story=${FIRST}`, 390, 844);
+        const win = doc.defaultView;
+        if (win.hawkesSound && win.hawkesSound.set) win.hawkesSound.set({ on: true, music: 1, sfx: 1 });
+        if (win.iltvAudio && win.iltvAudio.setEnabled) win.iltvAudio.setEnabled(true);
+        t.scene("Audio buses at 390x844 (smoke)");
+        await audioBusesAt(t, doc, "390x844 smoke");
+        closeViewFrame();
+      }
+      t.progress(1);
+      return;
+    }
+
+    t.scene("Audio buses: unlock, duck, toggle");
+    await openStory(t, FIRST);
+    await toStart(t, { quiet: true });
+    await audioBusesAt(t, document, "desktop");
+    t.progress(0.4);
+
+    for (const [w, h] of [[390, 844], [1280, 720]]) {
+      t.scene(`Audio buses at ${w}x${h}`);
+      const doc = await viewFrameLoad(t, `/?story=${FIRST}`, w, h);
+      const win = doc.defaultView;
+      if (win.hawkesSound && win.hawkesSound.set) win.hawkesSound.set({ on: true, music: 1, sfx: 1 });
+      if (win.iltvAudio && win.iltvAudio.setEnabled) win.iltvAudio.setEnabled(true);
+      await audioBusesAt(t, doc, `${w}x${h}`);
+      closeViewFrame();
+      t.progress(w === 390 ? 0.7 : 1);
+    }
+  } finally {
+    putBack();
   }
 }
 
@@ -6471,10 +6622,10 @@ installPlaytest({
   scenarios: [
     {
       id: "smoke",
-      title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): Tree, first video, one choice, All stories; language and phone-media at 390x844; scene-swap blackFrames; Continue Previously; then Endings gallery (one found, locked silhouette) at 390x844",
-      seconds: 420,
+      title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): Tree, first video, one choice, All stories; language and phone-media at 390x844; scene-swap blackFrames; Continue Previously; Endings gallery; audio buses",
+      seconds: 450,
       tags: ["smoke"],
-      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Then the trimmed Continue Previously leg (`continueRecap` with at:smoke). Last, the trimmed Endings gallery leg (`endingsGalleryRun` with at:smoke): one Water Road ending seeded as found, Endings tab shows \"1 of 2 found\", a named poster and a locked ??? silhouette, fit check at 390x844.",
+      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Then the trimmed Continue Previously leg (`continueRecap` with at:smoke). Endings gallery leg (`endingsGalleryRun` with at:smoke): one Water Road ending seeded as found, Endings tab shows \"1 of 2 found\", a named poster and a locked ??? silhouette, fit check at 390x844. Last, audio buses (`audioBusesRun` with at:smoke): first-tap unlock, duck under a clip, header toggle saves iltv.sound, at desktop and 390x844.",
     },
     {
       id: "endings-gallery",
@@ -6645,6 +6796,14 @@ installPlaytest({
       description: "Waits for the landing page's title splash to fade (no prompt there), opens The Final Spark from its card: its Tap to play prompt shows and is tapped with a pointer press on the spot (hit-tested, so a covered prompt fails); the AudioContext runs and the story's video plays unmuted by itself, and so does the next scene's after a choice. Opens Settings from the header, turns Sound off and Volume to 40% (saved in hawkes.sound), reloads the page (the run carries on through ?playtest=sound), checks the page opens straight back into The Final Spark (?story=final-spark) and the prompt is back with its title, the choice was kept and the video plays muted, turns Sound on, then opens the start's branch page: its prompt, then its video with sound at 40%. The viewer's own hawkes.sound and progress are put back. The Settings then follow Night Shift (opened from its card): the voice, ambience and effects elements are muted or not and take the volume, in the first scene and the next.",
     },
     {
+      id: "audio-buses",
+      title: "Audio module: first-tap unlock, duck under a clip, header sound toggle (iltv.sound) at 390x844 and 1280x720",
+      seconds: 90,
+      tags: ["full", "menus"],
+      starts: ["smoke"],
+      description: "Opens The Final Spark (Tap to play): js/audio.js unlocks its Web Audio context on that first tap (event audio-unlock; nothing from the buses before it). While the unmuted clip plays, ambience and music bus gains duck (audio-duck), then lift when the clip pauses — driven by the video's play/pause/volumechange events, no polling. The header sound toggle mutes everything including the clip, saves localStorage iltv.sound, and stays in step with hawkes.sound / Tap for sound. Checked on the page and in frames at 390x844 and 1280x720. Options: {\"at\":\"smoke\"} is the short leg smoke also runs.",
+    },
+    {
       id: "analytics",
       title: "Hawkes Analytics: the events going out on a way through The Final Spark (screen, video, choice, back, Try again, the ending), the thumbs question after going back twice and the stars question at the ending",
       seconds: 180,
@@ -6652,7 +6811,7 @@ installPlaytest({
       description: "Checks the analytics SDK is loaded with product imaginelivetv and a build (version, commit, date) and, on beta, env beta. Puts every event the page sends on the timeline as its batch goes out (the SDK's debug mode, ?hawkes-analytics-debug=1, on in a bot's tab). Opens The Final Spark from its card (fresh progress), then by tapping choices: Go back, the dead end's go back (back up the tree), the sludge (a death), Try again: the thumbs question (\"Retracing your steps…\") comes up and is answered thumbs up. Then the shortest way to the ending, a page at a time (each video plays, the next choice skips it): at Destroy the town the stars question \"How was this ending?\" comes up above the inventory bar and is answered 5 stars. Then All stories, and a check that screen, video (play, skip with seconds watched), choice (node, option, path in context), run_start, death, back, restart, run_end with the ending, both feedback answers and game_ready went out. The viewer's progress and question history are put back. Then Night Shift (a console story, no video): from its card, the big screen showing a camera (feature feed), the shift log opened (feature log), one real choice, and the last two choices of its shortest way to an ending after a seeded run (setup shortcut): story_open, screen, level_start, run_start, choice, run_end with the ending and the stars question answered went out, and no video or back event.",
     },
   ],
-  isReady: () => document.readyState === "complete" && !!stories() && !!soundOf(),
+  isReady: () => document.readyState === "complete" && !!stories() && !!soundOf() && !!audioOf(),
   async start(id, options, t) {
     const endQuiet = id === "analytics" ? () => {} : quietAnalytics();
     try {
@@ -6693,6 +6852,7 @@ installPlaytest({
       else if (id === "continue-recap") await continueRecap(options, t);
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
+      else if (id === "audio-buses") await audioBusesRun(options, t);
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
       else if (id === "endings") await endingsRun(options, t);

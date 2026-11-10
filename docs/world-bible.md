@@ -47,6 +47,10 @@ the pencil); the hero card breathes (slow light drift).
 console room), the question, the choices, the inventory bar, the Tree, Settings, the `Tap to play` prompt. Size: the
 viewport. In/out: card, `/?story=<id>`, `/<id>/` links; leave by All stories, or a death's Try again, or Start Over at an
 ending. There is **no Back button** (canon: a choice stands).
+**(new) House audio buses** (`js/audio.js`, `window.iltvAudio`): one Web Audio context unlocked on the first tap; three
+buses (ambience, music, ui) with gain fades; ambience and music duck under a clip that has sound; a header sound toggle
+mutes everything (saved in `iltv.sound`, kept in step with Settings / `hawkes.sound`). `setBed(story, mood)` and
+`playUi(name)` play `/assets/audio/...` when those files exist and stay quiet when they don't. Playtest: `audio-buses`.
 
 **C. The Tree.** A map of the story as found: only unlocked scenes show, a locked "?" per way not taken, nothing pressable.
 It is the home's one *map*: it is how a player sees how big a world they have not seen.
