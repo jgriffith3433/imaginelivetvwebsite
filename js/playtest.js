@@ -1679,8 +1679,9 @@ async function continueRecap(options, t) {
   }
 
   // Phone and desktop frames share the cookies, so Continue still opens mid-run with the same recap.
-  // Smoke keeps both sizes the criteria name (390x844 and 1280x720); always skip to stay inside the 400 s budget.
-  for (const [w, h, label] of [[390, 844, "phone"], [1280, 720, "wide"]]) {
+  // Smoke keeps portrait + wide; landscape 844x390 catches the console handoff that left a blank body after Previously.
+  // Always skip to stay inside the 400 s budget.
+  for (const [w, h, label] of [[390, 844, "phone"], [844, 390, "landscape"], [1280, 720, "wide"]]) {
     t.scene(`Continue recap: ${label} ${w}x${h}`);
     const doc = await viewFrameLoad(t, "/", w, h);
     const win = doc.defaultView;
@@ -6775,10 +6776,10 @@ installPlaytest({
     { id: "crossfade", title: "Scene changes cross-fade with audio fading and the clip already moving", seconds: 40, tags: ["full", "smoke"] },
     {
       id: "continue-recap",
-      title: "Continue opens with a 3 s Previously recap of the last scene (poster, title, one choice line), skippable, then the left-off scene with its choices — all three stories at desktop, 390x844 and 1280x720",
-      seconds: 180,
+      title: "Continue opens with a 3 s Previously recap of the last scene (poster, title, one choice line), skippable, then the left-off scene with its choices — all three stories at desktop, 390x844, 844x390 and 1280x720",
+      seconds: 200,
       tags: ["full"],
-      description: "From a fresh browser: each listed story is opened, one real choice is made, then All stories. Pressing Continue (hero or card) shows a Previously overlay with the last scene's poster (push-in), the story title and one short line naming that choice; a tap skips it (checked on the first story) or it ends after ~3 s. After the recap the viewer is at the same scene they left, with its choices ready. The same Continue path is checked in frames at 390x844 and 1280x720. Screenshot events while the overlay is up and after it lands. Also run as smoke's last leg with {\"at\":\"smoke\"} (always skip, same sizes). Events recap-armed, previously, recap-landed, screenshot. Options: {\"story\":\"<id>\"}, {\"at\":\"smoke\"}.",
+      description: "From a fresh browser: each listed story is opened, one real choice is made, then All stories. Pressing Continue (hero or card) shows a Previously overlay with the last scene's poster (push-in), the story title and one short line naming that choice; a tap skips it (checked on the first story) or it ends after ~3 s. After the recap the viewer is at the same scene they left, with its choices ready (Night Shift's room is already under the overlay so a short landscape never fades to a blank body). The same Continue path is checked in frames at 390x844, 844x390 and 1280x720. Screenshot events while the overlay is up and after it lands. Also run as smoke's last leg with {\"at\":\"smoke\"} (always skip, same sizes). Events recap-armed, previously, recap-landed, screenshot. Options: {\"story\":\"<id>\"}, {\"at\":\"smoke\"}.",
     },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
