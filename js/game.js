@@ -749,13 +749,45 @@
     }
   }
 
-  // Cinema chrome (J, 2026-11-06): the choices wait dimmed while the clip plays, fade in when it ends with a thin
-  // countdown (a window to decide: nothing is chosen for you), and the bar and title controls fade away after 3 s idle.
+  // Choice-card chrome (J, 2026-11-06; unified across all three stories for f_32e426e8a75b): while a clip plays,
+  // choices show an "up next" preview state (soft glow, thin progress line, never greyed-out disabled text); when the
+  // clip ends (or in Night Shift when lines finish), active choices slide and fade in one after another (70 ms apart)
+  // with a 15 s countdown window, and the bar and title controls fade away after 3 s idle.
   const CHOICE_WINDOW = 15;
   const IDLE_MS = 3000;
   const timerBox = document.getElementById("spark-timer");
+  const consoleChoicesBox = document.getElementById("console-choices");
   let windowTick = null;
   let idleTimer = null;
+
+  function tagChoiceStagger(container) {
+    if (!container) return;
+    const buttons = container.querySelectorAll(".choice");
+    buttons.forEach(function (btn, idx) {
+      btn.style.setProperty("--choice-i", String(idx));
+      btn.dataset.choiceIndex = String(idx);
+    });
+  }
+
+  if (consoleChoicesBox && typeof MutationObserver !== "undefined") {
+    const syncConsoleChoices = function () {
+      const has = consoleChoicesBox.querySelectorAll(".choice").length > 0;
+      consoleChoicesBox.dataset.phase = has ? "ready" : "waiting";
+      if (has) tagChoiceStagger(consoleChoicesBox);
+    };
+    new MutationObserver(syncConsoleChoices).observe(consoleChoicesBox, { childList: true });
+    syncConsoleChoices();
+  }
+
+  function syncWaitingProgress(video) {
+    let pct = 24;
+    if (video && video.duration > 0 && isFinite(video.duration)) {
+      pct = Math.max(16, Math.min(100, Math.round((video.currentTime / video.duration) * 84 + 16)));
+    }
+    const val = pct + "%";
+    if (choicesBox) choicesBox.style.setProperty("--clip-progress", val);
+    if (timerBox) timerBox.style.setProperty("--clip-progress", val);
+  }
 
   function stopChoiceWindow() {
     if (windowTick) clearTimeout(windowTick);
@@ -766,15 +798,37 @@
   function setChoicePhase(phase) {
     choicesBox.dataset.phase = phase;
     root.dataset.choices = phase;
+    if (phase === "ready") {
+      choicesBox.style.setProperty("--clip-progress", "100%");
+      if (timerBox) timerBox.style.setProperty("--clip-progress", "100%");
+      tagChoiceStagger(choicesBox);
+      choicesBox.querySelectorAll(".choice").forEach(function (btn) {
+        btn.style.animation = "none";
+        void btn.offsetWidth;
+        btn.style.animation = "";
+      });
+    }
   }
 
-  /** While the clip plays, the cue row says the choices are live (a phone shows it and its choices at full strength;
-      a wide screen keeps its row hidden and the choices dimmed). Pressing one is allowed at any time. */
-  function showWaitingCue(hasChoices) {
+  /** While the clip plays, the cue row and choice cards show an "Up next" preview state with a thin progress line
+      and soft glow (never dim disabled text). Pressing a choice is allowed at any time. */
+  function showWaitingCue(hasChoices, video) {
     if (!hasChoices || !timerBox) return;
-    timerBox.querySelector(".choice-timer-label").textContent = "Choose any time";
+    const label = timerBox.querySelector(".choice-timer-label");
+    const bar = timerBox.querySelector(".choice-timer-bar");
+    if (label) label.textContent = "Up next";
+    if (bar) bar.style.animation = "none";
     timerBox.hidden = false;
     timerBox.dataset.state = "waiting";
+    syncWaitingProgress(video);
+    if (video) {
+      const onProgress = function () {
+        if (activeClip === video && choicesBox.dataset.phase === "waiting") syncWaitingProgress(video);
+      };
+      ["loadedmetadata", "durationchange", "timeupdate", "playing"].forEach(function (ev) {
+        video.addEventListener(ev, onProgress);
+      });
+    }
   }
 
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
@@ -870,7 +924,7 @@
       playClip(video);
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
-      showWaitingCue(scene.choices.length > 0);
+      showWaitingCue(scene.choices.length > 0, video);
       video.addEventListener("ended", function () {
         if (activeClip === video && currentScene === sceneId) revealChoices(scene.choices.length > 0);
       });
@@ -891,10 +945,12 @@
     fillSpot(questionBox, scene.question, scene.questionEn, scene.lang, scene.dir);
     choicesBox.replaceChildren();
 
-    scene.choices.forEach(function (choice) {
+    scene.choices.forEach(function (choice, idx) {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "choice";
+      button.style.setProperty("--choice-i", String(idx));
+      button.dataset.choiceIndex = String(idx);
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
       if (lastWay && lastWay[history.length] === sceneId && lastWay[history.length + 1] === choice.next) {
         button.classList.add("was-taken");
@@ -905,6 +961,7 @@
       });
       choicesBox.appendChild(button);
     });
+    if (!videoSrc) setChoicePhase("ready");
 
     pendingTap = null;
     preloadNext(scene);
