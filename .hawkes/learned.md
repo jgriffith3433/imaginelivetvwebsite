@@ -1,1 +1,0 @@
-- convention: world bible — docs/world-bible.md treats "10 seconds" as something new to see/hear/do per scene, since these stories have no walking.

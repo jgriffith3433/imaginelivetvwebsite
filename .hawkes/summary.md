@@ -1,4 +1,0 @@
-Wrote docs/world-bible.md (Areas, Landmarks, Who lives here, What happens, Story beats) for the home and the three worlds, keeping canon from the story docs and saying where each falls short. No game code changed.
-Fun-reviewer verdict: thin (Night Shift is dense; the two clip stories have only "choose" inside a page; the home is silent). I added a look-around hotspot layer, and marked what is built versus new. Left for later: building the hotspots, home hover loops, the old man's voice line (the talking rat needs J's call), Night Shift's 15 echo scenes (voice) and 6 stings.
-GPU estimate: none needed for this task. The only known GPU item is Night Shift's 6 music stings, about $0.08 ($0.70 with idle tail) from the story doc. I did not run hawkesgen_estimate.
-Checks: the npm checks were not run, since only a doc changed.
