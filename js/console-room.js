@@ -143,6 +143,11 @@
     peopleEl.setAttribute("aria-hidden", "true");
     var big = document.getElementById("console-big");
     host.insertBefore(peopleEl, big && big.parentNode === host ? big.nextSibling : photoEl.nextSibling);
+    // The people wait for the plate (css: .room-people:not([data-ready]) is hidden), so a silhouette never shows before the room.
+    var people = peopleEl;
+    var ready = function () { people.setAttribute("data-ready", "1"); };
+    if (plate.complete && plate.naturalWidth) ready();
+    else { plate.addEventListener("load", ready); plate.addEventListener("error", ready); }
     setClock();
   }
 

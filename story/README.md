@@ -185,7 +185,7 @@ line) switches it while that line is heard. Every change of camera or of its pic
 collapses to a line and snaps back, bright and noisy, about 260 ms; reduced motion gets a brief dip instead), and the person
 at the desk is seen reaching for the controls ("Dee switches the screen to 4 Stairwell C, 31", in the caption under the room).
 
-**The people.** In the room they are **black silhouettes** (a head and shoulders seen from behind, so they face the screen),
+**The people.** In the room they are **silhouettes** (toned dark blue-grey and rim-lit from the monitors in CSS, never flat black; the speaker is lifted with a warm rim; they show only once the plate has loaded) (a head and shoulders seen from behind, so they face the screen),
 each with a shape of their own (Dee's bun and the radio on her belt, Mr. Okafor's height, bag and tie, Terrell's beanie, and
 so on; a name tag under each). The trainee (`you`) and Dee are there by default, seated. The speaker nods and has a small
 speech mark over them. **Out of the room** (the tour, a call-up to a floor, the lobby desk) they are drawn **as people**,
