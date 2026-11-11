@@ -1710,6 +1710,29 @@ async function continueRecap(options, t) {
   t.progress(1);
 }
 
+/** One article layout per post: hero, title, date, language label, reading time; Arabic reads right to left; nothing overflows. */
+function checkArticle(t, doc, p) {
+  const art = doc.querySelector("article.post-article");
+  const q = (s) => art && art.querySelector(s);
+  if (!art) return t.problem("bug", `${p.to}: no article`);
+  const hero = q(".post-hero img.hero-image");
+  if (!hero) t.problem("bug", `${p.to}: no hero image`);
+  const h1 = q("h1"), time = q(".post-meta time"), lang = q(".post-meta .post-lang"), read = q(".post-meta .post-read");
+  if (!h1 || !h1.textContent.trim()) t.problem("bug", `${p.to}: no title`);
+  if (!time || !time.getAttribute("datetime")) t.problem("bug", `${p.to}: no date`);
+  if (!lang || !lang.textContent.trim()) t.problem("bug", `${p.to}: no language label`);
+  if (!read || !/^\d+ min read$/.test(read.textContent.trim())) t.problem("bug", `${p.to}: no reading time`);
+  const script = art.getAttribute("data-script");
+  const rtl = doc.defaultView.getComputedStyle(art).direction === "rtl";
+  if (rtl !== (script === "ar")) t.problem("bug", `${p.to}: direction is ${rtl ? "rtl" : "ltr"} for script ${script}`);
+  const lh = parseFloat(doc.defaultView.getComputedStyle(q(".post-body")).lineHeight) / parseFloat(doc.defaultView.getComputedStyle(q(".post-body")).fontSize);
+  if (["zh", "ja", "hi", "bn", "ar"].includes(script) && lh < 1.8) t.problem("bug", `${p.to}: line-height ${lh.toFixed(2)} too tight for ${script}`);
+  const root = doc.documentElement;
+  if (root.scrollWidth > root.clientWidth + 1) t.problem("bug", `${p.to}: the page scrolls sideways`);
+  t.event("article", `${script} ${lang ? lang.textContent : ""} ${read ? read.textContent : ""} rtl=${rtl} lh=${lh.toFixed(2)}`);
+  t.add("articlesChecked");
+}
+
 async function blog(options, t) {
   t.scene("Blog");
   await passPrompt(t); // like a viewer: the home page's title splash goes first, so none is left behind the post frame
@@ -1739,6 +1762,7 @@ async function blog(options, t) {
     }
     if (!doc.querySelector("h1")) t.problem("warning", `Post "${p.title}" has no heading`);
     checkRecentPosts(t, doc, p.to);
+    checkArticle(t, doc, p);
     await waitFor(() => [...doc.images].every((img) => img.complete), 10000);
     [...doc.images].forEach((img) => !img.naturalWidth && t.problem("bug", `${p.to}: image ${pathOf(img.src)} didn't load`));
     await sleep(300);
