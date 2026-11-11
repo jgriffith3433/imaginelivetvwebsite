@@ -905,6 +905,9 @@ async function smoke(options, t) {
   // Audio buses (beta plays smoke): unlock on first tap, duck under a clip, header toggle saves iltv.sound; 390x844.
   t.scene("Audio buses: unlock, duck, header toggle");
   await audioBusesRun({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.995 + 0.004 * p) });
+  // UI sounds and beds (beta plays smoke): choice-appear, tap, timer ticks, ending sting, beds, Sound off after a reload.
+  t.scene("Audio: UI sounds, beds and Sound off after a reload");
+  await audioUiRun({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.9985 + 0.0005 * p) });
   // Decisive choice (beta plays smoke): chosen card glows, others fall away, double-tap is one choice, keys 1/2;
   // mid-animation screenshots at 390x844 for Final Spark and Night Shift.
   t.scene("Decisive choice: glow, fall-away, double-tap, keys");
@@ -2500,6 +2503,157 @@ async function audioBusesRun(options, t) {
     }
   } finally {
     putBack();
+  }
+}
+
+/* ---------------- audio-ui: choice-appear, tap, timer tick, ending sting, ambient beds (390x844, touch) ---------------- */
+
+/** One video story in a 390x844 frame, played by taps: the first clip's start, the beds that start after it (never two at once, one on
+    every page), the choices' appear sound, the 3 ticks of the timer, the tap on a choice, and the ending's sting. Every audio
+    event goes on the timeline; a missing sound is a problem. Then, with Sound off saved and the frame reloaded, no audio events at all. */
+async function audioUiAt(t, id) {
+  const st = story(id);
+  const url = `/?story=${id}`;
+  const clean = () => {
+    localStorage.setItem(SOUND_KEY, JSON.stringify({ on: true, music: 1, sfx: 1 }));
+    localStorage.setItem(AUDIO_KEY, JSON.stringify({ on: true }));
+  };
+  clean();
+  const t0 = performance.now();
+  let doc = await viewFrameLoad(t, url, 390, 844);
+  let win = doc.defaultView;
+  const events = [];
+  const watch = (d) => d.addEventListener("iltv:audio", (e) => events.push({ ...e.detail, ms: Math.round(performance.now() - t0) }));
+  watch(doc);
+  let clipPlayingAt = null;
+  const q = (d, sel) => d.querySelector(sel);
+  const video = () => q(doc, "#spark-video video:not(.spark-leave)");
+  const sceneNow = () => win.finalSpark && win.finalSpark.scene();
+  const buttons = () => [...doc.querySelectorAll("#spark-choices .choice")];
+  let worstBeds = 0;
+  const sampler = setInterval(() => {
+    const a = win.iltvAudio;
+    if (!a) return;
+    const n = a.beds().length;
+    worstBeds = Math.max(worstBeds, n);
+    const v = video();
+    if (clipPlayingAt == null && v && !v.paused && v.currentTime > 0.05) clipPlayingAt = Math.round(performance.now() - t0);
+  }, 80);
+  const seenScenes = {};
+  const checkBed = (where) => {
+    const a = win.iltvAudio;
+    if (!a.beds().length) t.problem("bug", `${id} ${where}: no ambient bed playing on ${sceneNow()}`);
+    seenScenes[sceneNow()] = true;
+  };
+  const count = (what, name) => events.filter((e) => e.what === what && (!name || e.name === name)).length;
+  try {
+    await passPrompt(t, doc, `${id} 390x844`);
+    const tapped = Math.round(performance.now() - t0);
+    await waitFor(() => clipPlayingAt != null, 8000);
+    await sleep(900);
+    t.metric(`firstClipMs.${id}`, clipPlayingAt == null ? -1 : clipPlayingAt);
+    const bedEv = events.find((e) => e.what === "bed" && e.on);
+    if (!bedEv) t.problem("bug", `${id}: no bed event after the first tap and the first clip`);
+    else {
+      t.event("bed", `${id}: ${bedEv.story}/${bedEv.mood} via ${bedEv.via} at ${bedEv.ms} ms (first clip playing at ${clipPlayingAt} ms, tap at ${tapped} ms)`);
+      if (clipPlayingAt != null && bedEv.ms + 60 < clipPlayingAt) t.problem("bug", `${id}: the bed started (${bedEv.ms} ms) before the first clip played (${clipPlayingAt} ms): it must not delay the clip`);
+    }
+    checkBed("first scene");
+    // The way to the nearest ending, a page at a time: each clip skipped to its end, then the choices come up.
+    const ending = Object.keys(st.scenes).filter((s) => st.scenes[s].ending);
+    const way = wayTo(st, (sc) => !!sc.ending) || [];
+    let ticked = false;
+    for (let step = 0; step <= way.length; step++) {
+      const v = video();
+      if (v) {
+        await waitFor(() => v.duration > 0.5 && isFinite(v.duration), 8000);
+        if (v.duration > 0.5 && isFinite(v.duration)) v.currentTime = Math.max(0, v.duration - 0.12);
+      }
+      if (step === way.length) break;
+      const here = sceneNow();
+      const ready = await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready" && buttons().length, 10000);
+      if (!ready) { if (st.scenes[here].choices.length === 1) { await waitFor(() => sceneNow() !== here, 6000); checkBed("auto"); continue; } t.problem("bug", `${id}: choices never came up on ${here}`); break; }
+      if (step === 0) {
+        await sleep(300);
+        if (!count("ui", "appear")) t.problem("bug", `${id}: no choice-appear sound when the choices came up`);
+        else t.event("ui", `${id}: choice-appear on ${here}`);
+        // The timer's last 3 seconds: three ticks (the window is 15 s; the bot lets it run to 2.5 s left).
+        await sleep(12600);
+        const ticks = count("ui", "tick");
+        if (ticks < 3) t.problem("bug", `${id}: ${ticks} timer ticks in the last 3 seconds (3 expected)`);
+        else t.event("ui", `${id}: ${ticks} timer ticks in the last 3 s`);
+        ticked = true;
+      }
+      const to = way[step];
+      const i = st.scenes[here].choices.findIndex((c) => c[2] === to);
+      const button = buttons()[i];
+      if (i < 0 || !button) throw new Error(`${id}: no choice from ${here} to ${to}`);
+      const before = count("ui", "tap");
+      await tapAt(t, button, `"${enText(button)}"`);
+      await sleep(250);
+      if (count("ui", "tap") !== before + 1) t.problem("bug", `${id}: the tap on a choice made ${count("ui", "tap") - before} tap sounds (1 expected)`);
+      await waitFor(() => sceneNow() === to, 3000);
+      await sleep(400);
+      checkBed(`step ${step + 1}`);
+    }
+    await sleep(600);
+    if (!count("sting")) t.problem("bug", `${id}: no ending sting at ${ending.length ? "the ending" : "any ending"}`);
+    else t.event("sting", `${id}: ${events.filter((e) => e.what === "sting").map((e) => e.name).join(", ")}`);
+    if (!ticked) t.problem("bug", `${id}: the timer was never listened to`);
+    if (count("ui-missing")) t.problem("bug", `${id}: missing sound ${events.filter((e) => e.what === "ui-missing").map((e) => e.name).join(", ")}`);
+    if (worstBeds > 1) t.problem("bug", `${id}: two ambient beds were playing at once`);
+    const duck = events.filter((e) => e.what === "duck");
+    t.event("audio-events", `${id}: ${events.length} (${["bed", "ui", "duck", "sting"].map((w) => `${w} ${events.filter((e) => e.what === w).length}`).join(", ")}); beds at once ≤ ${worstBeds}; ${duck.length ? "ducked under dialogue" : "no duck seen"}`);
+    t.metric(`bedsAtOnce.${id}`, worstBeds);
+    // The story list: the bed stops.
+    const back = q(doc, ".stories-back, #stories-back");
+    if (back) {
+      await tapAt(t, back, "All stories");
+      await sleep(900);
+      if (win.iltvAudio.beds().length) t.problem("bug", `${id}: the bed kept playing on the story list`);
+      else t.event("bed", `${id}: stopped on the story list`);
+    }
+  } finally {
+    clearInterval(sampler);
+  }
+  // Sound off, saved, reloaded: no audio events at all, even after a tap on a choice.
+  localStorage.setItem(SOUND_KEY, JSON.stringify({ on: false, music: 1, sfx: 1 }));
+  localStorage.setItem(AUDIO_KEY, JSON.stringify({ on: false }));
+  doc = await viewFrameLoad(t, url, 390, 844);
+  win = doc.defaultView;
+  events.length = 0;
+  watch(doc);
+  await passPrompt(t, doc, `${id} sound off`);
+  await sleep(1500);
+  const v2 = q(doc, "#spark-video video:not(.spark-leave)");
+  if (v2 && v2.duration > 0.5 && isFinite(v2.duration)) v2.currentTime = Math.max(0, v2.duration - 0.12);
+  await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 8000);
+  const b2 = [...doc.querySelectorAll("#spark-choices .choice")][0];
+  if (b2) await tapAt(t, b2, "first choice (sound off)");
+  await sleep(1200);
+  const stray = events.filter((e) => e.what !== "toggle");
+  if (stray.length) t.problem("bug", `${id}: Sound off after a reload, yet ${stray.length} audio events: ${stray.slice(0, 4).map((e) => e.what + (e.name ? ":" + e.name : "")).join(", ")}`);
+  else t.event("audio-off", `${id}: Sound off kept after reload: zero audio events through a tap on a choice`);
+  closeViewFrame();
+}
+
+async function audioUiRun(options, t) {
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const originalSound = localStorage.getItem(SOUND_KEY);
+  const originalAudio = localStorage.getItem(AUDIO_KEY);
+  try {
+    clearProgress();
+    const ids = options.story ? [options.story] : [FIRST, "water-road"];
+    let k = 0;
+    for (const id of ids) {
+      t.scene(`Audio: UI sounds and beds, ${id} at 390x844`);
+      await audioUiAt(t, id);
+      t.progress(++k / ids.length);
+    }
+  } finally {
+    if (originalSound == null) localStorage.removeItem(SOUND_KEY); else localStorage.setItem(SOUND_KEY, originalSound);
+    if (originalAudio == null) localStorage.removeItem(AUDIO_KEY); else localStorage.setItem(AUDIO_KEY, originalAudio);
+    closeViewFrame();
   }
 }
 
@@ -7986,6 +8140,14 @@ installPlaytest({
       description: "Opens The Final Spark (Tap to play): js/audio.js unlocks its Web Audio context on that first tap (event audio-unlock; nothing from the buses before it). While the unmuted clip plays, ambience and music bus gains duck (audio-duck), then lift when the clip pauses — driven by the video's play/pause/volumechange events, no polling. The header sound toggle mutes everything including the clip, saves localStorage iltv.sound, and stays in step with hawkes.sound / Tap for sound. Checked on the page and in frames at 390x844 and 1280x720. Options: {\"at\":\"smoke\"} is the short leg smoke also runs.",
     },
     {
+      id: "audio-ui",
+      title: "Audio: choice-appear, tap, timer ticks, ending sting and ambient beds in The Final Spark and The Water Road at 390x844, and Sound off after a reload",
+      seconds: 150,
+      tags: ["full", "menus"],
+      starts: ["smoke"],
+      description: "In a 390x844 frame per video story: Tap to play, the first clip's start (metric firstClipMs.<story>) and the ambient bed that starts only after it (event bed, never before the clip), a bed on every page of the way to the nearest ending and never two at once (bedsAtOnce), the choices' appear sound, three timer ticks in the last 3 seconds, one tap sound per press on a choice, the ending's sting, the bed stopping on the story list; a missing sound is a problem. Then Sound off saved and the frame reloaded: zero audio events through a tap on a choice. Options: {\"story\":\"<id>\"}.",
+    },
+    {
       id: "analytics",
       title: "Hawkes Analytics: the events going out on a way through The Final Spark (screen, video, choice, back, Try again, the ending), the thumbs question after going back twice and the stars question at the ending",
       seconds: 180,
@@ -8037,6 +8199,7 @@ installPlaytest({
       else if (id === "blog") await blog(options, t);
       else if (id === "sound") await sound(options, t);
       else if (id === "audio-buses") await audioBusesRun(options, t);
+      else if (id === "audio-ui") await audioUiRun(options, t);
       else if (id === "credits") await credits(options, t);
       else if (id === "analytics") await analyticsRun(options, t);
       else if (id === "endings") await endingsRun(options, t);

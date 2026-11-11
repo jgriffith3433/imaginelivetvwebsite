@@ -50,6 +50,15 @@ ending. There is **no Back button** (canon: a choice stands).
 buses (ambience, music, ui) with gain fades; ambience and music duck under a clip that has sound; a header sound toggle
 mutes everything (saved in `iltv.sound`, kept in step with Settings / `hawkes.sound`). `setBed(story, mood)` and
 `playUi(name)` play `/assets/audio/...` when those files exist and stay quiet when they don't. Playtest: `audio-buses`.
+**(new) Choosing sounds and beds** (`js/audio.js`, made in code until recordings replace them): *appear* (the choices come up, a soft
+two-note lift), *tap* (the lock-in on a press: a tape-deck clunk, 3 variants), *tick* (the last 3 s of the timer, 3 variants), all at
+±7% pitch with no repeat of the same variant+pitch back to back, and never two UI sounds at once (a louder kind cuts a quieter one).
+One ending sting per story: The Final Spark a low minor drop and one last drip; The Water Road a hollow open fifth under a swell of
+wind and one creak; Night Shift a cold fluorescent hum that cuts out. One bed per story, 8 s seamless loop: the sewer (50 Hz hum, thin
+trickle, four drips with echo) and the dust (gusting wind, deep rumble, two creaks of old wood); Night Shift keeps its own beds. A bed
+starts only after the first clip plays (or on an image page, or at the first tap on a choice), carries across scenes without a
+restart, ducks under clip dialogue and fades out on the story list. Sound off: no sound is made and no audio event is logged.
+Playtest: `audio-ui` (also in `smoke`).
 
 **C. The Tree.** A map of the story as found: only unlocked scenes show, a locked "?" per way not taken, nothing pressable.
 It is the home's one *map*: it is how a player sees how big a world they have not seen.

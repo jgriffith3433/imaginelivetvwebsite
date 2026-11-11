@@ -32,7 +32,11 @@
   var busGain = { ambience: BED_LEVEL, music: MUSIC_LEVEL, ui: UI_LEVEL };
   var ducked = false;
   var duckWant = false;
-  var bed = { story: null, mood: null, source: null, buffer: null, url: null };
+  var bed = { story: null, mood: null, source: null, buffer: null, url: null, key: null, gain: null };
+  var beds = [];          // live bed sources (the current one, plus one fading out for under a second)
+  var bedsGo = false;     // beds start only after the first clip plays (or on an image page, or the first choice tap)
+  var uiNow = null;       // the one UI sound that may play at a time: { src, priority, ends }
+  var lastVariant = {};
   var watched = null;
   var toggleBtn = null;
   var log = [];
@@ -66,6 +70,8 @@
   }
 
   function tell(what, detail) {
+    // Sound off: nothing is made, so nothing is logged (the toggle's own event aside).
+    if (!enabled && what !== "toggle") return;
     var row = { what: what, at: Date.now() };
     if (detail) {
       var k;
@@ -176,7 +182,7 @@
     var was = unlocked;
     unlocked = true;
     applyMaster();
-    if (bed.story && bed.mood) startBed(bed.story, bed.mood, true);
+    if (bed.story && bed.mood) startBed(bed.story, bed.mood, false, "unlock");
     applyDuck();
     if (!was) tell("unlock", { audio: context.state });
     return true;
@@ -192,138 +198,313 @@
     window.addEventListener(type, onGesture, true);
   });
 
-  function stopBedSource() {
-    if (!bed.source) return;
-    try { bed.source.stop(0); } catch (e) { /* already stopped */ }
-    try { bed.source.disconnect(); } catch (e2) { /* gone */ }
-    bed.source = null;
+  /* ---- The sounds (made here, in code: no files to fetch, nothing 404s) ----
+     When recordings exist at /assets/audio/ they can replace these; until then every UI sound, ending sting and
+     ambient bed is built from oscillators and filtered noise the first time it is needed (after unlock). */
+
+  function rand(seed) { // small deterministic generator so a bed is the same every load
+    var x = seed >>> 0 || 1;
+    return function () { x ^= x << 13; x >>>= 0; x ^= x >>> 17; x ^= x << 5; x >>>= 0; return x / 4294967296; };
   }
 
-  function playBufferOn(busName, buffer, loop) {
-    if (!unlocked || !enabled || !context || !buses[busName] || !buffer) return null;
-    try {
-      var src = context.createBufferSource();
-      src.buffer = buffer;
-      src.loop = !!loop;
-      src.connect(buses[busName]);
-      src.start(0);
-      return src;
-    } catch (e) {
-      return null;
+  function mono(secs, fn) {
+    var rate = context.sampleRate;
+    var buf = context.createBuffer(1, Math.max(1, Math.floor(rate * secs)), rate);
+    fn(buf.getChannelData(0), rate);
+    return buf;
+  }
+
+  function normalise(d, peak) {
+    var m = 0, i;
+    for (i = 0; i < d.length; i++) m = Math.max(m, Math.abs(d[i]));
+    if (m > 0) for (i = 0; i < d.length; i++) d[i] *= peak / m;
+  }
+
+  var TAU = Math.PI * 2;
+
+  /** Loops are seamless by construction: tones sit on whole cycles of the loop length, and the noise is made a
+      little longer than the loop, its extra tail cross-faded (equal power) into the head so there is no click. */
+  function loopNoise(d, rnd, k1, k2, amp) {
+    var n = d.length, xf = Math.min(Math.floor(n / 8), 16000), total = n + xf, y1 = 0, y2 = 0, i;
+    var x = new Float32Array(total);
+    for (i = 0; i < 4000; i++) { var w0 = rnd() * 2 - 1; y1 += k1 * (w0 - y1); y2 += k2 * (w0 - y2); }
+    for (i = 0; i < total; i++) {
+      var w = rnd() * 2 - 1;
+      y1 += k1 * (w - y1);
+      y2 += k2 * (w - y2);
+      x[i] = (y1 - y2) * amp;
+    }
+    for (i = 0; i < n; i++) d[i] += x[i];
+    for (i = 0; i < xf; i++) {
+      var f = i / xf;
+      d[i] = x[i] * Math.sin(f * Math.PI / 2) + x[n + i] * Math.cos(f * Math.PI / 2);
     }
   }
 
-  function loadBuffer(url, done) {
-    if (!url || missingUrls[url] || !window.fetch || !NativeContext) {
-      done(null);
-      return;
-    }
-    if (bufferCache[url]) {
-      done(bufferCache[url]);
-      return;
-    }
-    fetch(url, { method: "GET", cache: "force-cache" })
-      .then(function (res) {
-        if (!res.ok) {
-          missingUrls[url] = true;
-          throw new Error(String(res.status));
+  var LOOP = 8;
+
+  function makeBed(story, mood) {
+    var key = story + "/" + mood;
+    if (bufferCache[key]) return bufferCache[key];
+    if (!context) return null;
+    var buf = null;
+    if (mood === "sewer") {
+      // Sewer: a low electrical hum (whole cycles of the 8 s loop), a thin trickle, and the odd drip with its echo.
+      buf = mono(LOOP, function (d, rate) {
+        var i, t, rnd = rand(7);
+        loopNoise(d, rnd, 0.35, 0.04, 0.5);
+        for (i = 0; i < d.length; i++) {
+          t = i / rate;
+          d[i] *= 0.55 + 0.25 * Math.sin(TAU * t / LOOP * 3);
+          d[i] += 0.07 * Math.sin(TAU * 50 * t) + 0.04 * Math.sin(TAU * 100 * t) + 0.015 * Math.sin(TAU * 150 * t);
         }
-        return res.arrayBuffer();
-      })
-      .then(function (raw) {
-        if (!unlocked) throw new Error("locked");
-        ensureGraph();
-        if (!context) throw new Error("no context");
-        return new Promise(function (resolve, reject) {
-          var ret = context.decodeAudioData(raw, resolve, reject);
-          if (ret && ret.then) ret.then(resolve, reject);
+        [[1.3, 1500], [3.9, 1250], [5.2, 1700], [6.7, 1400]].forEach(function (dr) {
+          for (var e = 0; e < 2; e++) {
+            var start = Math.floor((dr[0] + e * 0.21) * rate), amp = e ? 0.22 : 0.55;
+            for (var k = 0; k < rate * 0.3 && start + k < d.length; k++) {
+              var tt = k / rate;
+              d[start + k] += amp * 0.18 * Math.exp(-tt * 45) * Math.sin(TAU * (dr[1] * (1 + 0.6 * Math.exp(-tt * 30))) * tt);
+            }
+          }
         });
-      })
-      .then(function (buf) {
-        if (buf) bufferCache[url] = buf;
-        done(buf);
-      })
-      .catch(function () { done(null); });
-  }
-
-  function bedUrl(story, mood) {
-    if (!story || !mood) return null;
-    return "/assets/audio/" + encodeURIComponent(String(story)) + "/" + encodeURIComponent(String(mood)) + ".mp3";
-  }
-
-  function uiUrl(name) {
-    if (!name) return null;
-    return "/assets/audio/ui/" + encodeURIComponent(String(name)) + ".mp3";
-  }
-
-  function startBed(story, mood, force) {
-    var url = bedUrl(story, mood);
-    bed.story = story || null;
-    bed.mood = mood || null;
-    if (!url) {
-      stopBedSource();
-      bed.buffer = null;
-      bed.url = null;
-      return;
+        normalise(d, 0.6);
+      });
+    } else if (mood === "dust") {
+      // Desert: wind in gusts that return to where they began, a deep rumble, and a creak of old wood twice a loop.
+      buf = mono(LOOP, function (d, rate) {
+        var i, t, rnd = rand(11);
+        loopNoise(d, rnd, 0.2, 0.012, 1.2);
+        for (i = 0; i < d.length; i++) {
+          t = i / rate;
+          var gust = 0.55 + 0.3 * Math.sin(TAU * t / LOOP) + 0.15 * Math.sin(TAU * 3 * t / LOOP + 1);
+          d[i] = d[i] * gust + 0.03 * Math.sin(TAU * 42 * t) * gust;
+        }
+        [[2.6, 150], [6.0, 118]].forEach(function (cr) {
+          var start = Math.floor(cr[0] * rate), len = Math.floor(rate * 0.8);
+          for (var k = 0; k < len && start + k < d.length; k++) {
+            var tt = k / rate, env = Math.sin(Math.PI * k / len);
+            var f = cr[1] * (1 + 0.08 * Math.sin(TAU * 6 * tt)) * (1 - 0.15 * tt);
+            var ph = TAU * f * tt;
+            d[start + k] += 0.12 * env * env * (Math.sin(ph) + 0.5 * Math.sin(2 * ph) + 0.3 * Math.sin(3 * ph + 1));
+          }
+        });
+        normalise(d, 0.6);
+      });
     }
-    if (!unlocked || !enabled) {
-      stopBedSource();
-      bed.url = url;
-      return;
+    if (buf) bufferCache[key] = buf;
+    return buf;
+  }
+
+  /** One-shot UI sounds and stings: name -> { priority, variants: [builder...], rates }. A louder kind may cut a quieter one. */
+  function tone(d, rate, at, secs, f0, f1, amp, decay, harm) {
+    var s = Math.floor(at * rate), n = Math.floor(secs * rate), ph = 0;
+    for (var k = 0; k < n && s + k < d.length; k++) {
+      var t = k / rate, f = f0 + (f1 - f0) * Math.min(1, t / secs);
+      ph += TAU * f / rate;
+      var v = Math.sin(ph) + (harm ? harm * Math.sin(2 * ph) : 0);
+      d[s + k] += amp * Math.exp(-t * decay) * Math.min(1, k / 40) * v;
     }
-    if (!force && bed.url === url && bed.source) return;
-    bed.url = url;
-    loadBuffer(url, function (buf) {
-      if (bed.url !== url) return; // a newer setBed won
-      stopBedSource();
-      bed.buffer = buf;
-      if (!buf) return; // missing file: do nothing
-      if (!unlocked || !enabled) return;
-      bed.source = playBufferOn("ambience", buf, true);
+  }
+
+  function noiseBurst(d, rate, at, secs, amp, decay, seed, lp) {
+    var rnd = rand(seed), s = Math.floor(at * rate), n = Math.floor(secs * rate), y = 0;
+    for (var k = 0; k < n && s + k < d.length; k++) {
+      y += lp * ((rnd() * 2 - 1) - y);
+      d[s + k] += amp * Math.exp(-(k / rate) * decay) * y;
+    }
+  }
+
+  var UI = {
+    appear: { priority: 1, variants: [880, 932, 988].map(function (f, i) { return function () {
+      // the choices come up: a soft two-note lift
+      return mono(0.32, function (d, r) { tone(d, r, 0, 0.3, f, f * 1.01, 0.22, 11, 0.2); tone(d, r, 0.07, 0.25, f * 1.5, f * 1.5, 0.14, 13, 0); noiseBurst(d, r, 0, 0.03, 0.05, 90, 3 + i, 0.5); });
+    }; }) },
+    tap: { priority: 3, variants: [1, 2, 3].map(function (n) { return function () {
+      // lock-in: a tape-deck clunk, a dull thump under a short click
+      return mono(0.3, function (d, r) {
+        tone(d, r, 0, 0.18, 220 - n * 12, 70, 0.55, 22, 0.3);
+        noiseBurst(d, r, 0, 0.012, 0.5, 400, 20 + n, 0.7);
+        noiseBurst(d, r, 0.03, 0.08, 0.18, 55, 40 + n, 0.12);
+        normalise(d, 0.7);
+      });
+    }; }) },
+    tick: { priority: 2, variants: [1, 2, 3].map(function (n) { return function () {
+      // the last three seconds: a dry wooden tick
+      return mono(0.12, function (d, r) { tone(d, r, 0, 0.06, 1500 + n * 90, 900, 0.3, 70, 0); noiseBurst(d, r, 0, 0.008, 0.25, 500, 60 + n, 0.6); });
+    }; }) },
+    "sting-final-spark": { priority: 4, variants: [function () {
+      // a low minor drop and a long breath: the sewer takes the light
+      return mono(3.2, function (d, r) {
+        tone(d, r, 0, 3.2, 98, 92, 0.34, 1.1, 0.25); tone(d, r, 0.02, 3.0, 116.5, 110, 0.22, 1.3, 0.2); tone(d, r, 0.5, 2.5, 174.6, 164, 0.1, 1.6, 0);
+        noiseBurst(d, r, 0, 0.4, 0.12, 6, 77, 0.05);
+        tone(d, r, 1.9, 0.3, 1400, 1100, 0.12, 12, 0); // one last drip
+        normalise(d, 0.7);
+      });
+    }] },
+    "sting-water-road": { priority: 4, variants: [function () {
+      // a hollow open fifth over a swell of wind and one creak of wood
+      return mono(3.4, function (d, r) {
+        tone(d, r, 0, 3.4, 146.8, 146.8, 0.3, 0.9, 0.35); tone(d, r, 0.05, 3.2, 220, 220, 0.2, 1.0, 0.2);
+        var rnd = rand(5), y1 = 0, y2 = 0, n = d.length;
+        for (var i = 0; i < n; i++) { var w = rnd() * 2 - 1; y1 += 0.18 * (w - y1); y2 += 0.01 * (w - y2); d[i] += (y1 - y2) * 0.9 * Math.sin(Math.PI * Math.min(1, i / n)) * 0.5; }
+        tone(d, r, 1.2, 0.7, 130, 108, 0.1, 3, 0.5);
+        normalise(d, 0.7);
+      });
+    }] },
+    "sting-night-shift": { priority: 4, variants: [function () {
+      // a cold fluorescent hum that cuts out
+      return mono(2.6, function (d, r) {
+        tone(d, r, 0, 2.2, 120, 120, 0.3, 1.2, 0.5); tone(d, r, 0, 2.2, 240, 240, 0.12, 1.0, 0); noiseBurst(d, r, 2.2, 0.05, 0.3, 80, 9, 0.5);
+        normalise(d, 0.65);
+      });
+    }] }
+  };
+  UI.choose = UI.tap;
+
+  /** The torch's soft click and low hum (js/spot.js). */
+  UI["torch-click"] = { priority: 1, variants: [function () {
+    return mono(0.09, function (d, r) { tone(d, r, 0, 0.09, 1900, 1900, 0.25, 70, 0); tone(d, r, 0, 0.09, 640, 640, 0.12, 70, 0); noiseBurst(d, r, 0, 0.09, 0.1, 70, 2, 0.8); });
+  }] };
+  UI["torch-hum"] = { priority: 1, variants: [function () {
+    return mono(3.2, function (d, r) {
+      for (var i = 0; i < d.length; i++) {
+        var t = i / r, fade = Math.min(1, t / 0.4) * Math.min(1, (3.2 - t) / 0.8);
+        d[i] = fade * 0.07 * (Math.sin(TAU * 100 * t) + 0.5 * Math.sin(TAU * 200 * t) + 0.12 * Math.sin(TAU * 300 * t));
+      }
     });
-  }
+  }] };
 
-  function setBed(story, mood) {
-    startBed(story, mood, false);
+  var RATES = [0.93, 1, 1.07]; // pitch variants, +-7%
+
+  function stopUiNow(fadeSecs) {
+    if (!uiNow) return;
+    var cur = uiNow;
+    uiNow = null;
+    try {
+      cur.gain.gain.cancelScheduledValues(context.currentTime);
+      cur.gain.gain.setValueAtTime(cur.gain.gain.value, context.currentTime);
+      cur.gain.gain.linearRampToValueAtTime(0, context.currentTime + fadeSecs);
+      cur.src.stop(context.currentTime + fadeSecs + 0.01);
+    } catch (e) { /* already ended */ }
   }
 
   function playUi(name) {
-    var url = uiUrl(name);
-    if (!url || !unlocked || !enabled) return;
-    loadBuffer(url, function (buf) {
-      if (!buf) buf = synthUi(name); // no recording yet: the torch's own sounds are made here
-      if (!buf) return; // missing file: do nothing
-      playBufferOn("ui", buf, false);
-    });
+    if (!unlocked || !enabled) return;
+    ensureGraph();
+    if (!context || !buses.ui) return;
+    var def = UI[name];
+    if (!def) { tell("ui-missing", { name: String(name) }); return; }
+    var now = context.currentTime;
+    if (uiNow && uiNow.ends > now) {
+      if (def.priority < uiNow.priority) return; // a quieter sound never cuts a louder one
+      stopUiNow(0.02);                           // never two UI sounds at once
+    }
+    var vi = Math.floor(Math.random() * def.variants.length);
+    var ri = def.variants.length > 1 || name === "tap" || name === "tick" || name === "appear" ? Math.floor(Math.random() * RATES.length) : 1;
+    if (def.variants.length > 1 || RATES.length > 1) {
+      var tries = 0;
+      while (lastVariant[name] === vi + ":" + ri && tries++ < 6 && (def.variants.length > 1 || name === "tap" || name === "tick" || name === "appear")) {
+        vi = Math.floor(Math.random() * def.variants.length);
+        ri = Math.floor(Math.random() * RATES.length);
+      }
+    }
+    lastVariant[name] = vi + ":" + ri;
+    var ck = "ui/" + name + "/" + vi;
+    var buf = bufferCache[ck] || (bufferCache[ck] = def.variants[vi]());
+    if (!buf) return;
+    var rate = (name.indexOf("sting") === 0 || name.indexOf("torch") === 0) ? 1 : RATES[ri];
+    try {
+      var src = context.createBufferSource(), g = context.createGain();
+      src.buffer = buf;
+      src.playbackRate.value = rate;
+      src.connect(g);
+      g.connect(buses.ui);
+      src.start(0);
+      uiNow = { src: src, gain: g, priority: def.priority, ends: now + buf.duration / rate };
+      src.onended = function () { if (uiNow && uiNow.src === src) uiNow = null; try { g.disconnect(); } catch (e) { /* gone */ } };
+      if (name.indexOf("sting") === 0) tell("sting", { name: name, story: name.slice(6) });
+      else if (name.indexOf("torch") !== 0) tell("ui", { name: name === "choose" ? "tap" : name, variant: vi, rate: rate });
+    } catch (e) { /* no sound */ }
   }
 
-  // The flashlight's soft click and low hum (js/spot.js), made in code until recordings exist at
-  // /assets/audio/ui/torch-click.mp3 and torch-hum.mp3 (a file there wins).
-  var synthCache = {};
-  function synthUi(name) {
-    if (name !== "torch-click" && name !== "torch-hum") return null;
-    if (synthCache[name]) return synthCache[name];
-    if (!context) return null;
+  /* ---- Beds: one at a time, started only after the first clip plays, cross-faded, ducked, stopped on the list ---- */
+
+  function liveBeds() {
+    return beds.filter(function (b) { return !b.fading; });
+  }
+
+  function dropBed(b, secs) {
+    if (!b || b.fading) return;
+    b.fading = true;
     try {
-      var rate = context.sampleRate;
-      var secs = name === "torch-click" ? 0.09 : 3.2;
-      var buf = context.createBuffer(1, Math.floor(rate * secs), rate);
-      var data = buf.getChannelData(0);
-      for (var i = 0; i < data.length; i++) {
-        var t = i / rate;
-        if (name === "torch-click") {
-          var env = Math.exp(-t * 70);
-          data[i] = env * (0.5 * Math.sin(2 * Math.PI * 1900 * t) + 0.25 * Math.sin(2 * Math.PI * 640 * t) + 0.2 * (Math.random() * 2 - 1)) * 0.5;
-        } else {
-          var fade = Math.min(1, t / 0.4) * Math.min(1, (secs - t) / 0.8);
-          data[i] = fade * 0.07 * (Math.sin(2 * Math.PI * 100 * t) + 0.5 * Math.sin(2 * Math.PI * 200 * t) + 0.12 * Math.sin(2 * Math.PI * 300 * t));
-        }
-      }
-      synthCache[name] = buf;
-      return buf;
-    } catch (e) {
-      return null;
+      var t = context.currentTime;
+      b.gain.gain.cancelScheduledValues(t);
+      b.gain.gain.setValueAtTime(b.gain.gain.value, t);
+      b.gain.gain.linearRampToValueAtTime(0, t + secs);
+      b.src.stop(t + secs + 0.02);
+    } catch (e) { /* already stopped */ }
+    setTimeout(function () {
+      try { b.src.disconnect(); b.gain.disconnect(); } catch (e2) { /* gone */ }
+      beds = beds.filter(function (x) { return x !== b; });
+    }, Math.round(secs * 1000) + 60);
+  }
+
+  function stopBedSource(secs) {
+    beds.slice().forEach(function (b) { dropBed(b, secs == null ? 0.05 : secs); });
+    bed.source = null;
+    bed.gain = null;
+    bed.key = null;
+  }
+
+  function startBed(story, mood, force, via) {
+    bed.story = story || null;
+    bed.mood = mood || null;
+    var key = story && mood ? story + "/" + mood : null;
+    bed.url = key;
+    if (!key) {
+      // the story list (or a story with its own beds): fade out and forget
+      var had = !!bed.source;
+      stopBedSource(0.5);
+      bedsGo = false;
+      if (had) tell("bed", { on: false, story: null, via: via || "stop" });
+      return;
     }
+    if (!unlocked || !enabled || !bedsGo) return;
+    if (!force && bed.key === key && bed.source) return; // the same bed carries on across scenes: no restart
+    ensureGraph();
+    var buf = makeBed(story, mood);
+    if (!buf) return;
+    var old = liveBeds();
+    old.forEach(function (b) { dropBed(b, 0.6); });
+    try {
+      var src = context.createBufferSource(), g = context.createGain();
+      src.buffer = buf;
+      src.loop = true;
+      g.gain.value = 0.0001;
+      src.connect(g);
+      g.connect(buses.ambience);
+      src.start(0);
+      g.gain.setValueAtTime(0.0001, context.currentTime);
+      g.gain.linearRampToValueAtTime(1, context.currentTime + 1.2);
+      var entry = { src: src, gain: g, key: key, fading: false };
+      beds.push(entry);
+      bed.source = src;
+      bed.gain = g;
+      bed.key = key;
+      bed.buffer = buf;
+      tell("bed", { on: true, story: story, mood: mood, via: via || "scene", beds: liveBeds().length });
+    } catch (e) { /* no sound */ }
+  }
+
+  function setBed(story, mood) {
+    startBed(story, mood, false, "scene");
+  }
+
+  /** The beds may start (once): the first clip is playing, or this is an image page, or the viewer tapped a choice. */
+  function beginBeds(via) {
+    if (bedsGo) return;
+    bedsGo = true;
+    if (bed.story && bed.mood && unlocked && enabled) startBed(bed.story, bed.mood, false, via || "clip");
   }
 
   function clipHasSound(video) {
@@ -362,6 +543,11 @@
     ["play", "playing", "pause", "ended", "volumechange"].forEach(function (type) {
       video.addEventListener(type, onClipEvent);
     });
+    if (!bedsGo) {
+      // the beds load only after the first clip is playing, so they never delay it
+      video.addEventListener("playing", function () { beginBeds("clip"); }, { once: true });
+      if (!video.paused && video.readyState >= 3) beginBeds("clip");
+    }
     refreshDuck();
   }
 
@@ -374,8 +560,8 @@
     enabled = on;
     saveOn();
     applyMaster();
-    if (!enabled) stopBedSource();
-    else if (unlocked && bed.story && bed.mood) startBed(bed.story, bed.mood, true);
+    if (!enabled) stopBedSource(0.05);
+    else if (unlocked && bed.story && bed.mood) startBed(bed.story, bed.mood, true, "toggle");
     applyDuck();
     renderToggle();
     if (via !== "hawkes" && via !== "load") {
@@ -476,10 +662,13 @@
     setEnabled: function (on) { setEnabled(!!on, "api"); paintToggleIcon(); },
     playUi: playUi,
     setBed: setBed,
+    beginBeds: beginBeds,
+    sounds: function () { return Object.keys(UI); },
+    beds: function () { return liveBeds().map(function (b) { return b.key; }); },
     watch: watch,
     unwatch: unwatch,
     ducked: function () { return ducked; },
-    bed: function () { return { story: bed.story, mood: bed.mood, url: bed.url, playing: !!bed.source }; },
+    bed: function () { return { story: bed.story, mood: bed.mood, url: bed.url, playing: liveBeds().length > 0 }; },
     buses: busLevels,
     events: function () { return log.slice(); },
     toggle: function () { return toggleBtn; },
