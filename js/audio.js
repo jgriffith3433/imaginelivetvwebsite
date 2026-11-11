@@ -388,6 +388,40 @@
     } catch (e) { /* already ended */ }
   }
 
+  /* Recordings (assets/audio/, made through Hawkes Gen) replace the synthesized sounds once decoded; until then,
+     or when a file is missing, the synthesized one plays. Nothing is fetched before the first tap (unlock). */
+  var FILES = {
+    appear: ["ui/appear.mp3"],
+    tap: ["ui/tap-1.mp3", "ui/tap-2.mp3", "ui/tap-3.mp3"],
+    "sting-final-spark": ["ui/sting-final-spark.mp3"],
+    "sting-water-road": ["ui/sting-water-road.mp3"],
+    "sting-night-shift": ["ui/sting-night-shift.mp3"]
+  };
+  var BED_FILES = { "final-spark/sewer": "final-spark/sewer.mp3", "water-road/dust": "water-road/dust.mp3" };
+  var fileState = {};
+
+  function loadFile(rel, then) {
+    var st = fileState[rel];
+    if (st) { if (st.buf) { if (then) then(st.buf); } else if (then && !st.failed) st.wait.push(then); return st.buf || null; }
+    if (!context || !window.fetch) return null;
+    st = fileState[rel] = { buf: null, failed: false, wait: then ? [then] : [] };
+    fetch("/assets/audio/" + rel).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.arrayBuffer();
+    }).then(function (ab) {
+      return new Promise(function (ok, no) { context.decodeAudioData(ab, ok, no); });
+    }).then(function (b) {
+      st.buf = b;
+      st.wait.forEach(function (f) { f(b); });
+      st.wait = [];
+    }).catch(function () { st.failed = true; st.wait = []; });
+    return null;
+  }
+
+  function preloadFiles() {
+    Object.keys(FILES).forEach(function (k) { FILES[k].forEach(function (rel) { loadFile(rel); }); });
+  }
+
   function playUi(name) {
     if (!unlocked || !enabled) return;
     ensureGraph();
@@ -398,6 +432,11 @@
     if (uiNow && uiNow.ends > now) {
       if (def.priority < uiNow.priority) return; // a quieter sound never cuts a louder one
       stopUiNow(0.02);                           // never two UI sounds at once
+    }
+    var files = FILES[name], fbuf = null, fi = -1;
+    if (files) {
+      var ready = files.filter(function (rel) { return fileState[rel] && fileState[rel].buf; });
+      if (ready.length) { fi = Math.floor(Math.random() * ready.length); fbuf = fileState[ready[fi]].buf; fi = files.indexOf(ready[fi]); }
     }
     var vi = Math.floor(Math.random() * def.variants.length);
     var ri = def.variants.length > 1 || name === "tap" || name === "tick" || name === "appear" ? Math.floor(Math.random() * RATES.length) : 1;
@@ -410,8 +449,9 @@
     }
     lastVariant[name] = vi + ":" + ri;
     var ck = "ui/" + name + "/" + vi;
-    var buf = bufferCache[ck] || (bufferCache[ck] = def.variants[vi]());
+    var buf = fbuf || bufferCache[ck] || (bufferCache[ck] = def.variants[vi]());
     if (!buf) return;
+    if (fbuf) vi = fi;
     var rate = (name.indexOf("sting") === 0 || name.indexOf("torch") === 0) ? 1 : RATES[ri];
     try {
       var src = context.createBufferSource(), g = context.createGain();
@@ -472,7 +512,13 @@
     if (!unlocked || !enabled || !bedsGo) return;
     if (!force && bed.key === key && bed.source) return; // the same bed carries on across scenes: no restart
     ensureGraph();
-    var buf = makeBed(story, mood);
+    var rel = BED_FILES[key], fb = rel && fileState[rel] && fileState[rel].buf;
+    if (rel && !fb && !(fileState[rel] && fileState[rel].failed)) {
+      // the recording is on its way: start it when decoded (if this is still the wanted bed), no synth flash first
+      loadFile(rel, function () { if (bed.key !== key && bed.url === key && bedsGo && enabled && !liveBeds().some(function (b) { return b.key === key; })) startBed(story, mood, false, via); });
+      return;
+    }
+    var buf = fb || makeBed(story, mood);
     if (!buf) return;
     var old = liveBeds();
     old.forEach(function (b) { dropBed(b, 0.6); });
@@ -504,6 +550,7 @@
   function beginBeds(via) {
     if (bedsGo) return;
     bedsGo = true;
+    if (unlocked && context) preloadFiles(); // recordings load only after the first clip has started
     if (bed.story && bed.mood && unlocked && enabled) startBed(bed.story, bed.mood, false, via || "clip");
   }
 
