@@ -624,10 +624,23 @@
     try { if (navigator.vibrate) navigator.vibrate(10); } catch (e) { /* unsupported */ }
     try { if (window.iltvAudio && window.iltvAudio.playUi) window.iltvAudio.playUi("choose"); } catch (e) { /* no sound */ }
     document.dispatchEvent(new CustomEvent("iltv:deciding", { detail: { index: btn.dataset.choiceIndex || btn.dataset.choice } }));
+    // The hand-off state belongs to this press. A scene change replaces the buttons (the chosen one leaves the page),
+    // and the box must still be released, or every choice on the next page keeps pointer-events:none and a press lands
+    // on the box. Not when a later press has taken over the box.
+    function release() {
+      if (box._deciding !== btn) return;
+      box._deciding = null;
+      box.classList.remove("is-deciding");
+      box.removeAttribute("aria-busy");
+      btn.classList.remove("is-chosen");
+      btn.removeAttribute("aria-pressed");
+      box.querySelectorAll(".is-fading").forEach(function (b) { b.classList.remove("is-fading"); b.removeAttribute("aria-disabled"); b.removeAttribute("tabindex"); });
+    }
     setTimeout(function () {
       if (btn.isConnected) { try { fn(); } catch (e) { console.error(e); } }
+      if (!btn.isConnected) { release(); return; }
       setTimeout(function () {
-        if (!btn.isConnected) return;
+        if (!btn.isConnected) { release(); return; }
         box._deciding = null;
         box.classList.remove("is-deciding");
         box.removeAttribute("aria-busy");
