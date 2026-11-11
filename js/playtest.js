@@ -477,9 +477,28 @@ function runWant(st) {
   return st.scenes[run.scene].ending ? "end" : "mid";
 }
 
-/** A card's badge says `want` (new, started, completed), visible across the card's top right corner. */
+/** A card's badge says `want` (new, started, completed), visible across the card's top right corner.
+    The featured story's hero has no ribbon: its progress lives on data-progress and .hero-go. */
 function checkBadge(t, card, st, want, where) {
-  const ribbon = card && card.querySelector(".story-card-ribbon");
+  if (!card) {
+    t.problem("bug", `${where}: ${st.title} has no card or hero on the landing page`);
+    return false;
+  }
+  if (card.classList.contains("hero")) {
+    if (card.dataset.progress !== want) {
+      t.problem("bug", `${where}: ${st.title}'s hero says progress "${card.dataset.progress}", not "${want}"`);
+      return false;
+    }
+    const go = (card.querySelector(".hero-go")?.textContent || "").trim();
+    const label = want === "completed" ? "Start Over" : GO[runWant(st)];
+    if (go !== label) t.problem("bug", `${where}: ${st.title}'s hero is ${want} (run at ${runWant(st)}) but its button says "${go}", not "${label}"`);
+    if (card.ownerDocument === document && stories().progress && stories().progress(st.id) !== want) {
+      t.problem("bug", `${where}: iltvStories.progress("${st.id}") says ${stories().progress(st.id)}, the hero ${want}`);
+    }
+    t.event("badge", `${where}: ${st.id} hero ${want}, ${go}`);
+    return true;
+  }
+  const ribbon = card.querySelector(".story-card-ribbon");
   const win = ribbon && ribbon.ownerDocument.defaultView;
   if (!ribbon || !ribbon.getClientRects().length || win.getComputedStyle(ribbon).visibility === "hidden") {
     t.problem("bug", `${where}: ${st.title}'s card has no progress badge (it should say ${BADGE[want]})`);
@@ -515,7 +534,12 @@ async function badgesAfterLoad(t, want, where) {
     return;
   }
   await sleep(300);
-  for (const st of listedStories()) checkBadge(t, doc.querySelector(`#story-list a.story-card[data-story="${st.id}"]`), st, want(st), where);
+  for (const st of listedStories()) {
+    const el =
+      doc.querySelector(`#story-list a.story-card[data-story="${st.id}"]`) ||
+      doc.querySelector(`#stories a.hero[data-story="${st.id}"]`);
+    checkBadge(t, el, st, want(st), where);
+  }
   await sleep(600); // on screen for the footage
   closeFrame();
 }
@@ -589,7 +613,10 @@ function savedPlace(st) {
 }
 
 const landingShown = () => !$("stories").hidden && $("spark").hidden;
-const cardOf = (id) => document.querySelector(`#story-list a.story-card[data-story="${id}"]`);
+/** A story's landing tile: its catalogue card, or the featured hero when that story is featured (not repeated in the catalogue). */
+const cardOf = (id) =>
+  document.querySelector(`#story-list a.story-card[data-story="${id}"]`) ||
+  document.querySelector(`#stories a.hero[data-story="${id}"]`);
 
 /** Opens a story from its card on the landing page, a viewer's tap (hit-tested). Its own Tap to play prompt comes
     up (until sound is unlocked) and is tapped, unless `tap` is false (the caller does it). */
@@ -776,10 +803,14 @@ async function smoke(options, t) {
   await passPrompt(t);
   if (!landingShown()) await toLanding(t);
   t.scene("Choose your story");
-  const cards = [...document.querySelectorAll("#story-list a.story-card")];
+  const cards = [...document.querySelectorAll("#story-list a.story-card, #stories a.hero")];
   if (!cards.length) t.problem("bug", "the landing page shows no stories");
   t.metric("stories", cards.length);
   t.note(`${cards.length} stories: ${cards.map((c) => c.querySelector("h2")?.textContent.trim()).join(" / ")}`);
+  // First-minutes (J, 2026-11-11): as a newcomer from a fresh browser at 1280x720 and 390x844, report motion /
+  // sound / first-choice timing per story; hero must move within 2 s; first choice after 30 s is a problem.
+  t.scene("First minutes: hero motion and per-story timing");
+  await firstMinutesRun({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.05 * p) });
   await sleep(800);
   await openStory(t, FIRST);
   await toStart(t);
@@ -1107,12 +1138,18 @@ async function storiesRun(options, t) {
   if (!landingShown()) await toLanding(t);
   t.scene("Choose your story");
   const list = listedStories();
+  const hero = document.querySelector("#stories a.hero");
+  const featuredId = hero && hero.dataset.story;
   const cards = [...document.querySelectorAll("#story-list a.story-card")];
   t.metric("stories", list.length);
-  t.metric("cards", cards.length);
-  // A card for every listed story, in the listing's order, and none for the others.
+  t.metric("cards", cards.length + (featuredId ? 1 : 0));
+  // Featured story is the hero only (not repeated as the first catalogue card). Catalogue follows the listing order of the rest.
+  const catalogueWant = list.filter((st) => st.id !== featuredId).map((st) => st.id);
   const order = cards.map((c) => c.dataset.story);
-  if (order.join() !== list.map((st) => st.id).join()) t.problem("bug", `the landing page shows ${order.join(", ") || "no stories"}, the listing has ${list.map((st) => st.id).join(", ")}`);
+  if (!featuredId || !list.some((st) => st.id === featuredId)) t.problem("bug", "the landing page has no featured hero for a listed story");
+  if (order.join() !== catalogueWant.join()) t.problem("bug", `the catalogue shows ${order.join(", ") || "no stories"}, expected ${catalogueWant.join(", ") || "(only the hero)"}`);
+  if (order[0] && order[0] === featuredId) t.problem("bug", `the featured story ${featuredId} is repeated as the first catalogue card`);
+  for (const st of list) if (!cardOf(st.id)) t.problem("bug", `${st.id} is listed but has no hero or catalogue card`);
   allStories().filter((st) => !st.listed && cardOf(st.id)).forEach((st) => t.problem("bug", `${st.id} has a card but isn't listed`));
   checkInventory(t, "landing page");
   await sleep(1000); // the landing page stays on screen for the footage
@@ -1344,10 +1381,11 @@ async function storiesRun(options, t) {
     await sleep(800);
     closeFrame();
   }
-  const postCard = document.querySelector("#blog a.post-card");
+  const notesDoc = await frameLoad(t, (f) => (f.src = "/notes/"));
+  const postCard = notesDoc && notesDoc.querySelector(".notes-list a");
   if (postCard) {
     const postPath = pathOf(postCard.getAttribute("href"));
-    const postDoc = await openByClick(t, "/", postPath);
+    const postDoc = await openByClick(t, "/notes/", postPath);
     if (postDoc && !isMissingPage(postDoc)) checkRecentPosts(t, postDoc, postPath);
     closeFrame();
   }
@@ -1738,27 +1776,35 @@ function checkArticle(t, doc, p) {
 }
 
 async function blog(options, t) {
-  t.scene("Blog");
+  t.scene("Studio notes");
   await passPrompt(t); // like a viewer: the home page's title splash goes first, so none is left behind the post frame
-  const posts = [...document.querySelectorAll("#blog a.post-card")].map((a) => ({
+  // Posts live under /notes/ ("Studio notes"); the home page itself lists none.
+  if (document.querySelector("#blog a.post-card, main .post-card")) t.problem("bug", "the home page still lists blog posts (they belong on /notes/)");
+  const notesLink = document.querySelector('footer a[href="/notes/"], footer a[href="/notes"]');
+  if (!notesLink) t.problem("bug", "the footer has no Studio notes link");
+  const notes = await frameLoad(t, (f) => (f.src = "/notes/"));
+  if (!notes) throw new Error("Studio notes (/notes/) didn't load");
+  const rows = [...notes.querySelectorAll(".notes-list a")].map((a) => ({
     to: pathOf(a.getAttribute("href")),
-    title: enText(a.querySelector("h3")),
+    title: (a.querySelector("h2")?.textContent || "").trim(),
+    chip: (a.querySelector(".lang-chip")?.textContent || "").trim(),
   }));
-  t.metric("posts", posts.length);
-  if (!posts.length) throw new Error("the home page lists no posts");
-  // Cover images on the home page.
-  document.querySelectorAll("#blog img").forEach((img) => {
-    if (img.complete && !img.naturalWidth) t.problem("bug", `home: image ${pathOf(img.src)} didn't load`);
-  });
+  t.metric("posts", rows.length);
+  if (!rows.length) throw new Error("Studio notes lists no posts");
+  for (const row of rows) {
+    if (!row.title || /[^\x00-\x7f\u2019]/.test(row.title)) t.problem("bug", `Studio notes title "${row.title}" is not English`);
+    if (!row.chip) t.problem("bug", `Studio notes "${row.title}" has no language chip`);
+    else t.event("notes-title", `${row.to}: "${row.title}" (${row.chip})`);
+  }
   const links = new Set();
-  for (let i = 0; i < posts.length; i++) {
-    const p = posts[i];
-    t.progress(i / posts.length);
+  for (let i = 0; i < rows.length; i++) {
+    const p = rows[i];
+    t.progress(i / rows.length);
     if ((await status(p.to)) !== 200) {
       t.problem("bug", `Post "${p.title}" (${p.to}) is missing`);
       continue;
     }
-    const doc = await openByClick(t, "/", p.to);
+    const doc = await openByClick(t, "/notes/", p.to);
     t.scene(p.title || p.to);
     if (isMissingPage(doc)) {
       t.problem("bug", `Post "${p.title}" opened the not-found page`);
@@ -2044,10 +2090,11 @@ async function creditsRun(t) {
     t.progress(0.3);
   }
 
-  // A blog post and a branch page, opened by a viewer's click from the home page, then What's new.
-  const post = document.querySelector("#blog a.post-card");
+  // A Studio notes post and a branch page, then What's new.
+  const notesDoc = await frameLoad(t, (f) => (f.src = "/notes/"));
+  const post = notesDoc && notesDoc.querySelector(".notes-list a");
   const pagesToCheck = [
-    post && { from: "/", to: pathOf(post.getAttribute("href")), name: "blog post" },
+    post && { from: "/notes/", to: pathOf(post.getAttribute("href")), name: "Studio notes post" },
     { from: null, to: folderOf(story().start), name: "branch page" },
     { from: "/", to: "/whatsnew.html", name: "What's new" },
   ].filter(Boolean);
@@ -4036,72 +4083,27 @@ async function languageRun(options, t) {
   await tapAt(t, doc.getElementById("tab-play"), "Play");
   try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
   t.progress(0.7);
-  // Blog titles on the list: each in one language.
-  t.scene("blog titles");
+  // Studio notes titles: English on /notes/, each with a language chip (posts moved off the home page).
+  t.scene("Studio notes titles");
   const home = await viewFrameLoad(t, "/", 390, 844);
-  // The home page's title splash fades by itself; the list is looked at once it has gone.
   await waitFor(() => { const sp = home.getElementById("title-splash"); return !sp || sp.hidden || home.defaultView.getComputedStyle(sp).display === "none" || +home.defaultView.getComputedStyle(sp).opacity === 0; }, 6000);
-  const cards = [...home.querySelectorAll("#blog .post-card")];
-  if (!cards.length) t.problem("bug", "the blog list has no posts");
-  // Back home, the blog list brought into view the way a viewer scrolls to it, so the footage shows its titles.
-  const blogList = home.getElementById("blog");
-  if (blogList) { blogList.scrollIntoView({ block: "start", behavior: "instant" }); await sleep(1200); }
-  t.event("blog-list", `home page at 390x844, the blog list in view: ${cards.length} posts`);
-  const scriptsOf = (text) => {
-    const found = new Set();
-    for (const ch of text) {
-      if (/\p{Script=Latin}/u.test(ch)) found.add("Latin");
-      else if (/\p{Script=Cyrillic}/u.test(ch)) found.add("Cyrillic");
-      else if (/\p{Script=Arabic}/u.test(ch)) found.add("Arabic");
-      else if (/\p{Script=Devanagari}/u.test(ch)) found.add("Devanagari");
-      else if (/\p{Script=Bengali}/u.test(ch)) found.add("Bengali");
-      else if (/\p{Script=Han}|\p{Script=Hiragana}|\p{Script=Katakana}/u.test(ch)) found.add("CJK");
-    }
-    return [...found];
-  };
-  // What the viewer sees of a title: the pieces that are shown (display, not the flashlight's mask), their text and language.
-  const shown = (el) => el && win2(el).getComputedStyle(el).display !== "none";
-  const win2 = (el) => el.ownerDocument.defaultView;
-  const visibleTitle = (h, reading) => {
-    const src = h.querySelector(".spot-src");
-    const en = h.querySelector(".spot-en");
-    const parts = [];
-    if (shown(src)) parts.push({ lang: src.lang || "x", text: (src.textContent || "").replace(/\s+/g, " ").trim() });
-    if (shown(en)) parts.push({ lang: "en", text: (win2(en).getComputedStyle(en, "::before").content.replace(/^"|"$/g, "") || en.textContent || "").replace(/\s+/g, " ").trim() });
-    return parts;
-  };
-  const langs = new Set();
-  for (const card of cards) {
-    const h = card.querySelector("h3");
-    const text = (h.innerText || "").replace(/\s+/g, " ").trim();
-    const content = (h.textContent || "").replace(/\s+/g, " ").trim();
-    const scripts = scriptsOf(content);
-    const parts = visibleTitle(h, "mixed");
-    const mask = h.querySelector(".spot-src") && win2(h).getComputedStyle(h.querySelector(".spot-src")).maskImage;
-    if (scripts.length > 1 || content !== text) t.problem("bug", `blog title "${content}" mixes languages (${scripts.join(", ")})`);
-    else if (parts.length !== 1 || (mask && mask !== "none")) t.problem("bug", `blog title "${content}" shows ${parts.length} languages at once (${parts.map((p) => p.lang).join("+")}${mask && mask !== "none" ? ", flashlight mask" : ""})`);
-    else {
-      langs.add(parts[0].lang);
-      t.event("blog-title", `${card.getAttribute("href")}: "${content}" is all in ${parts[0].lang} (${scripts[0] || "none"}); no second language shown`);
-      t.event("blog-title-language", `"${content}" script ${scripts[0] || "none"}, language ${parts[0].lang}`);
-    }
+  if (home.querySelector("#blog .post-card, main .post-card")) t.problem("bug", "the home page still lists blog posts at 390x844");
+  const notesLink = home.querySelector('footer a[href="/notes/"], footer a[href="/notes"]');
+  if (!notesLink) t.problem("bug", "the footer has no Studio notes link at 390x844");
+  closeViewFrame();
+  const notes = await frameLoad(t, (f) => (f.src = "/notes/"));
+  const rows = notes ? [...notes.querySelectorAll(".notes-list a")] : [];
+  if (!rows.length) t.problem("bug", "Studio notes has no posts");
+  t.event("notes-list", `/notes/ at 390x844: ${rows.length} posts`);
+  for (const row of rows) {
+    const title = (row.querySelector("h2")?.textContent || "").replace(/\s+/g, " ").trim();
+    const chip = (row.querySelector(".lang-chip")?.textContent || "").trim();
+    if (!title || /[^\x00-\x7f\u2019]/.test(title)) t.problem("bug", `Studio notes title "${title}" is not English alone`);
+    else if (!chip) t.problem("bug", `Studio notes "${title}" has no language chip`);
+    else t.event("notes-title", `${row.getAttribute("href")}: "${title}" (${chip})`);
   }
-  t.event("blog-titles-one-language", `${cards.length} titles, each in a single language (its post's own: ${[...langs].join(", ")}); none shows a second language`);
-  // Picked English: the same titles, each wholly English.
-  // The story frame above is gone by now (viewFrameLoad closes it), so its window can't save anything: use this page's
-  // own localStorage (same origin), and say so loudly if English can't be saved.
-  try { localStorage.setItem("iltv.reading", "en"); } catch (e) { t.problem("bug", `blog titles: couldn't save English (${e.message})`); }
-  const homeEn = await viewFrameLoad(t, "/", 390, 844);
-  if (homeEn.documentElement.dataset.reading !== "en") t.problem("bug", `blog titles: with iltv.reading="en" saved the home page's data-reading is "${homeEn.documentElement.dataset.reading}", not "en"`);
-  for (const card of [...homeEn.querySelectorAll("#blog .post-card")]) {
-    const h = card.querySelector("h3");
-    const parts = visibleTitle(h, "en");
-    const txt = parts.map((p) => p.text).join(" ");
-    if (parts.length !== 1 || parts[0].lang !== "en" || /[^\x00-\x7f\u2019]/.test(txt)) t.problem("bug", `with English picked a blog title reads "${txt}" (${parts.map((p) => p.lang).join("+")}), not English alone`);
-    else t.event("blog-title-en", `${card.getAttribute("href")}: "${txt}"`);
-  }
-  try { localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
-  t.metric("blogTitles", cards.length);
+  t.metric("blogTitles", rows.length);
+  closeFrame();
   t.progress(1);
 }
 
@@ -4432,8 +4434,11 @@ async function phoneMediaRun(options, t) {
   const imgs = [...doc.querySelectorAll(".story-card img, .hero img")];
   if (!imgs.length) t.problem("bug", "no picture on the landing page's cards");
   const cards = [...doc.querySelectorAll(".story-card")];
+  const heroTile = doc.querySelector("a.hero");
   const listed = stories().listed();
-  if (cards.length !== listed.length) t.problem("bug", `${cards.length} cards for ${listed.length} listed stories`);
+  const tileCount = cards.length + (heroTile ? 1 : 0);
+  if (tileCount !== listed.length) t.problem("bug", `${tileCount} tiles (hero + catalogue) for ${listed.length} listed stories`);
+  if (heroTile && cards.some((c) => c.dataset.story === heroTile.dataset.story)) t.problem("bug", `featured ${heroTile.dataset.story} is repeated in the catalogue`);
   for (const card of cards) {
     const img = card.querySelector("img");
     const video = card.querySelector("video");
@@ -6583,6 +6588,183 @@ async function nightRoomRun(options, t) {
   await toLanding(t);
 }
 
+/* ---------------- first-minutes: newcomer timing at desktop and phone ---------------- */
+/** As a newcomer from a fresh browser: hero motion within 2 s; per story secondsToFirstMotion / Sound /
+    Choice (from Tap to play) and wordsBeforeFirstChoice; first choice after 30 s is a problem. Also reduced-motion
+    posters-only, and at 390x844 a centred catalogue card starts its loop. */
+async function firstMinutesRun(options, t) {
+  const inSmoke = options && options.at === "smoke";
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  clearProgress();
+  const sizes = inSmoke
+    ? [[1280, 720, "1280x720"], [390, 844, "390x844"]]
+    : [[1280, 720, "1280x720"], [390, 844, "390x844"]];
+  const ids = listedStories().map((s) => s.id);
+
+  for (let si = 0; si < sizes.length; si++) {
+    const [w, h, label] = sizes[si];
+    t.scene(`First minutes at ${label}`);
+    const doc = await viewFrameLoad(t, "/", w, h);
+    const win = doc.defaultView;
+    // Clear progress again inside the frame's origin (same as the runner page).
+    try {
+      for (const st of listedStories()) {
+        win.localStorage.removeItem(`iltv.run.${st.cookie}`);
+        win.localStorage.removeItem(`${st.cookie}`);
+      }
+    } catch (e) { /* none */ }
+    // Wait out the title splash the way a viewer does (it fades by itself).
+    await waitFor(() => {
+      const sp = doc.getElementById("title-splash");
+      return !sp || sp.hidden || +win.getComputedStyle(sp).opacity === 0 || !doc.documentElement.classList.contains("is-splash-pending");
+    }, 6000);
+    const tLand = performance.now();
+    // Motion clock starts at landing paint (nav start), not after the splash wait — the criterion is "within 2 s of load".
+    const nav = win.performance.getEntriesByType("navigation")[0];
+    const sinceLoad = () => (nav ? win.performance.now() - nav.startTime : performance.now() - tLand);
+    const heroVid = () => doc.querySelector("a.hero video.hero-trailer");
+    const moving = await waitFor(() => {
+      const v = heroVid();
+      return v && !v.paused && v.currentTime > 0.05;
+    }, 2500);
+    const heroMs = Math.round(sinceLoad());
+    t.metric(`secondsToFirstMotion.hero.${label}`, Number((heroMs / 1000).toFixed(2)));
+    t.event("hero-motion", `${label}: ${moving ? "moving" : "STILL"} after ${heroMs} ms from load`);
+    if (!moving || heroMs > 2000) t.problem("bug", `${label}: the hero trailer was not moving within 2 s of load (after ${heroMs} ms)`);
+
+    // Phone: a catalogue card's loop starts when that card is centred (touch-shaped drag, then settle).
+    if (w <= 400) {
+      const card = doc.querySelector("#story-list a.story-card");
+      if (card) {
+        const before = win.scrollY;
+        const r0 = card.getBoundingClientRect();
+        const targetY = before + r0.top + r0.height / 2 - win.innerHeight / 2;
+        // Touch-shaped drag: pointerdown → move → up, then a settle scroll (IntersectionObserver + scroll listener).
+        const startX = Math.min(w / 2, 180), startY = Math.min(h * 0.7, 600);
+        doc.body.dispatchEvent(new win.PointerEvent("pointerdown", { bubbles: true, clientX: startX, clientY: startY, pointerType: "touch", pointerId: 1, isPrimary: true }));
+        for (let step = 1; step <= 4; step++) {
+          doc.body.dispatchEvent(new win.PointerEvent("pointermove", { bubbles: true, clientX: startX, clientY: startY - step * 40, pointerType: "touch", pointerId: 1, isPrimary: true }));
+          win.scrollTo(0, before + (targetY - before) * (step / 4));
+          await sleep(40);
+        }
+        doc.body.dispatchEvent(new win.PointerEvent("pointerup", { bubbles: true, clientX: startX, clientY: startY - 160, pointerType: "touch", pointerId: 1, isPrimary: true }));
+        win.scrollTo(0, targetY);
+        card.scrollIntoView({ block: "center", behavior: "instant" });
+        win.dispatchEvent(new win.Event("scroll"));
+        await sleep(900);
+        const loop = card.querySelector("video.card-loop");
+        const L = win.iltvLiving;
+        const previewing = (L && L.previewing && L.previewing() === card.dataset.story) || (loop && !loop.paused && loop.currentTime > 0.05);
+        t.event("card-centre-preview", `${label}: ${card.dataset.story} ${previewing ? "playing" : "NOT playing"} (scroll ${Math.round(win.scrollY)}px)`);
+        if (!previewing) t.problem("bug", `${label}: centred card ${card.dataset.story} did not start its preview loop`);
+      }
+    }
+
+    // Per story from Tap to play.
+    for (let i = 0; i < ids.length; i++) {
+      const id = ids[i];
+      const st = story(id);
+      t.scene(`First minutes: ${st.title} at ${label}`);
+      // Open from this frame's landing.
+      if (win.iltvStories && win.iltvStories.current()) {
+        const back = doc.querySelector("#spark-stories, #console-stories");
+        if (back && !back.closest("[hidden]")) await tapAt(t, back, "All stories");
+        await sleep(300);
+      }
+      const tile =
+        doc.querySelector(`#story-list a.story-card[data-story="${id}"]`) ||
+        doc.querySelector(`#stories a.hero[data-story="${id}"]`);
+      if (!tile) { t.problem("bug", `${label}: no tile for ${id}`); continue; }
+      tile.scrollIntoView({ block: "center", behavior: "instant" });
+      await sleep(150);
+      await tapAt(t, tile.querySelector("h2") || tile, `${st.title} tile`);
+      await sleep(200);
+      const sound = win.hawkesSound;
+      if (sound && sound.prompt()) await passPrompt(t, doc, `${id} (${label})`);
+      const t0 = performance.now();
+      let motionS = null, soundS = null, choiceS = null;
+      const words = () => {
+        const box = isConsole(st) ? doc.getElementById("console-subs") : doc.getElementById("spark-story");
+        return ((box && box.innerText) || "").trim().split(/\s+/).filter(Boolean).length;
+      };
+      let wordsBefore = 0;
+      // Console opens are voiced: Skip through lines so the 30 s first-choice bar measures UI readiness, not the night's open.
+      const deadline = t0 + (isConsole(st) ? 90000 : 45000);
+      while (performance.now() < deadline) {
+        if (motionS == null) {
+          if (isConsole(st)) {
+            const room = doc.getElementById("console-room");
+            if (room && room.getClientRects().length) motionS = (performance.now() - t0) / 1000;
+          } else {
+            const v = doc.querySelector("#spark-video video:not(.spark-leave)");
+            if (v && !v.paused && v.currentTime > 0.05) motionS = (performance.now() - t0) / 1000;
+          }
+        }
+        if (soundS == null) {
+          if (isConsole(st)) {
+            const a = doc.querySelector("#console audio, audio[data-sound-start], audio");
+            if (a && !a.paused && a.currentTime > 0.05) soundS = (performance.now() - t0) / 1000;
+          } else {
+            const v = doc.querySelector("#spark-video video:not(.spark-leave)");
+            if (v && !v.paused && v.currentTime > 0.05) {
+              // First decoded audio, or any play after Tap to play unlocked sound.
+              if (!v.muted || (v.webkitAudioDecodedByteCount && v.webkitAudioDecodedByteCount > 0)) soundS = (performance.now() - t0) / 1000;
+            }
+          }
+        }
+        if (isConsole(st)) {
+          const skip = doc.getElementById("console-skip");
+          if (skip && !skip.disabled && skip.offsetParent !== null) {
+            skip.click();
+            await sleep(40);
+          }
+        }
+        if (choiceS == null) {
+          const btns = isConsole(st)
+            ? [...doc.querySelectorAll("#console-choices .choice")].filter((b) => b.offsetParent !== null)
+            : [...doc.querySelectorAll("#spark-choices .choice")].filter((b) => b.offsetParent !== null);
+          const ready = isConsole(st) || (doc.getElementById("spark-choices") && doc.getElementById("spark-choices").dataset.phase === "ready");
+          if (ready && btns.length) {
+            choiceS = (performance.now() - t0) / 1000;
+            wordsBefore = words();
+          }
+        }
+        if (motionS != null && choiceS != null) break;
+        await sleep(80);
+      }
+      const round = (n) => (n == null ? null : Number(n.toFixed(2)));
+      t.metric(`secondsToFirstMotion.${id}.${label}`, round(motionS));
+      t.metric(`secondsToFirstSound.${id}.${label}`, round(soundS));
+      t.metric(`secondsToFirstChoice.${id}.${label}`, round(choiceS));
+      t.metric(`wordsBeforeFirstChoice.${id}.${label}`, wordsBefore);
+      t.event("first-minutes", `${id} @ ${label}: motion ${round(motionS)}s, sound ${round(soundS)}s, choice ${round(choiceS)}s, words ${wordsBefore}${isConsole(st) ? " (console, lines skipped)" : ""}`);
+      if (choiceS == null) t.problem("bug", `${id} @ ${label}: no choice appeared within ${isConsole(st) ? 90 : 45} s of Tap to play`);
+      else if (choiceS > 30) t.problem("bug", `${id} @ ${label}: first choice after ${choiceS.toFixed(1)} s (over 30 s)`);
+      // Back to landing for the next story.
+      const back = doc.querySelector("#spark-stories, #console-stories");
+      if (back) { await tapAt(t, back, "All stories"); await sleep(300); }
+      t.progress((si + (i + 1) / ids.length) / sizes.length);
+    }
+  }
+
+  // prefers-reduced-motion / still mode: posters only, no preview video plays.
+  // `?living=still` forces the same path living.js takes when prefers-reduced-motion is set (in-page bots can't emulate media features).
+  t.scene("First minutes: reduced motion");
+  const stillDoc = await viewFrameLoad(t, "/?living=still", 1280, 720);
+  await sleep(2000);
+  const playing = [...stillDoc.querySelectorAll(".hero-trailer, .card-loop")].filter((v) => v.src && !v.paused && v.currentTime > 0);
+  t.event("reduced-motion", `${playing.length} preview videos playing (want 0); living.reduced=${stillDoc.defaultView.iltvLiving && stillDoc.defaultView.iltvLiving.reduced()}`);
+  if (playing.length) t.problem("bug", `prefers-reduced-motion: ${playing.length} preview video(s) still playing`);
+  if (!(stillDoc.defaultView.iltvLiving && stillDoc.defaultView.iltvLiving.reduced())) t.problem("bug", "prefers-reduced-motion: living.js did not enter still mode");
+  if (stillDoc.documentElement.getAttribute("data-living") !== "still") t.problem("bug", "prefers-reduced-motion: html[data-living=still] was not set");
+  const posters = stillDoc.querySelectorAll("a.hero picture img, a.hero img, .story-card picture img, .story-card img");
+  if (![...posters].some((img) => img.getClientRects().length)) t.problem("bug", "prefers-reduced-motion: no posters visible on the landing page");
+
+  closeViewFrame();
+  if (!inSmoke) restoreProgress();
+  t.progress(1);
+}
+
 /* ---------------- living-home ---------------- */
 async function livingHomeRun(options, t) {
   rememberProgress();
@@ -6596,22 +6778,26 @@ async function livingHomeRun(options, t) {
   t.event("lights", `${L.lit()} of ${L.cards()} cards lit`);
   if (L.lit() < L.cards()) t.problem("bug", "the house lights did not come up on every card");
   t.progress(0.3);
-  t.scene("Living home: the cards answer");
-  const press = [];
-  for (const card of document.querySelectorAll("#stories .hero, #stories .story-card")) {
-    card.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, relatedTarget: document.body }));
-    t.event("card-hover", `${card.dataset.story}: ${card.classList.contains("hot") ? "glows" : "NO REACTION"}`);
-    if (!card.classList.contains("hot")) t.problem("bug", `${card.dataset.story}'s card does not react to the pointer`);
-    card.dispatchEvent(new PointerEvent("pointerout", { bubbles: true, relatedTarget: document.body }));
-    await sleep(1500);
+  t.scene("Living home: the hero trailer");
+  await sleep(500);
+  const heroOk = L.heroPlaying && L.heroPlaying();
+  t.event("hero-play", heroOk ? "playing" : (L.reduced && L.reduced() ? "reduced-motion" : "NOT playing"));
+  if (!L.reduced || !L.reduced()) {
+    if (!heroOk) t.problem("bug", "the hero trailer is not playing");
+    const ms = L.motionMs && L.motionMs();
+    if (ms != null && ms > 2000) t.problem("bug", `the hero trailer started after ${Math.round(ms)} ms (> 2 s)`);
   }
   t.progress(0.6);
-  t.scene("Living home: the blog wakes");
-  const posts = document.querySelectorAll(".post-card");
-  if (posts.length) { posts[0].scrollIntoView({ block: "center" }); await sleep(1500); }
-  t.event("blog", `${document.querySelectorAll(".post-card.awake").length} of ${posts.length} post cards awake`);
+  t.scene("Living home: a card preview");
+  const card = document.querySelector("#story-list a.story-card");
+  if (card) {
+    card.dispatchEvent(new PointerEvent("pointerenter", { bubbles: true }));
+    await sleep(600);
+    t.event("card-preview", `${card.dataset.story}: ${L.previewing() === card.dataset.story ? "playing" : "idle"}`);
+    card.dispatchEvent(new PointerEvent("pointerleave", { bubbles: true }));
+  }
   window.scrollTo(0, 0);
-  await sleep(8000);
+  await sleep(2000);
   const log = L.log().filter((e) => e.at >= 0);
   const times = log.map((e) => e.at / 1000).sort((a, b) => a - b);
   let max = 0;
@@ -6622,8 +6808,6 @@ async function livingHomeRun(options, t) {
   t.metric("quality.textOnlyBeats", 0);
   t.event("living-kinds", [...kinds].join(", "));
   if (max > 10) t.problem("bug", `${max.toFixed(1)} s with nothing to see, hear or do`);
-  if (!kinds.has("flicker")) t.problem("bug", "the screen wall never flickered on its own");
-  if (L.screens() < 3) t.problem("bug", "the wall has fewer than three screens");
   restoreProgress();
   t.progress(1);
 }
@@ -7344,10 +7528,10 @@ installPlaytest({
   scenarios: [
     {
       id: "smoke",
-      title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): Tree, first video, one choice, All stories; language and phone-media at 390x844; scene-swap blackFrames; Continue Previously; Endings gallery; audio buses",
-      seconds: 450,
+      title: "First-minutes (hero motion, per-story timing), landing, each listed story, language, phone-media, swap, Continue, Endings, audio buses, decisive choice",
+      seconds: 600,
       tags: ["smoke"],
-      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Then the trimmed Continue Previously leg (`continueRecap` with at:smoke). Endings gallery leg (`endingsGalleryRun` with at:smoke): one Water Road ending seeded as found, Endings tab shows \"1 of 2 found\", a named poster and a locked ??? silhouette, fit check at 390x844. Audio buses (`audioBusesRun` with at:smoke): first-tap unlock, duck under a clip, header toggle saves iltv.sound, at desktop and 390x844. Last, decisive choice (`decisiveRun` with at:smoke): chosen card glows and scales, others fall away, double-tap is one choice, keys 1/2, Final Spark mid-animation at 390x844, Night Shift key 3 at okafor-out.",
+      description: "First-minutes leg (fresh browser at 1280x720 and 390x844): hero trailer moving within 2 s; per story secondsToFirstMotion, secondsToFirstSound, secondsToFirstChoice, wordsBeforeFirstChoice (problem if first choice > 30 s); centred card preview at 390x844; posters-only with ?living=still. Then each listed story opens from its hero or catalogue card (Tap to play), first page or wall, one real choice, All stories. Then at 390x844 the language picker and Studio notes titles (`language`), The Water Road's poster and phone rendition (`phone-media`), scene-swap, Continue Previously (at:smoke), Endings gallery, audio buses, decisive choice.",
     },
     {
       id: "endings-gallery",

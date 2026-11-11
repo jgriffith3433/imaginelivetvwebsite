@@ -32,16 +32,15 @@ of the way.
 
 ### The home (the shell around the stories)
 
-**A. The landing page.** Mood: a late-night TV lobby, a dark room with three screens glowing, one of them yours to pick.
-Looks like: the title splash (*IMAGINE LIVE TV*, 0.7 s hold, 0.4 s fade), a hero card for the featured story, then a
-card per listed story with its image, logline, runtime, three-word mood and progress badge (Not started, Started,
-Completed). Sounds like: nothing until a card is pressed (the splash has no prompt, the first prompt comes with the story).
-Size: one scroll, hero plus three cards plus the blog list and footer. In/out: the URL; a card press enters a story;
-"All stories" returns with no splash.
-*Falls short today:* silent and still. **(new)** Gap budget: a card under the pointer or finger plays a 3-second muted
-loop of its own world (the rat's whiskers, the dove, the camera wall's tiles flicking) and a quiet "tick" of its own
-ambience once sound is on; the badge of a Completed story shows a small mark of the ending found (the match, the dove,
-the pencil); the hero card breathes (slow light drift).
+**A. The landing page.** Mood: a late-night TV lobby, a dark room with screens glowing, one of them yours to pick.
+Looks like: the title splash (*IMAGINE LIVE TV*, 0.7 s hold, 0.4 s fade), a hero for the featured story that plays its
+muted trailer within 2 s (Sound unmutes it), then a catalogue card per other listed story (the featured one is not
+repeated) with its image, a 3 s muted loop on hover or when centred on a phone, logline, runtime, three-word mood and
+progress badge (Not started, Started, Completed). Sounds like: the hero trailer is muted until Sound; a story's own
+Tap to play unlocks sound inside it. Size: one scroll, hero plus catalogue cards and footer (no blog on the home page).
+In/out: the URL; a card press enters a story; "All stories" returns with no splash. Studio notes live at `/notes/`.
+With `prefers-reduced-motion`, posters only. **(new)** Trailers and loops are cut from existing clips (Night Shift:
+CCTV stills with a slow push) by `tools/make-trailers.mjs`.
 
 **B. The player (story screen).** Mood: the same room, now one screen filling it. Looks like: the page's video (or the
 console room), the question, the choices, the inventory bar, the Tree, Settings, the `Tap to play` prompt. Size: the
@@ -65,7 +64,9 @@ whose whole way is seen a quiet "Seen" tick, and the Tree's nodes carry the same
 endings" and turns gold when every ending is found. The home only ever shows; it never talks. Video stories only: a
 console story's choices depend on flags, so it has the card count but no per-choice tags yet.
 
-**E. The blog.** The studio's lobby noticeboard: posts, each with its own images and videos, in the player's language list.
+**E. Studio notes (`/notes/`).** The studio's noticeboard, off the home page: English titles with a small language chip
+for the language each post was written in; the posts themselves stay under `/f/`. One footer link ("Studio notes") opens
+the list.
 
 ### The Final Spark: the sewer and the town
 
