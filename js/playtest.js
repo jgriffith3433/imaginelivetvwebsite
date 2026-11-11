@@ -2859,11 +2859,25 @@ async function endingsGalleryRun(options, t) {
       const r = btn.getBoundingClientRect();
       const text = btn.querySelector(".spot-src");
       const tr = text ? text.getBoundingClientRect() : r;
-      const tag = doc.defaultView.getComputedStyle(btn, "::before");
+      const tagEl = btn.querySelector(".choice-mark");
+      const tag = { content: tagEl ? tagEl.textContent.trim() : "" };
+      const tagBox = tagEl ? tagEl.getBoundingClientRect() : null;
       const cut = btn.scrollHeight > btn.clientHeight + 1 || tr.right > r.right - 2 || btn.scrollWidth > btn.clientWidth + 1;
       t.event("replay-phone", `${btn.dataset.mark} choice ${Math.round(r.width)}x${Math.round(r.height)}, tag "${tag.content}"`);
       if (r.height < 47.5) t.problem("bug", `${id}: a ${btn.dataset.mark} choice is ${Math.round(r.height)} px tall at 390x844, want 48 or more`);
       if (cut) t.problem("bug", `${id}: a ${btn.dataset.mark} choice's text is cut off at 390x844`);
+      // The tag sits inside the card, clear of the words, and the words keep the card's width: a short choice is one line.
+      const lineH = text ? parseFloat(doc.defaultView.getComputedStyle(text).lineHeight) || 20 : 20;
+      const lines = Math.round(tr.height / lineH);
+      const words = (enText(btn) || "").length;
+      t.event("replay-phone-fit", `${btn.dataset.mark}: ${lines} line(s) for ${words} characters, text ${Math.round(tr.width)} of ${Math.round(r.width)} px wide, tag ${tagBox ? `${Math.round(tagBox.width)}x${Math.round(tagBox.height)}` : "missing"}`);
+      if (!tagEl) t.problem("bug", `${id}: a ${btn.dataset.mark} choice has no visible tag at 390x844`);
+      else {
+        if (tagBox.left < r.left || tagBox.right > r.right || tagBox.top < r.top || tagBox.bottom > r.bottom) t.problem("bug", `${id}: the ${btn.dataset.mark} tag sticks out of its choice at 390x844`);
+        if (tagBox.bottom > tr.top + 1 && tagBox.left < tr.right && tagBox.right > tr.left) t.problem("bug", `${id}: the ${btn.dataset.mark} tag overlaps the choice's words at 390x844`);
+      }
+      if (tr.width < r.width * 0.7) t.problem("bug", `${id}: a ${btn.dataset.mark} choice's words only get ${Math.round(tr.width)} of ${Math.round(r.width)} px at 390x844 (they wrap at half the card)`);
+      if (lines > 1 && words <= 30) t.problem("bug", `${id}: a ${btn.dataset.mark} choice of ${words} characters wraps onto ${lines} lines at 390x844`);
     }
     t.event("screenshot", `second run at 390x844: ${tagged.length} tagged choices`);
     const backBtn = doc.querySelector(".stories-back");
@@ -2883,6 +2897,29 @@ async function endingsGalleryRun(options, t) {
       if (er.right > cr.right + 1 || er.left < cr.left - 1 || cardEl.scrollWidth > cardEl.clientWidth + 1) t.problem("bug", `${id}: the endings count is cut off on its card at 390x844`);
     }
     closeViewFrame();
+  };
+  // Every ending found: the home card's count reads "N of N endings" and wears the completion badge (a tick, lit),
+  // inside the card at 390x844.
+  const bothFoundCard = async () => {
+        const doc = await viewFrameLoad(t, "/", 390, 844);
+        await sleep(700);
+        const cardBox = doc.querySelector(`.story-card[data-story="${id}"]`);
+        const cardEl = cardBox && cardBox.querySelector(".story-card-endings");
+        if (!cardEl) t.problem("bug", `${id}: no endings count on the home card after both endings`);
+        else {
+          cardEl.scrollIntoView({ block: "center", behavior: "instant" });
+          await sleep(200);
+          const er = cardEl.getBoundingClientRect();
+          const cr = cardBox.getBoundingClientRect();
+          const txt = cardEl.textContent.trim();
+          const badge = doc.defaultView.getComputedStyle(cardEl, "::before").content;
+          t.event("replay-card-complete", `home card at 390x844: "${txt}", badge ${cardBox.dataset.allEndings === "true" ? "shown" : "missing"} (${badge})`);
+          if (txt !== `${ends.length} of ${ends.length} endings`) t.problem("bug", `${id}: home card says "${txt}" with both endings found`);
+          if (cardBox.dataset.allEndings !== "true") t.problem("bug", `${id}: no completion badge on the home card with every ending found`);
+          if (er.right > cr.right + 1 || er.left < cr.left - 1 || cardEl.scrollWidth > cardEl.clientWidth + 1) t.problem("bug", `${id}: the completion badge is cut off on its card at 390x844`);
+          t.event("screenshot", `home card with every ending found at 390x844`);
+        }
+        closeViewFrame();
   };
   try {
     // Smoke leg: seed one found ending, open the gallery from the story page, check locked silhouette + count.
@@ -2913,6 +2950,31 @@ async function endingsGalleryRun(options, t) {
           if (pane.getBoundingClientRect().bottom > 844 + 2) t.problem("bug", `${id}: gallery cut off at 390x844`);
         } else t.event("screenshot", "endings gallery at 390x844 (tab open attempted)");
         closeViewFrame();
+      }
+      t.progress(1);
+      return;
+    }
+
+    // Replay leg on its own ({"at":"replay"}, and by default on a phone-sized page, where walking the player to an ending
+    // is not what is being judged): a named setup shortcut, `seeded-run`. It writes what the player would have saved for a
+    // viewer who had reached the first ending (the ending found, the scenes of the way unlocked), opens the story by
+    // the card, then everything the criteria are about is real presses and taps: the New tags and Seen marks on the
+    // choices, the Tree, the card's "1 of N endings" at 390x844, and then "N of N" with the badge.
+    if (options.at === "replay" || innerWidth <= 600) {
+      const first = ends[0];
+      const seedWay = wayTo(st, (sc) => sc === st.scenes[first]);
+      if (!seedWay) throw new Error(`${id}: no way to ${first}`);
+      localStorage.setItem(endingsStorageKey(st), JSON.stringify({ ids: [first] }));
+      document.cookie = `${unlocksCookie(st)}=${encodeURIComponent(JSON.stringify({ seen: [st.start, ...seedWay], completed: true }))}; Max-Age=${30 * 86400}; Path=/; SameSite=Lax`;
+      t.event("seeded-run", `${id}: ending ${first} found and the ${seedWay.length + 1} scenes of its way unlocked (setup shortcut)`);
+      if (!landingShown()) await toLanding(t);
+      await openStory(t, id);
+      await toStart(t, { quiet: true });
+      await replayLeg(first, seedWay);
+      if (ends.length > 1) {
+        localStorage.setItem(endingsStorageKey(st), JSON.stringify({ ids: ends }));
+        t.event("seeded-run", `${id}: every ending found (setup shortcut)`);
+        await bothFoundCard();
       }
       t.progress(1);
       return;
@@ -2987,29 +3049,7 @@ async function endingsGalleryRun(options, t) {
       }
       closeViewFrame();
     }
-    // Both endings found: the home card's count reads "N of N endings" and wears the completion badge (a tick, lit),
-    // inside the card at 390x844.
-    {
-      const doc = await viewFrameLoad(t, "/", 390, 844);
-      await sleep(700);
-      const cardBox = doc.querySelector(`.story-card[data-story="${id}"]`);
-      const cardEl = cardBox && cardBox.querySelector(".story-card-endings");
-      if (!cardEl) t.problem("bug", `${id}: no endings count on the home card after both endings`);
-      else {
-        cardEl.scrollIntoView({ block: "center", behavior: "instant" });
-        await sleep(200);
-        const er = cardEl.getBoundingClientRect();
-        const cr = cardBox.getBoundingClientRect();
-        const txt = cardEl.textContent.trim();
-        const badge = doc.defaultView.getComputedStyle(cardEl, "::before").content;
-        t.event("replay-card-complete", `home card at 390x844: "${txt}", badge ${cardBox.dataset.allEndings === "true" ? "shown" : "missing"} (${badge})`);
-        if (txt !== `${ends.length} of ${ends.length} endings`) t.problem("bug", `${id}: home card says "${txt}" with both endings found`);
-        if (cardBox.dataset.allEndings !== "true") t.problem("bug", `${id}: no completion badge on the home card with every ending found`);
-        if (er.right > cr.right + 1 || er.left < cr.left - 1 || cardEl.scrollWidth > cardEl.clientWidth + 1) t.problem("bug", `${id}: the completion badge is cut off on its card at 390x844`);
-        t.event("screenshot", `home card with every ending found at 390x844`);
-      }
-      closeViewFrame();
-    }
+    await bothFoundCard();
     t.event("criterion", `${id}: endings gallery shows found posters/names, locked ???, count up to ${ends.length} of ${ends.length}, recall works, fits 390x844 and 1280x720`);
     // Night Shift's twelve tiles must scroll inside the player at 390x844 (flex shell like the Tree).
     const night = story("night-shift");
@@ -7561,7 +7601,7 @@ installPlaytest({
       title: "Endings gallery: reach two Water Road endings, found posters and names, locked silhouettes, count, recall, fit at 390x844 and 1280x720",
       seconds: 180,
       tags: ["full"],
-      description: "Clears progress, opens The Water Road (or {\"story\":\"<id>\"}), walks the shortest way to each ending with real presses. At each ending the card shows \"N of M found\" and an Endings button; the gallery lists found endings with poster and name and locked ones as a blurred darkened silhouette with \"???\". Tapping a found ending shows its card again. The Endings tab on the story page shows the same gallery. With one ending found, a second run: choices to unseen scenes wear New, fully seen ones Seen, the Tree the same, the home card says \"1 of 2 endings\" (replay leg at 390x844: tagged choices 48 px or more, nothing cut off; events replay-marks, replay-tree, replay-phone, replay-card). Fit checks in frames at 390x844 and 1280x720 after both are found. Events endings-count, endings-gallery, ending-recall, screenshot; metrics endingsFound, endingsTotal.",
+      description: "Clears progress, opens The Water Road (or {\"story\":\"<id>\"}), walks the shortest way to each ending with real presses. At each ending the card shows \"N of M found\" and an Endings button; the gallery lists found endings with poster and name and locked ones as a blurred darkened silhouette with \"???\". Tapping a found ending shows its card again. The Endings tab on the story page shows the same gallery. With one ending found, a second run: choices to unseen scenes wear New, fully seen ones Seen, the Tree the same, the home card says \"1 of 2 endings\" (replay leg at 390x844: tagged choices 48 px or more, nothing cut off; events replay-marks, replay-tree, replay-phone, replay-card). Fit checks in frames at 390x844 and 1280x720 after both are found. On a phone-sized page (or {\"at\":\"replay\"}) only the replay leg plays, from a seeded run (event seeded-run: the first ending found and its way unlocked), then every ending found for the card badge; the tag sits inside the card clear of the words (replay-phone-fit). Events endings-count, endings-gallery, ending-recall, screenshot; metrics endingsFound, endingsTotal.",
     },
     {
       id: "stories",

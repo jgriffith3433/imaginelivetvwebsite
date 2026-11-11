@@ -3381,30 +3381,40 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
 html[data-reading="en"] .post-article h1 .spot-src { display: none; }
 
 /* Replay marks (J, 2026-11-11): on a second run a choice to a way never found carries a small "New" tag, and one
-   whose whole way is seen a quiet tick. The tag is a pseudo-element in the card's right edge (the card reserves room
-   for it, so the text never wraps under it and the card stays 48 px or more); the Tree's nodes carry the same. */
-.spark-choices .choice[data-mark] { padding-right: 4.4rem; }
-.spark-choices .choice[data-mark]::before {
+   whose whole way is seen a quiet tick. The tag is a real span (.choice-mark): the card's ::before is the Up next
+   progress line and its ::after the "Last time" note, so a pseudo-element would clash. The Tree's nodes carry the same. */
+/* The two overlaid spans of a choice's words (.spot-src, .spot-en) share one grid cell. In the unified card's flex row
+   they sat side by side and each got half the width, so every choice wrapped at about half the card (J, 2026-11-11:
+   64 px tall, two lines at 390x844). A one-column grid gives the words the card's whole width. */
+.spark-choices .choice.spot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  align-content: center;
+}
+/* The tag sits in the card's top-right corner, on a line of its own above the words (extra top padding only on a tagged
+   card), so the words keep the card's whole width and never wrap or hide under it; the card stays 48 px or more. */
+.spark-choices .choice[data-mark] { padding-top: 1.2rem; padding-bottom: 0.55rem; }
+.spark-choices .choice .choice-mark {
   position: absolute;
-  top: 50%;
-  right: 0.7rem;
-  transform: translateY(-50%);
+  top: 0.32rem;
+  right: 0.6rem;
   white-space: nowrap;
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   line-height: 1;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  pointer-events: none;
 }
-.spark-choices .choice[data-mark="new"]::before {
-  content: "New";
-  padding: 0.22rem 0.5rem;
+.spark-choices .choice[data-mark="new"] .choice-mark {
+  padding: 0.14rem 0.42rem;
   color: #1a1b1d;
   background: #d8b45a;
   border-radius: 999px;
   font-weight: 700;
 }
-.spark-choices .choice[data-mark="seen"]::before {
-  content: "\2713  Seen";
+.spark-choices .choice[data-mark="seen"] .choice-mark {
+  padding: 0.14rem 0;
   color: #8e8b86;
 }
 .tree-node[data-mark]::after {
@@ -3422,6 +3432,8 @@ html[data-reading="en"] .post-article h1 .spot-src { display: none; }
 
 /* Home cards: "2 of 5 endings", bright once every ending is found. */
 .story-card-endings {
+  max-width: 100%;
+  box-sizing: border-box;
   color: var(--muted);
   font-size: 0.72rem;
   letter-spacing: 0.12em;

@@ -1241,6 +1241,10 @@
       } else if (mark) {
         button.dataset.mark = mark;
         button.title = mark === "new" ? "A way you haven't found yet" : "You've seen everything this way leads to";
+        const tag = document.createElement("span");
+        tag.className = "choice-mark";
+        tag.textContent = mark === "new" ? "New" : "\u2713 Seen";
+        button.appendChild(tag);
       }
       if (lastWay && lastWay[history.length] === sceneId && lastWay[history.length + 1] === choice.next) {
         button.classList.add("was-taken");
