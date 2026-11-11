@@ -361,6 +361,17 @@ remember a choice and call it back later. All of it is data in `story/<id>.json`
   A variant's `video` needs its own clip (made through Studio; a text or question variant is free). The branch pages
   (one static page per scene) always show the base scene. The Water Road: giving the flask or riding past the family
   changes the cottonwoods' question.
+- **Water and gated choices (J, 2026-11-11).** A choice may have a gate: `"needs": { "water": 3 }` (the item's count at
+  that scene, worked out from the way you came, must be 3 or more) and/or `"requires": { "gaveFlask": true }` (flags,
+  read like a variant's `when`). A choice whose `requires` don't hold is **not there**; a choice whose `needs` aren't met is
+  **not a button**: it stays on screen as a greyed-out dashed row (`.choice-locked`, a `div` with `aria-disabled`, 52 px
+  tall) that says why in words, "needs water 3+ (you have 1)", and a press on it does nothing. The inventory bar keeps the
+  count on screen below the choices. The timer's pick (`default`) is never gated, and a fork always keeps two things on
+  screen (a locked row counts). `npm run story` explores every state (scene, counts, flags) and fails on a fork with no safe
+  choice on screen, a default that is gated, a `needs` choice that is never open or (warning) never locked, a scene no
+  way reaches, and a `requires` flag no choice sets. Branch pages show the choice as it stands on the shortest way there
+  (locked: a note, not a link). A choice's `needs` leave the count unchanged: costs are on the scene a choice leads to
+  (`inventory`), so two choices to one scene cost the same. Playtest `water-gates`.
 - **One choice plays on.** A page with exactly one choice (and a clip) shows no button: when the clip ends the screen fades
   for 0.45 s and the story goes on to the choice's scene by itself (a clip that fails to load gets its button back).
   Deaths and endings are never one-choice pages in this sense.

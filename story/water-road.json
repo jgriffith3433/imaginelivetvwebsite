@@ -31,12 +31,20 @@
         "max": 6
       },
       {
+        "id": "barrels",
+        "name": "Barrels",
+        "icon": "barrel",
+        "start": 40,
+        "max": 40,
+        "note": "Forty barrels left the wells; the desert and your choices take them."
+      },
+      {
         "id": "water",
         "name": "Water",
         "icon": "flask",
         "start": 4,
         "max": 4,
-        "empty": "dead"
+        "note": "Your flask, four swallows. Some choices need water kept."
       }
     ]
   },
@@ -98,7 +106,7 @@
       "question": ["Which way does the caravan go?", "Which way does the caravan go?"],
       "choices": [
         { "say": "1. Cut across the salt flats", "en": "1. Cut across the salt flats", "next": "flats" },
-        { "say": "2. Take the long trail under the mesa", "en": "2. Take the long trail under the mesa", "next": "mesa" }
+        { "say": "2. Take the long trail under the mesa", "en": "2. Take the long trail under the mesa", "next": "mesa", "default": true }
       ],
       "shot": {
         "scene": "first light at dawn in the open desert, a low golden sun and dust haze; in the close foreground a mourning dove sits alone on a dead mesquite branch, sharp, filling the top of the frame; far below and behind it, soft and out of focus in the haze, a long wagon train of six canvas-covered wagons loaded with water barrels, each pulled by a team of mules, starts out across the flats; at the very back of the line, small in the distance, a young rider on a bay horse",
@@ -162,7 +170,7 @@
       ],
       "question": ["Do you stop?", "Do you stop?"],
       "choices": [
-        { "say": "1. Ride over to it", "en": "1. Ride over to it", "next": "family" },
+        { "say": "1. Ride over to it", "en": "1. Ride over to it", "next": "family", "default": true },
         { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy", "set": { "passedBy": true } }
       ],
       "shot": {
@@ -184,7 +192,7 @@
       ],
       "question": ["What do you do?", "What do you do?"],
       "choices": [
-        { "say": "1. Fire a warning shot", "en": "1. Fire a warning shot", "next": "rockslide" },
+        { "say": "1. Fire a warning shot", "en": "1. Fire a warning shot", "next": "rockslide", "set": { "firedAtMesa": true, "muleLame": true } },
         { "say": "2. Wave, and wait", "en": "2. Wave, and wait", "next": "lookout", "default": true }
       ],
       "shot": {
@@ -198,16 +206,15 @@
       "id": "rockslide",
       "folder": "the-rockslide",
       "lang": "en",
-      "dead": true,
-      "inventory": { "bullets": -1 },
+      "inventory": { "bullets": -1, "barrels": -4 },
       "title": ["The rockslide", "The rockslide"],
       "story": [
-        "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock.",
-        "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock."
+        "Your shot cracks off the mesa and the rock answers: four barrels go over the edge and a mule goes down lame. Nobody is under it.",
+        "Your shot cracks off the mesa and the rock answers: four barrels go over the edge and a mule goes down lame. Nobody is under it."
       ],
-      "question": ["You have died.", "You have died."],
+      "question": ["Who's that on the rocks?", "Who's that on the rocks?"],
       "choices": [
-        { "say": "1. Start over", "en": "1. Start over", "next": "start" }
+        { "say": "1. Ride on to the rocks", "en": "1. Ride on to the rocks", "next": "lookout" }
       ],
       "shot": {
         "scene": "the red mesa wall breaking apart above the trail, boulders and dust pouring down toward the wagons; the young rider with a smoking revolver raised",
@@ -226,8 +233,11 @@
         "It's a boy with a brass spyglass. His family's wagon broke down a mile on, and their water is gone."
       ],
       "question": ["What do you do?", "What do you do?"],
+      "variants": [
+        { "when": { "firedAtMesa": true }, "story": ["The boy comes down the rocks with both hands up, the brass spyglass swinging. His family's wagon broke down a mile on, and their water is gone.", "The boy comes down the rocks with both hands up, the brass spyglass swinging. His family's wagon broke down a mile on, and their water is gone."] }
+      ],
       "choices": [
-        { "say": "1. Follow him", "en": "1. Follow him", "next": "family" },
+        { "say": "1. Follow him", "en": "1. Follow him", "next": "family", "default": true },
         { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy", "set": { "passedBy": true } }
       ],
       "shot": {
@@ -248,7 +258,7 @@
       ],
       "question": ["What do you do?", "What do you do?"],
       "choices": [
-        { "say": "1. Give them your flask", "en": "1. Give them your flask", "next": "giveFlask", "set": { "gaveFlask": true, "passedBy": false } },
+        { "say": "1. Give them your flask", "en": "1. Give them your flask", "next": "giveFlask", "set": { "gaveFlask": true, "passedBy": false }, "default": true },
         { "say": "2. Tell them the water's spoken for", "en": "2. Tell them the water's spoken for", "next": "passBy", "set": { "passedBy": true } }
       ],
       "shot": {
@@ -262,7 +272,7 @@
       "id": "giveFlask",
       "folder": "your-flask",
       "lang": "en",
-      "inventory": { "water": -2 },
+      "inventory": { "water": -2, "barrels": -1 },
       "title": ["Your flask", "Your flask"],
       "story": [
         "You hand down your flask and the girl drinks first. The trail boss watches, then has a barrel opened, and the family rides on with the caravan.",
@@ -291,7 +301,7 @@
       "question": ["Do you look back?", "Do you look back?"],
       "choices": [
         { "say": "1. Turn around", "en": "1. Turn around", "next": "family" },
-        { "say": "2. Keep riding", "en": "2. Keep riding", "next": "dustStorm" }
+        { "say": "2. Keep riding", "en": "2. Keep riding", "next": "dustStorm", "default": true }
       ],
       "shot": {
         "scene": "from behind the young rider at the back of the caravan, water barrels sloshing in the wagon ahead; far behind, a small broken wagon and a family shrinking into the heat haze",
@@ -304,6 +314,7 @@
       "id": "dustStorm",
       "folder": "the-dust",
       "lang": "en",
+      "inventory": { "barrels": -2 },
       "title": ["The dust", "The dust"],
       "story": [
         "A wall of dust rolls in from the west and swallows the caravan. When it clears the trail is gone, and two barrels have split.",
@@ -311,8 +322,8 @@
       ],
       "question": ["Which way?", "Which way?"],
       "choices": [
-        { "say": "1. Follow the dry wash", "en": "1. Follow the dry wash", "next": "wash" },
-        { "say": "2. Ride for the high ground", "en": "2. Ride for the high ground", "next": "highGround" }
+        { "say": "1. Follow the dry wash", "en": "1. Follow the dry wash", "next": "wash", "default": true },
+        { "say": "2. Ride for the high ground", "en": "2. Ride for the high ground", "next": "highGround", "set": { "riderLeft": true } }
       ],
       "shot": {
         "scene": "a towering brown dust storm sweeping over the desert toward the wagons; in the lee of a wagon wheel a mourning dove crouches; the young rider pulls the red bandana over the face",
@@ -325,16 +336,15 @@
       "id": "highGround",
       "folder": "the-high-ground",
       "lang": "en",
-      "dead": true,
-      "inventory": { "water": -3 },
+      "inventory": { "water": -1, "barrels": -4 },
       "title": ["The high ground", "The high ground"],
       "story": [
-        "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry.",
-        "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry."
+        "From the ridge the desert looks the same in every direction. You lose a day finding the wash, four barrels sweat dry in the sun, and one of the drivers takes his mule and turns for home.",
+        "From the ridge the desert looks the same in every direction. You lose a day finding the wash, four barrels sweat dry in the sun, and one of the drivers takes his mule and turns for home."
       ],
-      "question": ["You have died.", "You have died."],
+      "question": ["Which way is the wash?", "Which way is the wash?"],
       "choices": [
-        { "say": "1. Start over", "en": "1. Start over", "next": "start" }
+        { "say": "1. Ride back down to the wash", "en": "1. Ride back down to the wash", "next": "wash" }
       ],
       "shot": {
         "scene": "the young rider alone on a rocky ridge at dusk, an empty desert to every horizon, holding an upturned tin flask with nothing coming out",
@@ -353,10 +363,15 @@
         "The wash bends between red rocks, and the mules start pulling hard, ears forward. Then five riders block the way, guns out. They want the water."
       ],
       "question": ["What do you do?", "What do you do?"],
+      "variants": [
+        { "when": { "gaveFlask": true }, "story": ["The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass whispers, \"That's Hale. He dug our well.\"", "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass whispers, \"That's Hale. He dug our well.\""] },
+        { "when": { "riderLeft": true }, "story": ["The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out, and with one driver gone there are fewer guns on your side to count.", "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out, and with one driver gone there are fewer guns on your side to count."] }
+      ],
       "choices": [
         { "say": "1. Draw your revolver", "en": "1. Draw your revolver", "next": "gunfight" },
         { "say": "2. Fire over their heads", "en": "2. Fire over their heads", "next": "warningShots", "default": true },
-        { "say": "3. Open a barrel for them", "en": "3. Open a barrel for them", "next": "shareWater" }
+        { "say": "3. Open a barrel for them", "en": "3. Open a barrel for them", "next": "shareWater", "needs": { "water": 2 } },
+        { "say": "4. Call their leader by name", "en": "4. Call their leader by name", "next": "shareWater", "requires": { "gaveFlask": true } }
       ],
       "shot": {
         "scene": "a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere; a small grey-brown mourning dove flies low along the dry sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front",
@@ -399,7 +414,8 @@
       ],
       "question": ["What now?", "What now?"],
       "choices": [
-        { "say": "1. Keep watch", "en": "1. Keep watch", "next": "nightRaid" }
+        { "say": "1. Keep watch", "en": "1. Keep watch", "next": "nightRaid", "default": true },
+        { "say": "2. Leave them a barrel on the rocks", "en": "2. Leave them a barrel on the rocks", "next": "shareWater", "needs": { "water": 3 }, "set": { "leftBarrel": true } }
       ],
       "shot": {
         "scene": "in a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere, the young rider fires a single-action revolver into the air; the five riders wheel their horses and gallop away up the rocks in a cloud of dust",
@@ -418,6 +434,10 @@
         "They come back after midnight, on foot, for the barrels. You can hear how dry their voices are."
       ],
       "question": ["What do you do?", "What do you do?"],
+      "variants": [
+        { "when": { "gaveFlask": true }, "story": ["They come back after midnight, on foot, for the barrels. The girl's father is already up, lantern in one hand, the other held out empty, at your shoulder.", "They come back after midnight, on foot, for the barrels. The girl's father is already up, lantern in one hand, the other held out empty, at your shoulder."] },
+        { "when": { "riderLeft": true }, "story": ["They come back after midnight, on foot, for the barrels. With a driver gone you are taking every watch yourself, and you can hear how dry their voices are.", "They come back after midnight, on foot, for the barrels. With a driver gone you are taking every watch yourself, and you can hear how dry their voices are."] }
+      ],
       "choices": [
         { "say": "1. Shoot it out", "en": "1. Shoot it out", "next": "gunfight" },
         { "say": "2. Open a barrel and call them in", "en": "2. Open a barrel and call them in", "next": "shareWater", "default": true }
@@ -433,12 +453,16 @@
       "id": "shareWater",
       "folder": "a-drink-for-strangers",
       "lang": "en",
+      "inventory": { "barrels": -2 },
       "title": ["A drink for strangers", "A drink for strangers"],
       "story": [
         "You knock the bung out of a barrel and hand their leader the dipper. He drinks slowly, puts his gun away, and his men ride with the caravan.",
         "You knock the bung out of a barrel and hand their leader the dipper. He drinks slowly, puts his gun away, and his men ride with the caravan."
       ],
       "question": ["Where does the wash go?", "Where does the wash go?"],
+      "variants": [
+        { "when": { "leftBarrel": true }, "story": ["You roll a barrel up onto the rocks and knock the bung out for them. In the morning their leader's tin dipper is on the lid, and his men ride in behind the caravan.", "You roll a barrel up onto the rocks and knock the bung out for them. In the morning their leader's tin dipper is on the lid, and his men ride in behind the caravan."] }
+      ],
       "choices": [
         { "say": "1. Follow it to the end", "en": "1. Follow it to the end", "next": "spring" }
       ],
@@ -465,7 +489,7 @@
         { "when": { "passedBy": true }, "question": ["You rode past a family once. What do you do with this water?", "You rode past a family once. What do you do with this water?"] }
       ],
       "choices": [
-        { "say": "1. Bring Dry Fork the way here", "en": "1. Bring Dry Fork the way here", "next": "heroEnding" },
+        { "say": "1. Bring Dry Fork the way here", "en": "1. Bring Dry Fork the way here", "next": "heroEnding", "default": true },
         { "say": "2. Keep the spring a secret and sell the water", "en": "2. Keep the spring a secret and sell the water", "next": "sellWater" }
       ],
       "shot": {
@@ -481,8 +505,8 @@
       "lang": "en",
       "title": ["Dry Fork", "Dry Fork"],
       "story": [
-        "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before.",
-        "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before."
+        "You ride into Dry Fork on what the desert left you, and the riders you gave a barrel to ride in beside you. In the morning you lead the whole town back to the spring, and by the end of summer they're calling you by a name you didn't have before.",
+        "You ride into Dry Fork on what the desert left you, and the riders you gave a barrel to ride in beside you. In the morning you lead the whole town back to the spring, and by the end of summer they're calling you by a name you didn't have before."
       ],
       "question": ["", ""],
       "ending": ["THE END. This is how it started.", "THE END. This is how it started."],
@@ -500,8 +524,8 @@
       "lang": "en",
       "title": ["The price of water", "The price of water"],
       "story": [
-        "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye.",
-        "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye."
+        "Dry Fork pays whatever you ask. You're rich by fall, and the riders you once gave a barrel to ride out without a word. Nobody in town will look you in the eye.",
+        "Dry Fork pays whatever you ask. You're rich by fall, and the riders you once gave a barrel to ride out without a word. Nobody in town will look you in the eye."
       ],
       "question": ["", ""],
       "ending": ["THE END. Not every story makes a hero.", "THE END. Not every story makes a hero."],
