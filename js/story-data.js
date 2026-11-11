@@ -824,12 +824,20 @@ window.ILTV_STORIES = {
       "max": 6
      },
      {
+      "id": "barrels",
+      "name": "Barrels",
+      "icon": "barrel",
+      "start": 40,
+      "max": 40,
+      "note": "Forty barrels left the wells; the desert and your choices take them."
+     },
+     {
       "id": "water",
       "name": "Water",
       "icon": "flask",
       "start": 4,
       "max": 4,
-      "empty": "dead"
+      "note": "Your flask, four swallows. Some choices need water kept."
      }
     ]
    },
@@ -897,7 +905,8 @@ window.ILTV_STORIES = {
       [
        "2. Take the long trail under the mesa",
        "2. Take the long trail under the mesa",
-       "mesa"
+       "mesa",
+       true
       ]
      ]
     },
@@ -993,7 +1002,8 @@ window.ILTV_STORIES = {
       [
        "1. Ride over to it",
        "1. Ride over to it",
-       "family"
+       "family",
+       true
       ],
       [
        "2. Ride on by",
@@ -1033,7 +1043,12 @@ window.ILTV_STORIES = {
       [
        "1. Fire a warning shot",
        "1. Fire a warning shot",
-       "rockslide"
+       "rockslide",
+       false,
+       {
+        "firedAtMesa": true,
+        "muleLame": true
+       }
       ],
       [
        "2. Wave, and wait",
@@ -1052,25 +1067,25 @@ window.ILTV_STORIES = {
       "The rockslide"
      ],
      "story": [
-      "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock.",
-      "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock."
+      "Your shot cracks off the mesa and the rock answers: four barrels go over the edge and a mule goes down lame. Nobody is under it.",
+      "Your shot cracks off the mesa and the rock answers: four barrels go over the edge and a mule goes down lame. Nobody is under it."
      ],
      "question": [
-      "You have died.",
-      "You have died."
+      "Who's that on the rocks?",
+      "Who's that on the rocks?"
      ],
      "video": "/water-road/the-rockslide/scene.mp4",
      "poster": "/water-road/the-rockslide/poster/scene.webp",
      "small": "/water-road/the-rockslide/sm/scene.mp4",
-     "dead": true,
      "inventory": {
-      "bullets": -1
+      "bullets": -1,
+      "barrels": -4
      },
      "choices": [
       [
-       "1. Start over",
-       "1. Start over",
-       "start"
+       "1. Ride on to the rocks",
+       "1. Ride on to the rocks",
+       "lookout"
       ]
      ]
     },
@@ -1098,7 +1113,8 @@ window.ILTV_STORIES = {
       [
        "1. Follow him",
        "1. Follow him",
-       "family"
+       "family",
+       true
       ],
       [
        "2. Ride on by",
@@ -1109,6 +1125,17 @@ window.ILTV_STORIES = {
         "passedBy": true
        }
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "firedAtMesa": true
+       },
+       "story": [
+        "The boy comes down the rocks with both hands up, the brass spyglass swinging. His family's wagon broke down a mile on, and their water is gone.",
+        "The boy comes down the rocks with both hands up, the brass spyglass swinging. His family's wagon broke down a mile on, and their water is gone."
+       ]
+      }
      ]
     },
     "family": {
@@ -1136,7 +1163,7 @@ window.ILTV_STORIES = {
        "1. Give them your flask",
        "1. Give them your flask",
        "giveFlask",
-       false,
+       true,
        {
         "gaveFlask": true,
         "passedBy": false
@@ -1173,7 +1200,8 @@ window.ILTV_STORIES = {
      "poster": "/water-road/your-flask/poster/scene.webp",
      "small": "/water-road/your-flask/sm/scene.mp4",
      "inventory": {
-      "water": -2
+      "water": -2,
+      "barrels": -1
      },
      "choices": [
       [
@@ -1212,7 +1240,8 @@ window.ILTV_STORIES = {
       [
        "2. Keep riding",
        "2. Keep riding",
-       "dustStorm"
+       "dustStorm",
+       true
       ]
      ]
     },
@@ -1240,14 +1269,22 @@ window.ILTV_STORIES = {
       [
        "1. Follow the dry wash",
        "1. Follow the dry wash",
-       "wash"
+       "wash",
+       true
       ],
       [
        "2. Ride for the high ground",
        "2. Ride for the high ground",
-       "highGround"
+       "highGround",
+       false,
+       {
+        "riderLeft": true
+       }
       ]
-     ]
+     ],
+     "inventory": {
+      "barrels": -2
+     }
     },
     "highGround": {
      "folder": "water-road/the-high-ground",
@@ -1258,25 +1295,25 @@ window.ILTV_STORIES = {
       "The high ground"
      ],
      "story": [
-      "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry.",
-      "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry."
+      "From the ridge the desert looks the same in every direction. You lose a day finding the wash, four barrels sweat dry in the sun, and one of the drivers takes his mule and turns for home.",
+      "From the ridge the desert looks the same in every direction. You lose a day finding the wash, four barrels sweat dry in the sun, and one of the drivers takes his mule and turns for home."
      ],
      "question": [
-      "You have died.",
-      "You have died."
+      "Which way is the wash?",
+      "Which way is the wash?"
      ],
      "video": "/water-road/the-high-ground/scene.mp4",
      "poster": "/water-road/the-high-ground/poster/scene.webp",
      "small": "/water-road/the-high-ground/sm/scene.mp4",
-     "dead": true,
      "inventory": {
-      "water": -3
+      "water": -1,
+      "barrels": -4
      },
      "choices": [
       [
-       "1. Start over",
-       "1. Start over",
-       "start"
+       "1. Ride back down to the wash",
+       "1. Ride back down to the wash",
+       "wash"
       ]
      ]
     },
@@ -1315,8 +1352,47 @@ window.ILTV_STORIES = {
       [
        "3. Open a barrel for them",
        "3. Open a barrel for them",
-       "shareWater"
+       "shareWater",
+       false,
+       null,
+       {
+        "needs": {
+         "water": 2
+        }
+       }
+      ],
+      [
+       "4. Call their leader by name",
+       "4. Call their leader by name",
+       "shareWater",
+       false,
+       null,
+       {
+        "requires": {
+         "gaveFlask": true
+        }
+       }
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "gaveFlask": true
+       },
+       "story": [
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass goes still beside you. \"That's Hale,\" he whispers. \"He dug our well.\"",
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass goes still beside you. \"That's Hale,\" he whispers. \"He dug our well.\""
+       ]
+      },
+      {
+       "when": {
+        "riderLeft": true
+       },
+       "story": [
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out, and with one driver gone there are fewer guns on your side to count.",
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out, and with one driver gone there are fewer guns on your side to count."
+       ]
+      }
      ]
     },
     "gunfight": {
@@ -1376,7 +1452,22 @@ window.ILTV_STORIES = {
       [
        "1. Keep watch",
        "1. Keep watch",
-       "nightRaid"
+       "nightRaid",
+       true
+      ],
+      [
+       "2. Leave them a barrel on the rocks",
+       "2. Leave them a barrel on the rocks",
+       "shareWater",
+       false,
+       {
+        "leftBarrel": true
+       },
+       {
+        "needs": {
+         "water": 3
+        }
+       }
       ]
      ]
     },
@@ -1412,6 +1503,26 @@ window.ILTV_STORIES = {
        "shareWater",
        true
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "gaveFlask": true
+       },
+       "story": [
+        "They come back after midnight, on foot, for the barrels. The girl's father is up before you, a lantern in one hand and the other held out empty, standing at your shoulder.",
+        "They come back after midnight, on foot, for the barrels. The girl's father is up before you, a lantern in one hand and the other held out empty, standing at your shoulder."
+       ]
+      },
+      {
+       "when": {
+        "riderLeft": true
+       },
+       "story": [
+        "They come back after midnight, on foot, for the barrels. With a driver gone you are taking every watch yourself, and you can hear how dry their voices are.",
+        "They come back after midnight, on foot, for the barrels. With a driver gone you are taking every watch yourself, and you can hear how dry their voices are."
+       ]
+      }
      ]
     },
     "shareWater": {
@@ -1439,6 +1550,20 @@ window.ILTV_STORIES = {
        "1. Follow it to the end",
        "spring"
       ]
+     ],
+     "inventory": {
+      "barrels": -2
+     },
+     "variants": [
+      {
+       "when": {
+        "leftBarrel": true
+       },
+       "story": [
+        "You roll a barrel up onto the rocks and knock the bung out for them. In the morning their leader's tin dipper is on the lid, and his men ride in behind the caravan.",
+        "You roll a barrel up onto the rocks and knock the bung out for them. In the morning their leader's tin dipper is on the lid, and his men ride in behind the caravan."
+       ]
+      }
      ]
     },
     "spring": {
@@ -1470,7 +1595,8 @@ window.ILTV_STORIES = {
       [
        "1. Bring Dry Fork the way here",
        "1. Bring Dry Fork the way here",
-       "heroEnding"
+       "heroEnding",
+       true
       ],
       [
        "2. Keep the spring a secret and sell the water",
@@ -1508,8 +1634,8 @@ window.ILTV_STORIES = {
       "Dry Fork"
      ],
      "story": [
-      "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before.",
-      "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before."
+      "You ride into Dry Fork on what the desert left you, and the riders you gave a barrel to ride in beside you. In the morning you lead the whole town back to the spring, and by the end of summer they're calling you by a name you didn't have before.",
+      "You ride into Dry Fork on what the desert left you, and the riders you gave a barrel to ride in beside you. In the morning you lead the whole town back to the spring, and by the end of summer they're calling you by a name you didn't have before."
      ],
      "question": [
       "",
@@ -1533,8 +1659,8 @@ window.ILTV_STORIES = {
       "The price of water"
      ],
      "story": [
-      "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye.",
-      "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye."
+      "Dry Fork pays whatever you ask. You're rich by fall, and the riders you once gave a barrel to ride out without a word. Nobody in town will look you in the eye.",
+      "Dry Fork pays whatever you ask. You're rich by fall, and the riders you once gave a barrel to ride out without a word. Nobody in town will look you in the eye."
      ],
      "question": [
       "",

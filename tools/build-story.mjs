@@ -160,6 +160,20 @@ function validateFlags(st, s) {
     for (const c of defaults) if (dead(c)) problems.push(`${at(s)}: the default choice "${c.en}" leads to a death (${c.next}): the timeout would kill a viewer who looked away`);
     if (!defaults.length && s.choices.every(dead)) problems.push(`${at(s)}: every choice leads to a death and none is marked default: the timeout has no safe pick`);
   }
+  // A gated choice: `requires` flags (absent unless they hold) and `needs` counts (shown locked while the inventory is short).
+  for (const c of s.choices) {
+    if (c.requires != null && (typeof c.requires !== 'object' || Array.isArray(c.requires) || !Object.keys(c.requires).length || !Object.values(c.requires).every(FLAG_VALUE))) problems.push(`${at(s)}: choice "${c.en}": requires must be { flag: value }`);
+    for (const flag of Object.keys(c.requires ?? {})) if (!st.scenes.some((o) => o.choices.some((x) => x.set && flag in x.set))) problems.push(`${at(s)}: choice "${c.en}" requires flag "${flag}", which no choice sets`);
+    if (c.needs != null) {
+      const items = new Map((st.data.inventory?.items ?? []).map((i) => [i.id, i]));
+      if (typeof c.needs !== 'object' || Array.isArray(c.needs) || !Object.keys(c.needs).length) problems.push(`${at(s)}: choice "${c.en}": needs must be { item: count }`);
+      else for (const [k, v] of Object.entries(c.needs)) {
+        if (!items.get(k) || items.get(k).start == null) problems.push(`${at(s)}: choice "${c.en}" needs ${k}, which isn't a counted inventory item`);
+        else if (!Number.isInteger(v) || v < 1 || v > (items.get(k).max ?? Infinity)) problems.push(`${at(s)}: choice "${c.en}" needs ${k} ${v}: a whole number from 1 to its most`);
+      }
+    }
+    if (c.default && (c.needs || c.requires)) problems.push(`${at(s)}: the default choice "${c.en}" has a gate; the timer's pick must always be on screen`);
+  }
   // Two choices to one scene must set the same flags (the run's flags are worked out from the scenes it passed through).
   const by = new Map();
   for (const c of s.choices) {
@@ -196,6 +210,18 @@ function kitCounts(st) {
   return new Map([...path].map(([id, p]) => [id, kit.counts(inv, scenes, st.data.start, p)]));
 }
 
+/** The flags on the shortest way to each scene (a choice's `set`, applied along the way): a branch page is a page on its
+    own, so a gated choice shows as it would on that way. */
+function kitFlags(st) {
+  const path = new Map([[st.data.start, {}]]);
+  const queue = [st.data.start];
+  while (queue.length) {
+    const id = queue.shift();
+    for (const c of st.byId.get(id)?.choices ?? []) if (!path.has(c.next) && st.byId.has(c.next)) path.set(c.next, { ...path.get(id), ...(c.set ?? {}) }), queue.push(c.next);
+  }
+  return path;
+}
+
 function validateInventory(st) {
   const { id, data, scenes, byId } = st;
   const inv = data.inventory;
@@ -222,18 +248,39 @@ function validateInventory(st) {
     }
   }
   if (problems.length > before) return;
-  // Every way through the story (a scene and the counts you have there): nothing goes below none, and an item
-  // whose running out ends the run ("empty": "dead") only runs out on a death page.
+  // Every way through the story (a scene, the counts you have there and the flags you carry): nothing goes below none,
+  // an item whose running out ends the run ("empty": "dead") only runs out on a death page, and every fork's gated choices
+  // leave a choice on screen (the timer's default, or a way that isn't a death) in every state.
   const all = Object.fromEntries(scenes.map((s) => [s.id, s]));
   const first = kit.apply(inv, kit.fresh(inv), all[data.start]).counts;
-  const key = (sid, c) => sid + ' ' + JSON.stringify(c);
-  const seen = new Set([key(data.start, first)]);
-  const queue = [[data.start, first]];
+  const key = (sid, c, f) => sid + ' ' + JSON.stringify(c) + ' ' + JSON.stringify(Object.keys(f).sort().map((k) => [k, f[k]]));
+  const seen = new Set([key(data.start, first, {})]);
+  const queue = [[data.start, first, {}]];
   const told = new Set();
   const tell = (msg) => !told.has(msg) && (told.add(msg), problems.push(msg));
+  const gated = new Map(); // scene id -> Map(choice -> Set('open', 'locked')): a `needs` choice has to be both, somewhere
+  const open = (c, counts, flags) => {
+    for (const [k, v] of Object.entries(c.requires ?? {})) if ((flags[k] ?? false) !== v) return 'hidden';
+    return kit.meets(counts, c.needs) ? 'open' : 'locked';
+  };
   while (queue.length && seen.size < 20000) {
-    const [sid, counts] = queue.shift();
-    for (const c of byId.get(sid).choices) {
+    const [sid, counts, flags] = queue.shift();
+    const here = byId.get(sid);
+    if (here.choices.length > 1 && !here.dead && !here.ending) {
+      const shown = here.choices.filter((c) => open(c, counts, flags) === 'open');
+      const safe = shown.filter((c) => !byId.get(c.next)?.dead);
+      const lockedNow = here.choices.filter((c) => open(c, counts, flags) === 'locked').length;
+      if (!safe.length) tell(`${id}/${sid}: with ${JSON.stringify(counts)} and flags ${JSON.stringify(flags)} no safe choice is on screen`);
+      if (shown.length + lockedNow < 2) tell(`${id}/${sid}: with ${JSON.stringify(counts)} and flags ${JSON.stringify(flags)} only ${shown.length} choice is on screen (a fork needs two, a locked one counts)`);
+    }
+    for (const c of here.choices) {
+      const state = open(c, counts, flags);
+      if (c.needs) {
+        const g = gated.get(sid) ?? gated.set(sid, new Map()).get(sid);
+        const h = g.get(c) ?? g.set(c, new Set()).get(c);
+        if (state !== 'hidden') h.add(state);
+      }
+      if (state !== 'open') continue;
       const next = all[c.next];
       const base = c.next === data.start ? kit.fresh(inv) : counts;
       const { counts: after, raw } = kit.apply(inv, base, next);
@@ -242,9 +289,18 @@ function validateInventory(st) {
         if (raw[item.id] < 0 && !next.dead) tell(`${id}/${next.id}: ${item.name} goes below none (${raw[item.id]}) on the way from ${sid}; only a death page may empty it past zero`);
         if (item.empty === 'dead' && after[item.id] === 0 && !next.dead) tell(`${id}/${next.id}: ${item.name} runs out on the way from ${sid}, but running out ends the run and this isn't a death page`);
       }
-      const k = key(c.next, after);
-      if (!seen.has(k)) seen.add(k), queue.push([c.next, after]);
+      const nflags = c.next === data.start ? {} : { ...flags, ...(c.set ?? {}) };
+      const k = key(c.next, after, nflags);
+      if (!seen.has(k)) seen.add(k), queue.push([c.next, after, nflags]);
     }
+  }
+  if (seen.size < 20000) {
+    for (const [sid, g] of gated) for (const [c, h] of g) {
+      if (!h.has('locked')) warnings.push(`${id}/${sid}: "${c.en}" needs ${JSON.stringify(c.needs)} but is never locked (the gate changes nothing)`);
+      if (!h.has('open')) problems.push(`${id}/${sid}: "${c.en}" needs ${JSON.stringify(c.needs)} but is never open (no way has that much)`);
+    }
+    const reached = new Set([...seen].map((k) => k.split(' ')[0]));
+    for (const s of scenes) if (!reached.has(s.id)) problems.push(`${id}/${s.id}: no way through the gates leads here`);
   }
   if (seen.size >= 20000) warnings.push(`${id}: more than 20000 ways through the inventory; not all checked`);
 }
@@ -380,8 +436,9 @@ function storyData() {
         ...(s.inventory ? { inventory: s.inventory } : {}),
         choices: s.choices.map((c) => {
           const row = [c.say, c.en, c.next];
-          if (c.default || c.set) row.push(!!c.default);
-          if (c.set) row.push(c.set);
+          if (c.default || c.set || c.needs || c.requires) row.push(!!c.default);
+          if (c.set || c.needs || c.requires) row.push(c.set ?? null);
+          if (c.needs || c.requires) row.push({ ...(c.requires ? { requires: c.requires } : {}), ...(c.needs ? { needs: c.needs } : {}) });
           return row;
         }),
         ...(s.variants?.length ? { variants: s.variants.map((v) => ({ when: v.when, ...(v.story ? { story: v.story } : {}), ...(v.question ? { question: v.question } : {}), ...(v.video ? { video: v.video, ...clipExtras(v.video) } : {}) })) } : {}),
@@ -566,13 +623,18 @@ const spot = (s, [say, en], tag = 'span', attrs = '') => {
   return `<${tag} class="${attrs ? attrs + ' ' : ''}spot"><span class="spot-src" lang="${s.lang}"${dir}>${src}</span><span class="spot-en" aria-hidden="true">${eng}</span></${tag}>`;
 };
 
-function page(st, s, counts) {
+function page(st, s, counts, flags = {}) {
   if (st.console) return consolePage(st, s);
   const tap = st.data.tap ?? {};
   const inv = st.data.inventory;
+  // A gated choice (story doc "Water and gated choices"): absent unless its flags hold; locked, with its requirement in
+  // words and not a link, while the counts on the shortest way here are short.
+  const need = (c) => Object.entries(c.needs ?? {}).map(([k, v]) => `needs ${(inv?.items.find((i) => i.id === k)?.name ?? k).toLowerCase()} ${v}+`).join(', ');
   const choices = s.choices
+    .filter((c) => Object.entries(c.requires ?? {}).every(([k, v]) => (flags[k] ?? false) === v))
     .map((c) => {
       const to = st.byId.get(c.next);
+      if (c.needs && counts && !kit.meets(counts, c.needs)) return `<div class="choice-locked spot" role="note" aria-disabled="true" data-locked="true" data-next="${esc(c.next)}"><span class="spot-src" lang="${s.lang}"${s.dir ? ` dir="${s.dir}"` : ''}>${esc(c.say)}</span><span class="spot-en" aria-hidden="true">${esc(c.en)}</span><span class="choice-need">${esc(need(c))}</span></div>`;
       return `<a class="choice spot" href="/${st.base}${to.folder}/"><span class="spot-src" lang="${s.lang}"${s.dir ? ` dir="${s.dir}"` : ''}>${esc(c.say)}</span><span class="spot-en" aria-hidden="true">${esc(c.en)}</span></a>`;
     })
     .join('');
@@ -1263,7 +1325,8 @@ if (!problems.length) {
   for (const st of stories) {
     write(`${st.id}/index.html`, storyLink(st));
     const counts = kitCounts(st);
-    for (const s of st.scenes) write(`${st.base}${s.folder}/index.html`, page(st, s, counts.get(s.id)));
+    const wayFlags = kitFlags(st);
+    for (const s of st.scenes) write(`${st.base}${s.folder}/index.html`, page(st, s, counts.get(s.id), wayFlags.get(s.id)));
   }
   if (!problems.length) write('hawkes.assets.json', assetsText);
   strays();
