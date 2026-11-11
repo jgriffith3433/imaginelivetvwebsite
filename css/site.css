@@ -1741,6 +1741,9 @@ html.is-splash-pending::after {
 .iltv-sound-toggle:hover, .iltv-sound-toggle:focus-visible { color: var(--green-soft); background: rgba(255, 255, 255, 0.06); }
 .iltv-sound-toggle.is-off { color: var(--muted); opacity: 0.72; }
 .iltv-sound-toggle.is-floating { position: fixed; top: 0.5rem; right: calc(2.75rem + 0.5rem); transform: none; z-index: 70; }
+@media (max-width: 560px) {
+  .site-header a { padding-right: 6rem; font-size: 0.85rem; letter-spacing: 0.24em; text-indent: 0.24em; }
+}
 
 .sound-gear {
   position: absolute;

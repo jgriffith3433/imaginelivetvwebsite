@@ -37,6 +37,8 @@
   var toggleBtn = null;
   var log = [];
   var syncing = false;
+  var bufferCache = {};
+  var missingUrls = {};
 
   function clamp01(n, fallback) {
     n = Number(n);
@@ -76,6 +78,18 @@
     } catch (e) { /* old browsers */ }
   }
 
+  function masterTarget() {
+    if (!enabled) return 0;
+    try {
+      var hs = window.hawkesSound;
+      if (hs && hs.settings) {
+        var s = hs.settings();
+        if (s && typeof s.music === "number") return clamp01(s.music, 1);
+      }
+    } catch (e) { /* ignore */ }
+    return 1;
+  }
+
   function ensureGraph() {
     if (!NativeContext) return null;
     if (context) return context;
@@ -86,7 +100,7 @@
       return null;
     }
     master = context.createGain();
-    master.gain.value = enabled ? 1 : 0;
+    master.gain.value = masterTarget();
     master.connect(context.destination);
     ["ambience", "music", "ui"].forEach(function (name) {
       var g = context.createGain();
@@ -100,19 +114,34 @@
   function fadeTo(gainNode, value, seconds) {
     if (!gainNode || !context) return;
     var g = gainNode.gain;
+    var dur = Math.max(0.02, seconds || 0.2);
+    if (gainNode._iltvFadeTimer) {
+      clearTimeout(gainNode._iltvFadeTimer);
+      gainNode._iltvFadeTimer = null;
+    }
+    if (context.state !== "running") {
+      try { g.cancelScheduledValues(context.currentTime); } catch (e0) { /* ignore */ }
+      g.value = value;
+      return;
+    }
     var now = context.currentTime;
     var target = Math.max(0.0001, value);
     try {
       g.cancelScheduledValues(now);
       g.setValueAtTime(Math.max(0.0001, g.value), now);
-      g.exponentialRampToValueAtTime(target, now + Math.max(0.02, seconds));
+      g.exponentialRampToValueAtTime(target, now + dur);
+      if (value <= 0.0001) g.setValueAtTime(0, now + dur + 0.005);
     } catch (e) {
       g.value = value;
     }
+    gainNode._iltvFadeTimer = setTimeout(function () {
+      gainNode._iltvFadeTimer = null;
+      try { g.value = value; } catch (e2) { /* ignore */ }
+    }, Math.round(dur * 1000) + 20);
   }
 
   function applyMaster() {
-    if (master) fadeTo(master, enabled ? 1 : 0, enabled ? FADE_IN : FADE_OUT);
+    if (master) fadeTo(master, masterTarget(), enabled ? FADE_IN : FADE_OUT);
   }
 
   function applyDuck() {
@@ -153,7 +182,9 @@
     return true;
   }
 
-  function onGesture() {
+  function onGesture(event) {
+    var t = event && event.target;
+    if (t && t.closest && t.closest(".tap-settings, .sound-settings")) return;
     unlock();
   }
 
@@ -183,16 +214,24 @@
   }
 
   function loadBuffer(url, done) {
-    if (!url || !window.fetch || !NativeContext) {
+    if (!url || missingUrls[url] || !window.fetch || !NativeContext) {
       done(null);
+      return;
+    }
+    if (bufferCache[url]) {
+      done(bufferCache[url]);
       return;
     }
     fetch(url, { method: "GET", cache: "force-cache" })
       .then(function (res) {
-        if (!res.ok) throw new Error(String(res.status));
+        if (!res.ok) {
+          missingUrls[url] = true;
+          throw new Error(String(res.status));
+        }
         return res.arrayBuffer();
       })
       .then(function (raw) {
+        if (!unlocked) throw new Error("locked");
         ensureGraph();
         if (!context) throw new Error("no context");
         return new Promise(function (resolve, reject) {
@@ -200,7 +239,10 @@
           if (ret && ret.then) ret.then(resolve, reject);
         });
       })
-      .then(function (buf) { done(buf); })
+      .then(function (buf) {
+        if (buf) bufferCache[url] = buf;
+        done(buf);
+      })
       .catch(function () { done(null); });
   }
 
@@ -222,6 +264,11 @@
       stopBedSource();
       bed.buffer = null;
       bed.url = null;
+      return;
+    }
+    if (!unlocked || !enabled) {
+      stopBedSource();
+      bed.url = url;
       return;
     }
     if (!force && bed.url === url && bed.source) return;
@@ -326,6 +373,7 @@
     hs.set = function (next) {
       orig.call(hs, next);
       if (next && typeof next.on === "boolean") syncFromHawkes(next.on);
+      else if (enabled) applyMaster();
     };
     hs._iltvAudioHooked = true;
     // Prefer an existing iltv.sound; otherwise adopt hawkes.sound's on.
@@ -387,7 +435,7 @@
       ambience: buses.ambience ? buses.ambience.gain.value : busGain.ambience,
       music: buses.music ? buses.music.gain.value : busGain.music,
       ui: buses.ui ? buses.ui.gain.value : busGain.ui,
-      master: master ? master.gain.value : (enabled ? 1 : 0)
+      master: master ? master.gain.value : masterTarget()
     };
   }
 
@@ -425,6 +473,6 @@
     saveOn();
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-  else boot();
+  if (document.body) boot();
+  else document.addEventListener("DOMContentLoaded", boot);
 })();

@@ -642,6 +642,7 @@ function checkHitTargets(t, doc = document, where = "player") {
   const targets = [
     ["#tab-play", "PLAY tab"],
     ["#tab-tree", "TREE tab"],
+    ["#iltv-sound-toggle", "Sound toggle"],
     ["#sound-gear", "Settings gear"],
   ];
   const sizes = [];
@@ -2237,11 +2238,12 @@ const savedAudio = () => {
   }
 };
 
-/** One size: unlock on Tap to play, duck while the clip has sound, header toggle mutes clips and saves iltv.sound. */
-async function audioBusesAt(t, doc, where) {
-  const win = doc.defaultView;
-  const audio = audioOf(doc);
-  const sound = soundOf(doc);
+/** One size: unlock on Tap to play, duck while the clip has sound, header toggle mutes clips and saves iltv.sound,
+    and after a reload the setting is still in place and Tap for sound restores playback. */
+async function audioBusesAt(t, doc, where, { reload = null } = {}) {
+  let win = doc.defaultView;
+  let audio = audioOf(doc);
+  let sound = soundOf(doc);
   if (!audio) {
     t.problem("bug", `${where}: no js/audio.js (window.iltvAudio)`);
     return;
@@ -2250,8 +2252,17 @@ async function audioBusesAt(t, doc, where) {
     t.problem("bug", `${where}: no js/hawkes-sound.js`);
     return;
   }
-  if (sound.prompt()) await passPrompt(t, doc, where);
-  else if (!sound.unlocked()) t.problem("bug", `${where}: sound still locked with no Tap to play prompt`);
+  let video = doc.querySelector("#spark-video video:not(.spark-leave)");
+  if (sound.prompt()) {
+    if (audio.unlocked() || audio.bed().playing || (video && !video.paused)) {
+      t.problem("bug", `${where}: sound or clip started before the viewer's first tap (unlocked=${audio.unlocked()}, bed=${audio.bed().playing}, paused=${video ? video.paused : "no-video"})`);
+    } else {
+      t.event("audio-before-tap", `${where}: locked before first tap, bed silent, clip paused`);
+    }
+    await passPrompt(t, doc, where);
+  } else if (!sound.unlocked()) {
+    t.problem("bug", `${where}: sound still locked with no Tap to play prompt`);
+  }
   await sleep(400);
   if (!audio.unlocked()) t.problem("bug", `${where}: iltvAudio stayed locked after the first tap`);
   const unlocks = audio.events().filter((e) => e.what === "unlock");
@@ -2259,7 +2270,7 @@ async function audioBusesAt(t, doc, where) {
   else t.event("audio-unlock", `${where}: ${unlocks[unlocks.length - 1].audio || "running"}`);
   t.metric("audioUnlocked", audio.unlocked() ? 1 : 0);
 
-  const video = doc.querySelector("#spark-video video:not(.spark-leave)");
+  video = doc.querySelector("#spark-video video:not(.spark-leave)");
   if (!video) {
     t.problem("bug", `${where}: no story video`);
     return;
@@ -2271,48 +2282,90 @@ async function audioBusesAt(t, doc, where) {
   try { if (video.paused) await video.play(); } catch (e) { /* autoplay */ }
   await waitFor(() => !video.paused && video.currentTime > 0.2, 6000);
   await sleep(350);
-  if (!audio.ducked()) t.problem("bug", `${where}: ambience/music did not duck while the unmuted clip played`);
-  else t.event("audio-duck", `${where}: ducked under the clip (ambience ${audio.buses().ambience.toFixed(2)})`);
+  const duckedBuses = audio.buses();
+  if (!audio.ducked() || duckedBuses.ambience > 0.1 || duckedBuses.music > 0.1) {
+    t.problem("bug", `${where}: ambience/music did not duck while the unmuted clip played (ducked=${audio.ducked()}, ambience=${duckedBuses.ambience.toFixed(2)}, music=${duckedBuses.music.toFixed(2)})`);
+  } else {
+    t.event("audio-duck", `${where}: ducked under the clip (ambience ${duckedBuses.ambience.toFixed(2)}, music ${duckedBuses.music.toFixed(2)})`);
+  }
   t.metric("audioDucked", audio.ducked() ? 1 : 0);
 
   video.pause();
   await sleep(400);
-  if (audio.ducked()) t.problem("bug", `${where}: duck stayed on after the clip paused`);
-  else t.event("audio-duck", `${where}: duck lifted after pause`);
+  const liftedBuses = audio.buses();
+  if (audio.ducked() || liftedBuses.ambience < 0.25 || liftedBuses.music < 0.2) {
+    t.problem("bug", `${where}: duck stayed on after the clip paused (ducked=${audio.ducked()}, ambience=${liftedBuses.ambience.toFixed(2)}, music=${liftedBuses.music.toFixed(2)})`);
+  } else {
+    t.event("audio-duck", `${where}: duck lifted after pause (ambience ${liftedBuses.ambience.toFixed(2)}, music ${liftedBuses.music.toFixed(2)})`);
+  }
 
   // Header toggle: mutes everything including the clip; saved in iltv.sound.
-  const toggle = audio.toggle() || doc.getElementById("iltv-sound-toggle");
+  let toggle = audio.toggle() || doc.getElementById("iltv-sound-toggle");
   if (!toggle) {
     t.problem("bug", `${where}: no header sound toggle`);
     return;
   }
   const r = toggle.getBoundingClientRect();
   if (r.width < 44 || r.height < 44) t.problem("bug", `${where}: sound toggle is ${Math.round(r.width)}x${Math.round(r.height)}, under 44px`);
+  const gear = doc.getElementById("sound-gear");
+  if (gear) {
+    const gr = gear.getBoundingClientRect();
+    if (r.right > gr.left + 1) t.problem("bug", `${where}: sound toggle (${Math.round(r.right)}) overlaps Settings gear (${Math.round(gr.left)})`);
+  }
   await tapAt(t, toggle, `Sound off (${where})`);
-  await sleep(200);
+  await sleep(500);
   if (audio.enabled()) t.problem("bug", `${where}: header toggle did not turn sound off`);
   const saved = savedAudio();
   if (!saved || saved.on !== false) t.problem("bug", `${where}: iltv.sound did not save Sound off: ${JSON.stringify(saved)}`);
   if (sound.settings().on !== false) t.problem("bug", `${where}: hawkes.sound stayed on after the header toggle`);
+  if (audio.buses().master > 0.01 || audio.bed().playing) t.problem("bug", `${where}: buses still active after header toggle off (master=${audio.buses().master}, bed=${audio.bed().playing})`);
   try { await video.play(); } catch (e) { /* ignore */ }
   await sleep(200);
   if (!video.muted) t.problem("bug", `${where}: clip still has sound after the header toggle`);
-  t.event("audio-toggle", `${where}: off, clip muted, iltv.sound saved`);
+  t.event("audio-toggle", `${where}: off, clip and buses muted, iltv.sound saved`);
 
-  // Tap for sound still works: turns sound back on.
+  // Reload check: the muted setting is still in place after a reload (read from localStorage iltv.sound at load).
+  if (reload) {
+    doc = await reload();
+    win = doc.defaultView;
+    audio = audioOf(doc);
+    sound = soundOf(doc);
+    toggle = (audio && audio.toggle()) || doc.getElementById("iltv-sound-toggle");
+    if (!audio || !sound) {
+      t.problem("bug", `${where} reload: audio or sound module missing after reload`);
+      return;
+    }
+    if (audio.enabled() || sound.settings().on !== false || (toggle && toggle.getAttribute("aria-pressed") !== "false")) {
+      t.problem("bug", `${where} reload: Sound off was not kept at load (enabled=${audio.enabled()}, hawkes=${sound.settings().on}, pressed=${toggle && toggle.getAttribute("aria-pressed")})`);
+    }
+    if (sound.prompt()) await passPrompt(t, doc, `${where} reload`);
+    await sleep(300);
+    video = doc.querySelector("#spark-video video:not(.spark-leave)");
+    if (audio.enabled() || (video && !video.muted) || audio.bed().playing) {
+      t.problem("bug", `${where} reload: sound played after reload despite Sound off (enabled=${audio.enabled()}, muted=${video && video.muted}, bed=${audio.bed().playing})`);
+    } else {
+      t.event("audio-reload", `${where}: Sound off still in place after reload (iltv.sound={"on":false}, clip muted)`);
+    }
+  }
+
+  // Tap for sound still works: turns sound back on and unmutes the clip.
+  if (video && video.paused) {
+    try { await video.play(); } catch (e) { /* ignore */ }
+    await sleep(200);
+  }
   const unmute = doc.querySelector(".spark-unmute");
   if (unmute && !unmute.hidden) {
     await tapAt(t, unmute, `Tap for sound (${where})`);
-    await sleep(200);
+    await sleep(250);
     if (!audio.enabled() || sound.settings().on !== true) t.problem("bug", `${where}: Tap for sound did not turn sound back on`);
     if (video.muted) t.problem("bug", `${where}: Tap for sound left the clip muted`);
     t.event("tap-for-sound", `${where}: sound back on`);
   } else {
     await tapAt(t, toggle, `Sound on (${where})`);
-    await sleep(200);
+    await sleep(250);
     if (!audio.enabled()) t.problem("bug", `${where}: header toggle did not turn sound back on`);
   }
-  t.event("audio-buses", `${where}: unlock, duck, toggle checked`);
+  t.event("audio-buses", `${where}: unlock, duck, toggle, reload checked`);
 }
 
 async function audioBusesRun(options, t) {
@@ -2332,20 +2385,21 @@ async function audioBusesRun(options, t) {
     await passPrompt(t);
     if (!landingShown()) await toLanding(t);
 
-    // Smoke leg: one path on the page, then a 390x844 frame (beta plays smoke).
+    // Smoke leg: one path on the page, then a 390x844 frame with reload (beta plays smoke).
     if (options.at === "smoke") {
       t.scene("Audio buses (smoke)");
       await openStory(t, FIRST);
       await toStart(t, { quiet: true });
       await audioBusesAt(t, document, "desktop smoke");
-      t.progress(0.6);
+      t.progress(0.5);
       {
+        localStorage.setItem(SOUND_KEY, JSON.stringify({ on: true, music: 1, sfx: 1 }));
+        localStorage.setItem(AUDIO_KEY, JSON.stringify({ on: true }));
         const doc = await viewFrameLoad(t, `/?story=${FIRST}`, 390, 844);
-        const win = doc.defaultView;
-        if (win.hawkesSound && win.hawkesSound.set) win.hawkesSound.set({ on: true, music: 1, sfx: 1 });
-        if (win.iltvAudio && win.iltvAudio.setEnabled) win.iltvAudio.setEnabled(true);
         t.scene("Audio buses at 390x844 (smoke)");
-        await audioBusesAt(t, doc, "390x844 smoke");
+        await audioBusesAt(t, doc, "390x844 smoke", {
+          reload: () => viewFrameLoad(t, `/?story=${FIRST}`, 390, 844),
+        });
         closeViewFrame();
       }
       t.progress(1);
@@ -2356,15 +2410,16 @@ async function audioBusesRun(options, t) {
     await openStory(t, FIRST);
     await toStart(t, { quiet: true });
     await audioBusesAt(t, document, "desktop");
-    t.progress(0.4);
+    t.progress(0.35);
 
     for (const [w, h] of [[390, 844], [1280, 720]]) {
       t.scene(`Audio buses at ${w}x${h}`);
+      localStorage.setItem(SOUND_KEY, JSON.stringify({ on: true, music: 1, sfx: 1 }));
+      localStorage.setItem(AUDIO_KEY, JSON.stringify({ on: true }));
       const doc = await viewFrameLoad(t, `/?story=${FIRST}`, w, h);
-      const win = doc.defaultView;
-      if (win.hawkesSound && win.hawkesSound.set) win.hawkesSound.set({ on: true, music: 1, sfx: 1 });
-      if (win.iltvAudio && win.iltvAudio.setEnabled) win.iltvAudio.setEnabled(true);
-      await audioBusesAt(t, doc, `${w}x${h}`);
+      await audioBusesAt(t, doc, `${w}x${h}`, {
+        reload: () => viewFrameLoad(t, `/?story=${FIRST}`, w, h),
+      });
       closeViewFrame();
       t.progress(w === 390 ? 0.7 : 1);
     }
