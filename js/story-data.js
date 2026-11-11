@@ -108,19 +108,71 @@ window.ILTV_STORIES = {
      "depth": "ਡੂੰਘਾਈ"
     }
    },
+   "inventory": {
+    "label": "Inventory",
+    "keepFlashlight": true,
+    "items": [
+     {
+      "id": "matches",
+      "name": "Matches",
+      "icon": "match",
+      "start": 20,
+      "max": 20,
+      "note": "Every page burns one match. At two or fewer, the options change."
+     }
+    ]
+   },
    "endings": [
     {
      "id": "destroyTown",
      "title": [
       "ਸ਼ਹਿਰ ਤਬਾਹ ਕਰੋ",
-      "Destroy town"
+      "Destroy the town"
      ],
      "ending": [
-      "ਅੰਤ",
-      "THE END"
+      "ਹਨੇਰਾ ਸ਼ਹਿਰ",
+      "THE DARK TOWN"
      ],
      "poster": "/assets/video/poster/destroy-town.webp",
      "video": "/assets/video/destroy-town.mp4"
+    },
+    {
+     "id": "refuseShadow",
+     "title": [
+      "影を拒む",
+      "Refuse the shadow"
+     ],
+     "ending": [
+      "消えない炎",
+      "THE FLAME HELD"
+     ],
+     "poster": "/assets/video/poster/fog.webp",
+     "video": "/assets/video/fog.mp4"
+    },
+    {
+     "id": "ratEnding",
+     "title": [
+      "La luz de la rata",
+      "The rat's light"
+     ],
+     "ending": [
+      "La luz de la rata",
+      "THE RAT'S LIGHT"
+     ],
+     "video": "/assets/video/start.mp4"
+    },
+    {
+     "id": "lamplighterEnding",
+     "title": [
+      "Der Laternenanzünder",
+      "The lamplighter"
+     ],
+     "ending": [
+      "Der Laternenanzünder",
+      "THE LAMPLIGHTER"
+     ],
+     "poster": "/assets/video/poster/fog.webp",
+     "video": "/assets/video/fog.mp4"
     }
    ],
    "scenes": {
@@ -141,9 +193,6 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/the-sewer/scene.mp4",
-     "poster": "/the-sewer/poster/scene.webp",
-     "small": "/the-sewer/sm/scene.mp4",
-     "live": 18,
      "choices": [
       [
        "1. 往回走",
@@ -155,7 +204,10 @@ window.ILTV_STORIES = {
        "2. Go right",
        "sewerWater"
       ]
-     ]
+     ],
+     "poster": "/the-sewer/poster/scene.webp",
+     "small": "/the-sewer/sm/scene.mp4",
+     "live": 18
     },
     "deadEnd": {
      "folder": "you-went-back",
@@ -176,6 +228,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/dead-end.mp4",
      "poster": "/assets/video/poster/dead-end.webp",
      "small": "/assets/video/sm/dead-end.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. वापस जाओ",
@@ -202,21 +257,19 @@ window.ILTV_STORIES = {
       "Back in the passage. The sewer runs on into the dark."
      ],
      "question": [
-      "¿Hacia dónde irás?",
-      "Which way will you go?"
+      "Solo queda un camino.",
+      "Only one way is left."
      ],
      "video": "/assets/video/direction.mp4",
      "poster": "/assets/video/poster/direction.webp",
      "small": "/assets/video/sm/direction.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
-       "1. Vuelve atrás",
-       "1. Go back",
-       "deadEnd"
-      ],
-      [
-       "2. Ve a la derecha",
-       "2. Go right",
+       "1. Ve a la derecha",
+       "1. Go right",
        "sewerWater"
       ]
      ]
@@ -241,6 +294,9 @@ window.ILTV_STORIES = {
      "poster": "/assets/video/poster/sludge.webp",
      "small": "/assets/video/sm/sludge.mp4",
      "dead": true,
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. Recommence",
@@ -268,6 +324,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/sewer-water.mp4",
      "poster": "/assets/video/poster/sewer-water.webp",
      "small": "/assets/video/sm/sewer-water.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. اخرج من الماء",
@@ -290,21 +349,49 @@ window.ILTV_STORIES = {
       "Out of the water"
      ],
      "story": [
-      "Você sai da água e segue pela cloaca.",
-      "You haul yourself out and follow the sewer on."
+      "Você sai da água. O rato sai atrás de você, tremendo.",
+      "You haul yourself out. The rat climbs out after you, shivering."
      ],
      "question": [
-      "À frente, um portão trancado.",
-      "Ahead: a locked gate."
+      "O que você faz pelo rato?",
+      "What do you do about the rat?"
      ],
      "video": "/assets/video/out-of-water.mp4",
      "poster": "/assets/video/poster/out-of-water.webp",
      "small": "/assets/video/sm/out-of-water.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
-       "1. Ir até o portão",
-       "1. Go to the gate",
-       "gate"
+       "1. Dar-lhe uma migalha",
+       "1. Feed it a crust",
+       "ratFed",
+       false,
+       {
+        "rat": "fed",
+        "bond": true
+       }
+      ],
+      [
+       "2. Seguir o rato",
+       "2. Follow the rat",
+       "ratFollowed",
+       false,
+       {
+        "rat": "followed",
+        "bond": true
+       }
+      ],
+      [
+       "3. Passar por cima",
+       "3. Step past it",
+       "ratIgnored",
+       true,
+       {
+        "rat": "ignored",
+        "bond": false
+       }
       ]
      ]
     },
@@ -328,6 +415,9 @@ window.ILTV_STORIES = {
      "poster": "/assets/video/poster/trench-foot.webp",
      "small": "/assets/video/sm/trench-foot.mp4",
      "dead": true,
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. Начни заново",
@@ -355,17 +445,48 @@ window.ILTV_STORIES = {
      "video": "/assets/video/gate.mp4",
      "poster": "/assets/video/poster/gate.webp",
      "small": "/assets/video/sm/gate.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. 門を壊す",
        "1. Break the gate",
-       "breakGate"
+       "breakGate",
+       false,
+       {
+        "gate": "broke"
+       }
       ],
       [
        "2. 錠をこじる",
        "2. Pick the lock",
-       "pickLock"
+       "pickLock",
+       false,
+       {
+        "gate": "picked"
+       }
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "rat": "fed"
+       },
+       "story": [
+        "錠のかかった鉄の門。ネズミが錠のにおいを嗅いでいる。",
+        "A locked iron gate. The rat sniffs at the lock."
+       ]
+      },
+      {
+       "when": {
+        "rat": "ignored"
+       },
+       "story": [
+        "錠のかかった鉄の門。ネズミは闇の中から、こちらを見ている。",
+        "A locked iron gate. The rat watches from the dark."
+       ]
+      }
      ]
     },
     "breakGate": {
@@ -387,6 +508,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/break-gate.mp4",
      "poster": "/assets/video/poster/break-gate.webp",
      "small": "/assets/video/sm/break-gate.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. একটা চাবি খোঁজো",
@@ -414,11 +538,18 @@ window.ILTV_STORIES = {
      "video": "/assets/video/pick-lock.mp4",
      "poster": "/assets/video/poster/pick-lock.webp",
      "small": "/assets/video/sm/pick-lock.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. Nach einem Schlüssel suchen",
        "1. Search for a key",
-       "gotKey"
+       "readTag",
+       false,
+       {
+        "knowsWho": true
+       }
       ]
      ]
     },
@@ -441,6 +572,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/got-key.mp4",
      "poster": "/assets/video/poster/got-key.webp",
      "small": "/assets/video/sm/got-key.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. 열쇠를 쓴다",
@@ -468,12 +602,35 @@ window.ILTV_STORIES = {
      "video": "/assets/video/use-key.mp4",
      "poster": "/assets/video/poster/use-key.webp",
      "small": "/assets/video/sm/use-key.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. Sise gir",
        "1. Enter the fog",
        "fog"
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "gate": "broke"
+       },
+       "story": [
+        "Anahtar uyar, ama kapı çarpık duruyor. Ardında kalın bir sis var.",
+        "The key fits, but the gate hangs crooked. Behind it, thick fog."
+       ]
+      },
+      {
+       "when": {
+        "gate": "picked"
+       },
+       "story": [
+        "Anahtar kilide uyar. Kapı sessizce açılır. Ardında kalın bir sis var.",
+        "The key fits. The gate swings open quietly. Behind it, thick fog."
+       ]
+      }
      ]
     },
     "fog": {
@@ -495,17 +652,57 @@ window.ILTV_STORIES = {
      "video": "/assets/video/fog.mp4",
      "poster": "/assets/video/poster/fog.webp",
      "small": "/assets/video/sm/fog.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. Đốt cánh cửa",
        "1. Set the door on fire",
-       "fireDoor"
+       "fireDoor",
+       false,
+       {
+        "door": "burned"
+       }
       ],
       [
        "2. Gõ cửa",
        "2. Knock",
-       "knock"
+       "knock",
+       false,
+       {
+        "door": "knocked"
+       }
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "rat": "fed"
+       },
+       "story": [
+        "Bạn bước vào sương mù. Con chuột thò đầu ra từ túi áo.",
+        "You step into the fog. The rat peeks out of your pocket."
+       ]
+      },
+      {
+       "when": {
+        "rat": "followed"
+       },
+       "story": [
+        "Con chuột chạy trước vào sương mù, đuôi dựng thẳng.",
+        "The rat runs ahead into the fog, tail up."
+       ]
+      },
+      {
+       "when": {
+        "rat": "ignored"
+       },
+       "story": [
+        "Bạn bước vào sương mù. Phía sau, không còn tiếng chân chuột.",
+        "You step into the fog. Behind you, no sound of rat feet."
+       ]
+      }
      ]
     },
     "fireDoor": {
@@ -527,6 +724,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/fire-door.mp4",
      "poster": "/assets/video/poster/fire-door.webp",
      "small": "/assets/video/sm/fire-door.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. Esci in strada",
@@ -554,11 +754,24 @@ window.ILTV_STORIES = {
      "video": "/assets/video/knock.mp4",
      "poster": "/assets/video/poster/knock.webp",
      "small": "/assets/video/sm/knock.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
-       "1. Kembali ke jalan",
-       "1. Turn back to the street",
-       "uponTruck"
+       "1. Tanya soal tanganmu",
+       "1. Ask about your hands",
+       "oldMan",
+       false,
+       {
+        "knowsWho": true
+       }
+      ],
+      [
+       "2. Kembali ke jalan",
+       "2. Turn back to the street",
+       "uponTruck",
+       true
       ]
      ]
     },
@@ -581,17 +794,48 @@ window.ILTV_STORIES = {
      "video": "/assets/video/truck.mp4",
      "poster": "/assets/video/poster/truck.webp",
      "small": "/assets/video/sm/truck.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. اندر چڑھ جاؤ",
        "1. Climb in",
-       "insideTruck"
+       "insideTruck",
+       false,
+       {
+        "truck": "in"
+       }
       ],
       [
        "2. چل دو",
        "2. Walk away",
-       "walkAway"
+       "walkAway",
+       false,
+       {
+        "truck": "away"
+       }
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "door": "burned"
+       },
+       "story": [
+        "ایک سفید ٹرک گلی میں کھلا کھڑا ہے۔ پیچھے دروازہ جل رہا ہے۔",
+        "A white truck stands open in the street. Behind you, the door burns."
+       ]
+      },
+      {
+       "when": {
+        "door": "knocked"
+       },
+       "story": [
+        "ایک سفید ٹرک گلی میں کھلا کھڑا ہے۔ بوڑھے نے اپنا دروازہ بند کر لیا ہے۔",
+        "A white truck stands open in the street. The old man has shut his door."
+       ]
+      }
      ]
     },
     "insideTruck": {
@@ -613,6 +857,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/inside-truck.mp4",
      "poster": "/assets/video/poster/inside-truck.webp",
      "small": "/assets/video/sm/inside-truck.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "Baila con la sombra",
@@ -640,6 +887,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/walk-away.mp4",
      "poster": "/assets/video/poster/walk-away.webp",
      "small": "/assets/video/sm/walk-away.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "เต้นกับเงา",
@@ -657,22 +907,45 @@ window.ILTV_STORIES = {
       "Shadow dance"
      ],
      "story": [
-      "Unacheza na kivuli. Kitu kinaamka ndani yako, na nguvu ya ajabu inakimbia mwilini mwako. Una nguvu mpya.",
-      "You dance with the shadow. Something wakes in you, and a strange power runs through your body. You have new powers."
+      "Unacheza na kivuli. Taa za mji ziliwashwa ili kukifunga chini; sasa kinataka ziizime.",
+      "You dance with the shadow. The town lit its lamps to keep it down; now it wants them out."
      ],
      "question": [
-      "Nguvu zako mpya zimeamka.",
-      "Your new powers have awakened."
+      "Kivuli kinakupa nguvu mbili.",
+      "The shadow gives you two powers."
      ],
      "video": "/assets/video/shadow-dance.mp4",
      "poster": "/assets/video/poster/shadow-dance.webp",
      "small": "/assets/video/sm/shadow-dance.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "Chunguza nguvu mpya",
        "Explore new powers",
        "explorePowers"
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "truck": "in"
+       },
+       "story": [
+        "Ndani ya gari, kivuli kinakushika mkono. Taa za mji ziliwashwa ili kukifunga; kinataka ziizime.",
+        "In the cab the shadow takes your hand. The town lit its lamps to keep it down; it wants them out."
+       ]
+      },
+      {
+       "when": {
+        "truck": "away"
+       },
+       "story": [
+        "Kivuli kinakufuata barabarani na kucheza nawe. Taa za mji ziliwashwa ili kukifunga; kinataka ziizime.",
+        "The shadow follows you down the street and dances. The town lit its lamps to keep it down; it wants them out."
+       ]
+      }
      ]
     },
     "explorePowers": {
@@ -694,6 +967,9 @@ window.ILTV_STORIES = {
      "video": "/assets/video/explore-powers.mp4",
      "poster": "/assets/video/poster/explore-powers.webp",
      "small": "/assets/video/sm/explore-powers.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
        "1. ஒளியை விழுங்கு",
@@ -726,11 +1002,14 @@ window.ILTV_STORIES = {
      "video": "/assets/video/consume-light.mp4",
      "poster": "/assets/video/poster/consume-light.webp",
      "small": "/assets/video/sm/consume-light.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
-       "పట్టణాన్ని నాశనం చేయి",
-       "Destroy town",
-       "destroyTown"
+       "పట్టణం వైపు చూడు",
+       "Look at the town",
+       "lightHunger"
       ]
      ]
     },
@@ -753,11 +1032,14 @@ window.ILTV_STORIES = {
      "video": "/assets/video/shadow-stitch.mp4",
      "poster": "/assets/video/poster/shadow-stitch.webp",
      "small": "/assets/video/sm/shadow-stitch.mp4",
+     "inventory": {
+      "matches": -1
+     },
      "choices": [
       [
-       "शहर उद्ध्वस्त कर",
-       "Destroy town",
-       "destroyTown"
+       "शहराकडे पाहा",
+       "Look at the town",
+       "threadPull"
       ]
      ]
     },
@@ -767,7 +1049,7 @@ window.ILTV_STORIES = {
      "dir": "",
      "title": [
       "ਸ਼ਹਿਰ ਤਬਾਹ ਕਰੋ",
-      "Destroy town"
+      "Destroy the town"
      ],
      "story": [
       "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰ ਦਿੰਦਾ ਹੈਂ। ਇੱਕ-ਇੱਕ ਕਰਕੇ ਹਰ ਬੱਤੀ ਬੁਝ ਜਾਂਦੀ ਹੈ।",
@@ -781,9 +1063,488 @@ window.ILTV_STORIES = {
      "poster": "/assets/video/poster/destroy-town.webp",
      "small": "/assets/video/sm/destroy-town.mp4",
      "ending": [
-      "ਅੰਤ",
-      "THE END"
+      "ਹਨੇਰਾ ਸ਼ਹਿਰ",
+      "THE DARK TOWN"
      ],
+     "inventory": {
+      "matches": -1
+     },
+     "choices": []
+    },
+    "ratFed": {
+     "folder": "the-rat-eats",
+     "lang": "fr",
+     "dir": "",
+     "title": [
+      "Le rat",
+      "The rat"
+     ],
+     "story": [
+      "Tu poses une croûte par terre. Le rat la ronge, puis te regarde.",
+      "You set a crust on the ground. The rat gnaws it, then looks at you."
+     ],
+     "question": [
+      "Il trottine déjà vers le portail.",
+      "It is already trotting toward the gate."
+     ],
+     "video": "/assets/video/start.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "1. Aller au portail",
+       "1. Go to the gate",
+       "gate"
+      ]
+     ]
+    },
+    "ratFollowed": {
+     "folder": "follow-the-rat",
+     "lang": "ru",
+     "dir": "",
+     "title": [
+      "За крысой",
+      "Follow the rat"
+     ],
+     "story": [
+      "Крыса бежит вперёд. Ты идёшь на писк в боковую трубу.",
+      "The rat runs ahead. You follow its squeaks into a side pipe."
+     ],
+     "question": [
+      "Труба узкая и мокрая.",
+      "The pipe is narrow and wet."
+     ],
+     "video": "/assets/video/direction.mp4",
+     "poster": "/assets/video/poster/direction.webp",
+     "small": "/assets/video/sm/direction.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "1. Ползти за крысой",
+       "1. Crawl after the rat",
+       "ratCrawl"
+      ]
+     ]
+    },
+    "ratCrawl": {
+     "folder": "the-rat-pipe",
+     "lang": "zh",
+     "dir": "",
+     "title": [
+      "窄管",
+      "The pipe"
+     ],
+     "story": [
+      "你挤出窄管，铁门已在身后。雾就在前面。",
+      "You squeeze out of the pipe; the iron gate is behind you. Fog lies ahead."
+     ],
+     "question": [
+      "老鼠蹲在管口，看着你。",
+      "The rat crouches at the pipe's mouth, watching you."
+     ],
+     "video": "/assets/video/use-key.mp4",
+     "poster": "/assets/video/poster/use-key.webp",
+     "small": "/assets/video/sm/use-key.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "1. 走进雾里",
+       "1. Walk into the fog",
+       "fog"
+      ]
+     ]
+    },
+    "ratIgnored": {
+     "folder": "step-past-the-rat",
+     "lang": "de",
+     "dir": "",
+     "title": [
+      "Am Tier vorbei",
+      "Step past the rat"
+     ],
+     "story": [
+      "Du steigst über das Tier hinweg. Es sieht dir nach, dann ist es fort.",
+      "You step over it. It watches you go, then it is gone."
+     ],
+     "question": [
+      "Vor dir sperrt ein Tor den Gang.",
+      "A gate bars the passage ahead."
+     ],
+     "video": "/assets/video/direction.mp4",
+     "poster": "/assets/video/poster/direction.webp",
+     "small": "/assets/video/sm/direction.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "1. Zum Tor gehen",
+       "1. Go to the gate",
+       "gate"
+      ]
+     ]
+    },
+    "readTag": {
+     "folder": "the-brass-tag",
+     "lang": "ko",
+     "dir": "",
+     "title": [
+      "명찰",
+      "The tag"
+     ],
+     "story": [
+      "해골 목의 놋쇠 명찰에 '점등원'이라 적혀 있다. 뒷면에는 네 이름.",
+      "The skeleton's brass tag reads LAMPLIGHTER. On the back, your name."
+     ],
+     "question": [
+      "열쇠가 그 아래 걸려 있다.",
+      "The key hangs beneath it."
+     ],
+     "video": "/assets/video/got-key.mp4",
+     "poster": "/assets/video/poster/got-key.webp",
+     "small": "/assets/video/sm/got-key.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "1. 열쇠를 쓴다",
+       "1. Use the key",
+       "useKey"
+      ]
+     ]
+    },
+    "oldMan": {
+     "folder": "the-old-man-speaks",
+     "lang": "es",
+     "dir": "",
+     "title": [
+      "El farolero",
+      "The lamplighter"
+     ],
+     "story": [
+      "Te mira las manos. «Hollín de farolero. Tú encendías estas lámparas.»",
+      "He studies your hands. \"Lamplighter's soot. You lit these lamps.\""
+     ],
+     "question": [
+      "Cierra la puerta despacio.",
+      "He closes the door slowly."
+     ],
+     "video": "/assets/video/knock.mp4",
+     "poster": "/assets/video/poster/knock.webp",
+     "small": "/assets/video/sm/knock.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "1. Volver a la calle",
+       "1. Turn back to the street",
+       "uponTruck"
+      ]
+     ]
+    },
+    "lightHunger": {
+     "folder": "the-lamps-go-out",
+     "lang": "fr",
+     "dir": "",
+     "title": [
+      "Les lampes",
+      "The lamps"
+     ],
+     "story": [
+      "Les fenêtres s'éteignent une à une. L'ombre attend ta réponse.",
+      "Window after window goes dark. The shadow waits for your answer."
+     ],
+     "question": [
+      "Que fais-tu des lampes ?",
+      "What do you do with the lamps?"
+     ],
+     "video": "/assets/video/consume-light.mp4",
+     "poster": "/assets/video/poster/consume-light.webp",
+     "small": "/assets/video/sm/consume-light.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "Détruire la ville",
+       "Destroy the town",
+       "destroyTown",
+       true
+      ],
+      [
+       "Lever une allumette",
+       "Hold up a match",
+       "refuseShadow",
+       false,
+       null,
+       null,
+       {
+        "min": 3
+       }
+      ],
+      [
+       "Siffler le rat",
+       "Whistle for the rat",
+       "ratEnding",
+       false,
+       null,
+       {
+        "bond": true
+       },
+       {
+        "max": 2
+       }
+      ],
+      [
+       "Souffler la dernière allumette",
+       "Put out the last match",
+       "destroyTown",
+       false,
+       null,
+       {
+        "bond": false
+       },
+       {
+        "max": 2
+       }
+      ],
+      [
+       "Dire qui tu étais",
+       "Say who you were",
+       "lamplighterEnding",
+       false,
+       null,
+       {
+        "knowsWho": true
+       },
+       null
+      ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "rat": "fed"
+       },
+       "story": [
+        "Les fenêtres s'éteignent. Dans un caniveau, le rat te regarde.",
+        "The windows go dark. From a gutter the rat watches you."
+       ]
+      },
+      {
+       "when": {
+        "rat": "followed"
+       },
+       "story": [
+        "Les fenêtres s'éteignent. Le rat s'est assis sur ton pied.",
+        "The windows go dark. The rat has sat down on your foot."
+       ]
+      },
+      {
+       "when": {
+        "rat": "ignored"
+       },
+       "story": [
+        "Les fenêtres s'éteignent. Aucun rat ne vient. Tu es seul.",
+        "The windows go dark. No rat comes. You are alone."
+       ]
+      }
+     ]
+    },
+    "threadPull": {
+     "folder": "the-threads-pull",
+     "lang": "pt",
+     "dir": "",
+     "title": [
+      "Os fios",
+      "The threads"
+     ],
+     "story": [
+      "Fios negros puxam as sombras dos postes até os teus pés. A sombra espera.",
+      "Black threads pull the lampposts' shadows to your feet. The shadow waits."
+     ],
+     "question": [
+      "O que fazes com a cidade?",
+      "What do you do with the town?"
+     ],
+     "video": "/assets/video/shadow-stitch.mp4",
+     "poster": "/assets/video/poster/shadow-stitch.webp",
+     "small": "/assets/video/sm/shadow-stitch.mp4",
+     "inventory": {
+      "matches": -1
+     },
+     "choices": [
+      [
+       "Destruir a cidade",
+       "Destroy the town",
+       "destroyTown",
+       true
+      ],
+      [
+       "Acender um fósforo",
+       "Strike a match",
+       "refuseShadow",
+       false,
+       null,
+       null,
+       {
+        "min": 3
+       }
+      ],
+      [
+       "Assobiar ao rato",
+       "Whistle for the rat",
+       "ratEnding",
+       false,
+       null,
+       {
+        "bond": true
+       },
+       {
+        "max": 2
+       }
+      ],
+      [
+       "Apagar o último fósforo",
+       "Put out the last match",
+       "destroyTown",
+       false,
+       null,
+       {
+        "bond": false
+       },
+       {
+        "max": 2
+       }
+      ],
+      [
+       "Dizer quem foste",
+       "Say who you were",
+       "lamplighterEnding",
+       false,
+       null,
+       {
+        "knowsWho": true
+       },
+       null
+      ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "rat": "fed"
+       },
+       "story": [
+        "Os fios negros contornam o rato, que roi a última migalha.",
+        "The black threads curl around the rat, gnawing its last crumb."
+       ]
+      },
+      {
+       "when": {
+        "rat": "followed"
+       },
+       "story": [
+        "Os fios negros passam por cima do rato, sentado no teu pé.",
+        "The black threads pass over the rat, sitting on your foot."
+       ]
+      },
+      {
+       "when": {
+        "rat": "ignored"
+       },
+       "story": [
+        "Nenhum rato à vista. Só os fios e a sombra.",
+        "No rat in sight. Only the threads and the shadow."
+       ]
+      }
+     ]
+    },
+    "refuseShadow": {
+     "folder": "refuse-the-shadow",
+     "lang": "ja",
+     "dir": "",
+     "title": [
+      "影を拒む",
+      "Refuse the shadow"
+     ],
+     "story": [
+      "きみはマッチを高く掲げる。影は炎の前で縮み、街の灯が一つずつ戻る。",
+      "You hold the match high. The shadow shrinks from the flame, and the town's lights come back one by one."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/assets/video/fog.mp4",
+     "poster": "/assets/video/poster/fog.webp",
+     "small": "/assets/video/sm/fog.mp4",
+     "ending": [
+      "消えない炎",
+      "THE FLAME HELD"
+     ],
+     "inventory": {
+      "matches": -1
+     },
+     "choices": []
+    },
+    "ratEnding": {
+     "folder": "the-rats-light",
+     "lang": "es",
+     "dir": "",
+     "title": [
+      "La luz de la rata",
+      "The rat's light"
+     ],
+     "story": [
+      "Silbas. Un correteo, y la rata arrastra hasta ti un cabo de vela encendido.",
+      "You whistle. Small feet, and the rat drags a burning candle stub to you."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/assets/video/start.mp4",
+     "ending": [
+      "La luz de la rata",
+      "THE RAT'S LIGHT"
+     ],
+     "inventory": {
+      "matches": -1
+     },
+     "choices": []
+    },
+    "lamplighterEnding": {
+     "folder": "the-lamplighter",
+     "lang": "de",
+     "dir": "",
+     "title": [
+      "Der Laternenanzünder",
+      "The lamplighter"
+     ],
+     "story": [
+      "Du sagst, wer du warst. Die Laternen am Platz glimmen auf, und der Schatten sinkt unter das Pflaster.",
+      "You say who you were. The lamps on the square glow, and the shadow sinks back under the cobbles."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/assets/video/fog.mp4",
+     "poster": "/assets/video/poster/fog.webp",
+     "small": "/assets/video/sm/fog.mp4",
+     "ending": [
+      "Der Laternenanzünder",
+      "THE LAMPLIGHTER"
+     ],
+     "inventory": {
+      "matches": -1
+     },
      "choices": []
     }
    }

@@ -30,6 +30,33 @@
 
   var slot = bar.querySelector("#torch-slot");
 
+  // The match count (story doc "A story's inventory", `keepFlashlight`): one number beside the flashlight, set by the
+  // player (js/game.js) for a story whose inventory keeps the flashlight, or read from <html data-matches> on a branch page.
+  var matchBox = document.createElement("p");
+  matchBox.className = "match-count";
+  matchBox.id = "match-count";
+  matchBox.hidden = true;
+  matchBox.innerHTML =
+    '<span class="match-icon" aria-hidden="true"><svg viewBox="0 0 12 28"><rect x="5" y="7" width="2" height="20" rx="1" fill="#c9a36b"/><ellipse cx="6" cy="6" rx="3.2" ry="4.6" fill="#c8402a"/></svg></span>' +
+    '<span class="match-n" id="match-n"></span>';
+  bar.appendChild(matchBox);
+
+  /** Shows the number of matches left (null hides the counter). */
+  function setMatches(n) {
+    var low = typeof n === "number" && n <= 2;
+    matchBox.hidden = typeof n !== "number";
+    if (typeof n !== "number") { delete matchBox.dataset.count; return; }
+    matchBox.dataset.count = String(n);
+    matchBox.classList.toggle("is-low", low);
+    matchBox.setAttribute("role", "img");
+    matchBox.setAttribute("aria-label", "Matches left: " + n);
+    matchBox.title = "Matches left: " + n;
+    matchBox.querySelector(".match-n").textContent = String(n);
+  }
+  window.iltvMatches = { set: setMatches };
+  var fromPage = parseInt(document.documentElement.getAttribute("data-matches"), 10);
+  if (!isNaN(fromPage)) setMatches(fromPage);
+
   function beamRadius() {
     var raw = getComputedStyle(document.documentElement).getPropertyValue("--beam");
     var size = parseFloat(raw) * parseFloat(getComputedStyle(document.documentElement).fontSize);
