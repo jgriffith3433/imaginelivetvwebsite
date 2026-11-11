@@ -1234,6 +1234,7 @@
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
     fillSpot(questionBox, scene.question, scene.questionEn, scene.lang, scene.dir);
     choicesBox.replaceChildren();
+    if (window.iltvDecideRelease) window.iltvDecideRelease(choicesBox);
     if (auto) choicesBox.dataset.auto = "true";
     else delete choicesBox.dataset.auto;
 
