@@ -375,6 +375,7 @@ function card(st, i = 1) {
           <div class="story-card-foot">
             <span class="story-card-go">Play</span>
             <span class="story-card-explored">0% explored</span>
+            <span class="story-card-endings" hidden></span>
           </div>
         </div>
       </a>`;

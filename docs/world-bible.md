@@ -60,6 +60,10 @@ It is the home's one *map*: it is how a player sees how big a world they have no
 darkened silhouette of the same poster and "???". A count reads "2 of 5 found" and rises when a new ending is
 reached (kept in localStorage `iltv.endings.<cookie>` next to the unlocks). Tapping a found ending shows its card
 again. Playtest `endings-gallery` (and smoke's trimmed leg) checks it at 390x844 and 1280x720.
+On a replay (an ending found or a death met) a choice to a never-reached scene wears a small gold "New" tag, one
+whose whole way is seen a quiet "Seen" tick, and the Tree's nodes carry the same (`data-mark`); a home card says "2 of 5
+endings" and turns gold when every ending is found. The home only ever shows; it never talks. Video stories only: a
+console story's choices depend on flags, so it has the card count but no per-choice tags yet.
 
 **E. The blog.** The studio's lobby noticeboard: posts, each with its own images and videos, in the player's language list.
 

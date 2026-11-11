@@ -243,6 +243,56 @@
     return foundN + " of " + total + " found";
   }
 
+  /** Home-card wording: "2 of 5 endings". */
+  function endingsCardText(foundN, total) {
+    return foundN + " of " + total + (total === 1 ? " ending" : " endings");
+  }
+
+  /** A replay: the viewer has already finished a run of this story (an ending found, or a death met), so the
+      choices can say which ways are still new. On a first run nothing is tagged (everything would be). */
+  function isReplay(story) {
+    if (Object.keys(readFoundEndings(story)).length) return true;
+    const seen = readUnlocks(story).seen;
+    return Object.keys(seen).some(function (id) { return story.scenes[id] && story.scenes[id].dead; });
+  }
+
+  /** Whether every scene a choice can lead to is seen: its target and all below it. Only forward edges count (to a
+      scene further from the start than the one the choice is on), so a "go back" never drags the whole story in. */
+  function subtreeSeen(story, seen, fromId, nextId) {
+    const depth = {};
+    depth[story.start] = 0;
+    const queue = [story.start];
+    while (queue.length) {
+      const id = queue.shift();
+      (story.scenes[id].choices || []).forEach(function (c) {
+        if (story.scenes[c.next] && depth[c.next] == null) { depth[c.next] = depth[id] + 1; queue.push(c.next); }
+      });
+    }
+    if (depth[nextId] == null || depth[fromId] == null || depth[nextId] <= depth[fromId]) {
+      return !!seen[nextId];
+    }
+    const stack = [nextId];
+    const visited = {};
+    while (stack.length) {
+      const id = stack.pop();
+      if (visited[id]) continue;
+      visited[id] = true;
+      if (!seen[id]) return false;
+      (story.scenes[id].choices || []).forEach(function (c) {
+        if (story.scenes[c.next] && depth[c.next] > depth[id]) stack.push(c.next);
+      });
+    }
+    return true;
+  }
+
+  /** "new" (leads to a scene never reached), "seen" (it and everything it can lead on to are reached), or "" (some
+      of it found, some not, or not a replay). */
+  function choiceMark(story, seen, fromId, nextId, replay) {
+    if (!replay || !story.scenes[nextId]) return "";
+    if (!seen[nextId]) return "new";
+    return subtreeSeen(story, seen, fromId, nextId) ? "seen" : "";
+  }
+
   /** A story's current run ({ scene, history, from, choice, poster }), or null. from/choice/poster are the Continue
       recap (the last scene left, the choice that led here, its poster); older cookies omit them. */
   function readProgress(story, scenes) {
@@ -1031,6 +1081,7 @@
     fillSpot(questionBox, scene.question, scene.questionEn, scene.lang, scene.dir);
     choicesBox.replaceChildren();
 
+    const replayNow = isReplay(STORY);
     scene.choices.forEach(function (choice, idx) {
       const button = document.createElement("button");
       button.type = "button";
@@ -1038,6 +1089,11 @@
       button.style.setProperty("--choice-i", String(idx));
       button.dataset.choiceIndex = String(idx);
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
+      const mark = choiceMark(STORY, unlocked, sceneId, choice.next, replayNow);
+      if (mark) {
+        button.dataset.mark = mark;
+        button.title = mark === "new" ? "A way you haven't found yet" : "You've seen everything this way leads to";
+      }
       if (lastWay && lastWay[history.length] === sceneId && lastWay[history.length + 1] === choice.next) {
         button.classList.add("was-taken");
         button.dataset.lastTime = "true";
@@ -1402,6 +1458,7 @@
       paths.push('<path class="tendril-return" d="' + d + '"></path>');
     });
 
+    const treeReplay = isReplay(STORY);
     const nodes = Object.keys(pos).map(function (id) {
       const parent = spanParent[id] ? SCENES[spanParent[id]] : null;
       const via = parent
@@ -1409,9 +1466,12 @@
         : null;
       const point = pos[id];
       const at = ' style="left:' + point.x + "px;top:" + point.y + 'px"';
+      const treeMark = !spanParent[id] ? "" : (locked[id] ? (treeReplay ? "new" : "")
+        : (treeReplay && subtreeSeen(STORY, unlocked, spanParent[id], id) ? "seen" : ""));
+      const markAttr = treeMark ? ' data-mark="' + treeMark + '"' : "";
       if (locked[id]) {
         // Only the choice you'd make to get there: you saw it on the page.
-        return '<div class="tree-node is-locked"' + at + '>' +
+        return '<div class="tree-node is-locked"' + markAttr + at + '>' +
           '<span class="tree-node-title">?</span>' +
           (via ? '<span class="tree-node-via">' + spotHtml(via.label, via.en, parent.lang, parent.dir) + "</span>" : "") +
           "</div>";
@@ -1424,14 +1484,14 @@
         (lastWay && lastWay.indexOf(id) >= 0 ? " is-walked" : "") +
         (scene.dead ? " is-dead" : "") +
         (id === currentScene ? " is-current" : "") +
-        '" data-scene="' + id + '"' + at + '>' +
+        '" data-scene="' + id + '"' + markAttr + at + '>' +
         '<span class="tree-node-title">' + spotHtml(scene.title, scene.titleEn, scene.lang, scene.dir) + "</span>" +
         (viaText ? '<span class="tree-node-via">' + spotHtml(viaText.label, viaText.en, parent.lang, parent.dir) + "</span>" : "") +
         "</div>";
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -1815,6 +1875,16 @@
       if (badge) badge.textContent = BADGES[progress];
       const explored = card.querySelector(".story-card-explored");
       if (explored) explored.textContent = exploredOf(story, readUnlocks(story).seen) + "% explored";
+      const endsEl = card.querySelector(".story-card-endings");
+      if (endsEl) {
+        const total = endingsOf(story).length;
+        const foundN = Object.keys(readFoundEndings(story)).length;
+        endsEl.hidden = !total;
+        endsEl.textContent = endingsCardText(foundN, total);
+        endsEl.dataset.found = String(foundN);
+        endsEl.dataset.total = String(total);
+        card.dataset.allEndings = total && foundN >= total ? "true" : "false";
+      }
       const go = card.querySelector(".story-card-go");
       if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
     });
@@ -2130,6 +2200,10 @@
       return story ? endingsOf(story).map(function (e) {
         return { id: e.id, title: endingTitleOf(e), poster: endingPosterOf(e, story) || "", found: !!readFoundEndings(story)[e.id] };
       }) : null;
+    },
+    endingsCount: function (id) {
+      const story = STORIES[id];
+      return story ? { found: Object.keys(readFoundEndings(story)).length, total: endingsOf(story).length } : null;
     },
     foundEndings: function (id) {
       return STORIES[id] ? Object.keys(readFoundEndings(STORIES[id])) : null;
