@@ -34,7 +34,7 @@
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
       choices: (spec.choices || []).map(function (choice) {
-        return { say: choice[0], en: choice[1], next: choice[2] };
+        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3] };
       })
     };
   }
@@ -106,13 +106,36 @@
   let fromPlayer = false;
 
   /** Tells js/analytics.js (Hawkes Analytics) what just happened: "iltv:<what>" on the document. The player never
-      waits for it or depends on anyone listening. */
+      waits for it or depends on anyone listening. A choice also remembers the recap for Continue (last scene, label,
+      poster), saved with the run. */
+  let lastRecap = null; // { from, choice, poster }
+  let wantRecap = false; // set when the viewer presses Continue on the landing page
+  let recapTimer = null;
+  let recapRaf = null;
+  let recapGuard = null;
+
   function tell(what, detail) {
+    if (what === "choice" && detail && STORY && detail.from && detail.option) {
+      lastRecap = {
+        from: detail.from,
+        choice: String(detail.option),
+        poster: posterOfScene(STORY, detail.from)
+      };
+    }
     try {
       document.dispatchEvent(new CustomEvent("iltv:" + what, { detail: detail }));
     } catch (error) {
       // Nothing listening, or an old browser: the story plays on.
     }
+  }
+
+  /** The picture for a Continue recap: a video scene's poster, else the story's card image. */
+  function posterOfScene(story, sceneId) {
+    if (!story) return "";
+    const raw = story.scenes && story.scenes[sceneId];
+    if (raw && raw.poster) return raw.poster;
+    if (STORY === story && SCENES[sceneId] && SCENES[sceneId].poster) return SCENES[sceneId].poster;
+    return story.image ? story.image.replace(/\.jpg$/, ".webp") : "";
   }
 
   /** One of a story's cookies, parsed (JSON), or null. */
@@ -142,21 +165,154 @@
   // Every story keeps two cookies: its run (`cookie` in its data: { scene, history }, the place you're at and the
   // way you came) and its unlocks (`<cookie>Unlocked`: { seen, completed }, every scene ever reached in the player
   // and whether an ending was). Start Over clears the run only; deaths, Try again and Start Over keep the unlocks.
+  // Found endings live in localStorage "iltv.endings.<cookie>" (ids once found), next to the unlocks; nothing clears them.
   function unlocksCookie(story) {
     return story.cookie + "Unlocked";
   }
 
-  /** A story's current run ({ scene, history }), or null. */
+  function endingsKey(story) {
+    return "iltv.endings." + story.cookie;
+  }
+
+  /** Ending nodes listed by the build (`story.endings`), or derived from scenes that carry an `ending` line. */
+  function endingsOf(story) {
+    if (Array.isArray(story.endings) && story.endings.length) return story.endings;
+    return Object.keys(story.scenes).filter(function (id) {
+      return !!story.scenes[id].ending;
+    }).map(function (id) {
+      const s = story.scenes[id];
+      return {
+        id: id,
+        title: s.title,
+        ending: s.ending,
+        poster: s.poster || s.endcard || "",
+        endcard: s.endcard || ""
+      };
+    });
+  }
+
+  /** Found ending ids for a story (localStorage). Seeds from unlocks.seen when the key is empty so older runs count. */
+  function readFoundEndings(story) {
+    const found = {};
+    const ends = endingsOf(story);
+    const endIds = {};
+    ends.forEach(function (e) { endIds[e.id] = true; });
+    try {
+      const raw = localStorage.getItem(endingsKey(story));
+      const saved = raw ? JSON.parse(raw) : null;
+      const list = Array.isArray(saved) ? saved : (saved && Array.isArray(saved.ids) ? saved.ids : []);
+      list.forEach(function (id) { if (typeof id === "string" && endIds[id]) found[id] = true; });
+    } catch (error) { /* storage blocked or bad JSON */ }
+    if (!Object.keys(found).length) {
+      const unlocks = readUnlocks(story);
+      ends.forEach(function (e) { if (unlocks.seen[e.id]) found[e.id] = true; });
+      if (Object.keys(found).length) writeFoundEndings(story, found);
+    }
+    return found;
+  }
+
+  function writeFoundEndings(story, found) {
+    try {
+      localStorage.setItem(endingsKey(story), JSON.stringify({ ids: Object.keys(found) }));
+    } catch (error) { /* storage blocked: gallery still works for this page load */ }
+  }
+
+  function markEndingFound(story, sceneId) {
+    if (!story || !sceneId) return;
+    const ends = endingsOf(story);
+    if (!ends.some(function (e) { return e.id === sceneId; })) return;
+    const found = readFoundEndings(story);
+    if (found[sceneId]) return;
+    found[sceneId] = true;
+    writeFoundEndings(story, found);
+  }
+
+  function endingTitleOf(entry) {
+    if (!entry) return "";
+    const t = entry.title;
+    if (Array.isArray(t)) return String(t[1] || t[0] || "");
+    return String(t || "");
+  }
+
+  function endingPosterOf(entry, story) {
+    if (!entry) return "";
+    return entry.poster || entry.endcard || (story && story.image) || "";
+  }
+
+  function endingsCountText(foundN, total) {
+    return foundN + " of " + total + " found";
+  }
+
+  /** Home-card wording: "2 of 5 endings". */
+  function endingsCardText(foundN, total) {
+    return foundN + " of " + total + (total === 1 ? " ending" : " endings");
+  }
+
+  /** A replay: the viewer has already finished a run of this story (an ending found, or a death met), so the
+      choices can say which ways are still new. On a first run nothing is tagged (everything would be). */
+  function isReplay(story) {
+    if (Object.keys(readFoundEndings(story)).length) return true;
+    const seen = readUnlocks(story).seen;
+    return Object.keys(seen).some(function (id) { return story.scenes[id] && story.scenes[id].dead; });
+  }
+
+  /** Whether every scene a choice can lead to is seen: its target and all below it. Only forward edges count (to a
+      scene further from the start than the one the choice is on), so a "go back" never drags the whole story in. */
+  function subtreeSeen(story, seen, fromId, nextId) {
+    const depth = {};
+    depth[story.start] = 0;
+    const queue = [story.start];
+    while (queue.length) {
+      const id = queue.shift();
+      (story.scenes[id].choices || []).forEach(function (c) {
+        if (story.scenes[c.next] && depth[c.next] == null) { depth[c.next] = depth[id] + 1; queue.push(c.next); }
+      });
+    }
+    if (depth[nextId] == null || depth[fromId] == null || depth[nextId] <= depth[fromId]) {
+      return !!seen[nextId];
+    }
+    const stack = [nextId];
+    const visited = {};
+    while (stack.length) {
+      const id = stack.pop();
+      if (visited[id]) continue;
+      visited[id] = true;
+      if (!seen[id]) return false;
+      (story.scenes[id].choices || []).forEach(function (c) {
+        if (story.scenes[c.next] && depth[c.next] > depth[id]) stack.push(c.next);
+      });
+    }
+    return true;
+  }
+
+  /** "new" (leads to a scene never reached), "seen" (it and everything it can lead on to are reached), or "" (some
+      of it found, some not, or not a replay). */
+  function choiceMark(story, seen, fromId, nextId, replay) {
+    if (!replay || !story.scenes[nextId]) return "";
+    if (!seen[nextId]) return "new";
+    return subtreeSeen(story, seen, fromId, nextId) ? "seen" : "";
+  }
+
+  /** A story's current run ({ scene, history, from, choice, poster }), or null. from/choice/poster are the Continue
+      recap (the last scene left, the choice that led here, its poster); older cookies omit them. */
   function readProgress(story, scenes) {
     const saved = readCookie(story.cookie);
     if (!saved || !scenes[saved.scene]) return null;
+    const from = typeof saved.from === "string" && scenes[saved.from] ? saved.from : null;
+    const choice = typeof saved.choice === "string" && saved.choice ? saved.choice : null;
+    const poster = typeof saved.poster === "string" && saved.poster
+      ? saved.poster
+      : (from ? posterOfScene(story, from) : "");
     return {
       scene: saved.scene,
       history: Array.isArray(saved.history)
         ? saved.history.filter(function (id) {
             return typeof id === "string" && !!scenes[id];
           })
-        : []
+        : [],
+      from: from,
+      choice: choice,
+      poster: poster
     };
   }
 
@@ -219,6 +375,7 @@
   /** Start Over: forgets one story's current run (its run cookie only; its unlocks and the other stories stay). */
   function clearProgress(story) {
     if (story.type === "console" && window.iltvConsole) window.iltvConsole.forget(story);
+    if (STORY === story) lastRecap = null;
     try {
       document.cookie = story.cookie + "=; Max-Age=0; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
     } catch (error) {
@@ -226,15 +383,26 @@
     }
   }
 
+  /** The run cookie payload, including the Continue recap fields when a choice has been made. */
+  function runPayload(historyIds) {
+    const payload = { scene: currentScene, history: historyIds };
+    if (lastRecap && lastRecap.from && lastRecap.choice) {
+      payload.from = lastRecap.from;
+      payload.choice = lastRecap.choice;
+      payload.poster = lastRecap.poster || posterOfScene(STORY, lastRecap.from);
+    }
+    return payload;
+  }
+
   function saveProgress() {
     if (STORY.type === "console") {
       // The run itself (the state, the log, the lines heard) is in localStorage (js/console.js); the cookies keep the
-      // card's badge, the place and the unlocks, small.
-      writeCookie(STORY.cookie, { scene: currentScene, history: [] });
+      // card's badge, the place, the Continue recap and the unlocks, small.
+      writeCookie(STORY.cookie, runPayload([]));
       writeCookie(unlocksCookie(STORY), { ix: packSeen(STORY, unlocked), completed: completed });
       return;
     }
-    writeCookie(STORY.cookie, { scene: currentScene, history: history });
+    writeCookie(STORY.cookie, runPayload(history));
     writeCookie(unlocksCookie(STORY), { seen: Object.keys(unlocked), completed: completed });
   }
 
@@ -337,12 +505,16 @@
     return (isPhone() && scene.small) || scene.video;
   }
 
-  /** The clips the choices lead to are fetched while this one plays, so a tap goes straight into the next. */
+  var posters = {};
+  var pendingTap = null;
+
+  /** Choices shown: every target's poster is decoded and its clip rendition (sm on phones, via clipSrc) buffered;
+      those no longer offered are cancelled. A tap then swaps to a scene that is ready (see goTo). */
   function preloadNext(scene) {
     var want = {};
     scene.choices.forEach(function (c) {
       var next = SCENES[c.next];
-      if (next && next.video) want[c.next] = clipSrc(next);
+      if (next) want[c.next] = next;
     });
     Object.keys(preloaded).forEach(function (id) {
       if (want[id]) return;
@@ -350,16 +522,57 @@
       preloaded[id].load();
       delete preloaded[id];
     });
-    Object.keys(want).slice(0, 3).forEach(function (id) {
-      if (preloaded[id]) return;
-      var v = document.createElement("video");
-      v.preload = "auto";
-      v.muted = true;
-      v.playsInline = true;
-      v.src = want[id];
-      v.load();
-      preloaded[id] = v;
+    Object.keys(posters).forEach(function (id) { if (!want[id]) delete posters[id]; });
+    Object.keys(want).forEach(function (id) {
+      var next = want[id];
+      if (next.poster && !posters[id]) {
+        var img = new Image();
+        img.src = next.poster;
+        var done = { ready: false };
+        posters[id] = done;
+        var fin = function () { done.ready = true; };
+        if (img.decode) img.decode().then(fin, fin); else img.onload = img.onerror = fin;
+      }
+      if (next.video && !preloaded[id]) {
+        var v = document.createElement("video");
+        v.preload = "auto";
+        v.muted = true;
+        v.playsInline = true;
+        v.src = clipSrc(next);
+        v.load();
+        preloaded[id] = v;
+      }
     });
+  }
+
+  function targetReady(id) {
+    var p = posters[id], v = preloaded[id];
+    return (!p || p.ready) && (!v || v.readyState >= 3 || v.error);
+  }
+
+  /** The current scene stays up until the target can show; after 300 ms it swaps anyway (the box paints the
+      target's poster, never black). Taps during the wait are ignored, so the scene shown is always the one chosen. */
+  function goTo(choice) {
+    if (pendingTap || !SCENES[choice.next]) return;
+    stopChoiceWindow();
+    var from = currentScene, story = STORY;
+    var token = pendingTap = {};
+    var t0 = performance.now();
+    var go = function () {
+      if (pendingTap !== token) return;
+      pendingTap = null;
+      if (STORY !== story || currentScene !== from) return;
+      tell("choice", { story: STORY.id, from: from, to: choice.next, option: choiceLabel(choice.en), waited: Math.round(performance.now() - t0), ready: targetReady(choice.next) });
+      history.push(from);
+      fromPlayer = true;
+      show(choice.next);
+    };
+    var poll = function () {
+      if (pendingTap !== token) return;
+      if (targetReady(choice.next) || performance.now() - t0 >= 300) go();
+      else setTimeout(poll, 20);
+    };
+    poll();
   }
 
   function fullscreenElement() {
@@ -403,11 +616,12 @@
       video.addEventListener(type, function () { loading(false); });
     });
     ["playing", "pause", "volumechange", "ended"].forEach(function (type) { video.addEventListener(type, sync); });
-    video.addEventListener("loadeddata", function () {
-      if (activeClip === video && SCENES[currentScene]) preloadNext(SCENES[currentScene]);
-    });
     unmute.addEventListener("click", function () {
       if (window.hawkesSound) window.hawkesSound.set({ on: true });
+      if (window.iltvAudio) {
+        window.iltvAudio.unlock();
+        window.iltvAudio.setEnabled(true);
+      }
       video.muted = false;
       if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
       sync();
@@ -441,16 +655,38 @@
   }
   document.addEventListener("fullscreenchange", function () { root.dataset.fullscreen = fullscreenElement() ? "true" : "false"; });
 
+  /** Short bed mood per story for js/audio.js setBed(story, mood). Files live at /assets/audio/<id>/<mood>.mp3 when made. */
+  function storyMood(story) {
+    if (!story) return "default";
+    if (story.id === "final-spark") return "sewer";
+    if (story.id === "water-road") return "dust";
+    if (story.id === "night-shift" || story.id === "night-shift-demo") return "room";
+    return "default";
+  }
+
+  function audioBed(story) {
+    if (!window.iltvAudio || !story) return;
+    // Console stories already loop their own ambience beds in js/console.js — don't stack a second house bed.
+    if (story.type === "console") {
+      window.iltvAudio.setBed(null, null);
+      return;
+    }
+    window.iltvAudio.setBed(story.id, storyMood(story));
+  }
+
   function playClip(video) {
     activeClip = video;
     stopClipUnlock();
+    if (window.iltvAudio) window.iltvAudio.watch(video);
     // js/hawkes-sound.js: the first video waits for the Tap to play prompt, which starts it with sound. The next
     // ones start here, inside the viewer's click, with the saved Settings.
     var sound = window.hawkesSound;
     if (sound) {
       video.setAttribute("data-sound-start", "");
-      if (sound.unlocked()) sound.play(video);
-      else sound.apply(video);
+      if (sound.unlocked()) {
+        if (window.iltvAudio) window.iltvAudio.unlock();
+        sound.play(video);
+      } else sound.apply(video);
       return;
     }
     video.muted = false;
@@ -467,6 +703,7 @@
         if (el.closest && el.closest(".choice, .spark-tab, .stories-back")) return;
         stopClipUnlock();
         if (activeClip !== video) return;
+        if (window.iltvAudio) window.iltvAudio.unlock();
         video.muted = false;
         if (video.paused) {
           var again = video.play();
@@ -520,13 +757,17 @@
     return steps;
   }
 
-  /** The card at an ending: its kicker (THE END), its own name, the choices made, how many endings are found, and
-      Try another path (a new run from the start with this way marked). */
-  function showEndingCard(sceneId, scene) {
-    const way = history.concat(sceneId);
-    const steps = recapOf(way);
-    const ends = Object.keys(SCENES).filter(function (id) { return !!SCENES[id].ending; });
-    const found = ends.filter(function (id) { return unlocked[id]; }).length;
+  /** The card at an ending: its kicker (THE END), its own name, the choices made, how many endings are found,
+      a link into the Endings gallery, and Try another path (a new run from the start with this way marked). */
+  function showEndingCard(sceneId, scene, opts) {
+    const options = opts || {};
+    const way = options.way || history.concat(sceneId);
+    const steps = options.skipRecap ? [] : recapOf(way);
+    const ends = endingsOf(STORY);
+    const foundMap = readFoundEndings(STORY);
+    markEndingFound(STORY, sceneId);
+    foundMap[sceneId] = true;
+    const foundN = Object.keys(foundMap).length;
     endingBox.className = "spark-ending ending-card";
     endingBox.dataset.ending = sceneId;
     endingBox.replaceChildren();
@@ -539,66 +780,154 @@
     fillSpot(name, scene.title, scene.titleEn, scene.lang, scene.dir);
     const count = document.createElement("p");
     count.className = "ending-count";
-    count.textContent = "Ending " + found + " of " + ends.length + " found";
+    count.id = "spark-ending-count";
+    count.textContent = endingsCountText(foundN, ends.length);
     endingBox.append(kicker, name, count);
 
-    const head = document.createElement("p");
-    head.className = "ending-recap-head";
-    head.textContent = steps.length ? "The choices you made" : "You made no choices";
-    endingBox.appendChild(head);
-    const list = document.createElement("ol");
-    list.className = "ending-recap";
-    steps.forEach(function (step) {
-      const li = document.createElement("li");
-      fillSpot(li, choiceLabel(step.choice.say), choiceLabel(step.choice.en), step.from.lang, step.from.dir);
-      list.appendChild(li);
-    });
-    endingBox.appendChild(list);
+    if (!options.skipRecap) {
+      const head = document.createElement("p");
+      head.className = "ending-recap-head";
+      head.textContent = steps.length ? "The choices you made" : "You made no choices";
+      endingBox.appendChild(head);
+      const list = document.createElement("ol");
+      list.className = "ending-recap";
+      steps.forEach(function (step) {
+        const li = document.createElement("li");
+        fillSpot(li, choiceLabel(step.choice.say), choiceLabel(step.choice.en), step.from.lang, step.from.dir);
+        list.appendChild(li);
+      });
+      endingBox.appendChild(list);
+    }
 
-    const again = document.createElement("button");
-    again.type = "button";
-    again.className = "choice ending-again";
-    again.id = "spark-try-another";
-    again.textContent = "Try another path";
-    again.addEventListener("click", function () {
-      writeLastWay(STORY, way);
-      lastWay = way;
-      clearProgress(STORY);
-      tell("restart", { story: STORY.id, via: "start_over", from: "ending_card" });
-      history = [];
-      fromPlayer = true;
-      if (treeRoot) treeRoot.replaceChildren();
-      show(STORY.start);
-    });
-    endingBox.appendChild(again);
+    const galleryBtn = document.createElement("button");
+    galleryBtn.type = "button";
+    galleryBtn.className = "choice ending-gallery-btn";
+    galleryBtn.id = "spark-endings-open";
+    galleryBtn.textContent = "Endings";
+    galleryBtn.addEventListener("click", function () { openEndingsGallery(STORY); });
+    endingBox.appendChild(galleryBtn);
+
+    if (!options.skipAgain) {
+      const again = document.createElement("button");
+      again.type = "button";
+      again.className = "choice ending-again";
+      again.id = "spark-try-another";
+      again.textContent = "Try another path";
+      again.addEventListener("click", function () {
+        writeLastWay(STORY, way);
+        lastWay = way;
+        clearProgress(STORY);
+        tell("restart", { story: STORY.id, via: "start_over", from: "ending_card" });
+        history = [];
+        fromPlayer = true;
+        if (treeRoot) treeRoot.replaceChildren();
+        setView("play");
+        show(STORY.start);
+      });
+      endingBox.appendChild(again);
+    }
   }
 
-  // Cinema chrome (J, 2026-11-06): the choices wait dimmed while the clip plays, fade in when it ends with a thin
-  // countdown (a window to decide: nothing is chosen for you), and the bar and title controls fade away after 3 s idle.
+  // Choice-card chrome (J, 2026-11-06; unified across all three stories for f_32e426e8a75b): while a clip plays,
+  // choices show an "up next" preview state (soft glow, thin progress line, never greyed-out disabled text); when the
+  // clip ends (or in Night Shift when lines finish), active choices slide and fade in one after another (70 ms apart)
+  // with a 15 s countdown window, and the bar and title controls fade away after 3 s idle.
   const CHOICE_WINDOW = 15;
   const IDLE_MS = 3000;
   const timerBox = document.getElementById("spark-timer");
+  const consoleChoicesBox = document.getElementById("console-choices");
   let windowTick = null;
+  let defaultTimer = null;
   let idleTimer = null;
 
+  function tagChoiceStagger(container) {
+    if (!container) return;
+    const buttons = container.querySelectorAll(".choice");
+    buttons.forEach(function (btn, idx) {
+      btn.style.setProperty("--choice-i", String(idx));
+      btn.dataset.choiceIndex = String(idx);
+    });
+  }
+
+  if (consoleChoicesBox && typeof MutationObserver !== "undefined") {
+    const syncConsoleChoices = function () {
+      const has = consoleChoicesBox.querySelectorAll(".choice").length > 0;
+      consoleChoicesBox.dataset.phase = has ? "ready" : "waiting";
+      if (has) tagChoiceStagger(consoleChoicesBox);
+    };
+    new MutationObserver(syncConsoleChoices).observe(consoleChoicesBox, { childList: true });
+    syncConsoleChoices();
+  }
+
+  function syncWaitingProgress(video) {
+    let pct = 24;
+    if (video && video.duration > 0 && isFinite(video.duration)) {
+      pct = Math.max(16, Math.min(100, Math.round((video.currentTime / video.duration) * 84 + 16)));
+    }
+    const val = pct + "%";
+    if (choicesBox) choicesBox.style.setProperty("--clip-progress", val);
+    if (timerBox) timerBox.style.setProperty("--clip-progress", val);
+  }
+
   function stopChoiceWindow() {
-    if (windowTick) clearTimeout(windowTick);
+    if (windowTick) cancelAnimationFrame(windowTick);
     windowTick = null;
-    if (timerBox) { timerBox.hidden = true; timerBox.dataset.state = "off"; }
+    if (defaultTimer) clearTimeout(defaultTimer);
+    defaultTimer = null;
+    choicesBox.querySelectorAll(".is-default-pick").forEach(function (b) {
+      b.classList.remove("is-default-pick");
+      delete b.dataset.defaultPick;
+    });
+    if (timerBox) {
+      const bar = timerBox.querySelector(".choice-timer-bar");
+      if (bar) {
+        bar.style.animation = "";
+        bar.style.transform = "";
+      }
+      timerBox.dataset.urgent = "false";
+      timerBox.hidden = true;
+      timerBox.dataset.state = "off";
+    }
   }
 
   function setChoicePhase(phase) {
     choicesBox.dataset.phase = phase;
     root.dataset.choices = phase;
+    if (phase === "ready") {
+      choicesBox.style.setProperty("--clip-progress", "100%");
+      if (timerBox) timerBox.style.setProperty("--clip-progress", "100%");
+      tagChoiceStagger(choicesBox);
+      choicesBox.querySelectorAll(".choice").forEach(function (btn) {
+        btn.style.animation = "none";
+        void btn.offsetWidth;
+        btn.style.animation = "";
+      });
+    }
   }
 
-  /** While the clip plays, the cue row says the choices are live (a phone shows it and its choices at full strength;
-      a wide screen keeps its row hidden and the choices dimmed). Pressing one is allowed at any time. */
-  function showWaitingCue(hasChoices) {
+  /** While the clip plays, the cue row and choice cards show an "Up next" preview state with a thin progress line
+      and soft glow (never dim disabled text). Pressing a choice is allowed at any time. */
+  function showWaitingCue(hasChoices, video) {
     if (!hasChoices || !timerBox) return;
-    timerBox.querySelector(".choice-timer-label").textContent = "Choose any time";
+    const label = timerBox.querySelector(".choice-timer-label");
+    const bar = timerBox.querySelector(".choice-timer-bar");
+    if (label) label.textContent = "Up next";
+    if (bar) {
+      bar.style.animation = "none";
+      bar.style.transform = "";
+    }
+    timerBox.dataset.urgent = "false";
     timerBox.hidden = false;
     timerBox.dataset.state = "waiting";
+    syncWaitingProgress(video);
+    if (video) {
+      const onProgress = function () {
+        if (activeClip === video && choicesBox.dataset.phase === "waiting") syncWaitingProgress(video);
+      };
+      ["loadedmetadata", "durationchange", "timeupdate", "playing"].forEach(function (ev) {
+        video.addEventListener(ev, onProgress);
+      });
+    }
   }
 
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
@@ -610,24 +939,51 @@
     const bar = timerBox.querySelector(".choice-timer-bar");
     timerBox.hidden = false;
     timerBox.dataset.state = "running";
-    bar.style.animation = "none";
-    void bar.offsetWidth;
+    timerBox.dataset.urgent = "false";
     bar.style.animation = "";
-    bar.style.animationDuration = CHOICE_WINDOW + "s";
-    let left = CHOICE_WINDOW;
-    label.textContent = "Choose in " + left + " s";
-    const tick = function () {
-      left -= 1;
-      if (left <= 0) {
-        timerBox.dataset.state = "done";
-        label.textContent = "Take your time";
-        windowTick = null;
-        return;
+    bar.style.transform = "scaleX(1)";
+    const total = CHOICE_WINDOW * 1000;
+    const t0 = performance.now();
+    const scene = currentScene;
+    let shown = CHOICE_WINDOW;
+    label.textContent = "Choose in " + CHOICE_WINDOW + " s";
+    const frame = function (now) {
+      if (currentScene !== scene || root.hidden) return;
+      const left = Math.max(0, total - (now - t0));
+      const ratio = left / total;
+      bar.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
+      const secs = Math.ceil(left / 1000);
+      if (secs > 0 && secs !== shown) {
+        shown = secs;
+        label.textContent = "Choose in " + secs + " s";
+        if (secs <= 3) timerBox.dataset.urgent = "true";
       }
-      label.textContent = "Choose in " + left + " s";
-      windowTick = setTimeout(tick, 1000);
+      if (left > 0) { windowTick = requestAnimationFrame(frame); return; }
+      windowTick = null;
+      bar.style.transform = "scaleX(0)";
+      timerBox.dataset.urgent = "false";
+      timerBox.dataset.state = "done";
+      label.textContent = "Choosing...";
+      pickDefault(scene);
     };
-    windowTick = setTimeout(tick, 1000);
+    windowTick = requestAnimationFrame(frame);
+  }
+
+  /** Time ran out: the first choice (or the one marked default) is lit for a moment, then played. */
+  function pickDefault(scene) {
+    const sc = SCENES[scene];
+    if (!sc || !sc.choices.length) return;
+    let idx = sc.choices.findIndex(function (c) { return c.default; });
+    if (idx < 0) idx = 0;
+    const btn = choicesBox.querySelectorAll(".choice")[idx];
+    if (!btn) return;
+    btn.classList.add("is-default-pick");
+    btn.dataset.defaultPick = "true";
+    tell("feature", { feature: "timeout_default", story: STORY.id, node: scene, choice: choiceLabel(sc.choices[idx].en) });
+    defaultTimer = setTimeout(function () {
+      defaultTimer = null;
+      if (currentScene === scene && !pendingTap) goTo(sc.choices[idx]);
+    }, 1100);
   }
 
   /** Any movement brings the controls back; 3 s without any hides them (never in the Tree). */
@@ -635,7 +991,7 @@
     root.classList.remove("is-idle");
     if (idleTimer) clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
-      if (root.hidden || root.classList.contains("is-tree")) return;
+      if (root.hidden || root.classList.contains("is-tree") || root.classList.contains("is-endings")) return;
       root.classList.add("is-idle");
     }, IDLE_MS);
   }
@@ -650,7 +1006,10 @@
     currentScene = sceneId;
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
     unlocked[sceneId] = true;
-    if (scene.ending) completed = true;
+    if (scene.ending) {
+      completed = true;
+      markEndingFound(STORY, sceneId);
+    }
     saveProgress();
     showExplored();
     root.dataset.state = sceneState(scene);
@@ -666,9 +1025,11 @@
     wakeChrome();
     stopChoiceWindow();
 
-    videoBox.replaceChildren();
+    crossfadeOut();
     // The poster is also the box's own picture, so it stays under the loading ring and between clips: never a black box.
-    videoBox.style.backgroundImage = scene.poster ? 'url("' + scene.poster + '")' : "";
+    const newBg = scene.poster ? 'url("' + scene.poster + '")' : "";
+    if (videoBox.querySelector(".spark-leave")) setTimeout(function () { videoBox.style.backgroundImage = newBg; }, fadeMs() + 40);
+    else videoBox.style.backgroundImage = newBg;
     const videoSrc = scene.video ? clipSrc(scene) : null;
     let video = null;
 
@@ -687,9 +1048,19 @@
       videoBox.appendChild(video);
       addClipControls(video);
       playClip(video);
+      // The incoming clip must never sit paused under the cross-fade: resume it when it can play and when the fade ends.
+      const resume = function () {
+        if (activeClip !== video || !video.isConnected || video.ended || !video.paused) return;
+        const p = video.play();
+        if (p && p.catch) p.catch(function () { video.muted = true; const q = video.play(); if (q && q.catch) q.catch(function () {}); });
+      };
+      if (!(window.hawkesSound && window.hawkesSound.prompt())) {
+        video.addEventListener("canplay", resume, { once: true });
+        setTimeout(resume, fadeMs() + 60);
+      }
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
-      showWaitingCue(scene.choices.length > 0);
+      showWaitingCue(scene.choices.length > 0, video);
       video.addEventListener("ended", function () {
         if (activeClip === video && currentScene === sceneId) revealChoices(scene.choices.length > 0);
       });
@@ -710,24 +1081,33 @@
     fillSpot(questionBox, scene.question, scene.questionEn, scene.lang, scene.dir);
     choicesBox.replaceChildren();
 
-    scene.choices.forEach(function (choice) {
+    const replayNow = isReplay(STORY);
+    scene.choices.forEach(function (choice, idx) {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "choice";
+      button.style.setProperty("--choice-i", String(idx));
+      button.dataset.choiceIndex = String(idx);
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
+      const mark = choiceMark(STORY, unlocked, sceneId, choice.next, replayNow);
+      if (mark) {
+        button.dataset.mark = mark;
+        button.title = mark === "new" ? "A way you haven't found yet" : "You've seen everything this way leads to";
+      }
       if (lastWay && lastWay[history.length] === sceneId && lastWay[history.length + 1] === choice.next) {
         button.classList.add("was-taken");
         button.dataset.lastTime = "true";
       }
       button.addEventListener("click", function () {
-        if (!SCENES[choice.next]) return;
-        tell("choice", { story: STORY.id, from: currentScene, to: choice.next, option: choiceLabel(choice.en) });
-        history.push(currentScene);
-        fromPlayer = true;
-        show(choice.next);
+        if (pendingTap) return;
+        window.iltvDecide(choicesBox, button, function () { goTo(choice); });
       });
       choicesBox.appendChild(button);
     });
+    if (!videoSrc) setChoicePhase("ready");
+
+    pendingTap = null;
+    preloadNext(scene);
 
     if (scene.choices.length === 0) {
       showEndingCard(sceneId, scene);
@@ -766,27 +1146,187 @@
   }
 
   const treeRoot = document.getElementById("spark-tree");
+  const endingsRoot = document.getElementById("spark-endings");
   const tabPlay = document.getElementById("tab-play");
   const tabTree = document.getElementById("tab-tree");
+  const tabEndings = document.getElementById("tab-endings");
 
   function choiceLabel(text) {
     return String(text).replace(/^\d+\.\s*/, "");
   }
 
   function setView(view) {
-    const playing = view !== "tree";
     const playPane = document.getElementById("spark-play");
     if (!playPane || !treeRoot || !tabPlay || !tabTree) return;
+    const mode = view === "tree" ? "tree" : (view === "endings" ? "endings" : "play");
 
-    playPane.hidden = !playing;
-    treeRoot.hidden = playing;
-    root.classList.toggle("is-tree", !playing);
-    tabPlay.classList.toggle("is-active", playing);
-    tabTree.classList.toggle("is-active", !playing);
-    tabPlay.setAttribute("aria-selected", playing ? "true" : "false");
-    tabTree.setAttribute("aria-selected", playing ? "false" : "true");
+    playPane.hidden = mode !== "play";
+    treeRoot.hidden = mode !== "tree";
+    if (endingsRoot) endingsRoot.hidden = mode !== "endings";
+    root.classList.toggle("is-tree", mode === "tree");
+    root.classList.toggle("is-endings", mode === "endings");
+    tabPlay.classList.toggle("is-active", mode === "play");
+    tabTree.classList.toggle("is-active", mode === "tree");
+    if (tabEndings) {
+      tabEndings.classList.toggle("is-active", mode === "endings");
+      tabEndings.setAttribute("aria-selected", mode === "endings" ? "true" : "false");
+    }
+    tabPlay.setAttribute("aria-selected", mode === "play" ? "true" : "false");
+    tabTree.setAttribute("aria-selected", mode === "tree" ? "true" : "false");
 
-    if (!playing) renderTree();
+    if (mode === "tree") renderTree();
+    if (mode === "endings") renderEndingsGallery(endingsRoot, STORY);
+  }
+
+  /** Fill an Endings gallery pane: found tiles show poster + name; locked ones a blurred poster and "???". */
+  function renderEndingsGallery(pane, story) {
+    if (!pane || !story) return;
+    const ends = endingsOf(story);
+    const found = readFoundEndings(story);
+    const foundN = Object.keys(found).length;
+    pane.replaceChildren();
+    pane.dataset.story = story.id;
+
+    const head = document.createElement("div");
+    head.className = "endings-head";
+    const title = document.createElement("h2");
+    title.className = "endings-title";
+    title.textContent = "Endings";
+    const count = document.createElement("p");
+    count.className = "endings-count";
+    count.id = pane.id === "console-endings" ? "console-endings-count" : "spark-endings-count";
+    count.textContent = endingsCountText(foundN, ends.length);
+    head.append(title, count);
+    pane.appendChild(head);
+
+    const grid = document.createElement("div");
+    grid.className = "endings-grid";
+    grid.setAttribute("role", "list");
+    ends.forEach(function (entry) {
+      const known = !!found[entry.id];
+      const tile = document.createElement(known ? "button" : "div");
+      tile.className = "ending-tile" + (known ? " is-found" : " is-locked");
+      tile.dataset.ending = entry.id;
+      tile.setAttribute("role", "listitem");
+      if (known) {
+        tile.type = "button";
+        tile.setAttribute("aria-label", endingTitleOf(entry));
+      } else {
+        tile.setAttribute("aria-label", "Locked ending");
+      }
+
+      const media = document.createElement("div");
+      media.className = "ending-tile-media";
+      const poster = endingPosterOf(entry, story);
+      if (poster) {
+        const img = document.createElement("img");
+        img.src = poster;
+        img.alt = "";
+        img.loading = "lazy";
+        img.decoding = "async";
+        media.appendChild(img);
+      } else {
+        media.classList.add("is-blank");
+      }
+      const label = document.createElement("span");
+      label.className = "ending-tile-name";
+      label.textContent = known ? endingTitleOf(entry) : "???";
+      tile.append(media, label);
+      if (known) {
+        tile.addEventListener("click", function () {
+          showFoundEndingCard(story, entry.id);
+        });
+      }
+      grid.appendChild(tile);
+    });
+    pane.appendChild(grid);
+    // Quiet lobby tick when the wall opens (no GPU: a short oscillator), skipped under reduced motion.
+    try {
+      if (!window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) {
+          const ctx = new Ctx();
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.type = "sine";
+          o.frequency.value = 660;
+          g.gain.value = 0.0001;
+          g.gain.exponentialRampToValueAtTime(0.03, ctx.currentTime + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18);
+          o.connect(g);
+          g.connect(ctx.destination);
+          o.start();
+          o.stop(ctx.currentTime + 0.2);
+          setTimeout(function () { try { ctx.close(); } catch (e) { /* gone */ } }, 280);
+        }
+      }
+    } catch (e) { /* autoplay / blocked */ }
+    tell("feature", { name: "endings_gallery", story: story.id, found: foundN, total: ends.length });
+  }
+
+  function openEndingsGallery(story) {
+    if (!story) return;
+    if (story.type === "console") {
+      const pane = document.getElementById("console-endings");
+      const btn = document.getElementById("console-endings-btn");
+      if (!pane) return;
+      const open = pane.hidden;
+      pane.hidden = !open;
+      if (btn) btn.setAttribute("aria-pressed", open ? "true" : "false");
+      if (open) renderEndingsGallery(pane, story);
+      return;
+    }
+    setView("endings");
+  }
+
+  /** Tapping a found ending: show its ending card again (no teleport; recap of the live run only when it is the current scene). */
+  function showFoundEndingCard(story, endingId) {
+    const entry = endingsOf(story).filter(function (e) { return e.id === endingId; })[0];
+    if (!entry || !readFoundEndings(story)[endingId]) return;
+    tell("feature", { name: "ending_recall", story: story.id, ending: endingId });
+    if (story.type === "console") {
+      const pane = document.getElementById("console-endings");
+      if (!pane) return;
+      pane.replaceChildren();
+      const card = document.createElement("div");
+      card.className = "ending-card endings-recall";
+      card.dataset.ending = endingId;
+      const poster = endingPosterOf(entry, story);
+      if (poster) {
+        const img = document.createElement("img");
+        img.className = "console-endcard";
+        img.src = poster;
+        img.alt = "";
+        card.appendChild(img);
+      }
+      const kicker = document.createElement("p");
+      kicker.className = "ending-kicker";
+      const kick = Array.isArray(entry.ending) ? entry.ending[0] : entry.ending;
+      kicker.textContent = kick || "THE END";
+      const name = document.createElement("h2");
+      name.className = "ending-name";
+      name.textContent = endingTitleOf(entry);
+      const found = readFoundEndings(story);
+      const count = document.createElement("p");
+      count.className = "ending-count";
+      count.textContent = endingsCountText(Object.keys(found).length, endingsOf(story).length);
+      const back = document.createElement("button");
+      back.type = "button";
+      back.className = "choice ending-gallery-btn";
+      back.textContent = "Back to Endings";
+      back.addEventListener("click", function () { renderEndingsGallery(pane, story); });
+      card.append(kicker, name, count, back);
+      pane.appendChild(card);
+      return;
+    }
+    // Video story: switch to Play and show the card (live recap only when this ending is the current scene).
+    setView("play");
+    endingBox.hidden = false;
+    const scene = SCENES[endingId];
+    if (scene) {
+      const live = currentScene === endingId;
+      showEndingCard(endingId, scene, { skipRecap: !live, skipAgain: !live, way: live ? history.concat(endingId) : [endingId] });
+    }
   }
 
   function markTreeCurrent() {
@@ -918,6 +1458,7 @@
       paths.push('<path class="tendril-return" d="' + d + '"></path>');
     });
 
+    const treeReplay = isReplay(STORY);
     const nodes = Object.keys(pos).map(function (id) {
       const parent = spanParent[id] ? SCENES[spanParent[id]] : null;
       const via = parent
@@ -925,9 +1466,12 @@
         : null;
       const point = pos[id];
       const at = ' style="left:' + point.x + "px;top:" + point.y + 'px"';
+      const treeMark = !spanParent[id] ? "" : (locked[id] ? (treeReplay ? "new" : "")
+        : (treeReplay && subtreeSeen(STORY, unlocked, spanParent[id], id) ? "seen" : ""));
+      const markAttr = treeMark ? ' data-mark="' + treeMark + '"' : "";
       if (locked[id]) {
         // Only the choice you'd make to get there: you saw it on the page.
-        return '<div class="tree-node is-locked"' + at + '>' +
+        return '<div class="tree-node is-locked"' + markAttr + at + '>' +
           '<span class="tree-node-title">?</span>' +
           (via ? '<span class="tree-node-via">' + spotHtml(via.label, via.en, parent.lang, parent.dir) + "</span>" : "") +
           "</div>";
@@ -940,14 +1484,14 @@
         (lastWay && lastWay.indexOf(id) >= 0 ? " is-walked" : "") +
         (scene.dead ? " is-dead" : "") +
         (id === currentScene ? " is-current" : "") +
-        '" data-scene="' + id + '"' + at + '>' +
+        '" data-scene="' + id + '"' + markAttr + at + '>' +
         '<span class="tree-node-title">' + spotHtml(scene.title, scene.titleEn, scene.lang, scene.dir) + "</span>" +
         (viaText ? '<span class="tree-node-via">' + spotHtml(viaText.label, viaText.en, parent.lang, parent.dir) + "</span>" : "") +
         "</div>";
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -1040,6 +1584,7 @@
   if (tabPlay && tabTree) {
     tabPlay.addEventListener("click", function () { setView("play"); });
     tabTree.addEventListener("click", function () { setView("tree"); });
+    if (tabEndings) tabEndings.addEventListener("click", function () { setView("endings"); });
   }
 
   /* ---------------- the landing page and the stories ---------------- */
@@ -1050,9 +1595,208 @@
     line: document.documentElement.getAttribute("data-tap-line") || ""
   };
 
+  /** Scene changes cross-fade (J, 2026-11-10): the outgoing clip or card stays as a layer above the incoming one,
+      fading out over FADE ms while its audio fades with it; the incoming clip is already playing under it. */
+  function fadeMs() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 350;
+  }
+
+  const RECAP_MS = 3000;
+
+  /** The Continue "Previously" overlay: built once, shown over the player for ~3 s (tap skips). */
+  function recapEl() {
+    let el = document.getElementById("story-recap");
+    if (el) return el;
+    el = document.createElement("div");
+    el.id = "story-recap";
+    el.className = "story-recap";
+    el.hidden = true;
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", "Previously");
+    el.innerHTML =
+      '<div class="story-recap-stage" aria-hidden="true"><img class="story-recap-poster" alt=""></div>' +
+      '<div class="story-recap-copy">' +
+      '<p class="story-recap-kicker">Previously</p>' +
+      '<h2 class="story-recap-title"></h2>' +
+      '<p class="story-recap-line"></p>' +
+      "</div>" +
+      '<p class="story-recap-skip">Tap to skip</p>';
+    document.body.appendChild(el);
+    return el;
+  }
+
+  function canRecap(saved) {
+    return !!(saved && saved.from && saved.choice && (saved.poster || posterOfScene(STORY, saved.from)));
+  }
+
+  /** Runs after the Tap to play prompt is gone (or at once if sound is already unlocked).
+      Failsafe: if the prompt never clears (observer miss, stuck overlay), dismiss it and continue so
+      Continue never leaves a blank page under a forever-waiting handoff. */
+  function afterPrompt(fn) {
+    if (!window.hawkesSound || !window.hawkesSound.prompt()) {
+      fn();
+      return;
+    }
+    let done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      try { obs.disconnect(); } catch (error) { /* gone */ }
+      document.body.removeEventListener("click", onAct, true);
+      document.body.removeEventListener("keydown", onAct, true);
+      clearTimeout(fail);
+      fn();
+    }
+    function ready() {
+      return !window.hawkesSound || !window.hawkesSound.prompt();
+    }
+    function onAct() {
+      if (ready()) go();
+    }
+    const obs = new MutationObserver(function () {
+      if (ready()) go();
+    });
+    // class "is-gone" is set before the node is removed; overlay is nulled on tap before either.
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+    document.body.addEventListener("click", onAct, true);
+    document.body.addEventListener("keydown", onAct, true);
+    const fail = setTimeout(function () {
+      const prompt = window.hawkesSound && window.hawkesSound.prompt();
+      if (prompt) {
+        try { prompt.click(); } catch (error) { /* ignore */ }
+      }
+      go();
+    }, 8000);
+  }
+
+  function stopRecapTimers() {
+    if (recapTimer) { clearTimeout(recapTimer); recapTimer = null; }
+    if (recapRaf) { cancelAnimationFrame(recapRaf); recapRaf = null; }
+    if (recapGuard) { clearTimeout(recapGuard); recapGuard = null; }
+  }
+
+  function pauseClipsForRecap() {
+    videoBox.querySelectorAll("video").forEach(function (video) {
+      try { video.pause(); } catch (error) { /* gone */ }
+    });
+  }
+
+  function resumeClipsAfterRecap() {
+    videoBox.querySelectorAll("video:not(.spark-leave)").forEach(function (video) {
+      if (video.ended) return;
+      const play = video.play();
+      if (play && play.catch) play.catch(function () {});
+    });
+  }
+
+  /** 3 s Previously moment on Continue: last scene's poster with a slow push-in, the story title, one short line
+      naming the last choice; a tap skips; then a cross-fade into the scene already waiting underneath. */
+  function playRecap(story, saved, then) {
+    stopRecapTimers();
+    const el = recapEl();
+    const img = el.querySelector(".story-recap-poster");
+    const title = el.querySelector(".story-recap-title");
+    const line = el.querySelector(".story-recap-line");
+    const poster = saved.poster || posterOfScene(story, saved.from);
+    img.removeAttribute("src");
+    if (poster) img.src = poster;
+    title.textContent = story.title;
+    line.textContent = saved.choice;
+    el.dataset.story = story.id;
+    el.dataset.from = saved.from;
+    el.dataset.choice = saved.choice;
+    el.dataset.poster = poster || "";
+    el.classList.remove("is-leaving");
+    el.hidden = false;
+    document.documentElement.dataset.recap = "1";
+    pauseClipsForRecap();
+    tell("feature", { feature: "recap", story: story.id, from: saved.from, choice: saved.choice });
+
+    const ms = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1200 : RECAP_MS;
+    const fade = fadeMs();
+    el.style.setProperty("--recap-ms", ms + "ms");
+    el.style.setProperty("--fade-ms", fade + "ms");
+
+    let done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      stopRecapTimers();
+      el.removeEventListener("click", skip);
+      el.classList.add("is-leaving");
+      recapTimer = setTimeout(function () {
+        el.hidden = true;
+        el.classList.remove("is-leaving");
+        delete document.documentElement.dataset.recap;
+        delete el.dataset.story;
+        delete el.dataset.from;
+        delete el.dataset.choice;
+        delete el.dataset.poster;
+        resumeClipsAfterRecap();
+        tell("feature", { feature: "recap_done", story: story.id, skipped: finish.skipped || false });
+        if (typeof then === "function") then();
+      }, fade + 20);
+    }
+    function skip() {
+      finish.skipped = true;
+      finish();
+    }
+    el.addEventListener("click", skip);
+    recapTimer = setTimeout(finish, ms);
+    // Hard cap: never leave Previously up (or data-recap held) if a timer is lost — show the scene underneath.
+    recapGuard = setTimeout(function () {
+      if (!done) {
+        finish.skipped = true;
+        finish();
+      }
+    }, ms + fade + 1500);
+  }
+
+  function queueRecap(story, saved, then) {
+    if (!canRecap(saved)) {
+      delete document.documentElement.dataset.recap;
+      if (typeof then === "function") then();
+      return;
+    }
+    afterPrompt(function () {
+      // Failsafe may fire after All stories: never show Previously over the landing page.
+      if (STORY !== story || document.documentElement.dataset.view !== "story") {
+        delete document.documentElement.dataset.recap;
+        return;
+      }
+      playRecap(story, saved, then);
+    });
+  }
+
+  function crossfadeOut() {
+    const ms = fadeMs();
+    const old = Array.prototype.slice.call(videoBox.children);
+    old.forEach(function (node) {
+      const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank");
+      if (!keep || node.classList.contains("spark-leave")) { node.remove(); return; }
+      node.classList.add("spark-leave");
+      node.style.setProperty("--fade-ms", ms + "ms");
+      node.removeAttribute("data-sound-start");
+      const started = performance.now();
+      const from = node.tagName === "VIDEO" ? node.volume : 0;
+      (function step(now) {
+        const t = Math.min(1, ((now || performance.now()) - started) / ms);
+        if (node.tagName === "VIDEO") { try { node.volume = from * (1 - t); } catch (error) { /* ignore */ } }
+        if (t < 1 && node.isConnected) requestAnimationFrame(step);
+      })();
+      setTimeout(function () {
+        if (node.tagName === "VIDEO") { try { node.pause(); } catch (error) { /* gone */ } }
+        node.remove();
+      }, ms + 40);
+    });
+    videoBox.dataset.fadeMs = String(ms);
+    videoBox.dataset.fadedAt = String(Math.round(performance.now()));
+  }
+
   function stopVideo() {
     stopClipUnlock();
     activeClip = null;
+    if (window.iltvAudio) window.iltvAudio.unwatch();
     videoBox.querySelectorAll("video").forEach(function (video) {
       try { video.pause(); } catch (error) { /* already gone */ }
     });
@@ -1131,6 +1875,16 @@
       if (badge) badge.textContent = BADGES[progress];
       const explored = card.querySelector(".story-card-explored");
       if (explored) explored.textContent = exploredOf(story, readUnlocks(story).seen) + "% explored";
+      const endsEl = card.querySelector(".story-card-endings");
+      if (endsEl) {
+        const total = endingsOf(story).length;
+        const foundN = Object.keys(readFoundEndings(story)).length;
+        endsEl.hidden = !total;
+        endsEl.textContent = endingsCardText(foundN, total);
+        endsEl.dataset.found = String(foundN);
+        endsEl.dataset.total = String(total);
+        card.dataset.allEndings = total && foundN >= total ? "true" : "false";
+      }
       const go = card.querySelector(".story-card-go");
       if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
     });
@@ -1210,15 +1964,20 @@
     visit: function (sceneId) {
       currentScene = sceneId;
       unlocked[sceneId] = true;
-      if (STORY.scenes[sceneId].ending) completed = true;
+      if (STORY.scenes[sceneId].ending) {
+        completed = true;
+        markEndingFound(STORY, sceneId);
+      }
       saveProgress();
       return exploredOf(STORY, unlocked);
     },
     history: function (ids) { history = ids.slice(); },
-    tell: tell
+    tell: tell,
+    endingsGallery: function () { openEndingsGallery(STORY); }
   };
 
-  function openConsole(story) {
+  function openConsole(story, withRecap) {
+    stopChoiceWindow();
     stopVideo();
     STORY = story;
     SCENES = story.scenes;
@@ -1231,6 +1990,7 @@
     if (firstScreen) firstScreen.classList.remove("is-landing");
     document.documentElement.dataset.view = "story";
     document.documentElement.dataset.type = "console";
+    audioBed(story);
     delete document.documentElement.dataset.kit;
     showKit();
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -1239,16 +1999,33 @@
     history = [];
     unlocked = unlocks.seen;
     completed = unlocks.completed;
+    if (saved && saved.from && saved.choice) {
+      lastRecap = { from: saved.from, choice: saved.choice, poster: saved.poster || posterOfScene(story, saved.from) };
+    } else {
+      lastRecap = null;
+    }
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
-    window.iltvConsole.open(story, consoleHooks, saved ? saved.scene : null);
+    function startConsole() {
+      window.iltvConsole.open(story, consoleHooks, saved ? saved.scene : null);
+    }
+    // Continue: open the left-off scene under the overlay (same as video stories), hold voiced lines while
+    // Previously is up (html[data-recap], js/console.js), then cross-fade the overlay away. Opening only after
+    // the overlay left a blank body at short landscape sizes (844x390) once it faded.
+    if (withRecap && canRecap(saved)) {
+      document.documentElement.dataset.recap = "1";
+      startConsole();
+      queueRecap(story, saved, null);
+    } else {
+      startConsole();
+    }
   }
 
-  function openStory(storyId, push) {
+  function openStory(storyId, push, withRecap) {
     const story = STORIES[storyId];
     if (!story) return showLanding(false);
     if (push) window.history.pushState({ story: storyId }, "", urlFor(storyId));
     closeConsole();
-    if (story.type === "console" && window.iltvConsole) return openConsole(story);
+    if (story.type === "console" && window.iltvConsole) return openConsole(story, withRecap);
     if (STORY !== story) {
       stopVideo();
       STORY = story;
@@ -1287,25 +2064,56 @@
     lastWay = readLastWay(story, SCENES);
     unlocked = unlocks.seen;
     completed = unlocks.completed;
+    if (saved && saved.from && saved.choice) {
+      lastRecap = { from: saved.from, choice: saved.choice, poster: saved.poster || posterOfScene(story, saved.from) };
+    } else if (!(saved && saved.scene !== story.start)) {
+      lastRecap = null;
+    }
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
+    audioBed(story);
     show(saved ? saved.scene : story.start);
     keepAtTop();
     requestAnimationFrame(function () { requestAnimationFrame(keepAtTop); });
+    // Continue: the scene is already under the overlay; Previously holds 3 s (or a tap), then reveals it.
+    if (withRecap && canRecap(saved)) queueRecap(story, saved, null);
+  }
+
+  function hideRecap() {
+    stopRecapTimers();
+    const el = document.getElementById("story-recap");
+    if (el) {
+      el.hidden = true;
+      el.classList.remove("is-leaving");
+      delete el.dataset.story;
+      delete el.dataset.from;
+      delete el.dataset.choice;
+      delete el.dataset.poster;
+    }
+    delete document.documentElement.dataset.recap;
   }
 
   function showLanding(push) {
     tell("landing", { story: STORY ? STORY.id : null, scene: currentScene });
+    hideRecap();
     closeConsole();
     if (push) window.history.pushState({}, "", urlFor(null));
     else if (new URL(location.href).searchParams.has("story")) window.history.replaceState({}, "", urlFor(null));
+    stopChoiceWindow();
     stopVideo();
+    if (window.iltvAudio) {
+      window.iltvAudio.unwatch();
+      window.iltvAudio.setBed(null, null);
+    }
     STORY = null;
     currentScene = null;
+    lastRecap = null;
+    wantRecap = false;
     root.hidden = true;
     landing.hidden = false;
     if (firstScreen) firstScreen.classList.add("is-landing");
     document.documentElement.dataset.view = "landing";
     delete document.documentElement.dataset.kit;
+    delete document.documentElement.dataset.type;
     showKit();
     document.title = SITE_TITLE;
     prompt(SITE_TAP);
@@ -1333,8 +2141,12 @@
         clearProgress(STORIES[card.dataset.story]);
         tell("restart", { story: card.dataset.story, via: "start_over" });
       }
-      tell("card", { story: card.dataset.story, go: startOver ? "end" : card.dataset.run, progress: card.dataset.progress });
-      openStory(card.dataset.story, true);
+      const go = startOver ? "end" : card.dataset.run;
+      // Continue (mid-run) opens with a short Previously recap; Play and Start Over go straight in.
+      wantRecap = go === "mid";
+      tell("card", { story: card.dataset.story, go: go, progress: card.dataset.progress });
+      openStory(card.dataset.story, true, wantRecap);
+      wantRecap = false;
     });
   }
 
@@ -1370,7 +2182,10 @@
     path: function () { return currentScene ? history.concat(currentScene) : []; },
     unlocked: function () { return STORY ? Object.keys(unlocked) : []; },
     explored: function () { return STORY ? exploredOf(STORY, unlocked) : null; },
-    inventory: function () { return kitCounts(); }
+    inventory: function () { return kitCounts(); },
+    /** Ending nodes from the build, and which of them this browser has found. */
+    endings: function () { return STORY ? endingsOf(STORY).map(function (e) { return e.id; }) : []; },
+    foundEndings: function () { return STORY ? Object.keys(readFoundEndings(STORY)) : []; }
   };
   window.iltvStories = {
     list: function () { return DATA.stories.map(function (story) { return story.id; }); },
@@ -1379,8 +2194,35 @@
     progress: function (id) { return STORIES[id] ? progressOf(STORIES[id]) : null; },
     run: function (id) { return STORIES[id] ? runOf(STORIES[id]) : null; },
     explored: function (id) { return STORIES[id] ? exploredOf(STORIES[id], readUnlocks(STORIES[id]).seen) : null; },
-    view: function () { return STORY ? "story" : "landing"; }
+    view: function () { return STORY ? "story" : "landing"; },
+    endings: function (id) {
+      const story = STORIES[id];
+      return story ? endingsOf(story).map(function (e) {
+        return { id: e.id, title: endingTitleOf(e), poster: endingPosterOf(e, story) || "", found: !!readFoundEndings(story)[e.id] };
+      }) : null;
+    },
+    endingsCount: function (id) {
+      const story = STORIES[id];
+      return story ? { found: Object.keys(readFoundEndings(story)).length, total: endingsOf(story).length } : null;
+    },
+    foundEndings: function (id) {
+      return STORIES[id] ? Object.keys(readFoundEndings(STORIES[id])) : null;
+    },
+    /** The Continue Previously overlay while it is up: { story, from, choice, poster }, or null. */
+    recap: function () {
+      const el = document.getElementById("story-recap");
+      if (!el || el.hidden || !el.dataset.story) return null;
+      return { story: el.dataset.story, from: el.dataset.from, choice: el.dataset.choice, poster: el.dataset.poster || "" };
+    }
   };
+
+  // Console Endings button (same gallery as the video player's Endings tab).
+  const consoleEndingsBtn = document.getElementById("console-endings-btn");
+  if (consoleEndingsBtn) {
+    consoleEndingsBtn.addEventListener("click", function () {
+      if (STORY && STORY.type === "console") openEndingsGallery(STORY);
+    });
+  }
 
   route();
 })();

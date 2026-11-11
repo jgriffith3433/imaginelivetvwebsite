@@ -108,6 +108,21 @@ window.ILTV_STORIES = {
      "depth": "ਡੂੰਘਾਈ"
     }
    },
+   "endings": [
+    {
+     "id": "destroyTown",
+     "title": [
+      "ਸ਼ਹਿਰ ਤਬਾਹ ਕਰੋ",
+      "Destroy town"
+     ],
+     "ending": [
+      "ਅੰਤ",
+      "THE END"
+     ],
+     "poster": "/assets/video/poster/destroy-town.webp",
+     "video": "/assets/video/destroy-town.mp4"
+    }
+   ],
    "scenes": {
     "start": {
      "folder": "the-sewer",
@@ -822,6 +837,34 @@ window.ILTV_STORIES = {
     "dove",
     "wings",
     "feather"
+   ],
+   "endings": [
+    {
+     "id": "heroEnding",
+     "title": [
+      "Dry Fork",
+      "Dry Fork"
+     ],
+     "ending": [
+      "THE END. This is how it started.",
+      "THE END. This is how it started."
+     ],
+     "poster": "/water-road/dry-fork/poster/scene.webp",
+     "video": "/water-road/dry-fork/scene.mp4"
+    },
+    {
+     "id": "sellWater",
+     "title": [
+      "The price of water",
+      "The price of water"
+     ],
+     "ending": [
+      "THE END. Not every story makes a hero.",
+      "THE END. Not every story makes a hero."
+     ],
+     "poster": "/water-road/the-price-of-water/poster/scene.webp",
+     "video": "/water-road/the-price-of-water/scene.mp4"
+    }
    ],
    "scenes": {
     "start": {
@@ -1580,6 +1623,30 @@ window.ILTV_STORIES = {
     "pencil": null
    },
    "music": {},
+   "endings": [
+    {
+     "id": "clean-report",
+     "title": [
+      "Clean report",
+      "Clean report"
+     ],
+     "ending": [
+      "Clean report.",
+      "Clean report."
+     ]
+    },
+    {
+     "id": "quiet-report",
+     "title": [
+      "All quiet",
+      "All quiet"
+     ],
+     "ending": [
+      "All quiet.",
+      "All quiet."
+     ]
+    }
+   ],
    "scenes": {
     "radio-check": {
      "folder": "night-shift-demo/radio-check",
@@ -2147,6 +2214,164 @@ window.ILTV_STORIES = {
     "laboratory"
    ],
    "stateCap": 300000,
+   "endings": [
+    {
+     "id": "end-clean",
+     "title": [
+      "Clean report",
+      "Clean report"
+     ],
+     "ending": [
+      "Clean report.",
+      "Clean report."
+     ],
+     "poster": "/night-shift/media/endcards/end-clean.png",
+     "endcard": "/night-shift/media/endcards/end-clean.png"
+    },
+    {
+     "id": "end-someone",
+     "title": [
+      "Someone to leave it to",
+      "Someone to leave it to"
+     ],
+     "ending": [
+      "Someone to leave it to.",
+      "Someone to leave it to."
+     ],
+     "poster": "/night-shift/media/endcards/end-someone.png",
+     "endcard": "/night-shift/media/endcards/end-someone.png"
+    },
+    {
+     "id": "end-she-knew",
+     "title": [
+      "She knew",
+      "She knew"
+     ],
+     "ending": [
+      "She knew.",
+      "She knew."
+     ],
+     "poster": "/night-shift/media/endcards/end-she-knew.png",
+     "endcard": "/night-shift/media/endcards/end-she-knew.png"
+    },
+    {
+     "id": "end-eat-something",
+     "title": [
+      "Eat something",
+      "Eat something"
+     ],
+     "ending": [
+      "Eat something.",
+      "Eat something."
+     ],
+     "poster": "/night-shift/media/endcards/end-eat-something.png",
+     "endcard": "/night-shift/media/endcards/end-eat-something.png"
+    },
+    {
+     "id": "end-by-the-book",
+     "title": [
+      "By the book, alone",
+      "By the book, alone"
+     ],
+     "ending": [
+      "By the book, alone.",
+      "By the book, alone."
+     ],
+     "poster": "/night-shift/media/endcards/end-by-the-book.png",
+     "endcard": "/night-shift/media/endcards/end-by-the-book.png"
+    },
+    {
+     "id": "end-friendly",
+     "title": [
+      "The friendly one",
+      "The friendly one"
+     ],
+     "ending": [
+      "The friendly one.",
+      "The friendly one."
+     ],
+     "poster": "/night-shift/media/endcards/end-friendly.png",
+     "endcard": "/night-shift/media/endcards/end-friendly.png"
+    },
+    {
+     "id": "end-opinions",
+     "title": [
+      "Opinions",
+      "Opinions"
+     ],
+     "ending": [
+      "Opinions.",
+      "Opinions."
+     ],
+     "poster": "/night-shift/media/endcards/end-opinions.png",
+     "endcard": "/night-shift/media/endcards/end-opinions.png"
+    },
+    {
+     "id": "end-four-hours",
+     "title": [
+      "The four hours",
+      "The four hours"
+     ],
+     "ending": [
+      "Four minutes.",
+      "Four minutes."
+     ],
+     "poster": "/night-shift/media/endcards/end-four-hours.png",
+     "endcard": "/night-shift/media/endcards/end-four-hours.png"
+    },
+    {
+     "id": "end-written-up",
+     "title": [
+      "Written up",
+      "Written up"
+     ],
+     "ending": [
+      "Written up.",
+      "Written up."
+     ],
+     "poster": "/night-shift/media/endcards/end-written-up.png",
+     "endcard": "/night-shift/media/endcards/end-written-up.png"
+    },
+    {
+     "id": "end-wedge",
+     "title": [
+      "The wedge",
+      "The wedge"
+     ],
+     "ending": [
+      "The wedge.",
+      "The wedge."
+     ],
+     "poster": "/night-shift/media/endcards/end-wedge.png",
+     "endcard": "/night-shift/media/endcards/end-wedge.png"
+    },
+    {
+     "id": "end-noted",
+     "title": [
+      "Noted",
+      "Noted"
+     ],
+     "ending": [
+      "Noted.",
+      "Noted."
+     ],
+     "poster": "/night-shift/media/endcards/end-noted.png",
+     "endcard": "/night-shift/media/endcards/end-noted.png"
+    },
+    {
+     "id": "end-under-review",
+     "title": [
+      "Under review",
+      "Under review"
+     ],
+     "ending": [
+      "Under review.",
+      "Under review."
+     ],
+     "poster": "/night-shift/media/endcards/end-under-review.png",
+     "endcard": "/night-shift/media/endcards/end-under-review.png"
+    }
+   ],
    "scenes": {
     "handover": {
      "folder": "night-shift/handover",

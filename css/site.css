@@ -695,10 +695,10 @@ a { color: var(--green); }
   .spark h1 { font-size: 0.95rem; }
   .spark-sub { display: none; }
   .spark-tabs { margin-bottom: 0.1rem; }
-  .choice { padding: 0.28rem 0.5rem; }
+  .choice { min-height: 48px; padding: 0.35rem 0.75rem; }
   .spark-story { font-size: 0.78rem; line-height: 1.25; margin-bottom: 0.2rem; }
   .spark-question { margin: 0.05rem 0 0.25rem; font-size: 0.86rem; }
-  .spark-choices { gap: 0.25rem; }
+  .spark-choices { gap: 0.3rem; }
 }
 
 @media (max-width: 860px) {
@@ -1111,7 +1111,8 @@ a { color: var(--green); }
 /* The featured story's catalogue card steps aside while the hero says Continue (one button for it). */
 .story-card[data-featured][data-run="mid"] { display: none; }
 
-#spark-tree {
+#spark-tree,
+#spark-endings {
   flex: 1;
   min-height: 0;
   display: flex;
@@ -1119,7 +1120,8 @@ a { color: var(--green); }
 }
 
 #spark-play[hidden],
-#spark-tree[hidden] { display: none; }
+#spark-tree[hidden],
+#spark-endings[hidden] { display: none; }
 
 .tree-scroll {
   flex: 1;
@@ -1716,6 +1718,33 @@ html.is-splash-pending::after {
   60% { opacity: 0.95; transform: scale(1.05); }
 }
 
+/* Sound toggle (js/audio.js) sits just left of the Settings gear. */
+.iltv-sound-toggle {
+  position: absolute;
+  top: 50%;
+  right: calc(2.75rem + max(0.5rem, env(safe-area-inset-right)));
+  transform: translateY(-50%);
+  min-width: 44px;
+  min-height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.iltv-sound-toggle svg { width: 1.35rem; height: 1.35rem; }
+.iltv-sound-toggle:hover, .iltv-sound-toggle:focus-visible { color: var(--green-soft); background: rgba(255, 255, 255, 0.06); }
+.iltv-sound-toggle.is-off { color: var(--muted); opacity: 0.72; }
+.iltv-sound-toggle.is-floating { position: fixed; top: 0.5rem; right: calc(2.75rem + 0.5rem); transform: none; z-index: 70; }
+@media (max-width: 560px) {
+  .site-header a { padding-right: 6rem; font-size: 0.85rem; letter-spacing: 0.24em; text-indent: 0.24em; }
+}
+
 .sound-gear {
   position: absolute;
   top: 50%;
@@ -2083,7 +2112,7 @@ figure.feed { cursor: default; }
     linear-gradient(90deg, rgba(120, 140, 130, 0.5), rgba(235, 245, 240, 0.85) 50%, rgba(120, 140, 130, 0.5));
 }
 .console-big.is-flash .big-crt { animation: crt-static 0.26s ease-out; }
-.console-big.is-flash .big-pic { animation: crt-pic 0.26s ease-out; }
+.console-big.is-flash .big-pic:not(.big-leave) { animation: crt-pic 0.26s ease-out; }
 @keyframes crt-static {
   0% { opacity: 1; transform: translateY(-18%); }
   45% { opacity: 0.75; transform: translateY(6%); }
@@ -2253,9 +2282,9 @@ figure.feed { cursor: default; }
 .console-controls { flex: none; display: flex; gap: 0.4rem; }
 .console-controls .console-btn { flex: 1; }
 
-.console-choices { flex: none; display: flex; flex-direction: column; gap: 0.35rem; }
+.console-choices { flex: none; display: flex; flex-direction: column; gap: 0.45rem; padding-bottom: 0.4rem; }
 .console-choices[hidden], .console-ending[hidden] { display: none; }
-.console-choices .choice { min-height: 44px; overflow-wrap: anywhere; }
+.console-choices .choice { min-height: 48px; overflow-wrap: anywhere; }
 
 .console-ending {
   flex: none;
@@ -2301,7 +2330,7 @@ figure.feed { cursor: default; }
 /* A phone on its side (844x390): the words column scrolls by itself, so many choices (up to fifteen) never push the
    Log button or the subtitles off the screen; once the lines are heard the subtitles give room to the choices. */
 @media (orientation: landscape) and (max-height: 520px) {
-  .console-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+  .console-panel { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scroll-padding-bottom: 0.5rem; }
   /* The strip takes all the room the choices leave (it was a fixed 6rem box with half the screen empty) and shrinks, to the newest line at least, when the choices need it. */
   .console[data-lines="done"] .console-subs { flex: 1 1 auto; min-height: 2.6rem; max-height: none; }
   .console .console-endcard { width: auto; max-width: 100%; max-height: 32dvh; }
@@ -2312,9 +2341,9 @@ figure.feed { cursor: default; }
   .console[data-state="soon"] .console-panel { gap: 0.25rem; }
   /* The stage's width follows the height that is left under the site bar and the console bar, so it never pushes the page into a scroll. */
   .console-stage { width: min(100%, calc((100dvh - 7.6rem - 2.4rem) / 0.6625)); }
-  /* Many choices (up to twelve) scroll inside the words column; each stays whole and 44px tall. */
-  .console-choices { padding-bottom: 0.15rem; }
-  .console-choices .choice { flex: none; }
+  /* Many choices (up to twelve) scroll inside the words column; each stays whole and at least 48px tall. */
+  .console-choices { gap: 0.3rem; padding-bottom: 0.4rem; }
+  .console-choices .choice { flex: none; min-height: 48px; }
 }
 
 @media (min-width: 1000px) and (min-height: 700px) {
@@ -2327,9 +2356,9 @@ figure.feed { cursor: default; }
    choices never push the page into a scroll; once the lines are heard the subtitles give room to the choices. */
 @media (max-width: 559px) and (orientation: portrait) {
   .console-body { overflow-y: hidden; }
-  .console-panel { min-height: 8rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+  .console-panel { min-height: 8rem; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scroll-padding-bottom: 0.5rem; }
   .console[data-lines="done"] .console-subs { flex: 1 1 auto; min-height: 2.6rem; max-height: none; }
-  .console-choices { padding-bottom: 0.15rem; }
+  .console-choices { padding-bottom: 0.4rem; }
 }
 
 @media (max-width: 559px) {
@@ -2482,13 +2511,161 @@ figure.feed { cursor: default; }
 .ending-recap li.spot > .spot-en { display: block; }
 .ending-recap li.spot { position: relative; }
 .ending-recap li.spot > .spot-en { position: absolute; inset: 0; }
-.ending-again { margin-top: 0.4rem; min-height: 44px; text-align: center; font-weight: 700; }
+.ending-again,
+.ending-gallery-btn { margin-top: 0.4rem; min-height: 44px; text-align: center; font-weight: 700; }
+.ending-gallery-btn { font-weight: 600; }
 @keyframes ending-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .spark-ending.ending-card { animation: none; } }
 @media (max-height: 560px) { .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
 
+/* Endings gallery (js/game.js): found tiles show poster + name; locked ones a blurred, darkened silhouette + ???. */
+.spark.is-endings #spark-play,
+.spark.is-endings #spark-tree { display: none; }
+.endings-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+  padding: 0.6rem 0.75rem 1.2rem;
+  color: #f2f0eb;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.endings-gallery[hidden] { display: none; }
+.endings-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+}
+.endings-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 4.5vw, 1.7rem);
+  letter-spacing: 0.02em;
+}
+.endings-count {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #a9a59f;
+}
+.endings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.65rem;
+}
+.ending-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background: #121317;
+  color: inherit;
+  text-align: left;
+  overflow: hidden;
+  min-height: 44px;
+  cursor: default;
+}
+button.ending-tile {
+  cursor: pointer;
+  font: inherit;
+}
+button.ending-tile:focus-visible {
+  outline: 2px solid #f2f0eb;
+  outline-offset: 2px;
+}
+.ending-tile-media {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  background: #0a0b0d;
+  overflow: hidden;
+}
+.ending-tile-media.is-blank { background: linear-gradient(160deg, #1a1c22, #0a0b0d 70%); }
+.ending-tile-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ending-tile.is-locked .ending-tile-media img {
+  filter: blur(10px) brightness(0.35) saturate(0.4);
+  transform: scale(1.08);
+}
+.ending-tile.is-locked .ending-tile-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 7, 9, 0.45);
+}
+/* Soft lobby drift across the wall so the gallery isn't a dead grid (fun-reviewer). */
+.ending-tile-media::before {
+  content: "";
+  position: absolute;
+  inset: -20% -40%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.07) 48%, transparent 62%);
+  animation: endings-drift 7s ease-in-out infinite alternate;
+}
+.ending-tile.is-locked .ending-tile-media::before { opacity: 0.35; }
+@keyframes endings-drift {
+  from { transform: translateX(-8%); }
+  to { transform: translateX(12%); }
+}
+.ending-tile-name {
+  display: block;
+  padding: 0 0.55rem 0.55rem;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+.ending-tile.is-locked .ending-tile-name {
+  letter-spacing: 0.2em;
+  color: #8e8a84;
+}
+.endings-recall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem 0.25rem 1rem;
+}
+#console-endings {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: rgba(8, 9, 11, 0.96);
+}
+.console { position: relative; }
+.console-ending .ending-count,
+.console-ending .ending-gallery-btn { display: block; margin: 0.45rem auto 0; }
+.console-ending .ending-gallery-btn { min-height: 44px; }
+@media (max-width: 420px) {
+  .endings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+  .ending-tile-name { font-size: 0.75rem; }
+}
+@media (max-height: 560px) {
+  .ending-tile-media { aspect-ratio: 3 / 4; max-height: 28dvh; }
+  .endings-gallery { padding-bottom: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ending-tile.is-locked .ending-tile-media img { transform: none; }
+  .ending-tile-media::before { animation: none; }
+}
+
 /* Try another path: where the last run went (the choice you took, the nodes in the Tree). */
-.choice.was-taken { border-color: #f4f2ee; }
+.choice.was-taken {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  border-color: #f4f2ee;
+}
 .choice.was-taken::after {
   content: "Last time";
   display: block;
@@ -2500,31 +2677,175 @@ figure.feed { cursor: default; }
 }
 .tree-node.is-walked { border-color: #d8b45a; }
 
-/* ---------------- Cinematic player chrome (J, 2026-11-06) ----------------
-   Desktop: the video sits in a 2.39:1 letterbox (black bars), the choices wait dimmed while the clip plays and come up
-   with a thin countdown when it ends, and the bar and title fade away after 3 s without movement. */
-.choice-timer { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.45rem; min-height: 14px; transition: opacity 0.4s ease; }
+/* ---------------- Unified choice-card & cinematic player chrome (J, 2026-11-06 / f_32e426e8a75b) ----------------
+   All three stories share one choice-card system: while a clip plays, choices show an "Up next" preview state (soft
+   glow, thin progress line, never dim grey disabled text); once active, near-white text (#e8e4dc) with a visible
+   border, staggered slide and fade-in (70 ms apart), and a desktop hover/focus state. 48 px minimum height and full
+   width across viewports. */
+.spark-choices, .console-choices {
+  width: 100%;
+  gap: 0.45rem;
+  padding-bottom: 0.4rem;
+  --clip-progress: 24%;
+}
+.spark-choices .choice, .console-choices .choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #e8e4dc;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 65%), #2a2f37;
+  border: 1.5px solid #d8d4cd;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  text-align: left;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  opacity: 1;
+  transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease, color 0.16s ease;
+}
+.spark-choices .choice:hover,
+.console-choices .choice:hover,
+.spark-choices .choice:focus-visible,
+.console-choices .choice:focus-visible {
+  color: #fbfaf7;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0) 65%), #383f4a;
+  border-color: #f4f2ee;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.42), 0 0 14px rgba(232, 228, 220, 0.22);
+  transform: translateY(-1px);
+}
+.spark-choices .choice:active,
+.console-choices .choice:active {
+  background: #444a53;
+  transform: translateY(0);
+}
+.spark-choices .choice:focus-visible,
+.console-choices .choice:focus-visible {
+  outline: 2px solid #f4f2ee;
+  outline-offset: 2px;
+}
+
+.spark-choices .choice, .console-choices .choice { transition-property: background, border-color, box-shadow, transform, color, opacity; }
+.is-deciding .choice { pointer-events: none; }
+.is-deciding .choice.is-chosen {
+  transform: scale(1.04);
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 22px rgba(244, 242, 238, 0.65), 0 6px 18px rgba(0, 0, 0, 0.42);
+  transition-duration: 0.25s;
+}
+.is-deciding .choice.is-fading { opacity: 0; transform: translateY(14px); transition: opacity 0.25s ease, transform 0.25s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .is-deciding .choice.is-chosen, .is-deciding .choice.is-fading { transform: none; }
+}
+.choice-timer { display: flex; align-items: center; gap: 0.65rem; margin: 0 0 0.45rem; min-height: 18px; transition: opacity 0.4s ease; }
 /* Hidden keeps its row: the video stage must not resize when the countdown appears. */
 .choice-timer[hidden] { display: flex; visibility: hidden; }
-.choice-timer-track { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
-.choice-timer-bar { display: block; height: 100%; width: 100%; background: #c8c4be; transform-origin: left center; animation: choice-timer linear forwards; }
-.choice-timer-label { min-width: 3.6em; text-align: right; color: #8e8b86; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
-.choice-timer[data-state="waiting"] { visibility: hidden; }
-.choice-timer[data-state="waiting"] .choice-timer-bar { animation: none; }
-.choice-timer[data-state="done"] { opacity: 0.55; }
-.choice-timer[data-state="done"] .choice-timer-bar { animation: none; transform: scaleX(0); }
+.choice-timer-track { flex: 1; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 999px; overflow: hidden; }
+.choice-timer-bar { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #d8d4cd, #f4f2ee); border-radius: inherit; transform-origin: left center; box-shadow: 0 0 8px rgba(232, 228, 220, 0.35); transition: background 0.2s ease, box-shadow 0.2s ease; }
+.choice-timer-label { min-width: 6.5em; flex-shrink: 0; white-space: nowrap; text-align: right; color: #e8e4dc; font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums; transition: color 0.2s ease; }
+.choice-timer[data-state="waiting"] { visibility: visible; opacity: 0.96; }
+.choice-timer[data-state="waiting"] .choice-timer-bar {
+  animation: none;
+  transform: none;
+  width: var(--clip-progress, 24%);
+  background: linear-gradient(90deg, rgba(232, 228, 220, 0.55), #e8e4dc);
+  box-shadow: 0 0 8px rgba(232, 228, 220, 0.5);
+  transition: width 0.25s linear;
+}
+.choice-timer[data-urgent="true"] .choice-timer-bar {
+  background: linear-gradient(90deg, #e07a3c, #ffb36b);
+  box-shadow: 0 0 12px rgba(240, 163, 94, 0.85);
+  animation: choice-timer-pulse 0.45s ease-in-out infinite alternate;
+}
+.choice-timer[data-urgent="true"] .choice-timer-track {
+  background: rgba(240, 163, 94, 0.28);
+  box-shadow: 0 0 10px rgba(240, 163, 94, 0.35);
+  animation: choice-timer-pulse 0.45s ease-in-out infinite alternate;
+}
+.choice-timer[data-urgent="true"] .choice-timer-label {
+  color: #ffb36b;
+  text-shadow: 0 0 8px rgba(240, 163, 94, 0.55);
+  animation: choice-timer-pulse 0.45s ease-in-out infinite alternate;
+}
+.choice-timer[data-state="done"] { opacity: 0.75; }
+.choice-timer[data-state="done"] .choice-timer-track,
+.choice-timer[data-state="done"] .choice-timer-bar,
+.choice-timer[data-state="done"] .choice-timer-label { animation: none; }
+.choice-timer[data-state="done"] .choice-timer-bar { transform: scaleX(0); }
+@keyframes choice-timer-pulse {
+  from { opacity: 0.55; filter: brightness(0.92); }
+  to { opacity: 1; filter: brightness(1.18); }
+}
+.spark-choices .choice.is-default-pick,
+.choice.is-default-pick {
+  color: #fffaf2;
+  border-color: #ffb36b;
+  background: linear-gradient(180deg, rgba(240, 163, 94, 0.28), rgba(240, 163, 94, 0.1)), #3a2e22;
+  outline: 2px solid #f0a35e;
+  outline-offset: 2px;
+  box-shadow: 0 0 22px rgba(240, 163, 94, 0.72), inset 0 0 12px rgba(240, 163, 94, 0.22);
+  transform: translateY(-1px);
+}
 @keyframes choice-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 
-.spark-choices[data-phase="waiting"] .choice { opacity: 0.4; }
-.spark-choices[data-phase="ready"] .choice { animation: choice-in 0.7s ease both; }
-.spark-choices[data-phase="ready"] .choice:nth-child(2) { animation-delay: 0.12s; }
-.spark-choices[data-phase="ready"] .choice:nth-child(3) { animation-delay: 0.24s; }
-.spark-choices[data-phase="ready"] .choice:nth-child(n+4) { animation-delay: 0.36s; }
-@keyframes choice-in { from { opacity: 0.22; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* "Up next" preview state while a clip plays: soft glow and thin progress line, never dim grey disabled text. */
+.spark-choices[data-phase="waiting"] .choice {
+  opacity: 1;
+  color: #e8e4dc;
+  background: linear-gradient(180deg, rgba(232, 228, 220, 0.1), rgba(232, 228, 220, 0.02)), #242931;
+  border-color: #cbc6be;
+  box-shadow: 0 0 16px rgba(232, 228, 220, 0.18), inset 0 0 10px rgba(232, 228, 220, 0.07);
+  overflow: hidden;
+}
+.spark-choices[data-phase="waiting"] .choice::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: var(--clip-progress, 24%);
+  background: linear-gradient(90deg, rgba(232, 228, 220, 0.55), #e8e4dc);
+  box-shadow: 0 0 8px rgba(232, 228, 220, 0.55);
+  transition: width 0.25s linear;
+  pointer-events: none;
+}
+
+/* Active state: staggered slide and fade-in (70 ms apart, within 60-80 ms) across all three stories. */
+.spark-choices .choice:nth-child(1), .console-choices .choice:nth-child(1) { --choice-i: 0; }
+.spark-choices .choice:nth-child(2), .console-choices .choice:nth-child(2) { --choice-i: 1; }
+.spark-choices .choice:nth-child(3), .console-choices .choice:nth-child(3) { --choice-i: 2; }
+.spark-choices .choice:nth-child(4), .console-choices .choice:nth-child(4) { --choice-i: 3; }
+.spark-choices .choice:nth-child(5), .console-choices .choice:nth-child(5) { --choice-i: 4; }
+.spark-choices .choice:nth-child(6), .console-choices .choice:nth-child(6) { --choice-i: 5; }
+.spark-choices .choice:nth-child(7), .console-choices .choice:nth-child(7) { --choice-i: 6; }
+.spark-choices .choice:nth-child(8), .console-choices .choice:nth-child(8) { --choice-i: 7; }
+.spark-choices .choice:nth-child(n+9), .console-choices .choice:nth-child(n+9) { --choice-i: 8; }
+.spark-choices[data-phase="ready"] .choice,
+.console[data-lines="done"] .console-choices .choice,
+.console-choices[data-phase="ready"] .choice {
+  animation: choice-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--choice-i, 0) * 70ms);
+}
+.console-choices .choice[data-stress] { animation: none; }
+@keyframes choice-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.console-choices:not(:empty)::before {
+  content: "Your move";
+  color: #e8e4dc;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
 .spark-bar, .spark-copy { transition: opacity 0.6s ease; }
-.spark.is-idle:not(.is-tree) .spark-bar,
-.spark.is-idle:not(.is-tree) .spark-copy { opacity: 0; }
+.spark.is-idle:not(.is-tree):not(.is-endings) .spark-bar,
+.spark.is-idle:not(.is-tree):not(.is-endings) .spark-copy { opacity: 0; }
 .spark.is-idle .spark-bar:focus-within { opacity: 1; }
 
 /* Wide screens: the portrait clip fills the stage's height beside the text (the two-column layout above), on a
@@ -2536,7 +2857,17 @@ figure.feed { cursor: default; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spark-choices[data-phase="ready"] .choice { animation: none; }
+  .spark-choices .choice,
+  .console-choices .choice,
+  .spark-choices[data-phase="ready"] .choice,
+  .console[data-lines="done"] .console-choices .choice,
+  .console-choices[data-phase="ready"] .choice,
+  .spark-choices[data-phase="waiting"] .choice::before,
+  .choice-timer[data-state="waiting"] .choice-timer-bar {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
   .spark-bar, .spark-copy { transition: none; }
 }
 
@@ -2577,7 +2908,7 @@ figure.feed { cursor: default; }
 @media (orientation: landscape) and (max-height: 500px) {
   .spark-copy { display: none; }
   #spark-play { grid-template-rows: minmax(0, 1fr); grid-template-areas: "stage panel"; }
-  .spark-panel { overflow-y: auto; overscroll-behavior: contain; }
+  .spark-panel { overflow-y: auto; overscroll-behavior: contain; scroll-padding-bottom: 0.5rem; }
 }
 
 /* A phone on its side, a story open (J, 2026-11-08; attempts 1 and 2 left the clip a 9:16 column, 89x159 then 184x327 of a
@@ -2642,7 +2973,7 @@ figure.feed { cursor: default; }
   }
   .spark:not(.is-tree) .spark-unmute { left: 0.6rem; bottom: calc(var(--inventory-h) + 0.3rem); }
   .spark:not(.is-tree) .spark-fullscreen { left: calc(var(--lp-col) - 2.75rem + 0.6rem); right: auto; bottom: calc(var(--inventory-h) + 0.3rem); }
-  /* Right black: the question and the choices, scrolling by themselves if there are many. */
+  /* Right black: the question and the choices, sized so every choice is at least 48px tall and fully visible. */
   .spark:not(.is-tree) .spark-panel {
     position: fixed;
     top: 0;
@@ -2650,8 +2981,38 @@ figure.feed { cursor: default; }
     bottom: var(--inventory-h);
     z-index: 50;
     width: var(--lp-col);
-    padding: 0.4rem 0.6rem 0.4rem 0;
+    padding: 0.3rem 0.6rem 0.3rem 0;
     justify-content: safe center;
+  }
+  .spark:not(.is-tree) .spark-story {
+    max-height: 4.5rem;
+    overflow-y: auto;
+    margin-bottom: 0.15rem;
+    font-size: 0.76rem;
+    line-height: 1.22;
+  }
+  .spark:not(.is-tree) .spark-question {
+    margin: 0.05rem 0 0.2rem;
+    font-size: 0.84rem;
+    line-height: 1.2;
+  }
+  .spark:not(.is-tree) .choice-timer {
+    margin: 0 0 0.2rem;
+    min-height: 16px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .spark-choices, .console-choices { gap: 0.3rem; }
+  .spark-choices .choice, .console-choices .choice {
+    min-height: 48px;
+    padding: 0.32rem 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.2;
+  }
+  .console-choices:not(:empty)::before {
+    font-size: 0.7rem;
+    line-height: 1.1;
   }
 }
 
@@ -2661,42 +3022,19 @@ figure.feed { cursor: default; }
 
 /* ---------------- Choices on a phone (J, 2026-11-08; playtest finding f_32e426e8a75b) ----------------
    Up to 480px wide every choice is a full-width button at least 48px tall with 1rem text, near-white on a lifted
-   fill with a visible border (the dim look stays for the truly disabled: waiting for the clip, locked). The countdown
-   sits right above them, readable, and says "Choose in N s". Night Shift's choices get the same, under a "Your move" cue. */
+   fill with a visible border, staggered entrance when active, and the countdown / Up next cue above them. */
 @media (max-width: 480px) {
   .spark-choices, .console-choices { width: 100%; gap: 0.5rem; }
   .spark-choices .choice, .console-choices .choice {
-    display: flex;
-    align-items: center;
     width: 100%;
     min-height: 48px;
-    box-sizing: border-box;
-    padding: 0.7rem 1rem;
+    padding: 0.65rem 1rem;
     font-size: 1rem;
     line-height: 1.3;
-    color: #fbfaf7;
-    background: #2f343b;
-    border: 1.5px solid #d8d4cd;
-    overflow-wrap: anywhere;
-    white-space: normal;
   }
-  .spark-choices .choice:active, .console-choices .choice:active { background: #444a53; }
-  .spark-choices .choice:focus-visible, .console-choices .choice:focus-visible { outline: 2px solid #f4f2ee; outline-offset: 2px; }
-  .choice-timer { gap: 0.7rem; margin: 0 0 0.6rem; min-height: 24px; }
+  .choice-timer { gap: 0.7rem; margin: 0 0 0.55rem; min-height: 22px; }
   .choice-timer-track { height: 5px; background: rgba(255, 255, 255, 0.2); }
-  .choice-timer-bar { background: #f4f2ee; }
-  .choice-timer-label { min-width: 7.5em; color: #f4f2ee; font-size: 0.85rem; }
-  /* While the clip plays the choices are live too (they work): full strength, no fade-in from dim, the cue says so. */
-  .choice-timer[data-state="waiting"] { visibility: visible; }
-  .spark-choices[data-phase="waiting"] .choice { opacity: 1; }
-  .spark-choices[data-phase="ready"] .choice { animation: none; }
-  .console-choices:not(:empty)::before {
-    content: "Your move";
-    color: #f4f2ee;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  .choice-timer-label { min-width: 7.5em; font-size: 0.85rem; }
 }
 
 /* Language picker (The Final Spark: every page is in another language). "English" shows the English plainly,
@@ -2750,3 +3088,238 @@ figure.feed { cursor: default; }
 .post-card .spot-en { display: none; }
 html[data-reading="en"] .post-card .spot-src { display: none; }
 html[data-reading="en"] .post-card .spot-en { display: inline; }
+
+/* Landing page living layer (js/living.js) */
+.hero, .story-card { transition: opacity .6s ease, filter .6s ease, border-color .2s, transform .2s; }
+.hero.dim, .story-card.dim { opacity: .25; filter: brightness(.5); }
+.hero.lit, .story-card.lit { animation: lit-in .8s ease-out; }
+.story-card.hot, .hero.hot { box-shadow: 0 0 22px rgba(160, 190, 255, .35); }
+.hero.lit .hero-image, .hero.lit picture { animation: hero-drift 9s ease-in-out infinite alternate; }
+@keyframes lit-in { from { box-shadow: 0 0 40px rgba(160, 190, 255, .6); } to { box-shadow: 0 0 0 rgba(160, 190, 255, 0); } }
+@keyframes hero-drift { from { filter: brightness(.92); } to { filter: brightness(1.08); } }
+.tile-wall { display: flex; gap: .5rem; margin: .6rem 0 1rem; height: 34px; }
+.tile-screen { flex: 1; background: #0b1220; border: 1px solid #2a3550; border-radius: 3px; position: relative; overflow: hidden; }
+.tile-screen::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(120,160,255,.10) 0 2px, transparent 2px 4px); }
+.tile-screen.flick { animation: tile-flick .5s steps(5); }
+@keyframes tile-flick { 0% { background: #bcd0ff; } 30% { background: #0b1220; } 55% { background: #6f8fd8; } 100% { background: #0b1220; } }
+.post-card.sleepy { opacity: .4; transform: translateY(10px); transition: opacity .6s, transform .6s; }
+.post-card.sleepy.awake { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .hero.lit, .story-card.lit, .tile-screen.flick, .hero.lit picture { animation: none; } }
+
+/* Scene cross-fade (js/game.js crossfadeOut): the outgoing layer sits above the incoming one and fades out;
+   the choices and timer are outside the video box, so nothing covers them. */
+.spark-video > .spark-leave {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  animation: spark-leave var(--fade-ms, 350ms) ease-in-out forwards;
+}
+.spark-video > video:not(.spark-leave),
+.spark-video > .spark-video-blank:not(.spark-leave) {
+  animation: spark-enter var(--fade-ms, 350ms) ease-in-out;
+}
+@keyframes spark-leave { from { opacity: 1; } to { opacity: 0; } }
+@keyframes spark-enter { from { opacity: 1; } to { opacity: 1; } }
+
+/* Console big screen: the old picture stays as a fading layer above the new one (js/console.js renderBig). */
+.console-big > .big-pic.big-leave { z-index: 2; pointer-events: none; animation: spark-leave var(--fade-ms, 350ms) ease-in-out forwards; }
+
+/* Continue "Previously" (js/game.js playRecap): last scene's poster with a slow push-in, the story title,
+   one short line for the last choice; tap skips; then fades into the left-off scene. */
+.story-recap {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  padding: 1.5rem;
+  background: #070807;
+  color: #f2f0eb;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.story-recap[hidden] { display: none !important; }
+.story-recap.is-leaving {
+  animation: story-recap-out var(--fade-ms, 350ms) ease-in-out forwards;
+  pointer-events: none;
+}
+.story-recap-stage {
+  position: relative;
+  width: min(72vw, 22rem);
+  aspect-ratio: 9 / 16;
+  max-height: min(58vh, 28rem);
+  overflow: hidden;
+  border-radius: 4px;
+  background: #0c0d0f;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+.story-recap-poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transform-origin: 50% 45%;
+  animation: story-recap-push var(--recap-ms, 3s) linear forwards;
+}
+.story-recap-copy {
+  max-width: 22rem;
+  text-align: center;
+}
+.story-recap-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #c8c4be;
+}
+.story-recap-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 5vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+.story-recap-line {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: #e8e4dc;
+}
+.story-recap-skip {
+  margin: 0.6rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a8680;
+}
+@keyframes story-recap-push {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@keyframes story-recap-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-recap-poster { animation: none; }
+  .story-recap.is-leaving { animation-duration: 120ms; }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .story-recap { flex-direction: row; flex-wrap: wrap; gap: 1rem 1.5rem; }
+  .story-recap-stage {
+    width: min(36vw, 14rem);
+    max-height: 78vh;
+  }
+  .story-recap-copy { text-align: left; max-width: 18rem; }
+}
+
+/* Blog article layout: hero, title, meta line (date, language, reading time), body at a 65-70 character measure,
+   with a font stack and line-height per script (data-script on the article). */
+.post-hero { margin: 0 0 1.2rem; }
+.post-hero .hero-image { display: block; margin: 0; aspect-ratio: 16 / 9; object-fit: cover; }
+.post-article .post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+  margin: 0 0 1.2rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.post-article .post-meta time { display: inline; margin: 0; }
+.post-meta .post-lang,
+.post-meta .post-read { text-transform: none; }
+.post-meta .post-lang::before,
+.post-meta .post-read::before { content: "\00b7\00a0"; }
+.post-article .post-body { max-width: 68ch; font-size: 1.05rem; line-height: 1.65; }
+.post-article h1 { overflow-wrap: anywhere; }
+.post-article .post-body .spot-src { white-space: pre-line; }
+.post-article .poem p { max-width: 68ch; }
+.post-article[data-script="zh"] { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif; }
+.post-article[data-script="ja"] { font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Noto Sans JP", sans-serif; }
+.post-article[data-script="hi"] { font-family: "Nirmala UI", "Noto Sans Devanagari", "Mangal", "Kohinoor Devanagari", sans-serif; }
+.post-article[data-script="bn"] { font-family: "Nirmala UI", "Noto Sans Bengali", "Vrinda", "Kohinoor Bangla", sans-serif; }
+.post-article[data-script="ar"] { font-family: "Segoe UI", "Noto Naskh Arabic", "Geeza Pro", Tahoma, sans-serif; }
+.post-article[data-script="zh"] .post-body,
+.post-article[data-script="ja"] .post-body { line-height: 1.9; }
+.post-article[data-script="hi"] .post-body,
+.post-article[data-script="bn"] .post-body { line-height: 1.95; }
+.post-article[data-script="ar"] .post-body { line-height: 1.9; }
+.post-article[data-script="zh"] h1,
+.post-article[data-script="ja"] h1,
+.post-article[data-script="hi"] h1,
+.post-article[data-script="bn"] h1,
+.post-article[data-script="ar"] h1 { line-height: 1.5; }
+.post-article[data-script="zh"] .poem p,
+.post-article[data-script="ja"] .poem p,
+.post-article[data-script="hi"] .poem p,
+.post-article[data-script="bn"] .poem p,
+.post-article[data-script="ar"] .poem p { line-height: 1.95; }
+.post-article[dir="rtl"] .post-kicker { direction: ltr; unicode-bidi: isolate; }
+.post-article[dir="rtl"] .post-meta { direction: rtl; }
+.post-layout:has(.post-article[dir="rtl"]) { direction: rtl; }
+.post-layout:has(.post-article[dir="rtl"]) .recent { direction: ltr; }
+html[data-reading="en"] .post-article h1 .spot-src { display: none; }
+
+/* Replay marks (J, 2026-11-11): on a second run a choice to a way never found carries a small "New" tag, and one
+   whose whole way is seen a quiet tick. The tag is a pseudo-element in the card's right edge (the card reserves room
+   for it, so the text never wraps under it and the card stays 48 px or more); the Tree's nodes carry the same. */
+.spark-choices .choice[data-mark] { padding-right: 4.4rem; }
+.spark-choices .choice[data-mark]::before {
+  position: absolute;
+  top: 50%;
+  right: 0.7rem;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.68rem;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.spark-choices .choice[data-mark="new"]::before {
+  content: "New";
+  padding: 0.22rem 0.5rem;
+  color: #1a1b1d;
+  background: #d8b45a;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.spark-choices .choice[data-mark="seen"]::before {
+  content: "\2713  Seen";
+  color: #8e8b86;
+}
+.tree-node[data-mark]::after {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.45rem;
+  font-size: 0.6rem;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tree-node[data-mark="new"]::after { content: "New"; padding: 0.15rem 0.35rem; color: #1a1b1d; background: #d8b45a; border-radius: 999px; font-weight: 700; }
+.tree-node[data-mark="seen"]::after { content: "\2713"; color: #8e8b86; font-size: 0.8rem; }
+.tree-node[data-mark] .tree-node-title { padding-right: 2.2rem; }
+
+/* Home cards: "2 of 5 endings", bright once every ending is found. */
+.story-card-endings {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.story-card-endings[hidden] { display: none; }
+.story-card[data-all-endings="true"] .story-card-endings {
+  color: #1a1b1d;
+  background: #d8b45a;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.story-card[data-all-endings="true"] .story-card-endings::before { content: "\2713  "; }

@@ -47,11 +47,25 @@ the pencil); the hero card breathes (slow light drift).
 console room), the question, the choices, the inventory bar, the Tree, Settings, the `Tap to play` prompt. Size: the
 viewport. In/out: card, `/?story=<id>`, `/<id>/` links; leave by All stories, or a death's Try again, or Start Over at an
 ending. There is **no Back button** (canon: a choice stands).
+**(new) House audio buses** (`js/audio.js`, `window.iltvAudio`): one Web Audio context unlocked on the first tap; three
+buses (ambience, music, ui) with gain fades; ambience and music duck under a clip that has sound; a header sound toggle
+mutes everything (saved in `iltv.sound`, kept in step with Settings / `hawkes.sound`). `setBed(story, mood)` and
+`playUi(name)` play `/assets/audio/...` when those files exist and stay quiet when they don't. Playtest: `audio-buses`.
 
 **C. The Tree.** A map of the story as found: only unlocked scenes show, a locked "?" per way not taken, nothing pressable.
 It is the home's one *map*: it is how a player sees how big a world they have not seen.
 
-**D. The blog.** The studio's lobby noticeboard: posts, each with its own images and videos, in the player's language list.
+**D. The Endings gallery (new).** Each story's found endings, reachable from the ending card and from an Endings tab
+(or Night Shift's Endings button). Found tiles show that ending's poster and name; unfound ones show a blurred,
+darkened silhouette of the same poster and "???". A count reads "2 of 5 found" and rises when a new ending is
+reached (kept in localStorage `iltv.endings.<cookie>` next to the unlocks). Tapping a found ending shows its card
+again. Playtest `endings-gallery` (and smoke's trimmed leg) checks it at 390x844 and 1280x720.
+On a replay (an ending found or a death met) a choice to a never-reached scene wears a small gold "New" tag, one
+whose whole way is seen a quiet "Seen" tick, and the Tree's nodes carry the same (`data-mark`); a home card says "2 of 5
+endings" and turns gold when every ending is found. The home only ever shows; it never talks. Video stories only: a
+console story's choices depend on flags, so it has the card count but no per-choice tags yet.
+
+**E. The blog.** The studio's lobby noticeboard: posts, each with its own images and videos, in the player's language list.
 
 ### The Final Spark: the sewer and the town
 
@@ -180,9 +194,13 @@ what fills any hold longer than ten seconds.
 - **Landing page.** *Interactions:* press a card; press Start Over / Continue; scroll to the blog; switch language; open
   Settings (sound, volume); press a footer link. *Self-running:* the hero light drifts; badges update; hover loops (new).
   *Ambient:* none by design before sound is on; after Tap to play, the story's own bed. *Changes over time:* a card
-  moves from Not started to Started to Completed; percent explored climbs.
-- **Player.** *Interactions:* choose; Tree tab; flashlight (Spark); Settings; CC; subtitles. *Self-running:* video plays,
-  a timer ticks where a choice has one. *Changes:* the inventory bar loses water/bullets/matches; the Tree fills in.
+  moves from Not started to Started to Completed; percent explored climbs. Continue opens beat 3b (Previously), not a
+  cold jump into the left-off scene.
+- **Player.** *Interactions:* choose; Tree tab; flashlight (Spark); Settings; CC; subtitles; skip Previously. *Self-running:*
+  video plays; in video stories (*The Final Spark*, *The Water Road*) a 15 s draining timer bar (`"Choose in N s"`) runs across
+  the top of the choice group once the clip ends, pulses warmer in the last 3 s, and briefly highlights the default choice
+  before playing it when time runs out (*Night Shift* choices are untimed by design); the Previously poster pushes in for 3 s.
+  *Changes:* the inventory bar loses water/bullets/matches; the Tree fills in.
 - **Blog.** *Interactions:* open a post, play its video, scroll. *Self-running:* none. *Falls short:* a bare document list;
   **(new)** each post card shows a still that animates once on scroll-in.
 
@@ -283,6 +301,10 @@ here for an agent to build next, within the existing scene data.
    with sound on, one note of its bed.
 3. **The first match (exists).** *Where/when:* press Play on The Final Spark. The Tap to play prompt covers the screen;
    the press unlocks sound and the sewer video starts with a match's strike.
+3b. **Previously on Continue (exists).** *Where/when:* press Continue on a mid-run (hero, Continue row or card). After
+   Tap to play (if needed), a 3 s push-in on the last scene's poster (card image for Night Shift), the story title and
+   one short line naming the last choice; a tap skips; then a cross-fade into the scene where they left off with its
+   choices ready. Play and Start Over never show it. Event: the house remembers the cut, not a cold jump.
 
 ### The Final Spark
 4. **Waking (exists).** *Page start.* Dripping water, the rat's glossy eyes in the match's light; the first choice.
@@ -332,6 +354,7 @@ here for an agent to build next, within the existing scene data.
 ## Where it falls short today, and what is next (honest)
 
 1. **The home is silent and still.** Landing page has no motion or sound before a story opens (beats 1 and 2 above).
+   Continue no longer drops cold into a scene (beat 3b exists); hover loops (beat 2) are still new.
 2. **Final Spark and Water Road are only clips with choices.** Between choices there are no interactions except the
    choice itself. Next: a "look around" ring on selected pages (the rat, the gate, the skeleton, the wagon barrels)
    that the player can press to hear one sound or line (cheap, CPU or voice cents).
@@ -350,3 +373,12 @@ here for an agent to build next, within the existing scene data.
   58th floor; the Spark and the Water Road are separate universes; Night Shift shows nothing of the restricted work
   (no B3, no vat, no creature); the dove is only in pictures.
 - Every beat is carried by a clip, an event, a sound or a voice. A new beat told only in text is rejected.
+
+## Vertical slice: the home's landing page (built, `js/living.js`)
+
+The slice is the home's landing page (the world bible's first area). **Landmark:** the hero card, with a slow light drift.
+**Life:** the house lights come up card by card (beat 1); a wall of three screens flickers on its own every 2.5 to 5 s;
+blog cards wake as they scroll in. **Interactions:** a card under the pointer glows and ticks; a press clicks and opens the
+story; scroll to the blog. **Ambient sound:** synthesized ticks and tones (no assets), only after the first press and
+never when Sound is off. **Beat as an event:** the house lights come up with a rising tone, no text. Playtest `living-home`
+reports quality.maxQuietSeconds and quality.textOnlyBeats. Left: hover loops of each world, voice lines for the Spark.

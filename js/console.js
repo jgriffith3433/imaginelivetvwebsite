@@ -323,14 +323,23 @@
     els.big.dataset.camera = cam.id;
     els.big.dataset.state = state;
     if (!changed && els.big.firstChild) return;
+    var oldPic = els.big.querySelector(".big-pic:not(.big-leave)");
     els.big.replaceChildren();
+    if (oldPic && shown && !quiet) {
+      var fms = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 350;
+      oldPic.classList.add("big-leave");
+      oldPic.style.setProperty("--fade-ms", fms + "ms");
+      els.big.appendChild(oldPic);
+      setTimeout(function () { oldPic.remove(); }, fms + 40);
+    }
     var pic = text("div", "big-pic");
     pic.appendChild(picture(info, cam, state));
     var tag = text("span", "big-tag", cam.id.toUpperCase() + " " + cam.name);
     var cap = text("p", "big-cap");
     cap.appendChild(text("b", "", cam.id.toUpperCase() + " " + cam.name + (state === "normal" ? "" : " · " + state)));
     cap.appendChild(document.createTextNode(" " + info.desc));
-    els.big.append(pic, text("span", "big-crt"), tag, cap);
+    els.big.insertBefore(pic, els.big.firstChild);
+    els.big.append(text("span", "big-crt"), tag, cap);
     if (state !== "normal") els.big.appendChild(text("span", "big-mark", state));
     if (changed && shown && !quiet) flash();
     else if (changed && shown) changes++;
@@ -422,13 +431,41 @@
     els.choices.replaceChildren();
     els.choices.hidden = !finished || !!s.ending;
     els.ending.hidden = !(finished && s.ending);
-    els.ending.textContent = s.ending ? s.ending[0] : "";
-    if (s.ending && s.endcard) {
-      var card = document.createElement("img");
-      card.className = "console-endcard";
-      card.src = s.endcard;
-      card.alt = "";
-      els.ending.prepend(card);
+    els.ending.replaceChildren();
+    if (finished && s.ending) {
+      if (s.endcard) {
+        var card = document.createElement("img");
+        card.className = "console-endcard";
+        card.src = s.endcard;
+        card.alt = "";
+        els.ending.appendChild(card);
+      }
+      els.ending.appendChild(document.createTextNode(s.ending[0]));
+      var ends = Array.isArray(story.endings) ? story.endings : [];
+      var foundN = 0;
+      try {
+        var raw = localStorage.getItem("iltv.endings." + story.cookie);
+        var saved = raw ? JSON.parse(raw) : null;
+        var ids = Array.isArray(saved) ? saved : (saved && Array.isArray(saved.ids) ? saved.ids : []);
+        foundN = ids.length;
+      } catch (e) { foundN = 0; }
+      if (!foundN && ends.length) foundN = 1; // this ending was just reached; game.js writes the key
+      if (ends.length) {
+        var count = document.createElement("p");
+        count.className = "ending-count";
+        count.id = "console-ending-count";
+        count.textContent = foundN + " of " + ends.length + " found";
+        els.ending.appendChild(count);
+      }
+      var galleryBtn = document.createElement("button");
+      galleryBtn.type = "button";
+      galleryBtn.className = "console-btn ending-gallery-btn";
+      galleryBtn.id = "console-ending-open";
+      galleryBtn.textContent = "Endings";
+      galleryBtn.addEventListener("click", function () {
+        if (hooks && hooks.endingsGallery) hooks.endingsGallery();
+      });
+      els.ending.appendChild(galleryBtn);
     }
     box.dataset.state = s.ending ? "soon" : "play";
     if (!finished || s.ending) return;
@@ -437,7 +474,7 @@
       var b = text("button", "choice", c[0]);
       b.type = "button";
       b.dataset.choice = String(i);
-      b.addEventListener("click", function () { choose(i); });
+      b.addEventListener("click", function () { window.iltvDecide(els.choices, b, function () { choose(i); }); });
       els.choices.appendChild(b);
     });
   }
@@ -458,6 +495,11 @@
         save();
         renderSubs();
         renderChoices();
+        return;
+      }
+      // Continue Previously (js/game.js): the room is already under the overlay; wait to speak until it clears.
+      if (document.documentElement.getAttribute("data-recap") === "1") {
+        setTimeout(again, 100);
         return;
       }
       if (!soundReady()) {
@@ -564,6 +606,50 @@
     }
     if (last) showFeed(last);
   }
+
+  /** The hand-off: the chosen card glows and grows, the others fall away (250 ms), then fn runs once. */
+  var DECIDE_MS = 250;
+  window.iltvDecide = function (box, btn, fn) {
+    if (box._deciding && box._deciding.isConnected) return false;
+    box._deciding = btn;
+    btn.classList.add("is-chosen");
+    btn.setAttribute("aria-pressed", "true");
+    box.classList.add("is-deciding");
+    box.setAttribute("aria-busy", "true");
+    box.querySelectorAll(".choice").forEach(function (b) {
+      if (b !== btn) { b.classList.add("is-fading"); b.setAttribute("aria-disabled", "true"); b.tabIndex = -1; }
+    });
+    try { if (navigator.vibrate) navigator.vibrate(10); } catch (e) { /* unsupported */ }
+    try { if (window.iltvAudio && window.iltvAudio.playUi) window.iltvAudio.playUi("choose"); } catch (e) { /* no sound */ }
+    document.dispatchEvent(new CustomEvent("iltv:deciding", { detail: { index: btn.dataset.choiceIndex || btn.dataset.choice } }));
+    setTimeout(function () {
+      if (btn.isConnected) { try { fn(); } catch (e) { console.error(e); } }
+      setTimeout(function () {
+        if (!btn.isConnected) return;
+        box._deciding = null;
+        box.classList.remove("is-deciding");
+        box.removeAttribute("aria-busy");
+        btn.classList.remove("is-chosen");
+        btn.removeAttribute("aria-pressed");
+        box.querySelectorAll(".is-fading").forEach(function (b) { b.classList.remove("is-fading"); b.removeAttribute("aria-disabled"); b.removeAttribute("tabindex"); });
+      }, 1500);
+    }, DECIDE_MS);
+    return true;
+  };
+
+  document.addEventListener("keydown", function (event) {
+    if (event.altKey || event.ctrlKey || event.metaKey || event.repeat || !/^[1-9]$/.test(event.key)) return;
+    var t = event.target;
+    if (t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable)) return;
+    var spark = document.getElementById("spark"), cons = document.getElementById("console");
+    var box = spark && !spark.hidden ? document.getElementById("spark-choices") : cons && !cons.hidden ? document.getElementById("console-choices") : null;
+    if (!box || box.hidden || document.querySelector(".tap-to-play:not([hidden])")) return;
+    var b = box.querySelectorAll(".choice")[Number(event.key) - 1];
+    if (!b || b.disabled || b.getAttribute("aria-disabled") === "true") return;
+    event.preventDefault();
+    b.focus();
+    b.click();
+  });
 
   function choose(i) {
     var s = scene();
@@ -715,6 +801,11 @@
     run = null;
     story = null;
     box.hidden = true;
+    var endingsPane = $("console-endings");
+    if (endingsPane) endingsPane.hidden = true;
+    if (els.logBtn) { /* keep */ }
+    var endingsBtn = $("console-endings-btn");
+    if (endingsBtn) endingsBtn.setAttribute("aria-pressed", "false");
   }
 
   /** Start Over / a card's reset: forgets the saved run (the cookies are game.js's). */

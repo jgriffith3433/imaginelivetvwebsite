@@ -64,8 +64,10 @@ A story with no ending yet builds with a warning: its badge can't say Completed.
 The card's button says **Start Over** once the story is **Completed** (or when the run is at an ending); otherwise it
 follows the current **run**: **Play** (no run, or at the first page) or **Continue** (somewhere further in). Pressing
 Start Over forgets that story's run only, its run cookie (the other stories keep theirs), and opens it at its first
-page with an empty history; its unlocked scenes, its percent and Completed stay. The `stories` playtest checks the
-badges, the percent, the buttons and Start Over.
+page with an empty history; its unlocked scenes, its percent and Completed stay. Pressing **Continue** opens a short
+Previously moment (last scene's poster, title, one line for the last choice; tap to skip) before the left-off scene
+(see "Unlocked scenes" below). The `stories` playtest checks the badges, the percent, the buttons and Start Over;
+`continue-recap` checks the Previously overlay.
 
 ## Console stories
 
@@ -146,7 +148,10 @@ play** press starts them (and unlocks them on iOS); Settings (Sound on/off, Volu
 only once sound is unlocked, then follow each other. **Replay line** plays the current (or last) line again, **Skip
 line** moves on. **Subtitles are on by default** (CC in the bar turns them off, kept in `localStorage["iltv.subtitles"]`;
 off, they stay for screen readers). Nothing on the screen or in the strip of cameras can be pressed (there is no
-click-to-enlarge): the people in the room choose what the big screen shows.
+click-to-enlarge): the people in the room choose what the big screen shows. **Choices are untimed by design:** when a
+scene's voiced lines finish, its choices slide in under a `"Your move"` cue with no countdown bar and never auto-pick
+(unlike the video stories *The Final Spark* and *The Water Road*, whose choices show a 15 s draining timer bar and
+`"Choose in N s"` label, pulsing warmer in the last 3 s and briefly highlighting the default choice before playing it).
 
 **Saving.** The whole run is in `localStorage["iltv.run.<cookie>"]`: the scene, the way there, the flags and meters, the
 log and how many lines were heard, so a returning player resumes in the same scene with the same state. The two
@@ -293,10 +298,24 @@ console stories next to the video ones (a console draft opens by its link and ke
 Scenes are unlockable (J, 2026-10-18: "so the user doesn't know if decisions continue down the path... they can't
 cheat"). Every story keeps two cookies, both named from `cookie` in its data:
 
-- the **run**, `<cookie>`: `{ scene, history }`, where they are and the way they came (the inventory's counts come
-  from it). Start Over clears it.
+- the **run**, `<cookie>`: `{ scene, history, from, choice, poster }`, where they are and the way they came (the
+  inventory's counts come from it). `from` / `choice` / `poster` are the Continue **Previously** recap (the last scene
+  left, the English words of the choice that led here, that scene's poster or the card image): set on each choice,
+  omitted on older cookies and at the start. Start Over clears the run.
 - the **unlocks**, `<cookie>Unlocked`: `{ seen, completed }`, every scene ever reached in the player (by id, once)
   and whether an ending was. Nothing in the game clears it: deaths, Try again and Start Over keep it.
+- the **found endings**, localStorage `iltv.endings.<cookie>`: `{ ids: [...] }`, every ending scene reached once.
+  `npm run story` lists each story's ending nodes into `endings` on `js/story-data.js` (id, title, poster or
+  endcard). The Endings gallery (Endings tab on a video story, Endings on a console story and on the ending card)
+  shows found tiles with poster and name, locked ones as a blurred darkened silhouette with "???", and a count
+  like "2 of 5 found". Tapping a found ending shows its card again. Nothing clears found endings. Playtest
+  `endings-gallery` (smoke's trimmed leg seeds one found ending).
+
+**Continue Previously (J, 2026-11-10):** pressing Continue on a mid-run (hero, Continue row or card) shows a ~3 s
+overlay after Tap to play: the last scene's poster with a slow push-in, the story title and one short line naming the
+last choice; a tap skips it; then a cross-fade into the left-off scene with its choices ready. Play and Start Over
+skip the overlay. Playtest `continue-recap` checks all three stories at desktop, 390x844 and 1280x720; beta's `smoke`
+ends with the same check (`{"at":"smoke"}`, always skip, with screenshot events).
 
 Only the player unlocks a scene: the branch pages (`/<folder>/`) never touch the cookies. A story's percent explored
 is its unlocked scenes over all its scenes, rounded down, so it is 100% only when every scene has been seen (a new
