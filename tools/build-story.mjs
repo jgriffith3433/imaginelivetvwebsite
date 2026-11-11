@@ -932,12 +932,12 @@ const rules = globalThis.iltvConsoleRules;
 const CAMERA_MIN = 6;
 const CAMERA_MAX = 9;
 const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
-const CHOICE_KEYS = ['say', 'next', 'requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic'];
+const CHOICE_KEYS = ['say', 'next', 'requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic', 'pose', 'react'];
 
 /** A choice as the player's data has it: [say, say, next, extra] (extra left out when empty). */
 function consoleChoice(c) {
   const extra = {};
-  for (const k of ['requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic']) if (c[k] != null && !(Array.isArray(c[k]) && !c[k].length)) extra[k] = c[k];
+  for (const k of ['requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic', 'pose', 'react']) if (c[k] != null && !(Array.isArray(c[k]) && !c[k].length)) extra[k] = c[k];
   return Object.keys(extra).length ? [c.say, c.say, c.next, extra] : [c.say, c.say, c.next];
 }
 
@@ -1137,6 +1137,8 @@ function consoleData(st) {
     ambience: Object.fromEntries(Object.keys(d.ambience ?? {}).map((cue) => [cue, urlIfMade(f.bed(cue))])),
     sfx: Object.fromEntries(Object.keys(d.sfx ?? {}).map((cue) => [cue, urlIfMade(f.sfx(cue))])),
     music: Object.fromEntries(Object.keys(d.music ?? {}).map((cue) => [cue, urlIfMade(f.music(cue))])),
+    ...(d.reactions ? { reactions: d.reactions } : {}),
+    ...(d.chapters ? { chapters: d.chapters } : {}),
     ...(d.unspoken ? { unspoken: d.unspoken } : {}),
     ...(d.stateCap ? { stateCap: d.stateCap } : {}),
     endings: endingsList(st),

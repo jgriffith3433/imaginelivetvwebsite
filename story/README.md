@@ -317,6 +317,12 @@ last choice; a tap skips it; then a cross-fade into the left-off scene with its 
 skip the overlay. Playtest `continue-recap` checks all three stories at desktop, 390x844 and 1280x720; beta's `smoke`
 ends with the same check (`{"at":"smoke"}`, always skip, with screenshot events).
 
+**Choice ink and chapters (Night Shift):** after a choice that changes `trainer_trust` or sets a flag, the choice's
+log line writes on screen within 2 s with the pencil SFX and a recorded Dee "Mm." / "Mm-hm." when named (`react` on
+the choice, `reactions` on the story). `chapters` in the story JSON groups the night (~10–12 min of audio each); leaving
+a chapter's `end` scene shows a 2 s card (clock jump + sting + hook). Continue resumes at the scene after that card
+(the current chapter). Playtest `night-shift` `{"at":"pace"}`.
+
 Only the player unlocks a scene: the branch pages (`/<folder>/`) never touch the cookies. A story's percent explored
 is its unlocked scenes over all its scenes, rounded down, so it is 100% only when every scene has been seen (a new
 scene added to a story lowers everyone's percent until they find it). It shows on the card and in the player, next

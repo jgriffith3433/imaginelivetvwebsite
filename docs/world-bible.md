@@ -277,9 +277,10 @@ the dove crosses frame once per page.
 Gap budget: a line every ~3 to 9 seconds; a scene's `act`s and `feed` changes (the big screen's CRT flash 200 to 300 ms)
 keep the eye moving; ambience beds under every scene; stings at turns. Nothing is silent between scenes.
 - **N1 Control room.** *Interactions:* choose what to say, log or do at each scene (up to 12 choices, gated by flags);
-  open the shift log; replay a line; toggle CC; Settings. *Events on their own:* the phone rings; the radio charger
-  clicks; the clock ticks fast; Dee counts; Okafor leaves by the door; the lights flicker and coffee spills; Dee taps the
-  screen, stands, angrily leaves with the keys; someone writes in the log; the silence button is pressed. *Ambient:*
+  sit or stand at handover; open the shift log; replay a line; toggle CC; Settings. *Events on their own:* the phone
+  rings; the radio charger clicks; the clock ticks fast; Dee counts; a choice writes itself in pencil on screen; a
+  chapter card jumps the clock; Okafor leaves by the door; the lights flicker and coffee spills; Dee taps the screen,
+  stands, angrily leaves with the keys; someone writes in the log; the silence button is pressed. *Ambient:*
   `control-room`, later `control-room-late`. *Changes:* the bed shifts at 02:00; slips and trust move a meter; a wedge
   stays propped until dealt with.
 - **N2 Lobby and vestibule.** *Interactions:* look at the laptop, call the bench owner, check the sleeper, offer a
@@ -374,8 +375,13 @@ here for an agent to build next, within the existing scene data.
     other ending: the same bell, but only after the barrels are counted.)
 
 ### Night Shift
-18. **Handover (exists).** *18:45, control room.* Okafor reads the log; Dee counts under her breath; the radio
-    charger clicks; he leaves for his train; the door closes.
+18. **Handover (exists).** *18:45, control room.* Okafor opens the log; Dee counts under her breath; "Sit anywhere
+    that isn't mine." Within ~20 s of Tap to play the viewer picks a chair or stays standing (trust or pose lands at
+    once); then the day log finishes and he leaves for his train.
+18a. **The choice lands in ink (exists/new).** *After any trust or flag choice.* The shift-log line writes on screen
+    with the pencil SFX within 2 s, and Dee answers with a recorded "Mm." or "Mm-hm." when one fits (Telltale beat).
+18b. **Chapter cards (exists/new).** *About every 10–12 minutes of audio on the shortest path.* A 2 s card: the clock
+    jumps, a sting, a one-line hook; home Continue resumes in that chapter.
 19. **The first radio check (exists).** *19:00.* A squelch, "Control to unit one." The player answers (or does not).
 20. **The cleaner's badge (exists).** *21:30, 44.* Marisol on the walkie, a vacuum far away; the badge reader refuses
     on camera 6.

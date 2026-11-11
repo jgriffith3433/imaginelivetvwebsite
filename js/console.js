@@ -57,6 +57,8 @@
   var sting = null;
   var bedCue = null;
   var subsOn = true;
+  var inkTimer = 0; // pending ink / chapter hand-off (cleared on close)
+  var chapterTimer = 0;
 
   try {
     subsOn = localStorage.getItem(SUBS_KEY) !== "off";
@@ -89,6 +91,8 @@
         log: run.log,
         done: run.done,
         sel: run.sel,
+        pose: run.pose || null,
+        chapter: run.chapter || null,
       });
     memory[runKey()] = text;
     try {
@@ -97,7 +101,7 @@
   }
 
   function fresh() {
-    return { scene: story.start, history: [], st: rules.fresh(story), log: [], done: 0, sel: null };
+    return { scene: story.start, history: [], st: rules.fresh(story), log: [], done: 0, sel: null, pose: null, chapter: chapterOfScene(story.start) };
   }
 
   /** The saved run, if it is this story's and still makes sense (the scenes it names exist) and matches the cookie's place. */
@@ -116,10 +120,54 @@
         log: Array.isArray(saved.log) ? saved.log : [],
         done: Math.max(0, Math.min(saved.done | 0, story.scenes[saved.scene].lines.length)),
         sel: saved.sel && story.cameras.some(function (c) { return c.id === saved.sel; }) ? saved.sel : null,
+        pose: saved.pose === "sit" || saved.pose === "stand" ? saved.pose : null,
+        chapter: saved.chapter || chapterOfScene(saved.scene),
       };
     } catch (e) {
       return null;
     }
+  }
+
+  /** Which chapter a scene belongs to (authored chapter list in story order). */
+  function chapterOfScene(id) {
+    var list = (story && story.chapters) || [];
+    if (!list.length) return null;
+    var i;
+    for (i = 0; i < list.length; i++) {
+      if (list[i].start === id || list[i].end === id) return list[i].id;
+    }
+    if (run && run.chapter) return run.chapter;
+    if (run && run.history) {
+      var found = list[0].id;
+      for (i = 0; i < list.length; i++) {
+        if (run.history.indexOf(list[i].start) >= 0) found = list[i].id;
+      }
+      return found;
+    }
+    return list[0].id;
+  }
+
+  function chapterById(id) {
+    var list = (story && story.chapters) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+
+  function chapterEnding(sceneId) {
+    var list = (story && story.chapters) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].end === sceneId) return list[i];
+    return null;
+  }
+
+  /** A choice that changes trainer_trust or sets/clears a flag (the ink / "remember that" beat). */
+  function choiceLands(before, after, extra) {
+    if (extra && ((extra.set && extra.set.length) || (extra.clear && extra.clear.length))) return true;
+    if (extra && extra.add && extra.add.trainer_trust) return true;
+    if (before.meters.trainer_trust !== after.meters.trainer_trust) return true;
+    var k;
+    for (k in after.flags) if (after.flags[k] && !before.flags[k]) return true;
+    for (k in before.flags) if (before.flags[k] && !after.flags[k]) return true;
+    return false;
   }
 
   /* ---------------- sound ---------------- */
@@ -541,6 +589,7 @@
 
   function enter(id, resumed) {
     run.scene = id;
+    run.chapter = chapterOfScene(id) || run.chapter;
     subsCapped = false; subsWrites = [];
     var s = scene();
     if (!resumed) {
@@ -557,6 +606,8 @@
     if (R) {
       R.scene({ id: id, time: s.time, place: s.place, cast: s.cast, away: s.away, lines: s.lines });
       if (resumed && run.done) R.catchUp(run.done);
+      // Handover chair choice: sit or stand sticks until the next scene's cast resets it.
+      if (run.pose && R.posture) R.posture("you", run.pose);
     }
     var before = shown;
     renderWall();
@@ -675,19 +726,154 @@
     b.click();
   });
 
+  function inkEl() {
+    var el = document.getElementById("console-ink");
+    if (el) return el;
+    el = document.createElement("div");
+    el.id = "console-ink";
+    el.className = "console-ink";
+    el.hidden = true;
+    el.setAttribute("role", "status");
+    el.innerHTML = '<p class="console-ink-line"></p>';
+    box.appendChild(el);
+    return el;
+  }
+
+  function chapterEl() {
+    var el = document.getElementById("console-chapter");
+    if (el) return el;
+    el = document.createElement("div");
+    el.id = "console-chapter";
+    el.className = "console-chapter";
+    el.hidden = true;
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", "Chapter");
+    el.innerHTML =
+      '<p class="console-chapter-kicker">Chapter</p>' +
+      '<p class="console-chapter-clock" id="console-chapter-clock"></p>' +
+      '<h2 class="console-chapter-title" id="console-chapter-title"></h2>' +
+      '<p class="console-chapter-hook" id="console-chapter-hook"></p>';
+    box.appendChild(el);
+    return el;
+  }
+
+  function playPencil() {
+    var cue = story.sfx && story.sfx.pencil;
+    if (!cue || !sfx) return;
+    sfx.src = cue;
+    playEl(sfx).catch(function () {});
+  }
+
+  /** Write the choice's log line on screen with the pencil SFX (and a Dee Mm / Mm-hm when one is named), then fn. */
+  function showInk(line, reactId, fn) {
+    var el = inkEl();
+    var p = el.querySelector(".console-ink-line");
+    var started = performance.now();
+    p.textContent = line || "";
+    el.hidden = false;
+    el.classList.add("is-writing");
+    box.dataset.ink = "1";
+    playPencil();
+    if (hooks.tell) hooks.tell("feature", { story: story.id, feature: "ink", line: line });
+    // "Written" the moment the line and pencil fire (criterion: within 2 s of the choice).
+    document.dispatchEvent(new CustomEvent("iltv:ink", {
+      detail: { line: line, react: reactId || null, ms: Math.round(performance.now() - started) },
+    }));
+    var react = reactId && story.reactions ? story.reactions[reactId] : null;
+    var finish = function () {
+      if (inkTimer) { clearTimeout(inkTimer); inkTimer = 0; }
+      el.classList.remove("is-writing");
+      el.hidden = true;
+      delete box.dataset.ink;
+      document.dispatchEvent(new CustomEvent("iltv:ink-done", { detail: { line: line } }));
+      if (!run || !story) return;
+      fn();
+    };
+    if (react && react.file && voice) {
+      var done = false;
+      var once = function () {
+        if (done) return;
+        done = true;
+        voice.onended = voice.onerror = null;
+        try { voice.pause(); } catch (e) { /* gone */ }
+        inkTimer = setTimeout(finish, 200);
+      };
+      voice.onended = once;
+      voice.onerror = once;
+      voice.src = react.file;
+      voice.loop = false;
+      playEl(voice).catch(function () { once(); });
+      inkTimer = setTimeout(once, ((react.dur || 1) + 1.2) * 1000);
+    } else {
+      inkTimer = setTimeout(finish, 900);
+    }
+  }
+
+  /** 2 s chapter card: clock jumps, sting, one-line hook; then fn. */
+  function showChapterCard(ch, fn) {
+    var el = chapterEl();
+    var next = null;
+    var list = story.chapters || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === ch.id && list[i + 1]) next = list[i + 1];
+    el.querySelector(".console-chapter-clock").textContent = (next && next.clock) || ch.clock || "";
+    el.querySelector(".console-chapter-title").textContent = (next && next.title) || ch.title || "";
+    el.querySelector(".console-chapter-hook").textContent = ch.hook || "";
+    el.hidden = false;
+    el.classList.add("is-up");
+    box.dataset.chapter = "1";
+    if (els.time && ((next && next.clock) || ch.clock)) els.time.textContent = (next && next.clock) || ch.clock;
+    playSting("shift-begins");
+    if (hooks.tell) hooks.tell("feature", { story: story.id, feature: "chapter", chapter: ch.id, clock: (next && next.clock) || ch.clock });
+    document.dispatchEvent(new CustomEvent("iltv:chapter", { detail: { id: ch.id, title: (next && next.title) || ch.title, clock: (next && next.clock) || ch.clock, hook: ch.hook } }));
+    chapterTimer = setTimeout(function () {
+      chapterTimer = 0;
+      el.classList.remove("is-up");
+      el.hidden = true;
+      delete box.dataset.chapter;
+      document.dispatchEvent(new CustomEvent("iltv:chapter-done", { detail: { id: ch.id } }));
+      if (!run || !story) return;
+      fn();
+    }, 2000);
+  }
+
   function choose(i) {
+    if (!run || !story) return;
     var s = scene();
+    if (!s) return;
     var c = s.choices[i];
     if (!c || !rules.usable(c, run.st)) return;
     stopAudio();
     var x = rules.extraOf(c);
-    run.log.push({ k: "c", t: s.time, text: x.log || c[0], o: s.choices.length - 1, sc: run.scene });
+    var before = { flags: {}, meters: {} };
+    Object.keys(run.st.flags).forEach(function (k) { before.flags[k] = run.st.flags[k]; });
+    Object.keys(run.st.meters).forEach(function (k) { before.meters[k] = run.st.meters[k]; });
+    var from = run.scene;
+    var logLine = x.log || c[0];
+    run.log.push({ k: "c", t: s.time, text: logLine, o: s.choices.length - 1, sc: run.scene });
     run.st = rules.apply(story, run.st, c);
-    if (hooks.tell) hooks.tell("choice", { story: story.id, from: run.scene, to: c[2], option: c[0] });
-    run.history.push(run.scene);
-    hooks.history(run.history);
-    enter(c[2], false);
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (x.pose === "sit" || x.pose === "stand") run.pose = x.pose;
+    if (hooks.tell) hooks.tell("choice", { story: story.id, from: from, to: c[2], option: c[0] });
+    var lands = choiceLands(before, run.st, x);
+    var ended = chapterEnding(from);
+    function goEnter() {
+      run.history.push(from);
+      hooks.history(run.history);
+      if (ended) {
+        var after = null;
+        var list = story.chapters || [];
+        for (var i = 0; i < list.length; i++) if (list[i].id === ended.id && list[i + 1]) after = list[i + 1];
+        if (after) run.chapter = after.id;
+        showChapterCard(ended, function () {
+          enter(c[2], false);
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        });
+        return;
+      }
+      enter(c[2], false);
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+    if (lands) showInk(logLine, x.react, goEnter);
+    else goEnter();
   }
 
   /* ---------------- the shift log (the Tree of this story type) ---------------- */
@@ -812,6 +998,14 @@
 
   function close() {
     stopAudio();
+    if (inkTimer) { clearTimeout(inkTimer); inkTimer = 0; }
+    if (chapterTimer) { clearTimeout(chapterTimer); chapterTimer = 0; }
+    delete box.dataset.ink;
+    delete box.dataset.chapter;
+    var ink = document.getElementById("console-ink");
+    if (ink) ink.hidden = true;
+    var ch = document.getElementById("console-chapter");
+    if (ch) ch.hidden = true;
     [voice, bed, sfx, sting].forEach(function (a) {
       if (!a) return;
       try { a.pause(); } catch (e) { /* gone */ }
@@ -857,6 +1051,9 @@
     selected: function () { return run ? run.sel : null; },
     screen: function () { return run && shown ? { camera: shown.cam, state: shown.state, changes: changes } : null; },
     room: function () { return room() ? room().view() : null; },
+    pose: function () { return run ? run.pose : null; },
+    chapter: function () { return run ? run.chapter : null; },
+    chapters: function () { return story && story.chapters ? story.chapters.slice() : []; },
     subtitles: function () { return subsOn; },
     audio: function () { return { voice: audioView(voice), bed: audioView(bed), sfx: audioView(sfx), sting: audioView(sting), bedCue: bedCue }; },
     saved: function () {

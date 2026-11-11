@@ -3932,10 +3932,25 @@ async function consoleChoose(t, st, m, i, doc, where, seen, { hear = true } = {}
   const label = st.scenes[m.scene].choices[i][0];
   const button = openChoices(doc).find((b) => Number(b.dataset.choice) === i);
   if (!button) throw new Error(`${where}: no choice "${label}" (choice ${i}) on screen at ${m.scene} (${JSON.stringify(openChoices(doc).map((b) => b.textContent.trim()))})`);
+  let inkMs = null, chapterId = null;
+  const tPress = performance.now();
+  const onInk = (ev) => { if (inkMs == null) inkMs = Math.round(performance.now() - tPress); };
+  const onChapter = (ev) => { chapterId = ev.detail && ev.detail.id; };
+  doc.addEventListener("iltv:ink", onInk);
+  doc.addEventListener("iltv:chapter", onChapter);
   await tapAt(t, button, `choice "${label}"`, { quick: true });
   t.log(`tap choice "${label}"`);
   m.choose(i);
-  if (!(await waitFor(() => apiOf(doc).scene() === m.scene, 3000))) throw new Error(`${where}: "${label}" didn't open ${m.scene} (on ${apiOf(doc).scene()})`);
+  // Ink (~1 s) and a chapter card (2 s) can hold the next scene; give them room.
+  if (!(await waitFor(() => apiOf(doc).scene() === m.scene, 9000))) throw new Error(`${where}: "${label}" didn't open ${m.scene} (on ${apiOf(doc).scene()})`);
+  doc.removeEventListener("iltv:ink", onInk);
+  doc.removeEventListener("iltv:chapter", onChapter);
+  if (inkMs != null) {
+    t.event("choice-ink", `${where}: ink ${inkMs} ms after trust/flag choice "${label}"`);
+    t.metric("choiceInkMs", inkMs);
+    if (inkMs > 2000) t.problem("bug", `${where}: ink took ${inkMs} ms (over 2 s) after "${label}"`);
+  }
+  if (chapterId) t.event("chapter-card", `${where}: chapter "${chapterId}" after "${label}"`);
   t.add("choicesClicked");
   if (hear) await consoleHeard(t, doc, `${where} > ${m.scene}`);
   consoleCheck(t, st, m, doc, `${where} > ${m.scene}`, seen);
@@ -6057,6 +6072,33 @@ async function nightShiftRun(options, t) {
     if (lengths.shortest < 30 * 60) t.problem("bug", `${st.id}: the shortest way through is ${minutes(lengths.shortest)} minutes, not 30`);
     if (lengths.mean < 40 * 60 || lengths.mean > 50 * 60) t.problem("warning", `${st.id}: the average way through is ${minutes(lengths.mean)} minutes, not about 45`);
 
+    // Chapters: on the shortest path a card appears at least every 12 minutes of audio.
+    const chapters = st.chapters || [];
+    if (chapters.length && lengths.shortestWay) {
+      t.scene(`${st.title}: chapter gaps on the shortest way`);
+      const durOf = (id) => (st.scenes[id].lines || []).reduce((a, l) => a + (l.dur || 0), 0);
+      let cum = 0, cur = st.start;
+      const atScene = {};
+      for (const pick of lengths.shortestWay) {
+        cum += durOf(cur);
+        atScene[cur] = cum;
+        cur = st.scenes[cur].choices[pick][2];
+      }
+      cum += durOf(cur);
+      atScene[cur] = cum;
+      let prevCum = 0;
+      for (const ch of chapters) {
+        if (!ch.end) continue;
+        const atEnd = atScene[ch.end];
+        if (atEnd == null) { t.problem("warning", `${st.id}: chapter "${ch.id}" end ${ch.end} is not on the shortest way`); continue; }
+        const gapMin = (atEnd - prevCum) / 60;
+        t.event("chapter-gap", `${ch.id} ends at ${ch.end}: ${gapMin.toFixed(1)} min of audio since last break`);
+        t.metric(`chapterGapMin.${ch.id}`, Number(gapMin.toFixed(2)));
+        if (gapMin > 12) t.problem("bug", `${st.id}: chapter "${ch.id}" is ${gapMin.toFixed(1)} min of audio after the previous break (over 12)`);
+        prevCum = atEnd;
+      }
+    }
+
     // Pierce Hawkes once, briefly; nothing about B3, the vat or the creature.
     const spoken = Object.entries(st.scenes).flatMap(([id, sc]) => sc.lines.map((l) => ({ id, ...l })));
     const pierce = spoken.filter((l) => l.speaker === "pierce");
@@ -6076,6 +6118,96 @@ async function nightShiftRun(options, t) {
     // last stretch of the way through every layer, from a seeded run at that scene, and the last choices to "The wedge".
     const at = options && options.at;
     if (at === "numbers") { t.event("start-at", "numbers: the data's checks only, no way played"); return; }
+
+    // {"at":"pace"}: first choice within 30 s (listening), ink within 2 s, chapter card + Continue — the acceptance criteria.
+    if (at === "pace") {
+      t.event("start-at", "pace: first choice, ink, chapter Continue");
+      for (const [w, h, label] of [[1280, 720, "1280x720"], [390, 844, "390x844"]]) {
+        t.scene(`${st.title}: first choice at ${label}`);
+        clearProgress();
+        const doc = await viewFrameLoad(t, `/?story=${st.id}`, w, h);
+        const win = doc.defaultView;
+        try { win.localStorage.removeItem(`iltv.run.${st.cookie}`); } catch (e) { /* none */ }
+        const sound = win.hawkesSound;
+        if (sound && sound.prompt && sound.prompt()) await passPrompt(t, doc, `${st.id} ${label}`);
+        const t0 = performance.now();
+        const ready = await waitFor(() => [...doc.querySelectorAll("#console-choices .choice")].some((b) => b.offsetParent !== null), 35000);
+        const secs = (performance.now() - t0) / 1000;
+        t.metric(`secondsToFirstChoice.${st.id}.${label}`, Number(secs.toFixed(2)));
+        t.event("first-choice", `${label}: ${ready ? secs.toFixed(1) : "NONE"} s (listening, no Skip)`);
+        if (!ready) t.problem("bug", `${st.id} @ ${label}: no choice within 35 s of Tap to play`);
+        else if (secs > 30) t.problem("bug", `${st.id} @ ${label}: first choice after ${secs.toFixed(1)} s (over 30 s)`);
+        else {
+          const btns = [...doc.querySelectorAll("#console-choices .choice")].filter((b) => b.offsetParent !== null);
+          for (const b of btns) {
+            const r = b.getBoundingClientRect();
+            if (r.height < 48) t.problem("bug", `${label}: choice "${(b.textContent || "").trim()}" is ${Math.round(r.height)} px tall (need 48)`);
+            if (r.bottom > h + 1 || r.right > w + 1 || r.left < -1) t.problem("bug", `${label}: choice clipped`);
+          }
+          t.event("screenshot", `${label}: first Night Shift choices`);
+          const good = btns.find((b) => /good chair/i.test(b.textContent || "")) || btns[0];
+          let inkMs = null;
+          const tPress = performance.now();
+          const onInk = () => { if (inkMs == null) inkMs = Math.round(performance.now() - tPress); };
+          doc.addEventListener("iltv:ink", onInk);
+          await tapAt(t, good, `${label}: take a chair`);
+          await waitFor(() => inkMs != null || (win.iltvConsole && win.iltvConsole.scene() !== st.start), 5000);
+          await sleep(250);
+          const inkEl = doc.getElementById("console-ink");
+          if (inkEl && !inkEl.hidden) {
+            const ir = inkEl.getBoundingClientRect();
+            if (ir.bottom > h + 1 || ir.right > w + 1) t.problem("bug", `${label}: ink line clipped`);
+            t.event("screenshot", `${label}: ink line`);
+          }
+          doc.removeEventListener("iltv:ink", onInk);
+          if (inkMs == null) t.problem("bug", `${label}: no ink after the first trust choice`);
+          else {
+            t.metric("choiceInkMs", inkMs);
+            t.event("choice-ink", `${label}: ink ${inkMs} ms`);
+            if (inkMs > 2000) t.problem("bug", `${label}: ink took ${inkMs} ms (over 2 s)`);
+          }
+        }
+        closeViewFrame();
+      }
+      if (chapters.length && chapters[0].end && x.scenes[chapters[0].end]) {
+        t.scene(`${st.title}: Continue resumes at chapter after card`);
+        await consoleOpen(t, st);
+        const way = x.scenes[chapters[0].end].picks;
+        const m = await consoleSeedAt(t, st, way.slice(0, Math.max(0, way.length - 1)), null);
+        await consoleHeard(t, document, "chapter continue");
+        let sawChapter = false;
+        const onCh = () => { sawChapter = true; };
+        document.addEventListener("iltv:chapter", onCh);
+        await consoleChoose(t, st, m, way[way.length - 1], document, "chapter end", null, { hear: false });
+        document.removeEventListener("iltv:chapter", onCh);
+        if (!sawChapter) t.problem("bug", `${st.id}: no chapter card when leaving ${chapters[0].end}`);
+        const afterScene = window.iltvConsole.scene();
+        t.event("chapter-landed", `after card at ${afterScene}`);
+        const chCard = document.getElementById("console-chapter");
+        if (chCard && !chCard.hidden) {
+          const cr = chCard.getBoundingClientRect();
+          if (cr.bottom > window.innerHeight + 1 || cr.right > window.innerWidth + 1) t.problem("bug", "chapter card clipped on desktop");
+        }
+        await toLanding(t);
+        await sleep(200);
+        const go = continueControl(document, st.id);
+        if (!go) t.problem("bug", `${st.id}: no Continue after chapter card`);
+        else {
+          await tapAt(t, go, "Continue after chapter");
+          await sleep(300);
+          if (soundOf().prompt()) await passPrompt(t, document, "chapter continue");
+          const recap = document.getElementById("story-recap");
+          if (recap && !recap.hidden) { await tapAt(t, recap, "skip Previously"); await sleep(400); }
+          await waitFor(() => window.iltvConsole && window.iltvConsole.story() === st.id, 4000);
+          const landed = window.iltvConsole.scene();
+          t.event("chapter-continue", `Continue landed at ${landed} (left at ${afterScene})`);
+          if (landed !== afterScene) t.problem("bug", `${st.id}: Continue after chapter landed at ${landed}, not ${afterScene}`);
+        }
+      }
+      t.progress(1);
+      return;
+    }
+
     await consoleOpen(t, st);
     if (at) {
       t.event("start-at", `${at}: seeded run at that scene on the way through every layer, then real presses to the end`);
@@ -8552,7 +8684,8 @@ installPlaytest({
       title: "Night Shift, the whole night: at least 8 endings, no dead ends, the shortest way through 30 minutes of audio and a typical one about 45, Pierce Hawkes once and briefly, nothing about B3, the vat or the creature",
       seconds: 180,
       tags: ["full"],
-      description: "Opens Night Shift (night-shift) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45 (a warning outside 40 to 50), and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged. Options: {\"at\":\"numbers\"} runs only the data's checks (about 10 s); {\"at\":\"four-hours\"} (any scene on the way through every layer) opens a seeded run (named setup shortcut, event seeded-run) at that scene and plays the rest of the way, to \"Someone to leave it to\", with real presses, then the last six choices to \"The wedge\" (about 3 minutes).",
+      starts: ["numbers", "pace", "four-hours"],
+      description: "Opens Night Shift (night-shift) by its link under its own Tap to play. From the build's state explorer (js/console-rules.js) it checks every scene and ending can be reached, no state is left without a usable choice, and there are at least 8 distinct endings, each with its own way (logged one by one). Chapter ends on the shortest way are at most 12 minutes of audio apart (events chapter-gap). Options: {\"at\":\"pace\"} (~90 s) checks the first choice within 30 s of Tap to play at 1280x720 and 390x844 (listening, no Skip; choices ≥48 px), ink within 2 s after a trust choice (event choice-ink), a chapter card then Continue landing at that chapter; {\"at\":\"numbers\"} runs only the data's checks (about 10 s); {\"at\":\"four-hours\"} (any scene on the way through every layer) opens a seeded run (named setup shortcut, event seeded-run) at that scene and plays the rest of the way, to \"Someone to leave it to\", with real presses, then the last six choices to \"The wedge\" (about 3 minutes). It works out how long every way through is to listen to (each line is its words at 150 a minute plus a pause, the player's own timer): the shortest must be 30 minutes or more, the average (every open choice equally likely) about 45 (a warning outside 40 to 50), and it logs the longest. It lists who speaks as Pierce Hawkes (once, two lines at the most, in the cameo scenes) and that no scene, line, choice or log entry mentions B3, the vat, the creature or the restricted work. Then it plays four ways with real presses from a new run each time (Skip line moves the lines along; every scene is checked against the data: flags, meters, history, shift log, wall, clock, choices): the shortest way, the longest way, and the ways to the endings Someone to leave it to and The wedge. Each ends at an ending, with the run saved as ended and the minutes of audio it held logged.",
     },
     {
       id: "voice",
@@ -8625,7 +8758,7 @@ installPlaytest({
       title: "Continue opens with a 3 s Previously recap of the last scene (poster, title, one choice line), skippable, then the left-off scene with its choices — all three stories at desktop, 390x844, 844x390 and 1280x720",
       seconds: 200,
       tags: ["full"],
-      description: "From a fresh browser: each listed story is opened, one real choice is made, then All stories. Pressing Continue (hero or card) shows a Previously overlay with the last scene's poster (push-in), the story title and one short line naming that choice; a tap skips it (checked on the first story) or it ends after ~3 s. After the recap the viewer is at the same scene they left, with its choices ready (Night Shift's room is already under the overlay so a short landscape never fades to a blank body). The same Continue path is checked in frames at 390x844, 844x390 and 1280x720. Screenshot events while the overlay is up and after it lands. Also run as smoke's last leg with {\"at\":\"smoke\"} (always skip, same sizes). Events recap-armed, previously, recap-landed, screenshot. Options: {\"story\":\"<id>\"}, {\"at\":\"smoke\"}.",
+      description: "From a fresh browser: each listed story is opened, one real choice is made (Night Shift's chair choice may show the ink line first), then All stories. Pressing Continue (hero or card) shows a Previously overlay with the last scene's poster (push-in), the story title and one short line naming that choice; a tap skips it (checked on the first story) or it ends after ~3 s. After the recap the viewer is at the same scene they left, with its choices ready (Night Shift's room is already under the overlay so a short landscape never fades to a blank body). Chapter-resume after a Night Shift chapter card is covered by night-shift {\"at\":\"pace\"}. The same Continue path is checked in frames at 390x844, 844x390 and 1280x720. Screenshot events while the overlay is up and after it lands. Also run as smoke's last leg with {\"at\":\"smoke\"} (always skip, same sizes). Events recap-armed, previously, recap-landed, screenshot. Options: {\"story\":\"<id>\"}, {\"at\":\"smoke\"}.",
     },
     { id: "blog", title: "Every blog post opens, with its images and links", seconds: 15, tags: ["full"] },
     {
