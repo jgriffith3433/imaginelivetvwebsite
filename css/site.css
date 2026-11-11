@@ -3593,3 +3593,127 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
   color: #e0b0a0;
 }
 .spark-choices .choice-locked .choice-need::before { content: "\1F512\00a0"; font-weight: 400; }
+
+/* ---------------- A vertical-native player (J, 2026-11-11) ----------------
+   The clips of The Final Spark and The Water Road are 9:16, so the stage is built for them (Night Shift has its own
+   console and none of this applies to it):
+   - a portrait phone (under 600px): the clip is the whole screen, edge to edge with no card or gutters, the bar floats
+     on its top gradient, and the story line, question and choices rise over the bottom gradient in thumb reach;
+   - a wider portrait screen (600 to 899px): the same full-bleed stage, the 9:16 clip centred over its blurred copy;
+   - desktop and landscape: the clip is centred at the stage's full height over a blurred, darkened, scaled copy of the
+     same video (#spark-blur, js/game.js mirrorBlur), and the stage takes the card's whole height (the title floats on it). */
+.spark-stage { position: relative; overflow: hidden; }
+
+.spark-blur {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000 center / cover no-repeat;
+  filter: blur(26px) brightness(0.5) saturate(1.15);
+  transform: scale(1.3);
+  pointer-events: none;
+}
+.spark-blur video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.spark-video { z-index: 1; }
+
+@media (min-width: 900px) and (min-height: 560px) {
+  #spark-play {
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: "stage panel";
+  }
+  .spark-copy {
+    grid-area: stage;
+    z-index: 3;
+    align-self: start;
+    justify-self: stretch;
+    padding: 0.5rem 0.7rem 1.2rem;
+    text-align: left;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+    border-radius: 12px 12px 0 0;
+  }
+  .spark-copy h1 { font-size: 0.95rem; }
+  .spark-copy .spark-sub { display: none; }
+  .spark-stage { border-radius: 12px; }
+}
+
+/* Portrait screens under 900px: the stage is the screen, the player's text floats over it. */
+@media (orientation: portrait) and (max-width: 899px) {
+  html[data-view="story"]:not([data-type="console"]) .site-header { display: none; }
+  .spark:not(.is-tree):not(.is-endings):not([hidden]) {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .spark:not(.is-tree):not(.is-endings) > #spark-play:not([hidden]) { display: contents; }
+  .spark:not(.is-tree):not(.is-endings) .spark-copy { display: none; }
+  .spark:not(.is-tree):not(.is-endings) .spark-stage {
+    position: fixed;
+    inset: 0 0 var(--inventory-h) 0;
+    z-index: 40;
+    background: #000;
+    border-radius: 0;
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-video {
+    width: 100cqw;
+    height: 100cqh;
+    max-width: none;
+    max-height: none;
+    aspect-ratio: auto;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent; /* the blurred copy shows either side of the picture */
+    background-size: contain;
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-video video { object-fit: contain; }
+  /* The bar floats over the clip's top gradient. */
+  .spark:not(.is-tree):not(.is-endings) > .spark-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    margin: 0;
+    padding: 0.4rem 0.6rem 1.6rem;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.72), transparent);
+  }
+  /* The story line, question and choices over the bottom gradient. */
+  .spark:not(.is-tree):not(.is-endings) .spark-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: var(--inventory-h);
+    z-index: 50;
+    max-height: 62dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    justify-content: flex-end;
+    padding: 2.4rem 0.9rem 0.6rem;
+    text-align: left;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 58%, transparent);
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-story {
+    max-height: 5.2rem;
+    overflow-y: auto;
+    text-shadow: 0 1px 3px #000;
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-choices .choice { min-height: 48px; }
+}
+
+/* A portrait phone: the clip covers the whole width and height (the way a Short does), so no copy runs behind it. */
+@media (orientation: portrait) and (max-width: 599px) {
+  .spark:not(.is-tree):not(.is-endings) .spark-video video { object-fit: cover; }
+  .spark:not(.is-tree):not(.is-endings) .spark-video { background-size: cover; }
+  .spark-blur { display: none; }
+}
+
+/* A phone on its side: the blurred copy fills the black either side of the centred picture. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .spark:not(.is-tree) .spark-video { background-color: transparent; background-size: contain; }
+}
