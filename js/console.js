@@ -607,13 +607,15 @@
     if (last) showFeed(last);
   }
 
-  /** The hand-off: the chosen card glows and grows, the others fall away (250 ms), then fn runs once. */
+  /** The hand-off: the chosen card glows and grows, the others fall away (250 ms), then fn runs once.
+      Shared by clip stories (js/game.js) and console stories. Double taps during the hand-off are ignored. */
   var DECIDE_MS = 250;
   window.iltvDecide = function (box, btn, fn) {
-    if (box._deciding && box._deciding.isConnected) return false;
+    if (!box || !btn || (box._deciding && box._deciding.isConnected)) return false;
     box._deciding = btn;
     btn.classList.add("is-chosen");
     btn.setAttribute("aria-pressed", "true");
+    try { btn.focus({ preventScroll: true }); } catch (e) { try { btn.focus(); } catch (e2) { /* not focusable */ } }
     box.classList.add("is-deciding");
     box.setAttribute("aria-busy", "true");
     box.querySelectorAll(".choice").forEach(function (b) {
