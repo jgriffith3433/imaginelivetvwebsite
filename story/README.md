@@ -453,8 +453,22 @@ sees, how it moves, who is in it). `hawkes.assets.json` (built from the data) ha
 
 plus one reference sheet per character (`char-<id>`) and one music cue per mood (`music-<cue>`, `audio.music`).
 
+A scene may list `shots` (2 to 4, each `{scene, motion, cast}`) instead of one `shot`: they are made as `<id>-shot`,
+`<id>-shot-2`, ... (`media/clip.mp4`, `media/clip-2.mp4`, ...) and laid end to end in the order listed. A shot whose clip
+isn't made yet is left out of the cut (a warning) until it is.
+
+**No loops (J, 2026-11-11).** A clip is never looped under the narration. The build lays the shots end to end; when the
+narration outruns them the last 0.8 s slows to half speed and the final frame is held while the camera pushes slowly in on
+it (zoompan, up to 1.14x), so the picture never jumps back to its first frame and never stops. A scene with more than one
+choice and no talking shot also carries 18 s (`LIVE_TAIL`, a little over the 15 s choice window) of that push-in past the
+narration, and its data has `live: 18`: `js/game.js` brings the choices and their timer up when the cut reaches that
+tail, over footage that is still playing, instead of waiting for the clip to end on a still frame. The phone rendition
+(`sm/`) is made from the same cut, so it behaves the same. The `smoke` run (`phone-media` leg, `livePictureCheck` in
+`js/playtest.js`) counts `loopRestarts` (currentTime jumping backward) per Water Road page and fails above 0, and checks the
+video is not paused and advances 2 s or more over 3 s with the choices up.
+
 A scene plays its generated cut only when its `use` (or the story's `use`) is `"gen"`. The build then joins the
-clip (looped under the narration), any talking shot and the mood music into `<folder>/scene.mp4` with ffmpeg.
+shots, any talking shot and the mood music into `<folder>/scene.mp4` with ffmpeg.
 Until then the filmed clip plays. A draft (`"listed": false`) whose music cue isn't made yet is cut without it (a
 warning), and cut again with it once the cue is made; a listed story waits for its music.
 

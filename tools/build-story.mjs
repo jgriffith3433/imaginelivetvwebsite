@@ -65,7 +65,7 @@ for (const entry of listing) {
     entry,
     file,
     data,
-    scenes: data.scenes,
+    scenes: data.scenes.map((s) => (s.shots?.length && !s.shot ? Object.assign(s, { shot: s.shots[0] }) : s)),
     byId: new Map(data.scenes.map((s) => [s.id, s])),
     root,
     console: data.type === 'console',
@@ -120,6 +120,11 @@ function validate(st) {
     }
     if (s.music && !data.music?.[s.music]) problems.push(`${at(s)}: music cue ${s.music} isn't in music`);
     if (!s.shot) problems.push(`${at(s)}: no shot (what the camera sees, for its generated media)`);
+    if (s.shots && (!Array.isArray(s.shots) || s.shots.length < 2 || s.shots.length > MAX_SHOTS)) problems.push(`${at(s)}: shots lists 2 to ${MAX_SHOTS} shots (or leave it out and use one shot)`);
+    for (const sh of Array.isArray(s.shots) ? s.shots : []) {
+      if (!sh.scene || !sh.motion) problems.push(`${at(s)}: every entry in shots needs a scene and a motion`);
+      for (const who of sh.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
+    }
     if (!s.film && useOf(st, s) !== 'gen') problems.push(`${at(s)}: no filmed clip, so it must use "gen"`);
     // Words no page may say (The Water Road's bird is only ever seen).
     const said = [s.title, s.story, s.question, s.ending ?? [], ...s.choices.map((c) => [c.say, c.en])].flat().join(' ').toLowerCase();
@@ -258,6 +263,7 @@ function validateAll() {
 
 /* ---------------- media paths ---------------- */
 
+const MAX_SHOTS = 4;
 const useOf = (st, s) => s.use ?? st.data.use ?? 'film';
 const media = (st, s, file) => `${st.base}${s.folder}/media/${file}`;
 const musicFile = (st, cue) => `${st.musicDir}/${cue}.mp3`;
@@ -266,14 +272,21 @@ const exists = (rel) => fs.existsSync(path.join(ROOT, rel));
 const titleOf = (st) => st.data.title;
 
 /** The parts of a scene's generated cut, and whether they're all there. */
+/** A scene's shots: `shots` (2 to 4, laid end to end) or its one `shot`. Shot 1 is clip.mp4; the others clip-2.mp4 ... */
+const shotsOf = (s) => (s.shots?.length ? s.shots : s.shot ? [s.shot] : []);
+const shotFile = (st, s, i, base, ext) => media(st, s, `${base}${i ? `-${i + 1}` : ''}.${ext}`);
+
 function cutParts(st, s) {
   const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }));
   let music = s.music ? musicFile(st, s.music) : null;
   // A draft's scene isn't held back by a music cue that isn't made yet: it's cut without it, and cut again once it is.
   const later = music && !st.listed && !exists(music) ? music : null;
   if (later) music = null;
-  const parts = { clip: media(st, s, 'clip.mp4'), narration: media(st, s, 'narration.mp3'), talks, music, later };
-  const need = [parts.clip, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
+  // Shots that aren't made yet are left out of the cut (it is cut again once they are); the first is required.
+  const shots = shotsOf(s).map((_, i) => shotFile(st, s, i, 'clip', 'mp4'));
+  const madeShots = shots.filter((f, i) => i === 0 || exists(f));
+  const parts = { clip: shots[0], shots: madeShots, narration: media(st, s, 'narration.mp3'), talks, music, later };
+  const need = [...parts.shots, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
   return { ...parts, missing: need.filter((f) => !exists(f)), all: need };
 }
 
@@ -360,6 +373,8 @@ function storyData() {
         question: s.question,
         video: videoOf(st, s),
         ...clipExtras(videoOf(st, s)),
+        // Seconds of live picture the cut keeps after the narration, so the choices come up over moving footage (js/game.js).
+        ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s) ? { live: LIVE_TAIL } : {}),
         ...(s.dead ? { dead: true } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
@@ -657,32 +672,35 @@ function assets(st) {
   }
 
   for (const s of scenes) {
-    const cast = (s.shot?.cast ?? []).slice(0, 3);
-    const still = `A vertical 9:16 film still: ${s.shot.scene}.`;
-    // The keyframe (image.edit from the cast's sheets, or image.generate with nobody in it; best of 3) and its clip (video.i2v).
-    list.push({
-      id: `${P}${s.id}-shot`,
-      note: `${s.title[1]}${of}: keyframe and clip.`,
-      ...(cast.length ? { inputs: cast.map((who) => story.characters[who].sheet) } : {}),
-      steps: [
-        cast.length
-          ? {
-              tool: 'image.edit',
-              params: { prompt: `${still} ${castRefs(st, cast)}; keep their faces, bodies and clothes exactly. ${story.style}`, negative: story.negative, width: 720, height: 1280 },
-              inputs: { images: cast.map((_, i) => `$input:${i}`) },
-              save: 'keyframe',
-            }
-          : { tool: 'image.generate', params: { prompt: positive(story, `${still} ${story.style}`), width: 720, height: 1280 }, save: 'keyframe' },
-        {
-          tool: 'video.i2v',
-          params: { prompt: `${s.shot.motion}. ${story.camera ?? 'Slow, tense handheld camera'}. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
-          inputs: { start: '$prev' },
-          save: 'clip',
-        },
-      ],
-      candidates: 3,
-      pick: `matches the scene (${s.shot.scene}); the characters match their reference sheets; reads clearly as a vertical frame; no text`,
-      files: { keyframe: media(st, s, 'keyframe.png'), clip: media(st, s, 'clip.mp4') },
+    // Each shot: its keyframe (image.edit from the cast's sheets, or image.generate with nobody in it; best of 3) and its clip (video.i2v).
+    shotsOf(s).forEach((shot, i) => {
+      const cast = (shot.cast ?? []).slice(0, 3);
+      const still = `A vertical 9:16 film still: ${shot.scene}.`;
+      const many = shotsOf(s).length > 1;
+      list.push({
+        id: `${P}${s.id}-shot${i ? `-${i + 1}` : ''}`,
+        note: `${s.title[1]}${of}: keyframe and clip${many ? ` (shot ${i + 1} of ${shotsOf(s).length})` : ''}.`,
+        ...(cast.length ? { inputs: cast.map((who) => story.characters[who].sheet) } : {}),
+        steps: [
+          cast.length
+            ? {
+                tool: 'image.edit',
+                params: { prompt: `${still} ${castRefs(st, cast)}; keep their faces, bodies and clothes exactly. ${story.style}`, negative: story.negative, width: 720, height: 1280 },
+                inputs: { images: cast.map((_, k) => `$input:${k}`) },
+                save: 'keyframe',
+              }
+            : { tool: 'image.generate', params: { prompt: positive(story, `${still} ${story.style}`), width: 720, height: 1280 }, save: 'keyframe' },
+          {
+            tool: 'video.i2v',
+            params: { prompt: `${shot.motion}. ${story.camera ?? 'Slow, tense handheld camera'}. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
+            inputs: { start: '$prev' },
+            save: 'clip',
+          },
+        ],
+        candidates: 3,
+        pick: `matches the scene (${shot.scene}); the characters match their reference sheets; reads clearly as a vertical frame; no text`,
+        files: { keyframe: shotFile(st, s, i, 'keyframe', 'png'), clip: shotFile(st, s, i, 'clip', 'mp4') },
+      });
     });
 
     // Narration: the story and the question, spoken in the scene's language.
@@ -751,28 +769,66 @@ function ffmpegBin(name) {
 }
 const duration = (rel) => Number(execFileSync(ffmpegBin('ffprobe'), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(ROOT, rel)], { encoding: 'utf8' }).trim());
 
-/** Clip looped under the narration, then each talking shot with its line, all over the mood music. */
+/** Seconds of live picture kept after the narration while the choices are up: the player's 15 s choice window plus a margin
+ *  (CHOICE_WINDOW in js/game.js). The cut carries on this long, so the picture is still moving under the buttons. */
+const LIVE_TAIL = 18;
+/** The cut's last stretch is a slow push-in on the final frame; this is how far it goes in a full tail (1.0 = none). */
+const PUSH_MAX = 1.14;
+
+/** Does this scene's cut keep the picture moving under its choices? (A one-choice page carries on by itself at the end of its clip.) */
+const liveTail = (s) => (s.choices?.length ?? 0) > 1 && !(s.lines ?? []).length;
+
+/** The shots laid end to end under the narration (never looped: when the narration outruns the footage the last frame
+ *  slows to a stop and the camera keeps pushing in on it), then each talking shot with its line, all over the mood music. */
 function cut(st, s) {
   const p = cutParts(st, s);
   if (p.missing.length) return;
   if (p.later) warnings.push(`${st.id}/${s.id}: cut without its music (${p.later} isn't made yet)`);
+  const unmade = shotsOf(s).length - p.shots.length;
+  if (unmade) warnings.push(`${st.id}/${s.id}: cut with ${p.shots.length} of ${shotsOf(s).length} shots (the rest aren't made yet)`);
   const out = path.join(ROOT, cutFile(st, s));
   const newest = Math.max(...p.all.map((f) => fs.statSync(path.join(ROOT, f)).mtimeMs), fs.statSync(path.join(ROOT, st.file)).mtimeMs);
   if (fs.existsSync(out) && fs.statSync(out).mtimeMs >= newest) return;
   if (CHECK) return problems.push(`${cutFile(st, s)} is out of date`);
 
-  const fit = 'scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=24,setsar=1';
+  const FPS = 24;
+  const fit = `scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=${FPS},setsar=1`;
   const args = ['-v', 'error', '-y'];
   const graph = [];
   const pairs = [];
-  const a0 = duration(p.narration) + 0.8;
+  const tail = liveTail(s) ? LIVE_TAIL : 0;
+  const speech = duration(p.narration) + 0.8;
+  const a0 = speech + tail;
   let total = a0;
-  args.push('-stream_loop', '-1', '-i', path.join(ROOT, p.clip), '-i', path.join(ROOT, p.narration));
-  graph.push(`[0:v]${fit},trim=duration=${a0},setpts=PTS-STARTPTS[v0]`, `[1:a]aformat=sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${a0}[a0]`);
+  // The shots, end to end, in the order listed.
+  p.shots.forEach((f) => args.push('-i', path.join(ROOT, f)));
+  const footage = p.shots.reduce((sum, f) => sum + duration(path.relative(ROOT, path.join(ROOT, f))), 0);
+  graph.push(`${p.shots.map((_, i) => `[${i}:v]${fit}[s${i}]`).join(';')}`);
+  const joined = p.shots.length > 1 ? `${p.shots.map((_, i) => `[s${i}]`).join('')}concat=n=${p.shots.length}:v=1:a=0,` : `[s0]`;
+  const have = Math.min(footage, a0);
+  const hold = Math.max(0, a0 - footage);
+  // Footage longer than the cut is trimmed. Shorter: the last 0.8 s slows to half speed, then its final frame is held while
+  // zoompan pushes in on it, so nothing ever jumps back and the picture is never still.
+  let v0;
+  if (hold > 0.05) {
+    const slow = Math.min(0.8, have);
+    const rest = Math.max(0, have - slow);
+    graph.push(
+      `${joined}split=2[ja][jb]`,
+      `[ja]trim=duration=${rest},setpts=PTS-STARTPTS[head]`,
+      `[jb]trim=start=${rest},setpts=PTS-STARTPTS,setpts=2*PTS,tpad=stop_mode=clone:stop_duration=${hold + slow},trim=duration=${hold + slow * 2},fps=${FPS},scale=1440:2560,zoompan=z='min(${PUSH_MAX},1+${((PUSH_MAX - 1) / ((hold + slow) * FPS)).toFixed(6)}*on)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=720x1280:fps=${FPS},setsar=1[tailv]`,
+      `[head][tailv]concat=n=2:v=1:a=0,trim=duration=${a0},setpts=PTS-STARTPTS[v0]`,
+    );
+  } else {
+    graph.push(`${joined}trim=duration=${a0},setpts=PTS-STARTPTS[v0]`);
+  }
+  const base = p.shots.length;
+  args.push('-i', path.join(ROOT, p.narration));
+  graph.push(`[${base}:a]aformat=sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${a0}[a0]`);
   pairs.push('[v0][a0]');
   p.talks.forEach((t, i) => {
     const d = duration(t.audio) + 0.5;
-    const vi = 2 + i * 2;
+    const vi = base + 1 + i * 2;
     total += d;
     args.push('-i', path.join(ROOT, t.video), '-i', path.join(ROOT, t.audio));
     graph.push(`[${vi}:v]${fit},tpad=stop_mode=clone:stop_duration=${d},trim=duration=${d},setpts=PTS-STARTPTS[v${i + 1}]`, `[${vi + 1}:a]aformat=sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${d}[a${i + 1}]`);
@@ -781,7 +837,7 @@ function cut(st, s) {
   graph.push(`${pairs.join('')}concat=n=${pairs.length}:v=1:a=1[v][speech]`);
   let audio = '[speech]';
   if (p.music) {
-    const mi = 2 + p.talks.length * 2;
+    const mi = base + 1 + p.talks.length * 2;
     args.push('-stream_loop', '-1', '-i', path.join(ROOT, p.music));
     graph.push(`[${mi}:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=0.22,atrim=duration=${total},afade=t=out:st=${Math.max(0, total - 1.5)}:d=1.5[m]`, `[speech][m]amix=inputs=2:duration=first:normalize=0[mix]`);
     audio = '[mix]';

@@ -143,6 +143,7 @@ window.ILTV_STORIES = {
      "video": "/the-sewer/scene.mp4",
      "poster": "/the-sewer/poster/scene.webp",
      "small": "/the-sewer/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. 往回走",
@@ -329,7 +330,7 @@ window.ILTV_STORIES = {
      "dead": true,
      "choices": [
       [
-       "1. Попробуй снова в другой жизни",
+       "1. Начни заново",
        "1. Start over",
        "start"
       ]
@@ -886,6 +887,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/the-water-road/scene.mp4",
      "poster": "/water-road/the-water-road/poster/scene.webp",
      "small": "/water-road/the-water-road/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Cut across the salt flats",
@@ -918,6 +920,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/the-salt-flats/scene.mp4",
      "poster": "/water-road/the-salt-flats/poster/scene.webp",
      "small": "/water-road/the-salt-flats/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "water": -1
      },
@@ -985,6 +988,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/under-the-stars/scene.mp4",
      "poster": "/water-road/under-the-stars/poster/scene.webp",
      "small": "/water-road/under-the-stars/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Ride over to it",
@@ -1021,6 +1025,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/under-the-mesa/scene.mp4",
      "poster": "/water-road/under-the-mesa/poster/scene.webp",
      "small": "/water-road/under-the-mesa/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "water": -1
      },
@@ -1088,6 +1093,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/the-lookout/scene.mp4",
      "poster": "/water-road/the-lookout/poster/scene.webp",
      "small": "/water-road/the-lookout/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Follow him",
@@ -1124,6 +1130,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/the-broken-wagon/scene.mp4",
      "poster": "/water-road/the-broken-wagon/poster/scene.webp",
      "small": "/water-road/the-broken-wagon/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Give them your flask",
@@ -1195,6 +1202,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/ride-on-by/scene.mp4",
      "poster": "/water-road/ride-on-by/poster/scene.webp",
      "small": "/water-road/ride-on-by/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Turn around",
@@ -1227,6 +1235,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/the-dust/scene.mp4",
      "poster": "/water-road/the-dust/poster/scene.webp",
      "small": "/water-road/the-dust/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Follow the dry wash",
@@ -1290,6 +1299,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/the-dry-wash/scene.mp4",
      "poster": "/water-road/the-dry-wash/poster/scene.webp",
      "small": "/water-road/the-dry-wash/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Draw your revolver",
@@ -1389,6 +1399,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/they-come-back/scene.mp4",
      "poster": "/water-road/they-come-back/poster/scene.webp",
      "small": "/water-road/they-come-back/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Shoot it out",
@@ -1449,6 +1460,7 @@ window.ILTV_STORIES = {
      "video": "/water-road/the-cottonwoods/scene.mp4",
      "poster": "/water-road/the-cottonwoods/poster/scene.webp",
      "small": "/water-road/the-cottonwoods/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "water": {
        "set": 4

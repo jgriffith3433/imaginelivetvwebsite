@@ -30,6 +30,7 @@
       // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
       poster: spec.poster || "",
       small: spec.small || "",
+      live: spec.live || 0,
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
@@ -150,7 +151,7 @@
     const out = Object.assign({}, base);
     if (hit.story) { out.story = hit.story[0]; out.storyEn = hit.story[1]; }
     if (hit.question) { out.question = hit.question[0]; out.questionEn = hit.question[1]; }
-    if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; }
+    if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = 0; }
     return out;
   }
   let fromPlayer = false;
@@ -933,10 +934,18 @@
     syncConsoleChoices();
   }
 
+  /** Where the choices come up in a clip: a generated cut keeps `live` seconds of moving picture after the narration
+      (tools/build-story.mjs), so the buttons appear over footage that is still playing, never over a held last frame. */
+  function revealPoint(video) {
+    const live = video && video._iltvLive ? video._iltvLive : 0;
+    return video && video.duration > 0 && isFinite(video.duration) ? Math.max(0.5, video.duration - live) : 0;
+  }
+
   function syncWaitingProgress(video) {
     let pct = 24;
-    if (video && video.duration > 0 && isFinite(video.duration)) {
-      pct = Math.max(16, Math.min(100, Math.round((video.currentTime / video.duration) * 84 + 16)));
+    const at = revealPoint(video);
+    if (at > 0) {
+      pct = Math.max(16, Math.min(100, Math.round((video.currentTime / at) * 84 + 16)));
     }
     const val = pct + "%";
     if (choicesBox) choicesBox.style.setProperty("--clip-progress", val);
@@ -1190,10 +1199,20 @@
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
       showWaitingCue(timed, video);
+      video._iltvLive = scene.live || 0;
+      if (video._iltvLive) {
+        // The cut's last seconds are a slow push-in on its final frame: the choices (and their timer) come up as it starts,
+        // and the video keeps playing under them. It is never paused, and never looped back to its first frame.
+        video.addEventListener("timeupdate", function () {
+          if (activeClip !== video || currentScene !== sceneId || choicesBox.dataset.phase !== "waiting") return;
+          const at = revealPoint(video);
+          if (at > 0 && video.currentTime >= at) revealChoices(timed);
+        });
+      }
       video.addEventListener("ended", function () {
         if (activeClip !== video || currentScene !== sceneId) return;
         if (auto) autoContinue(sceneId);
-        else revealChoices(timed);
+        else if (choicesBox.dataset.phase === "waiting") revealChoices(timed);
       });
       video.addEventListener("error", function () {
         // A clip that won't load must not keep the choices dim (watchVideo retries and then offers Retry).
