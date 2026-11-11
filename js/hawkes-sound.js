@@ -509,6 +509,9 @@
     /** Plays a video with the saved sound; if the browser still wants a tap, the prompt comes back. */
     play: play,
     unlocked: function () { return unlocked; },
+    /** A phone refused a play() although sound was unlocked (an element the tap never reached): ask for the tap again;
+        that tap starts every data-sound-start element then on the page. */
+    relock: function () { if (!unlocked || overlay) return; unlocked = false; showPrompt(); },
     prompt: function () { return overlay; },
     open: openSettings,
     label: label,
