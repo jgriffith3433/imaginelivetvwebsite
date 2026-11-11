@@ -36,7 +36,7 @@ const ROOT = process.env.ILTV_ROOT ? path.resolve(process.env.ILTV_ROOT) : path.
 const LISTING = 'story/stories.json';
 const CHECK = process.argv.includes('--check');
 // Top-level folders that aren't story pages.
-const RESERVED = new Set(['assets', 'css', 'js', 'f', 'story', 'tools', 'node_modules', 'hawkesgen', 'media']);
+const RESERVED = new Set(['assets', 'css', 'js', 'f', 'notes', 'story', 'tools', 'node_modules', 'hawkesgen', 'media']);
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 const problems = [];
@@ -403,15 +403,22 @@ const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 
 function card(st, i = 1) {
   const first = videoOf(st, st.byId.get(st.data.start));
+  const tr = trailerFiles(st.id);
   const picture = st.entry.image
     ? pictureTag(st.entry.image, st.entry.alt ?? titleOf(st), 'card', i === 0)
     : first
       ? `<video src="${esc(first)}#t=0.5" ${exists(posterPath(first).slice(1)) ? `poster="${esc(posterPath(first))}" ` : ''}muted playsinline preload="none" aria-hidden="true"></video>`
       : `<span class="story-card-blank" aria-hidden="true"></span>`;
-  // The badge, the percent explored and the button are the player's own progress: js/game.js sets them from the
-  // story's cookies (its run and its unlocks).
-  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}" data-progress="new">
+  const media = tr && tr.loop
+    ? `<div class="card-media">
         ${picture}
+        <video class="card-loop" muted loop playsinline preload="none" aria-hidden="true"${tr.loopPoster ? ` poster="${esc(tr.loopPoster)}"` : ''} data-src="${esc(tr.loop)}" data-small="${esc(tr.loopSm || tr.loop)}"></video>
+      </div>`
+    : picture;
+  // The badge, the percent explored and the button are the player's own progress: js/game.js sets them from the
+  // story's cookies (its run and its unlocks). The featured story is the hero only: not repeated here.
+  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}" data-progress="new"${tr && tr.loop ? ` data-loop="${esc(tr.loop)}"` : ''}>
+        ${media}
         <span class="story-card-ribbon">Not started</span>
         <div class="story-card-text">
           <h2>${esc(titleOf(st))}</h2>
@@ -426,13 +433,36 @@ function card(st, i = 1) {
       </a>`;
 }
 
-/** The hero at the top of the landing page: the featured story (or the first listed), big. Its poster is the card's
-    key image; a trailer clip (needs GPU: hawkes.assets.json has no recipe yet) would replace it. js/game.js sets its
-    button and progress like a card's. */
+/** Trailer / loop paths cut by tools/make-trailers.mjs (CPU only, from existing clips / CCTV stills). */
+function trailerFiles(id) {
+  const base = `/assets/trailers/${id}`;
+  const has = exists(`assets/trailers/${id}/trailer.mp4`);
+  if (!has) return null;
+  return {
+    trailer: `${base}/trailer.mp4`,
+    trailerSm: exists(`assets/trailers/${id}/trailer-sm.mp4`) ? `${base}/trailer-sm.mp4` : `${base}/trailer.mp4`,
+    poster: exists(`assets/trailers/${id}/poster.webp`) ? `${base}/poster.webp` : null,
+    loop: exists(`assets/trailers/${id}/loop.mp4`) ? `${base}/loop.mp4` : null,
+    loopSm: exists(`assets/trailers/${id}/loop-sm.mp4`) ? `${base}/loop-sm.mp4` : null,
+    loopPoster: exists(`assets/trailers/${id}/loop-poster.webp`) ? `${base}/loop-poster.webp` : null,
+  };
+}
+
+/** The hero at the top of the landing page: the featured story (or the first listed), big. Its muted trailer
+    (tools/make-trailers.mjs) plays within 2 s; the card image is the poster fallback. js/game.js sets its
+    button and progress like a card's; js/living.js owns play / Sound / reduced-motion. */
 function hero(st) {
+  const tr = trailerFiles(st.id);
   const pic = st.entry.image ? pictureTag(st.entry.image, st.entry.alt ?? titleOf(st), 'hero', true) : `<span class="hero-blank" aria-hidden="true"></span>`;
-  return `      <a class="hero" href="/?story=${st.id}" data-story="${st.id}" data-progress="new">
+  const media = tr
+    ? `<div class="hero-media">
         ${pic}
+        <video class="hero-trailer" muted loop playsinline preload="metadata" aria-hidden="true"${tr.poster ? ` poster="${esc(tr.poster)}"` : ''} data-src="${esc(tr.trailer)}" data-small="${esc(tr.trailerSm)}"></video>
+        <button type="button" class="hero-sound" aria-pressed="false" aria-label="Unmute trailer">Sound</button>
+      </div>`
+    : pic;
+  return `      <a class="hero" href="/?story=${st.id}" data-story="${st.id}" data-progress="new"${tr ? ` data-trailer="${esc(tr.trailer)}"` : ''}>
+        ${media}
         <div class="hero-text">
           <span class="hero-kicker">Featured</span>
           <h2>${esc(titleOf(st))}</h2>
@@ -456,7 +486,12 @@ function landing() {
     problems.push(`index.html: the story cards' markers are missing (${CARDS_START} … ${CARDS_END})`);
     return html;
   }
-  const cards = stories.filter((st) => st.listed).map((st, i) => card(st, i)).join('\n');
+  const listed = stories.filter((st) => st.listed);
+  if (listed.filter((st) => st.entry.featured).length > 1) problems.push(`${LISTING}: more than one story is featured`);
+  const featured = listed.find((st) => st.entry.featured) ?? listed[0];
+  // Catalogue: every listed story except the featured one (the hero already carries it; don't repeat it as the first card).
+  const catalogue = listed.filter((st) => st !== featured);
+  const cards = catalogue.map((st, i) => card(st, i)).join('\n');
   const out = html.slice(0, a + CARDS_START.length) + '\n' + cards + '\n      ' + html.slice(b);
   const ha = out.indexOf(HERO_START);
   const hb = out.indexOf(HERO_END);
@@ -464,9 +499,6 @@ function landing() {
     problems.push(`index.html: the hero's markers are missing (${HERO_START} … ${HERO_END})`);
     return out;
   }
-  const listed = stories.filter((st) => st.listed);
-  if (listed.filter((st) => st.entry.featured).length > 1) problems.push(`${LISTING}: more than one story is featured`);
-  const featured = listed.find((st) => st.entry.featured) ?? listed[0];
   return out.slice(0, ha + HERO_START.length) + '\n' + hero(featured) + '\n      ' + out.slice(hb);
 }
 

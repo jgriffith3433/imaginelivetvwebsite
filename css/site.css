@@ -814,6 +814,7 @@ a { color: var(--green); }
 
 .story-card img,
 .story-card video,
+.card-media,
 .story-card-blank {
   display: block;
   width: 100%;
@@ -869,8 +870,17 @@ a { color: var(--green); }
 .hero:hover,
 .hero:focus-visible { border-color: #8d9096; }
 
+.hero-media {
+  position: relative;
+  min-height: 15rem;
+  max-height: 22rem;
+  background: #0b0c0e;
+  overflow: hidden;
+}
+
 .hero img,
-.hero-blank {
+.hero-blank,
+.hero-trailer {
   display: block;
   width: 100%;
   height: 100%;
@@ -880,6 +890,64 @@ a { color: var(--green); }
   object-position: center 35%;
   background: #0b0c0e;
 }
+
+.hero-media picture,
+.hero-media > img {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-trailer {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-sound {
+  position: absolute;
+  z-index: 2;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  color: #f4f2ee;
+  background: rgba(12, 14, 18, 0.72);
+  border: 1px solid #5c6066;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.hero-sound:hover,
+.hero-sound:focus-visible { border-color: #8d9096; color: #fff; }
+.hero-sound[aria-pressed="true"] { border-color: var(--green); color: var(--green); }
+
+.card-media {
+  position: relative;
+  overflow: hidden;
+  background: #0b0c0e;
+}
+
+.card-media picture,
+.card-media > img { display: block; width: 100%; }
+
+.card-loop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.story-card.is-previewing .card-loop { opacity: 1; }
+
+html[data-living="still"] .hero-trailer,
+html[data-living="still"] .card-loop { display: none !important; }
 
 .hero-text {
   display: flex;
@@ -998,8 +1066,10 @@ a { color: var(--green); }
 
 @media (max-width: 640px) {
   .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero-media,
   .hero img,
-  .hero-blank { min-height: 0; max-height: 14rem; aspect-ratio: 16 / 10; }
+  .hero-blank,
+  .hero-trailer { min-height: 0; max-height: none; width: 100%; aspect-ratio: 16 / 10; }
   .continue-card { flex-basis: 100%; }
 }
 
@@ -3110,14 +3180,12 @@ button.ending-tile:focus-visible {
 html[data-reading="en"] .post-card .spot-src { display: none; }
 html[data-reading="en"] .post-card .spot-en { display: inline; }
 
-/* Landing page living layer (js/living.js) */
+/* Landing page living layer (js/living.js): hero trailer + card loops; light-up; screen wall. */
 .hero, .story-card { transition: opacity .6s ease, filter .6s ease, border-color .2s, transform .2s; }
 .hero.dim, .story-card.dim { opacity: .25; filter: brightness(.5); }
 .hero.lit, .story-card.lit { animation: lit-in .8s ease-out; }
-.story-card.hot, .hero.hot { box-shadow: 0 0 22px rgba(160, 190, 255, .35); }
-.hero.lit .hero-image, .hero.lit picture { animation: hero-drift 9s ease-in-out infinite alternate; }
+.story-card.is-previewing, .hero.is-playing { box-shadow: 0 0 22px rgba(160, 190, 255, .28); }
 @keyframes lit-in { from { box-shadow: 0 0 40px rgba(160, 190, 255, .6); } to { box-shadow: 0 0 0 rgba(160, 190, 255, 0); } }
-@keyframes hero-drift { from { filter: brightness(.92); } to { filter: brightness(1.08); } }
 .tile-wall { display: flex; gap: .5rem; margin: .6rem 0 1rem; height: 34px; }
 .tile-screen { flex: 1; background: #0b1220; border: 1px solid #2a3550; border-radius: 3px; position: relative; overflow: hidden; }
 .tile-screen::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(120,160,255,.10) 0 2px, transparent 2px 4px); }
@@ -3125,7 +3193,32 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
 @keyframes tile-flick { 0% { background: #bcd0ff; } 30% { background: #0b1220; } 55% { background: #6f8fd8; } 100% { background: #0b1220; } }
 .post-card.sleepy { opacity: .4; transform: translateY(10px); transition: opacity .6s, transform .6s; }
 .post-card.sleepy.awake { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .hero.lit, .story-card.lit, .tile-screen.flick, .hero.lit picture { animation: none; } }
+
+/* Studio notes (/notes/): English titles with a small language chip. */
+.notes-list { list-style: none; margin: 0; padding: 0; }
+.notes-list li { border-bottom: 1px solid #242824; }
+.notes-list a {
+  display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap;
+  padding: 1rem 0; color: inherit; text-decoration: none;
+}
+.notes-list a:hover h2 { color: var(--green); }
+.notes-list h2 {
+  margin: 0; flex: 1 1 12rem; color: var(--ink);
+  font-family: var(--serif); font-size: 1.25rem; font-weight: 560;
+}
+.notes-list time { color: var(--muted); font-size: 0.85rem; }
+.lang-chip {
+  display: inline-flex; align-items: center; min-height: 1.5rem;
+  padding: 0 0.5rem; color: #c9c4b8; background: #1a1c20;
+  border: 1px solid #3a3d42; border-radius: 999px;
+  font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero.lit, .story-card.lit, .tile-screen.flick { animation: none; }
+  .hero-trailer, .card-loop { display: none !important; }
+  .hero-sound { display: none !important; }
+}
 
 /* Scene cross-fade (js/game.js crossfadeOut): the outgoing layer sits above the incoming one and fades out;
    the choices and timer are outside the video box, so nothing covers them. */
