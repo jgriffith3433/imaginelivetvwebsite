@@ -3323,3 +3323,20 @@ html[data-reading="en"] .post-article h1 .spot-src { display: none; }
   font-weight: 700;
 }
 .story-card[data-all-endings="true"] .story-card-endings::before { content: "\2713  "; }
+
+/* Rewind and flags (J, 2026-11-11): a death offers Rewind to the choice and Start over, full width and 48px tall; a way
+   already tried is marked in words ("Tried"); a page with one choice carries on by itself, with no button. */
+.spark-choices[data-auto="true"] { display: none; }
+#spark #spark-video { transition: opacity 0.4s ease; }
+#spark.is-auto-advance #spark-video { opacity: 0; }
+.spark-choices .choice.death-choice { min-height: 52px; justify-content: center; text-align: center; font-weight: 600; }
+.spark-choices .choice.death-choice[data-death="rewind"] { border-color: #f0a35e; background: linear-gradient(180deg, rgba(240, 163, 94, 0.2), rgba(240, 163, 94, 0.06)), #3a2e22; }
+.spark-choices .choice.is-tried { padding-right: 5.4rem; border-style: dashed; border-color: #9a948a; color: #cfcac1; }
+.spark-choices .choice .choice-tried {
+  position: absolute; right: 0.7rem; top: 50%; transform: translateY(-50%);
+  padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #1a1b1d; background: #e0b0a0;
+}
+@media (prefers-reduced-motion: reduce) {
+  #spark #spark-video { transition: none; }
+}

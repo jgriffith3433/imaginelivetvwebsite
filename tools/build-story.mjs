@@ -111,6 +111,7 @@ function validate(st) {
     // An ending (its "ending" line) is where the story is completed (the card's badge says Completed); a death isn't one.
     if (s.ending && (s.dead || s.choices.length)) problems.push(`${at(s)}: an ending has no choices and isn't a death`);
     for (const c of s.choices) if (!byId.has(c.next)) problems.push(`${at(s)}: choice "${c.en}" goes to ${c.next}, which doesn't exist`);
+    validateFlags(st, s);
     for (const who of s.shot?.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
     for (const l of s.lines ?? []) {
       const who = data.characters?.[l.speaker];
@@ -131,6 +132,44 @@ function validate(st) {
   const queue = [data.start];
   while (queue.length) for (const c of byId.get(queue.shift())?.choices ?? []) if (!seen.has(c.next) && byId.has(c.next)) seen.add(c.next), queue.push(c.next);
   for (const s of scenes) if (!seen.has(s.id)) problems.push(`${at(s)}: no choice leads here (unreachable)`);
+}
+
+/* ---------------- flags, variants and defaults (video stories) ---------------- */
+
+const FLAG_VALUE = (v) => ['boolean', 'string', 'number'].includes(typeof v);
+
+/** A choice may `set` flags ({ flag: value }) and be the `default` (what the 15 s timeout picks); a scene may have
+    `variants` ({ when: { flag: value }, story?, question?, video? }), the first whose `when` holds replacing the base. */
+function validateFlags(st, s) {
+  const { id } = st;
+  const at = (x) => `${id}/${x.id}`;
+  const defaults = s.choices.filter((c) => c.default);
+  if (defaults.length > 1) problems.push(`${at(s)}: ${defaults.length} choices are marked default (one at most)`);
+  for (const c of s.choices) {
+    if (c.set != null && (typeof c.set !== 'object' || Array.isArray(c.set) || !Object.values(c.set).every(FLAG_VALUE))) problems.push(`${at(s)}: choice "${c.en}": set must be { flag: true | false | "text" | number }`);
+    if (c.default != null && c.default !== true) problems.push(`${at(s)}: choice "${c.en}": default is true or left out`);
+  }
+  // A timeout never kills a viewer who looked away: the default (or, with none, the first safe choice) is never a death.
+  if (!s.dead && !s.ending && s.choices.length > 1) {
+    const dead = (c) => !!st.byId.get(c.next)?.dead;
+    for (const c of defaults) if (dead(c)) problems.push(`${at(s)}: the default choice "${c.en}" leads to a death (${c.next}): the timeout would kill a viewer who looked away`);
+    if (!defaults.length && s.choices.every(dead)) problems.push(`${at(s)}: every choice leads to a death and none is marked default: the timeout has no safe pick`);
+  }
+  // Two choices to one scene must set the same flags (the run's flags are worked out from the scenes it passed through).
+  const by = new Map();
+  for (const c of s.choices) {
+    const key = JSON.stringify(c.set ?? {});
+    if (by.has(c.next) && by.get(c.next) !== key) problems.push(`${at(s)}: two choices to ${c.next} set different flags`);
+    by.set(c.next, key);
+  }
+  for (const [i, v] of (s.variants ?? []).entries()) {
+    if (!v.when || typeof v.when !== 'object' || !Object.keys(v.when).length || !Object.values(v.when).every(FLAG_VALUE)) problems.push(`${at(s)}: variant ${i}: when must be { flag: value }`);
+    for (const k of ['story', 'question']) if (v[k] != null && (!Array.isArray(v[k]) || v[k].length !== 2)) problems.push(`${at(s)}: variant ${i}: ${k} must be [in ${s.lang}, in English]`);
+    if (!['story', 'question', 'video'].some((k) => v[k] != null)) problems.push(`${at(s)}: variant ${i} changes nothing (story, question or video)`);
+    const setBy = (flag) => st.scenes.some((o) => o.choices.some((c) => c.set && flag in c.set));
+    for (const flag of Object.keys(v.when ?? {})) if (!setBy(flag)) problems.push(`${at(s)}: variant ${i} reads flag "${flag}", which no choice sets`);
+    for (const w of st.data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test([v.story, v.question].flat().filter(Boolean).join(' ').toLowerCase())) problems.push(`${at(s)}: variant ${i}'s words say "${w}" (unspoken)`);
+  }
 }
 
 /* ---------------- a story's inventory (js/kit.js) ---------------- */
@@ -324,7 +363,13 @@ function storyData() {
         ...(s.dead ? { dead: true } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
-        choices: s.choices.map((c) => [c.say, c.en, c.next]),
+        choices: s.choices.map((c) => {
+          const row = [c.say, c.en, c.next];
+          if (c.default || c.set) row.push(!!c.default);
+          if (c.set) row.push(c.set);
+          return row;
+        }),
+        ...(s.variants?.length ? { variants: s.variants.map((v) => ({ when: v.when, ...(v.story ? { story: v.story } : {}), ...(v.question ? { question: v.question } : {}), ...(v.video ? { video: v.video, ...clipExtras(v.video) } : {}) })) } : {}),
       };
     }
     const langs = new Set(['en', ...st.scenes.map((s) => s.lang)]);

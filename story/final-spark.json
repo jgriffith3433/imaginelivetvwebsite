@@ -278,8 +278,8 @@
       "dead": true,
       "choices": [
         {
-          "say": "1. Réessaie dans une autre vie",
-          "en": "1. Try again in another life",
+          "say": "1. Recommence",
+          "en": "1. Start over",
           "next": "start"
         }
       ],
@@ -384,8 +384,8 @@
       "dead": true,
       "choices": [
         {
-          "say": "1. Попробуй снова в другой жизни",
-          "en": "1. Try again in another life",
+          "say": "1. Начни заново",
+          "en": "1. Start over",
           "next": "start"
         }
       ],
