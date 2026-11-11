@@ -2709,7 +2709,97 @@
     },
     {
       "id": "water-road-start-shot",
-      "note": "The water road (The Water Road): keyframe and clip.",
+      "note": "The water road (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/dove.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide establishing view at first light: a long wagon train of six canvas-covered wagons loaded with water barrels, mule teams hauling in the dust haze across open desert, a low golden sun, a small mourning dove on a dead mesquite branch in the near foreground. image 1 is the reference sheet for the dove (a small slender mourning dove, soft grey-brown feathers with a buff breast, no ring or collar on the neck, a small black spot on the cheek, a few black spots on each wing, a long pointed tail, dark eyes ringed in pale blue); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera drifts slowly right along the train as the wagons start to roll; the dove turns its head. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide establishing view at first light: a long wagon train of six canvas-covered wagons loaded with water barrels, mule teams hauling in the dust haze across open desert, a low golden sun, a small mourning dove on a dead mesquite branch in the near foreground); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-water-road/media/keyframe.png",
+        "clip": "water-road/the-water-road/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-start-shot-2",
+      "note": "The water road (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up on the young rider at the back of the line, hat brim shading the eyes, faded red bandana, looking down at the unfired revolver in its holster, his hand resting uneasily on it, golden dawn light. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "his fingers rest on the holster, then he looks up toward the wagons ahead and swallows. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up on the young rider at the back of the line, hat brim shading the eyes, faded red bandana, looking down at the unfired revolver in its holster, his hand resting uneasily on it, golden dawn light); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-water-road/media/keyframe-2.png",
+        "clip": "water-road/the-water-road/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-start-shot-3",
+      "note": "The water road (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/dove.png",
         "story/characters/water-road/hero.png"
@@ -2750,8 +2840,8 @@
       "candidates": 3,
       "pick": "matches the scene (first light at dawn in the open desert, a low golden sun and dust haze; in the close foreground a mourning dove sits alone on a dead mesquite branch, sharp, filling the top of the frame; far below and behind it, soft and out of focus in the haze, a long wagon train of six canvas-covered wagons loaded with water barrels, each pulled by a team of mules, starts out across the flats; at the very back of the line, small in the distance, a young rider on a bay horse); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-water-road/media/keyframe.png",
-        "clip": "water-road/the-water-road/media/clip.mp4"
+        "keyframe": "water-road/the-water-road/media/keyframe-3.png",
+        "clip": "water-road/the-water-road/media/clip-3.mp4"
       }
     },
     {
@@ -2774,7 +2864,88 @@
     },
     {
       "id": "water-road-flats-shot",
-      "note": "The salt flats (The Water Road): keyframe and clip.",
+      "note": "The salt flats (The Water Road): keyframe and clip (shot 1 of 3).",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot of blinding white salt flats at noon in heat haze, six wagons stopped in a line, the last water wagon tilted on a cracked wooden wheel, mules stamping, tiny riders around it. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West. A modern 3D game render, not a photograph and not live action, not a cartoon or anime; a clean image with no writing on it.",
+            "width": 720,
+            "height": 1280
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "heat shimmer rolls across the salt; the camera pushes slowly in toward the tilted wagon. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot of blinding white salt flats at noon in heat haze, six wagons stopped in a line, the last water wagon tilted on a cracked wooden wheel, mules stamping, tiny riders around it); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-salt-flats/media/keyframe.png",
+        "clip": "water-road/the-salt-flats/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-flats-shot-2",
+      "note": "The salt flats (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up on the young rider's sunburnt face under the dusty hat brim, sweat on the lip, squinting at the white sun, a tin flask in his hand. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "he wipes sweat with the back of his wrist, glances at the flask, and does not drink. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up on the young rider's sunburnt face under the dusty hat brim, sweat on the lip, squinting at the white sun, a tin flask in his hand); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-salt-flats/media/keyframe-2.png",
+        "clip": "water-road/the-salt-flats/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-flats-shot-3",
+      "note": "The salt flats (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/hero.png"
       ],
@@ -2813,8 +2984,8 @@
       "candidates": 3,
       "pick": "matches the scene (blinding white salt flats at noon, heat haze; a water wagon tilts on a cracked wooden wheel, mules stamping; the young rider wipes sweat from under the hat brim); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-salt-flats/media/keyframe.png",
-        "clip": "water-road/the-salt-flats/media/clip.mp4"
+        "keyframe": "water-road/the-salt-flats/media/keyframe-3.png",
+        "clip": "water-road/the-salt-flats/media/clip-3.mp4"
       }
     },
     {
@@ -2956,7 +3127,99 @@
     },
     {
       "id": "water-road-mesa-shot",
-      "note": "Under the mesa (The Water Road): keyframe and clip.",
+      "note": "Under the mesa (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot of the caravan on a trail in the long shadow of a towering red mesa, a small bright glint on the sunlit rocks high above, the young rider at the rear. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera tilts up the mesa wall to the glint, which flashes twice. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot of the caravan on a trail in the long shadow of a towering red mesa, a small bright glint on the sunlit rocks high above, the young rider at the rear); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/under-the-mesa/media/keyframe.png",
+        "clip": "water-road/under-the-mesa/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-mesa-shot-2",
+      "note": "Under the mesa (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png",
+        "story/characters/water-road/boss.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up of the young rider's right hand drifting down to rest on the grip of his holstered single-action revolver, thumb on the hammer, sunlit mesa shadow behind. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); image 2 is the reference sheet for the trail boss (a lean old woman with a weathered face, grey braid, a battered black hat, a long duster coat and a coiled bullwhip at her hip); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "his thumb touches the hammer, the hand hovers, his eyes lift to the rocks. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up of the young rider's right hand drifting down to rest on the grip of his holstered single-action revolver, thumb on the hammer, sunlit mesa shadow behind); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/under-the-mesa/media/keyframe-2.png",
+        "clip": "water-road/under-the-mesa/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-mesa-shot-3",
+      "note": "Under the mesa (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/hero.png"
       ],
@@ -2995,8 +3258,8 @@
       "candidates": 3,
       "pick": "matches the scene (the caravan winds along a trail in the long shadow of a towering red mesa; high on the sunlit rocks a small bright glint; the young rider in the foreground, hand near the holster); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/under-the-mesa/media/keyframe.png",
-        "clip": "water-road/under-the-mesa/media/clip.mp4"
+        "keyframe": "water-road/under-the-mesa/media/keyframe-3.png",
+        "clip": "water-road/under-the-mesa/media/clip-3.mp4"
       }
     },
     {
@@ -3147,7 +3410,99 @@
     },
     {
       "id": "water-road-family-shot",
-      "note": "The broken wagon (The Water Road): keyframe and clip.",
+      "note": "The broken wagon (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/family.png",
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot of a homesteading family sunburnt and silent in the thin shade of a broken covered wagon beside an empty wooden cask, the caravan halted on the trail behind, the young rider on his horse above them. image 1 is the reference sheet for the family (a homesteading family: a thin mother in a faded blue calico dress and bonnet, a bearded father in suspenders, a boy of about twelve with a brass spyglass, and a little girl with a rag doll, all dusty and sunburnt); image 2 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow push in; the mother pulls the children closer. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot of a homesteading family sunburnt and silent in the thin shade of a broken covered wagon beside an empty wooden cask, the caravan halted on the trail behind, the young rider on his horse above them); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-broken-wagon/media/keyframe.png",
+        "clip": "water-road/the-broken-wagon/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-family-shot-2",
+      "note": "The broken wagon (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/boss.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up of the lean old trail boss on horseback, grey braid under a battered black hat, weathered face, eyes narrowed in a hard measuring look down at the family, coiled bullwhip at her hip. image 1 is the reference sheet for the trail boss (a lean old woman with a weathered face, grey braid, a battered black hat, a long duster coat and a coiled bullwhip at her hip); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "her eyes move from the family to the young rider and hold on him, waiting. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up of the lean old trail boss on horseback, grey braid under a battered black hat, weathered face, eyes narrowed in a hard measuring look down at the family, coiled bullwhip at her hip); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-broken-wagon/media/keyframe-2.png",
+        "clip": "water-road/the-broken-wagon/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-family-shot-3",
+      "note": "The broken wagon (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/family.png",
         "story/characters/water-road/hero.png"
@@ -3188,8 +3543,8 @@
       "candidates": 3,
       "pick": "matches the scene (a homesteading family, sunburnt and silent, sits in the thin shade of a broken covered wagon beside an empty wooden cask; the young rider looks down at them from the horse); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-broken-wagon/media/keyframe.png",
-        "clip": "water-road/the-broken-wagon/media/clip.mp4"
+        "keyframe": "water-road/the-broken-wagon/media/keyframe-3.png",
+        "clip": "water-road/the-broken-wagon/media/clip-3.mp4"
       }
     },
     {
@@ -3470,7 +3825,99 @@
     },
     {
       "id": "water-road-wash-shot",
-      "note": "The dry wash (The Water Road): keyframe and clip.",
+      "note": "The dry wash (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/dove.png",
+        "story/characters/water-road/leader.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot down a bone-dry sandy wash between red rock walls, five riders with drawn revolvers blocking the way ahead, their leader in a long grey duster in front, the caravan halting behind the camera. image 1 is the reference sheet for the dove (a small slender mourning dove, soft grey-brown feathers with a buff breast, no ring or collar on the neck, a small black spot on the cheek, a few black spots on each wing, a long pointed tail, dark eyes ringed in pale blue); image 2 is the reference sheet for the riders' leader (a hard-faced rider of about forty, black stubble, a dark low-crowned hat, a long grey duster, a gun belt with two revolvers, cracked lips); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow push in; the horses shift; a mourning dove skims low over the sand. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot down a bone-dry sandy wash between red rock walls, five riders with drawn revolvers blocking the way ahead, their leader in a long grey duster in front, the caravan halting behind the camera); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-dry-wash/media/keyframe.png",
+        "clip": "water-road/the-dry-wash/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-wash-shot-2",
+      "note": "The dry wash (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/leader.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up of the riders' leader, hard face with black stubble and cracked lips under a low-crowned dark hat, long grey duster, glaring straight at the camera over a drawn revolver. image 1 is the reference sheet for the riders' leader (a hard-faced rider of about forty, black stubble, a dark low-crowned hat, a long grey duster, a gun belt with two revolvers, cracked lips); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "he licks his cracked lips, raises one hand, and keeps his eyes on you. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up of the riders' leader, hard face with black stubble and cracked lips under a low-crowned dark hat, long grey duster, glaring straight at the camera over a drawn revolver); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-dry-wash/media/keyframe-2.png",
+        "clip": "water-road/the-dry-wash/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-wash-shot-3",
+      "note": "The dry wash (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/dove.png",
         "story/characters/water-road/leader.png",
@@ -3513,8 +3960,8 @@
       "candidates": 3,
       "pick": "matches the scene (a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere; a small grey-brown mourning dove flies low along the dry sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-dry-wash/media/keyframe.png",
-        "clip": "water-road/the-dry-wash/media/clip.mp4"
+        "keyframe": "water-road/the-dry-wash/media/keyframe-3.png",
+        "clip": "water-road/the-dry-wash/media/clip-3.mp4"
       }
     },
     {
