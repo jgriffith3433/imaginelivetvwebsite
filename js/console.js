@@ -652,6 +652,15 @@
     return true;
   };
 
+  /** A scene swap replaces the buttons: whatever press was handing off from this box is over, release it now (a clip
+      story's swap can come after the 250 ms hand-off, and the new choices must be pressable at once). */
+  window.iltvDecideRelease = function (box) {
+    if (!box) return;
+    box._deciding = null;
+    box.classList.remove("is-deciding");
+    box.removeAttribute("aria-busy");
+  };
+
   document.addEventListener("keydown", function (event) {
     if (event.altKey || event.ctrlKey || event.metaKey || event.repeat || !/^[1-9]$/.test(event.key)) return;
     var t = event.target;
