@@ -873,7 +873,11 @@ async function smoke(options, t) {
   await endingsGalleryRun({ at: "smoke", story: "water-road" }, { ...t, progress: (p) => t.progress(0.99 + 0.005 * p) });
   // Audio buses (beta plays smoke): unlock on first tap, duck under a clip, header toggle saves iltv.sound; 390x844.
   t.scene("Audio buses: unlock, duck, header toggle");
-  await audioBusesRun({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.995 + 0.005 * p) });
+  await audioBusesRun({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.995 + 0.004 * p) });
+  // Decisive choice (beta plays smoke): chosen card glows, others fall away, double-tap is one choice, keys 1/2;
+  // mid-animation screenshots at 390x844 for Final Spark and Night Shift.
+  t.scene("Decisive choice: glow, fall-away, double-tap, keys");
+  await decisiveRun({ at: "smoke" }, { ...t, progress: (p) => t.progress(0.999 + 0.001 * p) });
   closeViewFrame();
   t.progress(1);
 }
@@ -6762,47 +6766,258 @@ function frameWatch() {
   return w;
 }
 
+/** Mid-hand-off checks for a choice: glow on the chosen card, others fading, aria-busy, one vibration, exactly one
+    iltv:deciding for a double input. `doc` is the page or a sized frame; `buzz` is a shared vibrate log. */
+function decisiveCheck(t, doc, where, mode, btns, box, buzz, before, ui) {
+  const win = doc.defaultView || window;
+  const chosenBtn = btns[0];
+  const chosen = chosenBtn.classList.contains("is-chosen");
+  const fading = btns.length < 2 || btns.slice(1).every((b) => b.classList.contains("is-fading") && parseFloat(win.getComputedStyle(b).opacity) < 1);
+  const shadow = win.getComputedStyle(chosenBtn).boxShadow || "none";
+  const glow = /0px 0px 2[0-9]px|0 0 2[0-9]px/.test(shadow.replace(/,/g, ", "));
+  const scale = (() => {
+    const tr = win.getComputedStyle(chosenBtn).transform || "";
+    if (!tr || tr === "none") return 1;
+    const m = tr.match(/matrix\(([-\d.e]+)/);
+    return m ? parseFloat(m[1]) : 1;
+  })();
+  const reduced = !!(win.matchMedia && win.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const busy = box.getAttribute("aria-busy");
+  const pressed = chosenBtn.getAttribute("aria-pressed");
+  const focused = doc.activeElement === chosenBtn;
+  const decisions = ui - before;
+  t.event("decisive", `${where} ${mode}: chosen=${chosen} others-fading=${fading} glow=${glow} scale=${scale.toFixed(2)} reduced=${reduced} busy=${busy} pressed=${pressed} focus=${focused} vibrate=${JSON.stringify(buzz)} decisions=${decisions}`);
+  if (!chosen) t.problem("bug", `${where}: the ${mode} didn't mark the chosen card`);
+  if (!fading) t.problem("bug", `${where}: the other cards didn't fall away`);
+  if (!glow) t.problem("bug", `${where}: the chosen card has no glow (box-shadow ${shadow.slice(0, 80)})`);
+  if (!reduced && scale < 1.02) t.problem("bug", `${where}: the chosen card didn't scale up (scale ${scale.toFixed(2)})`);
+  if (busy !== "true") t.problem("bug", `${where}: aria-busy was not set during the hand-off`);
+  if (pressed !== "true") t.problem("bug", `${where}: aria-pressed was not set on the chosen card`);
+  if (decisions !== 1) t.problem("bug", `${where}: ${decisions} choices fired for a double ${mode}`);
+  if (mode === "tap" && "vibrate" in (win.navigator || navigator) && buzz[0] !== 10) t.problem("bug", `${where}: no 10 ms vibration (got ${JSON.stringify(buzz)})`);
+  return { chosen, fading, glow };
+}
+
+/** Presses a choice twice (tap or key) and checks the hand-off mid-animation. */
+async function decisivePress(t, doc, where, mode, key = "1") {
+  const win = doc.defaultView || window;
+  const console_ = !!doc.getElementById("console") && !doc.getElementById("console").hidden;
+  const box = doc.getElementById(console_ ? "console-choices" : "spark-choices");
+  const btns = [...(box ? box.querySelectorAll(".choice") : [])];
+  if (btns.length < 1) {
+    t.problem("bug", `${where}: no choices`);
+    return null;
+  }
+  const buzz = [];
+  const nav = win.navigator || navigator;
+  const realVibrate = nav.vibrate;
+  try { nav.vibrate = (ms) => { buzz.push(ms); return true; }; } catch (e) { /* read-only */ }
+  let ui = 0;
+  const onDeciding = () => ui++;
+  // iltvDecide fires on the frame's (or page's) document; listen only there so we don't double-count.
+  doc.addEventListener("iltv:deciding", onDeciding);
+  const before = ui;
+  if (mode === "tap") {
+    btns[0].click();
+    btns[0].click();
+  } else {
+    // The key listener is on the page document (js/console.js); in a frame, dispatch there.
+    doc.dispatchEvent(new win.KeyboardEvent("keydown", { key, bubbles: true }));
+    doc.dispatchEvent(new win.KeyboardEvent("keydown", { key: key === "1" ? "2" : "1", bubbles: true }));
+  }
+  await sleep(120);
+  t.event("screenshot", `${where} ${mode}: mid-animation`);
+  const result = decisiveCheck(t, doc, where, mode, btns, box, buzz, before, ui);
+  doc.removeEventListener("iltv:deciding", onDeciding);
+  try { nav.vibrate = realVibrate; } catch (e) { /* ignore */ }
+  return result;
+}
+
+/** Opens a story in a sized frame with choices ready (Night Shift: first scene's lines already heard). */
+async function decisiveOpenAt(t, id, w, h) {
+  const st = story(id);
+  const console_ = isConsole(st);
+  clearProgress();
+  if (console_) consoleSeedWrite(st, [], null);
+  const doc = await viewFrameLoad(t, `/?story=${id}`, w, h);
+  if (console_) {
+    await consolePrompt(t, doc, `${id} ${w}x${h}`);
+    t.event("seeded-run", `${id} ${w}x${h}: first scene's lines counted as heard (setup shortcut)`);
+    if (!(await waitFor(() => doc.querySelectorAll("#console-choices .choice").length > 0, 15000))) {
+      throw new Error(`${id} at ${w}x${h}: no choices at the first scene`);
+    }
+  } else {
+    await passPrompt(t, doc, `${id} ${w}x${h}`);
+    const box = doc.getElementById("spark-choices");
+    const v = () => doc.querySelector("#spark-video video:not(.spark-leave)");
+    await waitFor(() => v() && (!v().paused || v().ended || (v().duration && v().currentTime > 0)), 8000);
+    const vid = v();
+    if (vid && vid.duration > 0.5 && isFinite(vid.duration)) vid.currentTime = Math.max(0, vid.duration - 0.12);
+    else if (vid) vid.dispatchEvent(new doc.defaultView.Event("ended"));
+    if (!(await waitFor(() => box && box.dataset.phase === "ready" && box.querySelectorAll(".choice").length > 0, 20000))) {
+      throw new Error(`${id} at ${w}x${h}: the choices never came up`);
+    }
+  }
+  return doc;
+}
+
 async function decisiveRun(options, t) {
-  rememberProgress();
+  // Same guard as audioBusesRun / phoneChoicesRun: a smoke leg must not overwrite the outer snapshot.
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const inSmoke = options && options.at === "smoke";
   await passPrompt(t);
   clearProgress();
   if (!landingShown()) await toLanding(t);
-  const ids = listedStories().filter((i) => !isConsole(story(i.id))).map((i) => i.id);
-  const buzz = [];
-  const realVibrate = navigator.vibrate;
-  try { navigator.vibrate = (ms) => { buzz.push(ms); return true; }; } catch (e) { /* read-only */ }
-  let ui = 0;
-  const onDeciding = () => ui++;
-  document.addEventListener("iltv:deciding", onDeciding);
-  let k = 0;
-  for (const id of ids) {
-    for (const mode of ["tap", "key"]) {
-      t.scene(`${story(id).title}: choice by ${mode}`);
-      if (stories().current() !== id) await openStory(t, id);
-      await toStart(t);
-      await sleep(400);
-      const btns = choiceButtons();
-      if (btns.length < 1) { t.problem("bug", `${id}: no choices`); continue; }
-      const box = $("spark-choices");
-      buzz.length = 0;
-      const before = ui;
-      if (mode === "tap") { btns[0].click(); btns[0].click(); }
-      else { document.dispatchEvent(new KeyboardEvent("keydown", { key: "1", bubbles: true })); document.dispatchEvent(new KeyboardEvent("keydown", { key: "2", bubbles: true })); }
-      await sleep(120);
-      const chosen = btns[0].classList.contains("is-chosen");
-      const fading = btns.slice(1).every((b) => b.classList.contains("is-fading") && getComputedStyle(b).opacity < 1);
-      const glow = getComputedStyle(btns[0]).boxShadow !== "none";
-      t.event("decisive", `${id} ${mode}: chosen=${chosen} others-fading=${fading} glow=${glow} busy=${box.getAttribute("aria-busy")} vibrate=${JSON.stringify(buzz)} decisions=${ui - before}`);
-      if (!chosen) t.problem("bug", `${id}: the ${mode} didn't mark the chosen card`);
-      if (btns.length > 1 && !fading) t.problem("bug", `${id}: the other cards didn't fall away`);
-      if (ui - before !== 1) t.problem("bug", `${id}: ${ui - before} choices fired for a double ${mode}`);
-      if (mode === "tap" && "vibrate" in navigator && buzz[0] !== 10) t.problem("bug", `${id}: no 10 ms vibration`);
-      await sleep(1200);
+
+  // Smoke leg (beta plays smoke): Final Spark tap + keys 1/2, mid-animation at 390x844, then Night Shift key 3
+  // at okafor-out so all four criteria show in smoke footage.
+  if (inSmoke) {
+    t.scene("Decisive choice (smoke): Final Spark tap and keys");
+    await openStory(t, FIRST);
+    await toStart(t, { quiet: true });
+    await sleep(300);
+    await decisivePress(t, document, `${FIRST} desktop`, "tap");
+    await sleep(1400);
+    await toStart(t, { quiet: true });
+    await sleep(300);
+    await decisivePress(t, document, `${FIRST} desktop`, "key", "1");
+    t.progress(0.35);
+    {
+      t.scene("Decisive choice (smoke): Final Spark at 390x844");
+      const doc = await decisiveOpenAt(t, FIRST, 390, 844);
+      await decisivePress(t, doc, `${FIRST} 390x844`, "tap");
+      closeViewFrame();
+      await sleep(200);
     }
-    t.progress(++k / ids.length);
+    t.progress(0.6);
+    {
+      const st = story("night-shift");
+      t.scene("Decisive choice (smoke): Night Shift key 3");
+      clearProgress();
+      consoleSeedWrite(st, [0, 0], null);
+      t.event("seeded-run", "night-shift smoke: at okafor-out for key 3");
+      openByLink(t, st.id);
+      await waitFor(() => window.iltvConsole && window.iltvConsole.story() === st.id, 5000);
+      if (soundOf().prompt()) await consolePrompt(t, document, st.id);
+      if (!(await waitFor(() => document.querySelectorAll("#console-choices .choice").length >= 3, 15000))) {
+        t.problem("bug", "night-shift smoke: okafor-out never showed three choices for key 3");
+      } else {
+        const box = $("console-choices");
+        const btns = [...box.querySelectorAll(".choice")];
+        const buzz = [];
+        const realVibrate = navigator.vibrate;
+        try { navigator.vibrate = (ms) => { buzz.push(ms); return true; }; } catch (e) { /* read-only */ }
+        let ui = 0;
+        const onDeciding = () => ui++;
+        document.addEventListener("iltv:deciding", onDeciding);
+        const before = ui;
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "3", bubbles: true }));
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "1", bubbles: true }));
+        await sleep(120);
+        t.event("screenshot", "night-shift smoke key 3: mid-animation");
+        const chosen = btns[2].classList.contains("is-chosen");
+        const fading = btns.slice(0, 2).every((b) => b.classList.contains("is-fading"));
+        t.event("decisive", `night-shift smoke key3: chosen=${chosen} others-fading=${fading} decisions=${ui - before} vibrate=${JSON.stringify(buzz)}`);
+        if (!chosen) t.problem("bug", "night-shift smoke: key 3 didn't mark the third card");
+        if (!fading) t.problem("bug", "night-shift smoke: key 3 didn't fade the other cards");
+        if (ui - before !== 1) t.problem("bug", `night-shift smoke: ${ui - before} choices fired for key 3`);
+        document.removeEventListener("iltv:deciding", onDeciding);
+        try { navigator.vibrate = realVibrate; } catch (e) { /* ignore */ }
+        await sleep(400);
+      }
+    }
+    t.progress(1);
+    return;
   }
-  document.removeEventListener("iltv:deciding", onDeciding);
-  try { navigator.vibrate = realVibrate; } catch (e) { /* ignore */ }
+
+  const ids = listedStories().map((i) => i.id);
+  const sizes = [[390, 844, "390x844"], [1280, 720, "1280x720"]];
+  let step = 0;
+  const total = ids.length * 2 + ids.length * sizes.length + 1;
+
+  // On the page: each listed story, double-tap then (new run) keys 1+2 together.
+  // Night Shift: seed the first scene's lines as heard (setup shortcut) so the run stays under its budget.
+  for (const id of ids) {
+    const st = story(id);
+    for (const mode of ["tap", "key"]) {
+      t.scene(`${st.title}: choice by ${mode}`);
+      if (isConsole(st)) {
+        clearProgress();
+        consoleSeedWrite(st, [], null);
+        t.event("seeded-run", `${id} desktop: first scene's lines counted as heard (setup shortcut)`);
+        openByLink(t, id);
+        await waitFor(() => window.iltvConsole && window.iltvConsole.story() === id, 5000);
+        if (soundOf().prompt()) await consolePrompt(t, document, id);
+        if (!(await waitFor(() => document.querySelectorAll("#console-choices .choice").length > 0, 15000))) {
+          t.problem("bug", `${id}: no choices after seeded first scene`);
+          continue;
+        }
+      } else {
+        if (stories().current() !== id) await openStory(t, id);
+        await toStart(t);
+      }
+      await sleep(300);
+      await decisivePress(t, document, `${id} desktop`, mode, "1");
+      await sleep(1400);
+      t.progress(++step / total);
+    }
+  }
+
+  // Sized frames: mid-animation screenshots for every listed story at 390x844 and 1280x720.
+  for (const id of ids) {
+    for (const [w, h, tag] of sizes) {
+      t.scene(`${story(id).title}: decisive at ${tag}`);
+      const doc = await decisiveOpenAt(t, id, w, h);
+      await decisivePress(t, doc, `${id} ${tag}`, "tap");
+      closeViewFrame();
+      await sleep(200);
+      t.progress(++step / total);
+    }
+  }
+
+  // Key 3: Night Shift seeded two choices in (okafor-out has three choices); press 3 and check the third card.
+  {
+    const st = story("night-shift");
+    t.scene("Night Shift: key 3 picks the third choice");
+    clearProgress();
+    consoleSeedWrite(st, [0, 0], null); // setup shortcut: at okafor-out with lines heard
+    t.event("seeded-run", "night-shift: at okafor-out (two choices in) for key 3");
+    openByLink(t, st.id);
+    await waitFor(() => window.iltvConsole && window.iltvConsole.story() === st.id, 5000);
+    if (soundOf().prompt()) await consolePrompt(t, document, st.id);
+    if (!(await waitFor(() => document.querySelectorAll("#console-choices .choice").length >= 3, 15000))) {
+      t.problem("bug", "night-shift: okafor-out never showed three choices for key 3");
+    } else {
+      const win = window;
+      const box = $("console-choices");
+      const btns = [...box.querySelectorAll(".choice")];
+      const buzz = [];
+      const realVibrate = navigator.vibrate;
+      try { navigator.vibrate = (ms) => { buzz.push(ms); return true; }; } catch (e) { /* read-only */ }
+      let ui = 0;
+      const onDeciding = (e) => { ui++; t.event("decisive-key", `key 3 -> index ${e.detail && e.detail.index}`); };
+      document.addEventListener("iltv:deciding", onDeciding);
+      const before = ui;
+      // Key listener is on document (js/console.js); dispatch there, not on window.
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "3", bubbles: true }));
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "1", bubbles: true }));
+      await sleep(120);
+      t.event("screenshot", "night-shift key 3: mid-animation");
+      const third = btns[2];
+      const chosen = third.classList.contains("is-chosen");
+      const fading = btns.slice(0, 2).every((b) => b.classList.contains("is-fading"));
+      t.event("decisive", `night-shift key3: chosen=${chosen} others-fading=${fading} decisions=${ui - before} vibrate=${JSON.stringify(buzz)}`);
+      if (!chosen) t.problem("bug", "night-shift: key 3 didn't mark the third card");
+      if (!fading) t.problem("bug", "night-shift: key 3 didn't fade the other cards");
+      if (ui - before !== 1) t.problem("bug", `night-shift: ${ui - before} choices fired for key 3 (with a follow-up 1)`);
+      document.removeEventListener("iltv:deciding", onDeciding);
+      try { navigator.vibrate = realVibrate; } catch (e) { /* ignore */ }
+      await sleep(1400);
+    }
+    t.progress(++step / total);
+  }
+
+  t.progress(1);
 }
 
 async function progressRun(options, t) {
@@ -6869,7 +7084,7 @@ installPlaytest({
       title: "The landing page, each listed story from its card (The Final Spark, The Water Road, Night Shift): Tree, first video, one choice, All stories; language and phone-media at 390x844; scene-swap blackFrames; Continue Previously; Endings gallery; audio buses",
       seconds: 450,
       tags: ["smoke"],
-      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Then the trimmed Continue Previously leg (`continueRecap` with at:smoke). Endings gallery leg (`endingsGalleryRun` with at:smoke): one Water Road ending seeded as found, Endings tab shows \"1 of 2 found\", a named poster and a locked ??? silhouette, fit check at 390x844. Last, audio buses (`audioBusesRun` with at:smoke): first-tap unlock, duck under a clip, header toggle saves iltv.sound, at desktop and 390x844.",
+      description: "The title splash fades; each listed story opens from its card (Tap to play), first page or wall, one real choice, no Back, All stories. Then at 390x844 the language picker and blog titles (`language`), The Water Road's poster and phone rendition (`phone-media`), then two choices per story at 1280x720 and 390x844 with blackFrames and sceneSwapMs (`swap`). Then the trimmed Continue Previously leg (`continueRecap` with at:smoke). Endings gallery leg (`endingsGalleryRun` with at:smoke): one Water Road ending seeded as found, Endings tab shows \"1 of 2 found\", a named poster and a locked ??? silhouette, fit check at 390x844. Audio buses (`audioBusesRun` with at:smoke): first-tap unlock, duck under a clip, header toggle saves iltv.sound, at desktop and 390x844. Last, decisive choice (`decisiveRun` with at:smoke): chosen card glows and scales, others fall away, double-tap is one choice, keys 1/2, Final Spark mid-animation at 390x844, Night Shift key 3 at okafor-out.",
     },
     {
       id: "endings-gallery",
@@ -6888,9 +7103,9 @@ installPlaytest({
     {
       id: "decisive-choice",
       title: "A choice is decisive: the chosen card glows, the others fall away, one vibration, a double tap makes one choice, keys 1/2/3 pick",
-      seconds: 90,
+      seconds: 180,
       tags: ["full"],
-      description: "In each clip story: a double tap on choice 1, then (a new run) keys 1 and 2 pressed together. Checks is-chosen on the card, the others fading, aria-busy, navigator.vibrate(10), and exactly one iltv:deciding per double input. Event decisive.",
+      description: "In every listed story (clip and Night Shift): a double tap on choice 1, then (a new run) keys 1 and 2 pressed together; Night Shift uses a seeded first scene (setup shortcut, event seeded-run). Checks is-chosen, scale-up glow, the others fading, aria-busy/pressed, navigator.vibrate(10), and exactly one iltv:deciding per double input. Then mid-animation screenshots in frames at 390x844 and 1280x720 for each story. Last, Night Shift seeded at okafor-out (three choices) and key 3 picks the third card. Events decisive, screenshot, seeded-run. Smoke leg: Final Spark tap+keys, Final Spark at 390x844, Night Shift key 3 at okafor-out (so beta sees all four criteria).",
     },
     {
       id: "progress",
