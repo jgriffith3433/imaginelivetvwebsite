@@ -3563,3 +3563,33 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .spark-step .step-lang { animation: none; }
 }
+
+/* Water and gated choices (J, 2026-11-11): a choice the water can't pay for stays on screen, greyed out, with its
+   requirement in words ("needs water 3+"). It is a note, not a button: it cannot be pressed, and it is 48 px or more tall. */
+.spark-choices .choice-locked {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  gap: 0.1rem;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.45rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  color: #a39d92;
+  background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0 6px, rgba(255, 255, 255, 0) 6px 12px), #1f2227;
+  border: 1.5px dashed #6d6a64;
+  border-radius: 10px;
+  cursor: not-allowed;
+  user-select: none;
+}
+.spark-choices .choice-locked .spot-src,
+.spark-choices .choice-locked .spot-en { opacity: 0.75; }
+.spark-choices .choice-locked .choice-need {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #e0b0a0;
+}
+.spark-choices .choice-locked .choice-need::before { content: "\1F512\00a0"; font-weight: 400; }

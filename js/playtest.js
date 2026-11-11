@@ -7547,6 +7547,177 @@ async function decisiveOpenAt(t, id, w, h) {
   return doc;
 }
 
+/* ---------------- water-gates: the water you kept decides which choices stay open ---------------- */
+
+/** Every way (scene ids from the start, never through a death) to `target` whose counts and flags satisfy `ok(counts, flags)`:
+    the shortest, with the gates honoured (a gated choice is taken only when the way holds what it needs). */
+function gateWay(st, target, ok) {
+  const kit = window.iltvKit;
+  const flagsOf = (way) => {
+    const out = {};
+    for (let i = 0; i + 1 < way.length; i++) {
+      const c = st.scenes[way[i]].choices.find((x) => x[2] === way[i + 1]);
+      if (c && c[4]) Object.assign(out, c[4]);
+    }
+    return out;
+  };
+  const open = (c, way) => {
+    const g = c[5];
+    if (!g) return true;
+    const flags = flagsOf(way);
+    for (const [k, v] of Object.entries(g.requires || {})) if ((flags[k] === undefined ? false : flags[k]) !== v) return false;
+    return kit.meets(kit.counts(st.inventory, st.scenes, st.start, way), g.needs || {});
+  };
+  const queue = [[st.start]];
+  while (queue.length) {
+    const way = queue.shift();
+    const id = way[way.length - 1];
+    if (id === target && ok(kit.counts(st.inventory, st.scenes, st.start, way), flagsOf(way))) return way;
+    if (way.length > 12 || st.scenes[id].dead || id === target) continue;
+    for (const c of st.scenes[id].choices) if (open(c, way)) queue.push([...way, c[2]]);
+  }
+  return null;
+}
+
+function gateSeed(t, st, way, why) {
+  clearProgress();
+  document.cookie = `${st.cookie}=${encodeURIComponent(JSON.stringify({ scene: way[way.length - 1], history: way.slice(0, -1) }))}; Path=/`;
+  t.event("seeded-run", `${st.id}: at ${way[way.length - 1]} (${way.length - 1} choices in) for ${why}`);
+}
+
+/** The fork `sid` as a viewer at 390x844 sees it (a seeded run there, a real Tap to play press): the buttons, the locked
+    rows and the inventory bar, measured. Returns what was seen. */
+async function gateLook(t, st, sid, way, why) {
+  gateSeed(t, st, way, why);
+  const doc = await viewFrameLoad(t, `/?story=${st.id}`, 390, 844);
+  const win = doc.defaultView;
+  await passPrompt(t, doc, `${st.id} ${sid} 390x844`);
+  await waitFor(() => win.finalSpark.scene() === sid, 8000);
+  await rewindEndClip(doc);
+  await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 8000);
+  await sleep(500);
+  const touch = win.matchMedia("(pointer: coarse)").matches;
+  const box = doc.getElementById("spark-choices");
+  const buttons = [...box.querySelectorAll(".choice")];
+  const locked = [...box.querySelectorAll(".choice-locked")];
+  const bar = doc.querySelector(".inventory.kit");
+  const water = bar && bar.querySelector('[data-item="water"]');
+  const seen = {
+    buttons: buttons.map(enText),
+    locked: locked.map((el) => ({ label: enText(el), text: (el.querySelector(".choice-need") || {}).textContent || "", height: Math.round(el.getBoundingClientRect().height), font: parseFloat(win.getComputedStyle(el.querySelector(".choice-need") || el).fontSize), tag: el.tagName, el })),
+    water: win.finalSpark.inventory().water,
+    barWater: water ? Number(water.dataset.count) : null,
+    story: (doc.getElementById("spark-story").textContent || "").trim(),
+    shown: win.finalSpark.shown(),
+    doc, win, touch
+  };
+  // The water count is on screen with the choices: the bar's water chip fully inside the screen, clear of the choice rows.
+  if (!water) t.problem("bug", `${st.id}/${sid}: no water count in the inventory bar`);
+  else {
+    const wr = water.getBoundingClientRect();
+    if (wr.left < 0 || wr.right > win.innerWidth || wr.top < 0 || wr.bottom > win.innerHeight) t.problem("bug", `${st.id}/${sid}: the water count is not fully on screen at 390x844 (${Math.round(wr.left)}..${Math.round(wr.right)} x ${Math.round(wr.top)}..${Math.round(wr.bottom)})`);
+    const rows = [...buttons, ...locked].map((el) => el.getBoundingClientRect());
+    const lowest = Math.max(...rows.map((r) => r.bottom));
+    if (rows.length && lowest > wr.top + 1) t.problem("bug", `${st.id}/${sid}: the choices run under the inventory bar (their foot ${Math.round(lowest)}, the water count's top ${Math.round(wr.top)})`);
+    if (seen.barWater !== seen.water) t.problem("bug", `${st.id}/${sid}: the bar says water ${seen.barWater}, the story's counts say ${seen.water}`);
+  }
+  for (const r of [...buttons, ...locked]) {
+    const rect = r.getBoundingClientRect();
+    if (rect.height < 48) t.problem("bug", `${st.id}/${sid}: "${enText(r)}" is ${Math.round(rect.height)}px tall (48px at least)`);
+    if (rect.left < 0 || rect.right > win.innerWidth || rect.bottom > win.innerHeight + 1) t.problem("bug", `${st.id}/${sid}: "${enText(r)}" is not fully on screen at 390x844`);
+  }
+  return seen;
+}
+
+async function waterGatesRun(options, t) {
+  const id = (options && options.story) || "water-road";
+  const st = story(id);
+  if (!st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  const gated = [];
+  for (const sid of Object.keys(st.scenes)) for (const c of st.scenes[sid].choices) if (c[5] && c[5].needs) gated.push({ sid, next: c[2], en: c[1], needs: c[5].needs });
+  if (gated.length < 2) t.problem("bug", `${id}: ${gated.length} choices wait on a count (water); two forks at least must`);
+  const forks = [...new Set(gated.map((g) => g.sid))];
+  t.metric("waterForks", forks.length);
+  t.event("water-forks", `${id}: ${gated.map((g) => `${g.sid} "${g.en}" needs ${JSON.stringify(g.needs)}`).join("; ")}`);
+  t.progress(0.05);
+
+  // 1 and 2. At each water fork, a way that keeps the water (the option is a button) and a way that doesn't (it is not a
+  // button: a greyed-out row says why, 48px or taller, and a press on it does nothing); the water count is on screen both times.
+  let n = 0;
+  for (const g of gated) {
+    const need = g.needs.water;
+    const rich = gateWay(st, g.sid, (c) => c.water >= need);
+    const poor = gateWay(st, g.sid, (c) => c.water < need);
+    if (!rich) { t.problem("bug", `${id}/${g.sid}: no way arrives with water ${need} or more, so "${g.en}" is never open`); continue; }
+    if (!poor) { t.problem("bug", `${id}/${g.sid}: no way arrives with less than ${need} water, so "${g.en}" is never locked`); continue; }
+    t.scene(`${id}: ${g.sid} with water to spare`);
+    const a = await gateLook(t, st, g.sid, rich, `water ${need}+ at ${g.sid}`);
+    if (!a.buttons.includes(g.en)) t.problem("bug", `${id}/${g.sid}: with water ${a.water} "${g.en}" should be a button, the buttons are ${a.buttons.join(" | ")}`);
+    if (a.locked.some((l) => l.label === g.en)) t.problem("bug", `${id}/${g.sid}: with water ${a.water} "${g.en}" is still shown locked`);
+    t.event("water-gate-open", `${id}/${g.sid}: water ${a.water}, needs ${need}: "${g.en}" is a button (${a.buttons.length} buttons)`);
+    closeViewFrame();
+    t.scene(`${id}: ${g.sid} short of water`);
+    const b = await gateLook(t, st, g.sid, poor, `water below ${need} at ${g.sid}`);
+    if (b.buttons.includes(g.en)) t.problem("bug", `${id}/${g.sid}: with water ${b.water} "${g.en}" is still a button (needs ${need})`);
+    const row = b.locked.find((l) => l.label === g.en);
+    if (!row) t.problem("bug", `${id}/${g.sid}: with water ${b.water} "${g.en}" is not on screen as a locked row`);
+    else {
+      if (!new RegExp(`needs water ${need}\\+`, "i").test(row.text)) t.problem("bug", `${id}/${g.sid}: the locked row says "${row.text}", not "needs water ${need}+"`);
+      if (row.tag === "BUTTON" || row.el.getAttribute("aria-disabled") !== "true") t.problem("bug", `${id}/${g.sid}: the locked row is a ${row.tag} that can be pressed`);
+      if (row.height < 48) t.problem("bug", `${id}/${g.sid}: the locked row is ${row.height}px tall (48px at least)`);
+      if (row.font < 14) t.problem("bug", `${id}/${g.sid}: the locked row's requirement is ${row.font}px type (14px at least)`);
+      const before = b.win.finalSpark.scene();
+      await tapAt(t, row.el, `locked "${g.en}" (${b.touch ? "touch" : "pointer"})`);
+      await sleep(400);
+      if (b.win.finalSpark.scene() !== before) t.problem("bug", `${id}/${g.sid}: pressing the locked row moved the story to ${b.win.finalSpark.scene()}`);
+      t.event("water-gate-locked", `${id}/${g.sid}: water ${b.water}, "${g.en}" is not a button; the row says "${row.text}" (${row.height}px tall, ${row.font}px type); the bar says water ${b.barWater}; pressing it did nothing`);
+    }
+    t.metric(`waterGate_${g.sid}`, 1);
+    await sleep(1500);
+    closeViewFrame();
+    t.progress(0.05 + (0.5 * ++n) / gated.length);
+  }
+
+  // 3. Helping or passing the family changes the dry wash and the night raid: other words, other choices.
+  for (const sid of ["wash", "nightRaid"]) {
+    if (!st.scenes[sid]) continue;
+    const helped = gateWay(st, sid, (c, f) => f.gaveFlask === true);
+    const passed = gateWay(st, sid, (c, f) => f.passedBy === true && !f.riderLeft);
+    if (!helped || !passed) { t.problem("bug", `${id}/${sid}: no way arrives having ${helped ? "passed" : "helped"} the family`); continue; }
+    t.scene(`${id}: ${sid} after helping the family`);
+    const h = await gateLook(t, st, sid, helped, `helped the family, at ${sid}`);
+    closeViewFrame();
+    t.scene(`${id}: ${sid} after passing the family`);
+    const p = await gateLook(t, st, sid, passed, `passed the family, at ${sid}`);
+    closeViewFrame();
+    if (h.story === p.story && h.buttons.join("|") === p.buttons.join("|")) t.problem("bug", `${id}/${sid}: helping and passing the family look the same here`);
+    t.event("family-callback", `${id}/${sid}: helped → "${h.story.slice(-90)}" [${h.buttons.join(" | ")}]; passed → "${p.story.slice(-90)}" [${p.buttons.join(" | ")}]`);
+  }
+  t.progress(0.75);
+
+  // 4. Each ending's narration names an earlier choice (the barrel you gave the riders).
+  for (const eid of Object.keys(st.scenes).filter((x) => st.scenes[x].ending)) {
+    const words = `${st.scenes[eid].story[1]}`;
+    if (!/\bbarrel\b/i.test(words)) t.problem("bug", `${id}/${eid}: the ending's words name no earlier choice ("${words.slice(0, 80)}")`);
+    else t.event("ending-callback", `${id}/${eid}: "${words}"`);
+  }
+
+  // 5. Deaths a viewer can see coming: at most two, none after a warning shot or the high ground; costs instead.
+  const deaths = Object.keys(st.scenes).filter((x) => st.scenes[x].dead);
+  t.metric("deaths", deaths.length);
+  if (deaths.length > 2) t.problem("bug", `${id}: ${deaths.length} deaths (${deaths.join(", ")}); two at most`);
+  for (const sid of Object.keys(st.scenes)) for (const c of st.scenes[sid].choices) {
+    if (/warning shot|high ground/i.test(c[1]) && st.scenes[c[2]].dead) t.problem("bug", `${id}/${sid}: "${c[1]}" still leads to a death (${c[2]})`);
+    if (/warning shot|high ground/i.test(c[1])) t.event("cost-not-death", `${id}/${sid}: "${c[1]}" → ${c[2]} (${JSON.stringify(st.scenes[c[2]].inventory || {})}, flags ${JSON.stringify(c[4] || {})})`);
+  }
+  t.event("deaths", `${id}: ${deaths.join(", ")}`);
+  t.progress(1);
+}
+
 /* ---------------- rewind: a death goes back to the decision, a timeout never kills, one choice plays on ---------------- */
 
 function rewindPath(st, target) {
@@ -8238,11 +8409,18 @@ installPlaytest({
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Start Over (a Completed card always offers Start Over, the same in all three stories; only an ending sets Completed). Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
     },
     {
+      id: "water-gates",
+      title: "The water you kept decides which choices stay open: two water forks, a locked row that says why at 390x844, the family comes back, costs not trick deaths",
+      seconds: 150,
+      tags: ["full"],
+      description: "The Water Road at 390x844 (a frame; each fork opened from a seeded run there, a setup shortcut, event seeded-run; the Tap to play prompt pressed). At each fork that has a choice behind a count of water (the dry wash needs 2, the night's barrel on the rocks needs 3): reached with enough water the option is a button; reached short of it the option is not a button but a greyed-out row that says why (\"needs water 3+\", 48px or taller, 14px type or more, not pressable: a touch on it does nothing), and the water count in the inventory bar is fully on screen above no choice, with the count the story holds (events water-gate-open, water-gate-locked, metric waterForks). At the dry wash and the night raid, a run that helped the family and one that passed them read and offer differently (the boy recognises the riders, the father stands with you; event family-callback). Each ending's words name an earlier choice (ending-callback). Two deaths at most, and the warning shot and the high ground cost barrels, a mule or a rider instead (events cost-not-death, deaths). Options: {\"story\":\"<id>\"}.",
+    },
+    {
       id: "rewind",
       title: "A death goes back to the decision: Rewind to the choice (the deadly option marked Tried) and Start over; a timeout never kills; one-choice pages play on by themselves",
       seconds: 240,
       tags: ["full"],
-      description: "The Water Road (or {\"story\":\"<id>\"}): real presses to the nearest death. The death keeps its clip and line and offers two buttons, Rewind to the choice and Start over, full width and 48px tall. Rewind shows the same fork again within 2 s (rewindMs) with the deadly option marked Tried (words, readable contrast, saved with the run); the same death again, then Start over opens the first page as a new run with nothing tried. At 390x844 (a frame, the run seeded at the death: setup shortcut, event seeded-run) both buttons are fully on screen, full width and at least 48px tall, and Rewind there marks the fork too. Then every fork that has a deadly option (the salt flats, the mesa, the dust, the dry wash, the night raid) is opened from a seeded run, its clip played to the end and the 15 s timer left to run out: the timer never picks a death. Last, a one-choice page of The Final Spark (seeded) shows no button and, when its clip ends, fades and carries on to the next page by itself (event auto-continue).",
+      description: "The Water Road (or {\"story\":\"<id>\"}): real presses to the nearest death. The death keeps its clip and line and offers two buttons, Rewind to the choice and Start over, full width and 48px tall. Rewind shows the same fork again within 2 s (rewindMs) with the deadly option marked Tried (words, readable contrast, saved with the run); the same death again, then Start over opens the first page as a new run with nothing tried. At 390x844 (a frame, the run seeded at the death: setup shortcut, event seeded-run) both buttons are fully on screen, full width and at least 48px tall, and Rewind there marks the fork too. Then every fork that has a deadly option (the salt flats, the dry wash, the night raid) is opened from a seeded run, its clip played to the end and the 15 s timer left to run out: the timer never picks a death. Last, a one-choice page of The Final Spark (seeded) shows no button and, when its clip ends, fades and carries on to the next page by itself (event auto-continue).",
     },
     {
       id: "decisive-choice",
@@ -8466,6 +8644,7 @@ installPlaytest({
       else if (id === "decisive-choice") await decisiveRun(options, t);
       else if (id === "rewind") await rewindRun(options, t);
       else if (id === "spark-depth") await sparkDepthRun(options, t);
+      else if (id === "water-gates") await waterGatesRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);

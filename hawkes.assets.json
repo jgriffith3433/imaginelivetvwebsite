@@ -3069,7 +3069,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock. You have died.",
+            "text": "Your shot cracks off the mesa and the rock answers: four barrels go over the edge and a mule goes down lame. Nobody is under it. Who's that on the rocks?",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },
@@ -3457,7 +3457,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry. You have died.",
+            "text": "From the ridge the desert looks the same in every direction. You lose a day finding the wash, four barrels sweat dry in the sun, and one of the drivers takes his mule and turns for home. Which way is the wash?",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },
@@ -3905,7 +3905,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before. ",
+            "text": "You ride into Dry Fork on what the desert left you, and the riders you gave a barrel to ride in beside you. In the morning you lead the whole town back to the spring, and by the end of summer they're calling you by a name you didn't have before. ",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },
@@ -3968,7 +3968,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye. ",
+            "text": "Dry Fork pays whatever you ask. You're rich by fall, and the riders you once gave a barrel to ride out without a word. Nobody in town will look you in the eye. ",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },

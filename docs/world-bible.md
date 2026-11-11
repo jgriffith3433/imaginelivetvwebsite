@@ -6,7 +6,7 @@ that opens onto **three story worlds**, each its own universe with its own rules
 | World | Kind | Universe | Size now |
 | --- | --- | --- | --- |
 | **The Final Spark** | video choose-your-path | a sewer, a fog, a town; a villain origin, told in the dark | 34 pages, 4 endings, 2 deaths |
-| **The Water Road** | video choose-your-path | the Old West; a hero origin, the mirror of the Spark | 20 pages, 2 endings, 3 deaths |
+| **The Water Road** | video choose-your-path | the Old West; a hero origin, the mirror of the Spark | 20 pages, 2 endings, 2 deaths |
 | **Night Shift** | console story (a camera wall, voiced lines) | Hawkes Tower, Manhattan, one night in February | 256 scenes, 12 endings, 1,376 lines, 11 voices |
 
 Read with: `AGENTS.md`, `story/README.md`, `story/night-shift.md`, `story/water-road.md`, `docs/*/voice.md`. This bible
@@ -104,13 +104,16 @@ the list.
 ### The Water Road: the caravan and Dry Fork
 
 - **W1. The caravan (the water road, the salt flats).** Dawn, six wagons, forty barrels. Heat shimmer, creak of wheels,
-  hooves, a baritone guitar. Death: the heat.
+  hooves, a baritone guitar. Death: the heat (pushing on at noon: a viewer sees it coming).
 - **W2. Under the mesa (mesa, rockslide, lookout, the broken wagon).** Rock shade, a glint of spyglass, the family at
-  the empty cask. Death: the rockslide.
+  the empty cask. A warning shot costs four barrels and a lame mule, never the cliff on you.
 - **W3. The night and the dust (under the stars, the dust, the high ground, the dry wash).** Cold stars; a dust wall; a
-  wash that floods nothing.
+  wash that floods nothing. Riding for the high ground costs a lost day, four barrels and a driver who turns for home.
+  At the wash the water you kept opens or closes a choice, and the family you helped (the boy names the riders' leader)
+  or passed shows up in what you can say.
 - **W4. The raid (the gunfight, over their heads, they come back, a drink for strangers).** The only place with
-  gunfire. The gun is never the answer.
+  gunfire. The gun is never the answer. Death: drawing on five riders. The father of the family stands at your
+  shoulder at night if you helped them; a barrel left on the rocks (water 3 or more) can end the raid before it starts.
 - **W5. Dry Fork (the cottonwoods, Dry Fork, the price of water).** Green at last; a town on its knees. Two endings.
 
 ### Night Shift: Hawkes Tower, 18:45 to 07:00

@@ -35,7 +35,7 @@
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
       choices: (spec.choices || []).map(function (choice, index) {
-        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3], set: choice[4] || null, when: choice[5] || null, matches: choice[6] || null, index: index };
+        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3], set: choice[4] || null, when: choice[5] || null, matches: choice[6] || null, gate: choice[7] || null, index: index };
       }),
       // Alternate story text, question or clip chosen by flags (story doc "Flags and variants").
       variants: (spec.variants || []).map(function (v) {
@@ -182,6 +182,32 @@
     return typeof c.matches === "number" ? c.matches : null;
   }
   let fromPlayer = false;
+  // The choices on screen at the open scene (a gated choice that doesn't hold is left out or shown locked): the timer,
+  // a one-choice page and the buttons all read this list, in the order of the buttons.
+  let shownChoices = [];
+
+  /** A choice with a gate: `requires` flags (it is not there at all unless they hold) and `needs` counts (it is there but
+      locked, with its requirement in words, while the inventory is short). Returns "open", "locked" or "hidden". */
+  function gateOf(choice, flagMap, counts) {
+    const g = choice.gate;
+    if (!g) return "open";
+    const flagsOk = Object.keys(g.requires || {}).every(function (k) {
+      return (flagMap[k] === undefined ? false : flagMap[k]) === g.requires[k];
+    });
+    if (!flagsOk) return "hidden";
+    if (g.needs && window.iltvKit && !window.iltvKit.meets(counts || {}, g.needs)) return "locked";
+    return "open";
+  }
+
+  /** The words of a locked choice's requirement: "needs water 3+". */
+  function needText(choice) {
+    const needs = (choice.gate && choice.gate.needs) || {};
+    const items = (STORY && STORY.inventory && STORY.inventory.items) || [];
+    return Object.keys(needs).map(function (id) {
+      const item = items.filter(function (i) { return i.id === id; })[0];
+      return "needs " + (item ? item.name : id).toLowerCase() + " " + needs[id] + "+";
+    }).join(", ");
+  }
 
   /** Tells js/analytics.js (Hawkes Analytics) what just happened: "iltv:<what>" on the document. The player never
       waits for it or depends on anyone listening. A choice also remembers the recap for Continue (last scene, label,
@@ -1121,14 +1147,14 @@
   /** A page with one choice: when its clip ends the screen fades a moment and the story goes on by itself. */
   function autoContinue(sceneId) {
     const sc = shown && currentScene === sceneId ? shown : SCENES[sceneId];
-    if (!sc || sc.choices.length !== 1 || currentScene !== sceneId) return;
+    if (!sc || sc.choices.length !== 1 || currentScene !== sceneId || shownChoices.length !== 1) return;
     root.classList.add("is-auto-advance");
     tell("feature", { feature: "auto_continue", story: STORY.id, node: sceneId });
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     autoTimer = setTimeout(function () {
       autoTimer = null;
       root.classList.remove("is-auto-advance");
-      if (currentScene === sceneId && !pendingTap) goTo(sc.choices[0]);
+      if (currentScene === sceneId && !pendingTap) goTo(shownChoices[0]);
     }, reduce ? 0 : AUTO_FADE_MS);
   }
 
@@ -1177,8 +1203,8 @@
 
   /** Time ran out: the first choice (or the one marked default) is lit for a moment, then played. */
   function pickDefault(scene) {
-    const sc = shown && currentScene === scene ? shown : SCENES[scene];
-    if (!sc || !sc.choices.length) return;
+    const sc = { choices: shownChoices };
+    if (!sc.choices.length) return;
     // Never a death: a viewer who looked away isn't killed by the timer (npm run story -- --check fails a default that is).
     const safe = function (c) { return !(SCENES[c.next] && SCENES[c.next].dead); };
     let idx = sc.choices.findIndex(function (c) { return c.default && safe(c); });
@@ -1213,12 +1239,20 @@
     // The flags are the way you came (a choice's `set`), and they pick the scene's variant.
     flags = flagsOfWay(STORY, history.concat(sceneId));
     const scene = sceneWith(SCENES[sceneId], flags, matchesOfWay(history.concat(sceneId)));
-    shown = scene;
+    // A gated choice (story doc "Water and gated choices"): left out unless its flags hold, locked while its counts are short.
+    const here = window.iltvKit && STORY.inventory ? window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, history.concat(sceneId)) : {};
+    const lockedChoices = [];
+    shownChoices = scene.choices.filter(function (c) {
+      const state = gateOf(c, flags, here);
+      if (state === "locked") lockedChoices.push(c);
+      return state === "open";
+    });
+    shown = Object.assign({}, scene, { choices: shownChoices });
     // A scene with exactly one choice (and a clip) plays through by itself when the clip ends, with no button.
     const rewound = rewindFlag;
     rewindFlag = false;
-    const auto = scene.choices.length === 1 && !scene.dead && !scene.ending && !!scene.video;
-    const timed = scene.choices.length > 0 && !scene.dead && !auto;
+    const auto = SCENES[sceneId].choices.length === 1 && !scene.dead && !scene.ending && !!scene.video;
+    const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
@@ -1323,7 +1357,7 @@
     const replayNow = isReplay(STORY);
     const triedHere = tried[sceneId] || [];
     if (scene.dead) addDeathButtons(scene);
-    else scene.choices.forEach(function (choice, idx) {
+    else shownChoices.forEach(function (choice, idx) {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "choice";
@@ -1358,9 +1392,26 @@
       });
       choicesBox.appendChild(button);
     });
+    // A choice the water (or another count) can't pay for stays on screen, greyed out, with its requirement in words;
+    // it is not a button, so it cannot be pressed.
+    if (!scene.dead) lockedChoices.forEach(function (choice) {
+      const row = document.createElement("div");
+      row.className = "choice-locked spot";
+      row.dataset.locked = "true";
+      row.dataset.next = choice.next;
+      row.setAttribute("role", "note");
+      row.setAttribute("aria-disabled", "true");
+      fillSpot(row, choice.say, choice.en, scene.lang, scene.dir);
+      const need = document.createElement("span");
+      need.className = "choice-need";
+      need.textContent = needText(choice) + " (you have " + (here[Object.keys(choice.gate.needs)[0]] || 0) + ")";
+      row.appendChild(need);
+      choicesBox.appendChild(row);
+    });
+    if (lockedChoices.length) tell("feature", { feature: "locked_choice", story: STORY.id, node: sceneId, value: lockedChoices.map(function (c) { return c.next; }).join(",") });
     if (!videoSrc) setChoicePhase("ready");
     // Back from a death, the fork is playable at once: the clip plays, the choices don't wait for it.
-    if (rewound && scene.choices.length > 1) { setChoicePhase("ready"); stopChoiceWindow(); }
+    if (rewound && shownChoices.length > 1) { setChoicePhase("ready"); stopChoiceWindow(); }
 
     pendingTap = null;
     preloadNext(scene);
@@ -2454,10 +2505,13 @@
     flags: function () { return Object.assign({}, flags); },
     tried: function () { return JSON.parse(JSON.stringify(tried)); },
     /** Every scene's choices as the player has them (next, default, set). */
-    choicesOf: function (id) { return SCENES[id] ? SCENES[id].choices.map(function (c) { return { next: c.next, default: c.default, set: c.set, when: c.when, matches: c.matches }; }) : []; },
-    /** The match count where you are (null when the story counts none), and the choices on offer now. */
+    choicesOf: function (id) { return SCENES[id] ? SCENES[id].choices.map(function (c) { return { next: c.next, default: c.default, set: c.set, when: c.when, matches: c.matches, gate: c.gate }; }) : []; },
+    /** The match count where you are (null when the story counts none). */
     matches: function () { const n = kitCounts(); return n && typeof n.matches === "number" ? n.matches : null; },
-    offered: function () { return shown ? shown.choices.map(function (c) { return { next: c.next, index: c.index }; }) : []; },
+    /** The choices on offer now (next, data index), the ones on screen (next scenes, in button order) and the locked ones. */
+    offered: function () { return shownChoices.map(function (c) { return { next: c.next, index: c.index }; }); },
+    shown: function () { return shownChoices.map(function (c) { return c.next; }); },
+    locked: function () { return Array.prototype.map.call(choicesBox.querySelectorAll(".choice-locked"), function (el) { return el.dataset.next; }); },
     /** Ending nodes from the build, and which of them this browser has found. */
     endings: function () { return STORY ? endingsOf(STORY).map(function (e) { return e.id; }) : []; },
     foundEndings: function () { return STORY ? Object.keys(readFoundEndings(STORY)) : []; }
