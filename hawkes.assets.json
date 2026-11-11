@@ -5829,78 +5829,6 @@
     },
     {
       "id": "night-shift-handover-line-3",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[flat][reading] Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-3.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-4",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Forty-four. Water in the closet. Monitored.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[flat][a small stop] Forty-four. Water in the closet. Monitored.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-4.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-5",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[reading] Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-5.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-6",
-      "note": "Handover (Night Shift): Mr. Okafor says \"The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[dry][not joking] The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-6.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-7",
       "note": "Handover (Night Shift): Dee says \"Four.\".",
       "steps": [
         {
@@ -5914,11 +5842,11 @@
         }
       ],
       "files": {
-        "line": "night-shift/handover/media/line-7.mp3"
+        "line": "night-shift/handover/media/line-3.mp3"
       }
     },
     {
-      "id": "night-shift-handover-line-8",
+      "id": "night-shift-handover-line-4",
       "note": "Handover (Night Shift): Mr. Okafor says \"Dolores. You can say hello.\".",
       "steps": [
         {
@@ -5932,11 +5860,11 @@
         }
       ],
       "files": {
-        "line": "night-shift/handover/media/line-8.mp3"
+        "line": "night-shift/handover/media/line-4.mp3"
       }
     },
     {
-      "id": "night-shift-handover-line-9",
+      "id": "night-shift-handover-line-5",
       "note": "Handover (Night Shift): Dee says \"Hello. Sit anywhere that isn't mine.\".",
       "steps": [
         {
@@ -5950,61 +5878,7 @@
         }
       ],
       "files": {
-        "line": "night-shift/handover/media/line-9.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-10",
-      "note": "Handover (Night Shift): Dee says \"Mm.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[low] Mm.",
-            "voice": "qhe779QaY6YuY9d3VGab",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-10.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-11",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Dolores signs your hours. The binder's on the shelf, next to the…\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[cut off] Dolores signs your hours. The binder's on the shelf, next to the…",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-11.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-12",
-      "note": "Handover (Night Shift): Dee says \"Extinguisher. Mm-hm. Your train, Okafor.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[dry][not unkind] Extinguisher. Mm-hm. Your train, Okafor.",
-            "voice": "qhe779QaY6YuY9d3VGab",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-12.mp3"
+        "line": "night-shift/handover/media/line-5.mp3"
       }
     },
     {
@@ -30557,6 +30431,132 @@
       ],
       "files": {
         "line": "night-shift/adler-initialed/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-1",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][reading] Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-2",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Forty-four. Water in the closet. Monitored.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][a small stop] Forty-four. Water in the closet. Monitored.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-3",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[reading] Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-4",
+      "note": "The day log (Night Shift): Mr. Okafor says \"The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not joking] The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-5",
+      "note": "The day log (Night Shift): Dee says \"Mm.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] Mm.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-5.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-6",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Dolores signs your hours. The binder's on the shelf, next to the…\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[cut off] Dolores signs your hours. The binder's on the shelf, next to the…",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-6.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-7",
+      "note": "The day log (Night Shift): Dee says \"Extinguisher. Mm-hm. Your train, Okafor.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] Extinguisher. Mm-hm. Your train, Okafor.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-7.mp3"
       }
     }
   ]

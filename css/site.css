@@ -3360,6 +3360,90 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
   .story-recap-copy { text-align: left; max-width: 18rem; }
 }
 
+/* Night Shift: the choice lands in ink (pencil + one log line), and a 2 s chapter card (clock jump + hook). */
+.console-ink, .console-chapter {
+  position: absolute;
+  left: 50%;
+  z-index: 8;
+  box-sizing: border-box;
+  max-width: min(92vw, 28rem);
+  width: calc(100% - 1.2rem);
+  transform: translateX(-50%);
+  pointer-events: none;
+  text-align: center;
+}
+.console-ink {
+  bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4.8rem));
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(232, 228, 220, 0.28);
+  background: rgba(12, 14, 16, 0.92);
+  color: #f2ebe0;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.console-ink[hidden], .console-chapter[hidden] { display: none !important; }
+.console-ink.is-writing .console-ink-line {
+  animation: console-ink-write 0.7s ease-out both;
+}
+.console-ink-line { margin: 0; }
+@keyframes console-ink-write {
+  from { opacity: 0.35; letter-spacing: 0.04em; }
+  to { opacity: 1; letter-spacing: 0; }
+}
+.console-chapter {
+  top: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid rgba(232, 228, 220, 0.22);
+  background: rgba(6, 8, 10, 0.94);
+  color: #f4f2ee;
+}
+.console-chapter-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b8b3a8;
+}
+.console-chapter-clock {
+  margin: 0 0 0.45rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.55rem;
+  letter-spacing: 0.08em;
+  color: #e8c96a;
+}
+.console-chapter-title {
+  margin: 0 0 0.45rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.console-chapter-hook {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.4;
+  color: #d8d2c6;
+}
+@media (max-width: 430px) and (orientation: portrait) {
+  .console-ink {
+    bottom: max(6.2rem, calc(env(safe-area-inset-bottom, 0px) + 5.4rem));
+    font-size: 0.9rem;
+    max-width: calc(100vw - 1rem);
+  }
+  .console-chapter {
+    max-width: calc(100vw - 1rem);
+    padding: 0.95rem 1rem 1.05rem;
+  }
+  .console-chapter-clock { font-size: 1.4rem; }
+  .console-chapter-title { font-size: 1.15rem; }
+  .console-chapter-hook { font-size: 0.95rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .console-ink.is-writing .console-ink-line { animation: none; }
+}
+
 /* Blog article layout: hero, title, meta line (date, language, reading time), body at a 65-70 character measure,
    with a font stack and line-height per script (data-script on the article). */
 .post-hero { margin: 0 0 1.2rem; }

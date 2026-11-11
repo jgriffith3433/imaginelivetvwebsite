@@ -82,13 +82,23 @@ const subsCount = (p) => p.$('console-subs').children.length;
 const heard = (p) => p.c.lines().done >= p.c.lines().total && p.c.lines().playing < 0 && p.$('console').dataset.lines === 'done';
 const rules = (p) => p.w.iltvConsoleRules;
 
+/** Wait out ink / chapter overlays after a choice (they delay the next scene). */
+async function settleChoice(p, from) {
+  await until(() => {
+    const box = p.$('console');
+    return p.c.scene() && p.c.scene() !== from && !box.dataset.ink && !box.dataset.chapter;
+  }, `scene after ${from}`);
+}
+
 /** Plays lines to the end and presses the first usable choice, `n` times (or until an ending). */
 async function walk(p, n) {
   for (let i = 0; i < n; i++) {
     await until(() => heard(p), `lines of ${p.c.scene()}`);
     const buttons = p.$('console-choices').querySelectorAll('.choice');
     if (!buttons.length) return;
+    const from = p.c.scene();
     buttons[buttons.length - 1 > 2 ? 1 : 0].click();
+    await settleChoice(p, from);
   }
 }
 
@@ -126,11 +136,19 @@ async function main() {
   p = q;
 
   await until(() => heard(p), 'the lines of the scene');
-  p.$('console-choices').querySelector('.choice').click();
-  const choice = snapshot(p);
-  q = reload(p);
-  check('reload right after a choice: same scene, flags, meters, history, log; no lines heard', same(snapshot(q), { ...choice, done: 0 }), [choice, snapshot(q)]);
-  p = q;
+  {
+    const from = p.c.scene();
+    p.$('console-choices').querySelector('.choice').click();
+    await settleChoice(p, from);
+    // Ink/chapter delay + 100x timers may finish the next scene's lines before we snapshot; the reload must still
+    // restore the same scene, flags, meters, history and log.
+    const choice = snapshot(p);
+    q = reload(p);
+    const after = snapshot(q);
+    const sameCore = after.scene === choice.scene && same(after.flags, choice.flags) && same(after.meters, choice.meters) && same(after.history, choice.history) && same(after.log, choice.log);
+    check('reload right after a choice: same scene, flags, meters, history, log; no lines heard', sameCore, [choice, after]);
+    p = q;
+  }
 
   // Skip and Replay
   await sleep(10);
@@ -163,9 +181,11 @@ async function main() {
   p.c.open(story, p.hooks, null);
   for (const pick of picks) {
     await until(() => heard(p), `lines of ${p.c.scene()}`);
+    const from = p.c.scene();
     const button = p.$('console-choices').querySelector(`.choice[data-choice="${pick}"]`);
-    if (!button) throw new Error(`choice ${pick} of ${p.c.scene()} is not on screen`);
+    if (!button) throw new Error(`choice ${pick} of ${p.c.scene()} is not on screen (open: ${[...p.$('console-choices').querySelectorAll('.choice')].map((b) => b.dataset.choice).join(',')})`);
     button.click();
+    await settleChoice(p, from);
   }
   await until(() => heard(p), 'the ending');
   check('plays to an ending by presses', p.c.scene() === endId && !p.$('console-ending').hidden && p.$('console-choices').hidden);
@@ -225,7 +245,9 @@ async function main() {
       const buttons = r.$('console-choices').querySelectorAll('.choice');
       if (!buttons.length) break;
       const was = r.c.screen();
+      const from = r.c.scene();
       buttons[0].click();
+      await settleChoice(r, from);
       const s = story.scenes[r.c.scene()];
       const now = r.c.screen();
       if (s.focus && s.focus !== was.camera) {
@@ -291,7 +313,11 @@ async function main() {
     b.c.open(story, b.hooks, null);
     b.$('console-cc').click();
     await until(() => heard(b), 'lines with storage blocked');
-    b.$('console-choices').querySelector('.choice').click();
+    {
+      const from = b.c.scene();
+      b.$('console-choices').querySelector('.choice').click();
+      await settleChoice(b, from);
+    }
     b.$('console-log-btn').click();
     check('with storage blocked the story plays a choice, opens the Log and toggles CC', b.c.history().length === 1 && !b.$('console-log').hidden && b.$('console-cc').getAttribute('aria-pressed') === 'false' && !errors.length, errors);
     b.c.close();

@@ -1035,6 +1035,12 @@
     artEl.innerHTML = "";
   }
 
+  /** Sit or stand someone now (handover chair choice): kind is "sit" or "stand". */
+  function posture(who, kind) {
+    if (kind !== "sit" && kind !== "stand") return;
+    act(who + ":" + kind, true);
+  }
+
   window.iltvRoom = {
     scene: scene,
     line: line,
@@ -1042,6 +1048,7 @@
     runBeats: runBeats,
     speaking: speaking,
     switched: switched,
+    posture: posture,
     view: view,
     close: close,
     useStage: loadStage,

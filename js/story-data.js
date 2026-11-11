@@ -3026,6 +3026,67 @@ window.ILTV_STORIES = {
     "ending-warm": null,
     "ending-cold": null
    },
+   "reactions": {
+    "mm": {
+     "speaker": "dee",
+     "text": "Mm.",
+     "dur": 0.9,
+     "file": "/night-shift/handover/media/line-10.mp3"
+    },
+    "mmhm": {
+     "speaker": "dee",
+     "text": "Mm-hm.",
+     "dur": 1,
+     "file": "/night-shift/visitor-checked/media/line-5.mp3"
+    }
+   },
+   "chapters": [
+    {
+     "id": "ink",
+     "title": "Ink",
+     "start": "handover",
+     "end": "end1-fact",
+     "clock": "22:05",
+     "hook": "A name is on the sheet. The desk still has hours left.",
+     "next": "visitor-waved"
+    },
+    {
+     "id": "wall",
+     "title": "The wall is yours",
+     "start": "visitor-waved",
+     "end": "birthdays-ask",
+     "clock": "00:55",
+     "hook": "Cards on the shelf. Something is about to ring.",
+     "next": "late-read"
+    },
+    {
+     "id": "roof",
+     "title": "Roof door",
+     "start": "late-read",
+     "end": "three-oclock",
+     "clock": "03:00",
+     "hook": "The roof door. She does that one alone.",
+     "next": "flicker"
+    },
+    {
+     "id": "dawn",
+     "title": "Grey light",
+     "start": "flicker",
+     "end": "sleeper-watch",
+     "clock": "05:05",
+     "hook": "Twenty minutes. Then the glass starts to grey.",
+     "next": "dawn-tablet-f"
+    },
+    {
+     "id": "morning",
+     "title": "The read",
+     "start": "dawn-tablet-f",
+     "end": null,
+     "clock": "07:00",
+     "hook": null,
+     "next": null
+    }
+   ],
    "unspoken": [
     "restricted",
     "chimera",
@@ -3198,7 +3259,7 @@ window.ILTV_STORIES = {
          "at": 0.59
         }
        ],
-       "file": null,
+       "file": "/night-shift/handover/media/line-1.mp3",
        "dur": 9.9
       },
       {
@@ -3206,95 +3267,66 @@ window.ILTV_STORIES = {
        "text": "So. Let's walk through the log. I have a train.",
        "sfx": "tablet-tap",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/handover/media/line-2.mp3",
        "dur": 2.9
-      },
-      {
-       "speaker": "okafor",
-       "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
-       "file": null,
-       "dur": 6.9
-      },
-      {
-       "speaker": "okafor",
-       "text": "Forty-four. Water in the closet. Monitored.",
-       "file": null,
-       "dur": 3.4
-      },
-      {
-       "speaker": "okafor",
-       "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
-       "file": null,
-       "dur": 5.5
-      },
-      {
-       "speaker": "okafor",
-       "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
-       "file": null,
-       "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Four.",
        "sfx": "radio-charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/handover/media/line-7.mp3",
        "dur": 0.9
       },
       {
        "speaker": "okafor",
        "text": "Dolores. You can say hello.",
-       "file": null,
+       "file": "/night-shift/handover/media/line-8.mp3",
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Hello. Sit anywhere that isn't mine.",
-       "file": null,
+       "file": "/night-shift/handover/media/line-9.mp3",
        "dur": 3
-      },
-      {
-       "speaker": "dee",
-       "text": "Mm.",
-       "sfx": "radio-charger",
-       "act": "dee:count",
-       "file": null,
-       "dur": 0.9
-      },
-      {
-       "speaker": "okafor",
-       "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
-       "act": "okafor:point:shelf",
-       "file": null,
-       "dur": 4.3
-      },
-      {
-       "speaker": "dee",
-       "text": "Extinguisher. Mm-hm. Your train, Okafor.",
-       "file": null,
-       "dur": 4
       }
      ],
      "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer.",
      "choices": [
       [
-       "Ask about forty-four",
-       "Ask about forty-four",
-       "binder-44",
-       {
-        "set": [
-         "asked_44"
-        ]
-       }
-      ],
-      [
-       "Ask about Thursday",
-       "Ask about Thursday",
-       "binder-thu",
+       "Take the good chair",
+       "Take the good chair",
+       "handover-log",
        {
         "add": {
          "trainer_trust": 1
-        }
+        },
+        "log": "Sat in the chair with the good back.",
+        "pose": "sit",
+        "react": "mm"
+       }
+      ],
+      [
+       "Take Dee's chair",
+       "Take Dee's chair",
+       "handover-log",
+       {
+        "add": {
+         "trainer_trust": -1
+        },
+        "log": "Sat in D. Reyes's chair.",
+        "pose": "sit",
+        "react": "mmhm"
+       }
+      ],
+      [
+       "Stay standing",
+       "Stay standing",
+       "handover-log",
+       {
+        "log": "Stayed on my feet by the wall.",
+        "pose": "stand",
+        "react": "mm"
        }
       ]
      ]
@@ -25191,6 +25223,92 @@ window.ILTV_STORIES = {
        "Go on",
        "Go on",
        "dev-signout"
+      ]
+     ]
+    },
+    "handover-log": {
+     "folder": "night-shift/handover-log",
+     "lang": "en",
+     "dir": "",
+     "time": "18:48",
+     "title": [
+      "The day log",
+      "The day log"
+     ],
+     "ambience": "control-room",
+     "cast": [
+      "you",
+      "okafor@left",
+      "dee@right"
+     ],
+     "lines": [
+      {
+       "speaker": "okafor",
+       "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
+       "file": "/night-shift/handover/media/line-3.mp3",
+       "dur": 6.9
+      },
+      {
+       "speaker": "okafor",
+       "text": "Forty-four. Water in the closet. Monitored.",
+       "file": "/night-shift/handover/media/line-4.mp3",
+       "dur": 3.4
+      },
+      {
+       "speaker": "okafor",
+       "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
+       "file": "/night-shift/handover/media/line-5.mp3",
+       "dur": 5.5
+      },
+      {
+       "speaker": "okafor",
+       "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
+       "file": "/night-shift/handover/media/line-6.mp3",
+       "dur": 6.2
+      },
+      {
+       "speaker": "dee",
+       "text": "Mm.",
+       "sfx": "radio-charger",
+       "act": "dee:count",
+       "file": "/night-shift/handover/media/line-10.mp3",
+       "dur": 0.9
+      },
+      {
+       "speaker": "okafor",
+       "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
+       "act": "okafor:point:shelf",
+       "file": "/night-shift/handover/media/line-11.mp3",
+       "dur": 4.3
+      },
+      {
+       "speaker": "dee",
+       "text": "Extinguisher. Mm-hm. Your train, Okafor.",
+       "file": "/night-shift/handover/media/line-12.mp3",
+       "dur": 4
+      }
+     ],
+     "log": "1848 hrs. Day log walked. Radios still on the charger.",
+     "choices": [
+      [
+       "Ask about forty-four",
+       "Ask about forty-four",
+       "binder-44",
+       {
+        "set": [
+         "asked_44"
+        ]
+       }
+      ],
+      [
+       "Ask about Thursday",
+       "Ask about Thursday",
+       "binder-thu",
+       {
+        "add": {
+         "trainer_trust": 1
+        }
+       }
       ]
      ]
     }
