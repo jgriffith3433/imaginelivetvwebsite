@@ -6655,6 +6655,49 @@ function frameWatch() {
   return w;
 }
 
+async function decisiveRun(options, t) {
+  rememberProgress();
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  const ids = listedStories().filter((i) => !isConsole(story(i.id))).map((i) => i.id);
+  const buzz = [];
+  const realVibrate = navigator.vibrate;
+  try { navigator.vibrate = (ms) => { buzz.push(ms); return true; }; } catch (e) { /* read-only */ }
+  let ui = 0;
+  const onDeciding = () => ui++;
+  document.addEventListener("iltv:deciding", onDeciding);
+  let k = 0;
+  for (const id of ids) {
+    for (const mode of ["tap", "key"]) {
+      t.scene(`${story(id).title}: choice by ${mode}`);
+      if (stories().current() !== id) await openStory(t, id);
+      await toStart(t);
+      await sleep(400);
+      const btns = choiceButtons();
+      if (btns.length < 1) { t.problem("bug", `${id}: no choices`); continue; }
+      const box = $("spark-choices");
+      buzz.length = 0;
+      const before = ui;
+      if (mode === "tap") { btns[0].click(); btns[0].click(); }
+      else { document.dispatchEvent(new KeyboardEvent("keydown", { key: "1", bubbles: true })); document.dispatchEvent(new KeyboardEvent("keydown", { key: "2", bubbles: true })); }
+      await sleep(120);
+      const chosen = btns[0].classList.contains("is-chosen");
+      const fading = btns.slice(1).every((b) => b.classList.contains("is-fading") && getComputedStyle(b).opacity < 1);
+      const glow = getComputedStyle(btns[0]).boxShadow !== "none";
+      t.event("decisive", `${id} ${mode}: chosen=${chosen} others-fading=${fading} glow=${glow} busy=${box.getAttribute("aria-busy")} vibrate=${JSON.stringify(buzz)} decisions=${ui - before}`);
+      if (!chosen) t.problem("bug", `${id}: the ${mode} didn't mark the chosen card`);
+      if (btns.length > 1 && !fading) t.problem("bug", `${id}: the other cards didn't fall away`);
+      if (ui - before !== 1) t.problem("bug", `${id}: ${ui - before} choices fired for a double ${mode}`);
+      if (mode === "tap" && "vibrate" in navigator && buzz[0] !== 10) t.problem("bug", `${id}: no 10 ms vibration`);
+      await sleep(1200);
+    }
+    t.progress(++k / ids.length);
+  }
+  document.removeEventListener("iltv:deciding", onDeciding);
+  try { navigator.vibrate = realVibrate; } catch (e) { /* ignore */ }
+}
+
 async function progressRun(options, t) {
   rememberProgress();
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
@@ -6734,6 +6777,13 @@ installPlaytest({
       seconds: 80,
       tags: ["full"],
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Start Over (a Completed card always offers Start Over, the same in all three stories; only an ending sets Completed). Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
+    },
+    {
+      id: "decisive-choice",
+      title: "A choice is decisive: the chosen card glows, the others fall away, one vibration, a double tap makes one choice, keys 1/2/3 pick",
+      seconds: 90,
+      tags: ["full"],
+      description: "In each clip story: a double tap on choice 1, then (a new run) keys 1 and 2 pressed together. Checks is-chosen on the card, the others fading, aria-busy, navigator.vibrate(10), and exactly one iltv:deciding per double input. Event decisive.",
     },
     {
       id: "progress",
@@ -6932,6 +6982,7 @@ installPlaytest({
       else if (id === "console") await consoleRun(options, t);
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "progress") await progressRun(options, t);
+      else if (id === "decisive-choice") await decisiveRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
