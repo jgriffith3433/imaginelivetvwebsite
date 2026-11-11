@@ -3265,3 +3265,61 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
 .post-layout:has(.post-article[dir="rtl"]) { direction: rtl; }
 .post-layout:has(.post-article[dir="rtl"]) .recent { direction: ltr; }
 html[data-reading="en"] .post-article h1 .spot-src { display: none; }
+
+/* Replay marks (J, 2026-11-11): on a second run a choice to a way never found carries a small "New" tag, and one
+   whose whole way is seen a quiet tick. The tag is a pseudo-element in the card's right edge (the card reserves room
+   for it, so the text never wraps under it and the card stays 48 px or more); the Tree's nodes carry the same. */
+.spark-choices .choice[data-mark] { padding-right: 4.4rem; }
+.spark-choices .choice[data-mark]::before {
+  position: absolute;
+  top: 50%;
+  right: 0.7rem;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.68rem;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.spark-choices .choice[data-mark="new"]::before {
+  content: "New";
+  padding: 0.22rem 0.5rem;
+  color: #1a1b1d;
+  background: #d8b45a;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.spark-choices .choice[data-mark="seen"]::before {
+  content: "\2713  Seen";
+  color: #8e8b86;
+}
+.tree-node[data-mark]::after {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.45rem;
+  font-size: 0.6rem;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tree-node[data-mark="new"]::after { content: "New"; padding: 0.15rem 0.35rem; color: #1a1b1d; background: #d8b45a; border-radius: 999px; font-weight: 700; }
+.tree-node[data-mark="seen"]::after { content: "\2713"; color: #8e8b86; font-size: 0.8rem; }
+.tree-node[data-mark] .tree-node-title { padding-right: 2.2rem; }
+
+/* Home cards: "2 of 5 endings", bright once every ending is found. */
+.story-card-endings {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.story-card-endings[hidden] { display: none; }
+.story-card[data-all-endings="true"] .story-card-endings {
+  color: #1a1b1d;
+  background: #d8b45a;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.story-card[data-all-endings="true"] .story-card-endings::before { content: "\2713  "; }

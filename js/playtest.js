@@ -2751,6 +2751,88 @@ async function endingsGalleryRun(options, t) {
     await sleep(300);
     checkGallery($("spark-endings"), stories().foundEndings(id)?.length || 0, label);
   };
+  // Replay marks (J, 2026-11-11): with one ending found, a second run tags the choices that lead somewhere new ("New")
+  // and the ones whose whole way is seen (a quiet "Seen"), on the page and in the Tree; the home card says "1 of N
+  // endings". At 390x844 a tagged choice is 48 px or more and its words are not cut off, and the card's count fits.
+  const replayLeg = async (end, way) => {
+    t.scene(`${id}: second run (replay marks)`);
+    $("tab-play").click();
+    await sleep(300);
+    if ($("spark-try-another")) { await tapAt(t, $("spark-try-another"), "Try another path"); await sleep(500); }
+    else await toStart(t, { quiet: true });
+    const onWay = new Set([st.start, ...way]);
+    const checkMarks = (label) => {
+      const sc = st.scenes[sceneId()];
+      const seenNow = new Set(spark().unlocked());
+      const tally = { new: 0, seen: 0, plain: 0 };
+      choiceButtons().forEach((btn, i) => {
+        const to = sc.choices[i][2];
+        const mark = btn.dataset.mark || "";
+        tally[mark || "plain"] += 1;
+        if (!seenNow.has(to) && mark !== "new") t.problem("bug", `${id}: ${label}: a choice to an unseen scene (${to}) has no New tag`);
+        if (seenNow.has(to) && mark === "new") t.problem("bug", `${id}: ${label}: a choice to a seen scene (${to}) wears New`);
+        if (st.scenes[to].ending && seenNow.has(to) && mark !== "seen") t.problem("bug", `${id}: ${label}: the choice to the found ending ${to} has no Seen mark`);
+      });
+      t.event("replay-marks", `${id}/${sceneId()} ${label}: ${tally.new} New, ${tally.seen} Seen, ${tally.plain} untagged`);
+      return tally;
+    };
+    let total = { new: 0, seen: 0 };
+    const sum = (x) => { total = { new: total.new + x.new, seen: total.seen + x.seen }; };
+    sum(checkMarks("start"));
+    for (const to of way.slice(0, -1)) { await pressTo(to); sum(checkMarks(`on the way to ${end}`)); }
+    if (!total.new) t.problem("bug", `${id}: the second run showed no New tag`);
+    if (!total.seen) t.problem("bug", `${id}: the second run showed no Seen mark`);
+    t.metric("replayNewTags", total.new);
+    t.metric("replaySeenMarks", total.seen);
+    // The Tree carries the same marks.
+    $("tab-tree").click();
+    await sleep(400);
+    const treeNew = document.querySelectorAll('#spark-tree .tree-node[data-mark="new"]').length;
+    const treeSeen = document.querySelectorAll('#spark-tree .tree-node[data-mark="seen"]').length;
+    t.event("replay-tree", `${id}: Tree shows ${treeNew} New, ${treeSeen} Seen`);
+    if (!treeNew) t.problem("bug", `${id}: the Tree shows no New mark on a second run`);
+    $("tab-play").click();
+    await sleep(300);
+    // The home card (in this page) says how many endings are found.
+    const want = `1 of ${ends.length} endings`;
+    const here = stories().endingsCount(id);
+    if (!here || here.found !== 1 || here.total !== ends.length) t.problem("bug", `${id}: endings count ${JSON.stringify(here)}, want 1 of ${ends.length}`);
+    // Phone: the same story in a frame at 390x844 (same saved run), then its card on the landing page.
+    const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+    const sound = doc.defaultView && doc.defaultView.hawkesSound;
+    if (sound && sound.prompt && sound.prompt()) await passPrompt(t, doc, "replay marks phone");
+    await sleep(600);
+    const tagged = [...doc.querySelectorAll("#spark-choices .choice[data-mark]")];
+    if (!tagged.length) t.problem("bug", `${id}: no tagged choice at 390x844`);
+    for (const btn of tagged) {
+      const r = btn.getBoundingClientRect();
+      const text = btn.querySelector(".spot-src");
+      const tr = text ? text.getBoundingClientRect() : r;
+      const tag = doc.defaultView.getComputedStyle(btn, "::before");
+      const cut = btn.scrollHeight > btn.clientHeight + 1 || tr.right > r.right - 2 || btn.scrollWidth > btn.clientWidth + 1;
+      t.event("replay-phone", `${btn.dataset.mark} choice ${Math.round(r.width)}x${Math.round(r.height)}, tag "${tag.content}"`);
+      if (r.height < 47.5) t.problem("bug", `${id}: a ${btn.dataset.mark} choice is ${Math.round(r.height)} px tall at 390x844, want 48 or more`);
+      if (cut) t.problem("bug", `${id}: a ${btn.dataset.mark} choice's text is cut off at 390x844`);
+    }
+    t.event("screenshot", `second run at 390x844: ${tagged.length} tagged choices`);
+    const backBtn = doc.querySelector(".stories-back");
+    if (backBtn) backBtn.click();
+    await sleep(500);
+    const cardEl = doc.querySelector(`.story-card[data-story="${id}"] .story-card-endings`);
+    const cardBox = doc.querySelector(`.story-card[data-story="${id}"]`);
+    if (!cardEl || !cardBox) t.problem("bug", `${id}: no endings count on the home card at 390x844`);
+    else {
+      cardEl.scrollIntoView({ block: "center", behavior: "instant" });
+      await sleep(200);
+      const er = cardEl.getBoundingClientRect();
+      const cr = cardBox.getBoundingClientRect();
+      const txt = cardEl.textContent.trim();
+      t.event("replay-card", `home card at 390x844: "${txt}"`);
+      if (txt !== want) t.problem("bug", `${id}: home card says "${txt}", want "${want}"`);
+      if (er.right > cr.right + 1 || er.left < cr.left - 1 || cardEl.scrollWidth > cardEl.clientWidth + 1) t.problem("bug", `${id}: the endings count is cut off on its card at 390x844`);
+    }
+    closeViewFrame();
+  };
   try {
     // Smoke leg: seed one found ending, open the gallery from the story page, check locked silhouette + count.
     if (options.at === "smoke") {
@@ -2816,6 +2898,7 @@ async function endingsGalleryRun(options, t) {
         await sleep(300);
         checkGallery($("spark-endings"), reached, `${id} from ending card (${reached})`);
       }
+      if (reached === 1 && ends.length > 1) await replayLeg(end, way);
       t.progress(reached / (ends.length + 2));
     }
     // Tapping a found ending shows its card again.
@@ -6793,7 +6876,7 @@ installPlaytest({
       title: "Endings gallery: reach two Water Road endings, found posters and names, locked silhouettes, count, recall, fit at 390x844 and 1280x720",
       seconds: 180,
       tags: ["full"],
-      description: "Clears progress, opens The Water Road (or {\"story\":\"<id>\"}), walks the shortest way to each ending with real presses. At each ending the card shows \"N of M found\" and an Endings button; the gallery lists found endings with poster and name and locked ones as a blurred darkened silhouette with \"???\". Tapping a found ending shows its card again. The Endings tab on the story page shows the same gallery. Fit checks in frames at 390x844 and 1280x720 after both are found. Events endings-count, endings-gallery, ending-recall, screenshot; metrics endingsFound, endingsTotal.",
+      description: "Clears progress, opens The Water Road (or {\"story\":\"<id>\"}), walks the shortest way to each ending with real presses. At each ending the card shows \"N of M found\" and an Endings button; the gallery lists found endings with poster and name and locked ones as a blurred darkened silhouette with \"???\". Tapping a found ending shows its card again. The Endings tab on the story page shows the same gallery. With one ending found, a second run: choices to unseen scenes wear New, fully seen ones Seen, the Tree the same, the home card says \"1 of 2 endings\" (replay leg at 390x844: tagged choices 48 px or more, nothing cut off; events replay-marks, replay-tree, replay-phone, replay-card). Fit checks in frames at 390x844 and 1280x720 after both are found. Events endings-count, endings-gallery, ending-recall, screenshot; metrics endingsFound, endingsTotal.",
     },
     {
       id: "stories",
