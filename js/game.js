@@ -462,6 +462,49 @@
     writeCookie(unlocksCookie(STORY), { seen: Object.keys(unlocked), completed: completed });
   }
 
+  // The page's language, by its own name, where the location label is: about 1.5 s on every page, so the change of
+  // language from page to page reads as a rule (J, 2026-11-11). No words are added: it is the language itself.
+  const LANG_NAMES = {
+    ar: "العربية", bn: "বাংলা", de: "Deutsch", en: "English", es: "Español", fr: "Français", hi: "हिन्दी",
+    id: "Bahasa Indonesia", it: "Italiano", ja: "日本語", ko: "한국어", mr: "मराठी", pa: "ਪੰਜਾਬੀ", pt: "Português",
+    ru: "Русский", sw: "Kiswahili", ta: "தமிழ்", te: "తెలుగు", th: "ไทย", tr: "Türkçe", ur: "اردو",
+    vi: "Tiếng Việt", zh: "中文"
+  };
+  const LANG_FLASH_MS = 1500;
+  let langFlashTimer = null;
+
+  function flashLanguage(scene) {
+    if (!stepBox) return;
+    clearTimeout(langFlashTimer);
+    stepBox.querySelectorAll(".step-lang").forEach(function (el) { el.remove(); });
+    const code = scene.lang;
+    if (!code || !LANG_NAMES[code]) return;
+    const el = document.createElement("span");
+    el.className = "step-lang";
+    el.dataset.langCode = reading === "en" ? "en" : code;
+    el.lang = reading === "en" ? "en" : code;
+    if (scene.dir === "rtl" && reading !== "en") el.dir = "rtl";
+    el.textContent = LANG_NAMES[reading === "en" ? "en" : code];
+    stepBox.appendChild(el);
+    stepBox.dataset.langFlash = el.dataset.langCode;
+    langFlashTimer = setTimeout(function () {
+      el.remove();
+      delete stepBox.dataset.langFlash;
+    }, LANG_FLASH_MS);
+  }
+
+  // A viewer's first visit: as the first clip ends the flashlight sweeps once (js/spot.js). Not on a run that is
+  // already going, and never again once it has been seen (localStorage, per viewer).
+  function maybeSweep(sceneId) {
+    if (!window.iltvTorch || !STORY || STORY.type === "console") return;
+    if (history.length !== 0 || sceneId !== STORY.start || window.iltvTorch.swept()) return;
+    if (Object.keys(unlocked).length > 1) return;
+    setTimeout(function () {
+      if (currentScene !== sceneId || history.length !== 0) return;
+      window.iltvTorch.sweep();
+    }, 350);
+  }
+
   function sceneState(scene) {
     if (scene.ending) return "soon";
     if (scene.dead) return "dead";
@@ -1061,6 +1104,7 @@
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
   function revealChoices(hasChoices) {
     setChoicePhase("ready");
+    maybeSweep(currentScene);
     stopChoiceWindow();
     if (!hasChoices || !timerBox) return;
     const label = timerBox.querySelector(".choice-timer-label");
@@ -1159,6 +1203,8 @@
       scene.dir
     );
 
+    flashLanguage(scene);
+    if (window.iltvTorch) window.iltvTorch.stop();
     showKit();
     wakeChrome();
     stopChoiceWindow();

@@ -4091,6 +4091,132 @@ async function consoleFit(t, doc, where, { endScreen = false } = {}) {
 /** Language picker (J, 2026-11-08): The Final Spark's pages are each in another language by design; the picker at
     390px, a switch mid-story that keeps the scene and puts the screen's text in the picked language, and every blog
     title on the list in one language. */
+/** The first-visit flashlight (J, 2026-11-11), played at 390x844 touch in a frame: a fresh viewer's sweep shows English
+ *  under the light before the first choice with no instruction text; the light then rests and pulses until it is moved;
+ *  a second visit does not sweep; a tap on a word or a choice lights its English for about 2 s; each page shows its
+ *  language name for about 1.5 s where the location label is. Used by `language` and `phone-media`. */
+async function torchSweepLeg(t, id) {
+  clearProgress();
+  try { localStorage.removeItem("iltv.torch"); } catch (e) { /* none */ }
+  t.scene(`${id}: first visit, the flashlight sweep at 390x844`);
+  let doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+  let win = doc.defaultView;
+  try { win.localStorage.removeItem("iltv.torch"); win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  const lit = new Set();
+  let sweepSeen = false;
+  let englishUnder = 0;
+  let choicesLitBeforeReady = false;
+  const wordsBefore = (doc.getElementById("spark")?.innerText || "").split(/\s+/).length;
+  await passPrompt(t, doc, `${id} (first sweep)`);
+  const sample = () => {
+    if (!win.iltvTorch) return;
+    if (win.iltvTorch.sweeping()) sweepSeen = true;
+    doc.querySelectorAll("#spark-story.is-lit, #spark-question.is-lit, #spark-choices .choice.is-lit").forEach((el) => {
+      lit.add(el.id || "choice");
+      const en = el.querySelector(".spot-en");
+      if (en && win.getComputedStyle(en).opacity !== "0") englishUnder++;
+    });
+  };
+  const until = performance.now() + 60000;
+  // The first clip must end (or the cut's push-in start) and the sweep come; sample every 60 ms while it runs.
+  while (performance.now() < until) {
+    sample();
+    if (sweepSeen && !win.iltvTorch.sweeping()) break;
+    await sleep(60);
+  }
+  const phase = doc.getElementById("spark-choices")?.dataset.phase;
+  if (!sweepSeen) t.problem("bug", `${id}: a first visit's flashlight never swept by itself`);
+  else if (!lit.has("spark-story")) t.problem("bug", `${id}: the sweep never lit the story line (lit: ${[...lit].join(", ") || "nothing"})`);
+  else if (!englishUnder) t.problem("bug", `${id}: no English showed under the sweeping light`);
+  if (sweepSeen && phase !== "ready") t.problem("bug", `${id}: the sweep ended before the choices were up (phase ${phase})`);
+  const wordsAfter = (doc.getElementById("spark")?.innerText || "").split(/\s+/).length;
+  const hint = doc.querySelector(".torch-hint, .hint, .tutorial, [data-hint]");
+  if (hint) t.problem("bug", `${id}: instruction text on the first page: "${hint.textContent.trim().slice(0, 60)}"`);
+  t.event("torch-sweep", `${id}: first visit swept ${sweepSeen}; lit ${[...lit].join(", ")}; English under the light in ${englishUnder} samples; words on screen ${wordsBefore} -> ${wordsAfter}; no instruction text ${!hint}; saved "${win.localStorage.getItem("iltv.torch")}"`);
+  t.metric("torchSweepSeen", sweepSeen ? 1 : 0);
+  // It rests within reach and pulses until moved.
+  await sleep(300);
+  const pulsing = doc.body.classList.contains("torch-beckon") && win.getComputedStyle(doc.getElementById("torch-slot")).animationName !== "none";
+  if (sweepSeen && !pulsing) t.problem("bug", `${id}: after the sweep the flashlight doesn't rest and pulse`);
+  t.event("torch-rest", `${id}: resting and pulsing ${pulsing}`);
+  // A tap on a word lights its English for about 2 s, through touch, no drag.
+  const touchDown = (el) => {
+    const r = el.getBoundingClientRect();
+    const init = { pointerType: "touch", pointerId: 52, isPrimary: true, button: 0, buttons: 1, bubbles: true, cancelable: true, composed: true, clientX: r.left + Math.min(40, r.width / 2), clientY: r.top + Math.min(12, r.height / 2), view: win };
+    el.dispatchEvent(new win.PointerEvent("pointerdown", init));
+    return () => el.dispatchEvent(new win.PointerEvent("pointerup", { ...init, buttons: 0 }));
+  };
+  const tapTest = async (el, label) => {
+    el.scrollIntoView({ block: "center", behavior: "instant" });
+    await sleep(120);
+    const up = touchDown(el);
+    const t0 = performance.now();
+    await sleep(350);
+    const spot = el.classList.contains("spot") ? el : el.querySelector(".spot");
+    const en = spot?.querySelector(".spot-en");
+    const shownNow = !!spot && spot.classList.contains("is-tapped") && !!en && win.getComputedStyle(en).opacity === "1" && win.getComputedStyle(spot.querySelector(".spot-src")).opacity === "0";
+    let off = 0;
+    while (spot && spot.classList.contains("is-tapped") && performance.now() - t0 < 4000) await sleep(40);
+    off = performance.now() - t0;
+    up();
+    t.event("tap-light", `${id}: a touch tap on ${label}: English shown ${shownNow}, gone after ${Math.round(off)} ms`);
+    if (!shownNow) t.problem("bug", `${id}: a touch tap on ${label} didn't show its English`);
+    if (off < 1700 || off > 2600) t.problem("bug", `${id}: a tap on ${label} lit its English for ${Math.round(off)} ms (about 2000)`);
+  };
+  await tapTest(doc.getElementById("spark-story"), "the story line");
+  const firstChoice = doc.querySelector("#spark-choices .choice");
+  if (firstChoice) await tapTest(firstChoice, "a choice");
+  // Moving the torch once ends the pulse for good.
+  const slot = doc.getElementById("torch-slot");
+  doc.getElementById("spark").scrollIntoView?.({ block: "end", behavior: "instant" });
+  const sr = slot.getBoundingClientRect();
+  const sinit = { pointerType: "touch", pointerId: 53, isPrimary: true, button: 0, buttons: 1, bubbles: true, cancelable: true, composed: true, clientX: sr.left + sr.width / 2, clientY: sr.top + sr.height / 2, view: win };
+  slot.dispatchEvent(new win.PointerEvent("pointerdown", sinit));
+  await sleep(150);
+  slot.dispatchEvent(new win.PointerEvent("pointerup", { ...sinit, buttons: 0 }));
+  await sleep(200);
+  const moved = win.localStorage.getItem("iltv.torch") === "moved" && !doc.body.classList.contains("torch-beckon");
+  if (!moved) t.problem("bug", `${id}: moving the flashlight once didn't end the pulse (saved "${win.localStorage.getItem("iltv.torch")}")`);
+  // Each page names its language for about 1.5 s where the location label is.
+  await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 40000);
+  const choice = doc.querySelector("#spark-choices .choice");
+  if (choice) {
+    await tapAt(t, choice, "the first choice");
+    const t0 = performance.now();
+    const flash = await waitFor(() => doc.querySelector("#spark-step .step-lang"), 1500);
+    let gone = 0;
+    if (flash) { await waitFor(() => !doc.querySelector("#spark-step .step-lang"), 4000); gone = performance.now() - t0; }
+    const nowScene = win.finalSpark.scene();
+    const want = story(id).scenes[nowScene]?.lang;
+    const name = flash ? (flash.textContent || "").trim() : "";
+    t.event("language-name", `${id}: ${nowScene} (${want}) shows "${name}" in the location label for ${Math.round(gone)} ms`);
+    if (!flash) t.problem("bug", `${id}: the page doesn't show its language name where the location label is`);
+    else if (!name || /^[\x00-\x7f]+$/.test(name) && want !== "en" && want !== "de" && want !== "es" && want !== "fr" && want !== "id" && want !== "it" && want !== "pt" && want !== "sw" && want !== "tr" && want !== "vi") t.problem("bug", `${id}: the language name "${name}" isn't the language's own`);
+    if (flash && (gone < 1000 || gone > 2400)) t.problem("bug", `${id}: the language name stayed ${Math.round(gone)} ms (about 1500)`);
+  }
+  closeViewFrame();
+  // A second visit: no sweep by itself.
+  t.scene(`${id}: second visit, no sweep`);
+  try { localStorage.setItem("iltv.torch", "swept"); } catch (e) { /* none */ }
+  clearProgress();
+  doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+  win = doc.defaultView;
+  try { win.localStorage.setItem("iltv.torch", "swept"); } catch (e) { /* none */ }
+  await passPrompt(t, doc, `${id} (second visit)`);
+  let again = false;
+  const end2 = performance.now() + 14000;
+  await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 40000);
+  while (performance.now() < end2) {
+    if (win.iltvTorch && win.iltvTorch.sweeping()) again = true;
+    if (doc.querySelector("#spark-story.is-lit, #spark-question.is-lit, #spark-choices .choice.is-lit")) again = true;
+    await sleep(80);
+  }
+  t.event("torch-second-visit", `${id}: second visit swept by itself: ${again}`);
+  if (again) t.problem("bug", `${id}: the flashlight swept again on a second visit`);
+  closeViewFrame();
+  try { localStorage.setItem("iltv.torch", "moved"); } catch (e) { /* none */ }
+}
+
 async function languageRun(options, t) {
   // As a leg of smoke the viewer's progress is already kept: remembering again would keep the run's own instead.
   if (!savedRuns && savedCookie == null) rememberProgress();
@@ -4160,6 +4286,8 @@ async function languageRun(options, t) {
   if (treeSrc.length) t.problem("bug", `${id}: the Tree still shows ${treeSrc.length} words in the page's own language after picking English`);
   await tapAt(t, doc.getElementById("tab-play"), "Play");
   try { win.localStorage.removeItem("iltv.reading"); } catch (e) { /* none */ }
+  t.progress(0.5);
+  await torchSweepLeg(t, id);
   t.progress(0.7);
   // Studio notes titles: English on /notes/, each with a language chip (posts moved off the home page).
   t.scene("Studio notes titles");
@@ -4675,6 +4803,7 @@ async function phoneMediaRun(options, t) {
     }
     t.progress(0.2 + (0.8 * ++k) / ids.length);
   }
+  await torchSweepLeg(t, FIRST);
   closeViewFrame();
   restoreProgress();
 }
