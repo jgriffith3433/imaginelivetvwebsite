@@ -291,9 +291,39 @@
     var url = uiUrl(name);
     if (!url || !unlocked || !enabled) return;
     loadBuffer(url, function (buf) {
+      if (!buf) buf = synthUi(name); // no recording yet: the torch's own sounds are made here
       if (!buf) return; // missing file: do nothing
       playBufferOn("ui", buf, false);
     });
+  }
+
+  // The flashlight's soft click and low hum (js/spot.js), made in code until recordings exist at
+  // /assets/audio/ui/torch-click.mp3 and torch-hum.mp3 (a file there wins).
+  var synthCache = {};
+  function synthUi(name) {
+    if (name !== "torch-click" && name !== "torch-hum") return null;
+    if (synthCache[name]) return synthCache[name];
+    if (!context) return null;
+    try {
+      var rate = context.sampleRate;
+      var secs = name === "torch-click" ? 0.09 : 3.2;
+      var buf = context.createBuffer(1, Math.floor(rate * secs), rate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < data.length; i++) {
+        var t = i / rate;
+        if (name === "torch-click") {
+          var env = Math.exp(-t * 70);
+          data[i] = env * (0.5 * Math.sin(2 * Math.PI * 1900 * t) + 0.25 * Math.sin(2 * Math.PI * 640 * t) + 0.2 * (Math.random() * 2 - 1)) * 0.5;
+        } else {
+          var fade = Math.min(1, t / 0.4) * Math.min(1, (secs - t) / 0.8);
+          data[i] = fade * 0.07 * (Math.sin(2 * Math.PI * 100 * t) + 0.5 * Math.sin(2 * Math.PI * 200 * t) + 0.12 * Math.sin(2 * Math.PI * 300 * t));
+        }
+      }
+      synthCache[name] = buf;
+      return buf;
+    } catch (e) {
+      return null;
+    }
   }
 
   function clipHasSound(video) {

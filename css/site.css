@@ -3466,3 +3466,73 @@ html[data-reading="en"] .post-article h1 .spot-src { display: none; }
 @media (prefers-reduced-motion: reduce) {
   #spark #spark-video { transition: none; }
 }
+
+/* ---- First visit: the flashlight sweeps once, then rests and pulses until the viewer moves it (js/spot.js) ---- */
+body.torch-beckon .torch-slot {
+  animation: torch-beckon 2.4s ease-in-out infinite;
+}
+
+body.torch-beckon .torch.is-docked .torch-lens {
+  animation: torch-beckon-lens 2.4s ease-in-out infinite;
+}
+
+body.is-holding.torch-beckon .torch-slot,
+body.is-holding.torch-beckon .torch-lens { animation: none; }
+
+@keyframes torch-beckon {
+  0%, 100% { border-color: #3c4046; box-shadow: inset 0 10px 16px rgba(0, 0, 0, 0.55); }
+  50% { border-color: #cdb98f; box-shadow: inset 0 10px 16px rgba(0, 0, 0, 0.55), 0 0 18px 3px rgba(255, 236, 200, 0.4); }
+}
+
+@keyframes torch-beckon-lens {
+  0%, 100% { box-shadow: 0 0 0 3px #1c1e22; }
+  50% { box-shadow: 0 0 0 3px #1c1e22, 0 0 14px 5px rgba(255, 236, 200, 0.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.torch-beckon .torch-slot { animation: none; border-color: #cdb98f; }
+  body.torch-beckon .torch.is-docked .torch-lens { animation: none; box-shadow: 0 0 0 3px #1c1e22, 0 0 10px 3px rgba(255, 236, 200, 0.5); }
+}
+
+/* A tap on a word (a phone has no hover): the English shows whole for about 2 s. */
+.spark .spot.is-tapped > .spot-src {
+  opacity: 0;
+}
+.spark .spot.is-tapped > .spot-en {
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: 1;
+}
+.spark .spot > .spot-src,
+.spark .spot > .spot-en {
+  transition: opacity 0.18s ease;
+}
+
+/* The language name where the location label is: ~1.5 s on each page, then the label (js/game.js). */
+.spark-step { position: relative; }
+.spark-step .step-lang {
+  position: absolute;
+  inset: -0.15rem -0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 0.4rem;
+  background: #0c0d0f;
+  color: #fffaf2;
+  text-shadow: 0 0 10px rgba(255, 236, 200, 0.45);
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-size: 0.9rem;
+  animation: step-lang 1.5s ease both;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes step-lang {
+  0% { opacity: 0; }
+  12%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spark-step .step-lang { animation: none; }
+}
