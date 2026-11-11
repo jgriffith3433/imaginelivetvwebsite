@@ -3218,3 +3218,50 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
   }
   .story-recap-copy { text-align: left; max-width: 18rem; }
 }
+
+/* Blog article layout: hero, title, meta line (date, language, reading time), body at a 65-70 character measure,
+   with a font stack and line-height per script (data-script on the article). */
+.post-hero { margin: 0 0 1.2rem; }
+.post-hero .hero-image { display: block; margin: 0; aspect-ratio: 16 / 9; object-fit: cover; }
+.post-article .post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+  margin: 0 0 1.2rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.post-article .post-meta time { display: inline; margin: 0; }
+.post-meta .post-lang,
+.post-meta .post-read { text-transform: none; }
+.post-meta .post-lang::before,
+.post-meta .post-read::before { content: "\00b7\00a0"; }
+.post-article .post-body { max-width: 68ch; font-size: 1.05rem; line-height: 1.65; }
+.post-article h1 { overflow-wrap: anywhere; }
+.post-article .post-body .spot-src { white-space: pre-line; }
+.post-article .poem p { max-width: 68ch; }
+.post-article[data-script="zh"] { font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif; }
+.post-article[data-script="ja"] { font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Noto Sans JP", sans-serif; }
+.post-article[data-script="hi"] { font-family: "Nirmala UI", "Noto Sans Devanagari", "Mangal", "Kohinoor Devanagari", sans-serif; }
+.post-article[data-script="bn"] { font-family: "Nirmala UI", "Noto Sans Bengali", "Vrinda", "Kohinoor Bangla", sans-serif; }
+.post-article[data-script="ar"] { font-family: "Segoe UI", "Noto Naskh Arabic", "Geeza Pro", Tahoma, sans-serif; }
+.post-article[data-script="zh"] .post-body,
+.post-article[data-script="ja"] .post-body { line-height: 1.9; }
+.post-article[data-script="hi"] .post-body,
+.post-article[data-script="bn"] .post-body { line-height: 1.95; }
+.post-article[data-script="ar"] .post-body { line-height: 1.9; }
+.post-article[data-script="zh"] h1,
+.post-article[data-script="ja"] h1,
+.post-article[data-script="hi"] h1,
+.post-article[data-script="bn"] h1,
+.post-article[data-script="ar"] h1 { line-height: 1.5; }
+.post-article[data-script="zh"] .poem p,
+.post-article[data-script="ja"] .poem p,
+.post-article[data-script="hi"] .poem p,
+.post-article[data-script="bn"] .poem p,
+.post-article[data-script="ar"] .poem p { line-height: 1.95; }
+.post-article[dir="rtl"] .post-kicker { direction: ltr; unicode-bidi: isolate; }
+.post-article[dir="rtl"] .post-meta { direction: rtl; }
+.post-layout:has(.post-article[dir="rtl"]) { direction: rtl; }
+.post-layout:has(.post-article[dir="rtl"]) .recent { direction: ltr; }
+html[data-reading="en"] .post-article h1 .spot-src { display: none; }
