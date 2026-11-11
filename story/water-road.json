@@ -108,11 +108,23 @@
         { "say": "1. Cut across the salt flats", "en": "1. Cut across the salt flats", "next": "flats" },
         { "say": "2. Take the long trail under the mesa", "en": "2. Take the long trail under the mesa", "next": "mesa", "default": true }
       ],
-      "shot": {
-        "scene": "first light at dawn in the open desert, a low golden sun and dust haze; in the close foreground a mourning dove sits alone on a dead mesquite branch, sharp, filling the top of the frame; far below and behind it, soft and out of focus in the haze, a long wagon train of six canvas-covered wagons loaded with water barrels, each pulled by a team of mules, starts out across the flats; at the very back of the line, small in the distance, a young rider on a bay horse",
-        "motion": "the dove turns its head and flies off the branch; the camera tilts down past the branch and racks focus onto the wagon train, the mule teams hauling the covered wagons forward through the dust, the young rider at the back",
-        "cast": ["dove", "hero"]
-      },
+      "shots": [
+        {
+          "scene": "wide establishing view at first light: a long wagon train of six canvas-covered wagons loaded with water barrels, mule teams hauling in the dust haze across open desert, a low golden sun, a small mourning dove on a dead mesquite branch in the near foreground",
+          "motion": "the camera drifts slowly right along the train as the wagons start to roll; the dove turns its head",
+          "cast": ["dove"]
+        },
+        {
+          "scene": "close-up on the young rider at the back of the line, hat brim shading the eyes, faded red bandana, looking down at the unfired revolver in its holster, his hand resting uneasily on it, golden dawn light",
+          "motion": "his fingers rest on the holster, then he looks up toward the wagons ahead and swallows",
+          "cast": ["hero"]
+        },
+        {
+          "scene": "first light at dawn in the open desert, a low golden sun and dust haze; in the close foreground a mourning dove sits alone on a dead mesquite branch, sharp, filling the top of the frame; far below and behind it, soft and out of focus in the haze, a long wagon train of six canvas-covered wagons loaded with water barrels, each pulled by a team of mules, starts out across the flats; at the very back of the line, small in the distance, a young rider on a bay horse",
+          "motion": "the dove turns its head and flies off the branch; the camera tilts down past the branch and racks focus onto the wagon train, the mule teams hauling the covered wagons forward through the dust, the young rider at the back",
+          "cast": ["dove", "hero"]
+        }
+      ],
       "music": "trail"
     },
     {
@@ -130,11 +142,23 @@
         { "say": "1. Push on through the heat", "en": "1. Push on through the heat", "next": "sunstroke" },
         { "say": "2. Wait for dark and mend the wheel", "en": "2. Wait for dark and mend the wheel", "next": "nightCrossing", "default": true }
       ],
-      "shot": {
-        "scene": "blinding white salt flats at noon, heat haze; a water wagon tilts on a cracked wooden wheel, mules stamping; the young rider wipes sweat from under the hat brim",
-        "motion": "heat shimmer rolls across the salt, the wagon creaks and settles, the rider looks up at the sun",
-        "cast": ["hero"]
-      },
+      "shots": [
+        {
+          "scene": "wide shot of blinding white salt flats at noon in heat haze, six wagons stopped in a line, the last water wagon tilted on a cracked wooden wheel, mules stamping, tiny riders around it",
+          "motion": "heat shimmer rolls across the salt; the camera pushes slowly in toward the tilted wagon",
+          "cast": []
+        },
+        {
+          "scene": "close-up on the young rider's sunburnt face under the dusty hat brim, sweat on the lip, squinting at the white sun, a tin flask in his hand",
+          "motion": "he wipes sweat with the back of his wrist, glances at the flask, and does not drink",
+          "cast": ["hero"]
+        },
+        {
+          "scene": "blinding white salt flats at noon, heat haze; a water wagon tilts on a cracked wooden wheel, mules stamping; the young rider wipes sweat from under the hat brim",
+          "motion": "heat shimmer rolls across the salt, the wagon creaks and settles, the rider looks up at the sun",
+          "cast": ["hero"]
+        }
+      ],
       "music": "heat"
     },
     {
@@ -195,11 +219,23 @@
         { "say": "1. Fire a warning shot", "en": "1. Fire a warning shot", "next": "rockslide", "set": { "firedAtMesa": true, "muleLame": true } },
         { "say": "2. Wave, and wait", "en": "2. Wave, and wait", "next": "lookout", "default": true }
       ],
-      "shot": {
-        "scene": "the caravan winds along a trail in the long shadow of a towering red mesa; high on the sunlit rocks a small bright glint; the young rider in the foreground, hand near the holster",
-        "motion": "the glint flashes twice; the rider slows the horse and looks up",
-        "cast": ["hero"]
-      },
+      "shots": [
+        {
+          "scene": "wide shot of the caravan on a trail in the long shadow of a towering red mesa, a small bright glint on the sunlit rocks high above, the young rider at the rear",
+          "motion": "the camera tilts up the mesa wall to the glint, which flashes twice",
+          "cast": ["hero"]
+        },
+        {
+          "scene": "close-up of the young rider's right hand drifting down to rest on the grip of his holstered single-action revolver, thumb on the hammer, sunlit mesa shadow behind",
+          "motion": "his thumb touches the hammer, the hand hovers, his eyes lift to the rocks",
+          "cast": ["hero", "boss"]
+        },
+        {
+          "scene": "the caravan winds along a trail in the long shadow of a towering red mesa; high on the sunlit rocks a small bright glint; the young rider in the foreground, hand near the holster",
+          "motion": "the glint flashes twice; the rider slows the horse and looks up",
+          "cast": ["hero"]
+        }
+      ],
       "music": "danger"
     },
     {
@@ -261,11 +297,23 @@
         { "say": "1. Give them your flask", "en": "1. Give them your flask", "next": "giveFlask", "set": { "gaveFlask": true, "passedBy": false }, "default": true },
         { "say": "2. Tell them the water's spoken for", "en": "2. Tell them the water's spoken for", "next": "passBy", "set": { "passedBy": true } }
       ],
-      "shot": {
-        "scene": "a homesteading family, sunburnt and silent, sits in the thin shade of a broken covered wagon beside an empty wooden cask; the young rider looks down at them from the horse",
-        "motion": "the little girl looks up at the rider; the mother pulls her close",
-        "cast": ["family", "hero"]
-      },
+      "shots": [
+        {
+          "scene": "wide shot of a homesteading family sunburnt and silent in the thin shade of a broken covered wagon beside an empty wooden cask, the caravan halted on the trail behind, the young rider on his horse above them",
+          "motion": "slow push in; the mother pulls the children closer",
+          "cast": ["family", "hero"]
+        },
+        {
+          "scene": "close-up of the lean old trail boss on horseback, grey braid under a battered black hat, weathered face, eyes narrowed in a hard measuring look down at the family, coiled bullwhip at her hip",
+          "motion": "her eyes move from the family to the young rider and hold on him, waiting",
+          "cast": ["boss"]
+        },
+        {
+          "scene": "a homesteading family, sunburnt and silent, sits in the thin shade of a broken covered wagon beside an empty wooden cask; the young rider looks down at them from the horse",
+          "motion": "the little girl looks up at the rider; the mother pulls her close",
+          "cast": ["family", "hero"]
+        }
+      ],
       "music": "heat"
     },
     {
@@ -373,11 +421,23 @@
         { "say": "3. Open a barrel for them", "en": "3. Open a barrel for them", "next": "shareWater", "needs": { "water": 2 } },
         { "say": "4. Call their leader by name", "en": "4. Call their leader by name", "next": "shareWater", "requires": { "gaveFlask": true } }
       ],
-      "shot": {
-        "scene": "a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere; a small grey-brown mourning dove flies low along the dry sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front",
-        "motion": "the dove skims low along the wash and over the riders' heads; the riders' horses shift; the leader raises a hand",
-        "cast": ["dove", "leader", "hero"]
-      },
+      "shots": [
+        {
+          "scene": "wide shot down a bone-dry sandy wash between red rock walls, five riders with drawn revolvers blocking the way ahead, their leader in a long grey duster in front, the caravan halting behind the camera",
+          "motion": "slow push in; the horses shift; a mourning dove skims low over the sand",
+          "cast": ["dove", "leader"]
+        },
+        {
+          "scene": "close-up of the riders' leader, hard face with black stubble and cracked lips under a low-crowned dark hat, long grey duster, glaring straight at the camera over a drawn revolver",
+          "motion": "he licks his cracked lips, raises one hand, and keeps his eyes on you",
+          "cast": ["leader"]
+        },
+        {
+          "scene": "a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere; a small grey-brown mourning dove flies low along the dry sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front",
+          "motion": "the dove skims low along the wash and over the riders' heads; the riders' horses shift; the leader raises a hand",
+          "cast": ["dove", "leader", "hero"]
+        }
+      ],
       "music": "danger"
     },
     {
