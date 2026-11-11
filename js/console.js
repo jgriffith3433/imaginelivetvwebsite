@@ -604,7 +604,7 @@
     box.dataset.scene = id;
     var R = room();
     if (R) {
-      R.scene({ id: id, time: s.time, place: s.place, cast: s.cast, away: s.away, lines: s.lines });
+      R.scene({ id: id, time: s.time, place: s.place, cast: s.cast, away: s.away, lines: s.lines, poseMap: story.performPoses || null });
       if (resumed && run.done) R.catchUp(run.done);
       // Handover chair choice: sit or stand sticks until the next scene's cast resets it.
       if (run.pose && R.posture) R.posture("you", run.pose);

@@ -19020,5 +19020,117 @@
       "hook": null,
       "next": null
     }
-  ]
+  ],
+  "performPoses": {
+    "_about": "How a line's `perform` note picks the speaker's look (js/console-room.js). The note is matched word by word, so no line is posed by hand: `moods` (first mood whose words appear wins, else `default`) leans the figure (tense, relaxed, neutral: the layer is the same cut-out, tilted and shifted, so J's silhouette style holds), and `poses` (first pose whose words appear wins) picks the pose layer of the person, only while an `act` is not already posing them. A line's own `act` always wins.",
+    "default": "neutral",
+    "moods": {
+      "tense": [
+        "fast",
+        "hurried",
+        "hurry",
+        "rushed",
+        "rushing",
+        "breathless",
+        "out of breath",
+        "cutting",
+        "cut off",
+        "furious",
+        "horrified",
+        "mortified",
+        "embarrassed",
+        "hoarse",
+        "running",
+        "knife",
+        "hard no",
+        "ice",
+        "backing",
+        "caught",
+        "accusation",
+        "too bright",
+        "formal",
+        "crisp",
+        "correcting",
+        "before you",
+        "over the intercom",
+        "not looking at you",
+        "a click"
+      ],
+      "relaxed": [
+        "warm",
+        "smile",
+        "smiling",
+        "laugh",
+        "laughing",
+        "grin",
+        "amused",
+        "kind",
+        "kindness",
+        "easy",
+        "glad",
+        "delighted",
+        "pleased",
+        "bright",
+        "shrug",
+        "gently",
+        "proud",
+        "nod",
+        "almost",
+        "mild",
+        "a breath",
+        "sip",
+        "company"
+      ]
+    },
+    "poses": {
+      "count": [
+        "counting",
+        "counted",
+        "one finger on each",
+        "each column",
+        "each one set down"
+      ],
+      "write": [
+        "pencil",
+        "pen",
+        "writing",
+        "write",
+        "keyboard"
+      ],
+      "read": [
+        "reading",
+        "the page",
+        "binder",
+        "the card",
+        "the log"
+      ],
+      "point": [
+        "tapping the shelf",
+        "to the shelf",
+        "at the shelf",
+        "toward the shelf",
+        "the shelf"
+      ],
+      "touch": [
+        "tapping the glass",
+        "tapping the screen",
+        "tile",
+        "to the glass",
+        "the glass"
+      ],
+      "eat": [
+        "sandwich",
+        "foil",
+        "eating"
+      ],
+      "drink": [
+        "the cup",
+        "a sip",
+        "sipping"
+      ],
+      "lean": [
+        "tired"
+      ]
+    }
+  }
 }

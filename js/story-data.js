@@ -2489,12 +2489,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "sfx": "radio-squelch",
+       "perform": "flat, dry",
        "file": "/assets/story/night-shift-demo/silence.wav",
        "dur": 1.2
       },
       {
        "speaker": "dee",
        "text": "Mm. You're a minute late. Sit.",
+       "perform": "dry, unhurried",
        "file": "/assets/story/night-shift-demo/silence.wav",
        "dur": 1.2
       }
@@ -2549,12 +2551,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nothing happens at two o'clock. That's why we're here.",
+       "perform": "quiet, flat",
        "file": "/assets/story/night-shift-demo/silence.wav",
        "dur": 1.5
       },
       {
        "speaker": "terrell",
        "text": "Camera four, the door. Is that, like, normal?",
+       "perform": "quick, unsure",
        "file": "/assets/story/night-shift-demo/silence.wav",
        "dur": 1.2
       }
@@ -2624,6 +2628,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Write what you saw. Not what you think about what you saw.",
        "sfx": "pencil",
+       "perform": "dry, even",
        "file": "/assets/story/night-shift-demo/silence.wav",
        "dur": 1.5
       }
@@ -2691,6 +2696,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's noted. Go home. Eat something.",
+       "perform": "flat",
        "file": "/assets/story/night-shift-demo/silence.wav",
        "dur": 1.2
       }
@@ -2720,6 +2726,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. All quiet.",
+       "perform": "flat",
        "file": "/assets/story/night-shift-demo/silence.wav",
        "dur": 1
       }
@@ -3087,6 +3094,118 @@ window.ILTV_STORIES = {
      "next": null
     }
    ],
+   "performPoses": {
+    "_about": "How a line's `perform` note picks the speaker's look (js/console-room.js). The note is matched word by word, so no line is posed by hand: `moods` (first mood whose words appear wins, else `default`) leans the figure (tense, relaxed, neutral: the layer is the same cut-out, tilted and shifted, so J's silhouette style holds), and `poses` (first pose whose words appear wins) picks the pose layer of the person, only while an `act` is not already posing them. A line's own `act` always wins.",
+    "default": "neutral",
+    "moods": {
+     "tense": [
+      "fast",
+      "hurried",
+      "hurry",
+      "rushed",
+      "rushing",
+      "breathless",
+      "out of breath",
+      "cutting",
+      "cut off",
+      "furious",
+      "horrified",
+      "mortified",
+      "embarrassed",
+      "hoarse",
+      "running",
+      "knife",
+      "hard no",
+      "ice",
+      "backing",
+      "caught",
+      "accusation",
+      "too bright",
+      "formal",
+      "crisp",
+      "correcting",
+      "before you",
+      "over the intercom",
+      "not looking at you",
+      "a click"
+     ],
+     "relaxed": [
+      "warm",
+      "smile",
+      "smiling",
+      "laugh",
+      "laughing",
+      "grin",
+      "amused",
+      "kind",
+      "kindness",
+      "easy",
+      "glad",
+      "delighted",
+      "pleased",
+      "bright",
+      "shrug",
+      "gently",
+      "proud",
+      "nod",
+      "almost",
+      "mild",
+      "a breath",
+      "sip",
+      "company"
+     ]
+    },
+    "poses": {
+     "count": [
+      "counting",
+      "counted",
+      "one finger on each",
+      "each column",
+      "each one set down"
+     ],
+     "write": [
+      "pencil",
+      "pen",
+      "writing",
+      "write",
+      "keyboard"
+     ],
+     "read": [
+      "reading",
+      "the page",
+      "binder",
+      "the card",
+      "the log"
+     ],
+     "point": [
+      "tapping the shelf",
+      "to the shelf",
+      "at the shelf",
+      "toward the shelf",
+      "the shelf"
+     ],
+     "touch": [
+      "tapping the glass",
+      "tapping the screen",
+      "tile",
+      "to the glass",
+      "the glass"
+     ],
+     "eat": [
+      "sandwich",
+      "foil",
+      "eating"
+     ],
+     "drink": [
+      "the cup",
+      "a sip",
+      "sipping"
+     ],
+     "lean": [
+      "tired"
+     ]
+    }
+   },
    "unspoken": [
     "restricted",
     "chimera",
@@ -3266,6 +3385,7 @@ window.ILTV_STORIES = {
        "speaker": "okafor",
        "text": "So. Let's walk through the log. I have a train.",
        "sfx": "tablet-tap",
+       "perform": "polite, hurried",
        "act": "okafor:read",
        "file": "/night-shift/handover/media/line-2.mp3",
        "dur": 2.9
@@ -3274,6 +3394,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Four.",
        "sfx": "radio-charger",
+       "perform": "flat",
        "act": "dee:count",
        "file": "/night-shift/handover/media/line-7.mp3",
        "dur": 0.9
@@ -3281,12 +3402,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Dolores. You can say hello.",
+       "perform": "patient",
        "file": "/night-shift/handover/media/line-8.mp3",
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Hello. Sit anywhere that isn't mine.",
+       "perform": "dry",
        "file": "/night-shift/handover/media/line-9.mp3",
        "dur": 3
       }
@@ -3350,6 +3473,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Forty-four is the third line. Water was dry by four.",
+       "perform": "answering, glad to",
        "file": null,
        "dur": 3.8
       },
@@ -3364,6 +3488,7 @@ window.ILTV_STORIES = {
        "speaker": "okafor",
        "text": "Initial here. That says you've seen the day's log.",
        "sfx": "tablet-tap",
+       "perform": "polite",
        "act": "you:write",
        "file": null,
        "dur": 3.1
@@ -3371,12 +3496,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
+       "perform": "correcting himself",
        "file": null,
        "dur": 4.9
       },
       {
        "speaker": "okafor",
        "text": "And the binder. Fire, access, medical, who to call, in what order. Page eleven is the one people skip.",
+       "perform": "tapping the shelf",
        "act": "okafor:point:shelf",
        "file": null,
        "dur": 8.8
@@ -3384,30 +3511,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Page eleven.",
+       "perform": "flat, to the charger",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Read it.",
+       "perform": "flat",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "okafor",
        "text": "It's two pages.",
+       "perform": "mild",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Then it's two minutes.",
+       "perform": "flat",
        "file": null,
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Initial.",
+       "perform": "flat",
        "file": null,
        "dur": 1
       }
@@ -3457,6 +3589,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Thursday. Ten a.m. Not your shift.",
+       "perform": "a nod to himself",
        "file": null,
        "dur": 3.4
       },
@@ -3471,6 +3604,7 @@ window.ILTV_STORIES = {
        "speaker": "okafor",
        "text": "Initial here. That says you've seen the day's log.",
        "sfx": "tablet-tap",
+       "perform": "polite",
        "act": "you:write",
        "file": null,
        "dur": 3.1
@@ -3478,12 +3612,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
+       "perform": "correcting himself",
        "file": null,
        "dur": 4.9
       },
       {
        "speaker": "okafor",
        "text": "And the binder. Fire, access, medical, who to call, in what order. Page eleven is the one people skip.",
+       "perform": "tapping the shelf",
        "act": "okafor:point:shelf",
        "file": null,
        "dur": 8.8
@@ -3491,30 +3627,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Page eleven.",
+       "perform": "flat, to the charger",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Read it.",
+       "perform": "flat",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "okafor",
        "text": "It's two pages.",
+       "perform": "mild",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Then it's two minutes.",
+       "perform": "flat",
        "file": null,
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Initial.",
+       "perform": "flat",
        "file": null,
        "dur": 1
       }
@@ -3604,12 +3745,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four radios. Four on the charger when I walk in. Four when I leave.",
+       "perform": "flat, reading a sign",
        "file": null,
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Doesn't matter why.",
+       "perform": "quick",
        "file": null,
        "dur": 1.2
       },
@@ -3617,6 +3760,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Coffee's on the left. It's wrong. Don't tell me it's wrong.",
        "sfx": "coffee",
+       "perform": "dry",
        "act": "dee:drink",
        "file": null,
        "dur": 4.7
@@ -3624,12 +3768,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Terrell has the desk. You don't go out to the desk. The desk comes to you.",
+       "perform": "flat, a house rule",
        "file": null,
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "Officer. You've got a name? Say it once. I'll use it when I use it.",
+       "perform": "looks at you for the first time",
        "file": null,
        "dur": 5.8
       }
@@ -3712,24 +3858,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "It's customary to read it first.",
+       "perform": "from the door, tired",
        "file": null,
        "dur": 2.6
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "less than a word",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Four radios. Four on the charger when I walk in. Four when I leave.",
+       "perform": "flat, reading a sign",
        "file": null,
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Doesn't matter why.",
+       "perform": "quick",
        "file": null,
        "dur": 1.2
       },
@@ -3737,6 +3887,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Coffee's on the left. It's wrong. Don't tell me it's wrong.",
        "sfx": "coffee",
+       "perform": "dry",
        "act": "dee:drink",
        "file": null,
        "dur": 4.7
@@ -3744,12 +3895,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Terrell has the desk. You don't go out to the desk. The desk comes to you.",
+       "perform": "flat, a house rule",
        "file": null,
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "Officer. You've got a name? Say it once. I'll use it when I use it.",
+       "perform": "looks at you for the first time",
        "file": null,
        "dur": 5.8
       }
@@ -3810,6 +3963,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Sit.",
+       "perform": "already seated",
        "act": "you:sit",
        "file": null,
        "dur": 0.9
@@ -3818,6 +3972,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "The clock's two minutes fast. Leave it.",
        "sfx": "clock-tick",
+       "perform": "eyes on the clock",
        "file": null,
        "dur": 2.7
       },
@@ -3825,6 +3980,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. You've got one. Clip it on.",
        "sfx": "radio-charger",
+       "perform": "holds the fourth out",
        "act": "dee:hand",
        "file": null,
        "dur": 3.4
@@ -3832,6 +3988,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't move the chairs. The chairs know where they are.",
+       "perform": "flat, to the wall",
        "file": null,
        "dur": 3.3
       }
@@ -3891,6 +4048,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Knocking on it again, are we.",
+       "perform": "to the wall, not to you",
        "file": null,
        "dur": 2.2
       },
@@ -3909,6 +4067,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Sit.",
+       "perform": "already seated",
        "act": "you:sit",
        "file": null,
        "dur": 0.9
@@ -3917,6 +4076,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "The clock's two minutes fast. Leave it.",
        "sfx": "clock-tick",
+       "perform": "eyes on the clock",
        "file": null,
        "dur": 2.7
       },
@@ -3924,6 +4084,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. You've got one. Clip it on.",
        "sfx": "radio-charger",
+       "perform": "holds the fourth out",
        "act": "dee:hand",
        "file": null,
        "dur": 3.4
@@ -3931,6 +4092,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't move the chairs. The chairs know where they are.",
+       "perform": "flat, to the wall",
        "file": null,
        "dur": 3.3
       }
@@ -3979,12 +4141,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Back's all right? It's the only thing in here that is.",
+       "perform": "a dry look at the chair",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "It's been in here since before Terrell. Since before the carpet. Nobody's sure how it got in.",
+       "perform": "dry, to the wall",
        "file": null,
        "dur": 6.2
       },
@@ -4010,12 +4174,14 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
        "sfx": "radio-squelch",
+       "perform": "bright, over the radio",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "That's you.",
+       "perform": "not looking up",
        "file": null,
        "dur": 2.5
       }
@@ -4076,12 +4242,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "You're in my chair, Officer. Go on, I'll live.",
+       "perform": "deadpan, not moving",
        "file": null,
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "Fine. Sit. It's a chair.",
+       "perform": "gets up, takes the other",
        "file": null,
        "dur": 3.3
       },
@@ -4100,6 +4268,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't get used to it.",
+       "perform": "flat, from the good chair, the one she has never once sat in",
        "file": null,
        "dur": 1.8
       },
@@ -4113,12 +4282,14 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
        "sfx": "radio-squelch",
+       "perform": "bright, over the radio",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "That's you.",
+       "perform": "not looking up",
        "file": null,
        "dur": 2.5
       }
@@ -4175,18 +4346,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "So I'm never late for myself.",
+       "perform": "short, a shrug in it",
        "file": null,
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Leave it.",
+       "perform": "flat",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Mine's the watch on my wrist. That one's the room. Don't trust the room.",
+       "perform": "flat, tapping the glass of her watch",
        "file": null,
        "dur": 9
       },
@@ -4200,12 +4374,14 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
        "sfx": "radio-squelch",
+       "perform": "bright, over the radio",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "That's you.",
+       "perform": "not looking up",
        "file": null,
        "dur": 2.5
       }
@@ -4262,6 +4438,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Every time. Half hour, hour.",
+       "perform": "flat",
        "file": null,
        "dur": 4
       },
@@ -4282,18 +4459,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
+       "perform": "fast, finishing the thought wrong",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Desk.",
+       "perform": "without turning",
        "file": null,
        "dur": 2
       },
       {
        "speaker": "terrell",
        "text": "I'm going, I'm going.",
+       "perform": "backing out, still talking",
        "act": "terrell:leave",
        "file": null,
        "dur": 2.4
@@ -4301,6 +4481,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Where do you live?",
+       "perform": "to you, a real question, which surprises her",
        "file": null,
        "dur": 1.6
       }
@@ -4359,12 +4540,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Button's on the side. Side. The…",
+       "perform": "cut off by her own sigh",
        "file": null,
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Mm. A minute late.",
+       "perform": "the whole verdict",
        "file": null,
        "dur": 4.2
       },
@@ -4397,18 +4580,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
+       "perform": "fast, finishing the thought wrong",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Desk.",
+       "perform": "without turning",
        "file": null,
        "dur": 2
       },
       {
        "speaker": "terrell",
        "text": "I'm going, I'm going.",
+       "perform": "backing out, still talking",
        "act": "terrell:leave",
        "file": null,
        "dur": 2.4
@@ -4416,6 +4602,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Where do you live?",
+       "perform": "to you, a real question, which surprises her",
        "file": null,
        "dur": 1.6
       }
@@ -4474,12 +4661,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "It's not mine. Press the side.",
+       "perform": "flat, not taking it",
        "file": null,
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Mm. A minute late.",
+       "perform": "the whole verdict",
        "file": null,
        "dur": 4.2
       },
@@ -4506,18 +4695,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
+       "perform": "fast, finishing the thought wrong",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Desk.",
+       "perform": "without turning",
        "file": null,
        "dur": 2
       },
       {
        "speaker": "terrell",
        "text": "I'm going, I'm going.",
+       "perform": "backing out, still talking",
        "act": "terrell:leave",
        "file": null,
        "dur": 2.4
@@ -4525,6 +4717,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Where do you live?",
+       "perform": "to you, a real question, which surprises her",
        "file": null,
        "dur": 1.6
       }
@@ -4583,18 +4776,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "The seven? Mm. It stops. It always stops, right under Queensboro.",
+       "perform": "like she's been stuck there",
        "file": null,
        "dur": 11.3
       },
       {
        "speaker": "dee",
        "text": "It's wrong. I said not to say.",
+       "perform": "hearing you sip it",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Thirty-six minutes. Door to door. The seven smells like pennies.",
+       "perform": "flat, a small, dry kindness",
        "file": null,
        "dur": 4.9
       },
@@ -4614,6 +4810,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "One. Lobby. Two. Vestibule. Three, dock.",
        "sfx": "pencil",
+       "perform": "pencil moving, no hurry",
        "act": "dee:touch",
        "feed": [
         "c1",
@@ -4626,6 +4823,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you see. Not what it is.",
+       "perform": "short",
        "file": null,
        "dur": 2.6
       }
@@ -4681,18 +4879,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Pepper and egg. Half past midnight. Don't ask for a bite.",
+       "perform": "closing the foil",
        "file": null,
        "dur": 5.9
       },
       {
        "speaker": "dee",
        "text": "Ray used to… Forget it. Drink the coffee.",
+       "perform": "trails off, picks up the cup",
        "file": null,
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "It's wrong. I said not to say.",
+       "perform": "hearing you sip it",
        "file": null,
        "dur": 4.3
       },
@@ -4719,6 +4920,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "One. Lobby. Two. Vestibule. Three, dock.",
        "sfx": "pencil",
+       "perform": "pencil moving, no hurry",
        "act": "dee:touch",
        "feed": [
         "c1",
@@ -4731,6 +4933,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you see. Not what it is.",
+       "perform": "short",
        "file": null,
        "dur": 2.6
       }
@@ -4786,18 +4989,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "Hey, you see the game? Two points. Two. In the last…",
+       "perform": "from the door, still talking",
        "file": null,
        "dur": 4.4
       },
       {
        "speaker": "dee",
        "text": "Terrell.",
+       "perform": "one word",
        "file": null,
        "dur": 0.8
       },
       {
        "speaker": "dee",
        "text": "It's wrong. I said not to say.",
+       "perform": "hearing you sip it",
        "file": null,
        "dur": 4.3
       },
@@ -4823,6 +5029,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "One. Lobby. Two. Vestibule. Three, dock.",
        "sfx": "pencil",
+       "perform": "pencil moving, no hurry",
        "act": "dee:touch",
        "feed": [
         "c1",
@@ -4835,6 +5042,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you see. Not what it is.",
+       "perform": "short",
        "file": null,
        "dur": 2.6
       }
@@ -4890,12 +5098,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Good. Next.",
+       "perform": "approving the way a stamp does",
        "file": null,
        "dur": 1.7
       },
       {
        "speaker": "dee",
        "text": "Look at it till it's boring. Then look again.",
+       "perform": "tapping the glass of tile two",
        "act": "dee:point",
        "file": null,
        "dur": 4.8
@@ -4923,6 +5133,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four. Five. Six.",
+       "perform": "the pencil sliding down",
        "feed": [
         "c4",
         "c5",
@@ -4934,6 +5145,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
+       "perform": "a pause long enough to be a comment",
        "feed": "c7",
        "file": null,
        "dur": 4.9
@@ -4941,6 +5153,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
+       "perform": "the pencil stops",
        "feed": "c9",
        "file": null,
        "dur": 6.5
@@ -4997,12 +5210,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nothing's normal. Same lobby all night. That's normal.",
+       "perform": "a small shrug in the voice",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Look at it till it's boring. Then look again.",
+       "perform": "tapping the glass of tile two",
        "act": "dee:point",
        "file": null,
        "dur": 4.8
@@ -5010,6 +5225,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Eight hours. Nine tiles. Same lobby.",
+       "perform": "flat",
        "file": null,
        "dur": 3.6
       },
@@ -5030,6 +5246,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four. Five. Six.",
+       "perform": "the pencil sliding down",
        "feed": [
         "c4",
         "c5",
@@ -5041,6 +5258,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
+       "perform": "a pause long enough to be a comment",
        "feed": "c7",
        "file": null,
        "dur": 4.9
@@ -5048,6 +5266,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
+       "perform": "the pencil stops",
        "feed": "c9",
        "file": null,
        "dur": 6.5
@@ -5104,12 +5323,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Dead. Mm. That's the idea.",
+       "perform": "half-amused, not warm",
        "file": null,
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Look at it till it's boring. Then look again.",
+       "perform": "tapping the glass of tile two",
        "act": "dee:point",
        "file": null,
        "dur": 4.8
@@ -5117,6 +5338,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm-hm. Next.",
+       "perform": "before you've finished",
        "file": null,
        "dur": 3.6
       },
@@ -5150,6 +5372,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four. Five. Six.",
+       "perform": "the pencil sliding down",
        "feed": [
         "c4",
         "c5",
@@ -5161,6 +5384,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
+       "perform": "a pause long enough to be a comment",
        "feed": "c7",
        "file": null,
        "dur": 4.9
@@ -5168,6 +5392,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
+       "perform": "the pencil stops",
        "feed": "c9",
        "file": null,
        "dur": 6.5
@@ -5224,6 +5449,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nine never moves. If it moves, say.",
+       "perform": "slower, close to a rule",
        "feed": "c9",
        "file": null,
        "dur": 4.3
@@ -5231,6 +5457,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the wall. You've seen it. Now you've seen it.",
+       "perform": "pencil behind her ear",
        "file": null,
        "dur": 3.7
       },
@@ -5246,12 +5473,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
+       "perform": "flat, climbing",
        "file": null,
        "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. Look at the door.",
+       "perform": "at the landing, a little out of breath, hiding it",
        "file": null,
        "dur": 2.9
       },
@@ -5264,6 +5493,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Smokers. Door sticks, they prop it. Orange wedge.",
+       "perform": "dry",
        "act": "you:stand",
        "file": null,
        "dur": 4.7
@@ -5320,6 +5550,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Roof door. Eight. I do that one at three. Alone.",
+       "perform": "too quickly, then back to the wall",
        "feed": "c8",
        "file": null,
        "dur": 3.8
@@ -5327,6 +5558,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the wall. You've seen it. Now you've seen it.",
+       "perform": "pencil behind her ear",
        "file": null,
        "dur": 3.7
       },
@@ -5342,12 +5574,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
+       "perform": "flat, climbing",
        "file": null,
        "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. Look at the door.",
+       "perform": "at the landing, a little out of breath, hiding it",
        "file": null,
        "dur": 2.9
       },
@@ -5360,6 +5594,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Smokers. Door sticks, they prop it. Orange wedge.",
+       "perform": "dry",
        "act": "you:stand",
        "file": null,
        "dur": 4.7
@@ -5416,6 +5651,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the wall. You've seen it. Now you've seen it.",
+       "perform": "pencil behind her ear",
        "file": null,
        "dur": 3.7
       },
@@ -5438,12 +5674,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
+       "perform": "flat, climbing",
        "file": null,
        "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. Look at the door.",
+       "perform": "at the landing, a little out of breath, hiding it",
        "file": null,
        "dur": 2.9
       },
@@ -5456,6 +5694,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Smokers. Door sticks, they prop it. Orange wedge.",
+       "perform": "dry",
        "act": "you:stand",
        "file": null,
        "dur": 4.7
@@ -5516,6 +5755,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Good.",
+       "perform": "taking the pen back",
        "file": null,
        "dur": 1.7
       },
@@ -5529,36 +5769,42 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -5619,6 +5865,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Good.",
+       "perform": "taking the pen back",
        "file": null,
        "dur": 1.7
       },
@@ -5632,42 +5879,49 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
+       "perform": "to you, dry, a small nod",
        "file": null,
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -5735,36 +5989,42 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -5832,42 +6092,49 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
+       "perform": "to you, dry, a small nod",
        "file": null,
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -5928,12 +6195,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Once it's ink, it's true. I write it in pencil first.",
+       "perform": "gives it up like a coin",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Good.",
+       "perform": "taking the pen back",
        "file": null,
        "dur": 1.7
       },
@@ -5947,36 +6216,42 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -6037,12 +6312,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Once it's ink, it's true. I write it in pencil first.",
+       "perform": "gives it up like a coin",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Good.",
+       "perform": "taking the pen back",
        "file": null,
        "dur": 1.7
       },
@@ -6056,42 +6333,49 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
+       "perform": "to you, dry, a small nod",
        "file": null,
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -6157,24 +6441,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Gracias, mi amor. Bendito. I owe you a plate.",
+       "perform": "already moving, the walkie bouncing",
        "file": null,
        "dur": 3.7
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "the whole sentence",
        "file": null,
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "I'd have done it.",
+       "perform": "not looking at you",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "That's a line you write down, Officer.",
+       "perform": "flat, the pencil already in her hand",
        "file": null,
        "dur": 4.9
       },
@@ -6237,6 +6525,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Not on the list. Then he doesn't go in tonight.",
+       "perform": "phone-flat, a fork against a plate",
        "act": "you:phone",
        "file": null,
        "dur": 7.4
@@ -6244,6 +6533,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Please put it in the log, both times: when you called, and when he answered.",
+       "perform": "even",
        "file": null,
        "dur": 5.8
       },
@@ -6251,6 +6541,7 @@ window.ILTV_STORIES = {
        "speaker": "marisol",
        "text": "Hijo de… *Okay.* Okay. I don't forget this.",
        "sfx": "walkie-squelch",
+       "perform": "over the walkie, clipped, not warm",
        "act": "you:hangup",
        "file": null,
        "dur": 3.9
@@ -6258,18 +6549,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "She'll be fine by Thursday.",
+       "perform": "to the wall",
        "file": null,
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "You called it. Fine. It's the book.",
+       "perform": "a nod, grudging, not cold",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I'd have… Doesn't matter.",
+       "perform": "trailing off, reaching for the cup",
        "file": null,
        "dur": 3.9
       },
@@ -6330,30 +6624,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "I told you! Look. Look at it. Paper. He has paper.",
+       "perform": "triumphant, loud, on the walkie",
        "file": null,
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "Read me the name.",
+       "perform": "quiet, hands still",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "That's a name. That's not the list.",
+       "perform": "turning the paper in her head",
        "file": null,
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "Mm. But it's a name.",
+       "perform": "so low it's almost the wall talking",
        "file": null,
        "dur": 2.4
       },
       {
        "speaker": "marisol",
        "text": "So you let him wait in the hall. In the hall! Dios mío.",
+       "perform": "overlapping, fast",
        "file": null,
        "dur": 4.4
       },
@@ -6427,24 +6726,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you did.",
+       "perform": "plain",
        "file": null,
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "I said I'd have done it. I didn't say write that I did.",
+       "perform": "answer to a question you already asked",
        "file": null,
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "Time. Place. What you saw. What you did. Who you told.",
+       "perform": "tapping the pencil on each word",
        "file": null,
        "dur": 8.7
       },
       {
        "speaker": "dee",
        "text": "Nothing about how he looked.",
+       "perform": "short",
        "act": "you:write",
        "file": null,
        "dur": 1.9
@@ -6538,24 +6841,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you did.",
+       "perform": "plain",
        "file": null,
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "Water. Under the closet. You were watching.",
+       "perform": "a nod at tile six",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Time. Place. What you saw. What you did. Who you told.",
+       "perform": "tapping the pencil on each word",
        "file": null,
        "dur": 8.7
       },
       {
        "speaker": "dee",
        "text": "Nothing about how he looked.",
+       "perform": "short",
        "act": "you:write",
        "file": null,
        "dur": 1.9
@@ -6643,24 +6950,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you did.",
+       "perform": "plain",
        "file": null,
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "I'd have done it differently. That doesn't go in.",
+       "perform": "dry, to the tablet",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Not 'she got mad.' When did she say it, and what did she say?",
+       "perform": "tapping the pencil on each word",
        "file": null,
        "dur": 6.1
       },
       {
        "speaker": "dee",
        "text": "Time. Place. What you saw. Who you told.",
+       "perform": "short",
        "act": "you:write",
        "file": null,
        "dur": 3.6
@@ -6668,6 +6979,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Slow. You'll want to hurry. Don't.",
+       "perform": "while you reach for the tablet",
        "file": null,
        "dur": 4.3
       },
@@ -6759,18 +7071,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what happened. The paper's not a yes.",
+       "perform": "plain, flat on the second sentence",
        "file": null,
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "You read the name. Good. That's the first line.",
+       "perform": "a nod at the page",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Time. Place. What was shown. What you did.",
+       "perform": "tapping the pencil on each word",
        "act": "you:write",
        "file": null,
        "dur": 6.1
@@ -6851,18 +7166,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what happened. The paper's not a yes.",
+       "perform": "plain, flat on the second sentence",
        "file": null,
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "You handed it to me. It goes in your log, not mine.",
+       "perform": "pushing the pencil an inch toward you",
        "file": null,
        "dur": 7.9
       },
       {
        "speaker": "dee",
        "text": "Time. Place. What was shown. What you did.",
+       "perform": "tapping the pencil on each word",
        "act": "you:write",
        "file": null,
        "dur": 6.1
@@ -6946,6 +7264,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Keep that one.",
+       "perform": "reading it twice, not out loud",
        "file": null,
        "dur": 1
       },
@@ -6959,6 +7278,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
+       "perform": "closing the binder",
        "file": null,
        "dur": 2.9
       },
@@ -6972,24 +7292,28 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
+       "perform": "fast, over the radio",
        "file": null,
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "perform": "fast",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+       "perform": "dry, not turning",
        "file": null,
        "dur": 5.5
       }
@@ -7058,6 +7382,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Facts only. What did you see?",
+       "perform": "reaching for the rubber on the end of the pencil",
        "file": null,
        "dur": 3.4
       },
@@ -7071,6 +7396,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
+       "perform": "closing the binder",
        "file": null,
        "dur": 2.9
       },
@@ -7084,24 +7410,28 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
+       "perform": "fast, over the radio",
        "file": null,
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "perform": "fast",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+       "perform": "dry, not turning",
        "file": null,
        "dur": 5.5
       }
@@ -7170,6 +7500,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Where's forty-four?",
+       "perform": "the tablet turned toward you",
        "file": null,
        "dur": 3.5
       },
@@ -7183,6 +7514,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
+       "perform": "closing the binder",
        "file": null,
        "dur": 2.9
       },
@@ -7196,24 +7528,28 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
+       "perform": "fast, over the radio",
        "file": null,
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "perform": "fast",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+       "perform": "dry, not turning",
        "file": null,
        "dur": 5.5
       }
@@ -7282,12 +7618,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "the tablet slowly turned face down",
        "file": null,
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Officer.",
+       "perform": "formal, from here on",
        "file": null,
        "dur": 2.3
       },
@@ -7301,6 +7639,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
+       "perform": "closing the binder",
        "file": null,
        "dur": 2.9
       },
@@ -7314,24 +7653,28 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
+       "perform": "fast, over the radio",
        "file": null,
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
+       "perform": "fast",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
+       "perform": "dry, not turning",
        "file": null,
        "dur": 5.5
       }
@@ -7392,6 +7735,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Name. Santa Claus. Company. North Pole Logistics.",
        "sfx": "pencil",
+       "perform": "writing it in pencil on the corner of the sheet, flat",
        "act": "dee:write",
        "file": null,
        "dur": 9.7
@@ -7399,12 +7743,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
+       "perform": "tapping each column",
        "file": null,
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "That's a line that makes Okafor read the whole sheet. Mm. Rub it out.",
+       "perform": "handing you the rubber, almost a smile",
        "file": null,
        "dur": 9.2
       },
@@ -7418,36 +7764,42 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -7509,6 +7861,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Name. Santa Claus. Company. North Pole Logistics.",
        "sfx": "pencil",
+       "perform": "writing it in pencil on the corner of the sheet, flat",
        "act": "dee:write",
        "file": null,
        "dur": 9.7
@@ -7516,12 +7869,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
+       "perform": "tapping each column",
        "file": null,
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "That's a line that makes Okafor read the whole sheet. Mm. Rub it out.",
+       "perform": "handing you the rubber, almost a smile",
        "file": null,
        "dur": 9.2
       },
@@ -7535,42 +7890,49 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
+       "perform": "fast, warm, breathless",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
+       "perform": "talking over her own sentence",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
+       "perform": "to you, dry, a small nod",
        "file": null,
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
+       "perform": "quiet, hands in her lap",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
+       "perform": "cutting you off before the rule",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
+       "perform": "walkie held too close",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
+       "perform": "doesn't look away from the wall",
        "file": null,
        "dur": 1.9
       }
@@ -7629,6 +7991,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Hear that? That's it shut.",
+       "perform": "the door closing, the latch finding itself, flat",
        "act": "dee:point:ahead",
        "file": null,
        "dur": 3.8
@@ -7636,6 +7999,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "If you don't hear that, it's open. Mm. Stairs.",
+       "perform": "almost a smile, going down",
        "file": null,
        "dur": 5.4
       },
@@ -7650,12 +8014,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
        "sfx": "clock-tick",
+       "perform": "dry",
        "file": null,
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
+       "perform": "flat, to the rollup",
        "file": null,
        "dur": 4.9
       }
@@ -7713,6 +8079,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "I pull it. I go and find the smoker. I say hello.",
+       "perform": "flat, quiet, going down",
        "act": "dee:point:ahead",
        "file": null,
        "dur": 6
@@ -7720,12 +8087,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it.",
+       "perform": "flat",
        "file": null,
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Mm. You do the book.",
+       "perform": "a beat on the rail, even",
        "file": null,
        "dur": 2.1
       },
@@ -7740,12 +8109,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
        "sfx": "clock-tick",
+       "perform": "dry",
        "file": null,
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
+       "perform": "flat, to the rollup",
        "file": null,
        "dur": 4.9
       }
@@ -7803,6 +8174,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Thirty-one. Thirty-one flights. You'll know it in the dark.",
+       "perform": "flat, the rail under her hand",
        "act": "dee:point:ahead",
        "file": null,
        "dur": 4.4
@@ -7810,6 +8182,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Good. Next.",
+       "perform": "the way a stamp does",
        "file": null,
        "dur": 2
       },
@@ -7824,12 +8197,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
        "sfx": "clock-tick",
+       "perform": "dry",
        "file": null,
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
+       "perform": "flat, to the rollup",
        "file": null,
        "dur": 4.9
       }
@@ -7887,6 +8262,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Fruit. Linen. A crate for the design agency on thirty-seven. Once a box for fifty-eight, at four, with nobody's name on it.",
+       "perform": "even, listing",
        "act": "dee:point:ahead",
        "file": null,
        "dur": 9.1
@@ -7894,6 +8270,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Sign for it? Not unless the list says. Mm. Not unless.",
+       "perform": "flat, a half second slower the second time",
        "file": null,
        "dur": 5.7
       },
@@ -7906,12 +8283,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
+       "perform": "flat",
        "file": null,
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
+       "perform": "even, looking at the door and not at you",
        "file": null,
        "dur": 6.3
       }
@@ -7969,6 +8348,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Pull. Don't push. Pull.",
+       "perform": "watching your hands on the chain",
        "act": "dee:point:ahead",
        "file": null,
        "dur": 3.1
@@ -7976,6 +8356,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nobody checks that one. So it's the one.",
+       "perform": "flat",
        "file": null,
        "dur": 3.3
       },
@@ -7988,12 +8369,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
+       "perform": "flat",
        "file": null,
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
+       "perform": "even, looking at the door and not at you",
        "file": null,
        "dur": 6.3
       }
@@ -8059,6 +8442,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "There. You heard it. That's quiet.",
+       "perform": "pleased, not saying so",
        "act": "dee:point:ahead",
        "file": null,
        "dur": 3.2
@@ -8072,12 +8456,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
+       "perform": "flat",
        "file": null,
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
+       "perform": "even, looking at the door and not at you",
        "file": null,
        "dur": 6.3
       }
@@ -8135,6 +8521,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "It gives. It holds. Good.",
+       "perform": "her hand beside yours on the bar, flat",
        "act": "dee:touch:door",
        "file": null,
        "dur": 7.7
@@ -8148,30 +8535,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+       "perform": "tapping each column",
        "file": null,
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "ID, you look at it. Look. Not glance.",
+       "perform": "flat",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+       "perform": "like a recipe she has said a thousand times",
        "file": null,
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "However nice.",
+       "perform": "a beat, one eyebrow",
        "file": null,
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Pen's for the sheet. Pencil's for… Pick one.",
+       "perform": "holding both out",
        "file": null,
        "dur": 4
       }
@@ -8330,12 +8722,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Because I always have.",
+       "perform": "flat, no more",
        "file": null,
        "dur": 1.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Go on. It's ten to nine. We have a sheet.",
+       "perform": "down the stairs already",
        "file": null,
        "dur": 8.4
       },
@@ -8348,30 +8742,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+       "perform": "tapping each column",
        "file": null,
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "ID, you look at it. Look. Not glance.",
+       "perform": "flat",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+       "perform": "like a recipe she has said a thousand times",
        "file": null,
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "However nice.",
+       "perform": "a beat, one eyebrow",
        "file": null,
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Pen's for the sheet. Pencil's for… Pick one.",
+       "perform": "holding both out",
        "file": null,
        "dur": 4
       }
@@ -8537,6 +8936,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Don't read the walls.",
+       "perform": "flat, already on the stairs",
        "file": null,
        "dur": 3.4
       },
@@ -8549,30 +8949,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Name. Company. Who they're seeing. Floor. In. Out.",
+       "perform": "tapping each column",
        "file": null,
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "ID, you look at it. Look. Not glance.",
+       "perform": "flat",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
+       "perform": "like a recipe she has said a thousand times",
        "file": null,
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "However nice.",
+       "perform": "a beat, one eyebrow",
        "file": null,
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Pen's for the sheet. Pencil's for… Pick one.",
+       "perform": "holding both out",
        "file": null,
        "dur": 4
       }
@@ -8740,18 +9145,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "Door's all you. You're good, you're good.",
+       "perform": "warm, easy, off the radio",
        "file": null,
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "low",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "Stay on the wall.",
+       "perform": "getting up, the pencil from behind her ear",
        "act": "dee:leave",
        "file": null,
        "dur": 5.1
@@ -8766,6 +9174,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Eat something.",
+       "perform": "back in the doorway, nothing in her hands",
        "act": "dee:enter",
        "file": null,
        "dur": 1.2
@@ -8811,12 +9220,14 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Let me see what I can do.",
        "sfx": "radio-squelch",
+       "perform": "a beat of keyboard",
        "file": null,
        "dur": 2.1
       },
       {
        "speaker": "terrell",
        "text": "Huh. Forty's got, uh. Nothing for him, man. Let me see what I can do.",
+       "perform": "to the vest, not the radio",
        "file": null,
        "dur": 5.3
       },
@@ -8830,18 +9241,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "He said Tuesday, you know? Tuesday he was fine.",
+       "perform": "over the radio, small",
        "file": null,
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm.",
+       "perform": "dry",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Tuesday he had a yes. Today he doesn't.",
+       "perform": "flat, to the wall",
        "file": null,
        "dur": 3.4
       },
@@ -8889,6 +9303,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Go. I have the wall.",
+       "perform": "not turning",
        "act": "you:stand",
        "file": null,
        "dur": 2.1
@@ -8903,6 +9318,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "I mean, he's got the paper, you know? The paper's real.",
+       "perform": "relieved, fast",
        "file": null,
        "dur": 3.4
       },
@@ -8916,6 +9332,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "See? See, I said.",
+       "perform": "to nobody, delighted",
        "file": null,
        "dur": 2.5
       },
@@ -8928,6 +9345,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Initial the sheet. Both of you.",
+       "perform": "over your radio, quiet",
        "file": null,
        "dur": 2.4
       },
@@ -8984,24 +9402,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "Door's all you.",
+       "perform": "easy, warm",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "terrell",
        "text": "Hey, she's eaten that sandwich every night since I started. I asked her once what's in it.",
+       "perform": "to you, low, grinning",
        "file": null,
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Terrell.",
+       "perform": "flat",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "terrell",
        "text": "I'm going. I'm going!",
+       "perform": "backing out",
        "act": "terrell:leave",
        "file": null,
        "dur": 2.3
@@ -9009,6 +9431,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "Hey. You're good, you know? You're, uh. Night!",
+       "perform": "quick, over his shoulder",
        "act": [
         {
          "act": "terrell:gone",
@@ -9088,6 +9511,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Twenty minutes. Stay on the wall.",
        "sfx": "keys",
+       "perform": "at the door, flat",
        "act": "dee:stand",
        "file": null,
        "dur": 2.3
@@ -9095,6 +9519,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+       "perform": "flat, the door half open",
        "file": null,
        "dur": 7.3
       },
@@ -9115,6 +9540,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "sfx": "radio-squelch",
+       "perform": "over the radio, flat",
        "file": null,
        "dur": 1.3
       }
@@ -9182,12 +9608,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "She asked me your name twice. She never asks. I'm just saying.",
+       "perform": "quick, quiet",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "terrell",
        "text": "Okay. Okay! Radios, you know? Watch the radios. She counts them in her sleep.",
+       "perform": "backing into the cold",
        "file": null,
        "dur": 6
       },
@@ -9216,6 +9644,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Twenty minutes. Stay on the wall.",
        "sfx": "keys",
+       "perform": "at the door, flat",
        "act": "dee:stand",
        "file": null,
        "dur": 2.3
@@ -9223,6 +9652,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+       "perform": "flat, the door half open",
        "file": null,
        "dur": 7.3
       },
@@ -9243,6 +9673,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "sfx": "radio-squelch",
+       "perform": "over the radio, flat",
        "file": null,
        "dur": 1.3
       }
@@ -9304,18 +9735,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "Eleven years? Twelve? She hasn't missed a night. Not one. Somebody told me that, I didn't ask.",
+       "perform": "fast, to you",
        "file": null,
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Door.",
+       "perform": "a knife of a word",
        "file": null,
        "dur": 2.1
       },
       {
        "speaker": "terrell",
        "text": "Going. Going! Night.",
+       "perform": "gone",
        "act": "terrell:leave",
        "file": null,
        "dur": 2.9
@@ -9343,6 +9777,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Twenty minutes. Stay on the wall.",
        "sfx": "keys",
+       "perform": "at the door, flat",
        "act": "dee:stand",
        "file": null,
        "dur": 2.3
@@ -9350,6 +9785,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+       "perform": "flat, the door half open",
        "file": null,
        "dur": 7.3
       },
@@ -9370,6 +9806,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "sfx": "radio-squelch",
+       "perform": "over the radio, flat",
        "file": null,
        "dur": 1.3
       }
@@ -9431,36 +9868,42 @@ window.ILTV_STORIES = {
       {
        "speaker": "terrell",
        "text": "Criminal justice. Night classes, Tuesdays, Thursdays. Three years, I'm, like, a year and a half from done.",
+       "perform": "fast, pleased to be asked",
        "file": null,
        "dur": 6.1
       },
       {
        "speaker": "terrell",
        "text": "My uncle's store, Bed-Stuy. Names, not rules, you know? Nobody wrote anything down, it worked, till, uh.",
+       "perform": "a grin, trailing off",
        "file": null,
        "dur": 8.9
       },
       {
        "speaker": "terrell",
        "text": "Then I got here and it's all paper. Sign the sheet. Check the list.",
+       "perform": "a laugh, quieter",
        "file": null,
        "dur": 5.9
       },
       {
        "speaker": "terrell",
        "text": "I'm bad at it. The sheet's the same every night, so, you know?",
+       "perform": "warm",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Mm. Go to school, Terrell. Door.",
+       "perform": "flat, from her chair",
        "file": null,
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "Going. I'm going! Night, you two.",
+       "perform": "over his shoulder, warm",
        "act": "terrell:leave",
        "file": null,
        "dur": 2.9
@@ -9482,6 +9925,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Twenty minutes. Stay on the wall.",
        "sfx": "keys",
+       "perform": "at the door, flat",
        "act": "dee:stand",
        "file": null,
        "dur": 2.3
@@ -9489,6 +9933,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
+       "perform": "flat, the door half open",
        "file": null,
        "dur": 7.3
       },
@@ -9509,6 +9954,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "sfx": "radio-squelch",
+       "perform": "over the radio, flat",
        "file": null,
        "dur": 1.3
       }
@@ -9586,6 +10032,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "He's the best at it. Not the best at anything else.",
+       "perform": "from the doorway, taking off her coat, not asking what you are reading",
        "act": "dee:enter:right",
        "file": null,
        "dur": 8.7
@@ -9593,6 +10040,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't copy him. Read what he leaves out.",
+       "perform": "flat",
        "file": null,
        "dur": 3.4
       },
@@ -9606,6 +10054,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "to the charger",
        "act": "dee:count",
        "file": null,
        "dur": 0.9
@@ -9640,6 +10089,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Lobby's clear. Dock's clear. Compactor's ticking.",
+       "perform": "over the radio, a breath, almost company",
        "file": null,
        "dur": 4.7
       },
@@ -9732,18 +10182,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Side. The side.",
+       "perform": "over the radio, dry",
        "file": null,
        "dur": 2.2
       },
       {
        "speaker": "dee",
        "text": "Mm. A minute late.",
+       "perform": "the whole verdict",
        "file": null,
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "Lobby's clear. Dock's clear. Pay attention to the side.",
+       "perform": "over the radio",
        "file": null,
        "dur": 3.9
       },
@@ -9836,12 +10289,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Radio check.",
+       "perform": "over the radio, again",
        "file": null,
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "Post one. Radio check.",
+       "perform": "over the radio, a beat of static",
        "file": null,
        "dur": 3.1
       },
@@ -9849,12 +10304,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Answer when I call. Always. I'm not asking for a reason.",
        "sfx": "radio-squelch",
+       "perform": "flat, over the radio",
        "file": null,
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Lobby's clear. Dock's clear.",
+       "perform": "over the radio, after a moment",
        "file": null,
        "dur": 2.5
       },
@@ -9981,6 +10438,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "to the charger",
        "act": "dee:count",
        "file": null,
        "dur": 0.9
@@ -9988,6 +10446,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Drawer sticks.",
+       "perform": "at the shelf, not looking at it, not looking at you",
        "file": null,
        "dur": 1.4
       }
@@ -10048,6 +10507,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "to the charger",
        "act": "dee:count",
        "file": null,
        "dur": 0.9
@@ -10055,12 +10515,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you see.",
+       "perform": "at the doorway, taking off her coat, not asking",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Revolving door. Wind. Mm. Good. Write it.",
+       "perform": "when you tell her",
        "act": "you:write",
        "file": null,
        "dur": 6.3
@@ -10153,6 +10615,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Go. Two minutes. Then back on it.",
+       "perform": "over the radio, no pause",
        "act": "you:stand",
        "file": null,
        "dur": 3.1
@@ -10188,6 +10651,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "to the charger",
        "act": "dee:count",
        "file": null,
        "dur": 0.9
@@ -10195,6 +10659,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "You said. Mm.",
+       "perform": "the whole of it, not looking up",
        "file": null,
        "dur": 3.4
       }
@@ -10235,18 +10700,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Where were you?",
+       "perform": "quiet, a long way off",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Wall was empty four minutes. Nobody saw it. Nobody answered.",
+       "perform": "flat, each word set down",
        "file": null,
        "dur": 5.6
       },
       {
        "speaker": "dee",
        "text": "Next time you say. Mm. Next time.",
+       "perform": "taking off her coat, her back to you",
        "file": null,
        "dur": 4
       },
@@ -10293,6 +10761,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's him. Midnight, every night. Pick it up.",
+       "perform": "not looking up, flat",
        "act": "you:phone",
        "file": null,
        "dur": 5.5
@@ -10353,6 +10822,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. It's Okafor. Two entries and a tour sheet. They give times, places, and who you told.",
+       "perform": "polite, a chair creaking",
        "act": "you:phone",
        "file": null,
        "dur": 8.7
@@ -10360,18 +10830,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "That's noted. Are you eating? It's in the handbook, page nine.",
+       "perform": "dry",
        "file": null,
        "dur": 4.2
       },
       {
        "speaker": "okafor",
        "text": "Is Ms. Reyes there? Put her on. I'll just say good night.",
+       "perform": "polite",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "Okafor. Mm. It's quiet. Yes. Good night.",
+       "perform": "taking the phone, hanging up, putting the phone down like an egg",
        "act": [
         "you:hangup",
         "dee:phone"
@@ -10436,6 +10909,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. It's Okafor. The entry for forty-four. I'd like it to say what happened, in order, without \"seemed\" and without a gap.",
+       "perform": "polite, a chair creaking",
        "act": "you:phone",
        "file": null,
        "dur": 9.4
@@ -10443,12 +10917,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "\"Seemed.\" How did he seem? Put what he did, in order. Can you do that tonight?",
+       "perform": "even",
        "file": null,
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "a pencil tapping the shelf",
        "act": "you:hangup",
        "file": null,
        "dur": 3
@@ -10552,6 +11028,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. It's Okafor. I'm reading the entry for forty-four. I'll look at the reader record in the morning.",
+       "perform": "polite, a chair creaking, slower",
        "act": "you:phone",
        "file": null,
        "dur": 8.2
@@ -10559,12 +11036,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Let's make sure we're aligned. If anything in it is not exactly right, tell me now and we call it a correction. In the morning it isn't a correction.",
+       "perform": "even",
        "file": null,
        "dur": 9.2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "very low, to the wall, not to you",
        "file": null,
        "dur": 1.9
       },
@@ -10682,12 +11161,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Pepper and egg.",
+       "perform": "to the wall",
        "file": null,
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Peppers raw. Egg fried hard. The deli on Seventy-seventh has it wrapped before I'm through the door.",
+       "perform": "flat",
        "file": null,
        "dur": 6.9
       }
@@ -10756,18 +11237,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Pepper and egg. You asked.",
+       "perform": "to the wall",
        "file": null,
        "dur": 2.9
       },
       {
        "speaker": "dee",
        "text": "Ray used to take the corner. Said that's where the egg was.",
+       "perform": "low, quick, a pause after it",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Don't ask for a bite.",
+       "perform": "rewrapping, not looking",
        "file": null,
        "dur": 3.9
       }
@@ -10853,6 +11337,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nothing. Admin.",
+       "perform": "flat, before you ask",
        "file": null,
        "dur": 2
       }
@@ -10908,18 +11393,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "School safety agent. Then the courts. Then a bank on Fordham Road.",
+       "perform": "even, listing",
        "file": null,
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Then here. Twenty-six years. Same hall.",
+       "perform": "the foil folded in half",
        "file": null,
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "One door. Mm. Eat.",
+       "perform": "a short breath that might be a laugh",
        "file": null,
        "dur": 4.5
       },
@@ -10953,6 +11441,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nothing. Admin.",
+       "perform": "flat, before you ask",
        "file": null,
        "dur": 2
       }
@@ -11008,12 +11497,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "It's wrong.",
+       "perform": "looking at the cup you hold out",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Mm. Give it here.",
+       "perform": "taking it anyway",
        "file": null,
        "dur": 1.8
       },
@@ -11030,6 +11521,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't tell Terrell.",
+       "perform": "flat",
        "file": null,
        "dur": 1.5
       },
@@ -11061,6 +11553,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nothing. Admin.",
+       "perform": "flat, before you ask",
        "file": null,
        "dur": 2
       }
@@ -11116,18 +11609,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Birthdays.",
+       "perform": "flat, a word with the lid on",
        "file": null,
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "Adler, March. Marisol, July. Terrell's was Tuesday. Muffin. Don't say.",
+       "perform": "quick, quieter each name",
        "file": null,
        "dur": 6.3
       },
       {
        "speaker": "dee",
        "text": "I don't care about the tenants. Mm. Hand me the pencil.",
+       "perform": "dry",
        "act": "you:hand",
        "file": null,
        "dur": 4.1
@@ -11153,12 +11649,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
+       "perform": "flat, reading",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's on it by name but those two.",
+       "perform": "dry",
        "file": null,
        "dur": 2.9
       }
@@ -11250,12 +11748,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
+       "perform": "flat, reading",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's on it by name but those two.",
+       "perform": "dry",
        "file": null,
        "dur": 2.9
       }
@@ -11323,12 +11823,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
+       "perform": "flat, reading",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's on it by name but those two.",
+       "perform": "dry",
        "file": null,
        "dur": 2.9
       }
@@ -11385,6 +11887,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Tour. Stairwells A and B. Thirty minutes. You're the wall.",
        "sfx": "keys",
+       "perform": "at the door, the keys in her hand",
        "act": "dee:stand",
        "file": null,
        "dur": 6.3
@@ -11436,6 +11939,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Seven's always lit. Don't ask me why.",
+       "perform": "already standing, the keys in her hand",
        "file": null,
        "dur": 3.3
       },
@@ -11443,6 +11947,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Tour. Stairwells A and B. Thirty minutes. You're the wall.",
        "sfx": "keys",
+       "perform": "at the door, the keys in her hand",
        "act": "dee:stand",
        "file": null,
        "dur": 6.3
@@ -11487,12 +11992,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Six hours ahead. Their morning's our three.",
+       "perform": "flat, tapping the screen",
        "file": null,
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "Somebody's awake up there.",
+       "perform": "dry",
        "file": null,
        "dur": 2.1
       },
@@ -11500,6 +12007,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Tour. Stairwells A and B. Thirty minutes. You're the wall.",
        "sfx": "keys",
+       "perform": "at the door, the keys in her hand",
        "act": "dee:stand",
        "file": null,
        "dur": 6.3
@@ -11561,18 +12069,21 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Stairwell A. Clear. Landing nineteen has a bench.",
        "sfx": "footsteps-stairs",
+       "perform": "over the radio, echo on it",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Somebody put a bench in a fire stair. I sit on it four seconds.",
+       "perform": "over the radio, dry, a little out of breath",
        "file": null,
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Going up to B. Eyes open. Mm-hm.",
+       "perform": "over the radio",
        "file": null,
        "dur": 3.4
       }
@@ -11641,6 +12152,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Stairwell B. Clear.",
+       "perform": "over the radio, no idea",
        "file": null,
        "dur": 3.4
       },
@@ -11739,6 +12251,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Stairwell B. Clear. Heading for the roof side.",
+       "perform": "over the radio, no idea",
        "file": null,
        "dur": 3.8
       }
@@ -11809,6 +12322,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Where on thirty-one. Is anyone in the stairwell?",
+       "perform": "thick with sleep",
        "act": "you:phone",
        "file": null,
        "dur": 4.8
@@ -11816,12 +12330,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Do not go up. Put it in the log. I will tell the building manager at six.",
+       "perform": "even, a lamp clicking on",
        "file": null,
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Okafor's line is lit. What did you tell him?",
+       "perform": "over the radio, flat",
        "act": "you:hangup",
        "file": null,
        "dur": 3.2
@@ -11829,12 +12345,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "A wedge. Mm. A wedge. It's the book.",
+       "perform": "a long pause on the radio, even",
        "file": null,
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "I'd have gone and said hello. Doesn't matter. You did what it says. Mm. Write it.",
+       "perform": "over the radio, quieter, a click",
        "file": null,
        "dur": 6.2
       },
@@ -11918,6 +12436,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Wedge. Thirty-one. I'm going up. Wall.",
        "sfx": "footsteps-stairs",
+       "perform": "over the radio, already moving",
        "file": null,
        "dur": 3.8
       },
@@ -11930,18 +12449,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Thirty-one. Orange. Rubber. Anand, law firm. He's sorry. He's very sorry.",
+       "perform": "over the radio, dry",
        "file": null,
        "dur": 8
       },
       {
        "speaker": "dee",
        "text": "Door's shut. He knows. You said. Good.",
+       "perform": "a pause, the second part quieter",
        "file": null,
        "dur": 5.6
       },
       {
        "speaker": "dee",
        "text": "He's got a closing at nine. They all do. I'm coming down. Put the kettle on. It's wrong. Put it on.",
+       "perform": "over the radio, tired and not unkind, flat",
        "file": null,
        "dur": 8.7
       },
@@ -12042,6 +12564,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Stairwell B. Clear. Heading to the roof side.",
+       "perform": "over the radio, away from C",
        "file": null,
        "dur": 3.6
       },
@@ -12137,24 +12660,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Thirty-one is open. Wedge. Orange.",
+       "perform": "over the radio, flat as a plate",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "You were on the wall. Nine tiles. Not four. Anand, law firm. Smoke on the landing. Sorry, he says.",
+       "perform": "a breath, over the radio",
        "file": null,
        "dur": 9.8
       },
       {
        "speaker": "dee",
        "text": "Door's shut. Say it was me. It was me.",
+       "perform": "over the radio, even",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "Look at four. Look at it till it's boring. Then look again.",
+       "perform": "a click, then not a sound",
        "act": "dee:enter:right",
        "file": null,
        "dur": 5.7
@@ -12247,6 +12774,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nobody lazy in it. Nobody tired. A door and a wedge. Good.",
+       "perform": "tapping the page",
        "file": null,
        "dur": 6.6
       },
@@ -12267,6 +12795,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Tile one. Tile two. Say.",
+       "perform": "testing, flat",
        "feed": [
         "c1",
         "c2"
@@ -12344,12 +12873,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Probably being lazy. You weren't there. You watched a door.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Nobody's lazy at two in the morning. They're tired. Write the door.",
+       "perform": "the pencil held out",
        "file": null,
        "dur": 5
       },
@@ -12370,6 +12901,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Tile one. Tile two. Say.",
+       "perform": "testing, flat",
        "feed": [
         "c1",
         "c2"
@@ -12447,12 +12979,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Where's thirty-one?",
+       "perform": "the tablet turned toward you",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "There's a blank. Write it.",
+       "perform": "flat",
        "file": null,
        "dur": 2.1
       },
@@ -12473,6 +13007,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Tile one. Tile two. Say.",
+       "perform": "testing, flat",
        "feed": [
         "c1",
         "c2"
@@ -12550,12 +13085,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "the tablet turned face down",
        "file": null,
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Officer.",
+       "perform": "formal, from here on",
        "file": null,
        "dur": 2.3
       },
@@ -12576,6 +13113,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Tile one. Tile two. Say.",
+       "perform": "testing, flat",
        "feed": [
         "c1",
         "c2"
@@ -12647,12 +13185,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Bench.",
+       "perform": "a nod, pencil already moving off the glass",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Good. Next.",
+       "perform": "the way a stamp does",
        "file": null,
        "dur": 2
       },
@@ -12671,6 +13211,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Whose?",
+       "perform": "to the wall",
        "file": null,
        "dur": 1.1
       }
@@ -12753,12 +13294,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Lobby. The bench. Look at it.",
+       "perform": "dry, pencil tapping tile one",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Nobody sat there tonight. Nobody.",
+       "perform": "pointing, not unkind",
        "file": null,
        "dur": 3
       },
@@ -12777,6 +13320,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Whose?",
+       "perform": "to the wall",
        "file": null,
        "dur": 1.1
       }
@@ -12863,18 +13407,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Tag it. Time. Where. Who touched it.",
+       "perform": "tapping the shelf",
        "file": null,
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "Not \"found.\" \"Found on the lobby bench at.\" Exact.",
+       "perform": "flat",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Don't read it. Tag it. Time, where, who touched it.",
+       "perform": "tapping the shelf, dry",
        "file": null,
        "dur": 5.7
       },
@@ -12943,12 +13490,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Out at 23:12. He's home. He's in bed and his laptop isn't.",
+       "perform": "dry, a little pleased",
        "file": null,
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Don't call him. You'll call him at seven. Go get it. Tag it.",
+       "perform": "flat",
        "file": null,
        "dur": 4.3
       },
@@ -13023,12 +13572,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Not yours. Close it.",
+       "perform": "sharp, for her",
        "file": null,
        "dur": 1.9
       },
       {
        "speaker": "dee",
        "text": "Now.",
+       "perform": "low",
        "act": "dee:angry",
        "file": null,
        "dur": 1
@@ -13103,6 +13654,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Tagged. Timed. Whose. Good.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 3.7
       },
@@ -13125,12 +13677,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
+       "perform": "flat",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
+       "perform": "a beat, no more",
        "file": null,
        "dur": 8.2
       }
@@ -13186,6 +13740,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Probably on his way back? He's in bed, Officer. Write where it was.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 5
       },
@@ -13208,12 +13763,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
+       "perform": "flat",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
+       "perform": "a beat, no more",
        "file": null,
        "dur": 8.2
       }
@@ -13269,6 +13826,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "No line for the laptop. Where is it, in the log?",
+       "perform": "dry, turning the tablet",
        "file": null,
        "dur": 3.8
       },
@@ -13291,12 +13849,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
+       "perform": "flat",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
+       "perform": "a beat, no more",
        "file": null,
        "dur": 8.2
       }
@@ -13352,6 +13912,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Louder. Nobody's asleep in here but the monitors.",
+       "perform": "flat",
        "file": null,
        "dur": 3.7
       },
@@ -13395,18 +13956,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
+       "perform": "fast, warm, everything at once",
        "file": null,
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Marisol. The broker knows.",
+       "perform": "dry",
        "file": null,
        "dur": 2.6
       },
       {
        "speaker": "marisol",
        "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
+       "perform": "delighted",
        "file": null,
        "dur": 7
       }
@@ -13462,12 +14026,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "A man at the counter. A heart. The guard was on his phone.",
+       "perform": "even, to the cup",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Mm. A Tuesday.",
+       "perform": "a sip, flat",
        "file": null,
        "dur": 3.3
       },
@@ -13493,18 +14059,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
+       "perform": "fast, warm, everything at once",
        "file": null,
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Marisol. The broker knows.",
+       "perform": "dry",
        "file": null,
        "dur": 2.6
       },
       {
        "speaker": "marisol",
        "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
+       "perform": "delighted",
        "file": null,
        "dur": 7
       }
@@ -13560,6 +14129,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "It's wrong. Mm.",
+       "perform": "taking it anyway, the same word, softer",
        "file": null,
        "dur": 3.4
       },
@@ -13591,18 +14161,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
+       "perform": "fast, warm, everything at once",
        "file": null,
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Marisol. The broker knows.",
+       "perform": "dry",
        "file": null,
        "dur": 2.6
       },
       {
        "speaker": "marisol",
        "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
+       "perform": "delighted",
        "file": null,
        "dur": 7
       }
@@ -13663,24 +14236,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Ay, de nada, mi amor. You say thank you. Nobody says thank you.",
+       "perform": "fast, laughing, wiping her hands",
        "file": null,
        "dur": 5.6
       },
       {
        "speaker": "marisol",
        "text": "Twenty years I bring the coffee, I hear thank you from the dentist and from God.",
+       "perform": "fast",
        "file": null,
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Marisol.",
+       "perform": "flat",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "marisol",
        "text": "I'm going, I'm going. Floors don't mop themselves. They should. I'd retire.",
+       "perform": "out the door, the cart rattling",
        "act": "marisol:leave",
        "file": null,
        "dur": 7.8
@@ -13688,6 +14265,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Thirty years she's said that.",
+       "perform": "to the wall, after the door, almost fond",
        "file": null,
        "dur": 3.5
       },
@@ -13707,6 +14285,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "brandt",
        "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
+       "perform": "fast, brisk, a speakerphone in a big room",
        "act": "you:phone",
        "file": null,
        "dur": 7
@@ -13714,6 +14293,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Facilities. Not us.",
+       "perform": "low, to you",
        "act": "you:hangup",
        "file": null,
        "dur": 2.3
@@ -13775,24 +14355,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Dolores? Ay. Twenty-six years she's here. I'm thirty. We're the building, her and me. The rest are tenants.",
+       "perform": "fast, proud",
        "file": null,
        "dur": 7.1
       },
       {
        "speaker": "marisol",
        "text": "I tell her every Christmas: Dolores, go home. She says: who watches the door. She never goes home.",
+       "perform": "a laugh that stops itself",
        "file": null,
        "dur": 8.8
       },
       {
        "speaker": "dee",
        "text": "Marisol. Floors.",
+       "perform": "the voice of a closing door",
        "file": null,
        "dur": 2.8
       },
       {
        "speaker": "marisol",
        "text": "Okay. Okay! Eat something, mi amor! Both of you!",
+       "perform": "gone, the cart rattling",
        "act": "marisol:leave",
        "file": null,
        "dur": 4.9
@@ -13813,6 +14397,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "brandt",
        "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
+       "perform": "fast, brisk, a speakerphone in a big room",
        "act": "you:phone",
        "file": null,
        "dur": 7
@@ -13820,6 +14405,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Facilities. Not us.",
+       "perform": "low, to you",
        "act": "you:hangup",
        "file": null,
        "dur": 2.3
@@ -13881,18 +14467,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Thirty to forty-four. Six of us. Forty-one's the worst, the lawyers leave their lunch. Thirty-three's the best, they leave a pot.",
+       "perform": "listing, fast",
        "file": null,
        "dur": 7.5
       },
       {
        "speaker": "marisol",
        "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. Bendito.",
+       "perform": "a shrug in the voice",
        "file": null,
        "dur": 6.4
       },
       {
        "speaker": "dee",
        "text": "She's always on time. Five-thirty. You could set the clock by her. Mine. The right one.",
+       "perform": "flat, after she goes, almost a smile",
        "act": "marisol:leave",
        "file": null,
        "dur": 12
@@ -13913,6 +14502,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "brandt",
        "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
+       "perform": "fast, brisk, a speakerphone in a big room",
        "act": "you:phone",
        "file": null,
        "dur": 7
@@ -13920,6 +14510,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Facilities. Not us.",
+       "perform": "low, to you",
        "act": "you:hangup",
        "file": null,
        "dur": 2.3
@@ -13983,12 +14574,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Good. Don't promise warm.",
+       "perform": "dry, to the wall",
        "file": null,
        "dur": 2.6
       },
       {
        "speaker": "dee",
        "text": "Day facilities gets it at seven. They'll say it's the thermostat. It's never the thermostat.",
+       "perform": "flat",
        "file": null,
        "dur": 6.5
       },
@@ -14026,6 +14619,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "brandt",
        "text": "Great. Thanks. I'll be here.",
+       "perform": "brisk, already dialing",
        "file": null,
        "dur": 2.3
       },
@@ -14038,6 +14632,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't promise what we haven't got. He'll be at the desk at seven asking where they are.",
+       "perform": "flat",
        "file": null,
        "dur": 5.2
       },
@@ -14081,6 +14676,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Go. Radio at each floor.",
        "sfx": "keys",
+       "perform": "the keys pushed across, flat",
        "act": "you:stand",
        "file": null,
        "dur": 2.6
@@ -14095,6 +14691,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "brandt",
        "text": "Oh. Hi. It's cold.",
+       "perform": "surprised, polite, a bag of pretzels in his hand",
        "file": null,
        "dur": 2.6
       },
@@ -14107,6 +14704,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Forty is the floor you can't help. Come on down.",
+       "perform": "on the radio, flat",
        "file": null,
        "dur": 3.4
       },
@@ -14155,12 +14753,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the closet.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Marisol finished that floor at midnight.",
+       "perform": "pencil on the glass of tile six",
        "file": null,
        "dur": 3.6
       },
@@ -14168,6 +14768,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Old pipe.",
        "sfx": "clock-tick",
+       "perform": "flat",
        "file": null,
        "dur": 1.3
       },
@@ -14234,24 +14835,28 @@ window.ILTV_STORIES = {
        "speaker": "marisol",
        "text": "Ay! Dios mío! I'm there. I'm there! Don't hang up, mi amor!",
        "sfx": "walkie-squelch",
+       "perform": "on the walkie, running",
        "file": null,
        "dur": 5
       },
       {
        "speaker": "marisol",
        "text": "Somebody left the hose on in the sink. A hose! Not my girl. Not my girl, never.",
+       "perform": "out of breath, then a wet slap",
        "file": null,
        "dur": 7.8
       },
       {
        "speaker": "marisol",
        "text": "Off. It's off. It's a lake. It's a little lake. Okay.",
+       "perform": "laughing, furious",
        "file": null,
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Mm. A hose.",
+       "perform": "to you, dry",
        "file": null,
        "dur": 3
       },
@@ -14325,6 +14930,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Water where? Is it near anything electrical?",
+       "perform": "awake already, flat",
        "act": "you:phone",
        "file": null,
        "dur": 3.7
@@ -14332,12 +14938,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "The engineer on call will come at six. Put the time you saw it in the log. And tell Ms. Quintero to stop mopping.",
+       "perform": "a pen clicking",
        "file": null,
        "dur": 7.5
       },
       {
        "speaker": "dee",
        "text": "He'd have said that for a puddle. Mm. It's a lake.",
+       "perform": "to the wall, dry",
        "act": "you:hangup",
        "file": null,
        "dur": 4.1
@@ -14408,6 +15016,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Not alone. Nobody goes down alone.",
+       "perform": "fast, before you finish standing",
        "file": null,
        "dur": 2.5
       },
@@ -14415,6 +15024,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Take Marisol. Radio every floor you pass. Go.",
        "sfx": "radio-squelch",
+       "perform": "a breath, the radio pressed into your hand",
        "act": "you:stand",
        "file": null,
        "dur": 5
@@ -14429,6 +15039,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Look, look. A hose. In the sink. You see it? You see?",
+       "perform": "delighted and furious",
        "file": null,
        "dur": 4.8
       },
@@ -14496,6 +15107,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Hose. Sink. Off. That's a log.",
+       "perform": "reading, nodding",
        "file": null,
        "dur": 4
       },
@@ -14508,6 +15120,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
+       "perform": "to the cup",
        "file": null,
        "dur": 5.6
       },
@@ -14585,6 +15198,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Careless cleaner. Marisol's crew is never careless. They're loud. Write the hose.",
+       "perform": "reading, dry",
        "file": null,
        "dur": 6.9
       },
@@ -14597,6 +15211,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
+       "perform": "to the cup",
        "file": null,
        "dur": 5.6
       },
@@ -14674,6 +15289,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Forty-four's the one he'll ask about. The water's gone. The carpet isn't.",
+       "perform": "flat",
        "file": null,
        "dur": 5.1
       },
@@ -14686,6 +15302,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
+       "perform": "to the cup",
        "file": null,
        "dur": 5.6
       },
@@ -14769,6 +15386,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four hours.",
+       "perform": "to the wall",
        "file": null,
        "dur": 1.7
       },
@@ -14783,6 +15401,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Clock's fast. Leave it.",
        "sfx": "clock-tick",
+       "perform": "flat, the pencil moving",
        "file": null,
        "dur": 2.1
       },
@@ -14822,12 +15441,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't.",
+       "perform": "one word, flat as a door",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "Mm. Coffee.",
+       "perform": "getting up, the cup in her hand, away from you",
        "act": "dee:stand",
        "file": null,
        "dur": 7
@@ -14881,6 +15502,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Three o'clock. Mm. Nothing happens.",
+       "perform": "at the door, flat",
        "file": null,
        "dur": 3.8
       },
@@ -14888,12 +15510,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Roof door. Three. Alone. Stay on the wall.",
        "sfx": "keys",
+       "perform": "at the door, the keys in her hand",
        "file": null,
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Radio check at quarter past. Answer.",
+       "perform": "the door half open",
        "file": null,
        "dur": 3.1
       },
@@ -14957,12 +15581,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Wall.",
+       "perform": "a quiet, hard no, the door held open",
        "file": null,
        "dur": 2.7
       },
       {
        "speaker": "dee",
        "text": "I do that one alone. Always have. Mm.",
+       "perform": "the shortest apology there is",
        "file": null,
        "dur": 3.5
       },
@@ -15030,12 +15656,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "Hi, sorry, hi, I think the elevator, it, it stopped? Sorry.",
+       "perform": "nasal, rushed, apologizing",
        "file": null,
        "dur": 5.1
       },
       {
        "speaker": "dev",
        "text": "No, no, it's fine. It's fine. It's a little close in here.",
+       "perform": "fast, too bright",
        "file": null,
        "dur": 3.5
       },
@@ -15129,12 +15757,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "Hi, it's Dev. Anand. From the, the landing? Sorry. Not the door. The elevator. It stopped.",
+       "perform": "nasal, rushed, mortified",
        "file": null,
        "dur": 7.3
       },
       {
        "speaker": "dev",
        "text": "No, no, it's fine. It's fine. It's a little close in here.",
+       "perform": "fast, too bright",
        "file": null,
        "dur": 3.5
       },
@@ -15220,6 +15850,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "I have a closing at nine. Sorry. That's not your problem.",
+       "perform": "over the intercom, tinny, rushing",
        "file": null,
        "dur": 3.3
       },
@@ -15233,12 +15864,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "sfx": "radio-squelch",
+       "perform": "over the radio, thick with echo",
        "file": null,
        "dur": 1.4
       },
       {
        "speaker": "dev",
        "text": "It's — is it — it's getting a little —",
+       "perform": "over the intercom, quieter, breaking off",
        "file": null,
        "dur": 2.7
       },
@@ -15310,12 +15943,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Go. Tell him the company's twenty minutes. Tell him he can stand up or sit down.",
+       "perform": "over the radio, no questions, thick, then plain",
        "file": null,
        "dur": 7.3
       },
       {
        "speaker": "dev",
        "text": "Okay. Okay. Sorry. You don't have to — okay.",
+       "perform": "over the intercom, steadier",
        "file": null,
        "dur": 4.1
       },
@@ -15328,6 +15963,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Roof. Cold.",
+       "perform": "over the radio, thick, then plain, not an explanation",
        "file": null,
        "dur": 2.1
       },
@@ -15403,12 +16039,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "It's fine. I'm fine. Thank you. Sorry. Thank you.",
+       "perform": "over the intercom, a little steadier",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Post one. Mm.",
+       "perform": "over the radio, flat, final, a long click",
        "file": null,
        "dur": 2.9
       },
@@ -15486,6 +16124,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "Twenty? Twenty minutes? Sorry. No. That's fine. That's fine.",
+       "perform": "over the intercom, rushing",
        "file": null,
        "dur": 4
       },
@@ -15499,6 +16138,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "sfx": "radio-squelch",
+       "perform": "over the radio, thick, an echo behind it",
        "file": null,
        "dur": 2.4
       },
@@ -15581,6 +16221,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "Did you — did you call the fire department? Sorry. I'm fine. Really.",
+       "perform": "over the intercom, horrified",
        "file": null,
        "dur": 5.6
       },
@@ -15594,6 +16235,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Who called them? Mm. Never mind.",
+       "perform": "over the radio, quiet, thick, a long breath",
        "file": null,
        "dur": 4.2
       }
@@ -15657,6 +16299,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "On the stairs. Coming. Keep him on the line.",
        "sfx": "footsteps-stairs",
+       "perform": "over the radio, hoarse, short",
        "file": null,
        "dur": 3.4
       },
@@ -15675,6 +16318,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Anand. Dolores. Sit on the floor. It's a small thing. A box that stopped.",
+       "perform": "even, low, the voice of someone who has done this before",
        "act": "dee:lean",
        "file": null,
        "dur": 6.3
@@ -15682,12 +16326,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "Okay. Okay. Sorry. Thank you.",
+       "perform": "over the intercom, steadier at once",
        "file": null,
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "The company's twenty minutes. I'll stay till there's a man in the lobby. You talk.",
+       "perform": "to him, not you",
        "file": null,
        "dur": 5.2
       },
@@ -15706,6 +16352,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "I didn't finish. Ten minutes. Radio, Officer.",
+       "perform": "putting on her coat, to you, flat, at the door, hoarse",
        "file": null,
        "dur": 8.7
       }
@@ -15778,6 +16425,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "pierce",
        "text": "Evening. Don't get up.",
+       "perform": "to the guard, not stopping, mild",
        "file": null,
        "dur": 1.6
       }
@@ -15906,6 +16554,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "pierce",
        "text": "Fair. Fifty-eight. I own it. Put that in your log.",
+       "perform": "a pause, an actual smile",
        "file": null,
        "dur": 5.4
       },
@@ -15968,18 +16617,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 6.3
       },
       {
        "speaker": "dee",
        "text": "He walks it every night he's in town. Never signs. Never stops.",
+       "perform": "dry",
        "file": null,
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Mm. Don't ask. Write what he does.",
+       "perform": "flat",
        "file": null,
        "dur": 3.2
       },
@@ -16053,6 +16705,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "to the charger",
        "act": "dee:count",
        "file": null,
        "dur": 0.9
@@ -16060,12 +16713,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "He walks past everyone.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Mm. Write it the way it was.",
+       "perform": "a sip",
        "file": null,
        "dur": 4
       },
@@ -16151,6 +16806,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "to the charger",
        "act": "dee:count",
        "file": null,
        "dur": 0.9
@@ -16158,12 +16814,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "You made the Chairman sign.",
+       "perform": "dry, the corner of her mouth moving",
        "file": null,
        "dur": 2.7
       },
       {
        "speaker": "dee",
        "text": "He wrote the time. He never writes the time. I'd have waved.",
+       "perform": "a sip, flat",
        "file": null,
        "dur": 4.6
       },
@@ -16242,24 +16900,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say it.",
+       "perform": "sharp, awake",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "Camera, time, what it did. Not \"something's wrong.\"",
+       "perform": "even",
        "file": null,
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. Say it first. Then we'll see.",
+       "perform": "low, looking toward the shelf",
        "file": null,
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Stopped. Not why. Write it.",
+       "perform": "flat",
        "file": null,
        "dur": 3.4
       }
@@ -16339,12 +17001,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nine hasn't moved in fourteen minutes.",
+       "perform": "flat, quietly",
        "file": null,
        "dur": 2.8
       },
       {
        "speaker": "dee",
        "text": "You were looking right at it. Mm. Say it now. Exactly.",
+       "perform": "a breath, the cup down",
        "file": null,
        "dur": 6.2
       },
@@ -16425,6 +17089,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Camera, time, what it did. There. That's the sentence.",
+       "perform": "reading, even",
        "file": null,
        "dur": 5.1
       },
@@ -16448,12 +17113,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+       "perform": "flat, not turning, tired",
        "file": null,
        "dur": 7.9
       },
       {
        "speaker": "dee",
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
+       "perform": "to the shelf",
        "act": "dee:point:panel",
        "file": null,
        "dur": 5.4
@@ -16536,6 +17203,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Tampering. Who tampered? Mm. Write that it stopped.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 4.5
       },
@@ -16559,12 +17227,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+       "perform": "flat, not turning, tired",
        "file": null,
        "dur": 7.9
       },
       {
        "speaker": "dee",
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
+       "perform": "to the shelf",
        "act": "dee:point:panel",
        "file": null,
        "dur": 5.4
@@ -16647,6 +17317,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Nine stopped. If you don't write it, nine didn't stop. Mm. It stopped.",
+       "perform": "flat",
        "file": null,
        "dur": 6.1
       },
@@ -16670,12 +17341,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+       "perform": "flat, not turning, tired",
        "file": null,
        "dur": 7.9
       },
       {
        "speaker": "dee",
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
+       "perform": "to the shelf",
        "act": "dee:point:panel",
        "file": null,
        "dur": 5.4
@@ -16758,12 +17431,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Checked in person. You went to floor two?",
+       "perform": "reading, very flat",
        "file": null,
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "Nobody left this room. Officer.",
+       "perform": "quiet, formal",
        "file": null,
        "dur": 3
       },
@@ -16787,12 +17462,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
+       "perform": "flat, not turning, tired",
        "file": null,
        "dur": 7.9
       },
       {
        "speaker": "dee",
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
+       "perform": "to the shelf",
        "act": "dee:point:panel",
        "file": null,
        "dur": 5.4
@@ -16877,6 +17554,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "There. See.",
+       "perform": "a nod, almost kind, to the wall",
        "file": null,
        "dur": 3.1
       },
@@ -16922,6 +17600,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Did you silence it? Good. Do not touch it. Read me the display.",
+       "perform": "awake, even",
        "act": "you:phone",
        "file": null,
        "dur": 5.6
@@ -16929,12 +17608,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "That is a fire panel. It belongs to Ms. Adler. Call her. I will call the building manager at six.",
+       "perform": "a pen clicking",
        "file": null,
        "dur": 7.6
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "low, to the wall, a woman outranked by a binder",
        "act": "you:hangup",
        "file": null,
        "dur": 1.9
@@ -16974,6 +17655,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Read me the display. Exactly. Do not paraphrase.",
+       "perform": "formal, a pen already moving",
        "act": "you:phone",
        "file": null,
        "dur": 4.4
@@ -16981,6 +17663,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Word for word, please. Take your time.",
+       "perform": "crisp",
        "file": null,
        "dur": 2.7
       }
@@ -17033,18 +17716,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Thank you. That is the correct answer. Please put it in the log in the same words.",
+       "perform": "crisp",
        "file": null,
        "dur": 5.7
       },
       {
        "speaker": "adler",
        "text": "Do not silence it. Do not reset it. I will be at the panel at ten past four.",
+       "perform": "formal, one idea at a time",
        "file": null,
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Helen's good.",
+       "perform": "low, to the wall",
        "act": "you:hangup",
        "file": null,
        "dur": 1.6
@@ -17115,6 +17801,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "That is not what it says. Again. Exactly.",
+       "perform": "crisp, no heat in it",
        "act": "you:phone",
        "file": null,
        "dur": 4.1
@@ -17128,12 +17815,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Thank you. Do not silence it. Do not reset it. I will be there at ten past four.",
+       "perform": "formal",
        "file": null,
        "dur": 6.8
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "low, almost a laugh",
        "act": "you:hangup",
        "file": null,
        "dur": 1.9
@@ -17223,18 +17912,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Dolores.",
+       "perform": "a nod",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
+       "perform": "a nod back, the same size",
        "file": null,
        "dur": 1.2
       },
       {
        "speaker": "adler",
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
+       "perform": "to you, formal",
        "act": "adler:point:panel",
        "file": null,
        "dur": 6
@@ -17242,6 +17934,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
+       "perform": "one idea, then the next",
        "file": null,
        "dur": 4.1
       }
@@ -17281,6 +17974,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "That word is not on the display. Please cross it out and write what the display said.",
+       "perform": "formal, a pen stopping",
        "file": null,
        "dur": 5.5
       },
@@ -17294,18 +17988,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Dolores.",
+       "perform": "a nod",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
+       "perform": "a nod back, the same size",
        "file": null,
        "dur": 1.2
       },
       {
        "speaker": "adler",
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
+       "perform": "to you, formal",
        "act": "adler:point:panel",
        "file": null,
        "dur": 6
@@ -17313,6 +18010,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
+       "perform": "one idea, then the next",
        "file": null,
        "dur": 4.1
       }
@@ -17352,6 +18050,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "I will wait. Please write it now, in the same words.",
+       "perform": "formal, patient as a stone",
        "file": null,
        "dur": 4
       },
@@ -17365,18 +18064,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Dolores.",
+       "perform": "a nod",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
+       "perform": "a nod back, the same size",
        "file": null,
        "dur": 1.2
       },
       {
        "speaker": "adler",
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
+       "perform": "to you, formal",
        "act": "adler:point:panel",
        "file": null,
        "dur": 6
@@ -17384,6 +18086,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
+       "perform": "one idea, then the next",
        "file": null,
        "dur": 4.1
       }
@@ -17423,6 +18126,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "The panel has not been reset. I am looking at it. Please correct the entry.",
+       "perform": "formal, quiet",
        "file": null,
        "dur": 5.1
       },
@@ -17436,18 +18140,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Dolores.",
+       "perform": "a nod",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
+       "perform": "a nod back, the same size",
        "file": null,
        "dur": 1.2
       },
       {
        "speaker": "adler",
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
+       "perform": "to you, formal",
        "act": "adler:point:panel",
        "file": null,
        "dur": 6
@@ -17455,6 +18162,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
+       "perform": "one idea, then the next",
        "file": null,
        "dur": 4.1
       }
@@ -17514,24 +18222,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "courier",
        "text": "Package for fifty-eight.",
+       "perform": "flat, tinny, tired",
        "file": null,
        "dur": 1.6
       },
       {
        "speaker": "courier",
        "text": "It says someone's expecting it.",
+       "perform": "flat",
        "file": null,
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's expecting anything at four in the morning.",
+       "perform": "to the wall, dry",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "Sign for it. Tag it. It sits on the shelf till seven.",
+       "perform": "flat, a woman who has done this a thousand times",
        "file": null,
        "dur": 3.9
       },
@@ -17544,12 +18256,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Book says no. I've said yes forty times. Mm. Your call.",
+       "perform": "dry",
        "file": null,
        "dur": 5.6
       },
       {
        "speaker": "dee",
        "text": "Whoever you tell, you write who.",
+       "perform": "flat",
        "file": null,
        "dur": 2.5
       }
@@ -17621,12 +18335,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "courier",
        "text": "Sender's blank. Says Chairman's office, by five. I don't make the labels, man.",
+       "perform": "flat, tinny",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Chairman's office isn't on anybody's list at four in the morning.",
+       "perform": "dry",
        "file": null,
        "dur": 4.1
       }
@@ -17684,6 +18400,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "courier",
        "text": "I just need a signature, man.",
+       "perform": "flat, tired",
        "file": null,
        "dur": 2.2
       },
@@ -17697,12 +18414,14 @@ window.ILTV_STORIES = {
        "speaker": "courier",
        "text": "Yeah. Have a night.",
        "sfx": "intercom",
+       "perform": "flat, the van door sliding",
        "file": null,
        "dur": 2.9
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. The box will be at the mailroom at seven. It'll be fine.",
+       "perform": "low, to the wall",
        "file": null,
        "dur": 4.3
       }
@@ -17775,6 +18494,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Tag it. Time. Where. Who touched it.",
        "sfx": "paper",
+       "perform": "flat, handing you the paper tag",
        "place": "room",
        "file": null,
        "dur": 7.7
@@ -17782,6 +18502,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Seven o'clock. Not before.",
+       "perform": "almost kind",
        "file": null,
        "dur": 4.4
       }
@@ -17846,6 +18567,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Fifty-eight. Whose? Not on the list? Then you do not accept it.",
+       "perform": "slow, awake by the second sentence",
        "act": "you:phone",
        "file": null,
        "dur": 6.8
@@ -17853,12 +18575,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Log the courier's name if he gives it. The mailroom opens at seven. That's noted.",
+       "perform": "a throat cleared, even",
        "file": null,
        "dur": 5.9
       },
       {
        "speaker": "dee",
        "text": "That's what the book says.",
+       "perform": "to the wall, flat",
        "act": "you:hangup",
        "file": null,
        "dur": 1.7
@@ -17915,6 +18639,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Box, dock, who, when. Fine.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 3.8
       },
@@ -17982,6 +18707,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Probably expected. By whom? Write the label.",
+       "perform": "reading, dry",
        "file": null,
        "dur": 4
       },
@@ -18049,6 +18775,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "No line. Seven o'clock somebody asks where the box came from. Then you're tired too.",
+       "perform": "flat",
        "file": null,
        "dur": 6.4
       },
@@ -18120,12 +18847,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's not the key.",
+       "perform": "flat, one eyebrow, mid-bar",
        "file": null,
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Fine. Go on. Quieter. You'll wake the monitors.",
+       "perform": "a beat later, the corner of her mouth moving",
        "file": null,
        "dur": 5.4
       },
@@ -18144,12 +18873,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
+       "perform": "to the wall, flat, quick",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Book says trespass. Book doesn't say fourteen degrees.",
+       "perform": "low",
        "file": null,
        "dur": 4.6
       }
@@ -18226,6 +18957,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Habit. Mm.",
+       "perform": "flat, to the wall",
        "file": null,
        "dur": 1.9
       },
@@ -18244,12 +18976,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
+       "perform": "to the wall, flat, quick",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
+       "perform": "low",
        "file": null,
        "dur": 5.4
       }
@@ -18320,12 +19054,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "No song. A sound I make. When it's quiet.",
+       "perform": "flat",
        "file": null,
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "Terrell's got a name for it. Don't ask him.",
+       "perform": "dry",
        "file": null,
        "dur": 3.1
       },
@@ -18344,12 +19080,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
+       "perform": "to the wall, flat, quick",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
+       "perform": "low",
        "file": null,
        "dur": 5.4
       }
@@ -18428,6 +19166,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Now.",
        "sfx": "coffee",
+       "perform": "getting up, the paper cup from the shelf",
        "act": "dee:leave",
        "file": null,
        "dur": 4.1
@@ -18441,6 +19180,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "He's got a place at six. A shelter on Fifty-second. I told him. Don't tell Okafor I gave away the coffee.",
+       "perform": "back at the wall, dry, flat",
        "act": "dee:enter:right",
        "file": null,
        "dur": 10.5
@@ -18512,6 +19252,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "sleeper",
        "text": "I'm going. I'm going.",
+       "perform": "hoarse, a mumble from the ledge",
        "file": null,
        "dur": 2.3
       },
@@ -18519,6 +19260,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Twenty minutes.",
        "sfx": "radio-squelch",
+       "perform": "over your radio, quick, a warning with no weight in it",
        "file": null,
        "dur": 2.3
       }
@@ -18569,6 +19311,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "sleeper",
        "text": "Is it still cold out?",
+       "perform": "soft, as if to someone else",
        "file": null,
        "dur": 1.7
       },
@@ -18582,6 +19325,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Twenty minutes. Six. Fine.",
+       "perform": "over your radio, a breath of a laugh, flat, a woman making an exception, the same word again",
        "file": null,
        "dur": 7.1
       },
@@ -18651,6 +19395,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "the whole sentence, to the wall",
        "file": null,
        "dur": 1.2
       },
@@ -18730,6 +19475,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Is the individual breathing? Then he is not an emergency. He may stay inside the outer door until six if he is not a danger to himself.",
+       "perform": "even, careful, a man who once had this exact call",
        "act": "you:phone",
        "file": null,
        "dur": 13
@@ -18737,12 +19483,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Log the temperature. Not \"homeless.\" \"Individual.\"",
+       "perform": "correcting himself before you can",
        "file": null,
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "Mm. That's near what I'd do.",
+       "perform": "to the wall, a little surprised",
        "act": "you:hangup",
        "file": null,
        "dur": 2.7
@@ -18818,12 +19566,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "sleeper",
        "text": "I'm going. I'm going.",
+       "perform": "hoarse, through the glass",
        "file": null,
        "dur": 2.6
       },
       {
        "speaker": "dee",
        "text": "Mm. They'll feed him. That's something. Ask me first, next time.",
+       "perform": "to the wall, flat, no weight in it",
        "file": null,
        "dur": 5.2
       }
@@ -18879,6 +19629,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Fourteen degrees. In the log.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 2.7
       },
@@ -18946,6 +19697,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Homeless. Okafor says individual. Not for him. For the lawyer.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 5.5
       },
@@ -19013,6 +19765,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "He was there. Whether you write it or not.",
+       "perform": "flat",
        "file": null,
        "dur": 2.9
       },
@@ -19130,6 +19883,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Light soon.",
+       "perform": "to the wall",
        "act": "dee:sit",
        "file": null,
        "dur": 2.5
@@ -19137,6 +19891,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Six o'clock, the sky does a thing. Over the river. Can't see the river.",
+       "perform": "flat",
        "file": null,
        "dur": 5.7
       },
@@ -19220,24 +19975,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Twelve.",
+       "perform": "to the wall, not asking",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "It's a dentist now. There was a room. A bench. A kettle.",
+       "perform": "flat, the pencil still",
        "file": null,
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "They took it out. Nine years. Mm.",
+       "perform": "flat",
        "file": null,
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "Ten minutes. Then I write tour. Mm. Is there coffee.",
+       "perform": "even",
        "file": null,
        "dur": 5.6
       },
@@ -19288,12 +20047,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "a very small sound, as of a door",
        "file": null,
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Facts only. Isn't that what I said. Mm. A sensor reads a door.",
+       "perform": "flat, picking the pencil up, even",
        "file": null,
        "dur": 5.6
       },
@@ -19342,24 +20103,28 @@ window.ILTV_STORIES = {
        "speaker": "marisol",
        "text": "Mi amor, we're out. Forty-four is dry. Bendito.",
        "sfx": "walkie-squelch",
+       "perform": "on the walkie, tired and warm, the cart rattling",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Go home, Marisol.",
+       "perform": "on the walkie, short",
        "file": null,
        "dur": 2.4
       },
       {
        "speaker": "marisol",
        "text": "Dolores! There's a plate for you on the shelf by the freezer. Rice. Don't say no.",
+       "perform": "on the walkie, bright, the cart rattling",
        "file": null,
        "dur": 6.4
       },
       {
        "speaker": "dee",
        "text": "I didn't say anything.",
+       "perform": "on the walkie, dry",
        "file": null,
        "dur": 1.8
       },
@@ -19367,6 +20132,7 @@ window.ILTV_STORIES = {
        "speaker": "marisol",
        "text": "Your face said no, mi amor! It always says no. Eat it!",
        "sfx": "walkie-squelch",
+       "perform": "on the walkie, laughing, then off",
        "file": null,
        "dur": 6.7
       },
@@ -19379,6 +20145,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Rice. By the freezer.",
+       "perform": "to the wall, flat",
        "file": null,
        "dur": 3.2
       },
@@ -19421,6 +20188,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Pencil first.",
+       "perform": "the pencil, held out",
        "file": null,
        "dur": 1.3
       },
@@ -19428,6 +20196,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
        "sfx": "pencil",
+       "perform": "reading the headings, her finger going down the page",
        "act": "dee:write",
        "file": null,
        "dur": 6.8
@@ -19435,18 +20204,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Every one has a time and a place. Nobody's lazy. Nobody seemed.",
+       "perform": "dry",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Way it was.",
+       "perform": "not looking at the page",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "It'll bore him. Good.",
+       "perform": "flat",
        "file": null,
        "dur": 2.1
       }
@@ -19540,6 +20312,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Pencil first.",
+       "perform": "the pencil, held out",
        "file": null,
        "dur": 1.3
       },
@@ -19547,6 +20320,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
        "sfx": "pencil",
+       "perform": "reading the headings, her finger going down the page",
        "act": "dee:write",
        "file": null,
        "dur": 6.8
@@ -19554,18 +20328,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Seemed. Probably. Seemed.",
+       "perform": "tapping each word with the point of the pencil",
        "file": null,
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "He'll say: how did he seem? What did you see? Fix the ones you can.",
+       "perform": "flat",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "He wasn't here. The page is all he gets.",
+       "perform": "flat",
        "file": null,
        "dur": 3
       }
@@ -19659,24 +20436,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "I read it.",
+       "perform": "flat, the tablet turned face up",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
+       "perform": "her finger going down the page, stopping nowhere, stopping everywhere",
        "file": null,
        "dur": 8.6
       },
       {
        "speaker": "dee",
        "text": "Officer. Which of these isn't the way it was?",
+       "perform": "flat, no weight on any word",
        "file": null,
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "Once it's ink, it's true. Pencil's open till six.",
+       "perform": "the pencil laid down between you, not offered",
        "file": null,
        "dur": 7.6
       }
@@ -19791,12 +20572,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Once it's ink.",
+       "perform": "the whole of it, a nod, to the page",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Small one. Leave it. It's ink.",
+       "perform": "flat, low",
        "file": null,
        "dur": 3
       }
@@ -19861,6 +20644,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. It is ten to six. The wedge was at ten to two. That is four hours.",
+       "perform": "flat, awake, careful",
        "act": "you:phone",
        "file": null,
        "dur": 10.6
@@ -19868,12 +20652,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Let's make sure we're aligned. You will tell me that now, not at the handover. I would like it looked at.",
+       "perform": "even",
        "file": null,
        "dur": 6.3
       },
       {
        "speaker": "dee",
        "text": "I'll go. Stay on the wall.",
+       "perform": "to the wall, getting up, the keys",
        "act": "you:hangup",
        "file": null,
        "dur": 3.1
@@ -19957,6 +20743,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "How long has the panel been silent? How long.",
+       "perform": "formal, ice at the edges of a polite voice",
        "act": "you:phone",
        "file": null,
        "dur": 3.6
@@ -19964,18 +20751,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "I will be there at ten past six. Do not touch it again.",
+       "perform": "one idea at a time",
        "file": null,
        "dur": 4.2
       },
       {
        "speaker": "adler",
        "text": "Please put the time you silenced it in the log. In the same words.",
+       "perform": "formal",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "low, to the wall, a woman watching a train she did not stop",
        "act": "you:hangup",
        "file": null,
        "dur": 2
@@ -20051,12 +20841,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Time. Radios. What the night was, in one line.",
+       "perform": "flat, the pencil on the shelf, not offered",
        "file": null,
        "dur": 8.1
       },
       {
        "speaker": "dee",
        "text": "That's the one he reads first. Then he checks the rest.",
+       "perform": "even",
        "file": null,
        "dur": 4.2
       },
@@ -20133,6 +20925,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Eleven items. Good. He'll count them.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 3.1
       },
@@ -20146,6 +20939,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. Four.",
        "sfx": "radio-charger",
+       "perform": "at the charger, one finger on each",
        "act": "dee:count",
        "file": null,
        "dur": 2.2
@@ -20153,24 +20947,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
+       "perform": "flat, not hurrying",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "perform": "a beat on the last two words",
        "file": null,
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
+       "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
        "file": null,
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home.",
+       "perform": "flat",
        "file": null,
        "dur": 3.9
       }
@@ -20243,6 +21041,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Quiet night. It wasn't. Eleven items. Mm. He'll see.",
+       "perform": "reading, flat",
        "file": null,
        "dur": 6.1
       },
@@ -20256,6 +21055,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. Four.",
        "sfx": "radio-charger",
+       "perform": "at the charger, one finger on each",
        "act": "dee:count",
        "file": null,
        "dur": 2.2
@@ -20263,24 +21063,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
+       "perform": "flat, not hurrying",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "perform": "a beat on the last two words",
        "file": null,
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
+       "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
        "file": null,
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home. Mm.",
+       "perform": "flat",
        "file": null,
        "dur": 4.9
       }
@@ -20353,6 +21157,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "That's blank. He'll ask why. Mm.",
+       "perform": "flat",
        "file": null,
        "dur": 3.4
       },
@@ -20366,6 +21171,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. Four.",
        "sfx": "radio-charger",
+       "perform": "at the charger, one finger on each",
        "act": "dee:count",
        "file": null,
        "dur": 2.2
@@ -20373,24 +21179,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
+       "perform": "flat, not hurrying",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "perform": "a beat on the last two words",
        "file": null,
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
+       "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
        "file": null,
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home. Mm.",
+       "perform": "flat",
        "file": null,
        "dur": 4.9
       }
@@ -20463,12 +21273,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "No incidents.",
+       "perform": "reading, very flat",
        "file": null,
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Eleven. Mm.",
+       "perform": "the tablet turned face down",
        "file": null,
        "dur": 4.7
       },
@@ -20482,6 +21294,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radios. Four.",
        "sfx": "radio-charger",
+       "perform": "at the charger, one finger on each",
        "act": "dee:count",
        "file": null,
        "dur": 2.2
@@ -20489,24 +21302,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
+       "perform": "flat, not hurrying",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
+       "perform": "a beat on the last two words",
        "file": null,
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
+       "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
        "file": null,
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home. Mm.",
+       "perform": "flat",
        "file": null,
        "dur": 4.9
       }
@@ -20602,18 +21419,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Let's walk through the log. I have a nine o'clock.",
+       "perform": "polite, one hand already out",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "It's all in there. Four.",
+       "perform": "at the charger, not turning, the radios counted again",
        "file": null,
        "dur": 2.4
       },
       {
        "speaker": "okafor",
        "text": "Good morning, Officer. Good morning, Dolores.",
+       "perform": "a glance at the clock, then at the wall, then at the log",
        "file": null,
        "dur": 5.2
       }
@@ -20761,42 +21581,49 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Forty-four. The stairwell on thirty-one. The bench. Car three. Camera nine. The panel. The dock. The vestibule.",
+       "perform": "reading the headings, flat",
        "file": null,
        "dur": 10.5
       },
       {
        "speaker": "okafor",
        "text": "The stairwell. I can see the landing. You gave me the floor, the door, the thing in the door, and what was done.",
+       "perform": "the thumb stops",
        "file": null,
        "dur": 7.5
       },
       {
        "speaker": "okafor",
        "text": "The panel I can read word for word. I don't always get that.",
+       "perform": "flat",
        "file": null,
        "dur": 3.7
       },
       {
        "speaker": "okafor",
        "text": "Times. Places. What you saw. Who you told. It reads like a log.",
+       "perform": "a nod to the glass",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "okafor",
        "text": "That's noted. Thank you.",
+       "perform": "a nod at you, the highest thing he says",
        "file": null,
        "dur": 2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "from the charger, low",
        "file": null,
        "dur": 2.3
       },
       {
        "speaker": "okafor",
        "text": "Ms. Reyes. Before I go up. Is there anything in there I should hear from you and not from the page?",
+       "perform": "polite, to the room",
        "file": null,
        "dur": 6.3
       }
@@ -21052,42 +21879,49 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Let's walk through the log.",
+       "perform": "the thumb stops",
        "file": null,
        "dur": 2.3
       },
       {
        "speaker": "okafor",
        "text": "So. Some of these say what someone seemed to be. Some say nothing at all.",
+       "perform": "reading, flat, polite",
        "file": null,
        "dur": 5.4
       },
       {
        "speaker": "okafor",
        "text": "How did he seem? Probably what? Fine to whom? What does that mean to someone who wasn't here?",
+       "perform": "the thumb moves, even",
        "file": null,
        "dur": 6.3
       },
       {
        "speaker": "okafor",
        "text": "Not \"guy.\" \"Individual.\"",
+       "perform": "correcting himself, then you",
        "file": null,
        "dur": 2.5
       },
       {
        "speaker": "okafor",
        "text": "The building manager wasn't here. Neither was the lawyer. They have your words.",
+       "perform": "flat, a small stop",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "okafor",
        "text": "I can't tell what happened.",
+       "perform": "even",
        "file": null,
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "from the charger, low, a pencil behind her ear",
        "file": null,
        "dur": 3.2
       }
@@ -21181,36 +22015,42 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. A few of these are not what the binder says. Not many.",
+       "perform": "the thumb stops, then goes on",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "okafor",
        "text": "I can see where the binder said one thing and the night said another. I have marked them.",
+       "perform": "flat, each one set down",
        "file": null,
        "dur": 4.9
       },
       {
        "speaker": "okafor",
        "text": "Let's make sure we're aligned. I'm not saying anyone was wrong. I'm saying they're in the log.",
+       "perform": "even",
        "file": null,
        "dur": 5.9
       },
       {
        "speaker": "okafor",
        "text": "In your hand, with the time. That's the only reason this is a conversation.",
+       "perform": "even",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "okafor",
        "text": "Next time, the binder first. And if the binder says no, you say no, and you write that you said it.",
+       "perform": "a nod, tired",
        "file": null,
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "from the charger",
        "file": null,
        "dur": 2
       }
@@ -21304,36 +22144,42 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Twenty-three thirty. \"Left the control room, wall unattended.\" Four minutes.",
+       "perform": "reading, flat, quiet",
        "file": null,
        "dur": 6.2
       },
       {
        "speaker": "okafor",
        "text": "In your hand. Your own entry. That is the thing I would not have known.",
+       "perform": "the thumb stops",
        "file": null,
        "dur": 5.2
       },
       {
        "speaker": "okafor",
        "text": "That's noted. It is also the thing I have to act on.",
+       "perform": "even",
        "file": null,
        "dur": 3.9
       },
       {
        "speaker": "okafor",
        "text": "Dolores. You know the rule.",
+       "perform": "not looking up",
        "file": null,
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "I know the rule.",
+       "perform": "from the charger, flat, the counting stopped",
        "file": null,
        "dur": 3.1
       },
       {
        "speaker": "okafor",
        "text": "Nothing happened in those four minutes. Nothing happened. That is not what the rule is about.",
+       "perform": "even, to the glass",
        "file": null,
        "dur": 5.8
       }
@@ -21427,30 +22273,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Life safety.",
+       "perform": "the thumb stops on a line, and stays",
        "file": null,
        "dur": 2.5
       },
       {
        "speaker": "okafor",
        "text": "A door on thirty-one. A panel in this room. One of them was left, and nobody who is allowed to fix it was told.",
+       "perform": "flat, even, every word placed",
        "file": null,
        "dur": 7.9
       },
       {
        "speaker": "okafor",
        "text": "The fire panel belongs to Ms. Adler. The door belongs to the building. We are the people who tell them.",
+       "perform": "he looks up for the first time",
        "file": null,
        "dur": 6.5
       },
       {
        "speaker": "okafor",
        "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\" It is true and it is not a defense.",
+       "perform": "a breath",
        "file": null,
        "dur": 10.2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "from the charger, very low",
        "file": null,
        "dur": 2.3
       }
@@ -21544,30 +22395,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Let's make sure we're aligned.",
+       "perform": "the thumb stops",
        "file": null,
        "dur": 2.6
       },
       {
        "speaker": "okafor",
        "text": "There is a line in this log that does not match the record. The terminal, or the rest of the log. One of them is wrong.",
+       "perform": "even, polite, the worst voice he has",
        "file": null,
        "dur": 7.1
       },
       {
        "speaker": "okafor",
        "text": "I will not ask you why. The building manager will. He reads this at nine.",
+       "perform": "a breath",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "okafor",
        "text": "Dolores.",
+       "perform": "not looking up",
        "file": null,
        "dur": 1.2
       },
       {
        "speaker": "dee",
        "text": "Officer.",
+       "perform": "from the charger, formal, the last word she says for a while",
        "file": null,
        "dur": 1.1
       }
@@ -21615,18 +22471,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.",
+       "perform": "putting her coat on, short, flat",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "The seven stops under Queensboro. Walk it. Don't wait. I've timed it. It's faster.",
+       "perform": "dry",
        "file": null,
        "dur": 6.1
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "at the door, not turning",
        "file": null,
        "dur": 2.1
       },
@@ -21639,6 +22498,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Radio.",
+       "perform": "from the doorway, one word, not a suggestion",
        "file": null,
        "dur": 0.9
       },
@@ -21688,24 +22548,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "April first. I know you read it. The drawer sticks. It didn't stick.",
+       "perform": "to the charger, dry",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "dee",
        "text": "I put it where you'd find it. Not him. Mm. You didn't ask.",
+       "perform": "a breath that is nearly a smile",
        "file": null,
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "A camera and a woman in New Jersey. Mm. Doesn't matter.",
+       "perform": "flat",
        "file": null,
        "dur": 4.4
       },
       {
        "speaker": "dee",
        "text": "Pencil. Write it plain.",
+       "perform": "holding it out, the one from behind her ear, even",
        "act": "dee:hand",
        "file": null,
        "dur": 2.3
@@ -21756,6 +22620,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Thank you for telling me. That's noted. I will raise it with the contractor.",
+       "perform": "a pen clicking, faintly warmer than usual",
        "act": "okafor:write",
        "file": null,
        "dur": 5
@@ -21763,18 +22628,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Ms. Reyes's post is under review. I did not know.",
+       "perform": "a pause",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "okafor",
        "text": "I should have known. That is also noted.",
+       "perform": "even",
        "file": null,
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "You told him. Officer.",
+       "perform": "at the charger, flat, no weight on it",
        "file": null,
        "dur": 2.2
       },
@@ -21801,6 +22669,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "I'd have told him in April. Mm. It's the book.",
+       "perform": "low",
        "file": null,
        "dur": 4.1
       },
@@ -21850,6 +22719,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Eat something. Not the corner. The corner's mine.",
+       "perform": "holding out half a sandwich, quick, dry",
        "act": "dee:hand",
        "file": null,
        "dur": 3.2
@@ -21869,12 +22739,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Quarter to seven. You know where I sit. Mm.",
+       "perform": "folding the foil in four",
        "file": null,
        "dur": 5.8
       },
       {
        "speaker": "dee",
        "text": "You stayed on the wall. Mm. Go home.",
+       "perform": "to the wall",
        "file": null,
        "dur": 3.9
       },
@@ -21923,6 +22795,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. There is nothing in this log I would change. Ms. Reyes's evaluation is one line. \"Competent.\"",
+       "perform": "the thumb stops, reading, flat",
        "act": "okafor:read",
        "file": null,
        "dur": 7.1
@@ -21930,6 +22803,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "That's noted. Thank you. Good morning.",
+       "perform": "a pause, almost an apology, to you, politely",
        "file": null,
        "dur": 3.5
       },
@@ -21997,12 +22871,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Corrections in Dolores's hand, on entries that are not hers.",
+       "perform": "reading, flat, polite",
        "file": null,
        "dur": 4.9
       },
       {
        "speaker": "dee",
        "text": "Mine. I made them.",
+       "perform": "from the charger, flat, no excuse offered",
        "act": "dee:angry",
        "file": null,
        "dur": 2.1
@@ -22010,18 +22886,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Dolores, a word. Not now. That's twice this year.",
+       "perform": "tired, the thumb on the glass",
        "file": null,
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "He's new. I'm the one who counts. Four.",
+       "perform": "quietly, once",
        "file": null,
        "dur": 3.8
       },
       {
        "speaker": "okafor",
        "text": "Next time, you say, and I decide. That is what the chain is for.",
+       "perform": "even",
        "file": null,
        "dur": 5.3
       },
@@ -22077,6 +22956,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. \"Seemed.\" How did it seem? \"Probably.\" Probably.",
+       "perform": "reading, flat, patient, the red stylus",
        "act": "okafor:read",
        "file": null,
        "dur": 5.6
@@ -22084,18 +22964,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Next time: what he did. Not what he seemed. That's noted.",
+       "perform": "a nod, not unkind",
        "file": null,
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "low, at the charger",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "okafor",
        "text": "It is not a clean first week. That's noted.",
+       "perform": "even, handing the tablet back",
        "file": null,
        "dur": 3.2
       },
@@ -22145,24 +23028,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "I'll write it as it stands. Four minutes. It's the rule, Dolores.",
+       "perform": "quietly, not looking at either of you, the stylus",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "I know the rule.",
+       "perform": "flat, to the charger",
        "file": null,
        "dur": 1.3
       },
       {
        "speaker": "okafor",
        "text": "Ms. Reyes. If you want to say something, say it.",
+       "perform": "gently, for him",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "No. Thank you, Okafor.",
+       "perform": "one word, flat as a door, the thank you the size of a coin",
        "file": null,
        "dur": 2.6
       },
@@ -22182,6 +23069,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "counting",
        "act": "dee:count",
        "file": null,
        "dur": 0.9
@@ -22232,24 +23120,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "I'll walk you through what happens now. The building manager reads this at nine. The company decides at the end of the ninety days.",
+       "perform": "even, polite, final",
        "file": null,
        "dur": 7.3
       },
       {
        "speaker": "okafor",
        "text": "This is the procedure. Nothing in it is personal.",
+       "perform": "the thumb on the glass, a sigh",
        "file": null,
        "dur": 4.8
       },
       {
        "speaker": "okafor",
        "text": "Hand me your badge at the end of the week, not today. You've still got a shift to work. That is also in the book.",
+       "perform": "not unkind",
        "file": null,
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Officer.",
+       "perform": "at the charger, formal, the last word",
        "file": null,
        "dur": 1
       },
@@ -22306,6 +23198,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Life safety. A door, a panel. Either one, left.",
+       "perform": "opening the binder to a page",
        "act": "okafor:point:shelf",
        "file": null,
        "dur": 7.8
@@ -22313,18 +23206,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Nobody was hurt. That goes in the report. It is not a defense.",
+       "perform": "his hand flat on the page, even, even",
        "file": null,
        "dur": 4.6
       },
       {
        "speaker": "okafor",
        "text": "Page eleven, Officer. The order of calls. It is two pages.",
+       "perform": "a pause, not an accusation",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "from the charger, very low",
        "file": null,
        "dur": 2.3
       },
@@ -22374,18 +23270,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. Not wrong. Not right. Next to the binder. Noted.",
+       "perform": "reading, flat, the stylus, one small check",
        "file": null,
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "Mm. Quarter to seven. Read the whole binder. Page eleven, twice.",
+       "perform": "putting on her coat, to you, dry",
        "file": null,
        "dur": 5.9
       },
       {
        "speaker": "okafor",
        "text": "So. You are off at seven. Go home.",
+       "perform": "even",
        "file": null,
        "dur": 3.2
       },
@@ -22452,6 +23351,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Ten minutes. That's all it is.",
+       "perform": "flat, to the wall",
        "file": null,
        "dur": 2.4
       },
@@ -22507,6 +23407,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Thirty seconds.",
+       "perform": "low, not to you",
        "file": null,
        "dur": 2.1
       },
@@ -22558,12 +23459,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Ten to two. Bench clear.",
+       "perform": "flat, writing it down",
        "file": null,
        "dur": 2.8
       },
       {
        "speaker": "dee",
        "text": "That's the first line. The rest hangs off it.",
+       "perform": "flat",
        "file": null,
        "dur": 3.1
       },
@@ -22652,18 +23555,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "So. A notice, in a drawer, with a stamp. I will ask the contractor for a copy today.",
+       "perform": "flat, a pen finishing a line",
        "file": null,
        "dur": 7.7
       },
       {
        "speaker": "okafor",
        "text": "Ms. Reyes. April the first. Nobody gave you that in writing?",
+       "perform": "turning to her, courteous, careful",
        "file": null,
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Officer.",
+       "perform": "level, to you, nothing else in it",
        "file": null,
        "dur": 4.4
       },
@@ -22711,12 +23617,14 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Hey, hey, evening! Cold one, huh? Cold out, you know?",
        "sfx": "radio-squelch",
+       "perform": "bright, already waving, from the desk",
        "file": null,
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "One badge. Two people.",
+       "perform": "quiet, not turning her head",
        "file": null,
        "dur": 2.3
       },
@@ -22729,6 +23637,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Your wall.",
+       "perform": "flat; she is handing you this one",
        "file": null,
        "dur": 4
       }
@@ -22785,6 +23694,7 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Post one, hey. The guy behind her? I figured he was hers. You know?",
        "sfx": "radio-squelch",
+       "perform": "caught, running it together",
        "file": null,
        "dur": 4.6
       },
@@ -22799,12 +23709,14 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Okay. Okay! Thirty-four? Who for? Let me see what I can do.",
        "sfx": "phone-ring",
+       "perform": "fast, reading the card twice",
        "file": null,
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "Mm-hm.",
+       "perform": "dry; she is watching Terrell, not the man",
        "file": null,
        "dur": 2.8
       },
@@ -22854,12 +23766,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Thirty-four is insurance. Marsh works late.",
+       "perform": "flat, to the wall",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Next time he gets a name on the sheet before he gets an elevator.",
+       "perform": "no heat in it",
        "file": null,
        "dur": 3.9
       },
@@ -22903,6 +23817,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm.",
+       "perform": "the long one",
        "file": null,
        "dur": 3
       },
@@ -22916,6 +23831,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Thirty-four. I saw.",
+       "perform": "level, to the wall",
        "file": null,
        "dur": 3.4
       }
@@ -22960,6 +23876,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Five. Don't look. What was on it?",
+       "perform": "flat, a teacher she would deny being",
        "file": null,
        "dur": 6
       },
@@ -23021,12 +23938,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four cars. A plant.",
+       "perform": "flat",
        "file": null,
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Left side, the plant has a dead leaf. You didn't see the leaf.",
+       "perform": "dry, almost warm",
        "file": null,
        "dur": 4.8
       },
@@ -23040,6 +23959,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Tomorrow you'll see the leaf.",
+       "perform": "to the glass, not to you",
        "file": null,
        "dur": 3.4
       }
@@ -23070,12 +23990,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Elevators.",
+       "perform": "dry",
        "file": null,
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "How many? What colour is the light?",
+       "perform": "flat, no unkindness in it",
        "file": null,
        "dur": 2.6
       },
@@ -23094,6 +24016,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. That's what the log would say. \"Some elevators.\"",
+       "perform": "quiet, taking the paper down",
        "file": null,
        "dur": 4.4
       }
@@ -23124,12 +24047,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "A hint.",
+       "perform": "flat, turning it over",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "No hints at three in the morning. There's the wall.",
+       "perform": "level; the corner of her mouth moves",
        "file": null,
        "dur": 4.2
       },
@@ -23142,6 +24067,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Now you have a hint.",
+       "perform": "dry, folding the newspaper in four",
        "file": null,
        "dur": 2.7
       }
@@ -23183,12 +24109,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Power.",
        "sfx": "radio-squelch",
+       "perform": "on the radio, flat, a little out of breath",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "I'm not riding anything tonight. Stairs. You stay on the wall.",
+       "perform": "steady, climbing",
        "file": null,
        "dur": 5
       },
@@ -23262,6 +24190,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Say what you see.",
+       "perform": "on the radio, between breaths",
        "file": null,
        "dur": 2.2
       },
@@ -23322,6 +24251,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Panel?",
+       "perform": "on the radio, short",
        "file": null,
        "dur": 0.8
       },
@@ -23334,6 +24264,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Then it's the building. Buildings do that.",
+       "perform": "dry, one landing higher",
        "file": null,
        "dur": 4
       },
@@ -23388,12 +24319,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Wall.",
+       "perform": "on the radio, level",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "I said. Wall.",
+       "perform": "no louder than before",
        "file": null,
        "dur": 4.3
       },
@@ -23455,12 +24388,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "Hi, sorry, it's Anand, from thirty-one, the elevator? I'm going home for two hours. Do I sign something?",
+       "perform": "rushed, polite, run together",
        "file": null,
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "He badged in at six. He didn't badge out.",
+       "perform": "flat, to you",
        "file": null,
        "dur": 3.1
       }
@@ -23516,12 +24451,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "Sorry. Is that, I put it in the wrong box. Sorry.",
+       "perform": "mortified, quick",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "It's a box.",
+       "perform": "dry",
        "file": null,
        "dur": 1.3
       },
@@ -23576,12 +24513,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dev",
        "text": "It was a little close in there. Sorry. It's fine. Thank you. For staying on.",
+       "perform": "fast, embarrassed, looking at the floor",
        "file": null,
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Go home, Anand. Sleep two hours. Eat something.",
+       "perform": "gruff, kind underneath",
        "file": null,
        "dur": 4.1
       },
@@ -23631,12 +24570,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "She wrote \"and.\"",
+       "perform": "flat, reading it a second time",
        "file": null,
        "dur": 2
       },
       {
        "speaker": "dee",
        "text": "Twenty-six years, she never wrote \"and.\"",
+       "perform": "to the note",
        "file": null,
        "dur": 3.7
       }
@@ -23698,6 +24639,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Don't tell Marisol.",
+       "perform": "low, taking the first one",
        "file": null,
        "dur": 2.1
       },
@@ -23773,6 +24715,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "It says two names.",
+       "perform": "flat",
        "file": null,
        "dur": 1.6
       },
@@ -23791,6 +24734,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. Later. I'll leave the foil.",
+       "perform": "quiet, putting the plate back and the foil over it",
        "file": null,
        "dur": 4.3
       }
@@ -23850,6 +24794,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Log first.",
+       "perform": "level; it could be approval or the other thing",
        "file": null,
        "dur": 4.5
       },
@@ -23862,6 +24807,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. It keeps.",
+       "perform": "to the shelf",
        "file": null,
        "dur": 2.2
       }
@@ -24010,12 +24956,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Zurich. Mm. Take the number. Don't read them the list.",
+       "perform": "over the radio, a little out of breath",
        "file": null,
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Nobody calls and gets told who's up there. Number. Name. Okafor at seven.",
+       "perform": "over the radio, flat",
        "file": null,
        "dur": 6.4
       },
@@ -24058,6 +25006,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "It doesn't. Don't.",
+       "perform": "flat",
        "file": null,
        "dur": 1.9
       },
@@ -24101,12 +25050,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Four.",
+       "perform": "flat",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "First week you say it. After that it says itself.",
+       "perform": "flat, to the charger",
        "file": null,
        "dur": 3.7
       },
@@ -24150,6 +25101,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Sticks, doesn't it.",
+       "perform": "flat, at the charger, not looking",
        "file": null,
        "dur": 2.9
       },
@@ -24193,6 +25145,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Harder. It takes two.",
+       "perform": "at the charger, not looking at the shelf, not looking at you",
        "file": null,
        "dur": 7.6
       },
@@ -24235,12 +25188,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Hours.",
+       "perform": "flat",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Pen. Pencil. Same as nine o'clock. I sign how I'm handed it.",
+       "perform": "flat, holding out her hand for either",
        "file": null,
        "dur": 8.7
       }
@@ -24318,6 +25273,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Ink.",
+       "perform": "flat",
        "file": null,
        "dur": 0.8
       },
@@ -24360,6 +25316,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Pencil's open till Friday. Mm. Friday.",
+       "perform": "flat",
        "file": null,
        "dur": 3.7
       },
@@ -24396,6 +25353,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Not that one.",
+       "perform": "flat, not taking it",
        "file": null,
        "dur": 3
       },
@@ -24445,12 +25403,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Badge.",
+       "perform": "flat, not looking up",
        "file": null,
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "He'll say it's the cold. It is the cold. Mm. What does the list say?",
+       "perform": "dry",
        "file": null,
        "dur": 5.4
       }
@@ -24507,6 +25467,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "List first. Then the door.",
+       "perform": "flat",
        "file": null,
        "dur": 2.6
       },
@@ -24550,12 +25511,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "He's on the list.",
+       "perform": "flat, after a moment, to the wall",
        "file": null,
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "You didn't look. Mm. He's on the list.",
+       "perform": "flat",
        "file": null,
        "dur": 3.3
       }
@@ -24596,12 +25559,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mm. You count with your finger.",
+       "perform": "dry",
        "file": null,
        "dur": 2.7
       },
       {
        "speaker": "dee",
        "text": "Good. Do it again at six.",
+       "perform": "flat",
        "file": null,
        "dur": 2.4
       }
@@ -24636,12 +25601,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Radios.",
+       "perform": "dry, not unkind",
        "file": null,
        "dur": 1.2
       },
       {
        "speaker": "dee",
        "text": "If it is three, that is a log. If it is four, that is a night.",
+       "perform": "low",
        "file": null,
        "dur": 5.4
       }
@@ -24676,12 +25643,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "marisol",
        "text": "Tomorrow. Okay. I hold you to tomorrow, mi amor.",
+       "perform": "over the walkie, clipped, warm underneath",
        "file": null,
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "She will.",
+       "perform": "dry",
        "file": null,
        "dur": 1
       }
@@ -24715,12 +25684,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Mine to say?",
+       "perform": "flat",
        "file": null,
        "dur": 1.2
       },
       {
        "speaker": "dee",
        "text": "It was yours to say. Mm. I will say it.",
+       "perform": "dry, not unkind",
        "file": null,
        "dur": 3.9
       },
@@ -24766,12 +25737,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Times. Floor. Name.",
+       "perform": "low",
        "file": null,
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "That is all he can ask you about.",
+       "perform": "dry",
        "file": null,
        "dur": 2.5
       }
@@ -24811,12 +25784,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "\"Seemed.\"",
+       "perform": "flat",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Mm. He will circle that.",
+       "perform": "dry, not unkind",
        "file": null,
        "dur": 2.5
       }
@@ -24856,12 +25831,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Blank.",
+       "perform": "low",
        "file": null,
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Blank is a line too. He reads those first.",
+       "perform": "dry",
        "file": null,
        "dur": 3.9
       }
@@ -24901,12 +25878,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Not signed in. You wrote it.",
+       "perform": "flat",
        "file": null,
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Mm. Four words. That is a log.",
+       "perform": "dry, not unkind",
        "file": null,
        "dur": 3.7
       }
@@ -24946,12 +25925,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "\"Hurry.\"",
+       "perform": "low",
        "file": null,
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+       "perform": "dry",
        "file": null,
        "dur": 6.4
       }
@@ -24986,12 +25967,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "The Chairman went up. There is a camera that says so.",
+       "perform": "flat",
        "file": null,
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
+       "perform": "dry, not unkind",
        "file": null,
        "dur": 5
       }
@@ -25031,12 +26014,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Signed, in only. You wrote that.",
+       "perform": "low",
        "file": null,
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Four words. That is a log.",
+       "perform": "dry",
        "file": null,
        "dur": 4.3
       }
@@ -25076,12 +26061,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "\"Hurry.\"",
+       "perform": "flat",
        "file": null,
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
+       "perform": "dry, not unkind",
        "file": null,
        "dur": 6.2
       }
@@ -25116,12 +26103,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "The Chairman went up. There is a camera that says so.",
+       "perform": "low",
        "file": null,
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
+       "perform": "dry",
        "file": null,
        "dur": 5.1
       }
@@ -25161,6 +26150,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "Thank you. That is the entry.",
+       "perform": "formal",
        "file": null,
        "dur": 2.6
       },
@@ -25207,6 +26197,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "adler",
        "text": "That is my entry. Yours is above it. I did not read yours.",
+       "perform": "formal",
        "file": null,
        "dur": 4.8
       },
@@ -25245,24 +26236,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
+       "perform": "flat, reading",
        "file": "/night-shift/handover/media/line-3.mp3",
        "dur": 6.9
       },
       {
        "speaker": "okafor",
        "text": "Forty-four. Water in the closet. Monitored.",
+       "perform": "flat, a small stop",
        "file": "/night-shift/handover/media/line-4.mp3",
        "dur": 3.4
       },
       {
        "speaker": "okafor",
        "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
+       "perform": "reading",
        "file": "/night-shift/handover/media/line-5.mp3",
        "dur": 5.5
       },
       {
        "speaker": "okafor",
        "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
+       "perform": "dry, not joking",
        "file": "/night-shift/handover/media/line-6.mp3",
        "dur": 6.2
       },
@@ -25270,6 +26265,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Mm.",
        "sfx": "radio-charger",
+       "perform": "low",
        "act": "dee:count",
        "file": "/night-shift/handover/media/line-10.mp3",
        "dur": 0.9
@@ -25277,6 +26273,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "okafor",
        "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
+       "perform": "cut off",
        "act": "okafor:point:shelf",
        "file": "/night-shift/handover/media/line-11.mp3",
        "dur": 4.3
@@ -25284,6 +26281,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "dee",
        "text": "Extinguisher. Mm-hm. Your train, Okafor.",
+       "perform": "dry, not unkind",
        "file": "/night-shift/handover/media/line-12.mp3",
        "dur": 4
       }

@@ -7010,6 +7010,52 @@ async function roomWatch(test, ms = 60000) {
   return -1;
 }
 
+/** The brightest edge of a figure's layer as drawn (its CSS filter applied on a canvas): the mean luminance of the top 3% of its pixels.
+    The speaker's rim is a warm bright line round the figure; the others keep a dim cool one. 0 when there is nothing to measure. */
+function rimLuma(doc, img) {
+  try {
+    const win = doc.defaultView;
+    const c = doc.createElement("canvas");
+    c.width = 768; c.height = 460;
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    const f = win.getComputedStyle(img).filter;
+    ctx.filter = f && f !== "none" ? f : "none";
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    const d = ctx.getImageData(0, 0, c.width, c.height).data;
+    const lum = [];
+    for (let i = 0; i < d.length; i += 4) if (d[i + 3] > 40) lum.push(0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2]);
+    if (!lum.length) return 0;
+    lum.sort((a, b) => b - a);
+    const n = Math.max(1, Math.floor(lum.length * 0.03));
+    return lum.slice(0, n).reduce((a, b) => a + b, 0) / n;
+  } catch (e) { return 0; }
+}
+
+/** Who is marked as speaking in the room and how bright each shown figure's rim is: { speaker, rims: { who: luma } }. */
+function roomRims(doc) {
+  const host = byIdIn(doc, "console-room");
+  const rims = {};
+  let speaker = null;
+  for (const w of host.querySelectorAll(".room-pose")) {
+    const im = w.querySelector("img.on");
+    if (!im || !im.complete || !im.naturalWidth) continue;
+    rims[w.getAttribute("data-who")] = rimLuma(doc, im);
+    if (w.hasAttribute("data-speaking")) speaker = w.getAttribute("data-who");
+  }
+  return { speaker, rims };
+}
+
+/** The speaker's rim is measurably brighter than every other figure's: returns null when it is, else what was seen. */
+function speakerMarked(doc, who) {
+  const { speaker, rims } = roomRims(doc);
+  if (!(who in rims)) return null; // not drawn as a layer (away, or no layer for them): nothing to mark
+  if (speaker !== who) return `${who} speaks but ${speaker || "nobody"} is marked`;
+  const others = Object.entries(rims).filter(([k]) => k !== who);
+  const best = others.length ? Math.max(...others.map(([, v]) => v)) : 0;
+  if (!(rims[who] >= best + 12)) return `${who}'s rim ${Math.round(rims[who])} isn't brighter than the others' (${others.map(([k, v]) => `${k} ${Math.round(v)}`).join(", ")})`;
+  return null;
+}
+
 async function nightRoomRun(options, t) {
   const st = storyOf(options.story || "night-shift");
   if (!st || st.type !== "console") throw new Error(`room: ${options.story || "night-shift"} isn't a console story`);
@@ -7250,11 +7296,103 @@ async function nightRoomRun(options, t) {
     }
     const shot = byIdIn(doc, "console-room").getBoundingClientRect();
     t.event("layout", `${where}: room ${Math.round(shot.width)}x${Math.round(shot.height)}, big screen ${Math.round(big.width)}x${Math.round(big.height)}, ${strip.length} tiles of ${Math.round(strip[0].width)} px`);
+    if (w === 390 && h === 844) {
+      // [phone] the room picture is the main element: at least 50% taller than the transcript panel, which sits below it; the speaker's rim shows
+      const subs = byIdIn(doc, "console-subs").getBoundingClientRect();
+      t.metric("phoneRoomPx", Math.round(shot.height));
+      t.metric("phoneTranscriptPx", Math.round(subs.height));
+      if (shot.height < subs.height * 1.5) t.problem("bug", `${where}: the room picture is ${Math.round(shot.height)} px tall, the transcript ${Math.round(subs.height)} px: the picture must be at least 50% taller`);
+      if (subs.top < shot.bottom - 1) t.problem("bug", `${where}: the transcript (top ${Math.round(subs.top)}) covers the room picture (bottom ${Math.round(shot.bottom)})`);
+      const ln = api.lines();
+      if (ln && ln.playing >= 0) {
+        await sleep(450);
+        const l = st.scenes[api.scene()].lines[ln.playing];
+        const bad = l && speakerMarked(doc, l.speaker);
+        t.event("phone-rim", bad ? `${where}: ${bad}` : `${where}: the speaker's rim is visible (${l ? l.speaker : "?"})`);
+        if (bad) t.problem("bug", `${where}: ${bad}`);
+      }
+    }
     await checkNotEnlargeable(t, doc, where);
     await consoleHeard(t, doc, where);
     await consoleFit(t, doc, `${where}, the room and the choices`);
     closeViewFrame();
   }
+  /* 7. Characters (J, 2026-11-11): people with moods, not cut-outs. The first ten scenes at 1280x720: poses and moods per person,
+        the speaker's rim marked on every line, nobody still for 5 s, pose fades of 150-250 ms. */
+  {
+    t.scene("Characters: the first ten scenes");
+    await consoleFresh(t, st);
+    const ids = st.order ? st.order.slice(0, 10) : Object.keys(st.scenes).slice(0, 10);
+    const x = consoleExplore(st);
+    const seenPoses = {}, fadeMs = [];
+    let marked = 0, unmarked = 0, linesSeen = 0;
+    const moodsSeen = {};
+    for (const id of ids) {
+      if (id !== st.start && !x.scenes[id]) continue;
+      if (id !== st.start) await roomEnter(t, st, x, id, null, { hear: false }); // the first scene is already open (consoleFresh)
+      const doc = document;
+      const api = apiOf(doc);
+      await roomWatch(() => api.lines() && api.lines().total > 0, 6000);
+      const lines = st.scenes[id].lines;
+      const still = {}; // who -> { sig, since }
+      let lastLine = -2;
+      const t0 = performance.now();
+      while (performance.now() - t0 < 14000) {
+        const ln = api.lines();
+        if (!ln || ln.done >= ln.total) break;
+        const now = performance.now();
+        const v = api.room();
+        const ph = v && v.photo;
+        if (ph && ph.on) {
+          for (const w of doc.querySelectorAll("#console-room .room-pose")) {
+            const who = w.getAttribute("data-who");
+            if (!w.getAttribute("data-file")) continue;
+            const im = w.querySelector("img.on");
+            const sig = doc.defaultView.getComputedStyle(w).transform + "|" + (im ? doc.defaultView.getComputedStyle(im).transform : "");
+            const prev = still[who];
+            if (!prev || prev.sig !== sig) still[who] = { sig, since: now };
+            else if (now - prev.since > 5000 && !doc.defaultView.matchMedia("(prefers-reduced-motion: reduce)").matches) { t.problem("bug", `${id}: ${who} stays fully still for ${Math.round((now - prev.since) / 1000)} s while a line plays`); still[who].since = now + 1e9; }
+          }
+          if (ln.playing >= 0 && ln.playing !== lastLine) {
+            lastLine = ln.playing;
+            await sleep(450); // the pose crossfade and the rim settle
+            const l = lines[ln.playing];
+            if (l && api.lines() && api.lines().playing === ln.playing) {
+              linesSeen++;
+              const bad = speakerMarked(doc, l.speaker);
+              if (bad) { unmarked++; t.problem("bug", `${id} line ${ln.playing + 1}: ${bad}`); } else marked++;
+            }
+          }
+        }
+        await sleep(250);
+      }
+      try { await consoleHeard(t, doc, `characters ${id}`); } catch (e) { /* the scene's lines are taken as heard */ }
+      const v = api.room();
+      if (v && v.photo) {
+        for (const [who, list] of Object.entries(v.photo.poses || {})) { seenPoses[who] = seenPoses[who] || new Set(); list.forEach((k) => seenPoses[who].add(k)); }
+        for (const f of v.photo.fades || []) fadeMs.push(f.ms);
+        for (const [who, mo] of Object.entries(v.photo.moods || {})) { moodsSeen[who] = moodsSeen[who] || new Set(); moodsSeen[who].add(mo); }
+      }
+    }
+    const count = (who) => (seenPoses[who] ? seenPoses[who].size : 0);
+    t.metric("poseCountDee", count("dee"));
+    t.metric("poseCountOkafor", count("okafor"));
+    t.metric("poseCountYou", count("you"));
+    t.event("poses", `first ten scenes: Dee ${count("dee")} (${[...(moodsSeen.dee || [])].join("/")}), Okafor ${count("okafor")} (${[...(moodsSeen.okafor || [])].join("/")}), the trainee ${count("you")}`);
+    if (count("dee") < 3) t.problem("bug", `Dee shows ${count("dee")} distinct poses in the first ten scenes (3 at least)`);
+    if (count("okafor") < 2) t.problem("bug", `Mr. Okafor shows ${count("okafor")} distinct poses in the first ten scenes (2 at least)`);
+    t.metric("speakerMarkedLines", marked);
+    t.event("speaker-marked", `${marked} of ${linesSeen} lines had the speaker's rim brighter than every other figure's`);
+    if (!linesSeen) t.problem("bug", "no line was checked for the speaker's rim");
+    t.metric("poseFades", fadeMs.length);
+    if (fadeMs.length) {
+      const avg = Math.round(fadeMs.reduce((a, b) => a + b, 0) / fadeMs.length);
+      t.metric("poseFadeMs", avg);
+      t.event("pose-fade", `${fadeMs.length} pose fades measured, ${Math.min(...fadeMs)}-${Math.max(...fadeMs)} ms (mean ${avg})`);
+      if (fadeMs.some((ms) => ms < 150 || ms > 250)) t.problem("bug", `a pose cross-fade took ${Math.min(...fadeMs)}-${Math.max(...fadeMs)} ms, not 150-250`);
+    } else t.problem("warn", "no pose cross-fade was measured in the first ten scenes");
+  }
+
   t.progress(1);
   await toLanding(t);
 }
@@ -8675,9 +8813,9 @@ installPlaytest({
     {
       id: "room",
       title: "Night Shift's control room: silhouettes of the trainee and Dee facing one big screen, acting what the story says, the screen switching with a CRT flash, people (not silhouettes) out of the room, a layout that holds on phone, tablet and desktop",
-      seconds: 180,
+      seconds: 420,
       tags: ["full"],
-      description: "Opens Night Shift (a real press on its card, Tap to play) and checks the first scene is the security room, not a grid: the door to the lobby, wall clock (hands at the scene's time), fire panel, access terminal, radio charger, coffee machine, log tablet, desk phone, shelf and two chairs, with the trainee, Dee and Mr. Okafor as black silhouettes in front of one big screen inside the room; the nine cameras are a numbered strip under it and a press on a tile or on the screen does nothing (no buttons, no Shrink, the same camera after). A reduced-motion rule tones the flash and the motion down. Then, from a seeded run (setup shortcut, event seeded-run) and a real press into each of three scenes with a new focus, the screen changes camera with a CRT flash of about 200-300 ms on the camera the scene names, a person is seen switching it, and a line that names a camera (a tile read out, 'tile four') switches to it. Then ten story moments, each entered by a real press: the trainee sits when told to sit, Mr. Okafor leaves through the door at handover, Terrell comes in, the night line rings and is answered, something is written in the log, the lights flicker and coffee spills, Dee taps the screen, Dee stands up and gets angry, Dee takes the keys and leaves, the silence button on the fire panel is pressed: the room records exactly the acts the scene's data holds (act, place and feed fields in story/night-shift.json, in line order). Three of them are watched in motion with nothing skipped (the door opens, the phone rings then the answer, Dee stands then is angry). Out of the room (the tour: stairwell, dock, roof; the lobby desk; the endings by daylight) the people are drawn in colour in the place they are in, the screen a small inset and the room's picture gone; back in the room (visitor-desk) they are silhouettes again. Last, in a frame at 390x844, 360x640, 844x390, 820x1180 and 1280x800: the room scales to the width (5:3), the big screen sits inside it, the strip fits, nothing overlaps (the console fit checks) and no sideways scroll, with a line playing and with the choices up. Options: {\"story\":\"<id>\"}.",
+      description: "Opens Night Shift (a real press on its card, Tap to play) and checks the first scene is the security room, not a grid: the door to the lobby, wall clock (hands at the scene's time), fire panel, access terminal, radio charger, coffee machine, log tablet, desk phone, shelf and two chairs, with the trainee, Dee and Mr. Okafor as black silhouettes in front of one big screen inside the room; the nine cameras are a numbered strip under it and a press on a tile or on the screen does nothing (no buttons, no Shrink, the same camera after). A reduced-motion rule tones the flash and the motion down. Then, from a seeded run (setup shortcut, event seeded-run) and a real press into each of three scenes with a new focus, the screen changes camera with a CRT flash of about 200-300 ms on the camera the scene names, a person is seen switching it, and a line that names a camera (a tile read out, 'tile four') switches to it. Then ten story moments, each entered by a real press: the trainee sits when told to sit, Mr. Okafor leaves through the door at handover, Terrell comes in, the night line rings and is answered, something is written in the log, the lights flicker and coffee spills, Dee taps the screen, Dee stands up and gets angry, Dee takes the keys and leaves, the silence button on the fire panel is pressed: the room records exactly the acts the scene's data holds (act, place and feed fields in story/night-shift.json, in line order). Three of them are watched in motion with nothing skipped (the door opens, the phone rings then the answer, Dee stands then is angry). Out of the room (the tour: stairwell, dock, roof; the lobby desk; the endings by daylight) the people are drawn in colour in the place they are in, the screen a small inset and the room's picture gone; back in the room (visitor-desk) they are silhouettes again. Last, in a frame at 390x844, 360x640, 844x390, 820x1180 and 1280x800: the room scales to the width (5:3), the big screen sits inside it, the strip fits, nothing overlaps (the console fit checks) and no sideways scroll, with a line playing and with the choices up; at 390x844 the room picture is at least 50% taller than the transcript panel, the transcript below it, and the speaking figure's rim is visible. Then the characters (J, 2026-11-11): the first ten scenes at the page's size, each entered by a real press from a seeded run: poses per person (layer + mood from the `perform` word-to-pose map `performPoses` in the data; metrics poseCountDee, poseCountOkafor: Dee 3+, Okafor 2+), the speaker-marked check on every line (the speaking figure's rim, drawn on a canvas with its CSS filter, is brighter than every other figure's; metric speakerMarkedLines), no figure with an identical transform for over 5 s while a line plays (idle breathing), and every pose cross-fade measured from the transition itself (150-250 ms, poseFadeMs). Options: {\"story\":\"<id>\"}.",
     },
     {
       id: "night-shift",
