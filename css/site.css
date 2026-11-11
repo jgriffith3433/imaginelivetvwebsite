@@ -2907,7 +2907,7 @@ button.ending-tile:focus-visible {
   pointer-events: none;
 }
 
-/* Active state: staggered slide and fade-in (70 ms apart, within 60-80 ms) across all three stories. */
+/* Active state: staggered slide-in (70 ms apart, no fade) across all three stories. */
 .spark-choices .choice:nth-child(1), .console-choices .choice:nth-child(1) { --choice-i: 0; }
 .spark-choices .choice:nth-child(2), .console-choices .choice:nth-child(2) { --choice-i: 1; }
 .spark-choices .choice:nth-child(3), .console-choices .choice:nth-child(3) { --choice-i: 2; }
@@ -2924,7 +2924,8 @@ button.ending-tile:focus-visible {
   animation-delay: calc(var(--choice-i, 0) * 70ms);
 }
 .console-choices .choice[data-stress] { animation: none; }
-@keyframes choice-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+/* Move only, never from opacity 0: a card caught mid-entrance must still read as active (f_32e426e8a75b). */
+@keyframes choice-in { from { opacity: 1; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 .console-choices:not(:empty)::before {
   content: "Your move";
