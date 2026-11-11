@@ -3253,6 +3253,52 @@ async function endingsGalleryRun(options, t) {
   }
 }
 
+/** The vertical-native stage (J, 2026-11-11): how much of the stage the picture fills, the clip's height, the blurred copy
+    beside it and where the choices sit. `tag` is "1280x720" etc.; a `screenshot` event follows for the review. */
+function stageFill(t, doc, id, tag) {
+  const win = doc.defaultView;
+  const W = win.innerWidth;
+  const H = win.innerHeight;
+  const stage = doc.querySelector(".spark-stage");
+  const box = doc.getElementById("spark-video");
+  const v = doc.querySelector("#spark-video video:not(.spark-leave)");
+  if (!stage || !box || !v) { t.problem("bug", `${id} at ${tag}: no stage or clip to measure`); return null; }
+  const sr = stage.getBoundingClientRect();
+  const br = box.getBoundingClientRect();
+  const ar = v.videoWidth && v.videoHeight ? v.videoWidth / v.videoHeight : 9 / 16;
+  const fit = win.getComputedStyle(v).objectFit;
+  // The picture: the box itself when the clip covers it, else the clip's own 9:16 centred inside it.
+  let pw = br.width, ph = br.height;
+  if (fit !== "cover") { ph = Math.min(br.height, br.width / ar); pw = ph * ar; }
+  const share = (pw * ph) / (sr.width * sr.height);
+  const blur = doc.getElementById("spark-blur");
+  const blurShown = !!blur && win.getComputedStyle(blur).display !== "none";
+  const blurVideo = blur && blur.querySelector("video");
+  const blurPlaying = !!blurVideo && !blurVideo.paused && blurVideo.readyState >= 2;
+  const bare = Math.max(0, sr.width - pw);
+  const choices = [...doc.querySelectorAll("#spark-choices .choice")].map((c) => c.getBoundingClientRect());
+  t.metric(`stageFill.${id}.${tag}`, Math.round(share * 100) / 100);
+  t.metric(`clipHeightPx.${id}.${tag}`, Math.round(ph));
+  t.event("stage-fill", `${id} ${tag}: stage ${Math.round(sr.width)}x${Math.round(sr.height)}, clip box ${Math.round(br.width)}x${Math.round(br.height)} at ${Math.round(br.left)},${Math.round(br.top)}, picture ${Math.round(pw)}x${Math.round(ph)} = ${Math.round(share * 100)}% of the stage (${Math.round((ph / H) * 100)}% of the viewport's height); object-fit ${fit}; blurred copy ${blurShown ? (blurPlaying ? "playing" : "shown") : "off"}; choices ${choices.map((r) => `${Math.round(r.top)}+${Math.round(r.height)}`).join(", ") || "none"}`);
+  t.event("screenshot", `${id} ${tag}: the first frame fills ${Math.round(share * 100)}% of the stage`);
+  if (W < 600 && H > W) {
+    if (Math.abs(br.width - W) > 1 || br.left < -0.5) t.problem("bug", `${id} at ${tag}: the clip spans ${Math.round(br.width)} px of ${W}, not the full width`);
+    if (parseFloat(win.getComputedStyle(box).borderTopLeftRadius) > 0) t.problem("bug", `${id} at ${tag}: the clip is a rounded card`);
+    choices.forEach((r, i) => {
+      if (r.top < H * 2 / 3 - 1) t.problem("bug", `${id} at ${tag}: choice ${i + 1} starts at y=${Math.round(r.top)}, above the bottom third (${Math.round(H * 2 / 3)})`);
+    });
+  } else if (W >= 900 && H >= 560) {
+    if (ph < H * 0.6 - 1) t.problem("bug", `${id} at ${tag}: the clip is ${Math.round(ph)} px tall, under 60% of the ${H} px viewport`);
+    if (bare > 2 && !(blurShown && blurVideo)) t.problem("bug", `${id} at ${tag}: ${Math.round(bare)} px of flat black beside the clip: no blurred copy of the video fills it`);
+    else if (bare > 2 && !blurPlaying) t.problem("warning", `${id} at ${tag}: the blurred copy isn't playing yet`);
+  }
+  choices.forEach((r, i) => {
+    if (r.height < 47.5) t.problem("bug", `${id} at ${tag}: choice ${i + 1} is ${Math.round(r.height)} px tall, under 48`);
+    if (r.bottom > H + 1 || r.top < -1 || r.right > W + 1 || r.left < -1) t.problem("bug", `${id} at ${tag}: choice ${i + 1} isn't fully on screen (${Math.round(r.left)},${Math.round(r.top)} ${Math.round(r.width)}x${Math.round(r.height)} of ${W}x${H})`);
+  });
+  return share;
+}
+
 /** Cinematic player chrome (J, 2026-11-06): the video letterboxed to 2.39:1 on desktop, the choices dimmed while the clip
     plays and faded in at its end with a visible countdown, and the bar and title fading after 3 s idle. Real presses
     (the card, Tap to play); the clip is watched to its end. No setup shortcut. */
@@ -3270,17 +3316,19 @@ async function cinemaRun(options, t) {
     const frame = document.querySelector("#spark-video");
     const video = () => document.querySelector("#spark-video video:not(.spark-leave)");
     const box = $("spark-choices");
-    t.scene(`${id}: letterbox`);
-    // 1. 2.39:1 on desktop
+    t.scene(`${id}: stage fill`);
+    // 1. The vertical-native stage: the share of the stage the picture fills at 1280x720 (a frame), then at the page's own size.
     const r = frame.getBoundingClientRect();
-    const ratio = r.width / r.height;
-    const fit = getComputedStyle(video()).objectFit;
-    t.metric("videoFrameRatio", Math.round(ratio * 100) / 100);
-    t.event("letterbox", `${Math.round(r.width)}x${Math.round(r.height)} (${ratio.toFixed(2)}:1), object-fit ${fit}, viewport ${innerWidth}x${innerHeight}`);
-    if (desktop) {
-      if (Math.abs(ratio - 2.39) > 0.04) t.problem("bug", `${id}: on desktop the video frame is ${ratio.toFixed(2)}:1, not 2.39:1`);
-      if (fit !== "contain") t.problem("bug", `${id}: the video is ${fit}, not contained (it would be cropped, not letterboxed)`);
-    } else t.problem("warning", `${innerWidth}x${innerHeight} is not a desktop size: the 2.39:1 frame is desktop only`);
+    t.metric("videoFrameRatio", Math.round((r.width / r.height) * 100) / 100);
+    stageFill(t, document, id, `${innerWidth}x${innerHeight}`);
+    {
+      const fdoc = await viewFrameLoad(t, `/?story=${id}`, 1280, 720);
+      await passPrompt(t, fdoc, `${id} (1280x720)`);
+      await waitFor(() => { const fv = fdoc.querySelector("#spark-video video:not(.spark-leave)"); return fv && !fv.paused && fv.currentTime > 0.5; }, 8000);
+      await sleep(600);
+      stageFill(t, fdoc, id, "1280x720");
+      closeViewFrame();
+    }
     // 2. choices show the "Up next" preview state while the clip plays (not greyed-out disabled text, countdown not running yet)
     const first = choiceButtons()[0];
     if (!first) throw new Error(`${id}: no choices on the first page`);
@@ -4679,6 +4727,8 @@ async function phonePlayerRun(options, t) {
   const inView = (els) => els.length && els.every((b) => { const r = b.getBoundingClientRect(); return r.bottom <= win.innerHeight + 1 && r.top >= -1 && r.right <= win.innerWidth + 1; });
   const choices = () => [...doc.querySelectorAll("#spark-choices .choice")];
   t.event("choices", `upright: ${choices().length} choices, all on screen: ${inView(choices())}`);
+  // The first frame fills the phone: the clip spans the full width, the choices sit in the bottom third (390x844, touch).
+  stageFill(t, doc, id, "390x844");
   // The next clips are fetched while this one plays.
   // (at phone size the player asks for each clip's smaller rendition: scene.small)
   const next = Object.values(st.scenes[st.start].choices || []).map((c) => st.scenes[c.next] && [st.scenes[c.next].video, st.scenes[c.next].small]).filter((p) => p && p[0]);
@@ -4754,6 +4804,15 @@ async function phonePlayerRun(options, t) {
     if (r && r.width && (r.left < picRight - 1 && r.right > picLeft + 1) && r.top < win.innerHeight) t.problem("bug", `${id}: in landscape ${sel} sits over the picture`);
   }
   if (doc.documentElement.scrollWidth > win.innerWidth + 1) t.problem("bug", `${id}: landscape scrolls sideways`);
+  stageFill(t, doc, id, "844x390");
+  {
+    // And the desktop frame: the clip at least 60% of the height over its blurred copy.
+    const ddoc = await viewFrameLoad(t, `/?story=${id}`, 1280, 720);
+    await passPrompt(t, ddoc, `${id} (1280x720)`);
+    await waitFor(() => { const dv = ddoc.querySelector("#spark-video video:not(.spark-leave)"); return dv && !dv.paused && dv.currentTime > 0.5; }, 8000);
+    await sleep(600);
+    stageFill(t, ddoc, id, "1280x720");
+  }
   t.progress(1);
   closeViewFrame();
   restoreProgress();

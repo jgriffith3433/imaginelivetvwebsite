@@ -63,6 +63,9 @@
 
   const root = document.getElementById("spark");
   const videoBox = document.getElementById("spark-video");
+  // The stage's blurred, darkened copy of the clip (YouTube's fill for a vertical video on wide screens); on a portrait
+  // phone the clip itself fills the screen and this is display:none, so no second decoder runs there.
+  const blurBox = document.getElementById("spark-blur");
   const storyBox = document.getElementById("spark-story");
   const questionBox = document.getElementById("spark-question");
   const choicesBox = document.getElementById("spark-choices");
@@ -1271,6 +1274,7 @@
       video.preload = "auto";
       video.title = STORY.title + " story video";
       videoBox.appendChild(video);
+      mirrorBlur(video, videoSrc, scene.poster);
       addClipControls(video);
       playClip(video);
       // The incoming clip must never sit paused under the cross-fade: resume it when it can play and when the fade ends.
@@ -2048,6 +2052,39 @@
     });
   }
 
+  /** The blurred copy behind the clip: the same file, muted, kept within 0.4 s of the real clip. */
+  function clearBlur() {
+    if (!blurBox) return;
+    blurBox.querySelectorAll("video").forEach(function (v) { try { v.pause(); } catch (error) { /* gone */ } });
+    blurBox.replaceChildren();
+  }
+
+  function mirrorBlur(main, src, poster) {
+    if (!blurBox) return;
+    clearBlur();
+    blurBox.style.backgroundImage = poster ? 'url("' + poster + '")' : "";
+    if (getComputedStyle(blurBox).display === "none") return;
+    const copy = document.createElement("video");
+    copy.src = src;
+    copy.muted = true;
+    copy.defaultMuted = true;
+    copy.loop = false;
+    copy.playsInline = true;
+    copy.setAttribute("playsinline", "");
+    copy.setAttribute("aria-hidden", "true");
+    copy.tabIndex = -1;
+    copy.preload = "auto";
+    blurBox.appendChild(copy);
+    const follow = function () {
+      if (!copy.isConnected) return;
+      if (Math.abs(copy.currentTime - main.currentTime) > 0.4) { try { copy.currentTime = main.currentTime; } catch (error) { /* not ready */ } }
+      if (main.paused || main.ended) { if (!copy.paused) copy.pause(); }
+      else if (copy.paused) { const p = copy.play(); if (p && p.catch) p.catch(function () {}); }
+    };
+    ["timeupdate", "play", "playing", "pause", "seeked", "ended"].forEach(function (name) { main.addEventListener(name, follow); });
+    copy.addEventListener("canplay", follow, { once: true });
+  }
+
   function crossfadeOut() {
     const ms = fadeMs();
     const old = Array.prototype.slice.call(videoBox.children);
@@ -2081,6 +2118,7 @@
       try { video.pause(); } catch (error) { /* already gone */ }
     });
     videoBox.replaceChildren();
+    clearBlur();
   }
 
   function urlFor(storyId) {
