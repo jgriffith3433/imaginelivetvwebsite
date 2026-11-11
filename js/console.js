@@ -172,8 +172,23 @@
 
   /* ---------------- sound ---------------- */
 
-  function makeAudio(loop) {
-    var a = document.createElement("audio");
+  // The four elements live for the page, not for one opening: a phone (iOS) lets an element play only once a press
+  // has started it, so an element made after the Tap to play (a second story, All stories and back) would stay silent.
+  // close() takes them off the page and open() puts the same, already unlocked, ones back.
+  var pool = {};
+  function makeAudio(loop, key) {
+    var a = pool[key];
+    if (a) {
+      a.onended = a.onerror = null;
+      try { a.pause(); } catch (e) { /* gone */ }
+      a.src = SILENCE;
+      a.loop = !!loop;
+      document.body.appendChild(a);
+      if (window.hawkesSound) window.hawkesSound.apply(a);
+      return a;
+    }
+    a = pool[key] = document.createElement("audio");
+    a.addEventListener("playing", function () { a._primed = true; });
     a.src = SILENCE;
     a.loop = !!loop;
     a.preload = "auto";
@@ -183,6 +198,19 @@
     if (window.hawkesSound) window.hawkesSound.apply(a);
     return a;
   }
+
+  /** Any press while sound is unlocked starts the silent clip on an element no press has started yet (a phone's
+      unlock is per element), so every later line, bed and effect plays without another tap. */
+  function prime() {
+    if (!soundReady()) return;
+    [voice, bed, sfx, sting].forEach(function (a) {
+      if (!a || a._primed || !a.paused || a.src !== SILENCE) return;
+      try { var p = a.play(); if (p && p.catch) p.catch(function () {}); } catch (e) { /* not now */ }
+    });
+  }
+  ["touchend", "pointerup", "click", "keydown"].forEach(function (type) {
+    document.addEventListener(type, prime, true);
+  });
 
   function soundReady() {
     return !window.hawkesSound || window.hawkesSound.unlocked();
@@ -289,6 +317,8 @@
         // The browser wants a tap (js/hawkes-sound.js shows its prompt): hear the line again once there was one.
         clearTimeout(timer);
         el.onended = el.onerror = null;
+        // Sound counts as unlocked but this element was refused (a phone): the prompt comes back, its tap starts it.
+        if (soundReady() && window.hawkesSound && window.hawkesSound.relock) window.hawkesSound.relock();
         var wait = function () {
           if (finished || at !== flow) return; // heard (Skip) or the scene was left
           if (soundReady()) return playLine(line, done);
@@ -982,10 +1012,10 @@
     run = saved || fresh();
     els.title.textContent = def.title.toUpperCase();
     setSubs(subsOn);
-    voice = makeAudio(false);
-    bed = makeAudio(true);
-    sfx = makeAudio(false);
-    sting = makeAudio(false);
+    voice = makeAudio(false, "voice");
+    bed = makeAudio(true, "bed");
+    sfx = makeAudio(false, "sfx");
+    sting = makeAudio(false, "sting");
     bedCue = null;
     shown = null;
     warmBeds();
@@ -1008,6 +1038,7 @@
     if (ch) ch.hidden = true;
     [voice, bed, sfx, sting].forEach(function (a) {
       if (!a) return;
+      a.onended = a.onerror = null;
       try { a.pause(); } catch (e) { /* gone */ }
       if (a.parentNode) a.parentNode.removeChild(a);
     });
