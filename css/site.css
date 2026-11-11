@@ -2361,6 +2361,15 @@ figure.feed { cursor: default; }
   .console-choices { padding-bottom: 0.4rem; }
 }
 
+/* A tall phone upright (390x844): the picture is a short 5:3 frame, so the nine cameras become a 3-wide wall of readable tiles
+   (they were a strip of 40px thumbnails) and the lines are set larger, so the column under them is not a mostly empty black box. */
+@media (max-width: 559px) and (orientation: portrait) and (min-height: 760px) {
+  .console-wall { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+  .console-wall .feed-num { font-size: 0.8rem; }
+  .console-subs { font-size: 1.3rem; line-height: 1.4; padding: 0.5rem 0.6rem; }
+  .console[data-lines="done"] .console-subs { flex: 0 1 auto; }
+}
+
 @media (max-width: 559px) {
   .console-bar h1 { display: none; }
   .console-bar .stories-back { flex: 1; font-size: 0.66rem; letter-spacing: 0.1em; }
