@@ -364,7 +364,7 @@
       ],
       "question": ["What do you do?", "What do you do?"],
       "variants": [
-        { "when": { "gaveFlask": true }, "story": ["The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass goes still beside you. \"That's Hale,\" he whispers. \"He dug our well.\"", "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass goes still beside you. \"That's Hale,\" he whispers. \"He dug our well.\""] },
+        { "when": { "gaveFlask": true }, "story": ["The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass whispers, \"That's Hale. He dug our well.\"", "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass whispers, \"That's Hale. He dug our well.\""] },
         { "when": { "riderLeft": true }, "story": ["The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out, and with one driver gone there are fewer guns on your side to count.", "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out, and with one driver gone there are fewer guns on your side to count."] }
       ],
       "choices": [
@@ -435,7 +435,7 @@
       ],
       "question": ["What do you do?", "What do you do?"],
       "variants": [
-        { "when": { "gaveFlask": true }, "story": ["They come back after midnight, on foot, for the barrels. The girl's father is up before you, a lantern in one hand and the other held out empty, standing at your shoulder.", "They come back after midnight, on foot, for the barrels. The girl's father is up before you, a lantern in one hand and the other held out empty, standing at your shoulder."] },
+        { "when": { "gaveFlask": true }, "story": ["They come back after midnight, on foot, for the barrels. The girl's father is already up, lantern in one hand, the other held out empty, at your shoulder.", "They come back after midnight, on foot, for the barrels. The girl's father is already up, lantern in one hand, the other held out empty, at your shoulder."] },
         { "when": { "riderLeft": true }, "story": ["They come back after midnight, on foot, for the barrels. With a driver gone you are taking every watch yourself, and you can hear how dry their voices are.", "They come back after midnight, on foot, for the barrels. With a driver gone you are taking every watch yourself, and you can hear how dry their voices are."] }
       ],
       "choices": [

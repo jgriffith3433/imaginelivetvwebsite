@@ -1380,8 +1380,8 @@ window.ILTV_STORIES = {
         "gaveFlask": true
        },
        "story": [
-        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass goes still beside you. \"That's Hale,\" he whispers. \"He dug our well.\"",
-        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass goes still beside you. \"That's Hale,\" he whispers. \"He dug our well.\""
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass whispers, \"That's Hale. He dug our well.\"",
+        "The wash bends between red rocks, and the mules start pulling hard, ears forward. Five riders block the way, guns out. The boy with the spyglass whispers, \"That's Hale. He dug our well.\""
        ]
       },
       {
@@ -1510,8 +1510,8 @@ window.ILTV_STORIES = {
         "gaveFlask": true
        },
        "story": [
-        "They come back after midnight, on foot, for the barrels. The girl's father is up before you, a lantern in one hand and the other held out empty, standing at your shoulder.",
-        "They come back after midnight, on foot, for the barrels. The girl's father is up before you, a lantern in one hand and the other held out empty, standing at your shoulder."
+        "They come back after midnight, on foot, for the barrels. The girl's father is already up, lantern in one hand, the other held out empty, at your shoulder.",
+        "They come back after midnight, on foot, for the barrels. The girl's father is already up, lantern in one hand, the other held out empty, at your shoulder."
        ]
       },
       {
