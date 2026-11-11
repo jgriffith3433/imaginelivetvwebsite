@@ -622,7 +622,7 @@
       if (b !== btn) { b.classList.add("is-fading"); b.setAttribute("aria-disabled", "true"); b.tabIndex = -1; }
     });
     try { if (navigator.vibrate) navigator.vibrate(10); } catch (e) { /* unsupported */ }
-    try { if (window.iltvAudio && window.iltvAudio.playUi) window.iltvAudio.playUi("choose"); } catch (e) { /* no sound */ }
+    try { if (window.iltvAudio && window.iltvAudio.playUi) window.iltvAudio.playUi("tap"); window.iltvAudio.beginBeds && window.iltvAudio.beginBeds("choice"); } catch (e) { /* no sound */ }
     document.dispatchEvent(new CustomEvent("iltv:deciding", { detail: { index: btn.dataset.choiceIndex || btn.dataset.choice } }));
     // The hand-off state belongs to this press. A scene change replaces the buttons (the chosen one leaves the page),
     // and the box must still be released, or every choice on the next page keeps pointer-events:none and a press lands

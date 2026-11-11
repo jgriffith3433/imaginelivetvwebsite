@@ -1023,6 +1023,10 @@
     choicesBox.dataset.phase = phase;
     root.dataset.choices = phase;
     if (phase === "ready") {
+      if (window.iltvAudio && choicesBox.children.length && choicesBox.dataset.appeared !== currentScene) {
+        choicesBox.dataset.appeared = currentScene;
+        window.iltvAudio.playUi("appear");
+      }
       choicesBox.style.setProperty("--clip-progress", "100%");
       if (timerBox) timerBox.style.setProperty("--clip-progress", "100%");
       tagChoiceStagger(choicesBox);
@@ -1128,7 +1132,10 @@
       if (secs > 0 && secs !== shown) {
         shown = secs;
         label.textContent = "Choose in " + secs + " s";
-        if (secs <= 3) timerBox.dataset.urgent = "true";
+        if (secs <= 3) {
+          timerBox.dataset.urgent = "true";
+          if (window.iltvAudio) window.iltvAudio.playUi("tick");
+        }
       }
       if (left > 0) { windowTick = requestAnimationFrame(frame); return; }
       windowTick = null;
@@ -1270,6 +1277,7 @@
       });
     } else {
       setChoicePhase("ready");
+      if (window.iltvAudio) window.iltvAudio.beginBeds("image");
       // A draft story's scene before its media is made: its title on black, where the video will be.
       const blank = document.createElement("div");
       blank.className = "spark-video-blank";
@@ -1332,6 +1340,7 @@
     if (scene.choices.length === 0) {
       showEndingCard(sceneId, scene);
       endingBox.hidden = false;
+      if (window.iltvAudio) window.iltvAudio.playUi("sting-" + STORY.id);
     } else {
       endingBox.hidden = true;
       endingBox.replaceChildren();
