@@ -189,3 +189,23 @@ barrel given to the riders (opened at the wash, called in at night, or left on t
 voice only, cut over the existing clips (`npm run story` recipes; Studio's asset make, then `tools/make-audio.mjs`-style
 cut). Variant text (the lookout, wash, night raid, a drink for strangers) is shown on screen over the base narration; a
 variant clip is a GPU job (not made).
+
+## Edited openings: coverage on the five pages every path crosses (2026-11-11)
+
+Player goal: the opening reads as cut film, not one shot per page. `start`, `flats`, `mesa`, `family` and `wash` each list
+`shots` (the build lays them end to end, never looped): a **wide** that establishes, a **close-up** that acts the beat, then
+the page's original shot last.
+
+| Page | 1. wide | 2. close-up | 3. original |
+| --- | --- | --- | --- |
+| `start` | the wagon train in dawn haze, the dove in the foreground | the rider's hand resting on the unfired revolver | dove branch, rack focus to the train |
+| `flats` | six wagons on the white salt, one tilted on a cracked wheel | the rider's face and the flask he doesn't drink | the tilted wagon, the rider looks up |
+| `mesa` | the caravan under the mesa, the glint | the hand on the holster grip, thumb on the hammer | rider slows and looks up |
+| `family` | the family in the broken wagon's shade, the caravan behind | the trail boss's measuring look (the girl drinks on the next page, `giveFlask`) | the little girl looks up |
+| `wash` | the dry wash, five riders blocking it | the riders' leader's face | the dove skims over the riders |
+
+Characters are cast from their sheets (`hero`, `boss`, `leader`, `family`, `dove`): same faces and clothes as every other shot.
+**Status:** data only. None of the ten new clips is made (no GPU approved); the cut skips a shot that isn't made, with a
+warning, so nothing changes for the viewer until they are. To make them: `studio.cmd assets imaginelivetv make` (10 keyframes
+x 3 candidates, 10 `video.i2v`). Shot order in the file is play order, so the original shot is now `clip-3.mp4`, not `clip.mp4`:
+remake it with the others (or rename its files) before the cut is rebuilt.
