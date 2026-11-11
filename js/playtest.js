@@ -2755,13 +2755,28 @@ async function endingsGalleryRun(options, t) {
   const ends = Object.keys(st.scenes).filter((sid) => st.scenes[sid].ending);
   if (ends.length < 1) throw new Error(`${id}: no endings`);
   const pressTo = async (to) => {
-    const i = st.scenes[sceneId()].choices.findIndex((c) => c[2] === to);
-    const button = choiceButtons()[i];
-    if (i < 0 || !button) throw new Error(`${id}: no choice from ${sceneId()} to ${to}`);
-    button.scrollIntoView({ block: "center", behavior: "instant" });
-    await tapAt(t, button, `"${enText(button)}"`);
-    await sleep(250);
-    if (sceneId() !== to) throw new Error(`${id}: "${enText(button)}" didn't open ${to} (on ${sceneId()})`);
+    const from = sceneId();
+    const i = st.scenes[from].choices.findIndex((c) => c[2] === to);
+    if (i < 0) throw new Error(`${id}: no choice from ${from} to ${to}`);
+    // A viewer presses a card once it is there: the page's buttons are pressable when the last press's hand-off is over
+    // (up to 3 s), so a press never lands on the box around them. The button is looked up again at each look.
+    let button = null;
+    for (let waited = 0; waited <= 3000; waited += 100) {
+      button = choiceButtons()[i];
+      if (button) {
+        button.scrollIntoView({ block: "center", behavior: "instant" });
+        const r = button.getBoundingClientRect();
+        const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        if (hit && button.contains(hit)) break;
+      }
+      await sleep(100);
+    }
+    if (!button) throw new Error(`${id}: no choice from ${from} to ${to}`);
+    const say = enText(button);
+    await tapAt(t, button, `"${say}"`);
+    for (let waited = 0; waited < 3000 && sceneId() !== to; waited += 100) await sleep(100);
+    await sleep(150);
+    if (sceneId() !== to) throw new Error(`${id}: "${say}" didn't open ${to} (on ${sceneId()})`);
   };
   const checkGallery = (pane, foundWant, label) => {
     if (!pane || pane.hidden) { t.problem("bug", `${label}: endings gallery is not open`); return; }
