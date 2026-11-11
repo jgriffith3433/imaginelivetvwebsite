@@ -2987,6 +2987,29 @@ async function endingsGalleryRun(options, t) {
       }
       closeViewFrame();
     }
+    // Both endings found: the home card's count reads "N of N endings" and wears the completion badge (a tick, lit),
+    // inside the card at 390x844.
+    {
+      const doc = await viewFrameLoad(t, "/", 390, 844);
+      await sleep(700);
+      const cardBox = doc.querySelector(`.story-card[data-story="${id}"]`);
+      const cardEl = cardBox && cardBox.querySelector(".story-card-endings");
+      if (!cardEl) t.problem("bug", `${id}: no endings count on the home card after both endings`);
+      else {
+        cardEl.scrollIntoView({ block: "center", behavior: "instant" });
+        await sleep(200);
+        const er = cardEl.getBoundingClientRect();
+        const cr = cardBox.getBoundingClientRect();
+        const txt = cardEl.textContent.trim();
+        const badge = doc.defaultView.getComputedStyle(cardEl, "::before").content;
+        t.event("replay-card-complete", `home card at 390x844: "${txt}", badge ${cardBox.dataset.allEndings === "true" ? "shown" : "missing"} (${badge})`);
+        if (txt !== `${ends.length} of ${ends.length} endings`) t.problem("bug", `${id}: home card says "${txt}" with both endings found`);
+        if (cardBox.dataset.allEndings !== "true") t.problem("bug", `${id}: no completion badge on the home card with every ending found`);
+        if (er.right > cr.right + 1 || er.left < cr.left - 1 || cardEl.scrollWidth > cardEl.clientWidth + 1) t.problem("bug", `${id}: the completion badge is cut off on its card at 390x844`);
+        t.event("screenshot", `home card with every ending found at 390x844`);
+      }
+      closeViewFrame();
+    }
     t.event("criterion", `${id}: endings gallery shows found posters/names, locked ???, count up to ${ends.length} of ${ends.length}, recall works, fits 390x844 and 1280x720`);
     // Night Shift's twelve tiles must scroll inside the player at 390x844 (flex shell like the Tree).
     const night = story("night-shift");
