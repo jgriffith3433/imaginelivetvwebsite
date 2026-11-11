@@ -1221,8 +1221,8 @@ async function storiesRun(options, t) {
       await toStart(t);
       await playWay(t, st, death);
       t.event("death", `${st.id}: ${sceneId()}`);
-      const again = choiceButtons()[st.scenes[sceneId()].choices.findIndex((c) => c[2] === st.start)];
-      if (!again) t.problem("bug", `${st.id}: the death ${sceneId()} has no Try again back to the start`);
+      const again = document.querySelector("#spark-choices [data-death=start]");
+      if (!again) t.problem("bug", `${st.id}: the death ${sceneId()} has no Start over back to the start`);
       else {
         again.click();
         await sleep(200);
@@ -3118,13 +3118,35 @@ async function analyticsRun(options, t) {
   rememberProgress();
   clearProgress();
   const st = story(FIRST);
+  // A death's two buttons (Rewind to the choice, Start over): Start over is the old Try again.
+  const tapDeath = async (kind) => {
+    const button = document.querySelector(`#spark-choices [data-death=${kind}]`);
+    if (!button) throw new Error(`no ${kind} button on the death ${sceneId()}`);
+    button.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, button, `"${enText(button)}"`);
+    await sleep(200);
+    if (kind === "start" && sceneId() !== st.start) throw new Error(`Start over didn't open ${st.start} (on ${sceneId()})`);
+    t.scene(`${FIRST}/${st.scenes[sceneId()].folder}`);
+    await waitFor(() => !document.querySelector("#spark-video video:not(.spark-leave)")?.paused, 4000);
+    await sleep(900);
+  };
   const tapChoice = async (to) => {
     const i = st.scenes[sceneId()].choices.findIndex((ch) => ch[2] === to);
     const button = choiceButtons()[i];
     if (i < 0 || !button) throw new Error(`no choice from ${sceneId()} to ${to}`);
-    button.scrollIntoView({ block: "center", behavior: "instant" });
-    await tapAt(t, button, `"${enText(button)}"`);
-    await sleep(200);
+    if (!button.getClientRects().length) {
+      // A one-choice page has no button: it carries on by itself when its clip ends (the video is skipped to its end).
+      const from = sceneId();
+      const v = document.querySelector("#spark-video video:not(.spark-leave)");
+      await waitFor(() => v && v.duration > 0.5 && isFinite(v.duration), 8000);
+      if (v && v.duration > 0.5 && isFinite(v.duration)) v.currentTime = Math.max(0, v.duration - 0.12);
+      if (!(await waitFor(() => sceneId() !== from, 5000))) throw new Error(`${from} has one choice and didn't carry on by itself`);
+      t.event("auto-continue", `${from} → ${sceneId()} by itself`);
+    } else {
+      button.scrollIntoView({ block: "center", behavior: "instant" });
+      await tapAt(t, button, `"${enText(button)}"`);
+      await sleep(200);
+    }
     if (sceneId() !== to) throw new Error(`"${enText(button)}" didn't open ${to} (on ${sceneId()})`);
     t.scene(`${FIRST}/${st.scenes[to].folder}`);
     // A moment on each page, so its video plays (and is skipped by the next choice).
@@ -3146,7 +3168,7 @@ async function analyticsRun(options, t) {
     await tapChoice("direction");
     await tapChoice("deadEnd");
     await tapChoice("sludge");
-    await tapChoice(st.start);
+    await tapDeath("start");
     t.progress(0.3);
     const thumbs = await waitForAsk(t, "back-twice", 8000);
     if (!thumbs) t.problem("bug", "Going back up the tree twice (a back choice, then Try again) didn't show the thumbs question");
@@ -6861,6 +6883,247 @@ async function decisiveOpenAt(t, id, w, h) {
   return doc;
 }
 
+/* ---------------- rewind: a death goes back to the decision, a timeout never kills, one choice plays on ---------------- */
+
+function rewindPath(st, target) {
+  const from = { [st.start]: null };
+  const queue = [st.start];
+  while (queue.length) {
+    const id = queue.shift();
+    if (id === target) {
+      const way = [];
+      for (let at = id; at != null; at = from[at]) way.unshift(at);
+      return way;
+    }
+    if (st.scenes[id].dead) continue;
+    for (const c of st.scenes[id].choices) if (!(c[2] in from) && st.scenes[c[2]]) (from[c[2]] = id), queue.push(c[2]);
+  }
+  return null;
+}
+
+/** Setup shortcut (event seeded-run): the run the player would have saved for a viewer who came this way, opened by its link. */
+function rewindSeed(t, st, scene, why) {
+  const way = rewindPath(st, scene);
+  if (!way) throw new Error(`${st.id}: no way to ${scene}`);
+  clearProgress();
+  document.cookie = `${st.cookie}=${encodeURIComponent(JSON.stringify({ scene, history: way.slice(0, -1) }))}; Path=/`;
+  t.event("seeded-run", `${st.id}: at ${scene} (${way.length - 1} choices in) for ${why}`);
+}
+
+/** Plays the clip to its end (a skip of the wait, not of the player's logic). */
+async function rewindEndClip(doc) {
+  const win = doc.defaultView;
+  const v = () => doc.querySelector("#spark-video video:not(.spark-leave)");
+  await waitFor(() => v() && (!v().paused || v().ended || (v().duration && v().currentTime > 0)), 8000);
+  const vid = v();
+  if (!vid) return;
+  if (vid.duration > 0.5 && isFinite(vid.duration)) vid.currentTime = Math.max(0, vid.duration - 0.12);
+  else vid.dispatchEvent(new win.Event("ended"));
+}
+
+function rewindLum(rgb) {
+  const [r, g, b] = rgb.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+function rewindRgb(css) {
+  const m = String(css).match(/rgba?\(([^)]+)\)/);
+  return m ? m[1].split(",").slice(0, 3).map((n) => parseFloat(n)) : null;
+}
+
+/** The "Tried" mark on a button: present, in words, and readable against what is behind it (contrast 4.5:1). */
+function rewindCheckTried(t, doc, button, where) {
+  const win = doc.defaultView;
+  const note = button.querySelector(".choice-tried");
+  if (button.dataset.tried !== "true" || !note || !/tried/i.test(note.textContent)) {
+    t.problem("bug", `${where}: the deadly option isn't marked as tried (data-tried ${button.dataset.tried}, mark "${note ? note.textContent : "none"}")`);
+    return;
+  }
+  const r = note.getBoundingClientRect();
+  const fg = rewindRgb(win.getComputedStyle(note).color);
+  const bg = rewindRgb(win.getComputedStyle(note).backgroundColor);
+  const ratio = fg && bg ? (Math.max(rewindLum(fg), rewindLum(bg)) + 0.05) / (Math.min(rewindLum(fg), rewindLum(bg)) + 0.05) : 0;
+  const inside = r.width > 0 && r.right <= win.innerWidth + 1 && r.left >= -1 && r.right <= button.getBoundingClientRect().right + 1;
+  if (!inside) t.problem("bug", `${where}: the Tried mark is cut off or outside its button`);
+  if (ratio < 4.5) t.problem("bug", `${where}: the Tried mark's contrast is ${ratio.toFixed(1)}:1 (4.5:1 needed to stay readable)`);
+  t.event("tried-mark", `${where}: "${note.textContent}" ${Math.round(r.width)}x${Math.round(r.height)}px, contrast ${ratio.toFixed(1)}:1`);
+}
+
+/** The two death buttons in a document: both there (Rewind first), full width of the choices, 48px tall, on screen. */
+function rewindCheckButtons(t, doc, where, { phone = false } = {}) {
+  const win = doc.defaultView;
+  const btns = [...doc.querySelectorAll("#spark-choices [data-death]")];
+  const kinds = btns.map((b) => b.dataset.death).join(",");
+  if (kinds !== "rewind,start") {
+    t.problem("bug", `${where}: a death should offer Rewind to the choice then Start over, it offers [${kinds}]`);
+    return btns;
+  }
+  const texts = btns.map((b) => (b.querySelector(".spot-src") || b).textContent.trim());
+  if (!/^rewind to the choice$/i.test(texts[0])) t.problem("bug", `${where}: the first death button says "${texts[0]}"`);
+  if (!/start over|recommence/i.test(texts[1])) t.problem("bug", `${where}: the second death button says "${texts[1]}"`);
+  const box = doc.getElementById("spark-choices").getBoundingClientRect();
+  const sizes = [];
+  for (const b of btns) {
+    const r = b.getBoundingClientRect();
+    sizes.push(`${b.dataset.death} ${Math.round(r.width)}x${Math.round(r.height)}`);
+    if (r.height < 48) t.problem("bug", `${where}: the ${b.dataset.death} button is ${Math.round(r.height)}px tall (48px at least)`);
+    if (r.width < box.width * 0.95) t.problem("bug", `${where}: the ${b.dataset.death} button is ${Math.round(r.width)}px wide in a ${Math.round(box.width)}px row (full width wanted)`);
+    if (r.top < 0 || r.bottom > win.innerHeight + 1 || r.left < -1 || r.right > win.innerWidth + 1) t.problem("bug", `${where}: the ${b.dataset.death} button is not fully on screen (top ${Math.round(r.top)}, bottom ${Math.round(r.bottom)} of ${win.innerHeight})`);
+    if (phone && r.top + r.height / 2 < win.innerHeight * 0.5) t.problem("warning", `${where}: the ${b.dataset.death} button is in the top half of the phone screen, out of thumb reach`);
+  }
+  t.event("death-buttons", `${where}: ${sizes.join(", ")}`);
+  return btns;
+}
+
+async function rewindRun(options, t) {
+  const id = (options && options.story) || "water-road";
+  const st = story(id);
+  if (!st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const dead = (sid) => !!(st.scenes[sid] && st.scenes[sid].dead);
+  const forks = Object.keys(st.scenes).filter((sid) => !dead(sid) && st.scenes[sid].choices.length > 1 && st.scenes[sid].choices.some((c) => dead(c[2])));
+  const firstDeath = Object.keys(st.scenes).filter(dead).sort((a, b) => rewindPath(st, a).length - rewindPath(st, b).length)[0];
+  const dyingWay = rewindPath(st, firstDeath);
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  await openStory(t, id);
+  await toStart(t, { quiet: true });
+  t.progress(0.05);
+
+  // 1. Real presses to the nearest death: the clip and its line stay, and there are two buttons.
+  t.scene(`${id}: to the death at ${firstDeath}`);
+  const press = async (next) => {
+    const i = st.scenes[sceneId()].choices.findIndex((c) => c[2] === next);
+    const b = choiceButtons()[i];
+    if (i < 0 || !b) throw new Error(`${id}: no choice from ${sceneId()} to ${next}`);
+    b.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, b, `"${enText(b)}"`);
+    if (!(await waitFor(() => sceneId() === next, 3000))) throw new Error(`${id}: "${enText(b)}" didn't open ${next}`);
+  };
+  for (const next of dyingWay.slice(1)) {
+    await press(next);
+    await sleep(500);
+  }
+  if (sceneId() !== firstDeath) throw new Error(`${id}: expected the death ${firstDeath}, at ${sceneId()}`);
+  t.event("death", `${id}: ${firstDeath}`);
+  const fork = dyingWay[dyingWay.length - 2];
+  await rewindEndClip(document);
+  if (!(await waitFor(() => document.querySelectorAll("#spark-choices [data-death]").length >= 2, 5000))) t.problem("bug", `${id}: the death ${firstDeath} never offered its two buttons`);
+  if (!document.querySelector("#spark-video video") && !document.querySelector("#spark-video .spark-video-blank")) t.problem("bug", `${id}: the death shows no clip`);
+  if (!($("spark-story").textContent || "").trim()) t.problem("bug", `${id}: the death's line is gone`);
+  const deathButtons = rewindCheckButtons(t, document, `${id} ${firstDeath} (${innerWidth}x${innerHeight})`);
+  await sleep(1500); // on screen for the footage
+  t.progress(0.2);
+
+  // 2. Rewind: the same fork within 2 s, the deadly option marked as tried.
+  const t0 = performance.now();
+  const rewind = deathButtons.find((b) => b.dataset.death === "rewind");
+  if (!rewind) throw new Error(`${id}: no Rewind button`);
+  await tapAt(t, rewind, "Rewind to the choice");
+  const back = await waitFor(() => sceneId() === fork, 2000);
+  const ms = Math.round(performance.now() - t0);
+  if (!back) t.problem("bug", `${id}: Rewind didn't show ${fork} within 2 s (at ${sceneId()})`);
+  else t.event("rewound", `${id}: ${firstDeath} → ${fork} in ${ms} ms (history ${spark().depth()})`);
+  t.metric("rewindMs", ms);
+  const di = st.scenes[fork].choices.findIndex((c) => c[2] === firstDeath);
+  await sleep(400);
+  const marked = choiceButtons();
+  rewindCheckTried(t, document, marked[di], `${id} ${fork}`);
+  if (marked.some((b, i) => i !== di && b.dataset.tried === "true")) t.problem("bug", `${id}: an option that never killed anyone is marked as tried`);
+  if ((spark().tried()[fork] || []).join() !== firstDeath) t.problem("bug", `${id}: the run doesn't remember ${firstDeath} as tried at ${fork}`);
+  if (spark().path().join(">") !== dyingWay.slice(0, -1).join(">")) t.problem("bug", `${id}: after Rewind the way is ${spark().path().join(">")}, not ${dyingWay.slice(0, -1).join(">")}`);
+  await sleep(1200);
+  // The mark is saved with the run: a reload (the story's link) keeps it.
+  const saved = readJsonCookie(st.cookie);
+  if (!saved || !saved.tried || !saved.tried[fork]) t.problem("bug", `${id}: the tried mark isn't saved with the run cookie`);
+  t.progress(0.3);
+
+  // 3. The same death again, then Start over: the first page, a new run, nothing tried.
+  await press(firstDeath);
+  await rewindEndClip(document);
+  await waitFor(() => document.querySelectorAll("#spark-choices [data-death]").length >= 2, 5000);
+  const startBtn = document.querySelector("#spark-choices [data-death=start]");
+  if (!startBtn) t.problem("bug", `${id}: the second death has no Start over`);
+  else {
+    await tapAt(t, startBtn, "Start over");
+    await waitFor(() => sceneId() === st.start, 2000);
+    if (sceneId() !== st.start || spark().depth() !== 0) t.problem("bug", `${id}: Start over didn't open ${st.start} as a new run (at ${sceneId()}, depth ${spark().depth()})`);
+    if (Object.keys(spark().tried()).length) t.problem("bug", `${id}: Start over kept the tried marks`);
+  }
+  t.progress(0.38);
+
+  // 4. At 390x844 both buttons are full width, 48px tall and on screen; Rewind there marks the fork too.
+  t.scene(`${id}: the death at 390x844`);
+  rewindSeed(t, st, firstDeath, "the phone's death");
+  {
+    const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+    await passPrompt(t, doc, `${id} 390x844`);
+    await rewindEndClip(doc);
+    await waitFor(() => doc.querySelectorAll("#spark-choices [data-death]").length >= 2, 8000);
+    const btns = rewindCheckButtons(t, doc, `${id} ${firstDeath} (390x844)`, { phone: true });
+    await sleep(1200);
+    const r = btns.find((b) => b.dataset.death === "rewind");
+    if (r) {
+      await tapAt(t, r, "Rewind to the choice (390x844)");
+      const w = doc.defaultView;
+      if (!(await waitFor(() => w.finalSpark.scene() === fork, 2000))) t.problem("bug", `${id} 390x844: Rewind didn't show ${fork} within 2 s`);
+      await sleep(400);
+      rewindCheckTried(t, doc, [...doc.querySelectorAll("#spark-choices .choice")][di], `${id} ${fork} (390x844)`);
+      await sleep(1000);
+    }
+    closeViewFrame();
+  }
+  t.progress(0.5);
+
+  // 5. A timeout never kills: every fork with a deadly option is left to the 15 s timer.
+  for (const [n, sid] of forks.entries()) {
+    t.scene(`${id}: the timer runs out at ${sid}`);
+    for (const c of spark().choicesOf(sid)) if (c.default && dead(c.next)) t.problem("bug", `${id}/${sid}: the default choice leads to a death (${c.next})`);
+    rewindSeed(t, st, sid, `the timeout at ${sid}`);
+    openByLink(t, id);
+    await sleep(300);
+    if (soundOf().prompt()) await passPrompt(t, document, id);
+    if (!(await waitFor(() => sceneId() === sid, 5000))) throw new Error(`${id}: the saved place ${sid} didn't open (at ${sceneId()})`);
+    await rewindEndClip(document);
+    // The timer: 15 s from the end of the clip, then the pick glows for about a second.
+    const left = await waitFor(() => sceneId() !== sid, 22000);
+    const now = sceneId();
+    if (!left) t.problem("bug", `${id}/${sid}: nothing happened when the timer ran out`);
+    else if (dead(now)) t.problem("bug", `${id}/${sid}: letting the timer run out led to a death (${now})`);
+    else t.event("timeout-safe", `${id}/${sid}: the timer chose ${now}`);
+    t.progress(0.5 + (0.3 * (n + 1)) / forks.length);
+  }
+
+  // 6. One choice carries on by itself: no button, the screen fades, the next page opens.
+  const fs = story(FIRST);
+  const one = Object.keys(fs.scenes).find((sid) => fs.scenes[sid].choices.length === 1 && !fs.scenes[sid].dead && !fs.scenes[sid].ending && fs.scenes[sid].video && rewindPath(fs, sid));
+  if (one) {
+    t.scene(`${FIRST}: ${one} continues by itself`);
+    if (!landingShown()) await toLanding(t);
+    rewindSeed(t, fs, one, "a one-choice page");
+    openByLink(t, FIRST);
+    await sleep(300);
+    if (soundOf().prompt()) await passPrompt(t, document, FIRST);
+    if (!(await waitFor(() => sceneId() === one, 5000))) throw new Error(`${FIRST}: ${one} didn't open`);
+    const box = $("spark-choices");
+    const visible = [...box.querySelectorAll(".choice")].filter((b) => b.getClientRects().length);
+    if (visible.length) t.problem("bug", `${FIRST}/${one}: a one-choice page shows a button ("${enText(visible[0])}")`);
+    const next = fs.scenes[one].choices[0][2];
+    await rewindEndClip(document);
+    const t1 = performance.now();
+    let faded = false;
+    const watch = setInterval(() => { if ($("spark").classList.contains("is-auto-advance")) faded = true; }, 40);
+    const went = await waitFor(() => sceneId() !== one, 4000);
+    clearInterval(watch);
+    const took = Math.round(performance.now() - t1);
+    if (!went || sceneId() !== next) t.problem("bug", `${FIRST}/${one}: the page didn't carry on by itself to ${next} after its clip (at ${sceneId()})`);
+    else t.event("auto-continue", `${FIRST}/${one} → ${next} ${took} ms after its clip, no press${faded ? ", with a fade" : ""}`);
+    if (!faded) t.problem("warning", `${FIRST}/${one}: no fade before it carried on`);
+    await sleep(800);
+  }
+  t.progress(1);
+}
+
 async function decisiveRun(options, t) {
   // Same guard as audioBusesRun / phoneChoicesRun: a smoke leg must not overwrite the outer snapshot.
   if (!savedRuns && savedCookie == null) rememberProgress();
@@ -7101,6 +7364,13 @@ installPlaytest({
       description: "Waits for the landing page's title splash (just IMAGINE LIVE TV on the prompt's background, no Tap to play, no sound line) to fade away by itself, and checks the landing page shows no inventory (the flashlight is The Final Spark's: it's there once the story is open). Checks the landing page has a card for every listed story in story/stories.json (title, logline, an image that loads) and none for the unlisted ones. Progress on the cards: with the saved places cleared (a fresh browser, the home page loaded in a frame) every card says Not started and 0% explored; opening a story makes its card say Started, one scene's percent; its Tree then shows only the first page and a locked ? per choice (nothing to press, nothing of the scene behind a ?); reaching one of its endings (the shortest way) makes it Completed, the percent follows the unlocked scenes (100% only with every scene found) and its card's button says Start Over (the run is at an ending), the story's link reopens it at that ending (with the inventory's counts of the way there), and a death and Try again keep it Completed (the button Play: the run is back at the start); the home page loaded again shows every card Completed. Then, from an ending, each card's Start Over: it forgets only that story's run (its unlocks, percent and Completed stay; the other stories' cookies are untouched) and opens it at its start with an empty history; back on the landing page its card says Completed, the same percent, and Start Over (a Completed card always offers Start Over, the same in all three stories; only an ending sets Completed). Taps each card: the player opens that story (its title, ?story=<id> in the address) under its own Tap to play prompt, which it taps; its first page's text, video and choices, and no Back button in the player; All stories brings the landing page back with the video gone (no splash again, no inventory). A draft (listed: false) opens by its link, /?story=<id>: its title, first page and inventory (a draft whose media is made plays its first page's cut, 9:16 with sound), and a saved place a few choices in comes back with the same counts. Then each story's own link, /<id>/, opens the home page straight into that story, with its own Tap to play title. Night Shift (a console story, 36 minutes of voiced lines at the shortest) is a card like the others: opened from its card it shows its wall, first lines and choices; for Completed the bot leaves the player two choices short of the shortest way's ending with a seeded run (the run and unlocks saved as a viewer who had listened that far would have them: a named setup shortcut, event seeded-run) and presses the last choices; Start Over then reuses that ending. The `night-shift` scenario plays whole ways with real presses.",
     },
     {
+      id: "rewind",
+      title: "A death goes back to the decision: Rewind to the choice (the deadly option marked Tried) and Start over; a timeout never kills; one-choice pages play on by themselves",
+      seconds: 240,
+      tags: ["full"],
+      description: "The Water Road (or {\"story\":\"<id>\"}): real presses to the nearest death. The death keeps its clip and line and offers two buttons, Rewind to the choice and Start over, full width and 48px tall. Rewind shows the same fork again within 2 s (rewindMs) with the deadly option marked Tried (words, readable contrast, saved with the run); the same death again, then Start over opens the first page as a new run with nothing tried. At 390x844 (a frame, the run seeded at the death: setup shortcut, event seeded-run) both buttons are fully on screen, full width and at least 48px tall, and Rewind there marks the fork too. Then every fork that has a deadly option (the salt flats, the mesa, the dust, the dry wash, the night raid) is opened from a seeded run, its clip played to the end and the 15 s timer left to run out: the timer never picks a death. Last, a one-choice page of The Final Spark (seeded) shows no button and, when its clip ends, fades and carries on to the next page by itself (event auto-continue).",
+    },
+    {
       id: "decisive-choice",
       title: "A choice is decisive: the chosen card glows, the others fall away, one vibration, a double tap makes one choice, keys 1/2/3 pick",
       seconds: 180,
@@ -7305,6 +7575,7 @@ installPlaytest({
       else if (id === "night-shift") await nightShiftRun(options, t);
       else if (id === "progress") await progressRun(options, t);
       else if (id === "decisive-choice") await decisiveRun(options, t);
+      else if (id === "rewind") await rewindRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);

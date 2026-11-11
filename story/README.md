@@ -331,9 +331,42 @@ tree can be pressed. (A choice between two scenes you have both reached draws it
 ## No going back
 
 Players own their choices (J, 2026-10-18): the player has no Back button, in every story. A choice stands; the
-only ways to another path are a death (its Try again goes back to the start) or Start Over on a completed story's
+only ways to another path are a death (its two buttons, below) or Start Over on a completed story's
 card. The history is still kept (the way you came), for the inventory's counts and the saved place. The Tree tab can't
 open scenes either (above, "Unlocked scenes").
+
+## Deaths, rewinds, flags and the timer (video stories)
+
+J, 2026-11-11 (reference: Bandersnatch, where most endings offer to redo the last critical choice and the timeout
+follows the basic path, never a death; Choices: The Crown and the Flame, which rewinds to the last choice point). A
+choice never kills a viewer who looked away; a death sends them back to the decision, not to page 1; the story can
+remember a choice and call it back later. All of it is data in `story/<id>.json`; `js/game.js` and
+`tools/build-story.mjs` do the rest. Console stories are unchanged.
+
+- **A death keeps its clip and its line** and offers two buttons in place of "Try again": **Rewind to the choice**
+  reopens the last fork (the page the deadly choice was made on) with that option marked **Tried** (a word, not only a
+  colour; the run remembers it, saved in the run cookie as `tried`), and **Start over**, the story's own start (the
+  death's one `choices` entry, `next` the start, so write its words as "Start over"). Both are full-width, at least
+  48 px tall. A rewound fork plays its clip and its choices are pressable at once. A death at the first page has no
+  fork, so only Start over.
+- **The timer never picks a death.** The 15 s timeout presses the choice marked `"default": true` (the story's basic
+  path), else the first choice that isn't a death. `npm run story -- --check` fails a default that leads to a
+  death, a fork with two defaults, and a fork whose every choice is a death with no default.
+- **Flags.** A choice may `"set": { "gaveFlask": true, "passedBy": false }` (boolean, text or number). A scene may have
+  `"variants": [{ "when": { "gaveFlask": true }, "story": [say, en], "question": [say, en], "video": "/path.mp4" }]`; the
+  first variant whose `when` holds replaces what it names (text, question or clip) and the rest stays; an unset flag
+  reads as `false`. The run's flags are worked out from the way you came (every choice's `set` along it), so a rewind,
+  a Start over and a saved place always have the right ones, and are also saved in the run cookie as `flags`. Two
+  choices to one scene must set the same flags, and a variant may only read a flag some choice sets (both checked).
+  A variant's `video` needs its own clip (made through Studio; a text or question variant is free). The branch pages
+  (one static page per scene) always show the base scene. The Water Road: giving the flask or riding past the family
+  changes the cottonwoods' question.
+- **One choice plays on.** A page with exactly one choice (and a clip) shows no button: when the clip ends the screen fades
+  for 0.45 s and the story goes on to the choice's scene by itself (a clip that fails to load gets its button back).
+  Deaths and endings are never one-choice pages in this sense.
+- Playtest `rewind` plays all of it (setup shortcut: seeded runs, event `seeded-run`); the analytics hooks:
+  Rewind is a `choice` from the death to the fork (a `feature` `restart` `try_again`, and the thumbs question counts
+  it as going back) plus `feature` `rewind`; a carry-on is `feature` `auto_continue`.
 
 ## A story's inventory
 

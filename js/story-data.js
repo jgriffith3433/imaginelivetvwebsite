@@ -242,8 +242,8 @@ window.ILTV_STORIES = {
      "dead": true,
      "choices": [
       [
-       "1. Réessaie dans une autre vie",
-       "1. Try again in another life",
+       "1. Recommence",
+       "1. Start over",
        "start"
       ]
      ]
@@ -330,7 +330,7 @@ window.ILTV_STORIES = {
      "choices": [
       [
        "1. Попробуй снова в другой жизни",
-       "1. Try again in another life",
+       "1. Start over",
        "start"
       ]
      ]
@@ -930,7 +930,8 @@ window.ILTV_STORIES = {
       [
        "2. Wait for dark and mend the wheel",
        "2. Wait for dark and mend the wheel",
-       "nightCrossing"
+       "nightCrossing",
+       true
       ]
      ]
     },
@@ -959,8 +960,8 @@ window.ILTV_STORIES = {
      },
      "choices": [
       [
-       "1. Try again",
-       "1. Try again",
+       "1. Start over",
+       "1. Start over",
        "start"
       ]
      ]
@@ -993,7 +994,11 @@ window.ILTV_STORIES = {
       [
        "2. Ride on by",
        "2. Ride on by",
-       "passBy"
+       "passBy",
+       false,
+       {
+        "passedBy": true
+       }
       ]
      ]
     },
@@ -1028,7 +1033,8 @@ window.ILTV_STORIES = {
       [
        "2. Wave, and wait",
        "2. Wave, and wait",
-       "lookout"
+       "lookout",
+       true
       ]
      ]
     },
@@ -1057,8 +1063,8 @@ window.ILTV_STORIES = {
      },
      "choices": [
       [
-       "1. Try again",
-       "1. Try again",
+       "1. Start over",
+       "1. Start over",
        "start"
       ]
      ]
@@ -1091,7 +1097,11 @@ window.ILTV_STORIES = {
       [
        "2. Ride on by",
        "2. Ride on by",
-       "passBy"
+       "passBy",
+       false,
+       {
+        "passedBy": true
+       }
       ]
      ]
     },
@@ -1118,12 +1128,21 @@ window.ILTV_STORIES = {
       [
        "1. Give them your flask",
        "1. Give them your flask",
-       "giveFlask"
+       "giveFlask",
+       false,
+       {
+        "gaveFlask": true,
+        "passedBy": false
+       }
       ],
       [
        "2. Tell them the water's spoken for",
        "2. Tell them the water's spoken for",
-       "passBy"
+       "passBy",
+       false,
+       {
+        "passedBy": true
+       }
       ]
      ]
     },
@@ -1246,8 +1265,8 @@ window.ILTV_STORIES = {
      },
      "choices": [
       [
-       "1. Try again",
-       "1. Try again",
+       "1. Start over",
+       "1. Start over",
        "start"
       ]
      ]
@@ -1280,7 +1299,8 @@ window.ILTV_STORIES = {
       [
        "2. Fire over their heads",
        "2. Fire over their heads",
-       "warningShots"
+       "warningShots",
+       true
       ],
       [
        "3. Open a barrel for them",
@@ -1314,8 +1334,8 @@ window.ILTV_STORIES = {
      },
      "choices": [
       [
-       "1. Try again",
-       "1. Try again",
+       "1. Start over",
+       "1. Start over",
        "start"
       ]
      ]
@@ -1378,7 +1398,8 @@ window.ILTV_STORIES = {
       [
        "2. Open a barrel and call them in",
        "2. Open a barrel and call them in",
-       "shareWater"
+       "shareWater",
+       true
       ]
      ]
     },
@@ -1444,6 +1465,26 @@ window.ILTV_STORIES = {
        "2. Keep the spring a secret and sell the water",
        "sellWater"
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "gaveFlask": true
+       },
+       "question": [
+        "A little girl drank from your flask once. What do you do with this water?",
+        "A little girl drank from your flask once. What do you do with this water?"
+       ]
+      },
+      {
+       "when": {
+        "passedBy": true
+       },
+       "question": [
+        "You rode past a family once. What do you do with this water?",
+        "You rode past a family once. What do you do with this water?"
+       ]
+      }
      ]
     },
     "heroEnding": {

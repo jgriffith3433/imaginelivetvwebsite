@@ -137,3 +137,14 @@ Made 2026-10-18 within J's $8: the five character sheets (`story/characters/wate
 (best of 3, picked by Claude and looked at before its clip), a 9:16 clip per page, the 20 narrations and the six
 music cues; `npm run story` cuts each page's `scene.mp4`. The card image is `/assets/images/water-road.jpg`, the
 opening's dove on the dead branch.
+
+## Memory and mercy (J, 2026-11-11)
+
+The road remembers what you did and is kind to someone who looks away. Giving the girl your flask sets `gaveFlask`;
+riding past the family sets `passedBy` (giving it later clears it): at the cottonwoods the question calls it back
+("A little girl drank from your flask once. What do you do with this water?" / "You rode past a family once. What do you
+do with this water?"; text only, so the narration in the clip stays true). A death keeps its clip and its line and
+offers Rewind to the choice (the fork again, the deadly way marked Tried) and Start over. When the 15 s run out on the
+salt flats, under the mesa, in the dust, in the dry wash and at the night raid, the timer rides the basic path
+(`default`: wait for dark, wave and wait, fire over their heads, open a barrel), never into a death. Not made yet: a
+variant clip with its own narration for the callback (needs GPU; priced in the change's summary).

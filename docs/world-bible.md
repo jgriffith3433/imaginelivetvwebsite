@@ -264,6 +264,13 @@ keep the eye moving; ambience beds under every scene; stings at turns. Nothing i
 - **N8 Morning.** *Interactions:* the last choice before the log is read. *Events:* Okafor reads the log; the day staff
   arrive. *Ambient:* `morning`. *Changes:* twelve different mornings, each ends on an object.
 
+### Deaths, memory and mercy in the clip stories (new, J 2026-11-11)
+
+A death keeps its clip and its line, then offers Rewind to the choice (the fork again, the deadly way marked Tried) and
+Start over; a choice can be remembered (flags) and called back by a later page's text; the 15 s timer rides the story's
+basic path and never kills a viewer who looked away; a page with one choice plays on by itself after its clip. The
+Water Road's callback is at the cottonwoods (the flask given, the family passed). Rules: `story/README.md`.
+
 ### The look-around layer (new, the fix for the clip stories' empty holds)
 
 The fun review judged The Final Spark and The Water Road thin: inside a page the only verb is "choose". Every event and

@@ -120,7 +120,7 @@
       "question": ["What do you do?", "What do you do?"],
       "choices": [
         { "say": "1. Push on through the heat", "en": "1. Push on through the heat", "next": "sunstroke" },
-        { "say": "2. Wait for dark and mend the wheel", "en": "2. Wait for dark and mend the wheel", "next": "nightCrossing" }
+        { "say": "2. Wait for dark and mend the wheel", "en": "2. Wait for dark and mend the wheel", "next": "nightCrossing", "default": true }
       ],
       "shot": {
         "scene": "blinding white salt flats at noon, heat haze; a water wagon tilts on a cracked wooden wheel, mules stamping; the young rider wipes sweat from under the hat brim",
@@ -142,7 +142,7 @@
       ],
       "question": ["You have died.", "You have died."],
       "choices": [
-        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+        { "say": "1. Start over", "en": "1. Start over", "next": "start" }
       ],
       "shot": {
         "scene": "low angle on the cracked white salt flats under a white-hot sky, nobody in sight; an empty tin flask lies on its side beside a fallen dusty tan hat; behind them a saddled bay horse stands alone with an empty saddle, head low",
@@ -163,7 +163,7 @@
       "question": ["Do you stop?", "Do you stop?"],
       "choices": [
         { "say": "1. Ride over to it", "en": "1. Ride over to it", "next": "family" },
-        { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy" }
+        { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy", "set": { "passedBy": true } }
       ],
       "shot": {
         "scene": "sunrise over the salt flats after a night crossing; a mourning dove perches on the tailgate of the last water wagon; in the distance a small homestead wagon lies on its side",
@@ -185,7 +185,7 @@
       "question": ["What do you do?", "What do you do?"],
       "choices": [
         { "say": "1. Fire a warning shot", "en": "1. Fire a warning shot", "next": "rockslide" },
-        { "say": "2. Wave, and wait", "en": "2. Wave, and wait", "next": "lookout" }
+        { "say": "2. Wave, and wait", "en": "2. Wave, and wait", "next": "lookout", "default": true }
       ],
       "shot": {
         "scene": "the caravan winds along a trail in the long shadow of a towering red mesa; high on the sunlit rocks a small bright glint; the young rider in the foreground, hand near the holster",
@@ -207,7 +207,7 @@
       ],
       "question": ["You have died.", "You have died."],
       "choices": [
-        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+        { "say": "1. Start over", "en": "1. Start over", "next": "start" }
       ],
       "shot": {
         "scene": "the red mesa wall breaking apart above the trail, boulders and dust pouring down toward the wagons; the young rider with a smoking revolver raised",
@@ -228,7 +228,7 @@
       "question": ["What do you do?", "What do you do?"],
       "choices": [
         { "say": "1. Follow him", "en": "1. Follow him", "next": "family" },
-        { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy" }
+        { "say": "2. Ride on by", "en": "2. Ride on by", "next": "passBy", "set": { "passedBy": true } }
       ],
       "shot": {
         "scene": "a thin boy of about twelve scrambles down the red rocks holding a brass spyglass, waving one arm; the young rider waits on horseback below",
@@ -248,8 +248,8 @@
       ],
       "question": ["What do you do?", "What do you do?"],
       "choices": [
-        { "say": "1. Give them your flask", "en": "1. Give them your flask", "next": "giveFlask" },
-        { "say": "2. Tell them the water's spoken for", "en": "2. Tell them the water's spoken for", "next": "passBy" }
+        { "say": "1. Give them your flask", "en": "1. Give them your flask", "next": "giveFlask", "set": { "gaveFlask": true, "passedBy": false } },
+        { "say": "2. Tell them the water's spoken for", "en": "2. Tell them the water's spoken for", "next": "passBy", "set": { "passedBy": true } }
       ],
       "shot": {
         "scene": "a homesteading family, sunburnt and silent, sits in the thin shade of a broken covered wagon beside an empty wooden cask; the young rider looks down at them from the horse",
@@ -334,7 +334,7 @@
       ],
       "question": ["You have died.", "You have died."],
       "choices": [
-        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+        { "say": "1. Start over", "en": "1. Start over", "next": "start" }
       ],
       "shot": {
         "scene": "the young rider alone on a rocky ridge at dusk, an empty desert to every horizon, holding an upturned tin flask with nothing coming out",
@@ -355,7 +355,7 @@
       "question": ["What do you do?", "What do you do?"],
       "choices": [
         { "say": "1. Draw your revolver", "en": "1. Draw your revolver", "next": "gunfight" },
-        { "say": "2. Fire over their heads", "en": "2. Fire over their heads", "next": "warningShots" },
+        { "say": "2. Fire over their heads", "en": "2. Fire over their heads", "next": "warningShots", "default": true },
         { "say": "3. Open a barrel for them", "en": "3. Open a barrel for them", "next": "shareWater" }
       ],
       "shot": {
@@ -378,7 +378,7 @@
       ],
       "question": ["You have died.", "You have died."],
       "choices": [
-        { "say": "1. Try again", "en": "1. Try again", "next": "start" }
+        { "say": "1. Start over", "en": "1. Start over", "next": "start" }
       ],
       "shot": {
         "scene": "gun smoke drifting in a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere, nobody standing; water pouring from bullet holes in wooden barrels and soaking dark into the dry sand; a dropped single-action revolver, empty, lying by a fallen tan hat",
@@ -420,7 +420,7 @@
       "question": ["What do you do?", "What do you do?"],
       "choices": [
         { "say": "1. Shoot it out", "en": "1. Shoot it out", "next": "gunfight" },
-        { "say": "2. Open a barrel and call them in", "en": "2. Open a barrel and call them in", "next": "shareWater" }
+        { "say": "2. Open a barrel and call them in", "en": "2. Open a barrel and call them in", "next": "shareWater", "default": true }
       ],
       "shot": {
         "scene": "night camp in a dry desert wash with no water, a low campfire, the wagons in a ring; dark figures creep toward the water barrels in the moonlight; the young rider crouches low behind a wagon wheel, revolver in hand",
@@ -460,6 +460,10 @@
         "Where the wash ends there are cottonwoods, green as a lie, and a spring that's on nobody's map. You fill your flask to the top."
       ],
       "question": ["What do you do with it?", "What do you do with it?"],
+      "variants": [
+        { "when": { "gaveFlask": true }, "question": ["A little girl drank from your flask once. What do you do with this water?", "A little girl drank from your flask once. What do you do with this water?"] },
+        { "when": { "passedBy": true }, "question": ["You rode past a family once. What do you do with this water?", "You rode past a family once. What do you do with this water?"] }
+      ],
       "choices": [
         { "say": "1. Bring Dry Fork the way here", "en": "1. Bring Dry Fork the way here", "next": "heroEnding" },
         { "say": "2. Keep the spring a secret and sell the water", "en": "2. Keep the spring a secret and sell the water", "next": "sellWater" }
