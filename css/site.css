@@ -2730,6 +2730,19 @@ button.ending-tile:focus-visible {
   outline-offset: 2px;
 }
 
+.spark-choices .choice, .console-choices .choice { transition-property: background, border-color, box-shadow, transform, color, opacity; }
+.is-deciding .choice { pointer-events: none; }
+.is-deciding .choice.is-chosen {
+  transform: scale(1.04);
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 22px rgba(244, 242, 238, 0.65), 0 6px 18px rgba(0, 0, 0, 0.42);
+  transition-duration: 0.25s;
+}
+.is-deciding .choice.is-fading { opacity: 0; transform: translateY(14px); transition: opacity 0.25s ease, transform 0.25s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .is-deciding .choice.is-chosen, .is-deciding .choice.is-fading { transform: none; }
+}
 .choice-timer { display: flex; align-items: center; gap: 0.65rem; margin: 0 0 0.45rem; min-height: 18px; transition: opacity 0.4s ease; }
 /* Hidden keeps its row: the video stage must not resize when the countdown appears. */
 .choice-timer[hidden] { display: flex; visibility: hidden; }

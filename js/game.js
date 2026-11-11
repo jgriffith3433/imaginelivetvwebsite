@@ -1043,8 +1043,8 @@
         button.dataset.lastTime = "true";
       }
       button.addEventListener("click", function () {
-        if (window.iltvAudio) window.iltvAudio.playUi("choice");
-        goTo(choice);
+        if (pendingTap) return;
+        window.iltvDecide(choicesBox, button, function () { goTo(choice); });
       });
       choicesBox.appendChild(button);
     });
