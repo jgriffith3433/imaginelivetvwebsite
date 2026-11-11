@@ -257,7 +257,8 @@
               "act": "dee:count",
               "at": 0.59
             }
-          ]
+          ],
+          "file": "/night-shift/handover/media/line-1.mp3"
         },
         {
           "speaker": "okafor",
@@ -265,31 +266,8 @@
           "perform": "polite, hurried",
           "sfx": "tablet-tap",
           "dur": 2.9,
-          "act": "okafor:read"
-        },
-        {
-          "speaker": "okafor",
-          "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
-          "perform": "flat, reading",
-          "dur": 6.9
-        },
-        {
-          "speaker": "okafor",
-          "text": "Forty-four. Water in the closet. Monitored.",
-          "perform": "flat, a small stop",
-          "dur": 3.4
-        },
-        {
-          "speaker": "okafor",
-          "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
-          "perform": "reading",
-          "dur": 5.5
-        },
-        {
-          "speaker": "okafor",
-          "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
-          "perform": "dry, not joking",
-          "dur": 6.2
+          "act": "okafor:read",
+          "file": "/night-shift/handover/media/line-2.mp3"
         },
         {
           "speaker": "dee",
@@ -297,56 +275,51 @@
           "perform": "flat",
           "sfx": "radio-charger",
           "dur": 0.9,
-          "act": "dee:count"
+          "act": "dee:count",
+          "file": "/night-shift/handover/media/line-7.mp3"
         },
         {
           "speaker": "okafor",
           "text": "Dolores. You can say hello.",
           "perform": "patient",
-          "dur": 2.4
+          "dur": 2.4,
+          "file": "/night-shift/handover/media/line-8.mp3"
         },
         {
           "speaker": "dee",
           "text": "Hello. Sit anywhere that isn't mine.",
           "perform": "dry",
-          "dur": 3
-        },
-        {
-          "speaker": "dee",
-          "text": "Mm.",
-          "perform": "low",
-          "sfx": "radio-charger",
-          "dur": 0.9,
-          "act": "dee:count"
-        },
-        {
-          "speaker": "okafor",
-          "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
-          "perform": "cut off",
-          "dur": 4.3,
-          "act": "okafor:point:shelf"
-        },
-        {
-          "speaker": "dee",
-          "text": "Extinguisher. Mm-hm. Your train, Okafor.",
-          "perform": "dry, not unkind",
-          "dur": 4
+          "dur": 3,
+          "file": "/night-shift/handover/media/line-9.mp3"
         }
       ],
       "choices": [
         {
-          "say": "Ask about forty-four",
-          "next": "binder-44",
-          "set": [
-            "asked_44"
-          ]
-        },
-        {
-          "say": "Ask about Thursday",
-          "next": "binder-thu",
+          "say": "Take the good chair",
+          "next": "handover-log",
+          "log": "Sat in the chair with the good back.",
           "add": {
             "trainer_trust": 1
-          }
+          },
+          "pose": "sit",
+          "react": "mm"
+        },
+        {
+          "say": "Take Dee's chair",
+          "next": "handover-log",
+          "log": "Sat in D. Reyes's chair.",
+          "add": {
+            "trainer_trust": -1
+          },
+          "pose": "sit",
+          "react": "mmhm"
+        },
+        {
+          "say": "Stay standing",
+          "next": "handover-log",
+          "log": "Stayed on my feet by the wall.",
+          "pose": "stand",
+          "react": "mm"
         }
       ],
       "log": "1845 hrs. Handover from Mr. Okafor, day supervisor, to night post. D. Reyes assigned as trainer.",
@@ -18894,6 +18867,89 @@
         }
       ],
       "log": "0414 hrs. Log initialed beside F.S.D. H. Adler; officer's own entry left standing."
+    },
+    {
+      "id": "handover-log",
+      "folder": "handover-log",
+      "time": "18:48",
+      "title": "The day log",
+      "ambience": "control-room",
+      "cast": [
+        "you",
+        "okafor@left",
+        "dee@right"
+      ],
+      "lines": [
+        {
+          "speaker": "okafor",
+          "text": "Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
+          "perform": "flat, reading",
+          "dur": 6.9,
+          "file": "/night-shift/handover/media/line-3.mp3"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Forty-four. Water in the closet. Monitored.",
+          "perform": "flat, a small stop",
+          "dur": 3.4,
+          "file": "/night-shift/handover/media/line-4.mp3"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
+          "perform": "reading",
+          "dur": 5.5,
+          "file": "/night-shift/handover/media/line-5.mp3"
+        },
+        {
+          "speaker": "okafor",
+          "text": "The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
+          "perform": "dry, not joking",
+          "dur": 6.2,
+          "file": "/night-shift/handover/media/line-6.mp3"
+        },
+        {
+          "speaker": "dee",
+          "text": "Mm.",
+          "perform": "low",
+          "sfx": "radio-charger",
+          "dur": 0.9,
+          "act": "dee:count",
+          "file": "/night-shift/handover/media/line-10.mp3"
+        },
+        {
+          "speaker": "okafor",
+          "text": "Dolores signs your hours. The binder's on the shelf, next to the…",
+          "perform": "cut off",
+          "dur": 4.3,
+          "act": "okafor:point:shelf",
+          "file": "/night-shift/handover/media/line-11.mp3"
+        },
+        {
+          "speaker": "dee",
+          "text": "Extinguisher. Mm-hm. Your train, Okafor.",
+          "perform": "dry, not unkind",
+          "dur": 4,
+          "file": "/night-shift/handover/media/line-12.mp3"
+        }
+      ],
+      "choices": [
+        {
+          "say": "Ask about forty-four",
+          "next": "binder-44",
+          "set": [
+            "asked_44"
+          ]
+        },
+        {
+          "say": "Ask about Thursday",
+          "next": "binder-thu",
+          "add": {
+            "trainer_trust": 1
+          }
+        }
+      ],
+      "log": "1848 hrs. Day log walked. Radios still on the charger."
     }
   ],
   "music": {
@@ -18903,5 +18959,178 @@
     "ending-plain": "Instrumental, sparse: a slow plain piano figure of three notes repeated and left to fade, early morning, dry. No strings swell, no drums, no melody build. Restrained.",
     "ending-warm": "Instrumental, sparse: a soft felt piano and a single bowed note, slightly warmer and major, morning light through a lobby. No swell, no drums, very restrained.",
     "ending-cold": "Instrumental, sparse: one low sustained note under a slow detuned piano note, cold and still, a door closing on something. No swell, no drums, no melody. Very quiet."
+  },
+  "reactions": {
+    "mm": {
+      "speaker": "dee",
+      "text": "Mm.",
+      "dur": 0.9,
+      "file": "/night-shift/handover/media/line-10.mp3"
+    },
+    "mmhm": {
+      "speaker": "dee",
+      "text": "Mm-hm.",
+      "dur": 1,
+      "file": "/night-shift/visitor-checked/media/line-5.mp3"
+    }
+  },
+  "chapters": [
+    {
+      "id": "ink",
+      "title": "Ink",
+      "start": "handover",
+      "end": "end1-fact",
+      "clock": "22:05",
+      "hook": "A name is on the sheet. The desk still has hours left.",
+      "next": "visitor-waved"
+    },
+    {
+      "id": "wall",
+      "title": "The wall is yours",
+      "start": "visitor-waved",
+      "end": "birthdays-ask",
+      "clock": "00:55",
+      "hook": "Cards on the shelf. Something is about to ring.",
+      "next": "late-read"
+    },
+    {
+      "id": "roof",
+      "title": "Roof door",
+      "start": "late-read",
+      "end": "three-oclock",
+      "clock": "03:00",
+      "hook": "The roof door. She does that one alone.",
+      "next": "flicker"
+    },
+    {
+      "id": "dawn",
+      "title": "Grey light",
+      "start": "flicker",
+      "end": "sleeper-watch",
+      "clock": "05:05",
+      "hook": "Twenty minutes. Then the glass starts to grey.",
+      "next": "dawn-tablet-f"
+    },
+    {
+      "id": "morning",
+      "title": "The read",
+      "start": "dawn-tablet-f",
+      "end": null,
+      "clock": "07:00",
+      "hook": null,
+      "next": null
+    }
+  ],
+  "performPoses": {
+    "_about": "How a line's `perform` note picks the speaker's look (js/console-room.js). The note is matched word by word, so no line is posed by hand: `moods` (first mood whose words appear wins, else `default`) leans the figure (tense, relaxed, neutral: the layer is the same cut-out, tilted and shifted, so J's silhouette style holds), and `poses` (first pose whose words appear wins) picks the pose layer of the person, only while an `act` is not already posing them. A line's own `act` always wins.",
+    "default": "neutral",
+    "moods": {
+      "tense": [
+        "fast",
+        "hurried",
+        "hurry",
+        "rushed",
+        "rushing",
+        "breathless",
+        "out of breath",
+        "cutting",
+        "cut off",
+        "furious",
+        "horrified",
+        "mortified",
+        "embarrassed",
+        "hoarse",
+        "running",
+        "knife",
+        "hard no",
+        "ice",
+        "backing",
+        "caught",
+        "accusation",
+        "too bright",
+        "formal",
+        "crisp",
+        "correcting",
+        "before you",
+        "over the intercom",
+        "not looking at you",
+        "a click"
+      ],
+      "relaxed": [
+        "warm",
+        "smile",
+        "smiling",
+        "laugh",
+        "laughing",
+        "grin",
+        "amused",
+        "kind",
+        "kindness",
+        "easy",
+        "glad",
+        "delighted",
+        "pleased",
+        "bright",
+        "shrug",
+        "gently",
+        "proud",
+        "nod",
+        "almost",
+        "mild",
+        "a breath",
+        "sip",
+        "company"
+      ]
+    },
+    "poses": {
+      "count": [
+        "counting",
+        "counted",
+        "one finger on each",
+        "each column",
+        "each one set down"
+      ],
+      "write": [
+        "pencil",
+        "pen",
+        "writing",
+        "write",
+        "keyboard"
+      ],
+      "read": [
+        "reading",
+        "the page",
+        "binder",
+        "the card",
+        "the log"
+      ],
+      "point": [
+        "tapping the shelf",
+        "to the shelf",
+        "at the shelf",
+        "toward the shelf",
+        "the shelf"
+      ],
+      "touch": [
+        "tapping the glass",
+        "tapping the screen",
+        "tile",
+        "to the glass",
+        "the glass"
+      ],
+      "eat": [
+        "sandwich",
+        "foil",
+        "eating"
+      ],
+      "drink": [
+        "the cup",
+        "a sip",
+        "sipping"
+      ],
+      "lean": [
+        "tired"
+      ]
+    }
   }
 }

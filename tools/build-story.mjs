@@ -36,7 +36,7 @@ const ROOT = process.env.ILTV_ROOT ? path.resolve(process.env.ILTV_ROOT) : path.
 const LISTING = 'story/stories.json';
 const CHECK = process.argv.includes('--check');
 // Top-level folders that aren't story pages.
-const RESERVED = new Set(['assets', 'css', 'js', 'f', 'story', 'tools', 'node_modules', 'hawkesgen', 'media']);
+const RESERVED = new Set(['assets', 'css', 'js', 'f', 'notes', 'story', 'tools', 'node_modules', 'hawkesgen', 'media']);
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 const problems = [];
@@ -65,7 +65,7 @@ for (const entry of listing) {
     entry,
     file,
     data,
-    scenes: data.scenes,
+    scenes: data.scenes.map((s) => (s.shots?.length && !s.shot ? Object.assign(s, { shot: s.shots[0] }) : s)),
     byId: new Map(data.scenes.map((s) => [s.id, s])),
     root,
     console: data.type === 'console',
@@ -111,6 +111,7 @@ function validate(st) {
     // An ending (its "ending" line) is where the story is completed (the card's badge says Completed); a death isn't one.
     if (s.ending && (s.dead || s.choices.length)) problems.push(`${at(s)}: an ending has no choices and isn't a death`);
     for (const c of s.choices) if (!byId.has(c.next)) problems.push(`${at(s)}: choice "${c.en}" goes to ${c.next}, which doesn't exist`);
+    validateFlags(st, s);
     for (const who of s.shot?.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
     for (const l of s.lines ?? []) {
       const who = data.characters?.[l.speaker];
@@ -119,6 +120,11 @@ function validate(st) {
     }
     if (s.music && !data.music?.[s.music]) problems.push(`${at(s)}: music cue ${s.music} isn't in music`);
     if (!s.shot) problems.push(`${at(s)}: no shot (what the camera sees, for its generated media)`);
+    if (s.shots && (!Array.isArray(s.shots) || s.shots.length < 2 || s.shots.length > MAX_SHOTS)) problems.push(`${at(s)}: shots lists 2 to ${MAX_SHOTS} shots (or leave it out and use one shot)`);
+    for (const sh of Array.isArray(s.shots) ? s.shots : []) {
+      if (!sh.scene || !sh.motion) problems.push(`${at(s)}: every entry in shots needs a scene and a motion`);
+      for (const who of sh.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
+    }
     if (!s.film && useOf(st, s) !== 'gen') problems.push(`${at(s)}: no filmed clip, so it must use "gen"`);
     // Words no page may say (The Water Road's bird is only ever seen).
     const said = [s.title, s.story, s.question, s.ending ?? [], ...s.choices.map((c) => [c.say, c.en])].flat().join(' ').toLowerCase();
@@ -131,6 +137,68 @@ function validate(st) {
   const queue = [data.start];
   while (queue.length) for (const c of byId.get(queue.shift())?.choices ?? []) if (!seen.has(c.next) && byId.has(c.next)) seen.add(c.next), queue.push(c.next);
   for (const s of scenes) if (!seen.has(s.id)) problems.push(`${at(s)}: no choice leads here (unreachable)`);
+}
+
+/* ---------------- flags, variants and defaults (video stories) ---------------- */
+
+const FLAG_VALUE = (v) => ['boolean', 'string', 'number'].includes(typeof v);
+
+/** A choice may `set` flags ({ flag: value }) and be the `default` (what the 15 s timeout picks); a scene may have
+    `variants` ({ when: { flag: value }, story?, question?, video? }), the first whose `when` holds replacing the base. */
+function validateFlags(st, s) {
+  const { id } = st;
+  const at = (x) => `${id}/${x.id}`;
+  const defaults = s.choices.filter((c) => c.default);
+  if (defaults.length > 1) problems.push(`${at(s)}: ${defaults.length} choices are marked default (one at most)`);
+  for (const c of s.choices) {
+    if (c.set != null && (typeof c.set !== 'object' || Array.isArray(c.set) || !Object.values(c.set).every(FLAG_VALUE))) problems.push(`${at(s)}: choice "${c.en}": set must be { flag: true | false | "text" | number }`);
+    if (c.default != null && c.default !== true) problems.push(`${at(s)}: choice "${c.en}": default is true or left out`);
+    // A choice that is only on offer when flags hold (`when`) and/or the match count is in range (`matches`: { min, max }).
+    if (c.when != null && (typeof c.when !== 'object' || Array.isArray(c.when) || !Object.keys(c.when).length || !Object.values(c.when).every(FLAG_VALUE))) problems.push(`${at(s)}: choice "${c.en}": when must be { flag: value }`);
+    for (const flag of Object.keys(c.when ?? {})) if (!st.scenes.some((o) => o.choices.some((x) => x.set && flag in x.set))) problems.push(`${at(s)}: choice "${c.en}" reads flag "${flag}", which no choice sets`);
+    if (c.matches != null) {
+      const m = c.matches;
+      if (typeof m !== 'object' || Array.isArray(m) || !Object.keys(m).length || Object.entries(m).some(([k, v]) => !['min', 'max'].includes(k) || !Number.isInteger(v))) problems.push(`${at(s)}: choice "${c.en}": matches must be { min?, max? } (whole numbers)`);
+      if (!st.data.inventory?.items?.some((i) => i.id === 'matches')) problems.push(`${at(s)}: choice "${c.en}" has matches, but ${id} has no "matches" inventory item`);
+    }
+  }
+  // Whatever the flags and the count, a fork always offers something: at least one choice has no condition.
+  if (s.choices.length && !s.choices.some((c) => !c.when && !c.matches)) problems.push(`${at(s)}: every choice has a when or matches, so a viewer could be left with none`);
+  // A timeout never kills a viewer who looked away: the default (or, with none, the first safe choice) is never a death.
+  if (!s.dead && !s.ending && s.choices.length > 1) {
+    const dead = (c) => !!st.byId.get(c.next)?.dead;
+    for (const c of defaults) if (dead(c)) problems.push(`${at(s)}: the default choice "${c.en}" leads to a death (${c.next}): the timeout would kill a viewer who looked away`);
+    if (!defaults.length && s.choices.every(dead)) problems.push(`${at(s)}: every choice leads to a death and none is marked default: the timeout has no safe pick`);
+  }
+  // A gated choice: `requires` flags (absent unless they hold) and `needs` counts (shown locked while the inventory is short).
+  for (const c of s.choices) {
+    if (c.requires != null && (typeof c.requires !== 'object' || Array.isArray(c.requires) || !Object.keys(c.requires).length || !Object.values(c.requires).every(FLAG_VALUE))) problems.push(`${at(s)}: choice "${c.en}": requires must be { flag: value }`);
+    for (const flag of Object.keys(c.requires ?? {})) if (!st.scenes.some((o) => o.choices.some((x) => x.set && flag in x.set))) problems.push(`${at(s)}: choice "${c.en}" requires flag "${flag}", which no choice sets`);
+    if (c.needs != null) {
+      const items = new Map((st.data.inventory?.items ?? []).map((i) => [i.id, i]));
+      if (typeof c.needs !== 'object' || Array.isArray(c.needs) || !Object.keys(c.needs).length) problems.push(`${at(s)}: choice "${c.en}": needs must be { item: count }`);
+      else for (const [k, v] of Object.entries(c.needs)) {
+        if (!items.get(k) || items.get(k).start == null) problems.push(`${at(s)}: choice "${c.en}" needs ${k}, which isn't a counted inventory item`);
+        else if (!Number.isInteger(v) || v < 1 || v > (items.get(k).max ?? Infinity)) problems.push(`${at(s)}: choice "${c.en}" needs ${k} ${v}: a whole number from 1 to its most`);
+      }
+    }
+    if (c.default && (c.needs || c.requires)) problems.push(`${at(s)}: the default choice "${c.en}" has a gate; the timer's pick must always be on screen`);
+  }
+  // Two choices to one scene must set the same flags (the run's flags are worked out from the scenes it passed through).
+  const by = new Map();
+  for (const c of s.choices) {
+    const key = JSON.stringify(c.set ?? {});
+    if (by.has(c.next) && by.get(c.next) !== key) problems.push(`${at(s)}: two choices to ${c.next} set different flags`);
+    by.set(c.next, key);
+  }
+  for (const [i, v] of (s.variants ?? []).entries()) {
+    if (!v.when || typeof v.when !== 'object' || !Object.keys(v.when).length || !Object.values(v.when).every(FLAG_VALUE)) problems.push(`${at(s)}: variant ${i}: when must be { flag: value }`);
+    for (const k of ['story', 'question']) if (v[k] != null && (!Array.isArray(v[k]) || v[k].length !== 2)) problems.push(`${at(s)}: variant ${i}: ${k} must be [in ${s.lang}, in English]`);
+    if (!['story', 'question', 'video'].some((k) => v[k] != null)) problems.push(`${at(s)}: variant ${i} changes nothing (story, question or video)`);
+    const setBy = (flag) => st.scenes.some((o) => o.choices.some((c) => c.set && flag in c.set));
+    for (const flag of Object.keys(v.when ?? {})) if (!setBy(flag)) problems.push(`${at(s)}: variant ${i} reads flag "${flag}", which no choice sets`);
+    for (const w of st.data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test([v.story, v.question].flat().filter(Boolean).join(' ').toLowerCase())) problems.push(`${at(s)}: variant ${i}'s words say "${w}" (unspoken)`);
+  }
 }
 
 /* ---------------- a story's inventory (js/kit.js) ---------------- */
@@ -150,6 +218,18 @@ function kitCounts(st) {
     for (const c of st.byId.get(id)?.choices ?? []) if (!path.has(c.next) && st.byId.has(c.next)) path.set(c.next, [...path.get(id), c.next]), queue.push(c.next);
   }
   return new Map([...path].map(([id, p]) => [id, kit.counts(inv, scenes, st.data.start, p)]));
+}
+
+/** The flags on the shortest way to each scene (a choice's `set`, applied along the way): a branch page is a page on its
+    own, so a gated choice shows as it would on that way. */
+function kitFlags(st) {
+  const path = new Map([[st.data.start, {}]]);
+  const queue = [st.data.start];
+  while (queue.length) {
+    const id = queue.shift();
+    for (const c of st.byId.get(id)?.choices ?? []) if (!path.has(c.next) && st.byId.has(c.next)) path.set(c.next, { ...path.get(id), ...(c.set ?? {}) }), queue.push(c.next);
+  }
+  return path;
 }
 
 function validateInventory(st) {
@@ -178,18 +258,39 @@ function validateInventory(st) {
     }
   }
   if (problems.length > before) return;
-  // Every way through the story (a scene and the counts you have there): nothing goes below none, and an item
-  // whose running out ends the run ("empty": "dead") only runs out on a death page.
+  // Every way through the story (a scene, the counts you have there and the flags you carry): nothing goes below none,
+  // an item whose running out ends the run ("empty": "dead") only runs out on a death page, and every fork's gated choices
+  // leave a choice on screen (the timer's default, or a way that isn't a death) in every state.
   const all = Object.fromEntries(scenes.map((s) => [s.id, s]));
   const first = kit.apply(inv, kit.fresh(inv), all[data.start]).counts;
-  const key = (sid, c) => sid + ' ' + JSON.stringify(c);
-  const seen = new Set([key(data.start, first)]);
-  const queue = [[data.start, first]];
+  const key = (sid, c, f) => sid + ' ' + JSON.stringify(c) + ' ' + JSON.stringify(Object.keys(f).sort().map((k) => [k, f[k]]));
+  const seen = new Set([key(data.start, first, {})]);
+  const queue = [[data.start, first, {}]];
   const told = new Set();
   const tell = (msg) => !told.has(msg) && (told.add(msg), problems.push(msg));
+  const gated = new Map(); // scene id -> Map(choice -> Set('open', 'locked')): a `needs` choice has to be both, somewhere
+  const open = (c, counts, flags) => {
+    for (const [k, v] of Object.entries(c.requires ?? {})) if ((flags[k] ?? false) !== v) return 'hidden';
+    return kit.meets(counts, c.needs) ? 'open' : 'locked';
+  };
   while (queue.length && seen.size < 20000) {
-    const [sid, counts] = queue.shift();
-    for (const c of byId.get(sid).choices) {
+    const [sid, counts, flags] = queue.shift();
+    const here = byId.get(sid);
+    if (here.choices.length > 1 && !here.dead && !here.ending) {
+      const shown = here.choices.filter((c) => open(c, counts, flags) === 'open');
+      const safe = shown.filter((c) => !byId.get(c.next)?.dead);
+      const lockedNow = here.choices.filter((c) => open(c, counts, flags) === 'locked').length;
+      if (!safe.length) tell(`${id}/${sid}: with ${JSON.stringify(counts)} and flags ${JSON.stringify(flags)} no safe choice is on screen`);
+      if (shown.length + lockedNow < 2) tell(`${id}/${sid}: with ${JSON.stringify(counts)} and flags ${JSON.stringify(flags)} only ${shown.length} choice is on screen (a fork needs two, a locked one counts)`);
+    }
+    for (const c of here.choices) {
+      const state = open(c, counts, flags);
+      if (c.needs) {
+        const g = gated.get(sid) ?? gated.set(sid, new Map()).get(sid);
+        const h = g.get(c) ?? g.set(c, new Set()).get(c);
+        if (state !== 'hidden') h.add(state);
+      }
+      if (state !== 'open') continue;
       const next = all[c.next];
       const base = c.next === data.start ? kit.fresh(inv) : counts;
       const { counts: after, raw } = kit.apply(inv, base, next);
@@ -198,9 +299,18 @@ function validateInventory(st) {
         if (raw[item.id] < 0 && !next.dead) tell(`${id}/${next.id}: ${item.name} goes below none (${raw[item.id]}) on the way from ${sid}; only a death page may empty it past zero`);
         if (item.empty === 'dead' && after[item.id] === 0 && !next.dead) tell(`${id}/${next.id}: ${item.name} runs out on the way from ${sid}, but running out ends the run and this isn't a death page`);
       }
-      const k = key(c.next, after);
-      if (!seen.has(k)) seen.add(k), queue.push([c.next, after]);
+      const nflags = c.next === data.start ? {} : { ...flags, ...(c.set ?? {}) };
+      const k = key(c.next, after, nflags);
+      if (!seen.has(k)) seen.add(k), queue.push([c.next, after, nflags]);
     }
+  }
+  if (seen.size < 20000) {
+    for (const [sid, g] of gated) for (const [c, h] of g) {
+      if (!h.has('locked')) warnings.push(`${id}/${sid}: "${c.en}" needs ${JSON.stringify(c.needs)} but is never locked (the gate changes nothing)`);
+      if (!h.has('open')) problems.push(`${id}/${sid}: "${c.en}" needs ${JSON.stringify(c.needs)} but is never open (no way has that much)`);
+    }
+    const reached = new Set([...seen].map((k) => k.split(' ')[0]));
+    for (const s of scenes) if (!reached.has(s.id)) problems.push(`${id}/${s.id}: no way through the gates leads here`);
   }
   if (seen.size >= 20000) warnings.push(`${id}: more than 20000 ways through the inventory; not all checked`);
 }
@@ -219,6 +329,7 @@ function validateAll() {
 
 /* ---------------- media paths ---------------- */
 
+const MAX_SHOTS = 4;
 const useOf = (st, s) => s.use ?? st.data.use ?? 'film';
 const media = (st, s, file) => `${st.base}${s.folder}/media/${file}`;
 const musicFile = (st, cue) => `${st.musicDir}/${cue}.mp3`;
@@ -227,14 +338,21 @@ const exists = (rel) => fs.existsSync(path.join(ROOT, rel));
 const titleOf = (st) => st.data.title;
 
 /** The parts of a scene's generated cut, and whether they're all there. */
+/** A scene's shots: `shots` (2 to 4, laid end to end) or its one `shot`. Shot 1 is clip.mp4; the others clip-2.mp4 ... */
+const shotsOf = (s) => (s.shots?.length ? s.shots : s.shot ? [s.shot] : []);
+const shotFile = (st, s, i, base, ext) => media(st, s, `${base}${i ? `-${i + 1}` : ''}.${ext}`);
+
 function cutParts(st, s) {
   const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }));
   let music = s.music ? musicFile(st, s.music) : null;
   // A draft's scene isn't held back by a music cue that isn't made yet: it's cut without it, and cut again once it is.
   const later = music && !st.listed && !exists(music) ? music : null;
   if (later) music = null;
-  const parts = { clip: media(st, s, 'clip.mp4'), narration: media(st, s, 'narration.mp3'), talks, music, later };
-  const need = [parts.clip, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
+  // Shots that aren't made yet are left out of the cut (it is cut again once they are); the first is required.
+  const shots = shotsOf(s).map((_, i) => shotFile(st, s, i, 'clip', 'mp4'));
+  const madeShots = shots.filter((f, i) => i === 0 || exists(f));
+  const parts = { clip: shots[0], shots: madeShots, narration: media(st, s, 'narration.mp3'), talks, music, later };
+  const need = [...parts.shots, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
   return { ...parts, missing: need.filter((f) => !exists(f)), all: need };
 }
 
@@ -321,10 +439,22 @@ function storyData() {
         question: s.question,
         video: videoOf(st, s),
         ...clipExtras(videoOf(st, s)),
+        // Seconds of live picture the cut keeps after the narration, so the choices come up over moving footage (js/game.js).
+        ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s) ? { live: LIVE_TAIL } : {}),
         ...(s.dead ? { dead: true } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
-        choices: s.choices.map((c) => [c.say, c.en, c.next]),
+        choices: s.choices.map((c) => {
+          const row = [c.say, c.en, c.next];
+          const cond = c.when || c.matches;
+          const gate = c.needs || c.requires ? { ...(c.requires ? { requires: c.requires } : {}), ...(c.needs ? { needs: c.needs } : {}) } : null;
+          if (c.default || c.set || cond || gate) row.push(!!c.default);
+          if (c.set || cond || gate) row.push(c.set || null);
+          if (cond || gate) row.push(c.when || null, c.matches || null);
+          if (gate) row.push(gate);
+          return row;
+        }),
+        ...(s.variants?.length ? { variants: s.variants.map((v) => ({ when: v.when, ...(v.story ? { story: v.story } : {}), ...(v.question ? { question: v.question } : {}), ...(v.video ? { video: v.video, ...clipExtras(v.video) } : {}) })) } : {}),
       };
     }
     const langs = new Set(['en', ...st.scenes.map((s) => s.lang)]);
@@ -358,15 +488,22 @@ const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 
 function card(st, i = 1) {
   const first = videoOf(st, st.byId.get(st.data.start));
+  const tr = trailerFiles(st.id);
   const picture = st.entry.image
     ? pictureTag(st.entry.image, st.entry.alt ?? titleOf(st), 'card', i === 0)
     : first
       ? `<video src="${esc(first)}#t=0.5" ${exists(posterPath(first).slice(1)) ? `poster="${esc(posterPath(first))}" ` : ''}muted playsinline preload="none" aria-hidden="true"></video>`
       : `<span class="story-card-blank" aria-hidden="true"></span>`;
-  // The badge, the percent explored and the button are the player's own progress: js/game.js sets them from the
-  // story's cookies (its run and its unlocks).
-  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}" data-progress="new">
+  const media = tr && tr.loop
+    ? `<div class="card-media">
         ${picture}
+        <video class="card-loop" muted loop playsinline preload="none" aria-hidden="true"${tr.loopPoster ? ` poster="${esc(tr.loopPoster)}"` : ''} data-src="${esc(tr.loop)}" data-small="${esc(tr.loopSm || tr.loop)}"></video>
+      </div>`
+    : picture;
+  // The badge, the percent explored and the button are the player's own progress: js/game.js sets them from the
+  // story's cookies (its run and its unlocks). The featured story is the hero only: not repeated here.
+  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}" data-progress="new"${tr && tr.loop ? ` data-loop="${esc(tr.loop)}"` : ''}>
+        ${media}
         <span class="story-card-ribbon">Not started</span>
         <div class="story-card-text">
           <h2>${esc(titleOf(st))}</h2>
@@ -381,13 +518,36 @@ function card(st, i = 1) {
       </a>`;
 }
 
-/** The hero at the top of the landing page: the featured story (or the first listed), big. Its poster is the card's
-    key image; a trailer clip (needs GPU: hawkes.assets.json has no recipe yet) would replace it. js/game.js sets its
-    button and progress like a card's. */
+/** Trailer / loop paths cut by tools/make-trailers.mjs (CPU only, from existing clips / CCTV stills). */
+function trailerFiles(id) {
+  const base = `/assets/trailers/${id}`;
+  const has = exists(`assets/trailers/${id}/trailer.mp4`);
+  if (!has) return null;
+  return {
+    trailer: `${base}/trailer.mp4`,
+    trailerSm: exists(`assets/trailers/${id}/trailer-sm.mp4`) ? `${base}/trailer-sm.mp4` : `${base}/trailer.mp4`,
+    poster: exists(`assets/trailers/${id}/poster.webp`) ? `${base}/poster.webp` : null,
+    loop: exists(`assets/trailers/${id}/loop.mp4`) ? `${base}/loop.mp4` : null,
+    loopSm: exists(`assets/trailers/${id}/loop-sm.mp4`) ? `${base}/loop-sm.mp4` : null,
+    loopPoster: exists(`assets/trailers/${id}/loop-poster.webp`) ? `${base}/loop-poster.webp` : null,
+  };
+}
+
+/** The hero at the top of the landing page: the featured story (or the first listed), big. Its muted trailer
+    (tools/make-trailers.mjs) plays within 2 s; the card image is the poster fallback. js/game.js sets its
+    button and progress like a card's; js/living.js owns play / Sound / reduced-motion. */
 function hero(st) {
+  const tr = trailerFiles(st.id);
   const pic = st.entry.image ? pictureTag(st.entry.image, st.entry.alt ?? titleOf(st), 'hero', true) : `<span class="hero-blank" aria-hidden="true"></span>`;
-  return `      <a class="hero" href="/?story=${st.id}" data-story="${st.id}" data-progress="new">
+  const media = tr
+    ? `<div class="hero-media">
         ${pic}
+        <video class="hero-trailer" muted loop playsinline preload="metadata" aria-hidden="true"${tr.poster ? ` poster="${esc(tr.poster)}"` : ''} data-src="${esc(tr.trailer)}" data-small="${esc(tr.trailerSm)}"></video>
+        <button type="button" class="hero-sound" aria-pressed="false" aria-label="Unmute trailer">Sound</button>
+      </div>`
+    : pic;
+  return `      <a class="hero" href="/?story=${st.id}" data-story="${st.id}" data-progress="new"${tr ? ` data-trailer="${esc(tr.trailer)}"` : ''}>
+        ${media}
         <div class="hero-text">
           <span class="hero-kicker">Featured</span>
           <h2>${esc(titleOf(st))}</h2>
@@ -411,7 +571,12 @@ function landing() {
     problems.push(`index.html: the story cards' markers are missing (${CARDS_START} … ${CARDS_END})`);
     return html;
   }
-  const cards = stories.filter((st) => st.listed).map((st, i) => card(st, i)).join('\n');
+  const listed = stories.filter((st) => st.listed);
+  if (listed.filter((st) => st.entry.featured).length > 1) problems.push(`${LISTING}: more than one story is featured`);
+  const featured = listed.find((st) => st.entry.featured) ?? listed[0];
+  // Catalogue: every listed story except the featured one (the hero already carries it; don't repeat it as the first card).
+  const catalogue = listed.filter((st) => st !== featured);
+  const cards = catalogue.map((st, i) => card(st, i)).join('\n');
   const out = html.slice(0, a + CARDS_START.length) + '\n' + cards + '\n      ' + html.slice(b);
   const ha = out.indexOf(HERO_START);
   const hb = out.indexOf(HERO_END);
@@ -419,9 +584,6 @@ function landing() {
     problems.push(`index.html: the hero's markers are missing (${HERO_START} … ${HERO_END})`);
     return out;
   }
-  const listed = stories.filter((st) => st.listed);
-  if (listed.filter((st) => st.entry.featured).length > 1) problems.push(`${LISTING}: more than one story is featured`);
-  const featured = listed.find((st) => st.entry.featured) ?? listed[0];
   return out.slice(0, ha + HERO_START.length) + '\n' + hero(featured) + '\n      ' + out.slice(hb);
 }
 
@@ -474,20 +636,25 @@ const spot = (s, [say, en], tag = 'span', attrs = '') => {
   return `<${tag} class="${attrs ? attrs + ' ' : ''}spot"><span class="spot-src" lang="${s.lang}"${dir}>${src}</span><span class="spot-en" aria-hidden="true">${eng}</span></${tag}>`;
 };
 
-function page(st, s, counts) {
+function page(st, s, counts, flags = {}) {
   if (st.console) return consolePage(st, s);
   const tap = st.data.tap ?? {};
   const inv = st.data.inventory;
+  // A gated choice (story doc "Water and gated choices"): absent unless its flags hold; locked, with its requirement in
+  // words and not a link, while the counts on the shortest way here are short.
+  const need = (c) => Object.entries(c.needs ?? {}).map(([k, v]) => `needs ${(inv?.items.find((i) => i.id === k)?.name ?? k).toLowerCase()} ${v}+`).join(', ');
   const choices = s.choices
+    .filter((c) => Object.entries(c.requires ?? {}).every(([k, v]) => (flags[k] ?? false) === v))
     .map((c) => {
       const to = st.byId.get(c.next);
+      if (c.needs && counts && !kit.meets(counts, c.needs)) return `<div class="choice-locked spot" role="note" aria-disabled="true" data-locked="true" data-next="${esc(c.next)}"><span class="spot-src" lang="${s.lang}"${s.dir ? ` dir="${s.dir}"` : ''}>${esc(c.say)}</span><span class="spot-en" aria-hidden="true">${esc(c.en)}</span><span class="choice-need">${esc(need(c))}</span></div>`;
       return `<a class="choice spot" href="/${st.base}${to.folder}/"><span class="spot-src" lang="${s.lang}"${s.dir ? ` dir="${s.dir}"` : ''}>${esc(c.say)}</span><span class="spot-en" aria-hidden="true">${esc(c.en)}</span></a>`;
     })
     .join('');
   const video = videoOf(st, s);
   return `<!DOCTYPE html>
 <!-- Generated by tools/build-story.mjs from ${st.file} (scene "${s.id}"). Do not edit: change the data and run \`npm run story\`. -->
-<html lang="${s.lang}"${tap.title ? ` data-tap-title="${esc(tap.title)}"` : ''}${tap.line ? ` data-tap-line="${esc(tap.line)}"` : ''}${inv ? ` data-kit="${st.id}"` : ''}>
+<html lang="${s.lang}"${tap.title ? ` data-tap-title="${esc(tap.title)}"` : ''}${tap.line ? ` data-tap-line="${esc(tap.line)}"` : ''}${inv && !inv.keepFlashlight ? ` data-kit="${st.id}"` : ''}${inv?.keepFlashlight && typeof counts?.matches === 'number' ? ` data-matches="${counts.matches}"` : ''}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -516,12 +683,12 @@ function page(st, s, counts) {
     <p class="powered">Powered by <a class="powered-mark" href="https://hawkesgen.ai">HAWKES GEN</a></p>
     <p class="stats-note">Anonymous viewing statistics (no cookies, no personal data, no IP stored) help us improve the stories. <a href="/privacy.html">Privacy</a></p>
   </footer>
-${inv ? `  <div class="inventory kit" data-kit="${esc(JSON.stringify({ inventory: inv, counts }))}"></div>
+${inv && !inv.keepFlashlight ? `  <div class="inventory kit" data-kit="${esc(JSON.stringify({ inventory: inv, counts }))}"></div>
 ` : ''}  <script src="/js/hawkes-build.js"></script>
   <script src="https://hawkesgen.ai/sdk/analytics@1.js" data-product="imaginelivetv"></script>
   <script src="/js/analytics.js"></script>
   <script src="/js/hawkes-sound.js"></script>
-  <script src="/js/${inv ? 'kit' : 'spot'}.js"></script>
+  <script src="/js/${inv && !inv.keepFlashlight ? 'kit' : 'spot'}.js"></script>
 </body>
 </html>
 `;
@@ -580,32 +747,35 @@ function assets(st) {
   }
 
   for (const s of scenes) {
-    const cast = (s.shot?.cast ?? []).slice(0, 3);
-    const still = `A vertical 9:16 film still: ${s.shot.scene}.`;
-    // The keyframe (image.edit from the cast's sheets, or image.generate with nobody in it; best of 3) and its clip (video.i2v).
-    list.push({
-      id: `${P}${s.id}-shot`,
-      note: `${s.title[1]}${of}: keyframe and clip.`,
-      ...(cast.length ? { inputs: cast.map((who) => story.characters[who].sheet) } : {}),
-      steps: [
-        cast.length
-          ? {
-              tool: 'image.edit',
-              params: { prompt: `${still} ${castRefs(st, cast)}; keep their faces, bodies and clothes exactly. ${story.style}`, negative: story.negative, width: 720, height: 1280 },
-              inputs: { images: cast.map((_, i) => `$input:${i}`) },
-              save: 'keyframe',
-            }
-          : { tool: 'image.generate', params: { prompt: positive(story, `${still} ${story.style}`), width: 720, height: 1280 }, save: 'keyframe' },
-        {
-          tool: 'video.i2v',
-          params: { prompt: `${s.shot.motion}. ${story.camera ?? 'Slow, tense handheld camera'}. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
-          inputs: { start: '$prev' },
-          save: 'clip',
-        },
-      ],
-      candidates: 3,
-      pick: `matches the scene (${s.shot.scene}); the characters match their reference sheets; reads clearly as a vertical frame; no text`,
-      files: { keyframe: media(st, s, 'keyframe.png'), clip: media(st, s, 'clip.mp4') },
+    // Each shot: its keyframe (image.edit from the cast's sheets, or image.generate with nobody in it; best of 3) and its clip (video.i2v).
+    shotsOf(s).forEach((shot, i) => {
+      const cast = (shot.cast ?? []).slice(0, 3);
+      const still = `A vertical 9:16 film still: ${shot.scene}.`;
+      const many = shotsOf(s).length > 1;
+      list.push({
+        id: `${P}${s.id}-shot${i ? `-${i + 1}` : ''}`,
+        note: `${s.title[1]}${of}: keyframe and clip${many ? ` (shot ${i + 1} of ${shotsOf(s).length})` : ''}.`,
+        ...(cast.length ? { inputs: cast.map((who) => story.characters[who].sheet) } : {}),
+        steps: [
+          cast.length
+            ? {
+                tool: 'image.edit',
+                params: { prompt: `${still} ${castRefs(st, cast)}; keep their faces, bodies and clothes exactly. ${story.style}`, negative: story.negative, width: 720, height: 1280 },
+                inputs: { images: cast.map((_, k) => `$input:${k}`) },
+                save: 'keyframe',
+              }
+            : { tool: 'image.generate', params: { prompt: positive(story, `${still} ${story.style}`), width: 720, height: 1280 }, save: 'keyframe' },
+          {
+            tool: 'video.i2v',
+            params: { prompt: `${shot.motion}. ${story.camera ?? 'Slow, tense handheld camera'}. ${story.style}`, negative: story.negative, width: 544, height: 960, frames: 81, fps: 16 },
+            inputs: { start: '$prev' },
+            save: 'clip',
+          },
+        ],
+        candidates: 3,
+        pick: `matches the scene (${shot.scene}); the characters match their reference sheets; reads clearly as a vertical frame; no text`,
+        files: { keyframe: shotFile(st, s, i, 'keyframe', 'png'), clip: shotFile(st, s, i, 'clip', 'mp4') },
+      });
     });
 
     // Narration: the story and the question, spoken in the scene's language.
@@ -674,28 +844,66 @@ function ffmpegBin(name) {
 }
 const duration = (rel) => Number(execFileSync(ffmpegBin('ffprobe'), ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(ROOT, rel)], { encoding: 'utf8' }).trim());
 
-/** Clip looped under the narration, then each talking shot with its line, all over the mood music. */
+/** Seconds of live picture kept after the narration while the choices are up: the player's 15 s choice window plus a margin
+ *  (CHOICE_WINDOW in js/game.js). The cut carries on this long, so the picture is still moving under the buttons. */
+const LIVE_TAIL = 18;
+/** The cut's last stretch is a slow push-in on the final frame; this is how far it goes in a full tail (1.0 = none). */
+const PUSH_MAX = 1.14;
+
+/** Does this scene's cut keep the picture moving under its choices? (A one-choice page carries on by itself at the end of its clip.) */
+const liveTail = (s) => (s.choices?.length ?? 0) > 1 && !(s.lines ?? []).length;
+
+/** The shots laid end to end under the narration (never looped: when the narration outruns the footage the last frame
+ *  slows to a stop and the camera keeps pushing in on it), then each talking shot with its line, all over the mood music. */
 function cut(st, s) {
   const p = cutParts(st, s);
   if (p.missing.length) return;
   if (p.later) warnings.push(`${st.id}/${s.id}: cut without its music (${p.later} isn't made yet)`);
+  const unmade = shotsOf(s).length - p.shots.length;
+  if (unmade) warnings.push(`${st.id}/${s.id}: cut with ${p.shots.length} of ${shotsOf(s).length} shots (the rest aren't made yet)`);
   const out = path.join(ROOT, cutFile(st, s));
   const newest = Math.max(...p.all.map((f) => fs.statSync(path.join(ROOT, f)).mtimeMs), fs.statSync(path.join(ROOT, st.file)).mtimeMs);
   if (fs.existsSync(out) && fs.statSync(out).mtimeMs >= newest) return;
   if (CHECK) return problems.push(`${cutFile(st, s)} is out of date`);
 
-  const fit = 'scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=24,setsar=1';
+  const FPS = 24;
+  const fit = `scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=${FPS},setsar=1`;
   const args = ['-v', 'error', '-y'];
   const graph = [];
   const pairs = [];
-  const a0 = duration(p.narration) + 0.8;
+  const tail = liveTail(s) ? LIVE_TAIL : 0;
+  const speech = duration(p.narration) + 0.8;
+  const a0 = speech + tail;
   let total = a0;
-  args.push('-stream_loop', '-1', '-i', path.join(ROOT, p.clip), '-i', path.join(ROOT, p.narration));
-  graph.push(`[0:v]${fit},trim=duration=${a0},setpts=PTS-STARTPTS[v0]`, `[1:a]aformat=sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${a0}[a0]`);
+  // The shots, end to end, in the order listed.
+  p.shots.forEach((f) => args.push('-i', path.join(ROOT, f)));
+  const footage = p.shots.reduce((sum, f) => sum + duration(path.relative(ROOT, path.join(ROOT, f))), 0);
+  graph.push(`${p.shots.map((_, i) => `[${i}:v]${fit}[s${i}]`).join(';')}`);
+  const joined = p.shots.length > 1 ? `${p.shots.map((_, i) => `[s${i}]`).join('')}concat=n=${p.shots.length}:v=1:a=0,` : `[s0]`;
+  const have = Math.min(footage, a0);
+  const hold = Math.max(0, a0 - footage);
+  // Footage longer than the cut is trimmed. Shorter: the last 0.8 s slows to half speed, then its final frame is held while
+  // zoompan pushes in on it, so nothing ever jumps back and the picture is never still.
+  let v0;
+  if (hold > 0.05) {
+    const slow = Math.min(0.8, have);
+    const rest = Math.max(0, have - slow);
+    graph.push(
+      `${joined}split=2[ja][jb]`,
+      `[ja]trim=duration=${rest},setpts=PTS-STARTPTS[head]`,
+      `[jb]trim=start=${rest},setpts=PTS-STARTPTS,setpts=2*PTS,tpad=stop_mode=clone:stop_duration=${hold + slow},trim=duration=${hold + slow * 2},fps=${FPS},scale=1440:2560,zoompan=z='min(${PUSH_MAX},1+${((PUSH_MAX - 1) / ((hold + slow) * FPS)).toFixed(6)}*on)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=720x1280:fps=${FPS},setsar=1[tailv]`,
+      `[head][tailv]concat=n=2:v=1:a=0,trim=duration=${a0},setpts=PTS-STARTPTS[v0]`,
+    );
+  } else {
+    graph.push(`${joined}trim=duration=${a0},setpts=PTS-STARTPTS[v0]`);
+  }
+  const base = p.shots.length;
+  args.push('-i', path.join(ROOT, p.narration));
+  graph.push(`[${base}:a]aformat=sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${a0}[a0]`);
   pairs.push('[v0][a0]');
   p.talks.forEach((t, i) => {
     const d = duration(t.audio) + 0.5;
-    const vi = 2 + i * 2;
+    const vi = base + 1 + i * 2;
     total += d;
     args.push('-i', path.join(ROOT, t.video), '-i', path.join(ROOT, t.audio));
     graph.push(`[${vi}:v]${fit},tpad=stop_mode=clone:stop_duration=${d},trim=duration=${d},setpts=PTS-STARTPTS[v${i + 1}]`, `[${vi + 1}:a]aformat=sample_rates=44100:channel_layouts=stereo,apad=whole_dur=${d}[a${i + 1}]`);
@@ -704,7 +912,7 @@ function cut(st, s) {
   graph.push(`${pairs.join('')}concat=n=${pairs.length}:v=1:a=1[v][speech]`);
   let audio = '[speech]';
   if (p.music) {
-    const mi = 2 + p.talks.length * 2;
+    const mi = base + 1 + p.talks.length * 2;
     args.push('-stream_loop', '-1', '-i', path.join(ROOT, p.music));
     graph.push(`[${mi}:a]aformat=sample_rates=44100:channel_layouts=stereo,volume=0.22,atrim=duration=${total},afade=t=out:st=${Math.max(0, total - 1.5)}:d=1.5[m]`, `[speech][m]amix=inputs=2:duration=first:normalize=0[mix]`);
     audio = '[mix]';
@@ -724,12 +932,12 @@ const rules = globalThis.iltvConsoleRules;
 const CAMERA_MIN = 6;
 const CAMERA_MAX = 9;
 const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
-const CHOICE_KEYS = ['say', 'next', 'requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic'];
+const CHOICE_KEYS = ['say', 'next', 'requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic', 'pose', 'react'];
 
 /** A choice as the player's data has it: [say, say, next, extra] (extra left out when empty). */
 function consoleChoice(c) {
   const extra = {};
-  for (const k of ['requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic']) if (c[k] != null && !(Array.isArray(c[k]) && !c[k].length)) extra[k] = c[k];
+  for (const k of ['requires', 'forbids', 'meters', 'set', 'clear', 'add', 'log', 'cosmetic', 'pose', 'react']) if (c[k] != null && !(Array.isArray(c[k]) && !c[k].length)) extra[k] = c[k];
   return Object.keys(extra).length ? [c.say, c.say, c.next, extra] : [c.say, c.say, c.next];
 }
 
@@ -896,6 +1104,7 @@ function consoleData(st) {
         speaker: l.speaker,
         text: l.text,
         ...(l.sfx ? { sfx: l.sfx } : {}),
+        ...(l.perform ? { perform: l.perform } : {}),
         ...(l.act ? { act: l.act } : {}),
         ...(l.place ? { place: l.place } : {}),
         ...(l.feed ? { feed: l.feed } : {}),
@@ -929,6 +1138,9 @@ function consoleData(st) {
     ambience: Object.fromEntries(Object.keys(d.ambience ?? {}).map((cue) => [cue, urlIfMade(f.bed(cue))])),
     sfx: Object.fromEntries(Object.keys(d.sfx ?? {}).map((cue) => [cue, urlIfMade(f.sfx(cue))])),
     music: Object.fromEntries(Object.keys(d.music ?? {}).map((cue) => [cue, urlIfMade(f.music(cue))])),
+    ...(d.reactions ? { reactions: d.reactions } : {}),
+    ...(d.chapters ? { chapters: d.chapters } : {}),
+    ...(d.performPoses ? { performPoses: d.performPoses } : {}),
     ...(d.unspoken ? { unspoken: d.unspoken } : {}),
     ...(d.stateCap ? { stateCap: d.stateCap } : {}),
     endings: endingsList(st),
@@ -1130,7 +1342,8 @@ if (!problems.length) {
   for (const st of stories) {
     write(`${st.id}/index.html`, storyLink(st));
     const counts = kitCounts(st);
-    for (const s of st.scenes) write(`${st.base}${s.folder}/index.html`, page(st, s, counts.get(s.id)));
+    const wayFlags = kitFlags(st);
+    for (const s of st.scenes) write(`${st.base}${s.folder}/index.html`, page(st, s, counts.get(s.id), wayFlags.get(s.id)));
   }
   if (!problems.length) write('hawkes.assets.json', assetsText);
   strays();

@@ -13,14 +13,25 @@
     revolver:
       // A Colt Single Action Army from the side: barrel and front sight, ejector rod, cylinder, hammer, grip, trigger guard.
       '<svg viewBox="0 0 48 28" aria-hidden="true"><g fill="currentColor"><path d="M20 6H45V4.5h1.5V10H20z"/><path d="M22 10h15v2H22z"/><path d="M12 5h9v10h-9z"/><path d="M12 6L9 2l2-.5L14 5z"/><path d="M12 13c-3 4-6 8-6.5 13l6 1c.5-5 2.5-9 5-12z" fill="#8a5a33"/></g><path d="M14 7.5h5v1h-5zM14 10.5h5v1h-5z" fill="#17140f"/><path d="M15 15c0 5 5 5 5 0M17.2 15l-.6 3" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>',
+    match:
+      // A wooden match: the stick and its red head.
+      '<svg viewBox="0 0 12 28" aria-hidden="true"><rect x="5" y="7" width="2" height="20" rx="1" fill="#c9a36b"/><ellipse cx="6" cy="6" rx="3.2" ry="4.6" fill="#c8402a"/></svg>',
     rounds:
       '<svg viewBox="0 0 12 28" aria-hidden="true"><rect x="2" y="9" width="8" height="17" rx="1" fill="currentColor"/><path d="M2 10c0-5 2-8 4-9 2 1 4 4 4 9z" fill="#b8874a"/><rect x="1" y="24" width="10" height="3" rx="1" fill="currentColor"/></svg>',
+    barrel:
+      // A water barrel: staves, two iron hoops, a bung.
+      '<svg viewBox="0 0 28 30" aria-hidden="true"><path d="M5 2h18c3 4 4 9 4 13s-1 9-4 13H5c-3-4-4-9-4-13S2 6 5 2z" fill="#6b4a2b" stroke="currentColor" stroke-width="1.4"/><path d="M2.2 9h23.6M1.2 15h25.6M2.2 21h23.6" stroke="#17140f" stroke-width="1.8" fill="none"/><circle cx="14" cy="15" r="1.7" fill="#17140f"/></svg>',
     flask:
       '<svg viewBox="0 0 28 36" aria-hidden="true"><defs><clipPath id="kit-flask-clip"><path d="M10 2h8v6c5 2 8 6 8 12 0 8-5 14-12 14S2 28 2 20c0-6 3-10 8-12z"/></clipPath></defs><path d="M10 2h8v6c5 2 8 6 8 12 0 8-5 14-12 14S2 28 2 20c0-6 3-10 8-12z" fill="#1b1d20" stroke="currentColor" stroke-width="1.6"/><rect class="kit-flask-water" x="0" y="34" width="28" height="0" clip-path="url(#kit-flask-clip)" fill="#5aa6c8"/></svg>'
   };
 
   function isSet(change) {
     return !!change && typeof change === "object" && typeof change.set === "number";
+  }
+
+  /** Whether the counts meet a choice's `needs` ({ water: 3 }: the item's count must be 3 or more). */
+  function meets(now, needs) {
+    return Object.keys(needs || {}).every(function (id) { return (now[id] || 0) >= needs[id]; });
   }
 
   /** The counts at the start: every item with a `start`. */
@@ -124,7 +135,7 @@
     render(bar, def, now);
   }
 
-  root.iltvKit = { icons: Object.keys(ICONS), fresh: fresh, apply: apply, counts: counts, html: html, show: show };
+  root.iltvKit = { icons: Object.keys(ICONS), fresh: fresh, apply: apply, meets: meets, counts: counts, html: html, show: show };
 
   // A branch page: the build wrote the story's items and the counts into the bar.
   if (typeof document !== "undefined") {

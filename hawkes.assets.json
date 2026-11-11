@@ -120,7 +120,7 @@
     },
     {
       "id": "music-sewer",
-      "note": "Music for the sewer scenes (start, deadEnd, direction, sewerWater, getOutWater).",
+      "note": "Music for the sewer scenes (start, deadEnd, direction, sewerWater, getOutWater, ratFed, ratFollowed, ratIgnored).",
       "steps": [
         {
           "tool": "audio.music",
@@ -158,7 +158,7 @@
     },
     {
       "id": "music-gate",
-      "note": "Music for the gate scenes (gate, breakGate, pickLock, gotKey).",
+      "note": "Music for the gate scenes (gate, breakGate, pickLock, gotKey, readTag).",
       "steps": [
         {
           "tool": "audio.music",
@@ -177,7 +177,7 @@
     },
     {
       "id": "music-fog",
-      "note": "Music for the fog scenes (useKey, fog, fireDoor, knock, uponTruck).",
+      "note": "Music for the fog scenes (useKey, fog, fireDoor, knock, uponTruck, ratCrawl, oldMan, refuseShadow, ratEnding, lamplighterEnding).",
       "steps": [
         {
           "tool": "audio.music",
@@ -196,7 +196,7 @@
     },
     {
       "id": "music-shadow",
-      "note": "Music for the shadow scenes (insideTruck, walkAway, shadowDance, explorePowers, consumeLight, shadowStitch, destroyTown).",
+      "note": "Music for the shadow scenes (insideTruck, walkAway, shadowDance, explorePowers, consumeLight, shadowStitch, destroyTown, lightHunger, threadPull).",
       "steps": [
         {
           "tool": "audio.music",
@@ -265,7 +265,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "你在黑暗的下水道里醒来。空气很难闻，黑暗里不知哪里在滴水。 你要做什么？",
+            "text": "你在下水道里醒来。空气恶臭，黑暗深处有水在滴。 你要做什么？",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -328,7 +328,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "तुम एक बंद सिरे पर पहुँच गए। फर्श पर कुछ काला और घिनौना पसरा है। तुम क्या करोगे?",
+            "text": "आगे बंद दीवार है। फर्श पर कुछ काला और घिनौना पसरा है। तुम क्या करोगे?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -391,7 +391,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Vuelves al pasadizo. La cloaca se alarga hacia la oscuridad. ¿Hacia dónde irás?",
+            "text": "Vuelves al pasadizo. La cloaca sigue hacia la oscuridad. Solo queda un camino.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -517,7 +517,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "تدخل قسمًا مغمورًا من المجاري. الماء يبدو قذرًا. ماذا ستفعل؟",
+            "text": "تصل إلى جزء مغمور من المجاري. الماء قذر. ماذا ستفعل؟",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -532,20 +532,22 @@
       "id": "getOutWater-shot",
       "note": "Out of the water: keyframe and clip.",
       "inputs": [
-        "story/characters/hero.png"
+        "story/characters/hero.png",
+        "story/characters/rat.png"
       ],
       "steps": [
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: you climb out of the sewer water onto a narrow stone ledge, boots dripping. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "prompt": "A vertical 9:16 film still: you climb out of the sewer water onto a narrow stone ledge, boots dripping; a wet brown rat climbs out beside you. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
             "negative": "text, watermark, cartoon, subtitles",
             "width": 720,
             "height": 1280
           },
           "inputs": {
             "images": [
-              "$input:0"
+              "$input:0",
+              "$input:1"
             ]
           },
           "save": "keyframe"
@@ -553,7 +555,7 @@
         {
           "tool": "video.i2v",
           "params": {
-            "prompt": "the hero hauls up onto the ledge and stands. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "prompt": "the hero stands, the rat shakes water off its fur and looks up. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
             "negative": "text, watermark, cartoon, subtitles",
             "width": 544,
             "height": 960,
@@ -567,7 +569,7 @@
         }
       ],
       "candidates": 3,
-      "pick": "matches the scene (you climb out of the sewer water onto a narrow stone ledge, boots dripping); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "pick": "matches the scene (you climb out of the sewer water onto a narrow stone ledge, boots dripping; a wet brown rat climbs out beside you); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
         "keyframe": "get-out-of-the-water/media/keyframe.png",
         "clip": "get-out-of-the-water/media/clip.mp4"
@@ -580,7 +582,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Você consegue sair da água e continua pela cloaca. Você descobre um portão trancado à frente.",
+            "text": "Você sai da água. O rato sai atrás de você, tremendo. O que você faz pelo rato?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -643,7 +645,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Пробыв слишком долго в грязной воде, ты заболеваешь окопной стопой. Тебе становится всё хуже, пока ты уже не можешь идти дальше. Ты умер.",
+            "text": "Ты слишком долго стоял в грязной воде. Окопная стопа. Ноги отказывают, и дальше ты не идёшь. Ты умер.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -706,7 +708,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "錠のかかった門が道をふさいでいる。通り抜ける方法を見つけなければならない。 どうする？",
+            "text": "錠のかかった鉄の門が道をふさいでいる。 どうする？",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -769,7 +771,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "তুমি গেট ভাঙতে চেষ্টা করো, কিন্তু পার হওয়া সহজ হবে না। এরপর কী করবে?",
+            "text": "তুমি গেটে কাঁধ দিয়ে ধাক্কা দাও। গেট নড়ে না। এরপর কী করবে?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -832,7 +834,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Du versuchst, das Schloss zu knacken. Mit bloßen Händen reicht es vielleicht nicht. Was machst du als Nächstes?",
+            "text": "Du fummelst am Schloss herum. Mit bloßen Fingern ist da nichts zu machen. Was machst du als Nächstes?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -895,7 +897,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "열쇠를 찾았다! 그걸로 무엇을 할 거야?",
+            "text": "벽에 묶인 해골의 손에 열쇠가 걸려 있다. 그걸로 무엇을 할 거야?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -958,7 +960,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Anahtarla kapının kilidini açarsın. Ötesini kalın bir sis doldurur. Sisin içine girecek misin?",
+            "text": "Anahtar kilide uyar. Kapının ardında kalın bir sis var. Sisin içine girecek misin?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1021,7 +1023,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Bạn bước qua cổng và đi vào sương mù. Bạn hầu như không thấy phía trước có gì. Bạn sẽ làm gì?",
+            "text": "Bạn bước qua cổng vào sương mù. Gần như không thấy gì phía trước. Bạn sẽ làm gì?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1084,7 +1086,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Decidi di dare fuoco alla porta. Che cosa succede dopo?",
+            "text": "Accosti la fiamma alla porta. Il legno vecchio prende fuoco subito. Che cosa succede dopo?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1147,7 +1149,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Kamu mendekati pintu dan mengetuk. Apa yang terjadi selanjutnya?",
+            "text": "Kamu mengetuk pintu. Seorang lelaki tua membuka, lalu menyuruhmu pergi. Apa yang terjadi selanjutnya?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1268,7 +1270,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "تم اپنے آپ کو ایک ٹرک کے سامنے کھڑا پاتے ہو۔ تم کیا کرو گے؟",
+            "text": "ایک سفید ٹرک گلی میں کھلا کھڑا ہے۔ تم کیا کرو گے؟",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1331,7 +1333,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Subes a la camioneta. ¿Qué pasa ahora?",
+            "text": "Subes a la camioneta. En la oscuridad de la cabina, algo se mueve. ¿Qué pasa ahora?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1394,7 +1396,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "เจ้าตัดสินใจเดินหนีจากรถบรรทุก เจ้าจะทำอะไร?",
+            "text": "เจ้าหันหลังให้รถบรรทุกแล้วเดินจากไป แต่เงาตามมา เจ้าจะทำอะไร?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1459,7 +1461,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Unacheza na kivuli. Mnapoenda pamoja, kitu kinaamka ndani yako. Mwanguko wa nguvu ya ajabu unapita mwilini mwako, na unagundua umepata nguvu mpya. Nguvu zako mpya zimeamka.",
+            "text": "Unacheza na kivuli. Taa za mji ziliwashwa ili kukifunga chini; sasa kinataka ziizime. Kivuli kinakupa nguvu mbili.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1661,7 +1663,7 @@
     },
     {
       "id": "destroyTown-shot",
-      "note": "Destroy town: keyframe and clip.",
+      "note": "Destroy the town: keyframe and clip.",
       "inputs": [
         "story/characters/hero.png",
         "story/characters/shadow.png"
@@ -1708,12 +1710,12 @@
     },
     {
       "id": "destroyTown-voice",
-      "note": "Destroy town: narration in pa.",
+      "note": "Destroy the town: narration in pa.",
       "steps": [
         {
           "tool": "audio.voice",
           "params": {
-            "text": "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ। ",
+            "text": "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰ ਦਿੰਦਾ ਹੈਂ। ਇੱਕ-ਇੱਕ ਕਰਕੇ ਹਰ ਬੱਤੀ ਬੁਝ ਜਾਂਦੀ ਹੈ। ",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1722,6 +1724,773 @@
       ],
       "files": {
         "narration": "destroy-the-town/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratFed-shot",
+      "note": "The rat: keyframe and clip.",
+      "inputs": [
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up, a brown sewer rat gnaws a crust on wet cobbles beside a lit match, then looks up at the camera. image 1 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the rat chews, whiskers twitch, it raises its head. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up, a brown sewer rat gnaws a crust on wet cobbles beside a lit match, then looks up at the camera); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-rat-eats/media/keyframe.png",
+        "clip": "the-rat-eats/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratFed-voice",
+      "note": "The rat: narration in fr.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Tu poses une croûte par terre. Le rat la ronge, puis te regarde. Il trottine déjà vers le portail.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-rat-eats/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratFollowed-shot",
+      "note": "Follow the rat: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, a match held toward a low brick side pipe; a brown rat's tail disappears into it. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera ducks and crawls after the rat, the flame wavers. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, a match held toward a low brick side pipe; a brown rat's tail disappears into it); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "follow-the-rat/media/keyframe.png",
+        "clip": "follow-the-rat/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratFollowed-voice",
+      "note": "Follow the rat: narration in ru.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Крыса бежит вперёд. Ты идёшь на писк в боковую трубу. Труба узкая и мокрая.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "follow-the-rat/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratCrawl-shot",
+      "note": "The pipe: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: the hero crawls out of a brick pipe onto a foggy cobbled street; the iron gate stands behind, the rat sits at the pipe's mouth. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the hero stands, fog rolls in, the rat watches. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (the hero crawls out of a brick pipe onto a foggy cobbled street; the iron gate stands behind, the rat sits at the pipe's mouth); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-rat-pipe/media/keyframe.png",
+        "clip": "the-rat-pipe/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratCrawl-voice",
+      "note": "The pipe: narration in zh.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "你挤出窄管，铁门已在身后。雾就在前面。 老鼠蹲在管口，看着你。",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-rat-pipe/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratIgnored-shot",
+      "note": "Step past the rat: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, a boot steps over a small brown rat on a narrow ledge; the rat watches, then slips into a drain. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera walks on, the rat shrinks behind. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, a boot steps over a small brown rat on a narrow ledge; the rat watches, then slips into a drain); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "step-past-the-rat/media/keyframe.png",
+        "clip": "step-past-the-rat/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratIgnored-voice",
+      "note": "Step past the rat: narration in de.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Du steigst über das Tier hinweg. Es sieht dir nach, dann ist es fort. Vor dir sperrt ein Tor den Gang.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "step-past-the-rat/media/narration.mp3"
+      }
+    },
+    {
+      "id": "readTag-shot",
+      "note": "The tag: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up by match light, a brass tag on a chain round a chained skeleton's neck, an old iron key beneath it; a thumb turns the tag over. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the thumb flips the tag, scratched letters catch the flame. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up by match light, a brass tag on a chain round a chained skeleton's neck, an old iron key beneath it; a thumb turns the tag over); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-brass-tag/media/keyframe.png",
+        "clip": "the-brass-tag/media/clip.mp4"
+      }
+    },
+    {
+      "id": "readTag-voice",
+      "note": "The tag: narration in ko.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "해골 목의 놋쇠 명찰에 '점등원'이라 적혀 있다. 뒷면에는 네 이름. 열쇠가 그 아래 걸려 있다.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-brass-tag/media/narration.mp3"
+      }
+    },
+    {
+      "id": "oldMan-shot",
+      "note": "The lamplighter: keyframe and clip.",
+      "inputs": [
+        "story/characters/old-man.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: an old man with grey hair and round glasses holds a door half open in the fog, studying the hero's soot-black hands. image 1 is the reference sheet for the old man (an old man with swept-back grey hair, round wire glasses and a dark wool coat); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the old man looks from the hands to the face, then slowly shuts the door. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (an old man with grey hair and round glasses holds a door half open in the fog, studying the hero's soot-black hands); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-old-man-speaks/media/keyframe.png",
+        "clip": "the-old-man-speaks/media/clip.mp4"
+      }
+    },
+    {
+      "id": "oldMan-voice",
+      "note": "The lamplighter: narration in es.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Te mira las manos. «Hollín de farolero. Tú encendías estas lámparas.» Cierra la puerta despacio.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-old-man-speaks/media/narration.mp3"
+      }
+    },
+    {
+      "id": "oldMan-talk-1",
+      "note": "The lamplighter: The old man says \"Lamplighter's soot. You lit every lamp in this town, and you locked the dark under it.\" (DRAFT line: J to approve). video.talk is experimental.",
+      "inputs": [
+        "story/characters/old-man.png",
+        "the-old-man-speaks/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (an old man with swept-back grey hair, round wire glasses and a dark wool coat) facing the camera, mouth closed, in the setting of image 2: an old man with grey hair and round glasses holds a door half open in the fog, studying the hero's soot-black hands. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Lamplighter's soot. You lit every lamp in this town, and you locked the dark under it.",
+            "voice": "JBFqnCBsd6RMkjVDRZzb",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "an old man with swept-back grey hair, round wire glasses and a dark wool coat speaks to the camera, natural head movement, the old man looks from the hands to the face, then slowly shuts the door",
+            "width": 480,
+            "height": 832,
+            "frames": 185,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "the-old-man-speaks/media/portrait-1.png",
+        "line-1": "the-old-man-speaks/media/line-1.mp3",
+        "talk-1": "the-old-man-speaks/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "lightHunger-shot",
+      "note": "The lamps: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, the hero stands in a foggy square as every window and lamp goes dark one by one; a tall shadow waits at the edge of the light, a rat sits near the boots. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow pan across the darkening windows, the last candle gutters. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, the hero stands in a foggy square as every window and lamp goes dark one by one; a tall shadow waits at the edge of the light, a rat sits near the boots); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-lamps-go-out/media/keyframe.png",
+        "clip": "the-lamps-go-out/media/clip.mp4"
+      }
+    },
+    {
+      "id": "lightHunger-voice",
+      "note": "The lamps: narration in fr.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Les fenêtres s'éteignent une à une. L'ombre attend ta réponse. Que fais-tu des lampes ?",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-lamps-go-out/media/narration.mp3"
+      }
+    },
+    {
+      "id": "threadPull-shot",
+      "note": "The threads: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: the hero's shadow on the cobbles stitches itself to a row of lamppost shadows with black threads; the tall shadow waits behind. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the threads pull taut, the lamps flicker. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (the hero's shadow on the cobbles stitches itself to a row of lamppost shadows with black threads; the tall shadow waits behind); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-threads-pull/media/keyframe.png",
+        "clip": "the-threads-pull/media/clip.mp4"
+      }
+    },
+    {
+      "id": "threadPull-voice",
+      "note": "The threads: narration in pt.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Fios negros puxam as sombras dos postes até os teus pés. A sombra espera. O que fazes com a cidade?",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-threads-pull/media/narration.mp3"
+      }
+    },
+    {
+      "id": "refuseShadow-shot",
+      "note": "Refuse the shadow: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, a lit match held high in a foggy square; windows and lamps relight one by one as a tall black shadow shrinks back into the cobbles. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the flame steadies, light spreads across the windows. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, a lit match held high in a foggy square; windows and lamps relight one by one as a tall black shadow shrinks back into the cobbles); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "refuse-the-shadow/media/keyframe.png",
+        "clip": "refuse-the-shadow/media/clip.mp4"
+      }
+    },
+    {
+      "id": "refuseShadow-voice",
+      "note": "Refuse the shadow: narration in ja.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "きみはマッチを高く掲げる。影は炎の前で縮み、街の灯が一つずつ戻る。 ",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "refuse-the-shadow/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratEnding-shot",
+      "note": "The rat's light: keyframe and clip.",
+      "inputs": [
+        "story/characters/rat.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a small brown rat drags a burning candle stub across wet cobbles toward the camera in a dark foggy square. image 1 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the rat hauls the candle, its flame lights the whiskers and the black shadow pulls back. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a small brown rat drags a burning candle stub across wet cobbles toward the camera in a dark foggy square); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-rats-light/media/keyframe.png",
+        "clip": "the-rats-light/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratEnding-voice",
+      "note": "The rat's light: narration in es.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Silbas. Un correteo, y la rata arrastra hasta ti un cabo de vela encendido. ",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-rats-light/media/narration.mp3"
+      }
+    },
+    {
+      "id": "lamplighterEnding-shot",
+      "note": "The lamplighter: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a foggy old square at dusk; one by one the gas lamps glow on, a tall black shadow sinks into the cobbles. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow push in as the lamps catch. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a foggy old square at dusk; one by one the gas lamps glow on, a tall black shadow sinks into the cobbles); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-lamplighter/media/keyframe.png",
+        "clip": "the-lamplighter/media/clip.mp4"
+      }
+    },
+    {
+      "id": "lamplighterEnding-voice",
+      "note": "The lamplighter: narration in de.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Du sagst, wer du warst. Die Laternen am Platz glimmen auf, und der Schatten sinkt unter das Pflaster. ",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-lamplighter/media/narration.mp3"
       }
     },
     {
@@ -1940,7 +2709,97 @@
     },
     {
       "id": "water-road-start-shot",
-      "note": "The water road (The Water Road): keyframe and clip.",
+      "note": "The water road (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/dove.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide establishing view at first light: a long wagon train of six canvas-covered wagons loaded with water barrels, mule teams hauling in the dust haze across open desert, a low golden sun, a small mourning dove on a dead mesquite branch in the near foreground. image 1 is the reference sheet for the dove (a small slender mourning dove, soft grey-brown feathers with a buff breast, no ring or collar on the neck, a small black spot on the cheek, a few black spots on each wing, a long pointed tail, dark eyes ringed in pale blue); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera drifts slowly right along the train as the wagons start to roll; the dove turns its head. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide establishing view at first light: a long wagon train of six canvas-covered wagons loaded with water barrels, mule teams hauling in the dust haze across open desert, a low golden sun, a small mourning dove on a dead mesquite branch in the near foreground); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-water-road/media/keyframe.png",
+        "clip": "water-road/the-water-road/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-start-shot-2",
+      "note": "The water road (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up on the young rider at the back of the line, hat brim shading the eyes, faded red bandana, looking down at the unfired revolver in its holster, his hand resting uneasily on it, golden dawn light. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "his fingers rest on the holster, then he looks up toward the wagons ahead and swallows. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up on the young rider at the back of the line, hat brim shading the eyes, faded red bandana, looking down at the unfired revolver in its holster, his hand resting uneasily on it, golden dawn light); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-water-road/media/keyframe-2.png",
+        "clip": "water-road/the-water-road/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-start-shot-3",
+      "note": "The water road (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/dove.png",
         "story/characters/water-road/hero.png"
@@ -1981,8 +2840,8 @@
       "candidates": 3,
       "pick": "matches the scene (first light at dawn in the open desert, a low golden sun and dust haze; in the close foreground a mourning dove sits alone on a dead mesquite branch, sharp, filling the top of the frame; far below and behind it, soft and out of focus in the haze, a long wagon train of six canvas-covered wagons loaded with water barrels, each pulled by a team of mules, starts out across the flats; at the very back of the line, small in the distance, a young rider on a bay horse); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-water-road/media/keyframe.png",
-        "clip": "water-road/the-water-road/media/clip.mp4"
+        "keyframe": "water-road/the-water-road/media/keyframe-3.png",
+        "clip": "water-road/the-water-road/media/clip-3.mp4"
       }
     },
     {
@@ -2005,7 +2864,88 @@
     },
     {
       "id": "water-road-flats-shot",
-      "note": "The salt flats (The Water Road): keyframe and clip.",
+      "note": "The salt flats (The Water Road): keyframe and clip (shot 1 of 3).",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot of blinding white salt flats at noon in heat haze, six wagons stopped in a line, the last water wagon tilted on a cracked wooden wheel, mules stamping, tiny riders around it. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West. A modern 3D game render, not a photograph and not live action, not a cartoon or anime; a clean image with no writing on it.",
+            "width": 720,
+            "height": 1280
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "heat shimmer rolls across the salt; the camera pushes slowly in toward the tilted wagon. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot of blinding white salt flats at noon in heat haze, six wagons stopped in a line, the last water wagon tilted on a cracked wooden wheel, mules stamping, tiny riders around it); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-salt-flats/media/keyframe.png",
+        "clip": "water-road/the-salt-flats/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-flats-shot-2",
+      "note": "The salt flats (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up on the young rider's sunburnt face under the dusty hat brim, sweat on the lip, squinting at the white sun, a tin flask in his hand. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "he wipes sweat with the back of his wrist, glances at the flask, and does not drink. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up on the young rider's sunburnt face under the dusty hat brim, sweat on the lip, squinting at the white sun, a tin flask in his hand); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-salt-flats/media/keyframe-2.png",
+        "clip": "water-road/the-salt-flats/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-flats-shot-3",
+      "note": "The salt flats (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/hero.png"
       ],
@@ -2044,8 +2984,8 @@
       "candidates": 3,
       "pick": "matches the scene (blinding white salt flats at noon, heat haze; a water wagon tilts on a cracked wooden wheel, mules stamping; the young rider wipes sweat from under the hat brim); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-salt-flats/media/keyframe.png",
-        "clip": "water-road/the-salt-flats/media/clip.mp4"
+        "keyframe": "water-road/the-salt-flats/media/keyframe-3.png",
+        "clip": "water-road/the-salt-flats/media/clip-3.mp4"
       }
     },
     {
@@ -2187,7 +3127,99 @@
     },
     {
       "id": "water-road-mesa-shot",
-      "note": "Under the mesa (The Water Road): keyframe and clip.",
+      "note": "Under the mesa (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot of the caravan on a trail in the long shadow of a towering red mesa, a small bright glint on the sunlit rocks high above, the young rider at the rear. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera tilts up the mesa wall to the glint, which flashes twice. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot of the caravan on a trail in the long shadow of a towering red mesa, a small bright glint on the sunlit rocks high above, the young rider at the rear); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/under-the-mesa/media/keyframe.png",
+        "clip": "water-road/under-the-mesa/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-mesa-shot-2",
+      "note": "Under the mesa (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/hero.png",
+        "story/characters/water-road/boss.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up of the young rider's right hand drifting down to rest on the grip of his holstered single-action revolver, thumb on the hammer, sunlit mesa shadow behind. image 1 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); image 2 is the reference sheet for the trail boss (a lean old woman with a weathered face, grey braid, a battered black hat, a long duster coat and a coiled bullwhip at her hip); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "his thumb touches the hammer, the hand hovers, his eyes lift to the rocks. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up of the young rider's right hand drifting down to rest on the grip of his holstered single-action revolver, thumb on the hammer, sunlit mesa shadow behind); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/under-the-mesa/media/keyframe-2.png",
+        "clip": "water-road/under-the-mesa/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-mesa-shot-3",
+      "note": "Under the mesa (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/hero.png"
       ],
@@ -2226,8 +3258,8 @@
       "candidates": 3,
       "pick": "matches the scene (the caravan winds along a trail in the long shadow of a towering red mesa; high on the sunlit rocks a small bright glint; the young rider in the foreground, hand near the holster); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/under-the-mesa/media/keyframe.png",
-        "clip": "water-road/under-the-mesa/media/clip.mp4"
+        "keyframe": "water-road/under-the-mesa/media/keyframe-3.png",
+        "clip": "water-road/under-the-mesa/media/clip-3.mp4"
       }
     },
     {
@@ -2300,7 +3332,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Your shot cracks off the cliff, and the echo brings the cliff down with it. Wagons, mules and you go under the rock. You have died.",
+            "text": "Your shot cracks off the mesa and the rock answers: four barrels go over the edge and a mule goes down lame. Nobody is under it. Who's that on the rocks?",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },
@@ -2378,7 +3410,99 @@
     },
     {
       "id": "water-road-family-shot",
-      "note": "The broken wagon (The Water Road): keyframe and clip.",
+      "note": "The broken wagon (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/family.png",
+        "story/characters/water-road/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot of a homesteading family sunburnt and silent in the thin shade of a broken covered wagon beside an empty wooden cask, the caravan halted on the trail behind, the young rider on his horse above them. image 1 is the reference sheet for the family (a homesteading family: a thin mother in a faded blue calico dress and bonnet, a bearded father in suspenders, a boy of about twelve with a brass spyglass, and a little girl with a rag doll, all dusty and sunburnt); image 2 is the reference sheet for the hero (a young trail hand of about twenty, a lean clean-shaven boyish face with no beard, sun-browned, a flat-brimmed dusty tan hat, a faded red bandana at the neck, a short dust-brown canvas coat over a collarless cream shirt, a leather gun belt with a single-action revolver in its holster, worn brown boots); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow push in; the mother pulls the children closer. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot of a homesteading family sunburnt and silent in the thin shade of a broken covered wagon beside an empty wooden cask, the caravan halted on the trail behind, the young rider on his horse above them); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-broken-wagon/media/keyframe.png",
+        "clip": "water-road/the-broken-wagon/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-family-shot-2",
+      "note": "The broken wagon (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/boss.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up of the lean old trail boss on horseback, grey braid under a battered black hat, weathered face, eyes narrowed in a hard measuring look down at the family, coiled bullwhip at her hip. image 1 is the reference sheet for the trail boss (a lean old woman with a weathered face, grey braid, a battered black hat, a long duster coat and a coiled bullwhip at her hip); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "her eyes move from the family to the young rider and hold on him, waiting. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up of the lean old trail boss on horseback, grey braid under a battered black hat, weathered face, eyes narrowed in a hard measuring look down at the family, coiled bullwhip at her hip); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-broken-wagon/media/keyframe-2.png",
+        "clip": "water-road/the-broken-wagon/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-family-shot-3",
+      "note": "The broken wagon (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/family.png",
         "story/characters/water-road/hero.png"
@@ -2419,8 +3543,8 @@
       "candidates": 3,
       "pick": "matches the scene (a homesteading family, sunburnt and silent, sits in the thin shade of a broken covered wagon beside an empty wooden cask; the young rider looks down at them from the horse); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-broken-wagon/media/keyframe.png",
-        "clip": "water-road/the-broken-wagon/media/clip.mp4"
+        "keyframe": "water-road/the-broken-wagon/media/keyframe-3.png",
+        "clip": "water-road/the-broken-wagon/media/clip-3.mp4"
       }
     },
     {
@@ -2688,7 +3812,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "From the ridge the desert looks the same in every direction. You ride two days the wrong way, and your flask runs dry. You have died.",
+            "text": "From the ridge the desert looks the same in every direction. You lose a day finding the wash, four barrels sweat dry in the sun, and one of the drivers takes his mule and turns for home. Which way is the wash?",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },
@@ -2701,7 +3825,99 @@
     },
     {
       "id": "water-road-wash-shot",
-      "note": "The dry wash (The Water Road): keyframe and clip.",
+      "note": "The dry wash (The Water Road): keyframe and clip (shot 1 of 3).",
+      "inputs": [
+        "story/characters/water-road/dove.png",
+        "story/characters/water-road/leader.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: wide shot down a bone-dry sandy wash between red rock walls, five riders with drawn revolvers blocking the way ahead, their leader in a long grey duster in front, the caravan halting behind the camera. image 1 is the reference sheet for the dove (a small slender mourning dove, soft grey-brown feathers with a buff breast, no ring or collar on the neck, a small black spot on the cheek, a few black spots on each wing, a long pointed tail, dark eyes ringed in pale blue); image 2 is the reference sheet for the riders' leader (a hard-faced rider of about forty, black stubble, a dark low-crowned hat, a long grey duster, a gun belt with two revolvers, cracked lips); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow push in; the horses shift; a mourning dove skims low over the sand. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (wide shot down a bone-dry sandy wash between red rock walls, five riders with drawn revolvers blocking the way ahead, their leader in a long grey duster in front, the caravan halting behind the camera); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-dry-wash/media/keyframe.png",
+        "clip": "water-road/the-dry-wash/media/clip.mp4"
+      }
+    },
+    {
+      "id": "water-road-wash-shot-2",
+      "note": "The dry wash (The Water Road): keyframe and clip (shot 2 of 3).",
+      "inputs": [
+        "story/characters/water-road/leader.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up of the riders' leader, hard face with black stubble and cracked lips under a low-crowned dark hat, long grey duster, glaring straight at the camera over a drawn revolver. image 1 is the reference sheet for the riders' leader (a hard-faced rider of about forty, black stubble, a dark low-crowned hat, a long grey duster, a gun belt with two revolvers, cracked lips); keep their faces, bodies and clothes exactly. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "he licks his cracked lips, raises one hand, and keeps his eyes on you. Slow cinematic game camera, gently drifting. A still from a modern 3D open-world western video game in the look of Red Dead Redemption 2: real-time game render, physically based materials, warm desert sunlight, long shadows, dust hanging in the air, rich ochre and sage colors, cinematic composition, 1870s American Old West.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, modern objects",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up of the riders' leader, hard face with black stubble and cracked lips under a low-crowned dark hat, long grey duster, glaring straight at the camera over a drawn revolver); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "water-road/the-dry-wash/media/keyframe-2.png",
+        "clip": "water-road/the-dry-wash/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "water-road-wash-shot-3",
+      "note": "The dry wash (The Water Road): keyframe and clip (shot 3 of 3).",
       "inputs": [
         "story/characters/water-road/dove.png",
         "story/characters/water-road/leader.png",
@@ -2744,8 +3960,8 @@
       "candidates": 3,
       "pick": "matches the scene (a bone-dry sandy wash between red rock walls, cracked dry sand, not a drop of water anywhere; a small grey-brown mourning dove flies low along the dry sand ahead of the wagons, showing the way; around the bend five hard riders on horseback block the wash, revolvers drawn, their leader in a long grey duster in front); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
-        "keyframe": "water-road/the-dry-wash/media/keyframe.png",
-        "clip": "water-road/the-dry-wash/media/clip.mp4"
+        "keyframe": "water-road/the-dry-wash/media/keyframe-3.png",
+        "clip": "water-road/the-dry-wash/media/clip-3.mp4"
       }
     },
     {
@@ -3136,7 +4352,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You ride into Dry Fork with full barrels, and in the morning you lead the whole town back to the spring. By the end of summer they're calling you by a name you didn't have before. ",
+            "text": "You ride into Dry Fork on what the desert left you, and the riders you gave a barrel to ride in beside you. In the morning you lead the whole town back to the spring, and by the end of summer they're calling you by a name you didn't have before. ",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },
@@ -3199,7 +4415,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Dry Fork pays whatever you ask. You're rich by fall, and nobody in town will look you in the eye. ",
+            "text": "Dry Fork pays whatever you ask. You're rich by fall, and the riders you once gave a barrel to ride out without a word. Nobody in town will look you in the eye. ",
             "voice": "YXpFCvM1S3JbWEJhoskW",
             "model": "eleven_v4"
           },
@@ -5060,78 +6276,6 @@
     },
     {
       "id": "night-shift-handover-line-3",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[flat][reading] Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-3.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-4",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Forty-four. Water in the closet. Monitored.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[flat][a small stop] Forty-four. Water in the closet. Monitored.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-4.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-5",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[reading] Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-5.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-6",
-      "note": "Handover (Night Shift): Mr. Okafor says \"The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[dry][not joking] The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-6.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-7",
       "note": "Handover (Night Shift): Dee says \"Four.\".",
       "steps": [
         {
@@ -5145,11 +6289,11 @@
         }
       ],
       "files": {
-        "line": "night-shift/handover/media/line-7.mp3"
+        "line": "night-shift/handover/media/line-3.mp3"
       }
     },
     {
-      "id": "night-shift-handover-line-8",
+      "id": "night-shift-handover-line-4",
       "note": "Handover (Night Shift): Mr. Okafor says \"Dolores. You can say hello.\".",
       "steps": [
         {
@@ -5163,11 +6307,11 @@
         }
       ],
       "files": {
-        "line": "night-shift/handover/media/line-8.mp3"
+        "line": "night-shift/handover/media/line-4.mp3"
       }
     },
     {
-      "id": "night-shift-handover-line-9",
+      "id": "night-shift-handover-line-5",
       "note": "Handover (Night Shift): Dee says \"Hello. Sit anywhere that isn't mine.\".",
       "steps": [
         {
@@ -5181,61 +6325,7 @@
         }
       ],
       "files": {
-        "line": "night-shift/handover/media/line-9.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-10",
-      "note": "Handover (Night Shift): Dee says \"Mm.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[low] Mm.",
-            "voice": "qhe779QaY6YuY9d3VGab",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-10.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-11",
-      "note": "Handover (Night Shift): Mr. Okafor says \"Dolores signs your hours. The binder's on the shelf, next to the…\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[cut off] Dolores signs your hours. The binder's on the shelf, next to the…",
-            "voice": "Xxe1qCvSvBHFD7OTAz9I",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-11.mp3"
-      }
-    },
-    {
-      "id": "night-shift-handover-line-12",
-      "note": "Handover (Night Shift): Dee says \"Extinguisher. Mm-hm. Your train, Okafor.\".",
-      "steps": [
-        {
-          "tool": "audio.voice",
-          "params": {
-            "text": "[dry][not unkind] Extinguisher. Mm-hm. Your train, Okafor.",
-            "voice": "qhe779QaY6YuY9d3VGab",
-            "model": "eleven_v4"
-          },
-          "save": "line"
-        }
-      ],
-      "files": {
-        "line": "night-shift/handover/media/line-12.mp3"
+        "line": "night-shift/handover/media/line-5.mp3"
       }
     },
     {
@@ -29788,6 +30878,132 @@
       ],
       "files": {
         "line": "night-shift/adler-initialed/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-1",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][reading] Visitor on nineteen, a Mr. Pruitt. Out at 1640. Elevator contractor is back Thursday.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-1.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-2",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Forty-four. Water in the closet. Monitored.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[flat][a small stop] Forty-four. Water in the closet. Monitored.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-2.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-3",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[reading] Ms. Quintero's crew has thirty to forty-four from seven. Terrell has the desk until eleven.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-3.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-4",
+      "note": "The day log (Night Shift): Mr. Okafor says \"The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not joking] The night line is on the card by the phone. It rings in my kitchen. Use it. That is what it is for.",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-4.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-5",
+      "note": "The day log (Night Shift): Dee says \"Mm.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[low] Mm.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-5.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-6",
+      "note": "The day log (Night Shift): Mr. Okafor says \"Dolores signs your hours. The binder's on the shelf, next to the…\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[cut off] Dolores signs your hours. The binder's on the shelf, next to the…",
+            "voice": "Xxe1qCvSvBHFD7OTAz9I",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-6.mp3"
+      }
+    },
+    {
+      "id": "night-shift-handover-log-line-7",
+      "note": "The day log (Night Shift): Dee says \"Extinguisher. Mm-hm. Your train, Okafor.\".",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "[dry][not unkind] Extinguisher. Mm-hm. Your train, Okafor.",
+            "voice": "qhe779QaY6YuY9d3VGab",
+            "model": "eleven_v4"
+          },
+          "save": "line"
+        }
+      ],
+      "files": {
+        "line": "night-shift/handover-log/media/line-7.mp3"
       }
     }
   ]

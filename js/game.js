@@ -30,11 +30,23 @@
       // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
       poster: spec.poster || "",
       small: spec.small || "",
+      live: spec.live || 0,
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
-      choices: (spec.choices || []).map(function (choice) {
-        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3] };
+      choices: (spec.choices || []).map(function (choice, index) {
+        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3], set: choice[4] || null, when: choice[5] || null, matches: choice[6] || null, gate: choice[7] || null, index: index };
+      }),
+      // Alternate story text, question or clip chosen by flags (story doc "Flags and variants").
+      variants: (spec.variants || []).map(function (v) {
+        return {
+          when: v.when || {},
+          story: v.story || null,
+          question: v.question || null,
+          video: v.video || null,
+          poster: v.poster || "",
+          small: v.small || ""
+        };
       })
     };
   }
@@ -51,6 +63,9 @@
 
   const root = document.getElementById("spark");
   const videoBox = document.getElementById("spark-video");
+  // The stage's blurred, darkened copy of the clip (YouTube's fill for a vertical video on wide screens); on a portrait
+  // phone the clip itself fills the screen and this is display:none, so no second decoder runs there.
+  const blurBox = document.getElementById("spark-blur");
   const storyBox = document.getElementById("spark-story");
   const questionBox = document.getElementById("spark-question");
   const choicesBox = document.getElementById("spark-choices");
@@ -103,7 +118,99 @@
 
   let currentScene = null;
   let history = [];
+  // What the run remembers (video stories): `flags` are set by choices (`set`) and read by a scene's `variants`; they
+  // are worked out from the way you came, so a rewind or a saved place always has the right ones. `tried` is, per
+  // fork, the options that ended in a death and were rewound from (marked "Tried" when the fork comes back).
+  let flags = {};
+  let tried = {};
+  let shown = null; // the scene as it is on screen (variant and offered choices), set by show()
+  let rewindFlag = false; // set by a Rewind, read by the show() that follows it
+
+  function choiceTo(story, fromId, toId) {
+    const from = story.scenes[fromId];
+    return from && from.choices ? from.choices.filter(function (c) { return c.next === toId; })[0] : null;
+  }
+
+  /** The flags of a way (scene ids, the last one where you are): each step applies its choice's `set`. */
+  function flagsOfWay(story, way) {
+    const out = {};
+    for (let i = 0; i + 1 < way.length; i++) {
+      const c = choiceTo(story, way[i], way[i + 1]);
+      if (c && c.set) Object.keys(c.set).forEach(function (k) { out[k] = c.set[k]; });
+    }
+    return out;
+  }
+
+  /** Whether a conditional choice is on offer: its `when` flags hold and the match count is inside `matches` {min,max}. */
+  function offered(choice, flagMap, count) {
+    if (choice.when && !holds(choice.when, flagMap)) return false;
+    if (choice.matches && typeof count === "number") {
+      if (typeof choice.matches.min === "number" && count < choice.matches.min) return false;
+      if (typeof choice.matches.max === "number" && count > choice.matches.max) return false;
+    }
+    return true;
+  }
+
+  function holds(when, flagMap) {
+    return Object.keys(when).every(function (k) {
+      const have = flagMap[k] === undefined ? false : flagMap[k];
+      return have === when[k];
+    });
+  }
+
+  /** A scene as it plays with these flags (and match count): the first variant whose `when` holds replaces the base's
+      text and clip, and choices with a `when` or `matches` that doesn't hold are left out (each keeps its data `index`). */
+  function sceneWith(base, flagMap, count) {
+    if (!base) return base;
+    let out = base;
+    const vs = base.variants;
+    const hit = vs && vs.length ? vs.filter(function (v) { return holds(v.when, flagMap); })[0] : null;
+    if (hit) {
+      out = Object.assign({}, base);
+      if (hit.story) { out.story = hit.story[0]; out.storyEn = hit.story[1]; }
+      if (hit.question) { out.question = hit.question[0]; out.questionEn = hit.question[1]; }
+      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = 0; }
+    }
+    if (base.choices.some(function (c) { return c.when || c.matches; })) {
+      if (out === base) out = Object.assign({}, base);
+      out.choices = base.choices.filter(function (c) { return offered(c, flagMap, count); });
+    }
+    return out;
+  }
+
+  /** The match count at the end of a way (null when the story counts none). */
+  function matchesOfWay(way) {
+    if (!STORY || !STORY.inventory || !window.iltvKit) return null;
+    const c = window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, way);
+    return typeof c.matches === "number" ? c.matches : null;
+  }
   let fromPlayer = false;
+  // The choices on screen at the open scene (a gated choice that doesn't hold is left out or shown locked): the timer,
+  // a one-choice page and the buttons all read this list, in the order of the buttons.
+  let shownChoices = [];
+
+  /** A choice with a gate: `requires` flags (it is not there at all unless they hold) and `needs` counts (it is there but
+      locked, with its requirement in words, while the inventory is short). Returns "open", "locked" or "hidden". */
+  function gateOf(choice, flagMap, counts) {
+    const g = choice.gate;
+    if (!g) return "open";
+    const flagsOk = Object.keys(g.requires || {}).every(function (k) {
+      return (flagMap[k] === undefined ? false : flagMap[k]) === g.requires[k];
+    });
+    if (!flagsOk) return "hidden";
+    if (g.needs && window.iltvKit && !window.iltvKit.meets(counts || {}, g.needs)) return "locked";
+    return "open";
+  }
+
+  /** The words of a locked choice's requirement: "needs water 3+". */
+  function needText(choice) {
+    const needs = (choice.gate && choice.gate.needs) || {};
+    const items = (STORY && STORY.inventory && STORY.inventory.items) || [];
+    return Object.keys(needs).map(function (id) {
+      const item = items.filter(function (i) { return i.id === id; })[0];
+      return "needs " + (item ? item.name : id).toLowerCase() + " " + needs[id] + "+";
+    }).join(", ");
+  }
 
   /** Tells js/analytics.js (Hawkes Analytics) what just happened: "iltv:<what>" on the document. The player never
       waits for it or depends on anyone listening. A choice also remembers the recap for Continue (last scene, label,
@@ -312,7 +419,8 @@
         : [],
       from: from,
       choice: choice,
-      poster: poster
+      poster: poster,
+      tried: saved.tried && typeof saved.tried === "object" && !Array.isArray(saved.tried) ? saved.tried : {}
     };
   }
 
@@ -375,7 +483,7 @@
   /** Start Over: forgets one story's current run (its run cookie only; its unlocks and the other stories stay). */
   function clearProgress(story) {
     if (story.type === "console" && window.iltvConsole) window.iltvConsole.forget(story);
-    if (STORY === story) lastRecap = null;
+    if (STORY === story) { lastRecap = null; tried = {}; }
     try {
       document.cookie = story.cookie + "=; Max-Age=0; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
     } catch (error) {
@@ -386,6 +494,10 @@
   /** The run cookie payload, including the Continue recap fields when a choice has been made. */
   function runPayload(historyIds) {
     const payload = { scene: currentScene, history: historyIds };
+    if (STORY && STORY.type !== "console") {
+      if (Object.keys(flags).length) payload.flags = flags;
+      if (Object.keys(tried).length) payload.tried = tried;
+    }
     if (lastRecap && lastRecap.from && lastRecap.choice) {
       payload.from = lastRecap.from;
       payload.choice = lastRecap.choice;
@@ -404,6 +516,49 @@
     }
     writeCookie(STORY.cookie, runPayload(history));
     writeCookie(unlocksCookie(STORY), { seen: Object.keys(unlocked), completed: completed });
+  }
+
+  // The page's language, by its own name, where the location label is: about 1.5 s on every page, so the change of
+  // language from page to page reads as a rule (J, 2026-11-11). No words are added: it is the language itself.
+  const LANG_NAMES = {
+    ar: "العربية", bn: "বাংলা", de: "Deutsch", en: "English", es: "Español", fr: "Français", hi: "हिन्दी",
+    id: "Bahasa Indonesia", it: "Italiano", ja: "日本語", ko: "한국어", mr: "मराठी", pa: "ਪੰਜਾਬੀ", pt: "Português",
+    ru: "Русский", sw: "Kiswahili", ta: "தமிழ்", te: "తెలుగు", th: "ไทย", tr: "Türkçe", ur: "اردو",
+    vi: "Tiếng Việt", zh: "中文"
+  };
+  const LANG_FLASH_MS = 1500;
+  let langFlashTimer = null;
+
+  function flashLanguage(scene) {
+    if (!stepBox) return;
+    clearTimeout(langFlashTimer);
+    stepBox.querySelectorAll(".step-lang").forEach(function (el) { el.remove(); });
+    const code = scene.lang;
+    if (!code || !LANG_NAMES[code]) return;
+    const el = document.createElement("span");
+    el.className = "step-lang";
+    el.dataset.langCode = reading === "en" ? "en" : code;
+    el.lang = reading === "en" ? "en" : code;
+    if (scene.dir === "rtl" && reading !== "en") el.dir = "rtl";
+    el.textContent = LANG_NAMES[reading === "en" ? "en" : code];
+    stepBox.appendChild(el);
+    stepBox.dataset.langFlash = el.dataset.langCode;
+    langFlashTimer = setTimeout(function () {
+      el.remove();
+      delete stepBox.dataset.langFlash;
+    }, LANG_FLASH_MS);
+  }
+
+  // A viewer's first visit: as the first clip ends the flashlight sweeps once (js/spot.js). Not on a run that is
+  // already going, and never again once it has been seen (localStorage, per viewer).
+  function maybeSweep(sceneId) {
+    if (!window.iltvTorch || !STORY || STORY.type === "console") return;
+    if (history.length !== 0 || sceneId !== STORY.start || window.iltvTorch.swept()) return;
+    if (Object.keys(unlocked).length > 1) return;
+    setTimeout(function () {
+      if (currentScene !== sceneId || history.length !== 0) return;
+      window.iltvTorch.sweep();
+    }, 350);
   }
 
   function sceneState(scene) {
@@ -512,10 +667,16 @@
       those no longer offered are cancelled. A tap then swaps to a scene that is ready (see goTo). */
   function preloadNext(scene) {
     var want = {};
-    scene.choices.forEach(function (c) {
-      var next = SCENES[c.next];
-      if (next) want[c.next] = next;
-    });
+    var wantNext = function (id) {
+      var next = SCENES[id];
+      if (next) want[id] = sceneWith(next, flagsOfWay(STORY, history.concat(currentScene, id)), matchesOfWay(history.concat(currentScene, id)));
+    };
+    scene.choices.forEach(function (c) { wantNext(c.next); });
+    // A death's Rewind goes back to its fork: have it ready.
+    if (scene.dead && history.length) {
+      var fork = history[history.length - 1];
+      if (SCENES[fork]) want[fork] = SCENES[fork];
+    }
     Object.keys(preloaded).forEach(function (id) {
       if (want[id]) return;
       preloaded[id].removeAttribute("src");
@@ -552,7 +713,7 @@
 
   /** The current scene stays up until the target can show; after 300 ms it swaps anyway (the box paints the
       target's poster, never black). Taps during the wait are ignored, so the scene shown is always the one chosen. */
-  function goTo(choice) {
+  function goTo(choice, how) {
     if (pendingTap || !SCENES[choice.next]) return;
     stopChoiceWindow();
     var from = currentScene, story = STORY;
@@ -563,7 +724,18 @@
       pendingTap = null;
       if (STORY !== story || currentScene !== from) return;
       tell("choice", { story: STORY.id, from: from, to: choice.next, option: choiceLabel(choice.en), waited: Math.round(performance.now() - t0), ready: targetReady(choice.next) });
-      history.push(from);
+      if (how === "rewind") {
+        // Back to the fork the death came from: the deadly option stays marked as tried.
+        rewindFlag = true;
+        const fork = history.pop();
+        tried[fork] = (tried[fork] || []).filter(function (id) { return id !== from; }).concat(from);
+        tell("feature", { feature: "rewind", story: STORY.id, from: from, to: fork });
+      } else if (how === "start_over") {
+        history = [];
+        tried = {};
+      } else {
+        history.push(from);
+      }
       fromPlayer = true;
       show(choice.next);
     };
@@ -838,6 +1010,8 @@
   const consoleChoicesBox = document.getElementById("console-choices");
   let windowTick = null;
   let defaultTimer = null;
+  let autoTimer = null;
+  const AUTO_FADE_MS = 450;
   let idleTimer = null;
 
   function tagChoiceStagger(container) {
@@ -859,10 +1033,18 @@
     syncConsoleChoices();
   }
 
+  /** Where the choices come up in a clip: a generated cut keeps `live` seconds of moving picture after the narration
+      (tools/build-story.mjs), so the buttons appear over footage that is still playing, never over a held last frame. */
+  function revealPoint(video) {
+    const live = video && video._iltvLive ? video._iltvLive : 0;
+    return video && video.duration > 0 && isFinite(video.duration) ? Math.max(0.5, video.duration - live) : 0;
+  }
+
   function syncWaitingProgress(video) {
     let pct = 24;
-    if (video && video.duration > 0 && isFinite(video.duration)) {
-      pct = Math.max(16, Math.min(100, Math.round((video.currentTime / video.duration) * 84 + 16)));
+    const at = revealPoint(video);
+    if (at > 0) {
+      pct = Math.max(16, Math.min(100, Math.round((video.currentTime / at) * 84 + 16)));
     }
     const val = pct + "%";
     if (choicesBox) choicesBox.style.setProperty("--clip-progress", val);
@@ -874,6 +1056,9 @@
     windowTick = null;
     if (defaultTimer) clearTimeout(defaultTimer);
     defaultTimer = null;
+    if (autoTimer) clearTimeout(autoTimer);
+    autoTimer = null;
+    root.classList.remove("is-auto-advance");
     choicesBox.querySelectorAll(".is-default-pick").forEach(function (b) {
       b.classList.remove("is-default-pick");
       delete b.dataset.defaultPick;
@@ -894,6 +1079,10 @@
     choicesBox.dataset.phase = phase;
     root.dataset.choices = phase;
     if (phase === "ready") {
+      if (window.iltvAudio && choicesBox.children.length && choicesBox.dataset.appeared !== currentScene) {
+        choicesBox.dataset.appeared = currentScene;
+        window.iltvAudio.playUi("appear");
+      }
       choicesBox.style.setProperty("--clip-progress", "100%");
       if (timerBox) timerBox.style.setProperty("--clip-progress", "100%");
       tagChoiceStagger(choicesBox);
@@ -930,9 +1119,52 @@
     }
   }
 
+  /** A death keeps its clip and its line and offers two buttons: Rewind to the choice (the last fork, with the deadly
+      option marked as tried) and Start over (the story's own start). */
+  function addDeathButtons(scene) {
+    const make = function (kind, idx, say, en, run) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "choice death-choice";
+      button.dataset.death = kind;
+      button.dataset.choiceIndex = String(choice.index != null ? choice.index : idx);
+      button.style.setProperty("--choice-i", String(idx));
+      fillSpot(button, say, en, kind === "rewind" ? "en" : scene.lang, scene.dir);
+      button.addEventListener("click", function () {
+        if (pendingTap) return;
+        window.iltvDecide(choicesBox, button, run);
+      });
+      choicesBox.appendChild(button);
+    };
+    const fork = history.length ? history[history.length - 1] : null;
+    let n = 0;
+    if (fork && SCENES[fork]) {
+      make("rewind", n++, "Rewind to the choice", "Rewind to the choice", function () {
+        goTo({ next: fork, en: "Rewind to the choice" }, "rewind");
+      });
+    }
+    const start = scene.choices.filter(function (c) { return c.next === STORY.start; })[0] || scene.choices[0] || { say: "1. Start over", en: "1. Start over", next: STORY.start };
+    make("start", n++, choiceLabel(start.say), choiceLabel(start.en), function () { goTo(start, "start_over"); });
+  }
+
+  /** A page with one choice: when its clip ends the screen fades a moment and the story goes on by itself. */
+  function autoContinue(sceneId) {
+    const sc = shown && currentScene === sceneId ? shown : SCENES[sceneId];
+    if (!sc || sc.choices.length !== 1 || currentScene !== sceneId || shownChoices.length !== 1) return;
+    root.classList.add("is-auto-advance");
+    tell("feature", { feature: "auto_continue", story: STORY.id, node: sceneId });
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    autoTimer = setTimeout(function () {
+      autoTimer = null;
+      root.classList.remove("is-auto-advance");
+      if (currentScene === sceneId && !pendingTap) goTo(shownChoices[0]);
+    }, reduce ? 0 : AUTO_FADE_MS);
+  }
+
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
   function revealChoices(hasChoices) {
     setChoicePhase("ready");
+    maybeSweep(currentScene);
     stopChoiceWindow();
     if (!hasChoices || !timerBox) return;
     const label = timerBox.querySelector(".choice-timer-label");
@@ -956,7 +1188,10 @@
       if (secs > 0 && secs !== shown) {
         shown = secs;
         label.textContent = "Choose in " + secs + " s";
-        if (secs <= 3) timerBox.dataset.urgent = "true";
+        if (secs <= 3) {
+          timerBox.dataset.urgent = "true";
+          if (window.iltvAudio) window.iltvAudio.playUi("tick");
+        }
       }
       if (left > 0) { windowTick = requestAnimationFrame(frame); return; }
       windowTick = null;
@@ -971,10 +1206,13 @@
 
   /** Time ran out: the first choice (or the one marked default) is lit for a moment, then played. */
   function pickDefault(scene) {
-    const sc = SCENES[scene];
-    if (!sc || !sc.choices.length) return;
-    let idx = sc.choices.findIndex(function (c) { return c.default; });
-    if (idx < 0) idx = 0;
+    const sc = { choices: shownChoices };
+    if (!sc.choices.length) return;
+    // Never a death: a viewer who looked away isn't killed by the timer (npm run story -- --check fails a default that is).
+    const safe = function (c) { return !(SCENES[c.next] && SCENES[c.next].dead); };
+    let idx = sc.choices.findIndex(function (c) { return c.default && safe(c); });
+    if (idx < 0) idx = sc.choices.findIndex(safe);
+    if (idx < 0) return;
     const btn = choicesBox.querySelectorAll(".choice")[idx];
     if (!btn) return;
     btn.classList.add("is-default-pick");
@@ -1000,8 +1238,24 @@
   });
 
   function show(sceneId) {
-    const scene = SCENES[sceneId];
-    if (!scene) return;
+    if (!SCENES[sceneId]) return;
+    // The flags are the way you came (a choice's `set`), and they pick the scene's variant.
+    flags = flagsOfWay(STORY, history.concat(sceneId));
+    const scene = sceneWith(SCENES[sceneId], flags, matchesOfWay(history.concat(sceneId)));
+    // A gated choice (story doc "Water and gated choices"): left out unless its flags hold, locked while its counts are short.
+    const here = window.iltvKit && STORY.inventory ? window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, history.concat(sceneId)) : {};
+    const lockedChoices = [];
+    shownChoices = scene.choices.filter(function (c) {
+      const state = gateOf(c, flags, here);
+      if (state === "locked") lockedChoices.push(c);
+      return state === "open";
+    });
+    shown = Object.assign({}, scene, { choices: shownChoices });
+    // A scene with exactly one choice (and a clip) plays through by itself when the clip ends, with no button.
+    const rewound = rewindFlag;
+    rewindFlag = false;
+    const auto = SCENES[sceneId].choices.length === 1 && !scene.dead && !scene.ending && !!scene.video;
+    const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
@@ -1021,6 +1275,8 @@
       scene.dir
     );
 
+    flashLanguage(scene);
+    if (window.iltvTorch) window.iltvTorch.stop();
     showKit();
     wakeChrome();
     stopChoiceWindow();
@@ -1046,6 +1302,7 @@
       video.preload = "auto";
       video.title = STORY.title + " story video";
       videoBox.appendChild(video);
+      mirrorBlur(video, videoSrc, scene.poster);
       addClipControls(video);
       playClip(video);
       // The incoming clip must never sit paused under the cross-fade: resume it when it can play and when the fade ends.
@@ -1060,16 +1317,33 @@
       }
       watchVideo(video, videoSrc);
       setChoicePhase("waiting");
-      showWaitingCue(scene.choices.length > 0, video);
+      showWaitingCue(timed, video);
+      video._iltvLive = scene.live || 0;
+      if (video._iltvLive) {
+        // The cut's last seconds are a slow push-in on its final frame: the choices (and their timer) come up as it starts,
+        // and the video keeps playing under them. It is never paused, and never looped back to its first frame.
+        video.addEventListener("timeupdate", function () {
+          if (activeClip !== video || currentScene !== sceneId || choicesBox.dataset.phase !== "waiting") return;
+          const at = revealPoint(video);
+          if (at > 0 && video.currentTime >= at) revealChoices(timed);
+        });
+      }
       video.addEventListener("ended", function () {
-        if (activeClip === video && currentScene === sceneId) revealChoices(scene.choices.length > 0);
+        if (activeClip !== video || currentScene !== sceneId) return;
+        if (auto) autoContinue(sceneId);
+        else if (choicesBox.dataset.phase === "waiting") revealChoices(timed);
       });
       video.addEventListener("error", function () {
         // A clip that won't load must not keep the choices dim (watchVideo retries and then offers Retry).
-        if (activeClip === video && choicesBox.dataset.phase === "waiting") { setChoicePhase("ready"); stopChoiceWindow(); }
+        if (activeClip === video && choicesBox.dataset.phase === "waiting") {
+          delete choicesBox.dataset.auto; // a one-choice page gets its button back
+          setChoicePhase("ready");
+          stopChoiceWindow();
+        }
       });
     } else {
       setChoicePhase("ready");
+      if (window.iltvAudio) window.iltvAudio.beginBeds("image");
       // A draft story's scene before its media is made: its title on black, where the video will be.
       const blank = document.createElement("div");
       blank.className = "spark-video-blank";
@@ -1080,9 +1354,14 @@
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
     fillSpot(questionBox, scene.question, scene.questionEn, scene.lang, scene.dir);
     choicesBox.replaceChildren();
+    if (window.iltvDecideRelease) window.iltvDecideRelease(choicesBox);
+    if (auto) choicesBox.dataset.auto = "true";
+    else delete choicesBox.dataset.auto;
 
     const replayNow = isReplay(STORY);
-    scene.choices.forEach(function (choice, idx) {
+    const triedHere = tried[sceneId] || [];
+    if (scene.dead) addDeathButtons(scene);
+    else shownChoices.forEach(function (choice, idx) {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "choice";
@@ -1090,9 +1369,22 @@
       button.dataset.choiceIndex = String(idx);
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
       const mark = choiceMark(STORY, unlocked, sceneId, choice.next, replayNow);
-      if (mark) {
+      if (triedHere.indexOf(choice.next) >= 0) {
+        // A way that ended in a death, rewound from: marked in words as well as colour.
+        button.classList.add("is-tried");
+        button.dataset.tried = "true";
+        button.title = "You tried this way and it ended badly";
+        const note = document.createElement("span");
+        note.className = "choice-tried";
+        note.textContent = "Tried";
+        button.appendChild(note);
+      } else if (mark) {
         button.dataset.mark = mark;
         button.title = mark === "new" ? "A way you haven't found yet" : "You've seen everything this way leads to";
+        const tag = document.createElement("span");
+        tag.className = "choice-mark";
+        tag.textContent = mark === "new" ? "New" : "\u2713 Seen";
+        button.appendChild(tag);
       }
       if (lastWay && lastWay[history.length] === sceneId && lastWay[history.length + 1] === choice.next) {
         button.classList.add("was-taken");
@@ -1104,7 +1396,26 @@
       });
       choicesBox.appendChild(button);
     });
+    // A choice the water (or another count) can't pay for stays on screen, greyed out, with its requirement in words;
+    // it is not a button, so it cannot be pressed.
+    if (!scene.dead) lockedChoices.forEach(function (choice) {
+      const row = document.createElement("div");
+      row.className = "choice-locked spot";
+      row.dataset.locked = "true";
+      row.dataset.next = choice.next;
+      row.setAttribute("role", "note");
+      row.setAttribute("aria-disabled", "true");
+      fillSpot(row, choice.say, choice.en, scene.lang, scene.dir);
+      const need = document.createElement("span");
+      need.className = "choice-need";
+      need.textContent = needText(choice) + " (you have " + (here[Object.keys(choice.gate.needs)[0]] || 0) + ")";
+      row.appendChild(need);
+      choicesBox.appendChild(row);
+    });
+    if (lockedChoices.length) tell("feature", { feature: "locked_choice", story: STORY.id, node: sceneId, value: lockedChoices.map(function (c) { return c.next; }).join(",") });
     if (!videoSrc) setChoicePhase("ready");
+    // Back from a death, the fork is playable at once: the clip plays, the choices don't wait for it.
+    if (rewound && shownChoices.length > 1) { setChoicePhase("ready"); stopChoiceWindow(); }
 
     pendingTap = null;
     preloadNext(scene);
@@ -1112,6 +1423,7 @@
     if (scene.choices.length === 0) {
       showEndingCard(sceneId, scene);
       endingBox.hidden = false;
+      if (window.iltvAudio) window.iltvAudio.playUi("sting-" + STORY.id);
     } else {
       endingBox.hidden = true;
       endingBox.replaceChildren();
@@ -1142,7 +1454,16 @@
   }
 
   function showKit() {
-    if (window.iltvKit) window.iltvKit.show(STORY && STORY.inventory ? STORY.inventory : null, kitCounts() || {});
+    const inv = STORY && STORY.inventory ? STORY.inventory : null;
+    // `keepFlashlight`: the story's count sits in the flashlight bar (js/spot.js) instead of replacing it.
+    if (inv && inv.keepFlashlight) {
+      const n = kitCounts();
+      if (window.iltvMatches) window.iltvMatches.set(n && typeof n.matches === "number" ? n.matches : null);
+      if (window.iltvKit) window.iltvKit.show(null, {});
+      return;
+    }
+    if (window.iltvMatches) window.iltvMatches.set(null);
+    if (window.iltvKit) window.iltvKit.show(inv, kitCounts() || {});
   }
 
   const treeRoot = document.getElementById("spark-tree");
@@ -1768,6 +2089,39 @@
     });
   }
 
+  /** The blurred copy behind the clip: the same file, muted, kept within 0.4 s of the real clip. */
+  function clearBlur() {
+    if (!blurBox) return;
+    blurBox.querySelectorAll("video").forEach(function (v) { try { v.pause(); } catch (error) { /* gone */ } });
+    blurBox.replaceChildren();
+  }
+
+  function mirrorBlur(main, src, poster) {
+    if (!blurBox) return;
+    clearBlur();
+    blurBox.style.backgroundImage = poster ? 'url("' + poster + '")' : "";
+    if (getComputedStyle(blurBox).display === "none") return;
+    const copy = document.createElement("video");
+    copy.src = src;
+    copy.muted = true;
+    copy.defaultMuted = true;
+    copy.loop = false;
+    copy.playsInline = true;
+    copy.setAttribute("playsinline", "");
+    copy.setAttribute("aria-hidden", "true");
+    copy.tabIndex = -1;
+    copy.preload = "auto";
+    blurBox.appendChild(copy);
+    const follow = function () {
+      if (!copy.isConnected) return;
+      if (Math.abs(copy.currentTime - main.currentTime) > 0.4) { try { copy.currentTime = main.currentTime; } catch (error) { /* not ready */ } }
+      if (main.paused || main.ended) { if (!copy.paused) copy.pause(); }
+      else if (copy.paused) { const p = copy.play(); if (p && p.catch) p.catch(function () {}); }
+    };
+    ["timeupdate", "play", "playing", "pause", "seeked", "ended"].forEach(function (name) { main.addEventListener(name, follow); });
+    copy.addEventListener("canplay", follow, { once: true });
+  }
+
   function crossfadeOut() {
     const ms = fadeMs();
     const old = Array.prototype.slice.call(videoBox.children);
@@ -1801,6 +2155,7 @@
       try { video.pause(); } catch (error) { /* already gone */ }
     });
     videoBox.replaceChildren();
+    clearBlur();
   }
 
   function urlFor(storyId) {
@@ -2052,7 +2407,7 @@
     root.hidden = false;
     if (firstScreen) firstScreen.classList.remove("is-landing");
     document.documentElement.dataset.view = "story";
-    if (story.inventory) document.documentElement.dataset.kit = story.id;
+    if (story.inventory && !story.inventory.keepFlashlight) document.documentElement.dataset.kit = story.id;
     else delete document.documentElement.dataset.kit;
     setView("play");
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -2061,6 +2416,7 @@
     const saved = readProgress(story, SCENES);
     const unlocks = readUnlocks(story);
     history = saved ? saved.history : [];
+    tried = saved ? saved.tried : {};
     lastWay = readLastWay(story, SCENES);
     unlocked = unlocks.seen;
     completed = unlocks.completed;
@@ -2183,6 +2539,17 @@
     unlocked: function () { return STORY ? Object.keys(unlocked) : []; },
     explored: function () { return STORY ? exploredOf(STORY, unlocked) : null; },
     inventory: function () { return kitCounts(); },
+    /** The run's flags (a choice's `set`) and, per fork, the options rewound from after a death. */
+    flags: function () { return Object.assign({}, flags); },
+    tried: function () { return JSON.parse(JSON.stringify(tried)); },
+    /** Every scene's choices as the player has them (next, default, set). */
+    choicesOf: function (id) { return SCENES[id] ? SCENES[id].choices.map(function (c) { return { next: c.next, default: c.default, set: c.set, when: c.when, matches: c.matches, gate: c.gate }; }) : []; },
+    /** The match count where you are (null when the story counts none). */
+    matches: function () { const n = kitCounts(); return n && typeof n.matches === "number" ? n.matches : null; },
+    /** The choices on offer now (next, data index), the ones on screen (next scenes, in button order) and the locked ones. */
+    offered: function () { return shownChoices.map(function (c) { return { next: c.next, index: c.index }; }); },
+    shown: function () { return shownChoices.map(function (c) { return c.next; }); },
+    locked: function () { return Array.prototype.map.call(choicesBox.querySelectorAll(".choice-locked"), function (el) { return el.dataset.next; }); },
     /** Ending nodes from the build, and which of them this browser has found. */
     endings: function () { return STORY ? endingsOf(STORY).map(function (e) { return e.id; }) : []; },
     foundEndings: function () { return STORY ? Object.keys(readFoundEndings(STORY)) : []; }

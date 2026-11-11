@@ -79,6 +79,9 @@
   var photoEl = null;
   var peopleEl = null; // the people's layers: above the big screen, which is above the plate
   var poseWraps = {}; // who -> the person's layer holder
+  var seenPoses = {}; // who -> { "layer~mood": 1 } every look shown
+  var fades = []; // measured pose fades: { who, to, ms, together }
+  var FADE_MS = 200; // a pose changes over 150-250 ms
   var pending = []; // beats of the line on stage that have not happened yet
   var doorT = null;
   var ovMade = {};
@@ -143,6 +146,11 @@
     peopleEl.setAttribute("aria-hidden", "true");
     var big = document.getElementById("console-big");
     host.insertBefore(peopleEl, big && big.parentNode === host ? big.nextSibling : photoEl.nextSibling);
+    // The people wait for the plate (css: .room-people:not([data-ready]) is hidden), so a silhouette never shows before the room.
+    var people = peopleEl;
+    var ready = function () { people.setAttribute("data-ready", "1"); };
+    if (plate.complete && plate.naturalWidth) ready();
+    else { plate.addEventListener("load", ready); plate.addEventListener("error", ready); }
     setClock();
   }
 
@@ -163,6 +171,8 @@
     if (!table) return null;
     var base = f.posture === "seated" ? "seated" : "standing";
     var keys = [base + "." + f.pose + "." + (f.arg || ""), base + "." + f.pose, f.spot + "." + f.pose, f.spot, base, "*"];
+    // settled (nothing in an `act` is posing them): the pose the line's `perform` note asks for, when the person has that layer
+    if ((f.pose === "desk" || f.pose === "rest") && f.perfPose) keys = [base + "." + f.perfPose + "." + (f.arg || ""), base + "." + f.perfPose].concat(keys);
     for (var i = 0; i < keys.length; i++) if (table[keys[i]]) return table[keys[i]];
     return null;
   }
@@ -189,7 +199,9 @@
     }
     var file = here(f) ? poseFile(f) : null;
     var cur = wrap.querySelector("img.on");
-    if ((cur ? cur.getAttribute("data-f") : "") === (file || "")) return;
+    var mood = f.mood || "neutral";
+    wrap.setAttribute("data-mood", mood);
+    if ((cur ? cur.getAttribute("data-f") : "") === (file || "")) { if (cur) cur.setAttribute("data-mood", mood); notePose(f, file, mood); return; }
     wrap.setAttribute("data-file", file || "");
     var quick = instant || reduced;
     var together = !quick && cur && file && fadesTogether(cur.getAttribute("data-f"), file);
@@ -199,8 +211,9 @@
       var old = cur;
       if (quick) { if (old.parentNode) old.parentNode.removeChild(old); }
       else {
-        old.style.transitionDuration = together ? "" : "80ms";
-        later(function () { if (old.parentNode) old.parentNode.removeChild(old); }, together ? 320 : 100);
+        // a pair that registers cross-fades over FADE_MS; any other pair goes through the plate, out then in, FADE_MS in all
+        if (!together) old.style.transitionDuration = FADE_MS / 2 + "ms";
+        later(function () { if (old.parentNode) old.parentNode.removeChild(old); }, FADE_MS + 60);
       }
     }
     if (!file) return;
@@ -209,16 +222,75 @@
     im.alt = "";
     im.decoding = "async";
     im.setAttribute("data-f", file);
+    im.setAttribute("data-mood", mood);
     im.src = STAGE_URL + file;
-    if (!quick && cur && !together) { im.style.transitionDuration = "120ms"; im.style.transitionDelay = "80ms"; }
+    if (!quick && cur && !together) { im.style.transitionDuration = FADE_MS / 2 + "ms"; im.style.transitionDelay = FADE_MS / 2 + "ms"; }
     wrap.appendChild(im);
+    notePose(f, file, mood);
     if (quick) im.classList.add("on");
-    else (window.requestAnimationFrame || setTimeout)(function () { im.classList.add("on"); });
+    else {
+      var t0 = 0;
+      im.addEventListener("transitionrun", function (e) { if (e.propertyName === "opacity") t0 = performance.now(); });
+      im.addEventListener("transitionend", function (e) {
+        if (e.propertyName !== "opacity" || !t0) return;
+        var rec = { who: f.who, to: file, ms: Math.round(performance.now() - t0), together: !!together };
+        fades.push(rec);
+        if (fades.length > 60) fades.shift();
+        try { host.dispatchEvent(new CustomEvent("iltv:pose-fade", { bubbles: true, detail: rec })); } catch (e2) { /* nothing to tell */ }
+      });
+      (window.requestAnimationFrame || setTimeout)(function () { im.classList.add("on"); });
+    }
+  }
+
+  /** Every look a person has had on stage (layer + mood): the playtest counts them. */
+  function notePose(f, file, mood) {
+    if (!file) return;
+    var set = seenPoses[f.who] || (seenPoses[f.who] = {});
+    set[file + "~" + mood] = 1;
+  }
+
+  /** The word-to-pose map in the story data (`performPoses`): a line's `perform` note -> { mood, pose }. */
+  function performOf(l) {
+    var map = state && state.poseMap;
+    var out = { mood: (map && map.default) || "neutral", pose: "" };
+    if (!map || !l || !l.perform) return out;
+    var t = String(l.perform).toLowerCase();
+    var has = function (w) { return new RegExp("(^|[^a-z])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "([^a-z]|$)").test(t); };
+    var pick = function (table) {
+      var ks = Object.keys(table || {});
+      for (var i = 0; i < ks.length; i++) if (ks[i].charAt(0) !== "_" && table[ks[i]].some(has)) return ks[i];
+      return "";
+    };
+    out.mood = pick(map.moods) || out.mood;
+    out.pose = pick(map.poses);
+    return out;
+  }
+
+  /** The line `l` is spoken: its speaker takes the look its `perform` note asks for, everyone else listens. */
+  function perform(l, instant) {
+    if (!state || !state.poseMap) return;
+    var p = performOf(l);
+    Object.keys(figs).forEach(function (k) {
+      var f = figs[k];
+      var mine = l && l.speaker === k;
+      var mood = mine ? p.mood : (state.poseMap.default || "neutral");
+      var pose = mine ? p.pose : f.perfPose || "";
+      if (f.mood === mood && (f.perfPose || "") === pose) return;
+      f.mood = mood;
+      f.perfPose = pose;
+      photoFig(f, !!instant);
+    });
   }
 
   function photoView() {
     var o = { on: photoOn(), plate: stage ? stage.plate : null, still: state ? stillFor(state.place) : null, layers: {}, overlays: Object.keys(ovMade), door: host.hasAttribute("data-door") ? host.getAttribute("data-door-side") : "" };
     Object.keys(poseWraps).forEach(function (k) { o.layers[k] = poseWraps[k].getAttribute("data-file") || ""; });
+    o.moods = {};
+    Object.keys(poseWraps).forEach(function (k) { o.moods[k] = poseWraps[k].getAttribute("data-mood") || "neutral"; });
+    o.poses = {};
+    Object.keys(seenPoses).forEach(function (k) { o.poses[k] = Object.keys(seenPoses[k]); });
+    o.speaker = Object.keys(poseWraps).filter(function (k) { return poseWraps[k].hasAttribute("data-speaking"); });
+    o.fades = fades.slice();
     return o;
   }
 
@@ -884,7 +956,7 @@
       ["ring", "buzz", "writing", "touch", "spill", "knock", "count", "flicker", "swap", "door-side"].forEach(function (k) { host.removeAttribute("data-" + k); });
       var cast = def.cast && def.cast.length ? def.cast : ["you", "dee"];
       var place = def.place || "room";
-      state = { id: def.id, time: def.time, place: place, castList: cast, awayList: (def.away && def.away.length ? def.away : cast), lines: def.lines || [], at: -1, acted: {} };
+      state = { poseMap: def.poseMap || null, id: def.id, time: def.time, place: place, castList: cast, awayList: (def.away && def.away.length ? def.away : cast), lines: def.lines || [], at: -1, acted: {} };
       figsEl.innerHTML = '<svg class="figs-svg" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet" focusable="false"><defs><clipPath id="rg-seatclip" clipPathUnits="userSpaceOnUse"><rect x="-80" y="-220" width="160" height="186"/></clipPath></defs><g class="chairs"></g><g class="figs"></g></svg>';
       figs = {};
       chairs = {};
@@ -959,6 +1031,7 @@
       state.at = i;
       flushBeats();
       if (!l) return;
+      perform(l, instant);
       var beats = actsOf(l);
       state.acted[i] = beats.map(function (b) { return b.spec; });
       if (l.place) { setPlace(l.place, instant); state.acted[i].unshift("place:" + l.place); }
@@ -1025,9 +1098,17 @@
     clearTimers();
     state = null;
     photoReset();
+    seenPoses = {};
+    fades = [];
     figs = {};
     figsEl.innerHTML = "";
     artEl.innerHTML = "";
+  }
+
+  /** Sit or stand someone now (handover chair choice): kind is "sit" or "stand". */
+  function posture(who, kind) {
+    if (kind !== "sit" && kind !== "stand") return;
+    act(who + ":" + kind, true);
   }
 
   window.iltvRoom = {
@@ -1037,6 +1118,7 @@
     runBeats: runBeats,
     speaking: speaking,
     switched: switched,
+    posture: posture,
     view: view,
     close: close,
     useStage: loadStage,

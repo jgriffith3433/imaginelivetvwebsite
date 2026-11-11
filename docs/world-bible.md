@@ -5,8 +5,8 @@ that opens onto **three story worlds**, each its own universe with its own rules
 
 | World | Kind | Universe | Size now |
 | --- | --- | --- | --- |
-| **The Final Spark** | video choose-your-path | a sewer, a fog, a town; a villain origin, told in the dark | 23 pages, 1 ending, 7 deaths |
-| **The Water Road** | video choose-your-path | the Old West; a hero origin, the mirror of the Spark | 20 pages, 2 endings, 3 deaths |
+| **The Final Spark** | video choose-your-path | a sewer, a fog, a town; a villain origin, told in the dark | 34 pages, 4 endings, 2 deaths |
+| **The Water Road** | video choose-your-path | the Old West; a hero origin, the mirror of the Spark | 20 pages, 2 endings, 2 deaths |
 | **Night Shift** | console story (a camera wall, voiced lines) | Hawkes Tower, Manhattan, one night in February | 256 scenes, 12 endings, 1,376 lines, 11 voices |
 
 Read with: `AGENTS.md`, `story/README.md`, `story/night-shift.md`, `story/water-road.md`, `docs/*/voice.md`. This bible
@@ -32,16 +32,15 @@ of the way.
 
 ### The home (the shell around the stories)
 
-**A. The landing page.** Mood: a late-night TV lobby, a dark room with three screens glowing, one of them yours to pick.
-Looks like: the title splash (*IMAGINE LIVE TV*, 0.7 s hold, 0.4 s fade), a hero card for the featured story, then a
-card per listed story with its image, logline, runtime, three-word mood and progress badge (Not started, Started,
-Completed). Sounds like: nothing until a card is pressed (the splash has no prompt, the first prompt comes with the story).
-Size: one scroll, hero plus three cards plus the blog list and footer. In/out: the URL; a card press enters a story;
-"All stories" returns with no splash.
-*Falls short today:* silent and still. **(new)** Gap budget: a card under the pointer or finger plays a 3-second muted
-loop of its own world (the rat's whiskers, the dove, the camera wall's tiles flicking) and a quiet "tick" of its own
-ambience once sound is on; the badge of a Completed story shows a small mark of the ending found (the match, the dove,
-the pencil); the hero card breathes (slow light drift).
+**A. The landing page.** Mood: a late-night TV lobby, a dark room with screens glowing, one of them yours to pick.
+Looks like: the title splash (*IMAGINE LIVE TV*, 0.7 s hold, 0.4 s fade), a hero for the featured story that plays its
+muted trailer within 2 s (Sound unmutes it), then a catalogue card per other listed story (the featured one is not
+repeated) with its image, a 3 s muted loop on hover or when centred on a phone, logline, runtime, three-word mood and
+progress badge (Not started, Started, Completed). Sounds like: the hero trailer is muted until Sound; a story's own
+Tap to play unlocks sound inside it. Size: one scroll, hero plus catalogue cards and footer (no blog on the home page).
+In/out: the URL; a card press enters a story; "All stories" returns with no splash. Studio notes live at `/notes/`.
+With `prefers-reduced-motion`, posters only. **(new)** Trailers and loops are cut from existing clips (Night Shift:
+CCTV stills with a slow push) by `tools/make-trailers.mjs`.
 
 **B. The player (story screen).** Mood: the same room, now one screen filling it. Looks like: the page's video (or the
 console room), the question, the choices, the inventory bar, the Tree, Settings, the `Tap to play` prompt. Size: the
@@ -51,6 +50,15 @@ ending. There is **no Back button** (canon: a choice stands).
 buses (ambience, music, ui) with gain fades; ambience and music duck under a clip that has sound; a header sound toggle
 mutes everything (saved in `iltv.sound`, kept in step with Settings / `hawkes.sound`). `setBed(story, mood)` and
 `playUi(name)` play `/assets/audio/...` when those files exist and stay quiet when they don't. Playtest: `audio-buses`.
+**(new) Choosing sounds and beds** (`js/audio.js`, made in code until recordings replace them): *appear* (the choices come up, a soft
+two-note lift), *tap* (the lock-in on a press: a tape-deck clunk, 3 variants), *tick* (the last 3 s of the timer, 3 variants), all at
+±7% pitch with no repeat of the same variant+pitch back to back, and never two UI sounds at once (a louder kind cuts a quieter one).
+One ending sting per story: The Final Spark a low minor drop and one last drip; The Water Road a hollow open fifth under a swell of
+wind and one creak; Night Shift a cold fluorescent hum that cuts out. One bed per story, 8 s seamless loop: the sewer (50 Hz hum, thin
+trickle, four drips with echo) and the dust (gusting wind, deep rumble, two creaks of old wood); Night Shift keeps its own beds. A bed
+starts only after the first clip plays (or on an image page, or at the first tap on a choice), carries across scenes without a
+restart, ducks under clip dialogue and fades out on the story list. Sound off: no sound is made and no audio event is logged.
+Playtest: `audio-ui` (also in `smoke`).
 
 **C. The Tree.** A map of the story as found: only unlocked scenes show, a locked "?" per way not taken, nothing pressable.
 It is the home's one *map*: it is how a player sees how big a world they have not seen.
@@ -65,33 +73,47 @@ whose whole way is seen a quiet "Seen" tick, and the Tree's nodes carry the same
 endings" and turns gold when every ending is found. The home only ever shows; it never talks. Video stories only: a
 console story's choices depend on flags, so it has the card count but no per-choice tags yet.
 
-**E. The blog.** The studio's lobby noticeboard: posts, each with its own images and videos, in the player's language list.
+**E. Studio notes (`/notes/`).** The studio's noticeboard, off the home page: English titles with a small language chip
+for the language each post was written in; the posts themselves stay under `/f/`. One footer link ("Studio notes") opens
+the list.
 
 ### The Final Spark: the sewer and the town
 
 - **A1. The sewer (start, dead end, passage, sludge, sewer water, trench foot).** Mood: dread from what is left out.
   Looks: black brick, a lit match, rust, a drain's reflection; the light is the clock. Sounds: drip, low cello, a metal hum.
-  Size: six pages, a loop of corridors. In: waking (page 1). Out: the passage to the gate. Deaths: the sludge, trench foot.
-- **A2. The gate (gate, break the gate, pick the lock, the key, unlock).** Mood: tense, ticking. Looks: an iron gate,
-  a skeleton chained to the wall with a key in its hand. Sound: pulsing strings, a lock's small noise. Size: five pages.
-- **A3. The fog and the house (fog, burn the door, knock).** Mood: eerie, music box. Looks: fog, one lit window, a door.
-  The old man in round wire glasses lives behind it. Size: three pages. Death: the door.
-- **A4. The street and the white truck (upon the truck, inside, walk away).** Mood: cold daylight after the dark.
-  Size: three pages.
-- **A5. The shadow (shadow dance, new powers, Consume Light, Shadow Stitch).** Mood: quiet, awful, intimate. The shadow
-  is "a towering, thin, smoke-black humanoid shadow with long clawed fingers". Size: four pages.
-- **A6. The town (Destroy town).** The one ending. Mood: flat. "THE END".
+  Size: six pages, no loop (the passage only goes on). In: waking (page 1). Out: the ledge. Deaths: the sludge, trench foot.
+- **A1b. The ledge and the rat (get out of the water, the rat eats, follow the rat, step past it, the rat's pipe).**
+  Mood: small and wet. The rat climbs out after you, shivering. Three things your hands can do about it: feed it a crust,
+  follow it into a side pipe that lets out behind the gate, or step past it. Size: five pages. The pipe skips the gate.
+- **A2. The gate (gate, break the gate, pick the lock, the key, the tag, unlock).** Mood: tense, ticking. Looks: an iron
+  gate, a skeleton chained to the wall with a key in its hand and a brass tag at its neck. Sound: pulsing strings, a lock's
+  small noise. Size: six pages. Breaking the gate bends it and gives only the key; picking the lock is quiet and the
+  skeleton's tag reads LAMPLIGHTER, with your name scratched on the back (who you were).
+- **A3. The fog and the house (fog, burn the door, knock, the old man speaks).** Mood: eerie, music box. Looks: fog,
+  one lit window, a door. The old man in round wire glasses lives behind it. If you knock and ask about your hands he
+  reads the soot: you lit these lamps (who you were, the second way to learn it). Size: four pages.
+- **A4. The street and the white truck (upon the truck, inside, walk away).** Mood: cold daylight after the dark. The
+  street remembers the door: it burns behind you, or the old man has shut it. Size: three pages.
+- **A5. The shadow (shadow dance, new powers, Consume Light, Shadow Stitch, the lamps go out, the threads pull).** Mood:
+  quiet, awful, intimate. The shadow is "a towering, thin, smoke-black humanoid shadow with long clawed fingers". It wants
+  the town because the town lit every lamp to keep it down in the sewers. Eating light and stitching shadows are two
+  different pages with the same last question. Size: six pages.
+- **A6. The town (four endings).** THE DARK TOWN (the lamps go out), THE FLAME HELD (you hold a match up and refuse),
+  THE RAT'S LIGHT (the rat brings a candle stub when your matches are gone), THE LAMPLIGHTER (you say who you were).
 
 ### The Water Road: the caravan and Dry Fork
 
 - **W1. The caravan (the water road, the salt flats).** Dawn, six wagons, forty barrels. Heat shimmer, creak of wheels,
-  hooves, a baritone guitar. Death: the heat.
+  hooves, a baritone guitar. Death: the heat (pushing on at noon: a viewer sees it coming).
 - **W2. Under the mesa (mesa, rockslide, lookout, the broken wagon).** Rock shade, a glint of spyglass, the family at
-  the empty cask. Death: the rockslide.
+  the empty cask. A warning shot costs four barrels and a lame mule, never the cliff on you.
 - **W3. The night and the dust (under the stars, the dust, the high ground, the dry wash).** Cold stars; a dust wall; a
-  wash that floods nothing.
+  wash that floods nothing. Riding for the high ground costs a lost day, four barrels and a driver who turns for home.
+  At the wash the water you kept opens or closes a choice, and the family you helped (the boy names the riders' leader)
+  or passed shows up in what you can say.
 - **W4. The raid (the gunfight, over their heads, they come back, a drink for strangers).** The only place with
-  gunfire. The gun is never the answer.
+  gunfire. The gun is never the answer. Death: drawing on five riders. The father of the family stands at your
+  shoulder at night if you helped them; a barrel left on the rocks (water 3 or more) can end the raid before it starts.
 - **W5. Dry Fork (the cottonwoods, Dry Fork, the price of water).** Green at last; a town on its knees. Two endings.
 
 ### Night Shift: Hawkes Tower, 18:45 to 07:00
@@ -153,9 +175,16 @@ One per area, something a player can see in the first second and steer by.
 - **The rat:** a brown sewer rat with glossy black eyes. First thing that sees you. Routine: watches from a pipe, leaves
   when the match dies, returns when the next one is lit. It reacts to the player by its distance. (Talks only if J
   approves "the talking rat", still in Waiting for J.)
-- **The old man:** swept-back grey hair, round wire glasses, a dark wool coat. Behind the door in the fog. Sends you away.
-- **The shadow:** smoke-black, long clawed fingers. It comes only where there is no light and it mirrors you.
-- **The skeleton:** chained to the wall at the gate, holds the key.
+- **The old man:** swept-back grey hair, round wire glasses, a dark wool coat. Behind the door in the fog. Sends you
+  away, then, if you ask about your hands, says what they are: lamplighter's hands. He knew you.
+- **The shadow:** smoke-black, long clawed fingers. It comes only where there is no light and it mirrors you. Its reason:
+  the town lit its lamps to keep it down; it wants them out.
+- **The skeleton:** chained to the wall at the gate, holds the key and wears a brass lamplighter's tag, your name on the back.
+- **Who you were (the player's want):** a lamplighter of the town, who lit every lamp and locked the dark under it. You
+  learn it at the gate (pick the lock and read the tag) or from the old man (knock, then ask about your hands), and it
+  opens the ending THE LAMPLIGHTER. Burn the door and break the gate and you never learn it.
+- **Matches (the clock):** a box of 20; every new page burns one (a number beside the flashlight in the inventory bar,
+  red at 2 or fewer). Shortcuts and burning save matches; wandering and talking spend them.
 
 ### The Water Road
 - **You:** a young trail hand of about twenty, boyish, sun-browned, flat-brimmed tan hat, red bandana, revolver unfired.
@@ -221,8 +250,13 @@ edge).
 - **A5 Shadow.** *Interactions:* dance, explore powers, Consume Light, Shadow Stitch. *Events:* every lit thing nearby
   dims as the player's power grows; shadows on the wall move when the player does not. *Ambient:* sub-bass, silence
   where sound was. *Changes:* the lights go out one by one.
-- **A6 Town.** *Interaction:* one: Destroy town. *Events:* every window goes dark, house by house. *Ambient:* the silence
-  is the sound.
+- **A6 Town.** *Interactions:* the last fork (the lamps go out, or the threads pull). With matches to spare: Destroy the
+  town, Hold up a match, and Say who you were if you learned it. At 2 or fewer: no match to hold; Whistle for the rat if
+  you fed or followed it, Put out the last match if you did not, and Say who you were. *Events:* every window goes dark,
+  house by house; or the lamps come back one by one. *Ambient:* the silence is the sound; at THE RAT'S LIGHT a small drag
+  of a candle stub.
+- **The rat across the story.** Fed: it rides in your pocket and gnaws a last crumb at the end. Followed: it runs ahead,
+  and its pipe skips the gate. Ignored: no rat feet in the fog, no rat at the end. It comes back only to someone it knows.
 
 ### The Water Road
 Gap budget: a clip runs ~10 s with narration and music under it; wheels, hooves, wind and the guitar keep sound moving;
@@ -243,9 +277,10 @@ the dove crosses frame once per page.
 Gap budget: a line every ~3 to 9 seconds; a scene's `act`s and `feed` changes (the big screen's CRT flash 200 to 300 ms)
 keep the eye moving; ambience beds under every scene; stings at turns. Nothing is silent between scenes.
 - **N1 Control room.** *Interactions:* choose what to say, log or do at each scene (up to 12 choices, gated by flags);
-  open the shift log; replay a line; toggle CC; Settings. *Events on their own:* the phone rings; the radio charger
-  clicks; the clock ticks fast; Dee counts; Okafor leaves by the door; the lights flicker and coffee spills; Dee taps the
-  screen, stands, angrily leaves with the keys; someone writes in the log; the silence button is pressed. *Ambient:*
+  sit or stand at handover; open the shift log; replay a line; toggle CC; Settings. *Events on their own:* the phone
+  rings; the radio charger clicks; the clock ticks fast; Dee counts; a choice writes itself in pencil on screen; a
+  chapter card jumps the clock; Okafor leaves by the door; the lights flicker and coffee spills; Dee taps the screen,
+  stands, angrily leaves with the keys; someone writes in the log; the silence button is pressed. *Ambient:*
   `control-room`, later `control-room-late`. *Changes:* the bed shifts at 02:00; slips and trust move a meter; a wedge
   stays propped until dealt with.
 - **N2 Lobby and vestibule.** *Interactions:* look at the laptop, call the bench owner, check the sleeper, offer a
@@ -263,6 +298,13 @@ keep the eye moving; ambience beds under every scene; stings at turns. Nothing i
   *Events:* panel buzzer; camera 9 freezes at 03:41. *Ambient:* the panel's buzz.
 - **N8 Morning.** *Interactions:* the last choice before the log is read. *Events:* Okafor reads the log; the day staff
   arrive. *Ambient:* `morning`. *Changes:* twelve different mornings, each ends on an object.
+
+### Deaths, memory and mercy in the clip stories (new, J 2026-11-11)
+
+A death keeps its clip and its line, then offers Rewind to the choice (the fork again, the deadly way marked Tried) and
+Start over; a choice can be remembered (flags) and called back by a later page's text; the 15 s timer rides the story's
+basic path and never kills a viewer who looked away; a page with one choice plays on by itself after its clip. The
+Water Road's callback is at the cottonwoods (the flask given, the family passed). Rules: `story/README.md`.
 
 ### The look-around layer (new, the fix for the clip stories' empty holds)
 
@@ -315,7 +357,11 @@ here for an agent to build next, within the existing scene data.
    **(new)** His one line is spoken (pending "Waiting for J").
 8. **The white truck (exists).** *Street.* The player rides under or walks away; a diesel idles, a dog barks.
 9. **The first light goes out (exists).** *Shadow.* Consume Light: the nearest lamp dies with a soft pop.
-10. **The town goes dark (exists).** *Ending.* House by house the windows go black; THE END is the single allowed line.
+10. **The town goes dark (exists).** *Ending.* House by house the windows go black. The ending's name is the single allowed line.
+11. **The crust (new).** *Page the rat eats.* The rat gnaws what you set down and looks up; the camera stays at its height.
+12. **The tag (new).** *Gate.* A thumb turns the brass tag over: LAMPLIGHTER on the front, your name on the back.
+13. **The soot (new).** *The old man speaks.* He looks from your hands to your face and says what they are; he shuts the door slowly.
+14. **The last match (new).** *The last fork, at 2 or fewer matches.* The flame is too small to hold up; a rat's feet, a candle stub dragged over cobbles.
 
 ### The Water Road
 11. **Dawn on the water road (exists).** *Start.* Wagon wheels and harmonica; the dove leaves the lead wagon.
@@ -329,8 +375,13 @@ here for an agent to build next, within the existing scene data.
     other ending: the same bell, but only after the barrels are counted.)
 
 ### Night Shift
-18. **Handover (exists).** *18:45, control room.* Okafor reads the log; Dee counts under her breath; the radio
-    charger clicks; he leaves for his train; the door closes.
+18. **Handover (exists).** *18:45, control room.* Okafor opens the log; Dee counts under her breath; "Sit anywhere
+    that isn't mine." Within ~20 s of Tap to play the viewer picks a chair or stays standing (trust or pose lands at
+    once); then the day log finishes and he leaves for his train.
+18a. **The choice lands in ink (exists/new).** *After any trust or flag choice.* The shift-log line writes on screen
+    with the pencil SFX within 2 s, and Dee answers with a recorded "Mm." or "Mm-hm." when one fits (Telltale beat).
+18b. **Chapter cards (exists/new).** *About every 10–12 minutes of audio on the shortest path.* A 2 s card: the clock
+    jumps, a sting, a one-line hook; home Continue resumes in that chapter.
 19. **The first radio check (exists).** *19:00.* A squelch, "Control to unit one." The player answers (or does not).
 20. **The cleaner's badge (exists).** *21:30, 44.* Marisol on the walkie, a vacuum far away; the badge reader refuses
     on camera 6.

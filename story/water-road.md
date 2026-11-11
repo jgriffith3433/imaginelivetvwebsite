@@ -22,7 +22,7 @@ taking it, and never by the gun.
   a revolver you've never fired. Every page costs water.*
 - **Tap to play:** *THE WATER ROAD*, "Sound on. Fill your flask."
 
-## The story (the full decision tree, 20 pages)
+## The story (the full decision tree, 20 pages; changed 2026-11-11, see "Water decides, and the road remembers")
 
 You ride guard on the last wagon of a water caravan bound for Dry Fork, a mining town whose wells have gone dry.
 
@@ -53,8 +53,8 @@ of summer they call you by a name you didn't have before. *THE END. This is how 
 Dry Fork pays what you ask, you are rich by fall, and nobody in town will look you in the eye. *THE END. Not every
 story makes a hero.*
 
-**Deaths** (four: the heat, the rockslide, the high ground, the gunfight) send you back to the water road:
-"Try again", like The Final Spark.
+**Deaths** (two, both seen coming: the heat, the gunfight) send you back to the choice (Rewind) or the water road (Start
+over). The rockslide and the high ground are no longer deaths: they cost barrels, a mule and a driver (below).
 
 ## The bird (never mentioned)
 
@@ -87,23 +87,25 @@ going back a page to win a swallow back: a choice stands. Coming back to the sta
 over. A branch page (`/water-road/<folder>/`) is a page on its own, so it shows the counts as you would have them on
 the shortest way there.
 
-**Running out.** Water is the resource: **an empty flask ends the run.** The tree is written so the flask only runs
-dry on a death page (the heat, the high ground), and the build checks every way through the story for it
-(`"empty": "dead"` on water). **Bullets don't end anything**: the hero wins without them, and the two times you shoot
-(the warning shot under the mesa, the shots over the riders' heads) are as many as anyone fires; the gunfight empties
-the gun as you die. No way through the story leaves you with fewer than none (the build checks that too).
+**Running out (changed 2026-11-11).** Water is the resource, and an empty flask no longer ends the run: it closes
+doors. Some choices need water kept (below), shown locked with their requirement in words when you are short. **Barrels**
+(40 at the start, a barrel icon in the bar) are what the desert and your choices take. **Bullets don't end anything**: the
+hero wins without them, and the two times you shoot (the warning shot under the mesa, the shots over the riders' heads)
+are as many as anyone fires. No way through the story leaves you with fewer than none (the build checks that too).
 
-| Page | Bullets | Water |
-| --- | --- | --- |
-| The water road | 6 (start) | 4 (start) |
-| The salt flats, under the mesa |  | −1 |
-| The heat |  | −3 (empty: death) |
-| The rockslide | −1 |  |
-| Your flask (giving it) |  | −2 |
-| The high ground |  | −3 (empty: death) |
-| The gunfight | −6 (empty) |  |
-| Over their heads | −2 |  |
-| The cottonwoods |  | filled (4) |
+| Page | Bullets | Water | Barrels |
+| --- | --- | --- | --- |
+| The water road | 6 (start) | 4 (start) | 40 (start) |
+| The salt flats, under the mesa |  | −1 |  |
+| The heat (death) |  | −3 |  |
+| The rockslide | −1 |  | −4 |
+| Your flask (giving it) |  | −2 | −1 (the trail boss opens one) |
+| The dust |  |  | −2 |
+| The high ground |  | −1 | −4 |
+| The gunfight (death) | −6 |  |  |
+| Over their heads | −2 |  |  |
+| A drink for strangers |  |  | −2 |
+| The cottonwoods |  | filled (4) |  |
 
 ## The rules of the piece
 
@@ -137,3 +139,73 @@ Made 2026-10-18 within J's $8: the five character sheets (`story/characters/wate
 (best of 3, picked by Claude and looked at before its clip), a 9:16 clip per page, the 20 narrations and the six
 music cues; `npm run story` cuts each page's `scene.mp4`. The card image is `/assets/images/water-road.jpg`, the
 opening's dove on the dead branch.
+
+## Memory and mercy (J, 2026-11-11)
+
+The road remembers what you did and is kind to someone who looks away. Giving the girl your flask sets `gaveFlask`;
+riding past the family sets `passedBy` (giving it later clears it): at the cottonwoods the question calls it back
+("A little girl drank from your flask once. What do you do with this water?" / "You rode past a family once. What do you
+do with this water?"; text only, so the narration in the clip stays true). A death keeps its clip and its line and
+offers Rewind to the choice (the fork again, the deadly way marked Tried) and Start over. When the 15 s run out on the
+salt flats, under the mesa, in the dust, in the dry wash and at the night raid, the timer rides the basic path
+(`default`: wait for dark, wave and wait, fire over their heads, open a barrel), never into a death. Not made yet: a
+variant clip with its own narration for the callback (needs GPU; priced in the change's summary).
+
+## Water decides, and the road remembers (J, 2026-11-11)
+
+Player goal: the water you kept decides which choices stay open; helping the family comes back later; a bad choice costs
+barrels, a mule or a rider, not a trick death. Reference: Bandersnatch's cereal choice called back in the advert, Late
+Shift's choices that change the chapter you reach, Telltale's visible consequence. No new scenes and no new clips: every
+page keeps its folder and its picture; only words, gates and flags changed.
+
+**Water gates** (`needs`, story doc "Water and gated choices"; a locked choice stays on screen, greyed, "needs water 3+"):
+
+- **The dry wash** (`wash`): *Open a barrel for them* needs **water 2**. A viewer who gave the girl the flask (water 1
+  there) sees it locked, and gets *Call their leader by name* instead (`requires gaveFlask`): the boy knows the riders'
+  leader, Hale, who dug the family's well. A viewer who passed the family keeps the water and the barrel option, but not the name.
+- **Over their heads** (`warningShots`): *Leave them a barrel on the rocks* needs **water 3**: with it, you skip the night
+  raid (the riders find the barrel, `leftBarrel`, and ride with the caravan); short of it the row is locked and you keep watch.
+
+**The family comes back.** `gaveFlask` and `passedBy` already changed the spring's question. Now: at the dry wash the boy
+whispers who the riders are (helped), or you face them with nobody who knows their faces (passed: no variant, the base
+page); at the night raid the girl's father is up already, lantern in one hand and the other held out empty, at your
+shoulder (helped). The text of a variant is on screen only: the clip's narration is the base page's.
+
+**Costs instead of trick deaths.** *Fire a warning shot* (`mesa`) is no longer the cliff on you: the rock answers and takes
+four barrels and lays a mule down lame (`firedAtMesa`, `muleLame`); the boy then comes down with both hands up (a lookout
+variant). *Ride for the high ground* (`dustStorm`) costs a day, four barrels, a swallow of water and **a driver who turns
+for home** (`riderLeft`; the dry wash and the night raid say you are a rider short). Deaths left, both of the kind a viewer
+sees coming: **the heat** (pushing on across the salt at noon) and **the gunfight** (drawing on five riders).
+
+**Defaults.** Every fork marks the safe `default` the 15 s timer takes (never gated, never a death): mesa, ride over,
+follow him, give them your flask, keep riding, follow the dry wash, fire over their heads, keep watch, open a barrel and
+call them in, bring Dry Fork the way here, wait for dark, wave and wait.
+
+**The endings name an earlier choice.** *Dry Fork*: "...and the riders you gave a barrel to ride in beside you." *The
+price of water*: "...and the riders you once gave a barrel to ride out without a word." Every way to the spring passes the
+barrel given to the riders (opened at the wash, called in at night, or left on the rocks), so the line is true on every road.
+
+**Media.** No new picture is needed. Four narrations changed text and are remade (rockslide, high ground, both endings):
+voice only, cut over the existing clips (`npm run story` recipes; Studio's asset make, then `tools/make-audio.mjs`-style
+cut). Variant text (the lookout, wash, night raid, a drink for strangers) is shown on screen over the base narration; a
+variant clip is a GPU job (not made).
+
+## Edited openings: coverage on the five pages every path crosses (2026-11-11)
+
+Player goal: the opening reads as cut film, not one shot per page. `start`, `flats`, `mesa`, `family` and `wash` each list
+`shots` (the build lays them end to end, never looped): a **wide** that establishes, a **close-up** that acts the beat, then
+the page's original shot last.
+
+| Page | 1. wide | 2. close-up | 3. original |
+| --- | --- | --- | --- |
+| `start` | the wagon train in dawn haze, the dove in the foreground | the rider's hand resting on the unfired revolver | dove branch, rack focus to the train |
+| `flats` | six wagons on the white salt, one tilted on a cracked wheel | the rider's face and the flask he doesn't drink | the tilted wagon, the rider looks up |
+| `mesa` | the caravan under the mesa, the glint | the hand on the holster grip, thumb on the hammer | rider slows and looks up |
+| `family` | the family in the broken wagon's shade, the caravan behind | the trail boss's measuring look (the girl drinks on the next page, `giveFlask`) | the little girl looks up |
+| `wash` | the dry wash, five riders blocking it | the riders' leader's face | the dove skims over the riders |
+
+Characters are cast from their sheets (`hero`, `boss`, `leader`, `family`, `dove`): same faces and clothes as every other shot.
+**Status:** data only. None of the ten new clips is made (no GPU approved); the cut skips a shot that isn't made, with a
+warning, so nothing changes for the viewer until they are. To make them: `studio.cmd assets imaginelivetv make` (10 keyframes
+x 3 candidates, 10 `video.i2v`). Shot order in the file is play order, so the original shot is now `clip-3.mp4`, not `clip.mp4`:
+remake it with the others (or rename its files) before the cut is rebuilt.
