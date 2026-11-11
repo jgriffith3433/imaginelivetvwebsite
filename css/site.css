@@ -2437,7 +2437,19 @@ figure.feed { cursor: default; }
 .room-photo .room-pose, .room-photo .room-ov { position: absolute; inset: 0; }
 .room-photo .room-pose img.pose { opacity: 0; transition: opacity 0.25s ease; }
 .room-photo .room-pose img.pose.on { opacity: 1; }
-.room-photo .room-pose[data-speaking] img.pose.on { filter: drop-shadow(0 0 5px rgba(217, 197, 138, 0.55)); }
+/* The people are cut from the photo as solid-black masks. They are toned, not left as flat black holes: the mask is lifted to a
+   dark blue-grey (invert, then dim) and lit from the monitors with a cool rim on the top and screen-facing edges. The one who is
+   speaking is lifted further and gets a warm rim and halo, so the eye finds who is talking. */
+.room-photo .room-pose img.pose {
+  filter: invert(1) brightness(0.2) sepia(0.5) hue-rotate(170deg) saturate(1.6)
+    drop-shadow(0 -1px 0 rgba(176, 212, 240, 0.65)) drop-shadow(-1px 0 0 rgba(120, 170, 215, 0.45)) drop-shadow(1px 0 0 rgba(120, 170, 215, 0.2));
+}
+.room-photo .room-pose[data-speaking] img.pose.on {
+  filter: invert(1) brightness(0.3) sepia(0.5) hue-rotate(170deg) saturate(1.6)
+    drop-shadow(0 -1px 0 rgba(255, 226, 160, 0.9)) drop-shadow(-1px 0 0 rgba(255, 214, 140, 0.6)) drop-shadow(0 0 6px rgba(217, 197, 138, 0.6));
+}
+/* Nothing of the people shows until the plate under them has loaded, so a figure never appears alone before the room. */
+.room-people:not([data-ready]) { opacity: 0; }
 .room-photo .room-ov { opacity: 0; transition: opacity 0.25s ease; }
 .console-room[data-door][data-door-side="left"] .ov-door-left,
 .console-room[data-door][data-door-side="right"] .ov-door-right,
