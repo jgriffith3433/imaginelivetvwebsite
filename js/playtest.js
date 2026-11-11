@@ -4467,6 +4467,60 @@ async function phonePlayerRun(options, t) {
     fold are lazy, every card has a picture. Then each clip story is opened by its link: the clip's poster is on the
     video (and loads) before the clip does, and after Tap to play the player has requested the smaller rendition and
     not the full clip. A desktop frame (1280x800) must still play the full clip. */
+/** The Water Road's picture never snaps back and keeps moving under the choices (J, 2026-11-11): from the tap on Tap to play until the
+ *  choices are up the clip's currentTime must never jump backward (`loopRestarts`, fails above 0); then, for 3 s with the choices
+ *  up, the video isn't paused, its currentTime advances at least 2 s and two frames 1 s apart differ (the picture is moving). */
+async function livePictureCheck(t, doc, id, label) {
+  const win = doc.defaultView;
+  const video = () => doc.querySelector("#spark-video video:not(.spark-leave)");
+  const boxPhase = () => (doc.getElementById("spark-choices") || {}).dataset?.phase;
+  let restarts = 0;
+  let last = -1;
+  let v = video();
+  const t0 = performance.now();
+  while (performance.now() - t0 < 70000) {
+    v = video();
+    if (v && !v.seeking) {
+      if (last >= 0 && v.currentTime < last - 0.5 && !v.ended) { restarts++; t.event("loop-restart", `${id} (${label}): currentTime jumped back from ${last.toFixed(2)} s to ${v.currentTime.toFixed(2)} s`); }
+      last = v.currentTime;
+    }
+    if (boxPhase() === "ready" && [...doc.querySelectorAll("#spark-choices .choice")].length) break;
+    await sleep(100);
+  }
+  v = video();
+  if (!v || boxPhase() !== "ready") return t.problem("bug", `${id} (${label}): the choices never came up within 70 s`);
+  const probe = () => {
+    const c = doc.createElement("canvas");
+    c.width = 32; c.height = 56;
+    const g = c.getContext("2d");
+    g.drawImage(v, 0, 0, 32, 56);
+    return g.getImageData(0, 0, 32, 56).data;
+  };
+  const wasPaused = v.paused;
+  const from = v.currentTime;
+  const a = probe();
+  let paused = wasPaused;
+  await sleep(1000);
+  const b = probe();
+  for (let i = 0; i < 20; i++) {
+    await sleep(100);
+    v = video();
+    if (v.paused) paused = true;
+    if (v.currentTime < last - 0.5 && !v.ended) { restarts++; t.event("loop-restart", `${id} (${label}): currentTime jumped back during the choices`); }
+    last = v.currentTime;
+  }
+  const advanced = v.currentTime - from;
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 4) diff += Math.abs(a[i] - b[i]) + Math.abs(a[i + 1] - b[i + 1]) + Math.abs(a[i + 2] - b[i + 2]);
+  diff /= (a.length / 4) * 3;
+  t.metric(`loopRestarts.${id}.${label}`, restarts);
+  t.event("live-picture", `${id} (${label}): loopRestarts ${restarts}; choices up: paused ${paused}, currentTime +${advanced.toFixed(2)} s over 3 s, frames 1 s apart differ by ${diff.toFixed(1)}/255`);
+  if (restarts > 0) t.problem("bug", `${id} (${label}): the picture snapped back ${restarts} time(s) (loopRestarts must be 0)`);
+  if (paused) t.problem("bug", `${id} (${label}): the video is paused while the choices are up`);
+  if (advanced < 2) t.problem("bug", `${id} (${label}): the video advanced only ${advanced.toFixed(2)} s during a 3 s choice window (want 2 s or more)`);
+  if (diff < 0.5) t.problem("bug", `${id} (${label}): the picture isn't moving under the choices (frames 1 s apart differ by ${diff.toFixed(2)})`);
+}
+
 async function phoneMediaRun(options, t) {
   rememberProgress();
   clearProgress();
@@ -4602,6 +4656,7 @@ async function phoneMediaRun(options, t) {
         else if (Math.abs(video().videoWidth / video().videoHeight - 9 / 16) > 0.01) t.problem("bug", `${id}: the phone rendition is ${video().videoWidth}x${video().videoHeight}, not 9:16`);
         t.add("phoneRenditions");
       }
+      if (MADE.includes(id)) await livePictureCheck(t, doc, id, label);
     }
     t.progress(0.2 + (0.8 * ++k) / ids.length);
   }

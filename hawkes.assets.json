@@ -265,7 +265,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "你在黑暗的下水道里醒来。空气很难闻，黑暗里不知哪里在滴水。 你要做什么？",
+            "text": "你在下水道里醒来。空气恶臭，黑暗深处有水在滴。 你要做什么？",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -328,7 +328,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "तुम एक बंद सिरे पर पहुँच गए। फर्श पर कुछ काला और घिनौना पसरा है। तुम क्या करोगे?",
+            "text": "आगे बंद दीवार है। फर्श पर कुछ काला और घिनौना पसरा है। तुम क्या करोगे?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -391,7 +391,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Vuelves al pasadizo. La cloaca se alarga hacia la oscuridad. ¿Hacia dónde irás?",
+            "text": "Vuelves al pasadizo. La cloaca sigue hacia la oscuridad. ¿Hacia dónde irás?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -517,7 +517,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "تدخل قسمًا مغمورًا من المجاري. الماء يبدو قذرًا. ماذا ستفعل؟",
+            "text": "تصل إلى جزء مغمور من المجاري. الماء قذر. ماذا ستفعل؟",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -580,7 +580,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Você consegue sair da água e continua pela cloaca. Você descobre um portão trancado à frente.",
+            "text": "Você sai da água e segue pela cloaca. À frente, um portão trancado.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -643,7 +643,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Пробыв слишком долго в грязной воде, ты заболеваешь окопной стопой. Тебе становится всё хуже, пока ты уже не можешь идти дальше. Ты умер.",
+            "text": "Ты слишком долго стоял в грязной воде. Окопная стопа. Ноги отказывают, и дальше ты не идёшь. Ты умер.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -706,7 +706,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "錠のかかった門が道をふさいでいる。通り抜ける方法を見つけなければならない。 どうする？",
+            "text": "錠のかかった鉄の門が道をふさいでいる。 どうする？",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -769,7 +769,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "তুমি গেট ভাঙতে চেষ্টা করো, কিন্তু পার হওয়া সহজ হবে না। এরপর কী করবে?",
+            "text": "তুমি গেটে কাঁধ দিয়ে ধাক্কা দাও। গেট নড়ে না। এরপর কী করবে?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -832,7 +832,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Du versuchst, das Schloss zu knacken. Mit bloßen Händen reicht es vielleicht nicht. Was machst du als Nächstes?",
+            "text": "Du fummelst am Schloss herum. Mit bloßen Fingern ist da nichts zu machen. Was machst du als Nächstes?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -895,7 +895,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "열쇠를 찾았다! 그걸로 무엇을 할 거야?",
+            "text": "벽에 묶인 해골의 손에 열쇠가 걸려 있다. 그걸로 무엇을 할 거야?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -958,7 +958,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Anahtarla kapının kilidini açarsın. Ötesini kalın bir sis doldurur. Sisin içine girecek misin?",
+            "text": "Anahtar kilide uyar. Kapının ardında kalın bir sis var. Sisin içine girecek misin?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1021,7 +1021,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Bạn bước qua cổng và đi vào sương mù. Bạn hầu như không thấy phía trước có gì. Bạn sẽ làm gì?",
+            "text": "Bạn bước qua cổng vào sương mù. Gần như không thấy gì phía trước. Bạn sẽ làm gì?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1084,7 +1084,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Decidi di dare fuoco alla porta. Che cosa succede dopo?",
+            "text": "Accosti la fiamma alla porta. Il legno vecchio prende fuoco subito. Che cosa succede dopo?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1147,7 +1147,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Kamu mendekati pintu dan mengetuk. Apa yang terjadi selanjutnya?",
+            "text": "Kamu mengetuk pintu. Seorang lelaki tua membuka, lalu menyuruhmu pergi. Apa yang terjadi selanjutnya?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1268,7 +1268,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "تم اپنے آپ کو ایک ٹرک کے سامنے کھڑا پاتے ہو۔ تم کیا کرو گے؟",
+            "text": "ایک سفید ٹرک گلی میں کھلا کھڑا ہے۔ تم کیا کرو گے؟",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1331,7 +1331,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Subes a la camioneta. ¿Qué pasa ahora?",
+            "text": "Subes a la camioneta. En la oscuridad de la cabina, algo se mueve. ¿Qué pasa ahora?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1394,7 +1394,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "เจ้าตัดสินใจเดินหนีจากรถบรรทุก เจ้าจะทำอะไร?",
+            "text": "เจ้าหันหลังให้รถบรรทุกแล้วเดินจากไป แต่เงาตามมา เจ้าจะทำอะไร?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1459,7 +1459,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Unacheza na kivuli. Mnapoenda pamoja, kitu kinaamka ndani yako. Mwanguko wa nguvu ya ajabu unapita mwilini mwako, na unagundua umepata nguvu mpya. Nguvu zako mpya zimeamka.",
+            "text": "Unacheza na kivuli. Kitu kinaamka ndani yako, na nguvu ya ajabu inakimbia mwilini mwako. Una nguvu mpya. Nguvu zako mpya zimeamka.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1713,7 +1713,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰਨ ਦਾ ਫੈਸਲਾ ਕੀਤਾ। ",
+            "text": "ਤੂੰ ਸਾਰਾ ਸ਼ਹਿਰ ਤਬਾਹ ਕਰ ਦਿੰਦਾ ਹੈਂ। ਇੱਕ-ਇੱਕ ਕਰਕੇ ਹਰ ਬੱਤੀ ਬੁਝ ਜਾਂਦੀ ਹੈ। ",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
