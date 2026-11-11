@@ -120,7 +120,7 @@
     },
     {
       "id": "music-sewer",
-      "note": "Music for the sewer scenes (start, deadEnd, direction, sewerWater, getOutWater).",
+      "note": "Music for the sewer scenes (start, deadEnd, direction, sewerWater, getOutWater, ratFed, ratFollowed, ratIgnored).",
       "steps": [
         {
           "tool": "audio.music",
@@ -158,7 +158,7 @@
     },
     {
       "id": "music-gate",
-      "note": "Music for the gate scenes (gate, breakGate, pickLock, gotKey).",
+      "note": "Music for the gate scenes (gate, breakGate, pickLock, gotKey, readTag).",
       "steps": [
         {
           "tool": "audio.music",
@@ -177,7 +177,7 @@
     },
     {
       "id": "music-fog",
-      "note": "Music for the fog scenes (useKey, fog, fireDoor, knock, uponTruck).",
+      "note": "Music for the fog scenes (useKey, fog, fireDoor, knock, uponTruck, ratCrawl, oldMan, refuseShadow, ratEnding, lamplighterEnding).",
       "steps": [
         {
           "tool": "audio.music",
@@ -196,7 +196,7 @@
     },
     {
       "id": "music-shadow",
-      "note": "Music for the shadow scenes (insideTruck, walkAway, shadowDance, explorePowers, consumeLight, shadowStitch, destroyTown).",
+      "note": "Music for the shadow scenes (insideTruck, walkAway, shadowDance, explorePowers, consumeLight, shadowStitch, destroyTown, lightHunger, threadPull).",
       "steps": [
         {
           "tool": "audio.music",
@@ -391,7 +391,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Vuelves al pasadizo. La cloaca sigue hacia la oscuridad. ¿Hacia dónde irás?",
+            "text": "Vuelves al pasadizo. La cloaca sigue hacia la oscuridad. Solo queda un camino.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -532,20 +532,22 @@
       "id": "getOutWater-shot",
       "note": "Out of the water: keyframe and clip.",
       "inputs": [
-        "story/characters/hero.png"
+        "story/characters/hero.png",
+        "story/characters/rat.png"
       ],
       "steps": [
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: you climb out of the sewer water onto a narrow stone ledge, boots dripping. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "prompt": "A vertical 9:16 film still: you climb out of the sewer water onto a narrow stone ledge, boots dripping; a wet brown rat climbs out beside you. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
             "negative": "text, watermark, cartoon, subtitles",
             "width": 720,
             "height": 1280
           },
           "inputs": {
             "images": [
-              "$input:0"
+              "$input:0",
+              "$input:1"
             ]
           },
           "save": "keyframe"
@@ -553,7 +555,7 @@
         {
           "tool": "video.i2v",
           "params": {
-            "prompt": "the hero hauls up onto the ledge and stands. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "prompt": "the hero stands, the rat shakes water off its fur and looks up. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
             "negative": "text, watermark, cartoon, subtitles",
             "width": 544,
             "height": 960,
@@ -567,7 +569,7 @@
         }
       ],
       "candidates": 3,
-      "pick": "matches the scene (you climb out of the sewer water onto a narrow stone ledge, boots dripping); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "pick": "matches the scene (you climb out of the sewer water onto a narrow stone ledge, boots dripping; a wet brown rat climbs out beside you); the characters match their reference sheets; reads clearly as a vertical frame; no text",
       "files": {
         "keyframe": "get-out-of-the-water/media/keyframe.png",
         "clip": "get-out-of-the-water/media/clip.mp4"
@@ -580,7 +582,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Você sai da água e segue pela cloaca. À frente, um portão trancado.",
+            "text": "Você sai da água. O rato sai atrás de você, tremendo. O que você faz pelo rato?",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1459,7 +1461,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Unacheza na kivuli. Kitu kinaamka ndani yako, na nguvu ya ajabu inakimbia mwilini mwako. Una nguvu mpya. Nguvu zako mpya zimeamka.",
+            "text": "Unacheza na kivuli. Taa za mji ziliwashwa ili kukifunga chini; sasa kinataka ziizime. Kivuli kinakupa nguvu mbili.",
             "voice": "nPczCjzI2devNBz1zQrb",
             "model": "eleven_v4"
           },
@@ -1661,7 +1663,7 @@
     },
     {
       "id": "destroyTown-shot",
-      "note": "Destroy town: keyframe and clip.",
+      "note": "Destroy the town: keyframe and clip.",
       "inputs": [
         "story/characters/hero.png",
         "story/characters/shadow.png"
@@ -1708,7 +1710,7 @@
     },
     {
       "id": "destroyTown-voice",
-      "note": "Destroy town: narration in pa.",
+      "note": "Destroy the town: narration in pa.",
       "steps": [
         {
           "tool": "audio.voice",
@@ -1722,6 +1724,773 @@
       ],
       "files": {
         "narration": "destroy-the-town/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratFed-shot",
+      "note": "The rat: keyframe and clip.",
+      "inputs": [
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up, a brown sewer rat gnaws a crust on wet cobbles beside a lit match, then looks up at the camera. image 1 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the rat chews, whiskers twitch, it raises its head. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up, a brown sewer rat gnaws a crust on wet cobbles beside a lit match, then looks up at the camera); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-rat-eats/media/keyframe.png",
+        "clip": "the-rat-eats/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratFed-voice",
+      "note": "The rat: narration in fr.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Tu poses une croûte par terre. Le rat la ronge, puis te regarde. Il trottine déjà vers le portail.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-rat-eats/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratFollowed-shot",
+      "note": "Follow the rat: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, a match held toward a low brick side pipe; a brown rat's tail disappears into it. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera ducks and crawls after the rat, the flame wavers. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, a match held toward a low brick side pipe; a brown rat's tail disappears into it); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "follow-the-rat/media/keyframe.png",
+        "clip": "follow-the-rat/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratFollowed-voice",
+      "note": "Follow the rat: narration in ru.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Крыса бежит вперёд. Ты идёшь на писк в боковую трубу. Труба узкая и мокрая.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "follow-the-rat/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratCrawl-shot",
+      "note": "The pipe: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: the hero crawls out of a brick pipe onto a foggy cobbled street; the iron gate stands behind, the rat sits at the pipe's mouth. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the hero stands, fog rolls in, the rat watches. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (the hero crawls out of a brick pipe onto a foggy cobbled street; the iron gate stands behind, the rat sits at the pipe's mouth); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-rat-pipe/media/keyframe.png",
+        "clip": "the-rat-pipe/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratCrawl-voice",
+      "note": "The pipe: narration in zh.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "你挤出窄管，铁门已在身后。雾就在前面。 老鼠蹲在管口，看着你。",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-rat-pipe/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratIgnored-shot",
+      "note": "Step past the rat: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/rat.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, a boot steps over a small brown rat on a narrow ledge; the rat watches, then slips into a drain. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera walks on, the rat shrinks behind. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, a boot steps over a small brown rat on a narrow ledge; the rat watches, then slips into a drain); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "step-past-the-rat/media/keyframe.png",
+        "clip": "step-past-the-rat/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratIgnored-voice",
+      "note": "Step past the rat: narration in de.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Du steigst über das Tier hinweg. Es sieht dir nach, dann ist es fort. Vor dir sperrt ein Tor den Gang.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "step-past-the-rat/media/narration.mp3"
+      }
+    },
+    {
+      "id": "readTag-shot",
+      "note": "The tag: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: close-up by match light, a brass tag on a chain round a chained skeleton's neck, an old iron key beneath it; a thumb turns the tag over. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the thumb flips the tag, scratched letters catch the flame. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (close-up by match light, a brass tag on a chain round a chained skeleton's neck, an old iron key beneath it; a thumb turns the tag over); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-brass-tag/media/keyframe.png",
+        "clip": "the-brass-tag/media/clip.mp4"
+      }
+    },
+    {
+      "id": "readTag-voice",
+      "note": "The tag: narration in ko.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "해골 목의 놋쇠 명찰에 '점등원'이라 적혀 있다. 뒷면에는 네 이름. 열쇠가 그 아래 걸려 있다.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-brass-tag/media/narration.mp3"
+      }
+    },
+    {
+      "id": "oldMan-shot",
+      "note": "The lamplighter: keyframe and clip.",
+      "inputs": [
+        "story/characters/old-man.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: an old man with grey hair and round glasses holds a door half open in the fog, studying the hero's soot-black hands. image 1 is the reference sheet for the old man (an old man with swept-back grey hair, round wire glasses and a dark wool coat); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the old man looks from the hands to the face, then slowly shuts the door. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (an old man with grey hair and round glasses holds a door half open in the fog, studying the hero's soot-black hands); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-old-man-speaks/media/keyframe.png",
+        "clip": "the-old-man-speaks/media/clip.mp4"
+      }
+    },
+    {
+      "id": "oldMan-voice",
+      "note": "The lamplighter: narration in es.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Te mira las manos. «Hollín de farolero. Tú encendías estas lámparas.» Cierra la puerta despacio.",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-old-man-speaks/media/narration.mp3"
+      }
+    },
+    {
+      "id": "oldMan-talk-1",
+      "note": "The lamplighter: The old man says \"Lamplighter's soot. You lit every lamp in this town, and you locked the dark under it.\" (DRAFT line: J to approve). video.talk is experimental.",
+      "inputs": [
+        "story/characters/old-man.png",
+        "the-old-man-speaks/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (an old man with swept-back grey hair, round wire glasses and a dark wool coat) facing the camera, mouth closed, in the setting of image 2: an old man with grey hair and round glasses holds a door half open in the fog, studying the hero's soot-black hands. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Lamplighter's soot. You lit every lamp in this town, and you locked the dark under it.",
+            "voice": "JBFqnCBsd6RMkjVDRZzb",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "an old man with swept-back grey hair, round wire glasses and a dark wool coat speaks to the camera, natural head movement, the old man looks from the hands to the face, then slowly shuts the door",
+            "width": 480,
+            "height": 832,
+            "frames": 185,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "the-old-man-speaks/media/portrait-1.png",
+        "line-1": "the-old-man-speaks/media/line-1.mp3",
+        "talk-1": "the-old-man-speaks/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "lightHunger-shot",
+      "note": "The lamps: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, the hero stands in a foggy square as every window and lamp goes dark one by one; a tall shadow waits at the edge of the light, a rat sits near the boots. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow pan across the darkening windows, the last candle gutters. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, the hero stands in a foggy square as every window and lamp goes dark one by one; a tall shadow waits at the edge of the light, a rat sits near the boots); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-lamps-go-out/media/keyframe.png",
+        "clip": "the-lamps-go-out/media/clip.mp4"
+      }
+    },
+    {
+      "id": "lightHunger-voice",
+      "note": "The lamps: narration in fr.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Les fenêtres s'éteignent une à une. L'ombre attend ta réponse. Que fais-tu des lampes ?",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-lamps-go-out/media/narration.mp3"
+      }
+    },
+    {
+      "id": "threadPull-shot",
+      "note": "The threads: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: the hero's shadow on the cobbles stitches itself to a row of lamppost shadows with black threads; the tall shadow waits behind. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the threads pull taut, the lamps flicker. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (the hero's shadow on the cobbles stitches itself to a row of lamppost shadows with black threads; the tall shadow waits behind); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-threads-pull/media/keyframe.png",
+        "clip": "the-threads-pull/media/clip.mp4"
+      }
+    },
+    {
+      "id": "threadPull-voice",
+      "note": "The threads: narration in pt.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Fios negros puxam as sombras dos postes até os teus pés. A sombra espera. O que fazes com a cidade?",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-threads-pull/media/narration.mp3"
+      }
+    },
+    {
+      "id": "refuseShadow-shot",
+      "note": "Refuse the shadow: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: first-person, a lit match held high in a foggy square; windows and lamps relight one by one as a tall black shadow shrinks back into the cobbles. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the flame steadies, light spreads across the windows. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (first-person, a lit match held high in a foggy square; windows and lamps relight one by one as a tall black shadow shrinks back into the cobbles); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "refuse-the-shadow/media/keyframe.png",
+        "clip": "refuse-the-shadow/media/clip.mp4"
+      }
+    },
+    {
+      "id": "refuseShadow-voice",
+      "note": "Refuse the shadow: narration in ja.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "きみはマッチを高く掲げる。影は炎の前で縮み、街の灯が一つずつ戻る。 ",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "refuse-the-shadow/media/narration.mp3"
+      }
+    },
+    {
+      "id": "ratEnding-shot",
+      "note": "The rat's light: keyframe and clip.",
+      "inputs": [
+        "story/characters/rat.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a small brown rat drags a burning candle stub across wet cobbles toward the camera in a dark foggy square. image 1 is the reference sheet for the rat (a brown sewer rat with glossy black eyes, pink ears and long whiskers); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the rat hauls the candle, its flame lights the whiskers and the black shadow pulls back. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a small brown rat drags a burning candle stub across wet cobbles toward the camera in a dark foggy square); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-rats-light/media/keyframe.png",
+        "clip": "the-rats-light/media/clip.mp4"
+      }
+    },
+    {
+      "id": "ratEnding-voice",
+      "note": "The rat's light: narration in es.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Silbas. Un correteo, y la rata arrastra hasta ti un cabo de vela encendido. ",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-rats-light/media/narration.mp3"
+      }
+    },
+    {
+      "id": "lamplighterEnding-shot",
+      "note": "The lamplighter: keyframe and clip.",
+      "inputs": [
+        "story/characters/hero.png",
+        "story/characters/shadow.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a foggy old square at dusk; one by one the gas lamps glow on, a tall black shadow sinks into the cobbles. image 1 is the reference sheet for the hero (a young person with messy dark hair, dirt on the face, a worn olive canvas jacket over a grey hoodie, dark jeans, scuffed leather boots, grimy hands); image 2 is the reference sheet for the shadow (a towering, thin, smoke-black humanoid shadow with long clawed fingers); keep their faces, bodies and clothes exactly. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "slow push in as the lamps catch. Slow, tense handheld camera. Cinematic live-action video still, gritty, low light, handheld feel.",
+            "negative": "text, watermark, cartoon, subtitles",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a foggy old square at dusk; one by one the gas lamps glow on, a tall black shadow sinks into the cobbles); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "the-lamplighter/media/keyframe.png",
+        "clip": "the-lamplighter/media/clip.mp4"
+      }
+    },
+    {
+      "id": "lamplighterEnding-voice",
+      "note": "The lamplighter: narration in de.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Du sagst, wer du warst. Die Laternen am Platz glimmen auf, und der Schatten sinkt unter das Pflaster. ",
+            "voice": "nPczCjzI2devNBz1zQrb",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "the-lamplighter/media/narration.mp3"
       }
     },
     {

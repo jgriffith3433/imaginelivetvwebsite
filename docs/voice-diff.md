@@ -4,11 +4,12 @@ Base: `6c0d6ef`. A node is a scene; it counts as changed when its title, text, q
 
 ## final-spark
 
-- Scenes: 23 (before: 23); removed: 0; added: 0
-- Changed nodes: 19
+- Scenes: 34 (before: 23); removed: 0; added: 11
+- Changed nodes: 22
   - `start`
   - `deadEnd`
   - `direction`
+  - `sludge`
   - `sewerWater`
   - `getOutWater`
   - `disease`
@@ -24,12 +25,18 @@ Base: `6c0d6ef`. A node is a scene; it counts as changed when its title, text, q
   - `insideTruck`
   - `walkAway`
   - `shadowDance`
+  - `consumeLight`
+  - `shadowStitch`
   - `destroyTown`
 
 ## water-road
 
 - Scenes: 20 (before: 20); removed: 0; added: 0
-- Changed nodes: 0
+- Changed nodes: 4
+  - `sunstroke`
+  - `rockslide`
+  - `highGround`
+  - `gunfight`
 
 ## night-shift
 

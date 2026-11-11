@@ -13,6 +13,9 @@
     revolver:
       // A Colt Single Action Army from the side: barrel and front sight, ejector rod, cylinder, hammer, grip, trigger guard.
       '<svg viewBox="0 0 48 28" aria-hidden="true"><g fill="currentColor"><path d="M20 6H45V4.5h1.5V10H20z"/><path d="M22 10h15v2H22z"/><path d="M12 5h9v10h-9z"/><path d="M12 6L9 2l2-.5L14 5z"/><path d="M12 13c-3 4-6 8-6.5 13l6 1c.5-5 2.5-9 5-12z" fill="#8a5a33"/></g><path d="M14 7.5h5v1h-5zM14 10.5h5v1h-5z" fill="#17140f"/><path d="M15 15c0 5 5 5 5 0M17.2 15l-.6 3" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>',
+    match:
+      // A wooden match: the stick and its red head.
+      '<svg viewBox="0 0 12 28" aria-hidden="true"><rect x="5" y="7" width="2" height="20" rx="1" fill="#c9a36b"/><ellipse cx="6" cy="6" rx="3.2" ry="4.6" fill="#c8402a"/></svg>',
     rounds:
       '<svg viewBox="0 0 12 28" aria-hidden="true"><rect x="2" y="9" width="8" height="17" rx="1" fill="currentColor"/><path d="M2 10c0-5 2-8 4-9 2 1 4 4 4 9z" fill="#b8874a"/><rect x="1" y="24" width="10" height="3" rx="1" fill="currentColor"/></svg>',
     barrel:

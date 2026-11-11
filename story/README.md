@@ -361,6 +361,11 @@ remember a choice and call it back later. All of it is data in `story/<id>.json`
   A variant's `video` needs its own clip (made through Studio; a text or question variant is free). The branch pages
   (one static page per scene) always show the base scene. The Water Road: giving the flask or riding past the family
   changes the cottonwoods' question.
+- **A choice that is only sometimes on offer.** A choice may have `"when": { "bond": true }` (flags, as above) and/or
+  `"matches": { "min": 3, "max": 5 }` (the story's `matches` count, see "A story's inventory"): it is shown only while
+  they hold. A fork always keeps at least one choice with no condition (checked), a hidden choice keeps its place in the
+  data (`data-choice-index`), the 15 s timer picks among the choices on offer, and the branch pages and the Tree list
+  every choice. The Final Spark's last fork uses both (matches to spare vs 2 or fewer; the rat; who you were).
 - **Water and gated choices (J, 2026-11-11).** A choice may have a gate: `"needs": { "water": 3 }` (the item's count at
   that scene, worked out from the way you came, must be 3 or more) and/or `"requires": { "gaveFlask": true }` (flags,
   read like a variant's `when`). A choice whose `requires` don't hold is **not there**; a choice whose `needs` aren't met is
@@ -388,6 +393,10 @@ bar of items instead (`js/kit.js`; The Water Road's revolver, bullets and flask)
   a counted item `start` and `max`; `note` is its tooltip. `"empty": "dead"` says running out of it ends the run.
 - On a scene, `inventory` is what it does: `{ "water": -1 }` takes one, `{ "water": { "set": 4 } }` sets it.
 
+**`keepFlashlight`.** An inventory with `"keepFlashlight": true` (The Final Spark's one item, `matches`, icon `match`) does
+not replace the flashlight: the count is one number beside the torch in the flashlight bar (`js/spot.js`, `#match-count`,
+red at 2 or fewer; a branch page gets it as `<html data-matches>`), and the player sets it from the way you came.
+
 The counts at a scene come from the way you came: the start, then every scene since (the player's history), kept
 between 0 and `max`; back at the start they start over. So a saved place brings them back.
 A branch page shows the counts on the shortest way to it. `npm run story` checks every way through the story: no
@@ -402,20 +411,37 @@ saved place, `pages` every branch page.
 
 ## The story so far (canon, as played on the site)
 
-You wake in a sewer with no name and no past. A rat is watching you, and beside it is a matchbox. Every page is
-lit by a match, and the matches run out (the title is the last one).
+You wake in a sewer with no name and no past. A rat is watching you, and beside it is a matchbox of 20. Every page burns
+one match (a number beside the flashlight), and the matches run out. You were the town's lamplighter, who lit every lamp
+and locked the dark under it; the shadow wants the town because the town lit its lamps to keep it down.
 
-1. **The sewer.** Go back to a dead end smeared with sludge (touch it and you die), or go right into the water.
+1. **The sewer.** Go back to a dead end smeared with sludge (touch it and you die), then on to the passage, or go right
+   into the water. There is no loop: the passage only goes on, and the way back costs matches.
 2. **The water.** Climb out, or wade on and die of trench foot.
-3. **The gate.** A locked iron gate. Breaking it and picking the lock both fail; either way you search and find a
-   key on a skeleton chained to the wall.
-4. **The fog.** Beyond the gate is an old town drowned in white fog, and a house. Set its door on fire, or knock:
-   an old man answers and sends you away.
-5. **The truck.** A white van stands open in the street. Get in or walk away; either way you meet the shadow.
-6. **The shadow.** You dance with it and it wakes something in you: two powers, Consume Light and Shadow Stitch.
-   Either one ends with you destroying the town. That is the end of the story.
+3. **The ledge and the rat (the rat flag: `fed`, `followed`, `ignored`; `bond` is true for the first two).** The rat
+   climbs out after you. Feed it a crust (the rat eats), follow it into a side pipe (the pipe lets out behind the gate,
+   skipping the gate and the key), or step past it.
+4. **The gate.** A locked iron gate (the rat sniffs at the lock if fed, watches from the dark if ignored). Break it
+   (`gate: broke`): it bends, the skeleton gives up its key. Pick it (`gate: picked`, `knowsWho`): the skeleton's brass
+   tag reads LAMPLIGHTER, your name on the back, and the key hangs under it. The key scene reads differently for each.
+5. **The fog.** Beyond the gate is an old town drowned in white fog (the rat rides in your pocket, runs ahead, or is
+   gone), and a house. Burn its door (`door: burned`) or knock (`door: knocked`): the old man sends you away, and you may
+   ask about your hands (`knowsWho`): he reads the soot and says what you were. Or turn back to the street.
+6. **The truck.** A white van stands open in the street (the door burns behind you, or the old man has shut his). Climb
+   in or walk away (`truck`): either way you dance with the shadow, and the shadow's reason is told.
+7. **The shadow.** It wakes two powers, Consume Light and Shadow Stitch. Each goes to its own page (**the lamps go out**,
+   **the threads pull**) with the same last question and a rat variant each.
+8. **The last fork.** Destroy the town (always). With 3 or more matches: hold up a match. With 2 or fewer: no match to
+   hold up; whistle for the rat (fed or followed), put out the last match (ignored), and, if you learned who you were
+   (tag or old man), say who you were (at any count).
 
-Deaths send you back to the sewer ("try again in another life").
+Endings (four, each named): **THE DARK TOWN** (destroy the town), **THE FLAME HELD** (refuse the shadow with a match),
+**THE RAT'S LIGHT** (a rat you were kind to brings a candle when your matches are gone), **THE LAMPLIGHTER** (you say who
+you were, from the tag or the old man). Deaths send you back to the fork that killed you (Rewind to the choice) or to the
+sewer (Start over): the sludge and trench foot.
+
+The graph is acyclic, 34 pages, 20 matches; the longest way (the dead end detour, knocking, asking the old man) reaches the
+last fork with 2. `npm run story` checks no count goes below none.
 
 ## The rules of the piece
 
@@ -445,11 +471,13 @@ Deaths send you back to the sewer ("try again in another life").
 
 ## Waiting for J (not canon until approved)
 
-- **The old man's line** at the door (`knock`, marked `draft`): *"Do you know what time it is? Go away. Nobody comes
+- **The old man's second line** (`oldMan`, marked `draft`): *"Lamplighter's soot. You lit every lamp in this town, and you
+  locked the dark under it."* It plays the filmed knock clip until the shot is made (priced in the change's summary).
+- **The old man's first line** at the door (`knock`, marked `draft`): *"Do you know what time it is? Go away. Nobody comes
   out of that fog."* It is the only spoken line, and the only talking shot (`video.talk`).
 - **Does the rat talk?** A line at the start ("You're awake. Took you long enough.") would add a second talking
   shot. Not in the data.
-- **What happens after the town burns?** Not started.
+- **What happens after the town burns?** Not started (and now four ways to end it).
 
 ## How a page's media is made
 

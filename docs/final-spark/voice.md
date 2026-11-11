@@ -33,3 +33,25 @@ destroyed. The old man's spoken line and the talking rat stay in "Waiting for J"
 ## The writing pass (2026-11-06)
 19 of 23 nodes tightened, both language layers, no branch changed. Changed nodes are listed in `docs/voice-diff.md`.
 Narration is not recorded for this story (it plays J's filmed clips), so text edits cost nothing in audio.
+
+## The rewrite: a rat that remembers, matches that run down (2026-11-11)
+The story stopped being one corridor with one ending. The same voice rules hold; what changed is what the story keeps.
+- **The rat is the one you were kind to or not.** Three ways at the ledge (feed it, follow it, step past it) and the
+  fog and the last fork read differently for each. Say what the rat does, never what it feels: "The rat peeks out of
+  your pocket." / "Behind you, no sound of rat feet."
+- **The shadow has a reason, said once and plainly:** "The town lit its lamps to keep it down; now it wants them out."
+  It is never explained twice.
+- **Who you were is told by an object, not a speech:** a brass tag that says LAMPLIGHTER, soot on your hands. The old
+  man's one spoken line says it flatly: "Lamplighter's soot. You lit every lamp in this town, and you locked the dark under it."
+- **Matches are the clock and are never mentioned in the words.** The count lives in the inventory bar. At two or fewer
+  the story only changes what you are offered; it does not comment ("no light left to hold" is shown by the missing choice).
+- **New pages: two short lines.** The native line and its English are one or two short sentences, then one short
+  question. The last fork's choices carry no numerals (they come and go with what you have) and start with a verb:
+  "Hold up a match", "Whistle for the rat", "Say who you were", "Put out the last match", "Destroy the town".
+- **Endings are named, in the ending's own language and in English:** THE DARK TOWN, THE FLAME HELD, THE RAT'S LIGHT,
+  THE LAMPLIGHTER. One sentence or two of story, no moral.
+- **Each page keeps its own language** with the flashlight's English under it; the new pages use French, Russian,
+  Chinese, German, Korean, Spanish, Portuguese and Japanese, and a page's variants are in its own language too.
+
+Narration is still not recorded (the story plays the filmed clips). The old man's new line (`oldMan`, a draft like his
+first) and the new shots are designed in `story/final-spark.json` and priced in the change's summary.

@@ -26,7 +26,7 @@ const mustPlay = (st) => st.listed || MADE.includes(st.id);
 const TREE = {
   start: { choices: 2, to: ["deadEnd", "sewerWater"] },
   deadEnd: { choices: 2, to: ["direction", "sludge"] },
-  direction: { choices: 2, to: ["deadEnd", "sewerWater"] },
+  direction: { choices: 1, to: ["sewerWater"] },
   sludge: { state: "dead", to: ["start"] },
   sewerWater: { choices: 2 },
 };
@@ -315,7 +315,14 @@ function checkInventory(t, where, doc = document) {
   }
   const id = doc === document ? stories().current() : doc.documentElement.getAttribute("data-kit") || FIRST;
   const st = storyOf(id);
-  if (st && st.inventory) {
+  if (st && st.inventory && st.inventory.keepFlashlight) {
+    // The count sits in the flashlight's bar (js/spot.js): one number beside the torch, no other bar.
+    const box = doc.getElementById("match-count");
+    if (!shown(torchBar) || !shown(doc.getElementById("torch-slot"))) t.problem("bug", `${where}: ${id} is open but its flashlight isn't shown`);
+    else if (!shown(box) || !/^\d+$/.test((box.textContent || "").trim())) t.problem("bug", `${where}: ${id} is open but its match count isn't shown in the inventory bar`);
+    else if (shown(kitBar)) t.problem("bug", `${where}: ${id} shows another story's inventory`);
+    else t.event("inventory", `${where}: ${id} (flashlight, matches ${box.textContent.trim()})`);
+  } else if (st && st.inventory) {
     if (!shown(kitBar) || !kitBar.querySelector(".kit-item")) t.problem("bug", `${where}: ${id} is open but its inventory (${st.inventory.items.map((i) => i.name).join(", ")}) isn't shown`);
     else if (shown(torchBar) || shown(torch)) t.problem("bug", `${where}: ${id} shows The Final Spark's flashlight`);
     else t.event("inventory", `${where}: ${id} (${kitText(kitBar)})`);
@@ -351,6 +358,10 @@ function expectKit(st, chain) {
 function shownKit(bar) {
   const out = {};
   if (!bar) return out;
+  if (bar.id === "match-count") {
+    if (bar.dataset.count !== undefined && !bar.hidden) out.matches = Number(bar.dataset.count);
+    return out;
+  }
   bar.querySelectorAll(".kit-item[data-item]").forEach((el) => {
     const count = el.querySelector(".kit-count");
     if (!count) return;
@@ -366,7 +377,7 @@ const kitText = (bar) => Object.entries(shownKit(bar)).filter(([k]) => !k.includ
 function checkKit(t, st, chain, where, doc = document) {
   if (!st.inventory) return;
   const want = expectKit(st, chain);
-  const bar = doc.querySelector(".inventory.kit");
+  const bar = st.inventory.keepFlashlight ? doc.getElementById("match-count") : doc.querySelector(".inventory.kit");
   const got = shownKit(bar);
   if (doc === document && !shown(bar)) return t.problem("bug", `${where}: the inventory isn't shown`);
   const wrong = Object.entries(want).filter(([k, v]) => got[k] !== v || (`${k}:rounds` in got && got[`${k}:rounds`] !== v));
@@ -561,19 +572,54 @@ async function badgeAfterReload(t, st, want, where) {
   closeFrame();
 }
 
-/** The shortest way from the start (not through a death) to a scene that passes `test`: the scene ids after the start. */
-function wayTo(st, test) {
-  const from = { [st.start]: null };
-  const queue = [st.start];
-  while (queue.length) {
-    const id = queue.shift();
-    if (id !== st.start && test(st.scenes[id])) {
-      const way = [];
-      for (let at = id; at !== st.start; at = from[at]) way.unshift(at);
-      return way;
+/** The flags a way sets (a choice row's `set`, [4]) and the match count it leaves (the data's inventory, worked out here). */
+function sparkState(st, way) {
+  const flags = {};
+  for (let i = 0; i + 1 < way.length; i++) {
+    const row = st.scenes[way[i]].choices.find((c) => c[2] === way[i + 1]);
+    if (row && row[4]) Object.assign(flags, row[4]);
+  }
+  const item = st.inventory && st.inventory.items.find((i) => i.id === "matches");
+  let matches = null;
+  if (item) {
+    matches = item.start;
+    for (const id of way) {
+      if (id === st.start) matches = item.start;
+      const d = (st.scenes[id].inventory || {}).matches;
+      if (typeof d === "number") matches = Math.max(0, Math.min(item.max, matches + d));
     }
+  }
+  return { flags, matches };
+}
+
+/** The choice rows of a scene that are on offer after `way` (a row's `when` flags and `matches` {min,max}, [5] and [6]). */
+function offeredRows(st, id, way) {
+  const { flags, matches } = sparkState(st, way);
+  return st.scenes[id].choices.filter((c) => {
+    if (c[5] && !Object.entries(c[5]).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v)) return false;
+    if (c[6] && matches != null && ((c[6].min != null && matches < c[6].min) || (c[6].max != null && matches > c[6].max))) return false;
+    return true;
+  });
+}
+
+/** The shortest way from the start (not through a death) to a scene that passes `test`: the scene ids after the start.
+    A story with conditional choices is walked by state (scene, flags, matches), so the way only uses choices that are offered. */
+function wayTo(st, test) {
+  const conditional = Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6]));
+  const key = (way) => (conditional ? `${way[way.length - 1]} ${JSON.stringify(sparkState(st, way))}` : way[way.length - 1]);
+  const seen = new Set([key([st.start])]);
+  const queue = [[st.start]];
+  while (queue.length) {
+    const way = queue.shift();
+    const id = way[way.length - 1];
+    if (id !== st.start && test(st.scenes[id])) return way.slice(1);
     if (st.scenes[id].dead) continue;
-    for (const c of st.scenes[id].choices) if (!(c[2] in from) && st.scenes[c[2]]) (from[c[2]] = id), queue.push(c[2]);
+    for (const c of conditional ? offeredRows(st, id, way) : st.scenes[id].choices) {
+      if (!st.scenes[c[2]]) continue;
+      const next = [...way, c[2]];
+      const k = key(next);
+      if (!seen.has(k)) seen.add(k), queue.push(next);
+    }
   }
   return null;
 }
@@ -583,7 +629,8 @@ async function playWay(t, st, way) {
   for (const next of way) {
     const at = st.scenes[sceneId()];
     const i = at.choices.findIndex((c) => c[2] === next);
-    const button = choiceButtons()[i];
+    // A conditional fork shows only the choices on offer: each button keeps its place in the data (data-choice-index).
+    const button = choiceButtons().find((b) => Number(b.dataset.choiceIndex) === i);
     if (i < 0 || !button) throw new Error(`${st.id}: no choice from ${sceneId()} to ${next}`);
     button.click();
     await sleep(150);
@@ -1108,6 +1155,23 @@ async function walkStory(t, st, sums, total) {
   }
   if (st.inventory) checkInventory(t, st.title);
   await visit(st.start, [st.start], [st.start]);
+  // A fork with conditional choices (flags, a match range) hides some in some states. A scene no press above reached is walked
+  // to by state (the shortest way that only uses choices on offer), by real presses, and visited from there.
+  if (Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6]))) {
+    for (let round = 0; round < all.length; round++) {
+      const todo = all
+        .filter((id) => !seen.has(id))
+        .map((id) => ({ id, way: wayTo(st, (sc) => sc === st.scenes[id]) }))
+        .filter((x) => x.way)
+        .sort((x, y) => x.way.length - y.way.length)[0];
+      if (!todo) break;
+      const chain = [st.start, ...todo.way];
+      await toStart(t, { quiet: true });
+      await playWay(t, st, todo.way);
+      t.event("state-way", `${at(todo.id)}: by ${chain.join(" > ")} (flags ${JSON.stringify(sparkState(st, chain).flags)}, matches ${sparkState(st, chain).matches})`);
+      await visit(todo.id, [...chain.slice(0, -1), todo.id], chain);
+    }
+  }
   stopVideos();
   if (noVideo) t.problem("warning", `${st.title}: ${noVideo} scene(s) have no video yet (a draft, not on the landing page)`);
   // Every scene found: the whole tree, nothing locked, 100%.
@@ -1348,7 +1412,7 @@ async function storiesRun(options, t) {
       const where = sceneId();
       const chain = spark().path();
       checkKit(t, st, chain, `${st.id}: ${where}`);
-      const before = kitText(document.querySelector(".inventory.kit"));
+      const before = kitText(st.inventory.keepFlashlight ? document.getElementById("match-count") : document.querySelector(".inventory.kit"));
       await toLanding(t);
       checkInventory(t, "landing page, after a draft");
       await openStory(t, st.id);
@@ -7804,6 +7868,216 @@ function rewindCheckButtons(t, doc, where, { phone = false } = {}) {
   return btns;
 }
 
+/* ---------------- spark-depth: the rat, the match count, forks that diverge, four endings (story doc "The Final Spark") ---------------- */
+
+/** The Final Spark after its rewrite (J's player goal: a reason to go on). Every press is a real tap (touch on a phone);
+    the only setup shortcut is a seeded run (event seeded-run): the run the player would have saved for a viewer who came
+    by a named way, opened by its link, so the long way isn't replayed for each leg. Checks: the match count in the
+    inventory bar drops by one per page; the rat flag (fed, followed, ignored) changes a later page's words; breaking the
+    gate and picking the lock open different pages; at 2 or fewer matches the options of the last fork change; and
+    four differently named endings. At 390x844 the count sits beside the choices, which fit without scrolling. */
+async function sparkDepthRun(options, t) {
+  const st = story(FIRST);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const phone = innerWidth <= 600;
+  let way = [];
+  let lastCount = null;
+  const countShown = () => {
+    const box = $("match-count");
+    return box && !box.hidden && box.dataset.count !== undefined ? Number(box.dataset.count) : null;
+  };
+  const want = (w) => sparkState(st, w).matches;
+  const wordsOf = (el) => ((el && el.textContent) || "").trim().split(/\s+/).filter(Boolean).length;
+
+  /** The match count shown is the data's for the way so far, and (a press) one fewer than before. */
+  const checkCount = (where, fresh = false) => {
+    const n = countShown();
+    const exp = want(way);
+    if (n === null) t.problem("bug", `${where}: no match count in the inventory bar`);
+    else if (n !== exp) t.problem("bug", `${where}: the bar shows ${n} matches, the data gives ${exp} (via ${way.join(" > ")})`);
+    else if (!fresh && lastCount !== null && lastCount - n !== 1) t.problem("bug", `${where}: the count went ${lastCount} -> ${n}, one page should burn one match`);
+    else t.add("matchChecks");
+    lastCount = n;
+    t.event("matches", `${where}: ${n}`);
+  };
+
+  /** On a phone: the count is on screen beside the choices, they all fit without scrolling and are 44px tall at least. */
+  const checkPhoneFit = (where) => {
+    if (!phone) return;
+    const box = $("match-count");
+    const bar = document.querySelector(".inventory:not(.kit)");
+    const rect = box.getBoundingClientRect();
+    if (!shown(box) || rect.width < 1 || rect.left < 0 || rect.right > innerWidth + 1 || rect.bottom > innerHeight + 1) t.problem("bug", `${where}: the match count is not fully on screen at ${innerWidth}x${innerHeight}`);
+    const target = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    if (target && !box.contains(target) && !bar.contains(target)) t.problem("bug", `${where}: something covers the match count (${target.id || target.tagName.toLowerCase()})`);
+    for (const b of choiceButtons().filter((x) => x.getClientRects().length)) {
+      const r = b.getBoundingClientRect();
+      if (r.height < 44) t.problem("bug", `${where}: choice "${enText(b)}" is ${Math.round(r.height)}px tall (44 at least)`);
+      if (r.top < 0 || r.bottom > innerHeight - Math.min(bar.getBoundingClientRect().height, 80) + 4) t.problem("bug", `${where}: choice "${enText(b)}" is not reachable without scrolling (bottom ${Math.round(r.bottom)} of ${innerHeight})`);
+      const o = !(r.right < rect.left || r.left > rect.right || r.bottom < rect.top || r.top > rect.bottom);
+      if (o) t.problem("bug", `${where}: the match count overlaps choice "${enText(b)}"`);
+    }
+    t.event("phone-fit", `${where}: count ${Math.round(rect.width)}x${Math.round(rect.height)} at ${Math.round(rect.left)},${Math.round(rect.top)}`);
+  };
+
+  /** New pages keep their story to a few short lines: words of the English layer. */
+  const checkWords = (where) => {
+    const n = wordsOf($("spark-story").querySelector(".spot-en") || $("spark-story"));
+    if (n > 32) t.problem("warning", `${where}: ${n} words of story (two short lines is about 25)`);
+    t.event("story-words", `${where}: ${n}`);
+  };
+
+  const label = (b) => enText(b);
+  const offered = () => choiceButtons().filter((b) => b.getClientRects().length).map(label);
+
+  /** A viewer's press on the choice that leads to `next` (a one-choice page carries on by itself when its clip ends). */
+  const press = async (next) => {
+    const from = sceneId();
+    const i = st.scenes[from].choices.findIndex((c) => c[2] === next);
+    const b = choiceButtons().find((x) => Number(x.dataset.choiceIndex) === i);
+    if (i < 0 || !b) throw new Error(`${FIRST}: no choice from ${from} to ${next} on offer (${offered().join(" | ")})`);
+    if (!b.getClientRects().length) {
+      const v = document.querySelector("#spark-video video:not(.spark-leave)");
+      await waitFor(() => v && v.duration > 0.5 && isFinite(v.duration), 6000);
+      if (v && v.duration > 0.5 && isFinite(v.duration)) v.currentTime = Math.max(0, v.duration - 0.12);
+      if (!(await waitFor(() => sceneId() !== from, 5000))) b.click();
+      t.event("auto-continue", `${from} → ${next} by itself`);
+    } else {
+      b.scrollIntoView({ block: "center", behavior: "instant" });
+      await tapAt(t, b, `"${label(b)}"`);
+    }
+    if (!(await waitFor(() => sceneId() === next, 4000))) throw new Error(`${FIRST}: the press on ${from} → ${next} opened ${sceneId()}`);
+    way.push(next);
+    await sleep(350);
+    t.scene(`${FIRST}: ${next}`);
+    checkCount(`${FIRST}/${next}`);
+    checkWords(`${FIRST}/${next}`);
+    checkPhoneFit(`${FIRST}/${next}`);
+  };
+  const pressAll = async (...nexts) => { for (const n of nexts) await press(n); };
+
+  /** Setup shortcut (event seeded-run): a saved run at the end of `w`, opened by the story's link. */
+  const seed = async (w, why) => {
+    clearProgress();
+    if (!landingShown()) await toLanding(t);
+    document.cookie = `${st.cookie}=${encodeURIComponent(JSON.stringify({ scene: w[w.length - 1], history: w.slice(0, -1) }))}; Path=/`;
+    t.event("seeded-run", `${FIRST}: at ${w[w.length - 1]} (${w.length - 1} choices in) for ${why}`);
+    openByLink(t, FIRST);
+    await sleep(300);
+    if (soundOf().prompt()) await passPrompt(t, document, FIRST);
+    if (!(await waitFor(() => sceneId() === w[w.length - 1], 6000))) throw new Error(`${FIRST}: the seeded run didn't open ${w[w.length - 1]}`);
+    way = w.slice();
+    await sleep(300);
+    lastCount = null;
+    checkCount(`${FIRST}/${w[w.length - 1]} (seeded)`, true);
+  };
+
+  const storyText = () => (($("spark-story").querySelector(".spot-en") || $("spark-story")).textContent || "").trim();
+  const endingName = () => enText($("spark-ending"));
+  const endings = new Map();
+  const reachedEnding = (id) => {
+    const name = endingName();
+    if ($("spark").dataset.state !== "soon" || !name) t.problem("bug", `${FIRST}/${id}: expected an ending, the player doesn't show one`);
+    endings.set(id, name);
+    t.event("ending", `${FIRST}/${id}: ${name}`);
+  };
+
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+
+  // 1. A viewer opens the story from its card: 20 matches, one gone per page, and a fork about the rat.
+  t.scene(`${FIRST}: a new run`);
+  await openStory(t, FIRST);
+  await toStart(t, { quiet: true });
+  way = [st.start];
+  lastCount = null;
+  await sleep(400);
+  checkCount(`${FIRST}/${st.start}`, true);
+  checkPhoneFit(`${FIRST}/${st.start}`);
+  await pressAll("sewerWater", "getOutWater");
+  const fork = offered();
+  if (fork.length !== 3) t.problem("bug", `${FIRST}/getOutWater: the rat fork offers ${fork.length} choices (${fork.join(" | ")}), three wanted: feed it, follow it, step past it`);
+  t.event("rat-fork", fork.join(" | "));
+  t.progress(0.1);
+
+  // 2. The rat remembers: fed (real presses to the fog), then followed and ignored. Each leg's fog page reads differently.
+  const fogs = {};
+  await pressAll("ratFed", "gate", "pickLock", "readTag", "useKey", "fog");
+  fogs.fed = storyText();
+  t.progress(0.25);
+  await seed(["start", "sewerWater", "getOutWater"], "the rat fork (followed)");
+  await pressAll("ratFollowed", "ratCrawl", "fog");
+  fogs.followed = storyText();
+  if (spark().flags().rat !== "followed") t.problem("bug", `${FIRST}: the rat flag is "${spark().flags().rat}", not "followed"`);
+  t.progress(0.35);
+  await seed(["start", "sewerWater", "getOutWater"], "the rat fork (ignored)");
+  await press("ratIgnored");
+  await press("gate");
+  const gateIgnored = storyText();
+  // 3. The gate: breaking it and picking the lock open different pages.
+  await pressAll("breakGate", "gotKey", "useKey");
+  const keyBroke = storyText();
+  await press("fog");
+  fogs.ignored = storyText();
+  t.progress(0.45);
+  const distinct = new Set(Object.values(fogs));
+  t.event("rat-variants", `fog says: fed "${fogs.fed}" | followed "${fogs.followed}" | ignored "${fogs.ignored}"`);
+  if (distinct.size < 3) t.problem("bug", `${FIRST}/fog: the fog page reads the same for ${3 - distinct.size + 1} of fed, followed and ignored the rat (a later scene must differ for each)`);
+  await seed(["start", "sewerWater", "getOutWater", "ratIgnored", "gate"], "the gate fork (pick the lock)");
+  await pressAll("pickLock", "readTag");
+  const tagText = storyText();
+  await press("useKey");
+  const keyPicked = storyText();
+  const gotKeyText = ((st.scenes.gotKey.story || [])[1] || "").trim();
+  if (tagText === gotKeyText) t.problem("bug", `${FIRST}: picking the lock and breaking the gate show the same page`);
+  if (keyBroke === keyPicked) t.problem("bug", `${FIRST}/useKey: the key scene reads the same after breaking the gate and picking the lock`);
+  t.event("gate-fork", `break → breakGate, gotKey; pick → pickLock, readTag ("${tagText}"); useKey: broke "${keyBroke}" | picked "${keyPicked}"; gate with the rat ignored: "${gateIgnored}"`);
+  t.progress(0.55);
+
+  // 4. The low-match fork: the same last page offers other things at 2 or fewer matches.
+  const toPowers = (prefix) => [...prefix, "shadowDance", "explorePowers"];
+  const high = toPowers(["start", "sewerWater", "getOutWater", "ratFed", "gate", "pickLock", "readTag", "useKey", "fog", "fireDoor", "uponTruck", "walkAway"]);
+  const lowFed = toPowers(["start", "deadEnd", "direction", "sewerWater", "getOutWater", "ratFed", "gate", "pickLock", "readTag", "useKey", "fog", "knock", "oldMan", "uponTruck", "insideTruck"]);
+  const lowIgnored = toPowers(["start", "deadEnd", "direction", "sewerWater", "getOutWater", "ratIgnored", "gate", "breakGate", "gotKey", "useKey", "fog", "knock", "oldMan", "uponTruck", "insideTruck"]);
+  const forks = {};
+  await seed(high, "a fork with matches to spare");
+  await pressAll("consumeLight", "lightHunger");
+  forks.high = { matches: countShown(), options: offered() };
+  t.event("low-match-fork", `${countShown()} matches: ${forks.high.options.join(" | ")}`);
+  await sleep(600);
+  await press("refuseShadow");
+  reachedEnding("refuseShadow");
+  await seed(lowFed, "a fork with the matches nearly gone (rat fed)");
+  await pressAll("consumeLight", "lightHunger");
+  forks.low = { matches: countShown(), options: offered() };
+  t.event("low-match-fork", `${countShown()} matches: ${forks.low.options.join(" | ")}`);
+  await sleep(600);
+  await press("ratEnding");
+  reachedEnding("ratEnding");
+  t.progress(0.75);
+  await seed(lowIgnored, "a fork with the matches nearly gone (rat ignored, the old man's word)");
+  await pressAll("shadowStitch", "threadPull");
+  forks.lowIgnored = { matches: countShown(), options: offered() };
+  t.event("low-match-fork", `${countShown()} matches: ${forks.lowIgnored.options.join(" | ")}`);
+  await sleep(600);
+  await press("lamplighterEnding");
+  reachedEnding("lamplighterEnding");
+  await seed(lowIgnored, "the same fork, taking the dark");
+  await pressAll("consumeLight", "lightHunger");
+  await press("destroyTown");
+  reachedEnding("destroyTown");
+  if (forks.high.matches <= 2 || forks.low.matches > 2) t.problem("bug", `${FIRST}: the forks have ${forks.high.matches} and ${forks.low.matches} matches, wanted more than 2 and 2 or fewer`);
+  if (forks.high.options.join("|") === forks.low.options.join("|")) t.problem("bug", `${FIRST}: the last fork offers the same options at ${forks.high.matches} and at ${forks.low.matches} matches`);
+  if (forks.low.options.some((o) => /hold up a match|strike a match/i.test(o))) t.problem("bug", `${FIRST}: at ${forks.low.matches} matches the fork still offers a match to hold up`);
+  if (!forks.low.options.some((o) => /rat/i.test(o)) || forks.high.options.some((o) => /rat/i.test(o))) t.problem("bug", `${FIRST}: the rat should come only when the matches are gone (low: ${forks.low.options.join(" | ")}; high: ${forks.high.options.join(" | ")})`);
+  const names = new Set(endings.values());
+  t.metric("endingsReached", names.size);
+  t.event("endings", [...endings].map(([id, n]) => `${id} "${n}"`).join(", "));
+  if (names.size < 3) t.problem("bug", `${FIRST}: only ${names.size} differently named endings reached (3 wanted)`);
+  t.progress(1);
+}
+
 async function rewindRun(options, t) {
   const id = (options && options.story) || "water-road";
   const st = story(id);
@@ -8385,6 +8659,13 @@ installPlaytest({
       description: "In a 390x844 frame per video story: Tap to play, the first clip's start (metric firstClipMs.<story>) and the ambient bed that starts only after it (event bed, never before the clip), a bed on every page of the way to the nearest ending and never two at once (bedsAtOnce), the choices' appear sound, three timer ticks in the last 3 seconds, one tap sound per press on a choice, the ending's sting, the bed stopping on the story list; a missing sound is a problem. Then Sound off saved and the frame reloaded: zero audio events through a tap on a choice. Options: {\"story\":\"<id>\"}.",
     },
     {
+      id: "spark-depth",
+      title: "The Final Spark: a match count that runs down, a rat that remembers, forks that diverge, four named endings",
+      seconds: 240,
+      tags: ["full", "phone"],
+      description: "The Final Spark opened from its card (real taps; touch input on a phone): the inventory bar shows the flashlight and one number, the matches left (20 at the start), which drops by one on every new page (checked against the data at every page); at 390x844 the count is fully on screen beside the choices, nothing covers it, and every choice is at least 44px tall and reachable without scrolling; new pages keep their story to about two short lines. The rat fork (feed it, follow it, step past it) has three buttons; the fog page then reads differently for fed, followed and ignored (event rat-variants; the rat flag is in finalSpark.flags()). Breaking the gate and picking the lock open different pages (breakGate then gotKey, pickLock then readTag) and the key scene reads differently (event gate-fork). The last fork (the lamps go out or the threads pull) is reached twice from seeded runs (setup shortcut, event seeded-run): with matches to spare it offers Hold up a match; at 2 or fewer matches that choice is gone and, depending on the rat and on whether you learned who you were, Whistle for the rat, Say who you were or Put out the last match appear (event low-match-fork). Four endings are reached with real presses and named differently: THE DARK TOWN, THE FLAME HELD, THE RAT'S LIGHT, THE LAMPLIGHTER (metric endingsReached). Events matches, rat-fork, rat-variants, gate-fork, low-match-fork, ending, phone-fit, story-words."
+    },
+    {
       id: "analytics",
       title: "Hawkes Analytics: the events going out on a way through The Final Spark (screen, video, choice, back, Try again, the ending), the thumbs question after going back twice and the stars question at the ending",
       seconds: 180,
@@ -8421,6 +8702,7 @@ installPlaytest({
       else if (id === "progress") await progressRun(options, t);
       else if (id === "decisive-choice") await decisiveRun(options, t);
       else if (id === "rewind") await rewindRun(options, t);
+      else if (id === "spark-depth") await sparkDepthRun(options, t);
       else if (id === "water-gates") await waterGatesRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);

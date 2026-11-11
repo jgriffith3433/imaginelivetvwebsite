@@ -34,8 +34,8 @@
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
-      choices: (spec.choices || []).map(function (choice) {
-        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3], set: choice[4] || null, gate: choice[5] || null };
+      choices: (spec.choices || []).map(function (choice, index) {
+        return { say: choice[0], en: choice[1], next: choice[2], default: !!choice[3], set: choice[4] || null, when: choice[5] || null, matches: choice[6] || null, gate: choice[7] || null, index: index };
       }),
       // Alternate story text, question or clip chosen by flags (story doc "Flags and variants").
       variants: (spec.variants || []).map(function (v) {
@@ -123,6 +123,7 @@
   // fork, the options that ended in a death and were rewound from (marked "Tried" when the fork comes back).
   let flags = {};
   let tried = {};
+  let shown = null; // the scene as it is on screen (variant and offered choices), set by show()
   let rewindFlag = false; // set by a Rewind, read by the show() that follows it
 
   function choiceTo(story, fromId, toId) {
@@ -140,22 +141,48 @@
     return out;
   }
 
-  /** A scene as it plays with these flags: the first variant whose `when` holds replaces the base's text and clip. */
-  function sceneWith(base, flagMap) {
-    const vs = base && base.variants;
-    if (!vs || !vs.length) return base;
-    const hit = vs.filter(function (v) {
-      return Object.keys(v.when).every(function (k) {
-        const have = flagMap[k] === undefined ? false : flagMap[k];
-        return have === v.when[k];
-      });
-    })[0];
-    if (!hit) return base;
-    const out = Object.assign({}, base);
-    if (hit.story) { out.story = hit.story[0]; out.storyEn = hit.story[1]; }
-    if (hit.question) { out.question = hit.question[0]; out.questionEn = hit.question[1]; }
-    if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = 0; }
+  /** Whether a conditional choice is on offer: its `when` flags hold and the match count is inside `matches` {min,max}. */
+  function offered(choice, flagMap, count) {
+    if (choice.when && !holds(choice.when, flagMap)) return false;
+    if (choice.matches && typeof count === "number") {
+      if (typeof choice.matches.min === "number" && count < choice.matches.min) return false;
+      if (typeof choice.matches.max === "number" && count > choice.matches.max) return false;
+    }
+    return true;
+  }
+
+  function holds(when, flagMap) {
+    return Object.keys(when).every(function (k) {
+      const have = flagMap[k] === undefined ? false : flagMap[k];
+      return have === when[k];
+    });
+  }
+
+  /** A scene as it plays with these flags (and match count): the first variant whose `when` holds replaces the base's
+      text and clip, and choices with a `when` or `matches` that doesn't hold are left out (each keeps its data `index`). */
+  function sceneWith(base, flagMap, count) {
+    if (!base) return base;
+    let out = base;
+    const vs = base.variants;
+    const hit = vs && vs.length ? vs.filter(function (v) { return holds(v.when, flagMap); })[0] : null;
+    if (hit) {
+      out = Object.assign({}, base);
+      if (hit.story) { out.story = hit.story[0]; out.storyEn = hit.story[1]; }
+      if (hit.question) { out.question = hit.question[0]; out.questionEn = hit.question[1]; }
+      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = 0; }
+    }
+    if (base.choices.some(function (c) { return c.when || c.matches; })) {
+      if (out === base) out = Object.assign({}, base);
+      out.choices = base.choices.filter(function (c) { return offered(c, flagMap, count); });
+    }
     return out;
+  }
+
+  /** The match count at the end of a way (null when the story counts none). */
+  function matchesOfWay(way) {
+    if (!STORY || !STORY.inventory || !window.iltvKit) return null;
+    const c = window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, way);
+    return typeof c.matches === "number" ? c.matches : null;
   }
   let fromPlayer = false;
   // The choices on screen at the open scene (a gated choice that doesn't hold is left out or shown locked): the timer,
@@ -642,7 +669,7 @@
     var want = {};
     var wantNext = function (id) {
       var next = SCENES[id];
-      if (next) want[id] = sceneWith(next, flagsOfWay(STORY, history.concat(currentScene, id)));
+      if (next) want[id] = sceneWith(next, flagsOfWay(STORY, history.concat(currentScene, id)), matchesOfWay(history.concat(currentScene, id)));
     };
     scene.choices.forEach(function (c) { wantNext(c.next); });
     // A death's Rewind goes back to its fork: have it ready.
@@ -1100,7 +1127,7 @@
       button.type = "button";
       button.className = "choice death-choice";
       button.dataset.death = kind;
-      button.dataset.choiceIndex = String(idx);
+      button.dataset.choiceIndex = String(choice.index != null ? choice.index : idx);
       button.style.setProperty("--choice-i", String(idx));
       fillSpot(button, say, en, kind === "rewind" ? "en" : scene.lang, scene.dir);
       button.addEventListener("click", function () {
@@ -1122,7 +1149,7 @@
 
   /** A page with one choice: when its clip ends the screen fades a moment and the story goes on by itself. */
   function autoContinue(sceneId) {
-    const sc = SCENES[sceneId];
+    const sc = shown && currentScene === sceneId ? shown : SCENES[sceneId];
     if (!sc || sc.choices.length !== 1 || currentScene !== sceneId || shownChoices.length !== 1) return;
     root.classList.add("is-auto-advance");
     tell("feature", { feature: "auto_continue", story: STORY.id, node: sceneId });
@@ -1214,7 +1241,7 @@
     if (!SCENES[sceneId]) return;
     // The flags are the way you came (a choice's `set`), and they pick the scene's variant.
     flags = flagsOfWay(STORY, history.concat(sceneId));
-    const scene = sceneWith(SCENES[sceneId], flags);
+    const scene = sceneWith(SCENES[sceneId], flags, matchesOfWay(history.concat(sceneId)));
     // A gated choice (story doc "Water and gated choices"): left out unless its flags hold, locked while its counts are short.
     const here = window.iltvKit && STORY.inventory ? window.iltvKit.counts(STORY.inventory, STORY.scenes, STORY.start, history.concat(sceneId)) : {};
     const lockedChoices = [];
@@ -1223,6 +1250,7 @@
       if (state === "locked") lockedChoices.push(c);
       return state === "open";
     });
+    shown = Object.assign({}, scene, { choices: shownChoices });
     // A scene with exactly one choice (and a clip) plays through by itself when the clip ends, with no button.
     const rewound = rewindFlag;
     rewindFlag = false;
@@ -1426,7 +1454,16 @@
   }
 
   function showKit() {
-    if (window.iltvKit) window.iltvKit.show(STORY && STORY.inventory ? STORY.inventory : null, kitCounts() || {});
+    const inv = STORY && STORY.inventory ? STORY.inventory : null;
+    // `keepFlashlight`: the story's count sits in the flashlight bar (js/spot.js) instead of replacing it.
+    if (inv && inv.keepFlashlight) {
+      const n = kitCounts();
+      if (window.iltvMatches) window.iltvMatches.set(n && typeof n.matches === "number" ? n.matches : null);
+      if (window.iltvKit) window.iltvKit.show(null, {});
+      return;
+    }
+    if (window.iltvMatches) window.iltvMatches.set(null);
+    if (window.iltvKit) window.iltvKit.show(inv, kitCounts() || {});
   }
 
   const treeRoot = document.getElementById("spark-tree");
@@ -2370,7 +2407,7 @@
     root.hidden = false;
     if (firstScreen) firstScreen.classList.remove("is-landing");
     document.documentElement.dataset.view = "story";
-    if (story.inventory) document.documentElement.dataset.kit = story.id;
+    if (story.inventory && !story.inventory.keepFlashlight) document.documentElement.dataset.kit = story.id;
     else delete document.documentElement.dataset.kit;
     setView("play");
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -2506,8 +2543,11 @@
     flags: function () { return Object.assign({}, flags); },
     tried: function () { return JSON.parse(JSON.stringify(tried)); },
     /** Every scene's choices as the player has them (next, default, set). */
-    choicesOf: function (id) { return SCENES[id] ? SCENES[id].choices.map(function (c) { return { next: c.next, default: c.default, set: c.set, gate: c.gate }; }) : []; },
-    /** The choices on screen now (next scenes, in button order) and the locked ones (shown greyed out, not pressable). */
+    choicesOf: function (id) { return SCENES[id] ? SCENES[id].choices.map(function (c) { return { next: c.next, default: c.default, set: c.set, when: c.when, matches: c.matches, gate: c.gate }; }) : []; },
+    /** The match count where you are (null when the story counts none). */
+    matches: function () { const n = kitCounts(); return n && typeof n.matches === "number" ? n.matches : null; },
+    /** The choices on offer now (next, data index), the ones on screen (next scenes, in button order) and the locked ones. */
+    offered: function () { return shownChoices.map(function (c) { return { next: c.next, index: c.index }; }); },
     shown: function () { return shownChoices.map(function (c) { return c.next; }); },
     locked: function () { return Array.prototype.map.call(choicesBox.querySelectorAll(".choice-locked"), function (el) { return el.dataset.next; }); },
     /** Ending nodes from the build, and which of them this browser has found. */

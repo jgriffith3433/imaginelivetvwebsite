@@ -5,7 +5,7 @@ that opens onto **three story worlds**, each its own universe with its own rules
 
 | World | Kind | Universe | Size now |
 | --- | --- | --- | --- |
-| **The Final Spark** | video choose-your-path | a sewer, a fog, a town; a villain origin, told in the dark | 23 pages, 1 ending, 7 deaths |
+| **The Final Spark** | video choose-your-path | a sewer, a fog, a town; a villain origin, told in the dark | 34 pages, 4 endings, 2 deaths |
 | **The Water Road** | video choose-your-path | the Old West; a hero origin, the mirror of the Spark | 20 pages, 2 endings, 2 deaths |
 | **Night Shift** | console story (a camera wall, voiced lines) | Hawkes Tower, Manhattan, one night in February | 256 scenes, 12 endings, 1,376 lines, 11 voices |
 
@@ -81,16 +81,25 @@ the list.
 
 - **A1. The sewer (start, dead end, passage, sludge, sewer water, trench foot).** Mood: dread from what is left out.
   Looks: black brick, a lit match, rust, a drain's reflection; the light is the clock. Sounds: drip, low cello, a metal hum.
-  Size: six pages, a loop of corridors. In: waking (page 1). Out: the passage to the gate. Deaths: the sludge, trench foot.
-- **A2. The gate (gate, break the gate, pick the lock, the key, unlock).** Mood: tense, ticking. Looks: an iron gate,
-  a skeleton chained to the wall with a key in its hand. Sound: pulsing strings, a lock's small noise. Size: five pages.
-- **A3. The fog and the house (fog, burn the door, knock).** Mood: eerie, music box. Looks: fog, one lit window, a door.
-  The old man in round wire glasses lives behind it. Size: three pages. Death: the door.
-- **A4. The street and the white truck (upon the truck, inside, walk away).** Mood: cold daylight after the dark.
-  Size: three pages.
-- **A5. The shadow (shadow dance, new powers, Consume Light, Shadow Stitch).** Mood: quiet, awful, intimate. The shadow
-  is "a towering, thin, smoke-black humanoid shadow with long clawed fingers". Size: four pages.
-- **A6. The town (Destroy town).** The one ending. Mood: flat. "THE END".
+  Size: six pages, no loop (the passage only goes on). In: waking (page 1). Out: the ledge. Deaths: the sludge, trench foot.
+- **A1b. The ledge and the rat (get out of the water, the rat eats, follow the rat, step past it, the rat's pipe).**
+  Mood: small and wet. The rat climbs out after you, shivering. Three things your hands can do about it: feed it a crust,
+  follow it into a side pipe that lets out behind the gate, or step past it. Size: five pages. The pipe skips the gate.
+- **A2. The gate (gate, break the gate, pick the lock, the key, the tag, unlock).** Mood: tense, ticking. Looks: an iron
+  gate, a skeleton chained to the wall with a key in its hand and a brass tag at its neck. Sound: pulsing strings, a lock's
+  small noise. Size: six pages. Breaking the gate bends it and gives only the key; picking the lock is quiet and the
+  skeleton's tag reads LAMPLIGHTER, with your name scratched on the back (who you were).
+- **A3. The fog and the house (fog, burn the door, knock, the old man speaks).** Mood: eerie, music box. Looks: fog,
+  one lit window, a door. The old man in round wire glasses lives behind it. If you knock and ask about your hands he
+  reads the soot: you lit these lamps (who you were, the second way to learn it). Size: four pages.
+- **A4. The street and the white truck (upon the truck, inside, walk away).** Mood: cold daylight after the dark. The
+  street remembers the door: it burns behind you, or the old man has shut it. Size: three pages.
+- **A5. The shadow (shadow dance, new powers, Consume Light, Shadow Stitch, the lamps go out, the threads pull).** Mood:
+  quiet, awful, intimate. The shadow is "a towering, thin, smoke-black humanoid shadow with long clawed fingers". It wants
+  the town because the town lit every lamp to keep it down in the sewers. Eating light and stitching shadows are two
+  different pages with the same last question. Size: six pages.
+- **A6. The town (four endings).** THE DARK TOWN (the lamps go out), THE FLAME HELD (you hold a match up and refuse),
+  THE RAT'S LIGHT (the rat brings a candle stub when your matches are gone), THE LAMPLIGHTER (you say who you were).
 
 ### The Water Road: the caravan and Dry Fork
 
@@ -166,9 +175,16 @@ One per area, something a player can see in the first second and steer by.
 - **The rat:** a brown sewer rat with glossy black eyes. First thing that sees you. Routine: watches from a pipe, leaves
   when the match dies, returns when the next one is lit. It reacts to the player by its distance. (Talks only if J
   approves "the talking rat", still in Waiting for J.)
-- **The old man:** swept-back grey hair, round wire glasses, a dark wool coat. Behind the door in the fog. Sends you away.
-- **The shadow:** smoke-black, long clawed fingers. It comes only where there is no light and it mirrors you.
-- **The skeleton:** chained to the wall at the gate, holds the key.
+- **The old man:** swept-back grey hair, round wire glasses, a dark wool coat. Behind the door in the fog. Sends you
+  away, then, if you ask about your hands, says what they are: lamplighter's hands. He knew you.
+- **The shadow:** smoke-black, long clawed fingers. It comes only where there is no light and it mirrors you. Its reason:
+  the town lit its lamps to keep it down; it wants them out.
+- **The skeleton:** chained to the wall at the gate, holds the key and wears a brass lamplighter's tag, your name on the back.
+- **Who you were (the player's want):** a lamplighter of the town, who lit every lamp and locked the dark under it. You
+  learn it at the gate (pick the lock and read the tag) or from the old man (knock, then ask about your hands), and it
+  opens the ending THE LAMPLIGHTER. Burn the door and break the gate and you never learn it.
+- **Matches (the clock):** a box of 20; every new page burns one (a number beside the flashlight in the inventory bar,
+  red at 2 or fewer). Shortcuts and burning save matches; wandering and talking spend them.
 
 ### The Water Road
 - **You:** a young trail hand of about twenty, boyish, sun-browned, flat-brimmed tan hat, red bandana, revolver unfired.
@@ -234,8 +250,13 @@ edge).
 - **A5 Shadow.** *Interactions:* dance, explore powers, Consume Light, Shadow Stitch. *Events:* every lit thing nearby
   dims as the player's power grows; shadows on the wall move when the player does not. *Ambient:* sub-bass, silence
   where sound was. *Changes:* the lights go out one by one.
-- **A6 Town.** *Interaction:* one: Destroy town. *Events:* every window goes dark, house by house. *Ambient:* the silence
-  is the sound.
+- **A6 Town.** *Interactions:* the last fork (the lamps go out, or the threads pull). With matches to spare: Destroy the
+  town, Hold up a match, and Say who you were if you learned it. At 2 or fewer: no match to hold; Whistle for the rat if
+  you fed or followed it, Put out the last match if you did not, and Say who you were. *Events:* every window goes dark,
+  house by house; or the lamps come back one by one. *Ambient:* the silence is the sound; at THE RAT'S LIGHT a small drag
+  of a candle stub.
+- **The rat across the story.** Fed: it rides in your pocket and gnaws a last crumb at the end. Followed: it runs ahead,
+  and its pipe skips the gate. Ignored: no rat feet in the fog, no rat at the end. It comes back only to someone it knows.
 
 ### The Water Road
 Gap budget: a clip runs ~10 s with narration and music under it; wheels, hooves, wind and the guitar keep sound moving;
@@ -335,7 +356,11 @@ here for an agent to build next, within the existing scene data.
    **(new)** His one line is spoken (pending "Waiting for J").
 8. **The white truck (exists).** *Street.* The player rides under or walks away; a diesel idles, a dog barks.
 9. **The first light goes out (exists).** *Shadow.* Consume Light: the nearest lamp dies with a soft pop.
-10. **The town goes dark (exists).** *Ending.* House by house the windows go black; THE END is the single allowed line.
+10. **The town goes dark (exists).** *Ending.* House by house the windows go black. The ending's name is the single allowed line.
+11. **The crust (new).** *Page the rat eats.* The rat gnaws what you set down and looks up; the camera stays at its height.
+12. **The tag (new).** *Gate.* A thumb turns the brass tag over: LAMPLIGHTER on the front, your name on the back.
+13. **The soot (new).** *The old man speaks.* He looks from your hands to your face and says what they are; he shuts the door slowly.
+14. **The last match (new).** *The last fork, at 2 or fewer matches.* The flame is too small to hold up; a rat's feet, a candle stub dragged over cobbles.
 
 ### The Water Road
 11. **Dawn on the water road (exists).** *Start.* Wagon wheels and harmonica; the dove leaves the lead wagon.
