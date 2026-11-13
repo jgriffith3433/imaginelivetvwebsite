@@ -89,7 +89,7 @@ function validate(st) {
   if (st.entry.status != null) problems.push(`${id}: status is gone from ${LISTING}: every card wears the player's own progress badge (Not started, Started, Completed), and a story is completed at a scene with an "ending"`);
   // Card JPGs are often absent in a sparse / fresh agent checkout (m_edb2ba8ccb87). Warn and fall back to the
   // first video's frame on the landing card so `npm run story` still builds; production clones keep the image.
-  if (st.entry.image && !fs.existsSync(path.join(ROOT, st.entry.image.replace(/^\//, '')))) {
+  if (st.entry.image && !known(st.entry.image.replace(/^\//, ''))) {
     warnings.push(`${id}: card image ${st.entry.image} missing (landing card uses the first video's frame until it is there)`);
     st.entry.image = null;
   }
@@ -334,7 +334,19 @@ const useOf = (st, s) => s.use ?? st.data.use ?? 'film';
 const media = (st, s, file) => `${st.base}${s.folder}/media/${file}`;
 const musicFile = (st, cue) => `${st.musicDir}/${cue}.mp3`;
 const cutFile = (st, s) => `${st.base}${s.folder}/scene.mp4`;
+// A sparse agent checkout leaves assets/ (images, posters, trailers) off the disk while git still tracks them; a build
+// that only looked at the disk blanked every card image and committed it. A file git tracks counts as there.
+let tracked = null;
+const inGit = (rel) => {
+  if (!tracked) {
+    try { tracked = new Set(execFileSync('git', ['ls-files', '-z'], { cwd: ROOT, maxBuffer: 1 << 28 }).toString().split('\0')); }
+    catch { tracked = new Set(); }
+  }
+  return tracked.has(rel.replace(/\\/g, '/'));
+};
 const exists = (rel) => fs.existsSync(path.join(ROOT, rel));
+/** Like exists, but a file git tracks counts: for pictures that are only linked, never read (clips are read, so they use exists). */
+const known = (rel) => exists(rel) || inGit(rel);
 const titleOf = (st) => st.data.title;
 
 /** The parts of a scene's generated cut, and whether they're all there. */
@@ -408,7 +420,7 @@ function endingsList(st) {
 /** A card's or the hero's picture: WebP when made, lazy below the fold (\`eager\`: the first picture of the page). */
 function pictureTag(src, alt, cls, eager) {
   const attrs = `alt="${esc(alt)}" width="540" height="960" decoding="async"${eager ? ' fetchpriority="high"' : ' loading="lazy"'}`;
-  const webp = src.endsWith('.jpg') && exists(webpPath(src).slice(1)) ? webpPath(src) : null;
+  const webp = src.endsWith('.jpg') && known(webpPath(src).slice(1)) ? webpPath(src) : null;
   const img = `<img src="${esc(src)}" ${attrs}>`;
   return webp ? `<picture><source type="image/webp" srcset="${esc(webp)}">${img}</picture>` : img;
 }
@@ -491,8 +503,10 @@ function card(st, i = 1) {
   const tr = trailerFiles(st.id);
   const picture = st.entry.image
     ? pictureTag(st.entry.image, st.entry.alt ?? titleOf(st), 'card', i === 0)
+    : tr && (tr.poster || tr.loopPoster)
+      ? `<img src="${esc(tr.poster || tr.loopPoster)}" alt="${esc(st.entry.alt ?? titleOf(st))}" width="540" height="960" decoding="async" loading="lazy">`
     : first
-      ? `<video src="${esc(first)}#t=0.5" ${exists(posterPath(first).slice(1)) ? `poster="${esc(posterPath(first))}" ` : ''}muted playsinline preload="none" aria-hidden="true"></video>`
+      ? `<video src="${esc(first)}#t=0.5" ${known(posterPath(first).slice(1)) ? `poster="${esc(posterPath(first))}" ` : ''}muted playsinline preload="none" aria-hidden="true"></video>`
       : `<span class="story-card-blank" aria-hidden="true"></span>`;
   const media = tr && tr.loop
     ? `<div class="card-media">
@@ -521,15 +535,15 @@ function card(st, i = 1) {
 /** Trailer / loop paths cut by tools/make-trailers.mjs (CPU only, from existing clips / CCTV stills). */
 function trailerFiles(id) {
   const base = `/assets/trailers/${id}`;
-  const has = exists(`assets/trailers/${id}/trailer.mp4`);
+  const has = known(`assets/trailers/${id}/trailer.mp4`);
   if (!has) return null;
   return {
     trailer: `${base}/trailer.mp4`,
-    trailerSm: exists(`assets/trailers/${id}/trailer-sm.mp4`) ? `${base}/trailer-sm.mp4` : `${base}/trailer.mp4`,
-    poster: exists(`assets/trailers/${id}/poster.webp`) ? `${base}/poster.webp` : null,
-    loop: exists(`assets/trailers/${id}/loop.mp4`) ? `${base}/loop.mp4` : null,
-    loopSm: exists(`assets/trailers/${id}/loop-sm.mp4`) ? `${base}/loop-sm.mp4` : null,
-    loopPoster: exists(`assets/trailers/${id}/loop-poster.webp`) ? `${base}/loop-poster.webp` : null,
+    trailerSm: known(`assets/trailers/${id}/trailer-sm.mp4`) ? `${base}/trailer-sm.mp4` : `${base}/trailer.mp4`,
+    poster: known(`assets/trailers/${id}/poster.webp`) ? `${base}/poster.webp` : null,
+    loop: known(`assets/trailers/${id}/loop.mp4`) ? `${base}/loop.mp4` : null,
+    loopSm: known(`assets/trailers/${id}/loop-sm.mp4`) ? `${base}/loop-sm.mp4` : null,
+    loopPoster: known(`assets/trailers/${id}/loop-poster.webp`) ? `${base}/loop-poster.webp` : null,
   };
 }
 
