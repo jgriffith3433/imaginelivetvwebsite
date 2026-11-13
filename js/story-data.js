@@ -6,7 +6,7 @@ window.ILTV_STORIES = {
    "title": "The Final Spark",
    "tagline": "Every decision has consequences.",
    "logline": "You wake in a sewer with no name and no past. A rat is watching. Every page costs a match.",
-   "image": null,
+   "image": "/assets/images/final-spark.jpg",
    "listed": true,
    "cookie": "finalSparkProgress",
    "tap": {
@@ -1486,7 +1486,7 @@ window.ILTV_STORIES = {
    "title": "The Water Road",
    "tagline": "Every drop has to go somewhere.",
    "logline": "Forty barrels of water, a dying town on the far side of the desert, and a revolver you've never fired. Every page costs water.",
-   "image": null,
+   "image": "/assets/images/water-road.jpg",
    "listed": true,
    "cookie": "waterRoadProgress",
    "tap": {
@@ -2746,7 +2746,7 @@ window.ILTV_STORIES = {
    "title": "Night Shift",
    "tagline": "Say what you see.",
    "logline": "Your first week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who knows every door, and a report with your name on it.",
-   "image": null,
+   "image": "/assets/images/night-shift.jpg",
    "listed": true,
    "cookie": "nightShiftProgress",
    "tap": {
