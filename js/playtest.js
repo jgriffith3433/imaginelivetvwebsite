@@ -9333,15 +9333,15 @@ async function trustFallRun(options, t) {
   // find you in the dark first), a run that stopped and listened reads the believed one, and the jammed words fit 390x844.
   // Seeded at the vault, real taps on "Beg ARGUS for help".
   {
-    const readGreen = async (label, pred) => {
-      const way = wayTo("core", pred);
+    const readGreen = async (label, pred, fork = "core") => {
+      const way = wayTo(fork, pred);
       if (!way) { t.problem("bug", `${id}: no way to the vault ${label}`); return ""; }
       t.scene(`${id}: the green line, ${label}`);
       const doc = await open(way, `the green line ${label}`);
-      const box = await ready(doc, "core");
-      const gi = st.scenes.core.choices.findIndex((c) => c[2] === "saved" && !(c[7] && c[7].requires));
+      const box = await ready(doc, fork);
+      const gi = st.scenes[fork].choices.findIndex((c) => c[2] === "saved" && !(c[7] && c[7].requires));
       const b = visible(box).find((x) => Number(x.dataset.choiceIndex) === gi);
-      if (!b) { t.problem("bug", `${id}/core: can't press Beg ARGUS for help ${label}`); closeViewFrame(); return ""; }
+      if (!b) { t.problem("bug", `${id}/${fork}: can't press the way to the green line ${label}`); closeViewFrame(); return ""; }
       b.scrollIntoView({ block: "center", behavior: "instant" });
       await tapAt(t, b, `green line ${label} (${W}x${H})`);
       if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === "saved", 5000))) { t.problem("bug", `${id}: the green line didn't open ${label}`); closeViewFrame(); return ""; }
@@ -9353,12 +9353,15 @@ async function trustFallRun(options, t) {
       closeViewFrame();
       return text;
     };
-    const jammed = await readGreen("after Jam it", (f) => f.jammed === true);
+    // The jam road (blackout > breaker > crawl > coreDark) ends at the same green line: Beg the dead air from the dark vault.
+    const jammed = await readGreen("after Jam it, Beg the dead air", (f) => f.jammed === true, "coreDark");
+    const lying = await readGreen("after Stop and listen, It's lying, Beg the dead air", (f) => f.jammed === true && f.listened === true, "coreDark");
     const heard = await readGreen("after Stop and listen, Believe it", (f) => f.believed === true && !f.jammed);
-    const plain = await readGreen("after Stop and listen, It's lying", (f) => !f.believed && !f.jammed);
+    const plain = await readGreen("after Stop and listen, no belief", (f) => !f.believed && !f.jammed);
     if (jammed && !/in the dark first/.test(jammed)) t.problem("bug", `${id}/saved: after Jam it the green line doesn't read the jammed variant ("${jammed.slice(0, 80)}")`);
     if (heard && !/I told you I'd be there/.test(heard)) t.problem("bug", `${id}/saved: after Stop and listen, Believe it the green line doesn't read the believed variant`);
     if (plain && /in the dark first|I told you I'd be there/.test(plain)) t.problem("bug", `${id}/saved: after Stop and listen, It's lying the green line reads a variant it shouldn't`);
+    if (lying && !/in the dark first/.test(lying)) t.problem("bug", `${id}/saved: after It's lying. Keep going the green line doesn't read the jammed variant ("${lying.slice(0, 80)}")`);
     if (jammed && (jammed === heard || jammed === plain)) t.problem("bug", `${id}/saved: reads the same after Jam it and after Stop and listen`);
     t.event("jammed-variant", `${id}/saved: jammed "${jammed.slice(0, 90)}" | believed "${heard.slice(0, 60)}" | plain "${plain.slice(0, 60)}"`);
     t.add("trustFallJammedVariants");
@@ -9449,16 +9452,16 @@ async function trustFallRun(options, t) {
     // The jam road reaches its own rescue page, at least 2 scenes later than the believing road reaches its.
     const rescueDepth = (sid, ok) => { const w = wayTo(sid, ok); return w ? w.length - 1 - w.indexOf("tower") : null; };
     const believing = Math.min(...["promise", "saved"].map((sid) => rescueDepth(sid, (f) => f.believed === true && !f.jammed)).filter((x) => x != null));
-    const jamming = rescueDepth("jamRescue", (f) => f.jammed === true);
-    if (jamming == null) t.problem("bug", `${id}: no way reaches the jam road's rescue page (jamRescue)`);
+    const jamming = rescueDepth("saved", (f) => f.jammed === true);
+    if (jamming == null) t.problem("bug", `${id}: no way reaches the green line after jamming ARGUS`);
     else if (jamming < believing + 2) t.problem("bug", `${id}: the jam road's rescue is ${jamming} scenes after the lobby, the believing road's ${believing}: it must take at least 2 more`);
-    else { t.event("jam-rescue", `${id}: the believing road is rescued ${believing} scenes after the lobby (promise or the green line); jamming ARGUS takes ${jamming} (${wayTo("jamRescue", (f) => f.jammed === true).slice(wayTo("jamRescue", (f) => f.jammed === true).indexOf("tower")).join(" > ")})`); t.metric("trustFallJamRescueExtraScenes", jamming - believing); }
+    else { t.event("jam-rescue", `${id}: the believing road is rescued ${believing} scenes after the lobby (promise or the green line); jamming ARGUS takes ${jamming} (${wayTo("saved", (f) => f.jammed === true).slice(wayTo("saved", (f) => f.jammed === true).indexOf("tower")).join(" > ")})`); t.metric("trustFallJamRescueExtraScenes", jamming - believing); }
     {
       const w = wayTo("coreDark");
       if (w) {
         r = await trustLook(w, "jammed, in the dark vault");
-        after = await tapTrust(r.doc, r.box, "coreDark", pickTo(r.doc, "coreDark", "jamRescue"), "jamRescue");
-        if (after) t.event("jam-rescue-played", `${id}: Beg the dead air by touch -> jamRescue, trust ${after.n}`);
+        after = await tapTrust(r.doc, r.box, "coreDark", pickTo(r.doc, "coreDark", "saved"), "saved");
+        if (after) { t.event("jam-rescue-played", `${id}: Beg the dead air by touch -> the green line (jammed variant), trust ${after.n}`); if (after.n !== 0) t.problem("bug", `${id}: trust reads ${after.n} after jamming and the jam road, not 0`); }
         closeViewFrame();
       }
     }
