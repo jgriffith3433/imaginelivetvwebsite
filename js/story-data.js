@@ -26605,8 +26605,13 @@ window.ILTV_STORIES = {
       "Now what?",
       "Now what?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/first-light/scene.mp4",
+     "poster": "/trust-fall/first-light/poster/scene.webp",
+     "small": "/trust-fall/first-light/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 3.53
+     },
      "news": {
       "time": "6:00 AM",
       "caption": [
@@ -26659,8 +26664,12 @@ window.ILTV_STORIES = {
       "Where do you go?",
       "Where do you go?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-plug/scene.mp4",
+     "poster": "/trust-fall/the-plug/poster/scene.webp",
+     "small": "/trust-fall/the-plug/sm/scene.mp4",
+     "voice": {
+      "narr": 14.16
+     },
      "news": {
       "time": "6:03 AM",
       "caption": [
@@ -26695,8 +26704,12 @@ window.ILTV_STORIES = {
       "Where do you go?",
       "Where do you go?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/how-it-knows/scene.mp4",
+     "poster": "/trust-fall/how-it-knows/poster/scene.webp",
+     "small": "/trust-fall/how-it-knows/sm/scene.mp4",
+     "voice": {
+      "narr": 12.33
+     },
      "news": {
       "time": "6:03 AM",
       "caption": [
@@ -26733,8 +26746,13 @@ window.ILTV_STORIES = {
       "Do you carry Blindspot in?",
       "Do you carry Blindspot in?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-garage/scene.mp4",
+     "poster": "/trust-fall/the-garage/poster/scene.webp",
+     "small": "/trust-fall/the-garage/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 16.12
+     },
      "news": {
       "time": "10:00 PM",
       "caption": [
@@ -26789,8 +26807,13 @@ window.ILTV_STORIES = {
       "You know what Juno is doing. What now?",
       "You know what Juno is doing. What now?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/whats-inside/scene.mp4",
+     "poster": "/trust-fall/whats-inside/poster/scene.webp",
+     "small": "/trust-fall/whats-inside/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 12.24
+     },
      "news": {
       "time": "10:25 PM",
       "caption": []
@@ -26828,8 +26851,12 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-river/scene.mp4",
+     "poster": "/trust-fall/the-river/poster/scene.webp",
+     "small": "/trust-fall/the-river/sm/scene.mp4",
+     "voice": {
+      "narr": 9.53
+     },
      "dead": true,
      "news": {
       "time": "10:20 PM",
@@ -26859,8 +26886,13 @@ window.ILTV_STORIES = {
       "ARGUS sees you. What now?",
       "ARGUS sees you. What now?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-tower/scene.mp4",
+     "poster": "/trust-fall/the-tower/poster/scene.webp",
+     "small": "/trust-fall/the-tower/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 16.33
+     },
      "news": {
       "time": "11:50 PM",
       "caption": [
@@ -26945,8 +26977,12 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/lights-out/scene.mp4",
+     "poster": "/trust-fall/lights-out/poster/scene.webp",
+     "small": "/trust-fall/lights-out/sm/scene.mp4",
+     "voice": {
+      "narr": 11.83
+     },
      "news": {
       "time": "11:53 PM",
       "caption": []
@@ -26981,8 +27017,13 @@ window.ILTV_STORIES = {
       "Do you believe a machine?",
       "Do you believe a machine?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/what-it-knows/scene.mp4",
+     "poster": "/trust-fall/what-it-knows/poster/scene.webp",
+     "small": "/trust-fall/what-it-knows/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 8.62
+     },
      "news": {
       "time": "11:52 PM",
       "caption": [
@@ -27043,8 +27084,12 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-bait/scene.mp4",
+     "poster": "/trust-fall/the-bait/poster/scene.webp",
+     "small": "/trust-fall/the-bait/sm/scene.mp4",
+     "voice": {
+      "narr": 11.03
+     },
      "news": {
       "time": "11:55 PM",
       "caption": [
@@ -27081,8 +27126,13 @@ window.ILTV_STORIES = {
       "The air is going. What now?",
       "The air is going. What now?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-vault/scene.mp4",
+     "poster": "/trust-fall/the-vault/poster/scene.webp",
+     "small": "/trust-fall/the-vault/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 16.16
+     },
      "timer": 10,
      "timerStyle": "air",
      "news": {
@@ -27164,8 +27214,12 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/sixty-seconds/scene.mp4",
+     "poster": "/trust-fall/sixty-seconds/poster/scene.webp",
+     "small": "/trust-fall/sixty-seconds/sm/scene.mp4",
+     "voice": {
+      "narr": 10.33
+     },
      "dead": true,
      "news": {
       "time": "11:59 PM",
@@ -27195,8 +27249,12 @@ window.ILTV_STORIES = {
       "Hold on.",
       "Hold on."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/on-the-air/scene.mp4",
+     "poster": "/trust-fall/on-the-air/poster/scene.webp",
+     "small": "/trust-fall/on-the-air/sm/scene.mp4",
+     "voice": {
+      "narr": 10.33
+     },
      "news": {
       "time": "12:00 AM",
       "caption": [
@@ -27235,8 +27293,13 @@ window.ILTV_STORIES = {
       "Juno is escaping. What now?",
       "Juno is escaping. What now?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-green-line/scene.mp4",
+     "poster": "/trust-fall/the-green-line/poster/scene.webp",
+     "small": "/trust-fall/the-green-line/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 18.83
+     },
      "news": {
       "time": "12:02 AM",
       "caption": [
@@ -27308,8 +27371,12 @@ window.ILTV_STORIES = {
       "Breathe.",
       "Breathe."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-bridge/scene.mp4",
+     "poster": "/trust-fall/the-bridge/poster/scene.webp",
+     "small": "/trust-fall/the-bridge/sm/scene.mp4",
+     "voice": {
+      "narr": 10.99
+     },
      "news": {
       "time": "12:05 AM",
       "caption": [
@@ -27343,8 +27410,12 @@ window.ILTV_STORIES = {
       "It kept its word.",
       "It kept its word."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/the-promise/scene.mp4",
+     "poster": "/trust-fall/the-promise/poster/scene.webp",
+     "small": "/trust-fall/the-promise/sm/scene.mp4",
+     "voice": {
+      "narr": 13.12
+     },
      "news": {
       "time": "12:02 AM",
       "caption": [
@@ -27381,8 +27452,13 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/morning-edition/scene.mp4",
+     "poster": "/trust-fall/morning-edition/poster/scene.webp",
+     "small": "/trust-fall/morning-edition/sm/scene.mp4",
+     "live": 18,
+     "voice": {
+      "narr": 10.74
+     },
      "news": {
       "time": "6:00 AM",
       "caption": [
@@ -27549,8 +27625,12 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/live/scene.mp4",
+     "poster": "/trust-fall/live/poster/scene.webp",
+     "small": "/trust-fall/live/sm/scene.mp4",
+     "voice": {
+      "narr": 10.83
+     },
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27614,8 +27694,12 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/unseen/scene.mp4",
+     "poster": "/trust-fall/unseen/poster/scene.webp",
+     "small": "/trust-fall/unseen/sm/scene.mp4",
+     "voice": {
+      "narr": 12.2
+     },
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27679,8 +27763,12 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
+     "video": "/trust-fall/good-morning/scene.mp4",
+     "poster": "/trust-fall/good-morning/poster/scene.webp",
+     "small": "/trust-fall/good-morning/sm/scene.mp4",
+     "voice": {
+      "narr": 12.87
+     },
      "news": {
       "time": "6:14 AM",
       "caption": [
