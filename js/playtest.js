@@ -8698,6 +8698,15 @@ async function trustFallNewsRun(options, t) {
     if (card.tagName !== "BUTTON") t.problem("bug", `${id}/${sid}: the chapter card is not a button`);
     const under = doc.elementFromPoint(W / 2, H / 2);
     if (!card.contains(under)) t.problem("bug", `${id}/${sid}: something lies over the chapter card (${under && (under.id || under.tagName)})`);
+    // Centred and fully visible: every text line sits inside the screen with its middle on the screen's middle line.
+    for (const sp of card.querySelectorAll("span")) {
+      const sr = rect(sp);
+      if (!sr.width) continue;
+      const cx = sr.left + sr.width / 2;
+      if (sr.left < 0 || sr.right > W + 1 || sr.top < 0 || sr.bottom > H + 1) t.problem("bug", `${id}/${sid}: chapter card text "${sp.textContent.trim()}" runs off the ${W}x${H} screen`);
+      else if (Math.abs(cx - W / 2) > 6) t.problem("bug", `${id}/${sid}: chapter card text "${sp.textContent.trim()}" is not centred (middle ${Math.round(cx)}, want ${W / 2})`);
+    }
+    t.event("chapter-card-centred", `${id}/${sid}: ${want.time} text centred and fully visible at ${W}x${H}`);
     t.event("screenshot", `${id}/${sid} chapter card ${want.time} ${want.title}`);
     await tapAt(t, card, `the ${want.time} chapter card`);
     if (!(await waitFor(() => !doc.querySelector(".news-card"), 1500))) t.problem("bug", `${id}/${sid}: a press on the chapter card didn't move on`);
