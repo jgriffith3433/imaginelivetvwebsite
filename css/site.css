@@ -3930,3 +3930,25 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
 /* A page with a still and no clip: the choices (or a death's two buttons) hold their place but stay unseen until the
    words have had their reading time (js/game.js holdForReading). */
 .spark-choices[data-reading="true"] { visibility: hidden; pointer-events: none; }
+
+/* ---------------- First five minutes: Play is the single large call to action (critic, 2026-11-14) ----------------
+   The landing page's hero is the first screen: its trailer already moves behind the card; Play is a full-width, 56 px
+   button inside it, in thumb reach, on the first screen at 390x844 (the catalogue's small Play buttons stay small). */
+.hero .hero-go {
+  justify-content: center;
+  min-height: 56px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0c0d0f;
+  background: #f3f1ec;
+  border-color: #f3f1ec;
+}
+.hero:hover .hero-go,
+.hero:focus-visible .hero-go { color: #0c0d0f; background: #fff; border-color: #fff; }
+@media (max-width: 640px) {
+  .hero-media, .hero img, .hero-blank, .hero-trailer { aspect-ratio: 4 / 3; }
+  [data-view="landing"] .stories h1 { font-size: 1.4rem; margin-bottom: 0.4rem; }
+}
