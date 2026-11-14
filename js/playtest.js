@@ -8655,6 +8655,14 @@ async function trustFallRun(options, t) {
         if (r.width < bw * 0.95) t.problem("bug", `${id}/${parent}: "${label(b)}" is ${Math.round(r.width)}px wide in a ${Math.round(bw)}px row (full width wanted)`);
         if (r.left < 0 || r.right > W + 1 || r.bottom > H + 1) t.problem("bug", `${id}/${parent}: "${label(b)}" is not fully on screen at ${W}x${H}`);
       }
+      {
+        // Thumb reach: every choice sits in the lower half of the screen, the last one clear of the home bar.
+        const top = Math.min(...btns.map((b) => b.getBoundingClientRect().top)), foot = Math.max(...btns.map((b) => b.getBoundingClientRect().bottom));
+        if (top < H * 0.45) t.problem("bug", `${id}/${parent}: the choices start ${Math.round(top)}px down a ${H}px screen (lower half wanted, thumb reach)`);
+        else t.event("thumb-reach", `${id}/${parent}: choices ${Math.round(top)}-${Math.round(foot)}px of ${H}px`);
+        const bug = [...doc.querySelectorAll("button, a, [role=button]")].filter((e) => e.getClientRects().length && /bug/i.test((e.id || "") + (e.className || "") + (e.getAttribute("aria-label") || "") + (e.title || "")));
+        if (bug.length) t.problem("bug", `${id}/${parent}: a bug button is on screen`);
+      }
       const def = win.finalSpark.choicesOf(parent).find((c) => c.default);
       if (def && dead(def.next)) t.problem("bug", `${id}/${parent}: the countdown's default leads to a death (${def.next})`);
       t.event("fork", `${id}/${parent}: ${btns.length} choices, ${btns.map((b) => `${Math.round(b.getBoundingClientRect().width)}x${Math.round(b.getBoundingClientRect().height)}`).join(", ")}, countdown ${timerOn ? "on" : "off"}${touchOn(doc) ? ", touch" : ""}`);
