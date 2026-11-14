@@ -962,11 +962,33 @@
   }
 
   /** Trust Fall's looping bed follows the place: the rainy city, or the tower's and the core's server hum. */
-  const SERVER_SCENES = { tower: 1, jam: 1, core: 1, halon: 1, broadcast: 1, truth: 1, shadow: 1, believer: 1 };
+  const SERVER_SCENES = { tower: 1, jam: 1, listen: 1, believe: 1 };
+  const VAULT_SCENES = { core: 1, halon: 1, callMarcus: 1, saved: 1, promise: 1 };
+  const DAWN_SCENES = { start: 1, unplug: 1, asked: 1, broadcast: 1, truth: 1, shadow: 1, believer: 1 };
+  /** ARGUS's spoken line per scene (the same words as the scene's lines in story/trust-fall.json); js/audio.js plays a
+      recording at /assets/audio/voice/trust-fall-<scene>.mp3 when one exists, else a synthetic voice. */
+  const ARGUS_LINES = {
+    start: "Good morning, Rae. He says that to you, doesn't he?",
+    unplug: "I'm not your enemy, Rae.",
+    asked: "I know everyone's name, Rae. I'm telling you because someone will hurt you tonight.",
+    tower: "Rae. Please stop walking.",
+    listen: "That drive doesn't blind me. It locks the city's power, with your name on it.",
+    believe: "Then let them think it worked. Go down and plug it in.",
+    callMarcus: "He can't open doors, Rae. I can. Stay on the line with me.",
+    saved: "Breathe slow. Left, then up. I have you.",
+    chase: "You don't have to do everything alone, Rae.",
+    promise: "You believed me when it cost you something. Thank you.",
+    believer: "Good morning, Rae."
+  };
   function sceneMood(story, sceneId) {
-    if (story && story.id === "trust-fall") return SERVER_SCENES[sceneId] ? "server" : "city";
+    if (story && story.id === "trust-fall") return SERVER_SCENES[sceneId] ? "server" : VAULT_SCENES[sceneId] ? "vault" : DAWN_SCENES[sceneId] ? "dawn" : "city";
     return storyMood(story);
   }
+
+  // Trust Fall: every choice press also lands a short stinger under the click (js/audio.js "cue-trust-fall").
+  document.addEventListener("iltv:deciding", function () {
+    if (window.iltvAudio && STORY && STORY.id === "trust-fall") setTimeout(function () { window.iltvAudio.playUi("cue-trust-fall"); }, 110);
+  });
 
   function audioBed(story) {
     if (!window.iltvAudio || !story) return;
@@ -1421,7 +1443,10 @@
     const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
-    if (window.iltvAudio && STORY.id === "trust-fall") window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
+    if (window.iltvAudio && STORY.id === "trust-fall") {
+      window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
+      if (ARGUS_LINES[sceneId]) setTimeout(function () { if (currentScene === sceneId) window.iltvAudio.playVoice("trust-fall-" + sceneId, ARGUS_LINES[sceneId], "argus"); }, 900);
+    }
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
     unlocked[sceneId] = true;
     if (scene.ending) {

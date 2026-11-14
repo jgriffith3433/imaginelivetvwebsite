@@ -107,3 +107,9 @@ tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio
 - Endings gallery hints tease instead of giving the route. Runtime on the card: about 8 minutes.
 - Still to come (roadmap, `/mnt/project-files/new-story/roadmap.md`): a counted trust meter, narration for variants,
   tighter pages, a voice doc.
+
+## Sound (2026-11-14)
+
+- **Beds per place** (`sceneMood` in `js/game.js`, built in `js/audio.js`): `dawn` (the flat and the morning: soft rain, a wall clock), `city` (rain and traffic: the garage, the river), `server` (the Tower, the lobby: fans, relay ticks), `vault` (the sealed vault and the core: slow alarm pulse, sub drone).
+- **Every choice** plays the click (`tap`) and 110 ms later a short rising stinger (`cue-trust-fall`, three pitches so no sample repeats), layered so it never cuts the click.
+- **ARGUS speaks** its line in each scene that has one (`ARGUS_LINES`, 0.9 s after the scene shows; beds and music duck under it). A recording at `assets/audio/voice/trust-fall-<scene>.mp3` (Gen voice `hv_ai`) is used when it exists; until then a synthetic phrase plus the browser's own speech. The recordings wait on Gen access.
