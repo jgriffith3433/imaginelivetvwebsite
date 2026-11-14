@@ -3838,3 +3838,23 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
 [data-view="landing"] .story-card-text > p:not(.story-card-meta) {
   position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: -1px;
 }
+
+/* ---------------- The story player is the whole screen on desktop too (menus and UI, 2026-11-14) ----------------
+   The critic saw the story in a card with the site's header and the page around it. While a clip story is open the
+   player covers the viewport (above the inventory bar), the site header is gone and nothing of the landing page shows;
+   "All stories" in the player's own bar is the way back. Phones already do this (rules above). */
+@media (min-width: 900px) and (min-height: 560px) {
+  html[data-view="story"]:not([data-type="console"]) .site-header { display: none; }
+  html[data-view="story"]:not([data-type="console"]) .spark:not([hidden]) {
+    position: fixed;
+    inset: 0 0 var(--inventory-h, 0px) 0;
+    z-index: 4;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #070807;
+  }
+}
