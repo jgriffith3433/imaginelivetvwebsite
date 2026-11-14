@@ -592,20 +592,29 @@ function sparkState(st, way) {
   return { flags, matches };
 }
 
-/** The choice rows of a scene that are on offer after `way` (a row's `when` flags and `matches` {min,max}, [5] and [6]). */
+/** The choice rows of a scene that are on offer after `way` (a row's `when` flags and `matches` {min,max}, [5] and [6],
+    and a gate's `requires` flags, [7]: a choice not there at all without them, like Trust Fall's belief gates). */
 function offeredRows(st, id, way) {
   const { flags, matches } = sparkState(st, way);
+  const hold = (want) => Object.entries(want).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v);
   return st.scenes[id].choices.filter((c) => {
-    if (c[5] && !Object.entries(c[5]).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v)) return false;
+    if (c[5] && !hold(c[5])) return false;
+    if (c[7] && c[7].requires && !hold(c[7].requires)) return false;
     if (c[6] && matches != null && ((c[6].min != null && matches < c[6].min) || (c[6].max != null && matches > c[6].max))) return false;
     return true;
   });
 }
 
+/** Whether some choice of the story is offered only in some states: a `when` [5], a `matches` range [6] or a gate's
+    `requires` flags [7]. */
+function hasConditionalChoices(st) {
+  return Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6] || (c[7] && c[7].requires)));
+}
+
 /** The shortest way from the start (not through a death) to a scene that passes `test`: the scene ids after the start.
     A story with conditional choices is walked by state (scene, flags, matches), so the way only uses choices that are offered. */
 function wayTo(st, test) {
-  const conditional = Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6]));
+  const conditional = hasConditionalChoices(st);
   const key = (way) => (conditional ? `${way[way.length - 1]} ${JSON.stringify(sparkState(st, way))}` : way[way.length - 1]);
   const seen = new Set([key([st.start])]);
   const queue = [[st.start]];
@@ -1157,7 +1166,7 @@ async function walkStory(t, st, sums, total) {
   await visit(st.start, [st.start], [st.start]);
   // A fork with conditional choices (flags, a match range) hides some in some states. A scene no press above reached is walked
   // to by state (the shortest way that only uses choices on offer), by real presses, and visited from there.
-  if (Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6]))) {
+  if (hasConditionalChoices(st)) {
     for (let round = 0; round < all.length; round++) {
       const todo = all
         .filter((id) => !seen.has(id))
@@ -7891,7 +7900,7 @@ function gateWay(st, target, ok) {
     return out;
   };
   const open = (c, way) => {
-    const g = c[5];
+    const g = c[7]; // a choice row's gate: [say, en, next, default, set, when, matches, gate]
     if (!g) return true;
     const flags = flagsOf(way);
     for (const [k, v] of Object.entries(g.requires || {})) if ((flags[k] === undefined ? false : flags[k]) !== v) return false;
