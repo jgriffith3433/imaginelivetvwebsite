@@ -1578,6 +1578,12 @@
       label.className = "ending-tile-name";
       label.textContent = known ? endingTitleOf(entry) : "???";
       tile.append(media, label);
+      if (!known && entry.hint) {
+        const hint = document.createElement("span");
+        hint.className = "ending-tile-hint";
+        hint.textContent = entry.hint;
+        tile.appendChild(hint);
+      }
       if (known) {
         tile.addEventListener("click", function () {
           showFoundEndingCard(story, entry.id);
@@ -1686,6 +1692,11 @@
       a choice from one of them to a scene you haven't reached is a locked "?" with nothing below it (one per
       choice, so it never tells whether two ways meet, where they go, how deep it goes, or if it's a death or an
       ending). Nothing in it can be pressed; the current scene is marked. */
+  function treeEndingsText() {
+    const ends = endingsOf(STORY);
+    return ends.length ? ", " + endingsCardText(Object.keys(readFoundEndings(STORY)).length, ends.length) + " found" : "";
+  }
+
   function renderTree() {
     if (!treeRoot) return;
 
@@ -1837,7 +1848,7 @@
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored' + treeEndingsText() + '. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -2379,6 +2390,8 @@
     history = [];
     unlocked = unlocks.seen;
     completed = unlocks.completed;
+    // A saved run was played through its history, so those pages are on the Tree even if the unlocks cookie was lost.
+    history.forEach(function (sid) { if (SCENES[sid]) unlocked[sid] = true; });
     if (saved && saved.from && saved.choice) {
       lastRecap = { from: saved.from, choice: saved.choice, poster: saved.poster || posterOfScene(story, saved.from) };
     } else {

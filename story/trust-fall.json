@@ -994,7 +994,8 @@
         ]
       },
       "music": "end",
-      "film": "/assets/video/trust-fall/live.mp4"
+      "film": "/assets/video/trust-fall/live.mp4",
+      "hint": "Tell the whole city, live, who you are."
     },
     {
       "id": "shadow",
@@ -1031,7 +1032,8 @@
         ]
       },
       "music": "end",
-      "film": "/assets/video/trust-fall/unseen.mp4"
+      "film": "/assets/video/trust-fall/unseen.mp4",
+      "hint": "Walk out before anyone learns your name."
     },
     {
       "id": "believer",
@@ -1070,7 +1072,8 @@
         ]
       },
       "music": "end",
-      "film": "/assets/video/trust-fall/good-morning.mp4"
+      "film": "/assets/video/trust-fall/good-morning.mp4",
+      "hint": "Believe ARGUS in the Tower, then thank it."
     }
   ]
 }

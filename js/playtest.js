@@ -8781,6 +8781,44 @@ async function trustFallRun(options, t) {
     else t.event("timeout-safe", `${id}/${sid}: the countdown chose ${now}`);
     closeViewFrame();
   }
+
+  // 6. Reasons to come back: after one ending the Tree shows visited and unvisited branches and the Endings tab shows
+  // the other endings as locked tiles with a hint, all by touch at 390x844.
+  {
+    const endIds = ids.filter(ending);
+    const found = endIds.find((x) => !st.scenes[x].choices.length && wayTo(x, (f) => !f.believed));
+    const wayEnd = found && wayTo(found, (f) => !f.believed);
+    if (!wayEnd) t.problem("bug", `${id}: no ending reachable without believing ARGUS`);
+    else {
+      t.scene(`${id}: Tree and Endings after ${found}`);
+      let doc = await open(wayEnd, `the Tree and Endings tabs after ${found}`);
+      await ready(doc, found);
+      const win = doc.defaultView;
+      const tab = (n) => doc.getElementById(n);
+      for (const n of ["tab-tree", "tab-endings"]) {
+        const r = tab(n).getBoundingClientRect();
+        if (r.height < 44 || r.width < 44) t.problem("bug", `${id}: the ${n} tab is ${Math.round(r.width)}x${Math.round(r.height)}px (44px at least)`);
+      }
+      await tapAt(t, tab("tab-tree"), "Tree tab");
+      await sleep(300);
+      const tree = doc.getElementById("spark-tree");
+      const seen = tree.querySelectorAll(".tree-node:not(.is-locked)").length, hidden = tree.querySelectorAll(".tree-node.is-locked").length;
+      if (seen < wayEnd.length || hidden < 1) t.problem("bug", `${id}: the Tree shows ${seen} visited and ${hidden} unvisited branches after a ${wayEnd.length}-page way (visited >= ${wayEnd.length}, unvisited >= 1 wanted)`);
+      if (doc.documentElement.scrollWidth > W + 1) t.problem("bug", `${id}: the Tree scrolls the page sideways at ${W}x${H}`);
+      t.event("tree-branches", `${id}: Tree shows ${seen} visited and ${hidden} unvisited branches; "${(tree.querySelector(".tree-note") || {}).textContent || ""}"`);
+      await tapAt(t, tab("tab-endings"), "Endings tab");
+      await sleep(300);
+      const tiles = [...doc.querySelectorAll("#spark-endings .ending-tile")];
+      const open1 = tiles.filter((x) => x.classList.contains("is-found")).length, lockedTiles = tiles.filter((x) => x.classList.contains("is-locked"));
+      const hints = lockedTiles.filter((x) => (x.querySelector(".ending-tile-hint") || {}).textContent);
+      if (tiles.length !== endIds.length) t.problem("bug", `${id}: the Endings tab has ${tiles.length} tiles for ${endIds.length} endings`);
+      if (open1 !== 1) t.problem("bug", `${id}: the Endings tab shows ${open1} found endings after one (1 wanted)`);
+      if (hints.length !== lockedTiles.length) t.problem("bug", `${id}: ${lockedTiles.length - hints.length} locked endings give no hint on how to chase them`);
+      if (doc.documentElement.scrollWidth > W + 1) t.problem("bug", `${id}: the Endings tab scrolls the page sideways at ${W}x${H}`);
+      t.event("endings-chase", `${id}: ${open1} found, ${lockedTiles.length} locked with hints [${hints.map((x) => x.querySelector(".ending-tile-hint").textContent).join(" | ")}]`);
+      closeViewFrame();
+    }
+  }
   t.progress(1);
 }
 

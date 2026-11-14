@@ -2762,6 +2762,14 @@ button.ending-tile:focus-visible {
   letter-spacing: 0.2em;
   color: #8e8a84;
 }
+.ending-tile-hint {
+  display: block;
+  padding: 0 0.55rem 0.55rem;
+  margin-top: -0.3rem;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: #a9a49c;
+}
 .endings-recall {
   display: flex;
   flex-direction: column;
