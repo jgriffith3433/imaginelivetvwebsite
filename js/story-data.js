@@ -26686,8 +26686,8 @@ window.ILTV_STORIES = {
       "The garage"
      ],
      "story": [
-      "Juno's garage smells of solder and rain. At midnight you carry a drive, Blindspot, into the Tower and blind ARGUS. Juno presses it into your hand.",
-      "Juno's garage smells of solder and rain. At midnight you carry a drive, Blindspot, into the Tower and blind ARGUS. Juno presses it into your hand."
+      "Juno's garage smells of solder and rain. She hands you Blindspot, a drive.",
+      "Juno's garage smells of solder and rain. She hands you Blindspot, a drive."
      ],
      "question": [
       "Do you carry Blindspot in?",
@@ -26764,8 +26764,8 @@ window.ILTV_STORIES = {
       "The river"
      ],
      "story": [
-      "You put your copy on Juno's table. Juno doesn't argue. Juno never argues. The last thing you hear is the river.",
-      "You put your copy on Juno's table. Juno doesn't argue. Juno never argues. The last thing you hear is the river."
+      "You put your copy on Juno's table, and Juno never argues. The last thing you hear is the river.",
+      "You put your copy on Juno's table, and Juno never argues. The last thing you hear is the river."
      ],
      "question": [
       "You have died.",
@@ -27051,8 +27051,8 @@ window.ILTV_STORIES = {
       "Sixty seconds"
      ],
      "story": [
-      "You pull at the door's seam until your fingers give out. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now.",
-      "You pull at the door's seam until your fingers give out. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now."
+      "You pull at the door's seam until your fingers give out, and the hiss starts at fifty. You never asked anyone for help, and you don't start now.",
+      "You pull at the door's seam until your fingers give out, and the hiss starts at fifty. You never asked anyone for help, and you don't start now."
      ],
      "question": [
       "You have died.",

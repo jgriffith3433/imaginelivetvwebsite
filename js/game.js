@@ -1340,7 +1340,7 @@
 
   /** A death keeps its clip and its line and offers two buttons: Rewind to the choice (the last fork, with the deadly
       option marked as tried) and Start over (the story's own start). */
-  function addDeathButtons(scene) {
+  function addDeathButtons(scene, sceneId) {
     const make = function (kind, idx, say, en, run) {
       const button = document.createElement("button");
       button.type = "button";
@@ -1358,8 +1358,13 @@
     const fork = history.length ? history[history.length - 1] : null;
     let n = 0;
     if (fork && SCENES[fork]) {
-      make("rewind", n++, "Rewind to the choice", "Rewind to the choice", function () {
-        goTo({ next: fork, en: "Rewind to the choice" }, "rewind");
+      // The label names the choice it returns to: "Rewind: go back and face Juno" (the fork's option that led here).
+      const led = SCENES[fork].choices.filter(function (c) { return c.next === sceneId; })[0];
+      let said = led ? choiceLabel(led.en || led.say) : "";
+      if (said && /^[A-Z][a-z]/.test(said)) said = said.charAt(0).toLowerCase() + said.slice(1);
+      const label = said ? "Rewind: " + said : "Rewind to the choice";
+      make("rewind", n++, label, label, function () {
+        goTo({ next: fork, en: label }, "rewind");
       });
     }
     const start = scene.choices.filter(function (c) { return c.next === STORY.start; })[0] || scene.choices[0] || { say: "1. Start over", en: "1. Start over", next: STORY.start };
@@ -1658,7 +1663,7 @@
 
     const replayNow = isReplay(STORY);
     const triedHere = tried[sceneId] || [];
-    if (scene.dead) addDeathButtons(scene);
+    if (scene.dead) addDeathButtons(scene, sceneId);
     else shownChoices.forEach(function (choice, idx) {
       const button = document.createElement("button");
       button.type = "button";

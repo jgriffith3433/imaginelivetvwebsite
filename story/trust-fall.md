@@ -64,7 +64,7 @@ story, and his sign-off ("you know who you are") is a line only the two of you u
   side.* This is the reward for belief.
 
 **Deaths** (two, both seen coming): facing Juno with the copy (the river), prying the vault door alone (sixty seconds).
-Each offers Rewind to the choice or Start over. The timer never picks a death: every fork's default is the believing
+Each offers Rewind (labelled with the choice it returns to, e.g. "Rewind: go back and face Juno") or Start over. The timer never picks a death: every fork's default is the believing
 or basic path.
 
 ## Belief shows on the next clip (2026-11-14)

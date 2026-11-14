@@ -31846,7 +31846,7 @@
     },
     {
       "id": "trust-fall-crew-talk-1",
-      "note": "The garage (Trust Fall): Juno Vale says \"One night with nobody watching, Rae. That's all I want. One night, and this city is ours.\". video.talk is experimental.",
+      "note": "The garage (Trust Fall): Juno Vale says \"Seven years ago I pulled you out of that cell. I asked nothing.\". video.talk is experimental.",
       "inputs": [
         "story/characters/trust-fall/juno.png",
         "trust-fall/the-garage/media/keyframe.png"
@@ -31871,7 +31871,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "One night with nobody watching, Rae. That's all I want. One night, and this city is ours.",
+            "text": "Seven years ago I pulled you out of that cell. I asked nothing.",
             "voice": "hv_heroine",
             "model": "eleven_v4"
           },
@@ -31883,7 +31883,7 @@
             "prompt": "a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile speaks to the camera, natural head movement, the camera drifts along the table past the crew to the woman in the black coat, who looks up",
             "width": 480,
             "height": 832,
-            "frames": 195,
+            "frames": 155,
             "fps": 25
           },
           "inputs": {
@@ -31900,6 +31900,64 @@
         "portrait-1": "trust-fall/the-garage/media/portrait-1.png",
         "line-1": "trust-fall/the-garage/media/line-1.mp3",
         "talk-1": "trust-fall/the-garage/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-crew-talk-2",
+      "note": "The garage (Trust Fall): Juno Vale says \"One night, Rae. This city is ours.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/juno.png",
+        "trust-fall/the-garage/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile) facing the camera, mouth closed, in the setting of image 2: a cluttered underground garage at night lit by work lamps and monitors, rain dripping from a roll-up door, a crew of four hunched over a steel table of electronics and city maps; a tall woman with a silver buzz cut and a long black coat stands at the head of the table. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-2"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "One night, Rae. This city is ours.",
+            "voice": "hv_heroine",
+            "model": "eleven_v4"
+          },
+          "save": "line-2"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile speaks to the camera, natural head movement, the camera drifts along the table past the crew to the woman in the black coat, who looks up",
+            "width": 480,
+            "height": 832,
+            "frames": 95,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-2"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-2": "trust-fall/the-garage/media/portrait-2.png",
+        "line-2": "trust-fall/the-garage/media/line-2.mp3",
+        "talk-2": "trust-fall/the-garage/media/talk-2.mp4"
       }
     },
     {
