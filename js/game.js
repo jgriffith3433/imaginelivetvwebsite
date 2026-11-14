@@ -837,8 +837,16 @@
     if (!story) return "default";
     if (story.id === "final-spark") return "sewer";
     if (story.id === "water-road") return "dust";
+    if (story.id === "trust-fall") return "city";
     if (story.id === "night-shift" || story.id === "night-shift-demo") return "room";
     return "default";
+  }
+
+  /** Trust Fall's looping bed follows the place: the rainy city, or the tower's and the core's server hum. */
+  const SERVER_SCENES = { tower: 1, jam: 1, core: 1, halon: 1, broadcast: 1, truth: 1, shadow: 1, believer: 1 };
+  function sceneMood(story, sceneId) {
+    if (story && story.id === "trust-fall") return SERVER_SCENES[sceneId] ? "server" : "city";
+    return storyMood(story);
   }
 
   function audioBed(story) {
@@ -1263,6 +1271,7 @@
     const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
+    if (window.iltvAudio && STORY.id === "trust-fall") window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
     unlocked[sceneId] = true;
     if (scene.ending) {
