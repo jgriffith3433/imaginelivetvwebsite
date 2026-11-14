@@ -26491,6 +26491,7 @@ window.ILTV_STORIES = {
       "THE END. You were the story.",
       "THE END. You were the story."
      ],
+     "hint": "Tell the whole city, live, who you are.",
      "poster": "/assets/video/trust-fall/poster/live.webp",
      "video": "/assets/video/trust-fall/live.mp4"
     },
@@ -26504,6 +26505,7 @@ window.ILTV_STORIES = {
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
      ],
+     "hint": "Walk out before anyone learns your name.",
      "poster": "/assets/video/trust-fall/poster/unseen.webp",
      "video": "/assets/video/trust-fall/unseen.mp4"
     },
@@ -26517,6 +26519,7 @@ window.ILTV_STORIES = {
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
      ],
+     "hint": "Believe ARGUS in the Tower, then thank it.",
      "poster": "/assets/video/trust-fall/poster/good-morning.webp",
      "video": "/assets/video/trust-fall/good-morning.mp4"
     }

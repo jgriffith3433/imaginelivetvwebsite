@@ -411,6 +411,7 @@ function endingsList(st) {
       id: s.id,
       title: s.title,
       ending: s.ending,
+      ...(s.hint ? { hint: s.hint } : {}),
       ...(extras.poster ? { poster: extras.poster } : {}),
       ...(video ? { video } : {}),
     };
