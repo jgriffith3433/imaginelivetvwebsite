@@ -8866,6 +8866,16 @@ async function trustFallRun(options, t) {
       if (!bd.playing) t.problem("bug", `${id}/${target}: no looping ambient bed is playing in the scene`);
       else t.event("scene-bed", `${id}/${target}: bed ${bd.url || "on"} loops under the scene`);
     }
+    if (au && au.events) {
+      // The press's click and stinger, and ARGUS speaking in the scenes where it has a line (voice at 0.9 s, so wait for it).
+      const evs = () => au.events();
+      if (!(await waitFor(() => evs().some((e) => e.what === "cue"), 1500))) t.problem("bug", `${id}/${target}: the choice press made no stinger (cue) after its click`);
+      else t.event("choice-stinger", `${id}/${target}: a click and a stinger played on the press`);
+      if (["start", "unplug", "asked", "tower", "listen", "believe", "callMarcus", "saved", "chase", "promise", "believer"].includes(target)) {
+        if (!(await waitFor(() => evs().some((e) => e.what === "voice" && e.speaker === "argus"), 3000))) t.problem("bug", `${id}/${target}: ARGUS has a line here but no voice played`);
+        else { t.event("argus-voice", `${id}/${target}: ARGUS speaks (bed ducks under it)`); t.add("trustFallArgusVoices"); }
+      }
+    }
     if (ending(target)) {
       await rewindEndClip(doc);
       const nameEl = doc.getElementById("spark-ending");
