@@ -26,10 +26,13 @@
       storyEn: spec.story[1],
       question: spec.question[0],
       questionEn: spec.question[1],
-      video: spec.video,
+      // A scene whose clip isn't made shows the story's key art, graded (.spark-still), never a title card:
+      // no clip is played and the still is the poster.
+      still: spec.still || "",
+      video: spec.still ? "" : spec.video,
       // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
-      poster: spec.poster || "",
-      small: spec.small || "",
+      poster: spec.still || spec.poster || "",
+      small: spec.still ? "" : spec.small || "",
       live: spec.live || 0,
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
@@ -1369,11 +1372,28 @@
     } else {
       setChoicePhase("ready");
       if (window.iltvAudio) window.iltvAudio.beginBeds("image");
-      // A draft story's scene before its media is made: its title on black, where the video will be.
-      const blank = document.createElement("div");
-      blank.className = "spark-video-blank";
-      blank.textContent = scene.titleEn;
-      videoBox.appendChild(blank);
+      if (scene.still) {
+        // The clip isn't made yet: one graded still (css/site.css .spark-still) where it will play, framed a little
+        // differently per scene so the run isn't one picture. No title card, no "in production" text.
+        let h = 0;
+        for (let i = 0; i < sceneId.length; i++) h = (h * 31 + sceneId.charCodeAt(i)) >>> 0;
+        const still = document.createElement("div");
+        still.className = "spark-still";
+        still.dataset.still = scene.still;
+        still.setAttribute("role", "img");
+        still.setAttribute("aria-label", scene.titleEn);
+        still.style.backgroundImage = 'url("' + scene.still + '")';
+        still.style.setProperty("--still-x", 20 + (h % 61) + "%");
+        still.style.setProperty("--still-y", 25 + ((h >> 8) % 51) + "%");
+        still.style.setProperty("--still-zoom", String(1.08 + ((h >> 16) % 14) / 100));
+        videoBox.appendChild(still);
+      } else {
+        // A draft story's scene before its media is made: its title on black, where the video will be.
+        const blank = document.createElement("div");
+        blank.className = "spark-video-blank";
+        blank.textContent = scene.titleEn;
+        videoBox.appendChild(blank);
+      }
     }
 
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
@@ -2162,7 +2182,7 @@
     const ms = fadeMs();
     const old = Array.prototype.slice.call(videoBox.children);
     old.forEach(function (node) {
-      const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank");
+      const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank") || node.classList.contains("spark-still");
       if (!keep || node.classList.contains("spark-leave")) { node.remove(); return; }
       node.classList.add("spark-leave");
       node.style.setProperty("--fade-ms", ms + "ms");
