@@ -3858,3 +3858,17 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
     background: #070807;
   }
 }
+
+/* ---------------- Phone: no black between the splash and the catalogue; choices in thumb reach (phone 4/10, 2026-11-14) ----------------
+   The hero trailer lay over the hero picture with an opaque black fill until it played, so for the seconds a phone took
+   to start it the hero was a black box under the lifted splash. It is clear until it plays (the picture shows). */
+.hero:not(.is-playing) .hero-trailer { background: transparent; opacity: 0; }
+.hero .hero-trailer { transition: opacity 0.3s ease; }
+.hero.is-playing .hero-trailer { opacity: 1; }
+.hero-media { background: #121417; }
+/* The player's choices sit at the foot of the screen, clear of the home bar (thumb zone). */
+@media (orientation: portrait) and (max-width: 899px) {
+  .spark:not(.is-tree):not(.is-endings):not([hidden]) .spark-panel {
+    padding-bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
+  }
+}
