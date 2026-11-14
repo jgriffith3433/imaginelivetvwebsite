@@ -126,9 +126,14 @@
   let shown = null; // the scene as it is on screen (variant and offered choices), set by show()
   let rewindFlag = false; // set by a Rewind, read by the show() that follows it
 
+  /** The choice from one scene to the next, as { next, set }. `story` is the story's data (js/story-data.js), where a
+      choice is a row [say, en, next, default, set, ...] (line() reads the same row); a scene from scenesOf() works too. */
   function choiceTo(story, fromId, toId) {
     const from = story.scenes[fromId];
-    return from && from.choices ? from.choices.filter(function (c) { return c.next === toId; })[0] : null;
+    if (!from || !from.choices) return null;
+    const c = from.choices.filter(function (x) { return (Array.isArray(x) ? x[2] : x.next) === toId; })[0];
+    if (!c) return null;
+    return { next: toId, set: (Array.isArray(c) ? c[4] : c.set) || null };
   }
 
   /** The flags of a way (scene ids, the last one where you are): each step applies its choice's `set`. */
