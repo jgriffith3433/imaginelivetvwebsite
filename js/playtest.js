@@ -7723,6 +7723,14 @@ function frontDoorFit(t, doc, w, where) {
   if (wide > w + 1) t.problem("bug", `${where}: the page is ${wide}px wide in a ${w}px screen (sideways scroll)`);
   const small = [...doc.querySelectorAll("#stories .hero-go, #stories .continue-go, #stories .story-card-go")].filter((el) => el.getClientRects().length && (el.getBoundingClientRect().height < 30));
   for (const el of small) t.problem("bug", `${where}: "${(el.textContent || "").trim()}" is ${Math.round(el.getBoundingClientRect().height)}px tall`);
+  /* First five minutes (critic, 2026-11-14): Play is the one large call to action, on the first screen. */
+  const heroPlay = doc.querySelector("#stories a.hero .hero-go");
+  if (heroPlay && heroPlay.getClientRects().length) {
+    const pr = heroPlay.getBoundingClientRect();
+    t.event("play-cta", `${where}: hero Play ${Math.round(pr.width)}x${Math.round(pr.height)}px, bottom ${Math.round(pr.bottom)} of ${win.innerHeight}px`);
+    if (pr.height < 52) t.problem("bug", `${where}: the hero's Play is ${Math.round(pr.height)}px tall, not a large call to action`);
+    if (pr.bottom > win.innerHeight) t.problem("bug", `${where}: the hero's Play is below the first screen (bottom ${Math.round(pr.bottom)}px of ${win.innerHeight}px)`);
+  }
   for (const el of doc.querySelectorAll("#stories a.hero, #stories a.story-card, #stories a.continue-card")) {
     const r = el.getBoundingClientRect();
     if (r.width < 44 || r.height < 44) t.problem("bug", `${where}: a ${el.className} is ${Math.round(r.width)}x${Math.round(r.height)}px`);
