@@ -31363,7 +31363,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name. ARGUS knows you. Now what?",
+            "text": "Dawn. Your speaker glows amber, says your name. Now what?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
