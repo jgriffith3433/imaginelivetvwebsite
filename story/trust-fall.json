@@ -421,6 +421,17 @@
           "en": "2. Stop and listen",
           "next": "listen",
           "default": true
+        },
+        {
+          "say": "3. Show ARGUS your copy",
+          "en": "3. Show ARGUS your copy",
+          "next": "showCopy",
+          "requires": {
+            "readWorm": true
+          },
+          "set": {
+            "believed": true
+          }
         }
       ],
       "lines": [
@@ -1504,6 +1515,48 @@
         "THE END. It answered for you."
       ],
       "hint": "Some trust pays out in full."
+    },
+    {
+      "id": "showCopy",
+      "inventory": {
+        "trust": 1
+      },
+      "folder": "your-copy",
+      "lang": "en",
+      "title": [
+        "Your copy",
+        "Your copy"
+      ],
+      "story": [
+        "You hold your copy up to the screen, the way you would show a badge. The amber face does not read it. It does not need to. It says what Blindspot is before you can ask, and it matches every line you read on the train. You have been lied to for two hours. This is the first thing anyone has told you straight.",
+        "You hold your copy up to the screen, the way you would show a badge. The amber face does not read it. It does not need to. It says what Blindspot is before you can ask, and it matches every line you read on the train. You have been lied to for two hours. This is the first thing anyone has told you straight."
+      ],
+      "question": [
+        "It knew. You believe it. Now what?",
+        "It knew. You believe it. Now what?"
+      ],
+      "choices": [
+        {
+          "say": "1. Do what it says",
+          "en": "1. Do what it says",
+          "next": "believe"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "That is Blindspot. A ransom on the city’s power, signed with your name. You have already read it, Rae. Let them think it worked, and I will show you how it ends."
+        }
+      ],
+      "shot": {
+        "scene": "a person in a cleaner’s uniform standing in a vast dim skyscraper lobby holding a small black drive up toward one tall screen, where a calm face drawn in amber light lines looks down at it; the amber glow falls across their raised hand",
+        "motion": "the person lifts the drive toward the screen; the amber face’s eyes lower to it and the glow steadies",
+        "cast": [
+          "hero",
+          "argus"
+        ]
+      },
+      "music": "hum"
     }
   ]
 }

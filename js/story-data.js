@@ -26818,6 +26818,22 @@ window.ILTV_STORIES = {
        "2. Stop and listen",
        "listen",
        true
+      ],
+      [
+       "3. Show ARGUS your copy",
+       "3. Show ARGUS your copy",
+       "showCopy",
+       false,
+       {
+        "believed": true
+       },
+       null,
+       null,
+       {
+        "requires": {
+         "readWorm": true
+        }
+       }
       ]
      ],
      "variants": [
@@ -27665,6 +27681,35 @@ window.ILTV_STORIES = {
       "THE END. It answered for you."
      ],
      "choices": []
+    },
+    "showCopy": {
+     "folder": "trust-fall/your-copy",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Your copy",
+      "Your copy"
+     ],
+     "story": [
+      "You hold your copy up to the screen, the way you would show a badge. The amber face does not read it. It does not need to. It says what Blindspot is before you can ask, and it matches every line you read on the train. You have been lied to for two hours. This is the first thing anyone has told you straight.",
+      "You hold your copy up to the screen, the way you would show a badge. The amber face does not read it. It does not need to. It says what Blindspot is before you can ask, and it matches every line you read on the train. You have been lied to for two hours. This is the first thing anyone has told you straight."
+     ],
+     "question": [
+      "It knew. You believe it. Now what?",
+      "It knew. You believe it. Now what?"
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "inventory": {
+      "trust": 1
+     },
+     "choices": [
+      [
+       "1. Do what it says",
+       "1. Do what it says",
+       "believe"
+      ]
+     ]
     }
    }
   }

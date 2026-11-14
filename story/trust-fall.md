@@ -40,7 +40,9 @@ story, and his sign-off ("you know who you are") is a line only the two of you u
 3. **The Tower.** 11:50 p.m. Every lobby screen shows Marcus live on the plaza, then cuts to ARGUS's face, looking at
    you: "Rae. Please stop walking." Jam it and keep going (**lights out**), or stop and listen (**what it knows**: Juno
    sold you two hours ago). Believe it (**the bait**: it tells you to go down and let the trap close; sets `believed`),
-   or call it a liar and keep going.
+   or call it a liar and keep going. Only if you read the drive on the train (`readWorm`), a third choice: **Show ARGUS
+   your copy** (**your copy**): ARGUS confirms at once what Blindspot is, you believe it (sets `believed`, +1 trust), and the
+   road joins **the bait**. It is a faster road to trusting ARGUS: the reader skips the question.
 4. **The vault.** You plug in Blindspot; the door seals; Juno in your earpiece: somebody has to be the face of it.
    Fire suppression in sixty seconds. Beg ARGUS for help (**the green line**), call Marcus (**on the air**: he hears
    you live on the plaza, and ARGUS opens the doors; sets `calledMarcus`), pry the door (**sixty seconds**, a death),
