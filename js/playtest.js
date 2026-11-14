@@ -8224,7 +8224,7 @@ function rewindCheckButtons(t, doc, where, { phone = false } = {}) {
     return btns;
   }
   const texts = btns.map((b) => (b.querySelector(".spot-src") || b).textContent.trim());
-  if (!/^rewind to the choice$/i.test(texts[0])) t.problem("bug", `${where}: the first death button says "${texts[0]}"`);
+  if (!/^rewind(: .+| to the choice)$/i.test(texts[0])) t.problem("bug", `${where}: the first death button says "${texts[0]}"`);
   if (!/start over|recommence/i.test(texts[1])) t.problem("bug", `${where}: the second death button says "${texts[1]}"`);
   const box = doc.getElementById("spark-choices").getBoundingClientRect();
   const sizes = [];
