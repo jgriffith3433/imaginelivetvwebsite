@@ -3870,14 +3870,21 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
   .spark:not(.is-tree) .spark-video { background-color: transparent; background-size: contain; }
 }
 
-/* First minute (quality rule: at most 40 words on screen): the landing page shows each story's title, run time and
-   Play, and the featured story's one line. The cards' loglines, the moods and the intro line stay in the page (tests,
-   search engines, screen readers) but are not drawn. */
+/* First minute (quality rule: at most 40 words on screen, counted from the page's innerText, so display:none, not a
+   clipped box): the landing page shows each story's title and Play and little else to read: the loglines, moods, run
+   times, kicker, intro line, "Not started" ribbons and 0% badges, the catalogue heading, the statistics sentence and
+   the copyright line are in the page (tests, search engines) but not drawn. Started or completed cards show their
+   badge. Everything comes back once a story is open. */
 [data-view="landing"] .stories-sub,
-[data-view="landing"] .meta-mood,
-[data-view="landing"] .story-card-text > p:not(.story-card-meta) {
-  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: -1px;
-}
+[data-view="landing"] .hero-kicker,
+[data-view="landing"] .hero-text > p,
+[data-view="landing"] .story-card-meta,
+[data-view="landing"] .story-card-text > p,
+[data-view="landing"] #catalogue-title,
+[data-view="landing"] .story-card[data-progress="new"] .story-card-ribbon,
+[data-view="landing"] .story-card[data-progress="new"] .story-card-explored,
+[data-view="landing"] .site-footer .stats-text,
+[data-view="landing"] .site-footer .copyright { display: none; }
 
 /* ---------------- The story player is the whole screen on desktop too (menus and UI, 2026-11-14) ----------------
    The critic saw the story in a card with the site's header and the page around it. While a clip story is open the
