@@ -26470,7 +26470,8 @@ window.ILTV_STORIES = {
    "cookie": "trustFallProgress",
    "tap": {
     "title": "TRUST FALL",
-    "line": "It's already watching."
+    "line": "It's already watching.",
+    "autostart": true
    },
    "start": "start",
    "ui": {
@@ -26530,12 +26531,12 @@ window.ILTV_STORIES = {
       "First light"
      ],
      "story": [
-      "Six in the morning. You're home from a job you'll never mention, still in your jacket, and Marcus is on the kitchen TV like every morning: tonight at midnight, ARGUS goes live in every street in Meridian. Then the little speaker on the counter, the one the city sent everyone for free, lights up amber and says your name.",
-      "Six in the morning. You're home from a job you'll never mention, still in your jacket, and Marcus is on the kitchen TV like every morning: tonight at midnight, ARGUS goes live in every street in Meridian. Then the little speaker on the counter, the one the city sent everyone for free, lights up amber and says your name."
+      "Six a.m. Marcus is on the kitchen TV. The speaker on your counter lights amber and says your name.",
+      "Six a.m. Marcus is on the kitchen TV. The speaker on your counter lights amber and says your name."
      ],
      "question": [
-      "ARGUS knows your name. What do you do?",
-      "ARGUS knows your name. What do you do?"
+      "ARGUS knows you. Now what?",
+      "ARGUS knows you. Now what?"
      ],
      "video": "/assets/video/trust-fall/first-light.mp4",
      "poster": "/assets/video/trust-fall/poster/first-light.webp",

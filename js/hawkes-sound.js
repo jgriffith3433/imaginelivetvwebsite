@@ -292,10 +292,14 @@
   }
 
   // A story opens (js/game.js): its Tap to play prompt, unless sound is already unlocked.
-  function ask() {
+  // autostart (a story's tap.autostart): the card's own press is the tap, so there is no overlay at all; sound unlocks
+  // here and the first clip plays with sound. If the browser still refuses (a link opened cold), play() shows the prompt.
+  function ask(opts) {
     decided = true;
     markSplashed();
-    if (!unlocked) showPrompt();
+    if (!unlocked) {
+      if (opts && opts.autostart) { taps++; trusted = true; unlock(); } else showPrompt();
+    }
     lift();
   }
 
