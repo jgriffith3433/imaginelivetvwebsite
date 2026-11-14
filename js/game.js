@@ -2416,7 +2416,7 @@
     syncReading();
     document.title = story.title + " · " + SITE_TITLE;
     prompt(story.tap, posterOfStory(story));
-    sound("ask");
+    sound("ask", story.tap && story.tap.autostart ? { autostart: true } : undefined);
     markSplashed();
 
     landing.hidden = true;
