@@ -26686,8 +26686,8 @@ window.ILTV_STORIES = {
       "The garage"
      ],
      "story": [
-      "Juno's garage smells of solder and rain. At midnight you carry a drive, Blindspot, into the Tower and blind ARGUS. Juno presses it into your hand.",
-      "Juno's garage smells of solder and rain. At midnight you carry a drive, Blindspot, into the Tower and blind ARGUS. Juno presses it into your hand."
+      "Juno's garage smells of solder and rain. She hands you Blindspot, a drive.",
+      "Juno's garage smells of solder and rain. She hands you Blindspot, a drive."
      ],
      "question": [
       "Do you carry Blindspot in?",
