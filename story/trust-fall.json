@@ -22,6 +22,7 @@
     },
     "marcus": {
       "name": "Marcus Okoro",
+      "label": "Marcus",
       "sheet": "story/characters/trust-fall/marcus.png",
       "look": "a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor",
       "voice": "hv_narrator_warm"
@@ -35,6 +36,7 @@
     },
     "juno": {
       "name": "Juno Vale",
+      "label": "Juno",
       "sheet": "story/characters/trust-fall/juno.png",
       "look": "a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile",
       "voice": "hv_heroine"

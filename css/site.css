@@ -4087,29 +4087,31 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
 
 .news-caption {
   margin: 0.15rem 0 0.35rem;
-  padding: 0.35rem 0.6rem;
-  color: #fffaf2;
-  background: rgba(8, 14, 28, 0.72);
-  border-left: 3px solid #ffb040;
+  padding: 0.4rem 0.7rem;
+  color: #ffffff;
+  background: rgba(8, 14, 28, 0.78);
+  border-left: 4px solid #ffffff;
   border-radius: 0 6px 6px 0;
-  font-size: 0.86rem;
-  line-height: 1.3;
+  font-size: 1rem;
+  line-height: 1.35;
 }
 .news-caption[hidden] { display: none; }
 .news-who {
   display: inline-block;
   margin-right: 0.5rem;
-  color: #ffb040;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+/* Speaker colours (J, 2026-11-14): Marcus white, ARGUS amber, Juno grey; the words stay white-ish for reading. */
+.news-caption[data-who="Marcus"] { border-left-color: #ffffff; }
+.news-caption[data-who="Marcus"] .news-who { color: #ffffff; }
 .news-caption[data-who="ARGUS"] { border-left-color: #ffb040; }
-.news-caption[data-who="Marcus Okoro"] .news-who { color: #8fd0ff; }
-.news-caption[data-who="Marcus Okoro"] { border-left-color: #8fd0ff; }
-.news-caption[data-who="Juno Vale"] .news-who { color: #ff8f8f; }
-.news-caption[data-who="Juno Vale"] { border-left-color: #ff8f8f; }
-@media (max-width: 480px) { .news-caption { font-size: 0.82rem; padding: 0.3rem 0.5rem; } }
+.news-caption[data-who="ARGUS"] .news-who { color: #ffb040; }
+.news-caption[data-who="Juno"] { border-left-color: #a8adb5; }
+.news-caption[data-who="Juno"] .news-who { color: #a8adb5; }
 
 .news-card {
   position: fixed;

@@ -8738,7 +8738,16 @@ async function trustFallNewsRun(options, t) {
       const cap = doc.getElementById("spark-caption");
       if (cap && !cap.hidden) {
         const who = (cap.querySelector(".news-who") || {}).textContent, say = (cap.querySelector(".news-say") || {}).textContent;
-        if (who && (!seen.length || seen[seen.length - 1][1] !== say)) seen.push([who, say]);
+        if (who && (!seen.length || seen[seen.length - 1][1] !== say)) {
+          seen.push([who, say]);
+          // Speaker colour and size (J 2026-11-14): Marcus white, ARGUS amber, Juno grey; 16px or more.
+          const cs = win.getComputedStyle(cap.querySelector(".news-who")), px = parseFloat(win.getComputedStyle(cap.querySelector(".news-say")).fontSize);
+          const rgb = cs.color.match(/\d+/g).map(Number), amber = rgb[0] > 200 && rgb[2] < 120, white = rgb.every((v) => v > 235), grey = Math.max(...rgb) - Math.min(...rgb) < 30 && rgb[0] > 120 && rgb[0] < 220;
+          const ok = { Marcus: white, ARGUS: amber, Juno: grey }[who];
+          if (ok === false) t.problem("bug", `${id}/${sid}: ${who}'s caption label is ${cs.color}, not the speaker's colour`);
+          if (px < 16 || parseFloat(cs.fontSize) < 16) t.problem("bug", `${id}/${sid}: the caption is ${px}px at ${W}x${H}, under 16px`);
+          t.event("caption-style", `${id}/${sid}: ${who} label ${cs.color}, ${px}px`);
+        }
       }
       if (lower && (!bar() || bar() !== b0 || !b0.querySelector(".news-plate"))) stayed = false;
       if (seen.length >= want.length) break;

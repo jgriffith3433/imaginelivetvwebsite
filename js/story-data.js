@@ -26623,7 +26623,7 @@ window.ILTV_STORIES = {
       "time": "6:00 AM",
       "caption": [
        [
-        "Marcus Okoro",
+        "Marcus",
         "Good morning, Meridian. At midnight, ARGUS goes live: every camera, every light, every door. And to the one who always watches: you know who you are."
        ],
        [
@@ -26759,11 +26759,11 @@ window.ILTV_STORIES = {
       "time": "10:00 PM",
       "caption": [
        [
-        "Juno Vale",
+        "Juno",
         "Seven years ago I pulled you out of that cell. I asked nothing."
        ],
        [
-        "Juno Vale",
+        "Juno",
         "One night, Rae. This city is ours."
        ]
       ],
@@ -26914,7 +26914,7 @@ window.ILTV_STORIES = {
       "time": "11:50 PM",
       "caption": [
        [
-        "Marcus Okoro",
+        "Marcus",
         "Ten minutes, Meridian. Whatever you think of it, tonight it starts watching over all of us."
        ],
        [
@@ -27149,7 +27149,7 @@ window.ILTV_STORIES = {
       "time": "11:58 PM",
       "caption": [
        [
-        "Juno Vale",
+        "Juno",
         "Sorry, Rae. Somebody has to be the face of it. Might as well be the one with the famous husband."
        ]
       ]
@@ -27217,7 +27217,7 @@ window.ILTV_STORIES = {
       "time": "12:00 AM",
       "caption": [
        [
-        "Marcus Okoro",
+        "Marcus",
         "Hey. Hey, where are you?"
        ],
        [
@@ -27538,7 +27538,7 @@ window.ILTV_STORIES = {
       "time": "6:00 AM",
       "caption": [
        [
-        "Marcus Okoro",
+        "Marcus",
         "Someone walked into that vault last night to break this city, and walked out because a machine wouldn't let go. If you're watching, you know who you are. Come home."
        ]
       ],
@@ -27608,7 +27608,7 @@ window.ILTV_STORIES = {
       "time": "6:14 AM",
       "caption": [
        [
-        "Marcus Okoro",
+        "Marcus",
         "Good morning, Meridian. My guest is the reason your lights are still on. Go ahead, Rae."
        ]
       ],
@@ -27675,7 +27675,7 @@ window.ILTV_STORIES = {
       "time": "6:14 AM",
       "caption": [
        [
-        "Marcus Okoro",
+        "Marcus",
         "Stay safe, Meridian. And to the one who came home: you know who you are."
        ]
       ],
@@ -27862,7 +27862,7 @@ window.ILTV_STORIES = {
       "time": "11:59 PM",
       "caption": [
        [
-        "Juno Vale",
+        "Juno",
         "Sorry, Rae. Somebody has to be the face of it. Nobody is coming for you."
        ]
       ]
@@ -27895,7 +27895,7 @@ window.ILTV_STORIES = {
       "time": "6:14 AM",
       "caption": [
        [
-        "Marcus Okoro",
+        "Marcus",
         "Good morning, Meridian. My guest says she can't prove any of it. Go ahead, Rae."
        ]
       ],

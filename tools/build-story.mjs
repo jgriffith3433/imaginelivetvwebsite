@@ -473,7 +473,7 @@ function branchVideo(video) {
     captions (one per line), whether the anchor's lower-third shows, a chapter card on arrival, a sign-off card at an ending. */
 function newsOf(st, s) {
   const chars = st.data.characters ?? {};
-  const who = (id) => (id === 'narrator' ? 'Narrator' : (chars[id]?.name ?? id));
+  const who = (id) => (id === 'narrator' ? 'Narrator' : (chars[id]?.label ?? chars[id]?.name ?? id));
   return {
     time: s.time,
     caption: (s.lines ?? []).map((l) => [who(l.speaker), l.text]),
