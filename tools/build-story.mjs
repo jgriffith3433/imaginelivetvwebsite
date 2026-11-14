@@ -743,7 +743,7 @@ function assets(st) {
   // so every shot keeps the same faces.
   for (const [id, c] of Object.entries(story.characters ?? {})) {
     if (!used.has(id)) continue;
-    const prompt = `Character reference sheet of this exact individual: ${c.look}. Full-body front view, three-quarter view, side view and back view, plus a close-up of the face, side by side on a plain mid-grey background. Same proportions and clothes in every view. ${story.style}`;
+    const prompt = `Character reference sheet of this exact individual: ${c.look}. ${c.views ?? 'Full-body front view, three-quarter view, side view and back view, plus a close-up of the face, side by side on a plain mid-grey background. Same proportions and clothes in every view.'} ${story.style}`;
     list.push({
       id: `${P}char-${id}`,
       note: c.seed ? `Reference sheet for ${c.name}${of}, from a frame of the filmed clips (${c.seed}).` : `Reference sheet for ${c.name}${of}, from the description alone (no filmed clip).`,
