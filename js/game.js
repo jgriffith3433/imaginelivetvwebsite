@@ -697,13 +697,16 @@
       if (next.poster && !posters[id]) {
         var img = new Image();
         img.src = next.poster;
-        var done = { ready: false };
+        var done = { ready: false, waiting: [] };
         posters[id] = done;
-        var fin = function () { done.ready = true; };
+        var fin = function () {
+          done.ready = true;
+          done.waiting.splice(0).forEach(function (fn) { fn(); });
+        };
         if (img.decode) img.decode().then(fin, fin); else img.onload = img.onerror = fin;
       }
       if (next.video && !preloaded[id]) {
-        var v = document.createElement("video");
+        var v = takeClip();
         v.preload = "auto";
         v.muted = true;
         v.playsInline = true;
@@ -713,6 +716,86 @@
       }
     });
   }
+
+  /* Clip elements are kept and reused, never made per scene. iPhone Safari lets a video play with sound only once a
+     press has started that element, and the permission stays with the element. So every press (Tap to play
+     included) starts each idle clip element, muted and unseen, and pauses it again; whichever one then shows the next
+     scene (after a choice, a choice's countdown running out, a one-choice page moving on, a Rewind) may play with
+     sound, pressed or not. An element is idle when it is off the page and not holding a preloaded clip. */
+  var clipPool = [];
+  var POOL_SIZE = 6; // the clip on screen, the one fading out, and up to four preloaded (three choices and a Rewind)
+  var pressing = false;
+  var nativeListen = HTMLMediaElement.prototype.addEventListener;
+  /** Listeners added while a scene holds the element end when the element is taken for the next one. */
+  function leasedListen(type, fn, opts) {
+    var o = opts && typeof opts === "object" ? Object.assign({}, opts) : { capture: !!opts };
+    if (!o.signal && this._lease) o.signal = this._lease.signal;
+    return nativeListen.call(this, type, fn, o);
+  }
+  function newClip() {
+    var v = document.createElement("video");
+    v.addEventListener = leasedListen;
+    clipPool.push(v);
+    return v;
+  }
+  function idleClip(v) {
+    if (v.isConnected) return false;
+    for (var id in preloaded) if (preloaded[id] === v) return false;
+    return true;
+  }
+  /** An idle clip element, cleared of the last scene's listeners and settings. */
+  function takeClip() {
+    var v = null;
+    for (var i = 0; i < clipPool.length && !v; i++) if (idleClip(clipPool[i])) v = clipPool[i];
+    if (!v) v = newClip();
+    if (v._lease) v._lease.abort();
+    v._lease = new AbortController();
+    try { v.pause(); } catch (e) { /* not started */ }
+    ["src", "poster", "data-sound-start", "class", "style", "title", "autoplay", "loop"].forEach(function (name) { v.removeAttribute(name); });
+    v.autoplay = false;
+    v.loop = false;
+    v.muted = false;
+    v._iltvLive = 0;
+    try { v.volume = 1; } catch (e) { /* read-only on iPhone */ }
+    v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+    blessClips();
+    return v;
+  }
+  /** During a press: start and pause every clip element that isn't playing, so iPhone lets each play with sound later. */
+  function blessClips() {
+    if (!pressing) return;
+    clipPool.forEach(function (v) {
+      if (v._blessed || !v.paused || v.error) return;
+      var wasMuted = v.muted;
+      var idle = idleClip(v);
+      v._blessed = true;
+      try {
+        v.muted = true;
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+        v.pause();
+        if (!idle && v.currentTime) v.currentTime = 0;
+      } catch (e) { v._blessed = false; }
+      v.muted = wasMuted;
+    });
+  }
+  for (var made = 0; made < POOL_SIZE; made++) newClip();
+  ["touchend", "pointerup", "click", "keydown"].forEach(function (type) {
+    document.addEventListener(type, function () {
+      pressing = true;
+      blessClips();
+      // Cleared once the whole press is handled (a microtask would run between its listeners).
+      setTimeout(function () { pressing = false; }, 0);
+    }, true);
+  });
+  document.addEventListener("hawkes:unlocked", function () {
+    var was = pressing;
+    pressing = true;
+    blessClips();
+    pressing = was;
+  });
 
   function targetReady(id) {
     var p = posters[id], v = preloaded[id];
@@ -747,12 +830,18 @@
       fromPlayer = true;
       show(choice.next);
     };
-    var poll = function () {
-      if (pendingTap !== token) return;
-      if (targetReady(choice.next) || performance.now() - t0 >= 300) go();
-      else setTimeout(poll, 20);
-    };
-    poll();
+    // Ready now: swap at once, still inside the press (iPhone keeps a press only through one short timer, and the
+    // choice's animation already used it). Otherwise the clip's canplay and the poster's decode call back, with one
+    // 300 ms cap. No timer loop.
+    if (targetReady(choice.next)) return go();
+    var check = function () { if (pendingTap === token && targetReady(choice.next)) go(); };
+    var pre = preloaded[choice.next], pic = posters[choice.next];
+    if (pre) {
+      pre.addEventListener("canplay", check, { once: true });
+      pre.addEventListener("error", check, { once: true });
+    }
+    if (pic && !pic.ready) pic.waiting.push(check);
+    setTimeout(go, 300);
   }
 
   function fullscreenElement() {
@@ -1368,13 +1457,14 @@
     if (videoSrc) {
       // The clip the choices preloaded is the one that plays: its buffer is already there, so the swap is one frame.
       const pre = preloaded[sceneId];
-      if (pre && !pre.error && pre.readyState >= 2 && pre.getAttribute("src") === videoSrc) {
+      // Adopted even if still loading: it is the element the viewer's press started, so iPhone lets it play with sound.
+      if (pre && !pre.error && pre.getAttribute("src") === videoSrc) {
         video = pre;
         delete preloaded[sceneId];
         video.muted = false;
         videoBox.dataset.adopted = "true";
       } else {
-        video = document.createElement("video");
+        video = takeClip();
         videoBox.dataset.adopted = "false";
         video.src = videoSrc;
       }

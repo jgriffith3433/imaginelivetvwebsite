@@ -176,40 +176,62 @@
   // has started it, so an element made after the Tap to play (a second story, All stories and back) would stay silent.
   // close() takes them off the page and open() puts the same, already unlocked, ones back.
   var pool = {};
-  function makeAudio(loop, key) {
+  var POOL_KEYS = ["voice", "bed", "sfx", "sting"];
+  /** One of the four page-long elements, made once (not put on the page: makeAudio does that when a story opens). */
+  function poolAudio(key) {
     var a = pool[key];
-    if (a) {
-      a.onended = a.onerror = null;
-      try { a.pause(); } catch (e) { /* gone */ }
-      a.src = SILENCE;
-      a.loop = !!loop;
-      document.body.appendChild(a);
-      if (window.hawkesSound) window.hawkesSound.apply(a);
-      return a;
-    }
+    if (a) return a;
     a = pool[key] = document.createElement("audio");
     a.addEventListener("playing", function () { a._primed = true; });
     a.src = SILENCE;
-    a.loop = !!loop;
     a.preload = "auto";
     a.setAttribute("playsinline", "");
     a.setAttribute("data-sound-start", "");
+    return a;
+  }
+  function makeAudio(loop, key) {
+    var a = pool[key];
+    var fresh = !a;
+    a = poolAudio(key);
+    if (!fresh) {
+      a.onended = a.onerror = null;
+      try { a.pause(); } catch (e) { /* gone */ }
+      a.src = SILENCE;
+    }
+    a.loop = !!loop;
     document.body.appendChild(a);
     if (window.hawkesSound) window.hawkesSound.apply(a);
     return a;
   }
+  // The four exist from the start, so the very first press that unlocks sound (any story's Tap to play, or a card's
+  // press once sound is on) starts every one of them: a story opened later, or second, never has an element no press
+  // has started (iOS refuses those, without a word, and the story plays silent).
+  POOL_KEYS.forEach(poolAudio);
 
-  /** Any press while sound is unlocked starts the silent clip on an element no press has started yet (a phone's
-      unlock is per element), so every later line, bed and effect plays without another tap. */
+  /** Any press while sound is unlocked starts every element no press has started yet (a phone's unlock is per
+      element), so every later line, bed and effect plays without another tap. An idle one plays its silent clip; one
+      that holds a file is started and paused at once, inside the press, so nothing is heard early. */
   function prime() {
     if (!soundReady()) return;
-    [voice, bed, sfx, sting].forEach(function (a) {
-      if (!a || a._primed || !a.paused || a.src !== SILENCE) return;
-      try { var p = a.play(); if (p && p.catch) p.catch(function () {}); } catch (e) { /* not now */ }
+    POOL_KEYS.forEach(function (key) {
+      var a = pool[key];
+      if (!a || a._primed || !a.paused) return;
+      var idle = a.src === SILENCE;
+      try {
+        var p = a.play();
+        if (p && p.catch) p.catch(function () {});
+        if (!idle) { a.pause(); a._primed = true; }
+      } catch (e) { /* not now */ }
     });
   }
   ["touchend", "pointerup", "click", "keydown"].forEach(function (type) {
     document.addEventListener(type, prime, true);
+  });
+  // The Tap to play press itself (js/hawkes-sound.js says so inside the press): start all four, and bring back the bed
+  // a refused start left paused. A line that was refused waits for this too (playLine), with no timer.
+  document.addEventListener("hawkes:unlocked", function () {
+    prime();
+    if (story && bed && bed.paused && bed.src !== SILENCE && bedCue) playEl(bed).catch(function () {});
   });
 
   function soundReady() {
@@ -319,12 +341,13 @@
         el.onended = el.onerror = null;
         // Sound counts as unlocked but this element was refused (a phone): the prompt comes back, its tap starts it.
         if (soundReady() && window.hawkesSound && window.hawkesSound.relock) window.hawkesSound.relock();
-        var wait = function () {
+        if (!window.hawkesSound) return byTimer(line.dur * 1000);
+        var again = function () {
+          document.removeEventListener("hawkes:unlocked", again);
           if (finished || at !== flow) return; // heard (Skip) or the scene was left
-          if (soundReady()) return playLine(line, done);
-          timer = setTimeout(wait, 250);
+          playLine(line, done);
         };
-        wait();
+        document.addEventListener("hawkes:unlocked", again);
       } else if (!retried) byTimer(line.dur * 1000); // a failed load: onerror's retry owns the timer
     });
   }
