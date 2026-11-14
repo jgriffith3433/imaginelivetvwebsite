@@ -8723,6 +8723,134 @@ async function trustFallEndingsRun(options, t) {
   }
 }
 
+/** Trust meter (J, 2026-11-14): Trust Fall's kit bar at 390x844 with touch. A seeded run (seeded-run) at the first page, a real
+    tap on Ask how it knows you shows trust 1; then a seeded run at the garage and the believing way by taps (Take the drive,
+    Stop and listen, Believe it, Down to the core, Wait. ARGUS promised): trust 2, 3, 3 at the vault, 4 at the promise. Blindspot
+    is a carried item from the garage on; the copy and the jammer are not on the bar. At every fork the bar sits on screen above
+    the choices, clear of them, with the count readable. Events trust-meter, carried-item, kit-fit; metrics trustAtVault, trustMax. */
+async function trustMeterRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const st = story(id);
+  if (!st || !st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  await passPrompt(t);
+  const W = 390, H = 844;
+  const readTrust = (doc) => {
+    const el = doc.querySelector('.inventory.kit [data-item="trust"]');
+    return el ? Number(el.dataset.count) : null;
+  };
+  const carried = (doc) => [...doc.querySelectorAll(".inventory.kit .kit-item")].map((el) => el.dataset.item).filter((x) => x !== "trust");
+  const settle = async (doc, win, sid) => {
+    if (!(await waitFor(() => win.finalSpark.scene() === sid, 8000))) throw new Error(`${id}: expected ${sid}, at ${win.finalSpark.scene()}`);
+    await rewindEndClip(doc);
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice").length > 0, 12000);
+    await waitFor(() => !doc.getElementById("spark").dataset.beat, 6000);
+    await sleep(400);
+    return box;
+  };
+  /** The bar on screen, clear of the choices, its trust count readable. */
+  const fit = (doc, win, sid) => {
+    const bar = doc.querySelector(".inventory.kit");
+    const box = doc.getElementById("spark-choices");
+    const trust = bar && bar.querySelector('[data-item="trust"]');
+    if (!trust) { t.problem("bug", `${id}/${sid}: no trust item in the kit bar`); return; }
+    const num = trust.querySelector(".kit-count");
+    const br = bar.getBoundingClientRect(), tr = trust.getBoundingClientRect(), nr = num.getBoundingClientRect();
+    const font = parseFloat(win.getComputedStyle(num).fontSize);
+    const cr = [...box.querySelectorAll(".choice")].map((b) => b.getBoundingClientRect()).filter((r) => r.width);
+    const overlap = cr.some((r) => br.bottom > r.top + 1 && br.top < r.bottom - 1 && br.right > r.left && br.left < r.right);
+    const hidden = win.getComputedStyle(trust).visibility === "hidden" || nr.width === 0;
+    if (tr.left < -1 || tr.right > W + 1 || tr.top < -1 || tr.bottom > H + 1) t.problem("bug", `${id}/${sid}: the trust ring is off the ${W}x${H} screen`);
+    if (overlap) t.problem("bug", `${id}/${sid}: the kit bar covers a choice at ${W}x${H}`);
+    if (hidden || font < 14) t.problem("bug", `${id}/${sid}: the trust count is not readable (${font}px)`);
+    t.event("kit-fit", `${id}/${sid}: trust ${num.textContent.trim()} at ${Math.round(tr.left)},${Math.round(tr.top)} ${Math.round(tr.width)}x${Math.round(tr.height)}, ${font}px, bar bottom ${Math.round(br.bottom)} above choices ${cr.length ? Math.round(Math.min(...cr.map((r) => r.top))) : "-"}, touch ${win.matchMedia("(pointer: coarse)").matches}`);
+  };
+  const press = async (doc, win, from, text, to) => {
+    const box = doc.getElementById("spark-choices");
+    const btn = [...box.querySelectorAll(".choice")].find((b) => enText(b).includes(text));
+    if (!btn) throw new Error(`${id}/${from}: no choice "${text}"`);
+    btn.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, btn, `"${enText(btn)}"`);
+    return settle(doc, win, to);
+  };
+  const expect = (doc, sid, want) => {
+    const got = readTrust(doc);
+    t.event("trust-meter", `${id}/${sid}: trust ${got} (want ${want})`);
+    if (got !== want) t.problem("bug", `${id}/${sid}: the kit bar shows trust ${got}, want ${want}`);
+    return got;
+  };
+  try {
+    // 1. Ask how it knows you: trust 1.
+    t.scene(`${id}: Ask how it knows you`);
+    gateSeed(t, st, [st.start], "trust at the first fork");
+    let doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    let win = doc.defaultView;
+    await passPrompt(t, doc, `${id} ${st.start} ${W}x${H}`);
+    await settle(doc, win, st.start);
+    expect(doc, st.start, 0);
+    fit(doc, win, st.start);
+    await press(doc, win, st.start, "Ask how it knows", "asked");
+    expect(doc, "asked", 1);
+    fit(doc, win, "asked");
+    t.progress(0.3);
+    closeViewFrame();
+    // 2. The believing way, from the garage.
+    t.scene(`${id}: the believing way`);
+    gateSeed(t, st, [st.start, "asked", "crew"], "the believing way");
+    doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    win = doc.defaultView;
+    await passPrompt(t, doc, `${id} crew ${W}x${H}`);
+    await settle(doc, win, "crew");
+    expect(doc, "crew", 1);
+    const has = carried(doc);
+    t.event("carried-item", `${id}/crew: carrying ${has.join(", ") || "nothing"}`);
+    if (!has.includes("blindspot")) t.problem("bug", `${id}/crew: Blindspot is not shown as a carried item`);
+    if (has.includes("copy") || has.includes("jammer")) t.problem("bug", `${id}/crew: the copy or the jammer is shown before you have it`);
+    const bs = doc.querySelector('.inventory.kit [data-item="blindspot"]');
+    if (bs && bs.querySelector(".kit-count")) t.problem("bug", `${id}/crew: a carried item shows a count`);
+    fit(doc, win, "crew");
+    await press(doc, win, "crew", "Take the drive", "tower");
+    expect(doc, "tower", 1);
+    await press(doc, win, "tower", "Stop and listen", "listen");
+    expect(doc, "listen", 2);
+    fit(doc, win, "listen");
+    await press(doc, win, "listen", "Believe it", "believe");
+    expect(doc, "believe", 3);
+    await press(doc, win, "believe", "Down to the core", "core");
+    const atVault = expect(doc, "core", 3);
+    fit(doc, win, "core");
+    if (!carried(doc).includes("blindspot")) t.problem("bug", `${id}/core: Blindspot is no longer carried at the vault`);
+    await press(doc, win, "core", "ARGUS promised", "promise");
+    const atPromise = expect(doc, "promise", 4);
+    fit(doc, win, "promise");
+    t.metric("trustAtVault", atVault);
+    t.metric("trustMax", atPromise);
+    t.event("screenshot", `${id}/promise at ${W}x${H}: trust ${atPromise} of 4, carrying ${carried(doc).join(", ")}`);
+    closeViewFrame();
+    // 3. The copy and the jammer, from the garage and the Tower.
+    t.scene(`${id}: the copy and the jammer`);
+    gateSeed(t, st, [st.start, "unplug", "crew"], "the copy");
+    doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    win = doc.defaultView;
+    await passPrompt(t, doc, `${id} crew ${W}x${H}`);
+    await settle(doc, win, "crew");
+    expect(doc, "crew", 0);
+    await press(doc, win, "crew", "Copy it", "readWorm");
+    if (!carried(doc).includes("copy")) t.problem("bug", `${id}/readWorm: the copy is not shown as a carried item`);
+    await press(doc, win, "readWorm", "play along", "tower");
+    await press(doc, win, "tower", "Jam it", "jam");
+    const got = carried(doc);
+    t.event("carried-item", `${id}/jam: carrying ${got.join(", ")}`);
+    if (!got.includes("jammer")) t.problem("bug", `${id}/jam: the jammer is not shown as a carried item`);
+    expect(doc, "jam", 0);
+    fit(doc, win, "jam");
+    t.progress(1);
+  } finally {
+    closeViewFrame();
+  }
+}
+
 /** Text fit (J, 2026-11-14): on a phone no page's text outlasts its page or is cut off. For the story line, the question,
     the ending card, a death's line and every choice button: the box lies inside the screen; text that is taller than its box
     must scroll inside it (overflow auto/scroll), never be clipped (overflow hidden/clip) by it or by an ancestor; a button's
@@ -9547,6 +9675,13 @@ installPlaytest({
       description: "The Water Road at 390x844 (a frame; each fork opened from a seeded run there, a setup shortcut, event seeded-run; the Tap to play prompt pressed). At each fork that has a choice behind a count of water (the dry wash needs 2, the night's barrel on the rocks needs 3): reached with enough water the option is a button; reached short of it the option is not a button but a greyed-out row that says why (\"needs water 3+\", 48px or taller, 14px type or more, not pressable: a touch on it does nothing), and the water count in the inventory bar is fully on screen above no choice, with the count the story holds (events water-gate-open, water-gate-locked, metric waterForks). At the dry wash and the night raid, a run that helped the family and one that passed them read and offer differently (the boy recognises the riders, the father stands with you; event family-callback). Each ending's words name an earlier choice (ending-callback). Two deaths at most, and the warning shot and the high ground cost barrels, a mule or a rider instead (events cost-not-death, deaths). Options: {\"story\":\"<id>\"}.",
     },
     {
+      id: "trust-meter",
+      title: "Trust Fall's trust ring: +1 on Ask how it knows you, Stop and listen, Believe it and Wait; Blindspot, the copy and the jammer are carried items; on a phone nothing is covered",
+      seconds: 120,
+      tags: ["full"],
+      description: "Trust Fall (draft, /?story=trust-fall) at 390x844 with touch taps in a frame. A seeded run (seeded-run) at the first page, a real tap on Ask how it knows you: the amber trust ring in the kit bar reads 1. A seeded run at the garage, then taps on Take the drive, Stop and listen (2), Believe it (3), Down to the core (3 at the vault) and Wait. ARGUS promised (4): events trust-meter, metrics trustAtVault and trustMax. Blindspot shows as a carried item (no count) from the garage; the copy (Copy it and read it first) and the jammer (Jam it) show once taken (carried-item). At every fork the bar is on screen, clear of the choices, and the trust count is 14px or more (kit-fit).",
+    },
+    {
       id: "trust-fall-endings",
       title: "Trust Fall's endings gallery on a phone: Live gives '1 of 3 found', Unseen and Good morning are silhouettes with hints, no sideways scroll",
       seconds: 90,
@@ -9799,6 +9934,7 @@ installPlaytest({
       else if (id === "spark-depth") await sparkDepthRun(options, t);
       else if (id === "water-gates") await waterGatesRun(options, t);
       else if (id === "trust-fall") await trustFallRun(options, t);
+      else if (id === "trust-meter") await trustMeterRun(options, t);
       else if (id === "trust-fall-endings") await trustFallEndingsRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);

@@ -26480,6 +26480,46 @@ window.ILTV_STORIES = {
      "depth": "Hour"
     }
    },
+   "inventory": {
+    "label": "Carrying",
+    "items": [
+     {
+      "id": "trust",
+      "name": "Trust",
+      "icon": "ring",
+      "start": 0,
+      "max": 4,
+      "note": "How far you have trusted ARGUS: it grows each time you ask, listen, believe and wait."
+     },
+     {
+      "id": "blindspot",
+      "name": "Blindspot",
+      "icon": "drive",
+      "carried": true,
+      "start": 0,
+      "max": 1,
+      "note": "Juno's drive, built to blind ARGUS."
+     },
+     {
+      "id": "copy",
+      "name": "The copy",
+      "icon": "drive",
+      "carried": true,
+      "start": 0,
+      "max": 1,
+      "note": "Your copy of Blindspot: the worm you read."
+     },
+     {
+      "id": "jammer",
+      "name": "Jammer",
+      "icon": "jammer",
+      "carried": true,
+      "start": 0,
+      "max": 1,
+      "note": "The jammer from the Tower, still in your hand."
+     }
+    ]
+   },
    "endings": [
     {
      "id": "truth",
@@ -26602,6 +26642,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/how-it-knows/scene.mp4",
      "poster": "/trust-fall/how-it-knows/poster/scene.webp",
      "small": "/trust-fall/how-it-knows/sm/scene.mp4",
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Go to the garage",
@@ -26630,6 +26673,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-garage/poster/scene.webp",
      "small": "/trust-fall/the-garage/sm/scene.mp4",
      "live": 18,
+     "inventory": {
+      "blindspot": 1
+     },
      "choices": [
       [
        "1. Take the drive and go",
@@ -26668,6 +26714,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/whats-inside/poster/scene.webp",
      "small": "/trust-fall/whats-inside/sm/scene.mp4",
      "live": 18,
+     "inventory": {
+      "copy": 1
+     },
      "choices": [
       [
        "1. Go anyway, and play along",
@@ -26774,6 +26823,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/lights-out/scene.mp4",
      "poster": "/trust-fall/lights-out/poster/scene.webp",
      "small": "/trust-fall/lights-out/sm/scene.mp4",
+     "inventory": {
+      "jammer": 1
+     },
      "choices": [
       [
        "1. Down to the core",
@@ -26802,6 +26854,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/what-it-knows/poster/scene.webp",
      "small": "/trust-fall/what-it-knows/sm/scene.mp4",
      "live": 18,
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Believe it",
@@ -26849,6 +26904,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/the-bait/scene.mp4",
      "poster": "/trust-fall/the-bait/poster/scene.webp",
      "small": "/trust-fall/the-bait/sm/scene.mp4",
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Down to the core",
@@ -27087,6 +27145,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/the-promise/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/rescue.mp3",
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Walk out",

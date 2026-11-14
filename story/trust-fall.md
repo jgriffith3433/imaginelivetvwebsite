@@ -136,3 +136,7 @@ its media is made, takes the beat's place and keeps the order: action first, wor
   Their clips (and the talking shots, 19 in the recipes) are the media still to make.
 - The build cuts a scene as soon as its shots, narration and music exist; a talking shot is cut in only once both its
   video and its recording are made. A scene whose lines have no talking shots yet keeps the live tail under its choices.
+
+## The trust ring and what you carry (J, 2026-11-14)
+
+The kit bar ("Carrying", `js/kit.js`) shows ARGUS's amber ring with a count, **Trust**, 0 to 4: +1 on arriving at How it knows (Ask how it knows you), What it knows (Stop and listen), The bait (Believe it) and The promise (Wait. ARGUS promised); it never goes below 0. On the believing way it reads 3 at the vault and 4 once you Wait. Carried items appear only once you have them, with no count: **Blindspot** (from the garage), **the copy** (Copy it and read it first) and **the jammer** (Jam it and keep going). Playtest `trust-meter`.
