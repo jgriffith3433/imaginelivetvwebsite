@@ -1017,10 +1017,8 @@
           "next": "believer",
           "requires": {
             "believed": true,
-            "waited": true
-          },
-          "forbids": {
-            "listened": true
+            "waited": true,
+            "listened": false
           },
           "needs": {
             "trust": 3

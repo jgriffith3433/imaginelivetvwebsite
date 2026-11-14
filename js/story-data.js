@@ -27263,7 +27263,8 @@ window.ILTV_STORIES = {
        {
         "requires": {
          "believed": true,
-         "waited": true
+         "waited": true,
+         "listened": false
         },
         "needs": {
          "trust": 3
