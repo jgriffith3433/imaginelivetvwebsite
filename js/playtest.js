@@ -8948,8 +8948,8 @@ async function trustFallRun(options, t) {
       rewindCheckButtons(t, doc, `${id} ${target} (${W}x${H})`, { phone: true });
       for (const b of doc.querySelectorAll("#spark-choices [data-death]")) {
         const r = b.getBoundingClientRect();
-        if (r.top < H * 0.6 || r.width < 44 || r.height < 44) t.problem("bug", `${id}/${target}: the ${b.dataset.death} button (${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.top)}px) is not in the bottom 40% of a ${H}px screen with a 44px target`);
-        else t.event("thumb-reach", `${id}/${target}: ${b.dataset.death} ${Math.round(r.width)}x${Math.round(r.height)}, top ${Math.round(r.top)}px of ${H}px (bottom 40%)`);
+        if (r.top < (H * 2) / 3 || r.bottom > H + 1 || r.width < 44 || r.height < 48) t.problem("bug", `${id}/${target}: the ${b.dataset.death} button (${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.top)}px) is not in the bottom third of a ${H}px screen with a 48px target`);
+        else t.event("thumb-reach", `${id}/${target}: ${b.dataset.death} ${Math.round(r.width)}x${Math.round(r.height)}, top ${Math.round(r.top)}px of ${H}px (bottom third)`);
       }
       deathsSeen.push(target);
       t.event("death", `${id}: ${target}`);
@@ -9031,6 +9031,46 @@ async function trustFallRun(options, t) {
       t.event("phone-layout", `${id}/${sid}: clip ${Math.round(stage.top)}-${Math.round(stage.bottom)}, text ${Math.round(text.top)}-${Math.round(text.bottom)}, choices ${btns.map((b) => `${Math.round(b.top)}-${Math.round(b.bottom)}`).join(", ")} of ${H}`);
       t.event("screenshot", `${id}/${sid} at ${W}x${H}: clip above the text, choices at the foot of the screen`);
       t.metric("trustFallPhoneChoiceTop", Math.round(Math.min(...btns.map((b) => b.top))));
+      closeViewFrame();
+    }
+  }
+
+  // 4c. After the river (the death at the end of "Go back and face Juno"): both buttons by touch. Rewind returns to the
+  // fork with the deadly choice marked Tried; Start over returns to First light.
+  for (const dsid of ids.filter(dead)) {
+    const fork = ids.find((x) => !dead(x) && st.scenes[x].choices.some((c) => c[2] === dsid) && wayTo(x));
+    if (!fork) continue;
+    const deadly = st.scenes[fork].choices.find((c) => c[2] === dsid);
+    for (const kind of ["rewind", "start"]) {
+      t.scene(`${id}: ${kind} after ${dsid}`);
+      const doc = await open(wayTo(fork), `${kind} after ${dsid}`);
+      const win = doc.defaultView;
+      const fbox = await ready(doc, fork);
+      const killer = visible(fbox).find((b) => label(b).replace(/^\d+\.\s*/, "") === deadly[1].replace(/^\d+\.\s*/, ""));
+      if (!killer) { t.problem("bug", `${id}/${fork}: the deadly choice "${deadly[1]}" isn't offered`); closeViewFrame(); continue; }
+      await tapAt(t, killer, `the deadly choice at ${fork}`);
+      if (!(await waitFor(() => win.finalSpark.scene() === dsid, 6000))) { t.problem("bug", `${id}/${fork}: pressing "${deadly[1]}" didn't reach ${dsid}`); closeViewFrame(); continue; }
+      await rewindEndClip(doc);
+      const box = doc.getElementById("spark-choices");
+      await waitFor(() => box.querySelectorAll("[data-death]").length >= 2, 8000);
+      await sleep(350);
+      const btn = box.querySelector(`[data-death="${kind}"]`);
+      if (!btn) { t.problem("bug", `${id}/${dsid}: no ${kind} button`); closeViewFrame(); continue; }
+      const r = btn.getBoundingClientRect();
+      if (r.top < (H * 2) / 3 || r.height < 48) t.problem("bug", `${id}/${dsid}: ${kind} at ${Math.round(r.top)}px, ${Math.round(r.height)}px tall (bottom third, 48px wanted)`);
+      else t.event("death-buttons-reach", `${id}/${dsid}: ${kind} top ${Math.round(r.top)} of ${H}, ${Math.round(r.width)}x${Math.round(r.height)}`);
+      await tapAt(t, btn, `${kind} after ${dsid}`);
+      const want = kind === "rewind" ? fork : st.start;
+      if (!(await waitFor(() => win.finalSpark.scene() === want, 4000))) t.problem("bug", `${id}/${dsid}: ${kind} didn't return to ${want} (at ${win.finalSpark.scene()})`);
+      else t.event(`${kind}-after-death`, `${id}/${dsid}: ${kind} -> ${want}`);
+      if (kind === "rewind") {
+        const rbox = doc.getElementById("spark-choices");
+        await waitFor(() => rbox.dataset.phase === "ready" && rbox.querySelector(".choice"), 8000);
+        await sleep(350);
+        const tried = [...rbox.querySelectorAll(".choice")].find((b) => label(b).replace(/^\d+\.\s*/, "") === deadly[1].replace(/^\d+\.\s*/, ""));
+        if (!tried) t.problem("bug", `${id}/${fork}: after Rewind the deadly choice "${deadly[1]}" isn't there`);
+        else rewindCheckTried(t, doc, tried, `${id}/${fork} after Rewind`);
+      }
       closeViewFrame();
     }
   }
