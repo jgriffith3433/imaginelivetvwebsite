@@ -402,6 +402,12 @@ bar of items instead (`js/kit.js`; The Water Road's revolver, bullets and flask)
   a counted item `start` and `max`; `note` is its tooltip. `"empty": "dead"` says running out of it ends the run.
 - On a scene, `inventory` is what it does: `{ "water": -1 }` takes one, `{ "water": { "set": 4 } }` sets it.
 
+- A **carried** item (`"carried": true`, with `start` 0 and `max` 1: Trust Fall's Blindspot, the copy, the jammer) is on the bar
+  only once a scene gives it (`{ "blindspot": 1 }`), and shows no count. Icons also include `ring` (Trust Fall's amber trust),
+  `drive` and `jammer`. Trust Fall's `trust` is a counted item (0 to 4): +1 on arriving at How it knows (Ask how it knows you),
+  What it knows (Stop and listen), The bait (Believe it) and The promise (Wait. ARGUS promised). Counts change on arriving at a scene,
+  so at The vault it reads 3 on the believing way and 4 at The promise. Playtest `trust-meter`.
+
 **`keepFlashlight`.** An inventory with `"keepFlashlight": true` (The Final Spark's one item, `matches`, icon `match`) does
 not replace the flashlight: the count is one number beside the torch in the flashlight bar (`js/spot.js`, `#match-count`,
 red at 2 or fewer; a branch page gets it as `<html data-matches>`), and the player sets it from the way you came.

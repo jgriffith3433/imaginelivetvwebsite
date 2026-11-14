@@ -53,6 +53,46 @@
     "death": "sparse low piano over soft static, slow and empty, instrumental",
     "end": "warm sunrise theme, synth and full strings swelling, quiet and tender at the end, instrumental"
   },
+  "inventory": {
+    "label": "Carrying",
+    "items": [
+      {
+        "id": "trust",
+        "name": "Trust",
+        "icon": "ring",
+        "start": 0,
+        "max": 4,
+        "note": "How far you have trusted ARGUS: it grows each time you ask, listen, believe and wait."
+      },
+      {
+        "id": "blindspot",
+        "name": "Blindspot",
+        "icon": "drive",
+        "carried": true,
+        "start": 0,
+        "max": 1,
+        "note": "Juno's drive, built to blind ARGUS."
+      },
+      {
+        "id": "copy",
+        "name": "The copy",
+        "icon": "drive",
+        "carried": true,
+        "start": 0,
+        "max": 1,
+        "note": "Your copy of Blindspot: the worm you read."
+      },
+      {
+        "id": "jammer",
+        "name": "Jammer",
+        "icon": "jammer",
+        "carried": true,
+        "start": 0,
+        "max": 1,
+        "note": "The jammer from the Tower, still in your hand."
+      }
+    ]
+  },
   "ui": {
     "en": {
       "mouth": "First light",
@@ -168,6 +208,7 @@
     },
     {
       "id": "asked",
+      "inventory": { "trust": 1 },
       "folder": "how-it-knows",
       "lang": "en",
       "title": [
@@ -207,6 +248,7 @@
     },
     {
       "id": "crew",
+      "inventory": { "blindspot": 1 },
       "folder": "the-garage",
       "lang": "en",
       "title": [
@@ -264,6 +306,7 @@
     },
     {
       "id": "readWorm",
+      "inventory": { "copy": 1 },
       "folder": "whats-inside",
       "lang": "en",
       "title": [
@@ -402,6 +445,7 @@
     },
     {
       "id": "jam",
+      "inventory": { "jammer": 1 },
       "folder": "lights-out",
       "lang": "en",
       "title": [
@@ -435,6 +479,7 @@
     },
     {
       "id": "listen",
+      "inventory": { "trust": 1 },
       "folder": "what-it-knows",
       "lang": "en",
       "title": [
@@ -494,6 +539,7 @@
     },
     {
       "id": "believe",
+      "inventory": { "trust": 1 },
       "folder": "the-bait",
       "lang": "en",
       "title": [
@@ -809,6 +855,7 @@
     },
     {
       "id": "promise",
+      "inventory": { "trust": 1 },
       "folder": "the-promise",
       "lang": "en",
       "title": [
