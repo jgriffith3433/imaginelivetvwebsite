@@ -26916,6 +26916,10 @@ window.ILTV_STORIES = {
        "when": {
         "believed": true
        },
+       "story": [
+        "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there.",
+        "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there."
+       ],
        "question": [
         "The door shut, just like ARGUS said it would. What do you do?",
         "The door shut, just like ARGUS said it would. What do you do?"
@@ -27013,6 +27017,21 @@ window.ILTV_STORIES = {
         "chased": true
        }
       ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "believed": true
+       },
+       "story": [
+        "The lock clunks open before you finish asking. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
+        "The lock clunks open before you finish asking. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+       ],
+       "question": [
+        "It was there, like it said. What now?",
+        "It was there, like it said. What now?"
+       ]
+      }
      ]
     },
     "chase": {
@@ -27120,6 +27139,10 @@ window.ILTV_STORIES = {
        "when": {
         "believed": true
        },
+       "story": [
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
+       ],
        "question": [
         "ARGUS kept its promise. What do you do?",
         "ARGUS kept its promise. What do you do?"
