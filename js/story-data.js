@@ -26969,8 +26969,8 @@ window.ILTV_STORIES = {
        null,
        null,
        {
-        "requires": {
-         "believed": true
+        "needs": {
+         "trust": 3
         }
        }
       ]
@@ -27281,7 +27281,36 @@ window.ILTV_STORIES = {
       "THE END. You were the story.",
       "THE END. You were the story."
      ],
-     "choices": []
+     "choices": [],
+     "variants": [
+      {
+       "when": {
+        "chased": true
+       },
+       "story": [
+        "You walk into the studio at seven in last night's jacket, the bridge still in your legs, and sit down at Marcus's glass desk. You tell the whole city who you are and what you came to do, and that you went after Juno alone when you didn't have to. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
+        "You walk into the studio at seven in last night's jacket, the bridge still in your legs, and sit down at Marcus's glass desk. You tell the whole city who you are and what you came to do, and that you went after Juno alone when you didn't have to. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
+       ]
+      },
+      {
+       "when": {
+        "calledMarcus": true
+       },
+       "story": [
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. Marcus says on air that your call came through eleven floors of concrete, and that he heard you. ARGUS vouches for every word. When the camera light goes off, he leans over and says it just to you: you know who you are.",
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. Marcus says on air that your call came through eleven floors of concrete, and that he heard you. ARGUS vouches for every word. When the camera light goes off, he leans over and says it just to you: you know who you are."
+       ]
+      },
+      {
+       "when": {
+        "believed": true
+       },
+       "story": [
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. You tell them you believed a machine in a lobby, and the light above the camera is amber, not red. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. You tell them you believed a machine in a lobby, and the light above the camera is amber, not red. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
+       ]
+      }
+     ]
     },
     "shadow": {
      "folder": "trust-fall/unseen",
@@ -27307,7 +27336,36 @@ window.ILTV_STORIES = {
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
      ],
-     "choices": []
+     "choices": [],
+     "variants": [
+      {
+       "when": {
+        "chased": true
+       },
+       "story": [
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name, the same way you rode off the Harbor Bridge, alone. ARGUS never gives your name to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name, the same way you rode off the Harbor Bridge, alone. ARGUS never gives your name to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+       ]
+      },
+      {
+       "when": {
+        "calledMarcus": true
+       },
+       "story": [
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. Marcus knows only that someone called him from under the Tower and he heard them, and ARGUS never gives him more. The next morning there's a new line at the end of his broadcast, and only two people in Meridian know who it's for.",
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. Marcus knows only that someone called him from under the Tower and he heard them, and ARGUS never gives him more. The next morning there's a new line at the end of his broadcast, and only two people in Meridian know who it's for."
+       ]
+      },
+      {
+       "when": {
+        "believed": true
+       },
+       "story": [
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them; you asked it to keep that one thing, and it does. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them; you asked it to keep that one thing, and it does. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+       ]
+      }
+     ]
     },
     "believer": {
      "folder": "trust-fall/good-morning",
