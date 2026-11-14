@@ -89,3 +89,18 @@ Studio's asset make into `<folder>/media/narration-v<n>.mp3`); `npm run story` c
 scene's shots and plays it for the run whose flags pick that variant. Base narrations changed too (words and an ending's "THE END"
 line are narrated now), so every Trust Fall voice is to be remade (voice only, cents; no new picture) and every cut re-cut.
 Playtest `trust-fall` (section 4b) walks every variant by the flags that pick it and checks words, fit at 390x844 and narration.
+
+## One voice at a time (J, 2026-11-14)
+"Make sure any that have vocal lines in the video don't overlap with the story line being read too. Worst case just wait until
+the video is done before reading the line." The rule for every voice in Trust Fall:
+1. **One voice is audible at a time.** The narrator, ARGUS, Marcus and Juno never speak together, in a clip or over a still.
+2. **The narrator goes first, alone.** The page's story and question are read before anyone in the scene speaks; the lines
+   (a talking shot, or ARGUS's recording where there is no shot) follow, each with its caption.
+3. **The caption names the voice you hear:** none while the narrator reads (the page text is the narration), then each speaker's
+   name as that voice begins.
+4. **Where the cut can't sequence it, wait.** A clip whose speech isn't timed in the data holds the lines until the clip's speech has
+   ended (J's fallback), never a polling loop.
+5. **Music and beds duck under every voice** (at least 6 dB) and come back after; a one-choice page carries on only after ARGUS has
+   finished its line.
+When you write a line for a scene with a clip, write it to be spoken after the narration: the page's two sentences, then the line.
+Do not write a line that answers the narration mid-sentence. How it is built and checked: `story/trust-fall.md`, "One voice at a time".

@@ -586,31 +586,130 @@
     }), secs: total + 0.3 };
   }
 
-  function playVoice(key, text, speaker, late) {
+  /* ---- One voice at a time (story doc "One voice at a time", J 2026-11-14). Every voice has a span: ARGUS's line, the
+     narrator over a still, and (game.js, voiceSpan) a voice inside the clip. A line asked for while another voice speaks
+     waits in a queue and starts VOICE_GAP ms after the last one ends: nothing talks over anything. The log of starts and
+     ends, and any start that found another voice open (an overlap), are for the playtest. ---- */
+  var VOICE_GAP = 300;
+  var talking = {};      // id -> { who, key, kind }: the voices speaking now
+  var voiceQueue = [];   // lines waiting for the voices above to end
+  var voiceLog = [];     // every span start and end { ev, id, who, key, kind, t, note }
+  var voiceOverlaps = [];
+  var voiceNote = null;  // game.js: what the player shows when a voice starts (the caption's speaker)
+  var drainTimer = null;
+  var lineNode = null;   // the line being spoken { src, g, key }
+  var idleWaiters = [];
+  function stamp() { return Math.round(performance.now()); }
+  function anyoneTalking() { return Object.keys(talking).length > 0; }
+  function voiceStart(who, key, kind) {
+    var id = who + ":" + key, others = Object.keys(talking);
+    if (talking[id]) return id;
+    talking[id] = { who: who, key: key, kind: kind };
+    var e = { ev: "start", id: id, who: who, key: key, kind: kind, t: stamp() };
+    if (voiceNote) { try { e.note = voiceNote(who, key, kind); } catch (x) { /* no note */ } }
+    voiceLog.push(e);
+    if (voiceLog.length > 400) voiceLog.shift();
+    if (others.length) {
+      var o = { id: id, who: who, key: key, with: others, t: e.t };
+      voiceOverlaps.push(o);
+      tell("voice-overlap", o);
+    }
+    return id;
+  }
+  function voiceStop(who, key) {
+    var id = who + ":" + key;
+    if (!talking[id]) return;
+    delete talking[id];
+    voiceLog.push({ ev: "end", id: id, who: who, key: key, t: stamp() });
+    if (!anyoneTalking()) {
+      if (voiceQueue.length) drainSoon();
+      else { var w = idleWaiters; idleWaiters = []; w.forEach(function (f) { try { f(); } catch (x) { /* ignore */ } }); }
+    }
+  }
+  function drainSoon() {
+    if (drainTimer || !voiceQueue.length) return;
+    drainTimer = setTimeout(function () {
+      drainTimer = null;
+      if (anyoneTalking() || !voiceQueue.length) return;
+      var q = voiceQueue.shift();
+      if (!speakNow(q.key, q.text, q.speaker, false, q.done) && q.done) q.done();
+    }, VOICE_GAP);
+  }
+  /** Calls back when no voice is speaking and none is waiting (now, if that is so already). */
+  function whenVoicesIdle(cb) {
+    if (!anyoneTalking() && !voiceQueue.length && !drainTimer) cb();
+    else idleWaiters.push(cb);
+  }
+  /** A scene is over: every voice stops, nothing queued survives into the next scene. */
+  function stopVoices() {
+    voiceQueue = [];
+    idleWaiters = [];
+    clearTimeout(drainTimer); drainTimer = null;
+    var ln = lineNode;
+    lineNode = null;
+    if (ln) { try { ln.src.stop(); } catch (e) { /* ended */ } try { ln.g.disconnect(); } catch (e2) { /* gone */ } }
+    if (window.speechSynthesis) { try { window.speechSynthesis.cancel(); } catch (e3) { /* no speech */ } }
+    stopNarration();
+    Object.keys(talking).forEach(function (id) { var v = talking[id]; voiceStop(v.who, v.key); });
+    idleWaiters = [];
+    clearTimeout(voiceTimer);
+    voiceDuck = false;
+    applyDuck();
+  }
+
+  /** ARGUS's (or any speaker's) line. Asked for while another voice speaks, it waits its turn; `done` is called when it
+      has been spoken (not when the scene changed first). Returns false when nothing will play (sound off, no audio). */
+  function playVoice(key, text, speaker, late, done) {
     if (!unlocked || !enabled || !text) return false;
     ensureGraph();
     if (!context || !buses.ui) return false;
+    if (anyoneTalking() || drainTimer) { voiceQueue.push({ key: key, text: text, speaker: speaker, done: done }); return true; }
+    return speakNow(key, text, speaker, late, done);
+  }
+
+  function speakNow(key, text, speaker, late, done) {
+    var who = speaker || "argus", token = {}, finished = false;
+    var finish = function () {
+      if (finished) return;
+      finished = true;
+      if (lineNode && lineNode.token === token) lineNode = null;
+      voiceStop(who, key);
+      if (done) done();
+    };
+    voiceStart(who, key, "line");
+    lineNode = { token: token };
     var rel = "voice/" + key + ".mp3", st = fileState[rel], buf = st && st.buf, secs;
     if (!buf && st && !st.failed && !late) { // the recording is still loading: give it a moment rather than the synthetic voice
-      var waited = false, go = function () { if (!waited) { waited = true; playVoice(key, text, speaker, true); } };
+      var waited = false, go = function () {
+        if (waited) return;
+        waited = true;
+        if (lineNode && lineNode.token === token) { if (!speakBuffer(key, text, who, token, finish, true)) finish(); }
+      };
       st.wait.push(go); setTimeout(go, 1500);
       return true;
     }
+    if (!speakBuffer(key, text, who, token, finish, !!late)) { finish(); return false; }
+    return true;
+  }
+
+  function speakBuffer(key, text, who, token, finish) {
+    var rel = "voice/" + key + ".mp3", st = fileState[rel], buf = st && st.buf, secs;
     if (!buf && !st) loadFile(rel); // a recording for next time (404s quietly while none is made)
     var recorded = !!buf;
     if (!buf) { var ph = voicePhrase(text, key.length * 977 + text.length); buf = ph.buf; secs = ph.secs; } else secs = buf.duration;
     try {
       var src = context.createBufferSource(), g = context.createGain();
       src.buffer = buf;
-      src.__hawkesSampleId = "voice:" + (speaker || "argus") + ":" + key;
+      src.__hawkesSampleId = "voice:" + who + ":" + key;
       src.__hawkesBus = "voice";
       g.gain.value = recorded ? 1 : 0.8;
       src.connect(g); g.connect(buses.ui);
+      lineNode = { token: token, src: src, g: g };
+      src.onended = function () { try { g.disconnect(); } catch (e) { /* gone */ } finish(); };
       src.start(0);
-      src.onended = function () { try { g.disconnect(); } catch (e) { /* gone */ } };
       voiceDuck = true; applyDuck();
       clearTimeout(voiceTimer);
-      voiceTimer = setTimeout(function () { voiceDuck = false; applyDuck(); }, Math.round(secs * 1000) + 250);
+      voiceTimer = setTimeout(function () { if (!voiceQueue.length && !drainTimer) { voiceDuck = false; applyDuck(); } }, Math.round(secs * 1000) + 250);
       if (!recorded && window.speechSynthesis && window.SpeechSynthesisUtterance) {
         try {
           var u = new SpeechSynthesisUtterance(text);
@@ -619,7 +718,7 @@
           window.speechSynthesis.speak(u);
         } catch (e3) { /* no speech */ }
       }
-      tell("voice", { speaker: speaker || "argus", key: key, recorded: recorded, seconds: Math.round(secs * 10) / 10 });
+      tell("voice", { speaker: who, key: key, recorded: recorded, seconds: Math.round(secs * 10) / 10 });
       return true;
     } catch (e) { return false; }
   }
@@ -628,31 +727,49 @@
      under it, its music cue looped on the music bus. Both are fetched by URL (not /assets/audio/), cached, and stopped
      when the scene changes. Beds and music duck under the voice, as they do for ARGUS. ---- */
   var urlBuf = {}, narr = null;
-  function loadUrl(url, then) {
+  function loadUrl(url, then, fail) {
     var st = urlBuf[url];
-    if (st) { if (st.buf) then(st.buf); else if (!st.failed) st.wait.push(then); return; }
-    if (!context || !window.fetch) return;
-    st = urlBuf[url] = { buf: null, failed: false, wait: [then] };
+    if (st) {
+      if (st.buf) then(st.buf);
+      else if (st.failed) { if (fail) fail(); }
+      else { st.wait.push(then); if (fail) st.fails.push(fail); }
+      return;
+    }
+    if (!context || !window.fetch) { if (fail) fail(); return; }
+    st = urlBuf[url] = { buf: null, failed: false, wait: [then], fails: fail ? [fail] : [] };
     fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
       .then(function (ab) { return new Promise(function (ok, no) { context.decodeAudioData(ab, ok, no); }); })
-      .then(function (b) { st.buf = b; st.wait.forEach(function (f) { f(b); }); st.wait = []; })
-      .catch(function () { st.failed = true; st.wait = []; });
+      .then(function (b) { st.buf = b; st.wait.forEach(function (f) { f(b); }); st.wait = []; st.fails = []; })
+      .catch(function () { st.failed = true; st.wait = []; var f = st.fails; st.fails = []; f.forEach(function (x) { x(); }); });
   }
   function stopNarration() {
     var n = narr;
     narr = null;
     if (!n) return;
+    n.done = null; // the scene changed: nobody is waiting for the end any more
     n.nodes.forEach(function (x) { try { x.src.stop(); } catch (e) { /* ended */ } try { x.g.disconnect(); } catch (e2) { /* gone */ } });
+    voiceStop("narrator", n.id);
     clearTimeout(voiceTimer);
     voiceDuck = false;
     applyDuck();
   }
-  function playNarration(url, scoreUrl, id) {
+  /** The narration over a still. `done` is called when it has been spoken (or could not be: the recording failed). The
+      narrator's span is open from the call to the end, so a line asked for meanwhile waits its turn. */
+  function playNarration(url, scoreUrl, id, done) {
     stopNarration();
     if (!unlocked || !enabled || !url) return false;
     ensureGraph();
     if (!context || !buses.ui) return false;
-    var mine = narr = { id: id, nodes: [] };
+    var mine = narr = { id: id, nodes: [], done: done || null };
+    voiceStart("narrator", id, "narration");
+    var finish = function () {
+      if (narr !== mine) return;
+      voiceStop("narrator", id);
+      if (!voiceQueue.length) { clearTimeout(voiceTimer); voiceDuck = false; applyDuck(); }
+      var d = mine.done;
+      mine.done = null;
+      if (d) d();
+    };
     function start(buf, bus, name, loop, level, onEnd) {
       if (narr !== mine) return; // the scene changed while it loaded
       try {
@@ -665,15 +782,16 @@
         src.start(0);
         mine.nodes.push({ src: src, g: g });
         if (onEnd) src.onended = onEnd;
-      } catch (e) { /* no sound */ }
+        return true;
+      } catch (e) { return false; }
     }
     if (scoreUrl && buses.music) loadUrl(scoreUrl, function (b) { start(b, buses.music, "score", true, 0.9); });
     loadUrl(url, function (b) {
       if (narr !== mine) return;
       voiceDuck = true; applyDuck();
-      start(b, buses.ui, "narration", false, 1, function () { if (narr === mine) { voiceDuck = false; applyDuck(); } });
-      tell("voice", { speaker: "narrator", key: id, recorded: true, seconds: Math.round(b.duration * 10) / 10 });
-    });
+      if (!start(b, buses.ui, "narration", false, 1, finish)) finish();
+      else tell("voice", { speaker: "narrator", key: id, recorded: true, seconds: Math.round(b.duration * 10) / 10 });
+    }, finish);
     return true;
   }
 
@@ -923,6 +1041,13 @@
     playVoice: playVoice,
     playNarration: playNarration,
     stopNarration: stopNarration,
+    stopVoices: stopVoices,
+    voiceSpan: function (who, key, on) { if (on) voiceStart(who, key, "clip"); else voiceStop(who, key); },
+    voicesIdle: whenVoicesIdle,
+    voiceNote: function (fn) { voiceNote = typeof fn === "function" ? fn : null; },
+    voiceLog: function () { return voiceLog.slice(); },
+    voiceOverlaps: function () { return voiceOverlaps.slice(); },
+    voicesNow: function () { return Object.keys(talking); },
     setBed: setBed,
     beginBeds: beginBeds,
     sounds: function () { return Object.keys(UI); },

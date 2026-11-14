@@ -379,7 +379,7 @@ const shotFile = (st, s, i, base, ext) => media(st, s, `${base}${i ? `-${i + 1}`
 
 function cutParts(st, s, vi = -1) {
   // A talking shot is cut in once both its picture and its recording are made; until then the scene plays without it.
-  const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }))
+  const talks = (s.lines ?? []).map((l, i) => ({ i, who: l.speaker, video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }))
     .filter((t) => exists(t.video) && exists(t.audio));
   let music = s.music ? musicFile(st, s.music) : null;
   // A draft's scene isn't held back by a music cue that isn't made yet: it's cut without it, and cut again once it is.
@@ -504,6 +504,8 @@ function storyData() {
         ...(stillOf(st, s) && exists(media(st, s, 'narration.mp3')) ? { narration: '/' + media(st, s, 'narration.mp3'), ...(s.music && exists(musicFile(st, s.music)) ? { score: '/' + musicFile(st, s.music) } : {}) } : {}),
         // Seconds of live picture the cut keeps after the narration, so the choices come up over moving footage (js/game.js).
         ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s, st) ? { live: LIVE_TAIL } : {}),
+        // When the narration and each talking shot speak (a news-framed story's one-voice-at-a-time rule, js/game.js).
+        ...(st.data.news && useOf(st, s) === 'gen' ? voiceField(voiceOf(st, s, -1, videoOf(st, s) !== '/' + cutFile(st, s))) : {}),
         ...(s.dead ? { dead: true } : {}),
         ...(s.timer ? { timer: s.timer } : {}),
         ...(s.timerStyle ? { timerStyle: s.timerStyle } : {}),
@@ -530,7 +532,7 @@ function storyData() {
             when: v.when,
             ...(v.story ? { story: v.story } : {}),
             ...(v.question ? { question: v.question } : {}),
-            ...(video ? { video, ...clipExtras(video), ...(cutOwn && liveTail(s, st) ? { live: LIVE_TAIL } : {}) } : {}),
+            ...(video ? { video, ...clipExtras(video), ...(cutOwn && liveTail(s, st) ? { live: LIVE_TAIL } : {}), ...(cutOwn && st.data.news ? voiceField(voiceOf(st, s, vi)) : {}) } : {}),
             ...(stillOwn ? { narration: stillOwn } : {}),
           };
         }) } : {}),
@@ -985,6 +987,39 @@ const PUSH_MAX = 1.14;
 
 /** Does this scene's cut keep the picture moving under its choices? (A one-choice page carries on by itself at the end of its clip.) */
 const liveTail = (s, st) => (s.choices?.length ?? 0) > 1 && !(st ? cutParts(st, s).talks : s.lines ?? []).length;
+
+/** When each voice speaks in a scene (J, 2026-11-14: "never let narration talk over a voice in the video"). The cut lays the
+ *  narration first, 0 to `narr`, then 0.8 s of picture, then each talking shot with its line in turn (cut() below: concat, so
+ *  they never overlap by construction); this is the same arithmetic, in seconds from the start of the clip, for the player
+ *  (js/game.js clipVoices waits for `narr` before ARGUS's recording and the captions; it skips ARGUS's recording for a line the
+ *  clip speaks) and for the `trust-fall` playtest's voice check. A still has only `narr` (its narration's length). */
+function voiceOf(st, s, vi = -1, still = false) {
+  const p = cutParts(st, s, vi);
+  if (still) return exists(p.narration) ? { narr: round2(duration(p.narration)) } : null;
+  if (p.missing.length) return null;
+  const file = duration(p.narration);
+  let at = file + 0.8;
+  const talks = p.talks.map((t) => {
+    const d = duration(t.audio);
+    const row = { who: t.who, i: t.i, start: round2(at), end: round2(at + d) };
+    at += d + 0.5;
+    return row;
+  });
+  // The narration baked into the cut that is on disk is what the viewer hears. When the cut has no talking shot it is the cut's
+  // length less the live tail and the 0.8 s pad; this is exact even when the recording was remade after the cut (a stale cut).
+  const cutFileRel = cutFile(st, s, vi);
+  let narr = file;
+  if (!talks.length && exists(cutFileRel)) {
+    const baked = duration(cutFileRel) - (liveTail(s, st) ? LIVE_TAIL : 0) - 0.8;
+    if (baked > 0.5) {
+      if (Math.abs(baked - file) > 0.25) warnings.push(`${st.id}/${s.id}: the cut ${cutFileRel} speaks its narration for ${baked.toFixed(1)} s but the recording is ${file.toFixed(1)} s: the cut is out of date (re-cut it with the current narration); the player waits for the ${baked.toFixed(1)} s that are baked in`);
+      narr = baked;
+    }
+  }
+  return { narr: round2(narr), ...(talks.length ? { talks } : {}) };
+}
+const round2 = (n) => Math.round(n * 100) / 100;
+const voiceField = (v) => (v ? { voice: v } : {});
 
 /** The shots laid end to end under the narration (never looped: when the narration outruns the footage the last frame
  *  slows to a stop and the camera keeps pushing in on it), then each talking shot with its line, all over the mood music. */

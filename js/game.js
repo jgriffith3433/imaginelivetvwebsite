@@ -37,6 +37,8 @@
       narration: spec.still ? spec.narration || "" : "",
       score: spec.still ? spec.score || "" : "",
       live: spec.live || 0,
+      // When the narration baked into the clip ends and each talking shot speaks (tools/build-story.mjs voiceOf): one voice at a time.
+      voice: spec.voice || null,
       dead: !!spec.dead,
       // This page's own countdown in seconds (default CHOICE_WINDOW) and how it is drawn ("air": the air running out).
       timer: spec.timer || 0,
@@ -58,6 +60,7 @@
           poster: v.poster || "",
           small: v.small || "",
           live: v.live || 0,
+          voice: v.voice || null,
           narration: v.narration || ""
         };
       })
@@ -187,7 +190,7 @@
       out = Object.assign({}, base);
       if (hit.story) { out.story = hit.story[0]; out.storyEn = hit.story[1]; }
       if (hit.question) { out.question = hit.question[0]; out.questionEn = hit.question[1]; }
-      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = hit.live || 0; }
+      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = hit.live || 0; out.voice = hit.voice; }
       if (hit.narration) out.narration = hit.narration;
     }
     if (base.choices.some(function (c) { return c.when || c.matches; })) {
@@ -1406,6 +1409,8 @@
   function autoContinue(sceneId) {
     const sc = shown && currentScene === sceneId ? shown : SCENES[sceneId];
     if (!sc || sc.choices.length !== 1 || currentScene !== sceneId || shownChoices.length !== 1) return;
+    // ARGUS still has a line to say (after the narration, one voice at a time): the page carries on once it has.
+    if (argusPending) { afterLines = function () { autoContinue(sceneId); }; return; }
     root.classList.add("is-auto-advance");
     tell("feature", { feature: "auto_continue", story: STORY.id, node: sceneId });
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1565,16 +1570,100 @@
     tell("feature", { feature: "caption", story: STORY.id, node: currentScene, value: name });
   }
 
-  /** The scene's lines, one after another (about 0.4 s a word, at least 2.2 s), each under its speaker's name. */
-  function newsCaptions(news) {
-    const lines = news.caption || [];
-    if (!lines.length) return;
-    let at = 0;
-    lines.forEach(function (line, i) {
-      const words = line[1].split(/\s+/).length;
-      newsTimers.push(setTimeout(function () { newsSay(line[0], line[1]); }, at));
-      at += Math.max(2200, words * 400) + 250;
+  /* ---------------- One voice at a time (story doc "One voice at a time", J 2026-11-14) ----------------
+     "Make sure any that have vocal lines in the video don't overlap with the story line being read too. Worst case just
+     wait until the video is done before reading the line." The narrator speaks first and alone: a clip's narration is
+     baked into it (scene.voice.narr is where it ends, measured by the build), a still's is played over it. Only then do
+     the lines come: a talking shot that is in the clip (scene.voice.talks, laid after the narration by the build), or
+     ARGUS's recording (ARGUS_LINES) when the clip has no talking shot for it, each with its caption, one at a time, music
+     and beds ducked under all of them. js/audio.js keeps the single queue and the log the playtest reads. */
+  let lineGate = { scene: null, voice: false, ready: false, started: false, plan: null };
+  let argusPending = false; // ARGUS's recording is still to be spoken for this scene
+  let afterLines = null;    // a one-choice page's carry-on, waiting for ARGUS to finish
+
+  function gateReset(sceneId) {
+    lineGate = { scene: sceneId, voice: false, ready: false, started: false, plan: null };
+    argusPending = false;
+    afterLines = null;
+  }
+
+  /** `voice`: the narrator is done; `ready`: nothing (a chapter card) holds the lines back. Both: the lines begin. */
+  function gateOpen(sceneId, part) {
+    if (lineGate.scene !== sceneId) return;
+    lineGate[part] = true;
+    if (lineGate.voice && lineGate.ready && !lineGate.started) {
+      lineGate.started = true;
+      startLines(sceneId);
+    }
+  }
+
+  function linesDone() {
+    argusPending = false;
+    const next = afterLines;
+    afterLines = null;
+    if (next) next();
+  }
+
+  /** What js/audio.js logs beside each voice's start: who the caption names at that moment ("" when none shows). */
+  function voiceNote() {
+    return { scene: currentScene, caption: captionBox.hidden ? "" : captionBox.dataset.who || "" };
+  }
+
+  const isArgus = function (label) { return /^argus$/i.test(label); };
+  const lineSlot = function (text) { return Math.max(2200, text.split(/\s+/).length * 400) + 250; };
+
+  function speakArgus(sceneId) {
+    const ok = window.iltvAudio && window.iltvAudio.playVoice("trust-fall-" + sceneId, ARGUS_LINES[sceneId], "argus", false, linesDone);
+    if (!ok) linesDone();
+  }
+
+  /** The scene's lines, one after another (about 0.4 s a word, at least 2.2 s), each under its speaker's name. A line
+      the clip speaks itself (a talking shot) is captioned by clipVoices when it begins; ARGUS's recording is spoken as
+      its caption comes up, so the caption always names the voice you hear. */
+  function startLines(sceneId) {
+    const plan = lineGate.plan;
+    if (!plan) return;
+    let at = 0, argus = plan.argus;
+    (plan.news.caption || []).forEach(function (line, i) {
+      if (plan.talked[i]) return;
+      const mine = argus && isArgus(line[0]);
+      if (mine) argus = false;
+      newsTimers.push(setTimeout(function () {
+        if (currentScene !== sceneId) return;
+        newsSay(line[0], line[1]);
+        if (mine) speakArgus(sceneId);
+      }, at));
+      at += lineSlot(line[1]);
     });
+    if (argus) linesDone();
+  }
+
+  /** A clip's voices, from its own clock (media events, no timer): the narrator [0, narr] and each talking shot are
+      spans in the voice log while the clip plays them; the lines are let go once the last of them has ended. */
+  function clipVoices(video, sceneId, scene, plan) {
+    const v = scene.voice, audio = window.iltvAudio;
+    if (!v || !audio || !audio.voiceSpan) { gateOpen(sceneId, "voice"); return; }
+    const segs = [{ who: "narrator", key: "narration", a: 0, b: v.narr }];
+    (v.talks || []).forEach(function (t) { segs.push({ who: t.who, key: "line-" + (t.i + 1), a: t.start, b: t.end, line: t.i }); });
+    const lineAt = segs.reduce(function (m, g) { return Math.max(m, g.b); }, 0) + 0.3;
+    const open = {};
+    const sync = function () {
+      if (activeClip !== video || currentScene !== sceneId) return;
+      const t = video.currentTime, on = !video.paused && !video.ended;
+      segs.forEach(function (g) {
+        const want = on && t >= g.a && t < g.b;
+        if (want && !open[g.key]) {
+          open[g.key] = true;
+          if (g.line != null && plan.news.caption[g.line]) newsSay(plan.news.caption[g.line][0], plan.news.caption[g.line][1]);
+          audio.voiceSpan(g.who, g.key, true);
+        } else if (!want && open[g.key]) {
+          open[g.key] = false;
+          audio.voiceSpan(g.who, g.key, false);
+        }
+      });
+      if (t >= lineAt || video.ended) gateOpen(sceneId, "voice");
+    };
+    ["timeupdate", "playing", "pause", "seeked", "ended"].forEach(function (ev) { video.addEventListener(ev, sync); });
   }
 
   /** The top band: the broadcast clock, and on the anchor's scenes his name plate (the lower-third) beside it. */
@@ -1667,7 +1756,16 @@
   /** Called at the end of show(): the bar, the captions, a chapter card on arrival, a sign-off over an ending. */
   function newsShow(sceneId, scene, video, arrived) {
     const news = STORY.news && SCENES[sceneId] && SCENES[sceneId].news;
-    if (!news) return;
+    if (!news) { if (video) gateOpen(sceneId, "voice"); return; }
+    const talked = {};
+    ((scene.voice && scene.voice.talks) || []).forEach(function (tk) { talked[tk.i] = true; });
+    const plan = { news: news, talked: talked, argus: false };
+    // ARGUS's recording speaks the line only when the clip has no talking shot of its own for it.
+    plan.argus = STORY.id === "trust-fall" && !!ARGUS_LINES[sceneId] && !!window.iltvAudio && window.iltvAudio.enabled() &&
+      (news.caption || []).some(function (c, i) { return isArgus(c[0]) && !talked[i]; });
+    lineGate.plan = plan;
+    argusPending = plan.argus;
+    if (video) clipVoices(video, sceneId, scene, plan);
     newsBar(news);
     if (news.chapter && arrived) {
       // The clip waits under the card, and plays when it goes.
@@ -1682,11 +1780,11 @@
           video.removeEventListener("play", hold);
           if (currentScene === sceneId && !video.ended && video.paused) { const pr = video.play(); if (pr && pr.catch) pr.catch(function () { /* the viewer's press starts it */ }); }
         }
-        if (currentScene === sceneId) newsCaptions(news);
+        if (currentScene === sceneId) gateOpen(sceneId, "ready");
       });
       return;
     }
-    newsCaptions(news);
+    gateOpen(sceneId, "ready");
     if (news.signoff && scene.ending) {
       // The ending's clip plays out (or 6 s of a still), then Marcus closes the broadcast; the ending card is already under it.
       let shownSignoff = false;
@@ -1724,15 +1822,19 @@
     const arrived = newsArrive;
     newsArrive = false;
     newsClear();
-    if (window.iltvAudio && window.iltvAudio.playNarration) {
+    // One voice at a time (story doc "One voice at a time"): the last scene's voices stop, then this scene's narration,
+    // ARGUS's line and the clip's own talking shots take turns. A still speaks its narration first; the lines (captions
+    // and ARGUS's recording) start when it has ended. A clip's narration is in the clip: clipVoices waits for it.
+    gateReset(sceneId);
+    if (window.iltvAudio) {
+      if (window.iltvAudio.stopVoices) window.iltvAudio.stopVoices();
+      if (window.iltvAudio.voiceNote) window.iltvAudio.voiceNote(voiceNote);
+      let narrating = false;
       // No clip, so the narration and its music cue come from the recordings, over the graded still (a clip carries its own).
-      if (scene.still && scene.narration) window.iltvAudio.playNarration(scene.narration, scene.score, sceneId);
-      else window.iltvAudio.stopNarration();
-    }
-    if (window.iltvAudio && STORY.id === "trust-fall") {
-      window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
-      if (ARGUS_LINES[sceneId]) setTimeout(function () { if (currentScene === sceneId) window.iltvAudio.playVoice("trust-fall-" + sceneId, ARGUS_LINES[sceneId], "argus"); }, 900);
-    }
+      if (scene.still && scene.narration && window.iltvAudio.playNarration) narrating = !!window.iltvAudio.playNarration(scene.narration, scene.score, sceneId, function () { gateOpen(sceneId, "voice"); });
+      if (!scene.video && !narrating) lineGate.voice = true;
+      if (STORY.id === "trust-fall") window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
+    } else if (!scene.video) lineGate.voice = true;
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
     unlocked[sceneId] = true;
     if (scene.ending) {
@@ -2687,7 +2789,7 @@
     stopClipUnlock();
     newsClear();
     activeClip = null;
-    if (window.iltvAudio) window.iltvAudio.unwatch();
+    if (window.iltvAudio) { window.iltvAudio.unwatch(); if (window.iltvAudio.stopVoices) window.iltvAudio.stopVoices(); }
     videoBox.querySelectorAll("video").forEach(function (video) {
       try { video.pause(); } catch (error) { /* already gone */ }
     });

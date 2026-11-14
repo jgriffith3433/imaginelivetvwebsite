@@ -171,7 +171,7 @@ tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio
 
 - **Beds per place** (`sceneMood` in `js/game.js`, built in `js/audio.js`): `dawn` (the flat and the morning: soft rain, a wall clock), `city` (rain and traffic: the garage, the river), `server` (the Tower, the lobby: fans, relay ticks), `vault` (the sealed vault and the core: slow alarm pulse, sub drone).
 - **Every choice** plays the click (`tap`) and 110 ms later a short rising stinger (`cue-trust-fall`, three pitches so no sample repeats), layered so it never cuts the click.
-- **ARGUS speaks** its line in each scene that has one (`ARGUS_LINES`, 0.9 s after the scene shows; beds and music duck under it). A recording at `assets/audio/voice/trust-fall-<scene>.mp3` (Gen voice `hv_ai`) is used when it exists; until then a synthetic phrase plus the browser's own speech. The recordings wait on Gen access.
+- **ARGUS speaks** its line in each scene that has one (`ARGUS_LINES`), after the narration has ended, never over it ("One voice at a time", below); beds and music duck under it. A recording at `assets/audio/voice/trust-fall-<scene>.mp3` (Gen voice `hv_ai`) is used when it exists; until then a synthetic phrase plus the browser's own speech. The recordings wait on Gen access.
 
 ## Shown before told (2026-11-14, critic: story through play 4/10)
 
@@ -206,3 +206,44 @@ Live (`truth`) and Unseen (`shadow`) have story variants, most specific first li
 bridge, alone), **calledMarcus** (Marcus heard the call; in Unseen he knows only that someone called), **believed** (the
 amber light above the camera; in Unseen ARGUS keeps your name because you asked). Someone who did none of them reads the
 base text. The timer's default stays Live. Good morning (`believer`) is the reward for trust 3 and has one text.
+
+## One voice at a time (J, 2026-11-14)
+
+J: "make sure any that have vocal lines in the video don't overlap with the story line being read too. Worse case just wait
+until the video is done before reading the line." Reference: Bandersnatch, The Last of Us Part II. **The rule: speech in the
+video and the narrator's reading are never audible together, and ARGUS's line and the narration take turns.** The narrator is
+the page's story (always first, alone); then the lines. Music and beds duck under all of them.
+
+- **What overlapped (found 2026-11-14).** The scene's narration is baked into `scene.mp4`, but `show()` also started ARGUS's
+  recording 0.9 s into the scene (`ARGUS_LINES`), so in the 11 scenes with an ARGUS line (`start`, `unplug`, `asked`, `tower`,
+  `listen`, `believe`, `callMarcus`, `saved`, `chase`, `promise`, `believer`) the two spoke together for the first seconds. On
+  the three stills with both (`chase`, `promise`, `believer`) the still's narration and ARGUS did the same. The captions ran on a
+  timer from the first frame, so the first caption named a speaker while the narrator spoke. No talking shot (`lines` with a
+  `talk-N.mp4`) is made yet, so none of those could overlap yet; the build already laid them after the narration (below).
+- **In the cut (build).** `cut()` in `tools/build-story.mjs` concatenates the narration segment, 0.8 s of picture, then each
+  talking shot with its line (0.5 s apart): sequential by construction, never mixed. The same arithmetic is written to
+  `js/story-data.js` as `scene.voice` (`{ narr, talks: [{ who, i, start, end }] }`, seconds from the start of the clip, per
+  variant too when it has its own cut; a still has only `narr`) by `voiceOf`, from the cut **on disk** (a stale cut's baked
+  narration is its length less the live tail and the 0.8 s: the build warns "the cut is out of date" when that differs from the
+  recording, as it does for all 14 cuts today, see below).
+- **At runtime (`js/game.js`, `js/audio.js`).** `clipVoices` follows the clip's own media events (no timer): the narrator is a span
+  from the first frame to `voice.narr`, a talking shot a span between its `start` and `end`; the lines are let go 0.3 s after the
+  last of them. A still's narration (`playNarration`) lets them go when it ends (or at once when sound is off or the recording
+  can't load). Then `startLines` shows each caption and, for a line with no talking shot in the clip, speaks ARGUS's recording as
+  its caption comes up (the caption always names the voice you hear). A line the clip speaks itself (a talking shot) is never
+  also played as a recording. `audio.js` keeps a single queue: `playVoice` asked for while any voice speaks waits and starts 300 ms
+  after the last one ends; `stopVoices` (every scene change, leaving the story) ends them all and drops the queue.
+- **A one-choice page** (`unplug`, `asked`, `believe`, `callMarcus`, ...) still carries on by itself when its clip ends, but waits
+  for ARGUS to finish its line first (`argusPending` in `autoContinue`). The choices on a fork come up on the same clip time as
+  before (the cut's live tail), so ARGUS can speak under the buttons and the 15 s timer: choices are never late.
+- **Worst case, J's fallback:** where a clip has no `voice` data the lines wait for the end of the clip's speech by its `ended`
+  event, never a timer loop.
+- **Checks.** `npm run test:voices` (jsdom, real `audio.js` and `game.js` with a fake audio context and clip clock; also in
+  `test:console`). Playtest `trust-fall` (touch, 390x844, every scene by a real press): `voice-order` per scene from the audio's own
+  voice log (`iltvAudio.voiceLog`), `voice-data`, `voice-catches` (a self-test must see two voices at once); a scene whose voices
+  overlap, or whose caption names someone other than the voice speaking, is a bug naming the scene; metrics `trustFallVoiceOverlaps`
+  (must be 0), `trustFallVoiceScenes`.
+- **Still to do (media, no GPU): re-cut every scene.** The narrations were remade in the "tight and true" pass (voice doc) but
+  the 14 `scene.mp4` cuts still carry the older, longer narration (the-green-line speaks 18.8 s, its recording is 11.2 s; the-tower
+  16.3 s vs 11.9 s; the-plug 14.2 s vs 10.8 s). `npm run story` on a full checkout re-cuts them from the current recordings (ffmpeg,
+  CPU); the voice timing follows by itself. Until then the player waits for what is baked in.

@@ -26537,8 +26537,7 @@ window.ILTV_STORIES = {
       "THE END. You were the story.",
       "THE END. You were the story."
      ],
-     "hint": "Some stories you tell yourself.",
-     "video": "/trust-fall/live/scene.mp4"
+     "hint": "Some stories you tell yourself."
     },
     {
      "id": "shadow",
@@ -26550,8 +26549,7 @@ window.ILTV_STORIES = {
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
      ],
-     "hint": "Some heroes keep their names.",
-     "video": "/trust-fall/unseen/scene.mp4"
+     "hint": "Some heroes keep their names."
     },
     {
      "id": "believer",
@@ -26563,8 +26561,7 @@ window.ILTV_STORIES = {
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
      ],
-     "hint": "Some mornings you answer back.",
-     "video": "/trust-fall/good-morning/scene.mp4"
+     "hint": "Some mornings you answer back."
     },
     {
      "id": "unvouched",
@@ -26608,10 +26605,8 @@ window.ILTV_STORIES = {
       "Now what?",
       "Now what?"
      ],
-     "video": "/trust-fall/first-light/scene.mp4",
-     "poster": "/trust-fall/first-light/poster/scene.webp",
-     "small": "/trust-fall/first-light/sm/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "6:00 AM",
       "caption": [
@@ -26664,9 +26659,8 @@ window.ILTV_STORIES = {
       "Where do you go?",
       "Where do you go?"
      ],
-     "video": "/trust-fall/the-plug/scene.mp4",
-     "poster": "/trust-fall/the-plug/poster/scene.webp",
-     "small": "/trust-fall/the-plug/sm/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "6:03 AM",
       "caption": [
@@ -26701,9 +26695,8 @@ window.ILTV_STORIES = {
       "Where do you go?",
       "Where do you go?"
      ],
-     "video": "/trust-fall/how-it-knows/scene.mp4",
-     "poster": "/trust-fall/how-it-knows/poster/scene.webp",
-     "small": "/trust-fall/how-it-knows/sm/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "6:03 AM",
       "caption": [
@@ -26740,10 +26733,8 @@ window.ILTV_STORIES = {
       "Do you carry Blindspot in?",
       "Do you carry Blindspot in?"
      ],
-     "video": "/trust-fall/the-garage/scene.mp4",
-     "poster": "/trust-fall/the-garage/poster/scene.webp",
-     "small": "/trust-fall/the-garage/sm/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "10:00 PM",
       "caption": [
@@ -26798,10 +26789,8 @@ window.ILTV_STORIES = {
       "You know what Juno is doing. What now?",
       "You know what Juno is doing. What now?"
      ],
-     "video": "/trust-fall/whats-inside/scene.mp4",
-     "poster": "/trust-fall/whats-inside/poster/scene.webp",
-     "small": "/trust-fall/whats-inside/sm/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "10:25 PM",
       "caption": []
@@ -26839,9 +26828,8 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": "/trust-fall/the-river/scene.mp4",
-     "poster": "/trust-fall/the-river/poster/scene.webp",
-     "small": "/trust-fall/the-river/sm/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "dead": true,
      "news": {
       "time": "10:20 PM",
@@ -26871,10 +26859,8 @@ window.ILTV_STORIES = {
       "ARGUS sees you. What now?",
       "ARGUS sees you. What now?"
      ],
-     "video": "/trust-fall/the-tower/scene.mp4",
-     "poster": "/trust-fall/the-tower/poster/scene.webp",
-     "small": "/trust-fall/the-tower/sm/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "11:50 PM",
       "caption": [
@@ -26939,9 +26925,7 @@ window.ILTV_STORIES = {
        "question": [
         "You know the drive. ARGUS sees you. What now?",
         "You know the drive. ARGUS sees you. What now?"
-       ],
-       "video": "/trust-fall/the-tower/scene-v1.mp4",
-       "live": 18
+       ]
       }
      ]
     },
@@ -26961,9 +26945,8 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "video": "/trust-fall/lights-out/scene.mp4",
-     "poster": "/trust-fall/lights-out/poster/scene.webp",
-     "small": "/trust-fall/lights-out/sm/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "11:53 PM",
       "caption": []
@@ -26998,10 +26981,8 @@ window.ILTV_STORIES = {
       "Do you believe a machine?",
       "Do you believe a machine?"
      ],
-     "video": "/trust-fall/what-it-knows/scene.mp4",
-     "poster": "/trust-fall/what-it-knows/poster/scene.webp",
-     "small": "/trust-fall/what-it-knows/sm/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "11:52 PM",
       "caption": [
@@ -27042,9 +27023,7 @@ window.ILTV_STORIES = {
        "question": [
         "It's what you read on the train. Do you believe a machine?",
         "It's what you read on the train. Do you believe a machine?"
-       ],
-       "video": "/trust-fall/what-it-knows/scene-v1.mp4",
-       "live": 18
+       ]
       }
      ]
     },
@@ -27064,9 +27043,8 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "video": "/trust-fall/the-bait/scene.mp4",
-     "poster": "/trust-fall/the-bait/poster/scene.webp",
-     "small": "/trust-fall/the-bait/sm/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "11:55 PM",
       "caption": [
@@ -27103,10 +27081,8 @@ window.ILTV_STORIES = {
       "The air is going. What now?",
       "The air is going. What now?"
      ],
-     "video": "/trust-fall/the-vault/scene.mp4",
-     "poster": "/trust-fall/the-vault/poster/scene.webp",
-     "small": "/trust-fall/the-vault/sm/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "timer": 10,
      "timerStyle": "air",
      "news": {
@@ -27168,9 +27144,7 @@ window.ILTV_STORIES = {
        "question": [
         "Just as ARGUS said. What now?",
         "Just as ARGUS said. What now?"
-       ],
-       "video": "/trust-fall/the-vault/scene-v1.mp4",
-       "live": 18
+       ]
       }
      ]
     },
@@ -27190,9 +27164,8 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": "/trust-fall/sixty-seconds/scene.mp4",
-     "poster": "/trust-fall/sixty-seconds/poster/scene.webp",
-     "small": "/trust-fall/sixty-seconds/sm/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "dead": true,
      "news": {
       "time": "11:59 PM",
@@ -27222,9 +27195,8 @@ window.ILTV_STORIES = {
       "Hold on.",
       "Hold on."
      ],
-     "video": "/trust-fall/on-the-air/scene.mp4",
-     "poster": "/trust-fall/on-the-air/poster/scene.webp",
-     "small": "/trust-fall/on-the-air/sm/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "12:00 AM",
       "caption": [
@@ -27263,10 +27235,8 @@ window.ILTV_STORIES = {
       "Juno is escaping. What now?",
       "Juno is escaping. What now?"
      ],
-     "video": "/trust-fall/the-green-line/scene.mp4",
-     "poster": "/trust-fall/the-green-line/poster/scene.webp",
-     "small": "/trust-fall/the-green-line/sm/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "12:02 AM",
       "caption": [
@@ -27305,9 +27275,7 @@ window.ILTV_STORIES = {
        "question": [
         "It was there. What now?",
         "It was there. What now?"
-       ],
-       "video": "/trust-fall/the-green-line/scene-v1.mp4",
-       "live": 18
+       ]
       },
       {
        "when": {
@@ -27320,9 +27288,7 @@ window.ILTV_STORIES = {
        "question": [
         "It came late. What now?",
         "It came late. What now?"
-       ],
-       "video": "/trust-fall/the-green-line/scene-v2.mp4",
-       "live": 18
+       ]
       }
      ]
     },
@@ -27342,7 +27308,8 @@ window.ILTV_STORIES = {
       "Breathe.",
       "Breathe."
      ],
-     "video": "/trust-fall/the-bridge/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "12:05 AM",
       "caption": [
@@ -27376,7 +27343,8 @@ window.ILTV_STORIES = {
       "It kept its word.",
       "It kept its word."
      ],
-     "video": "/trust-fall/the-promise/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "12:02 AM",
       "caption": [
@@ -27413,8 +27381,8 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": "/trust-fall/morning-edition/scene.mp4",
-     "live": 18,
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "6:00 AM",
       "caption": [
@@ -27508,9 +27476,7 @@ window.ILTV_STORIES = {
        "question": [
         "You weren't alone. What now?",
         "You weren't alone. What now?"
-       ],
-       "video": "/trust-fall/morning-edition/scene-v1.mp4",
-       "live": 18
+       ]
       },
       {
        "when": {
@@ -27519,9 +27485,7 @@ window.ILTV_STORIES = {
        "question": [
         "He heard you. What now?",
         "He heard you. What now?"
-       ],
-       "video": "/trust-fall/morning-edition/scene-v2.mp4",
-       "live": 18
+       ]
       },
       {
        "when": {
@@ -27534,9 +27498,7 @@ window.ILTV_STORIES = {
        "question": [
         "It kept its word. What now?",
         "It kept its word. What now?"
-       ],
-       "video": "/trust-fall/morning-edition/scene-v3.mp4",
-       "live": 18
+       ]
       },
       {
        "when": {
@@ -27545,9 +27507,7 @@ window.ILTV_STORIES = {
        "question": [
         "ARGUS kept its promise. What now?",
         "ARGUS kept its promise. What now?"
-       ],
-       "video": "/trust-fall/morning-edition/scene-v4.mp4",
-       "live": 18
+       ]
       },
       {
        "when": {
@@ -27556,9 +27516,7 @@ window.ILTV_STORIES = {
        "question": [
         "ARGUS knew your name. What now?",
         "ARGUS knew your name. What now?"
-       ],
-       "video": "/trust-fall/morning-edition/scene-v5.mp4",
-       "live": 18
+       ]
       },
       {
        "when": {
@@ -27571,9 +27529,7 @@ window.ILTV_STORIES = {
        "question": [
         "No light watched. What now?",
         "No light watched. What now?"
-       ],
-       "video": "/trust-fall/morning-edition/scene-v6.mp4",
-       "live": 18
+       ]
       }
      ]
     },
@@ -27593,7 +27549,8 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": "/trust-fall/live/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27619,8 +27576,7 @@ window.ILTV_STORIES = {
        "story": [
         "At seven you tell the city who you are, and that you chased Juno alone. ARGUS vouches for every word. Marcus tells you alone: you know who you are.",
         "At seven you tell the city who you are, and that you chased Juno alone. ARGUS vouches for every word. Marcus tells you alone: you know who you are."
-       ],
-       "video": "/trust-fall/live/scene-v1.mp4"
+       ]
       },
       {
        "when": {
@@ -27629,8 +27585,7 @@ window.ILTV_STORIES = {
        "story": [
         "At seven you tell the city who you are. Marcus says on air your call came through eleven floors. ARGUS vouches. To you alone: you know who you are.",
         "At seven you tell the city who you are. Marcus says on air your call came through eleven floors. ARGUS vouches. To you alone: you know who you are."
-       ],
-       "video": "/trust-fall/live/scene-v2.mp4"
+       ]
       },
       {
        "when": {
@@ -27639,8 +27594,7 @@ window.ILTV_STORIES = {
        "story": [
         "At seven you tell the city you believed a machine. The camera light is amber, not red. ARGUS vouches. Marcus tells you alone: you know who you are.",
         "At seven you tell the city you believed a machine. The camera light is amber, not red. ARGUS vouches. Marcus tells you alone: you know who you are."
-       ],
-       "video": "/trust-fall/live/scene-v3.mp4"
+       ]
       }
      ]
     },
@@ -27660,7 +27614,8 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": "/trust-fall/unseen/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27686,8 +27641,7 @@ window.ILTV_STORIES = {
        "story": [
         "You leave the blanket on the bench and slip out alone. ARGUS never gives your name. Marcus's next broadcast ends with a line only you understand.",
         "You leave the blanket on the bench and slip out alone. ARGUS never gives your name. Marcus's next broadcast ends with a line only you understand."
-       ],
-       "video": "/trust-fall/unseen/scene-v1.mp4"
+       ]
       },
       {
        "when": {
@@ -27696,8 +27650,7 @@ window.ILTV_STORIES = {
        "story": [
         "You leave the blanket and slip out. Marcus knows only that someone called from under the Tower. His next broadcast ends with a line for you.",
         "You leave the blanket and slip out. Marcus knows only that someone called from under the Tower. His next broadcast ends with a line for you."
-       ],
-       "video": "/trust-fall/unseen/scene-v2.mp4"
+       ]
       },
       {
        "when": {
@@ -27706,8 +27659,7 @@ window.ILTV_STORIES = {
        "story": [
         "You leave the blanket on the bench and slip out. ARGUS never gives your name; you asked. Marcus's next broadcast ends with a line only you understand.",
         "You leave the blanket on the bench and slip out. ARGUS never gives your name; you asked. Marcus's next broadcast ends with a line only you understand."
-       ],
-       "video": "/trust-fall/unseen/scene-v3.mp4"
+       ]
       }
      ]
     },
@@ -27727,7 +27679,8 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": "/trust-fall/good-morning/scene.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27763,8 +27716,6 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/dead-stairs/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/trapped.mp3",
      "news": {
       "time": "11:55 PM",
       "caption": []
@@ -27795,8 +27746,6 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/the-breaker-room/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/hum.mp3",
      "news": {
       "time": "11:57 PM",
       "caption": []
@@ -27827,8 +27776,6 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/the-duct/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/trapped.mp3",
      "news": {
       "time": "11:58 PM",
       "caption": [
@@ -27864,8 +27811,6 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/the-dark-vault/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/trapped.mp3",
      "timer": 10,
      "timerStyle": "air",
      "news": {
@@ -27918,8 +27863,6 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/alone-on-air/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/end.mp3",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27956,8 +27899,6 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/on-air-together/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/end.mp3",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27993,8 +27934,6 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/your-copy/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/hum.mp3",
      "news": {
       "time": "11:52 PM",
       "caption": [
