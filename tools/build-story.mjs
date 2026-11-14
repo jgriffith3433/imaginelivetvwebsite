@@ -336,7 +336,12 @@ const MAX_SHOTS = 4;
 const useOf = (st, s) => s.use ?? st.data.use ?? 'film';
 const media = (st, s, file) => `${st.base}${s.folder}/media/${file}`;
 const musicFile = (st, cue) => `${st.musicDir}/${cue}.mp3`;
-const cutFile = (st, s) => `${st.base}${s.folder}/scene.mp4`;
+const cutFile = (st, s, vi = -1) => `${st.base}${s.folder}/scene${vi >= 0 ? `-v${vi + 1}` : ''}.mp4`;
+/** The words a scene narrates (and shows): story, question and an ending's line; a variant replaces what it names. */
+const narratedText = (s, v) => [(v?.story ?? s.story)[0], (v?.question ?? s.question)[0], s.ending?.[0]].filter(Boolean).map(flat).join(' ');
+/** The variants that change words, each with its own narration recording and cut (index in s.variants). */
+const wordVariants = (s) => (s.variants ?? []).map((v, i) => ({ v, i })).filter(({ v }) => v.story || v.question);
+const narrationFile = (st, s, vi = -1) => media(st, s, vi >= 0 ? `narration-v${vi + 1}.mp3` : 'narration.mp3');
 // A sparse agent checkout leaves assets/ (images, posters, trailers) off the disk while git still tracks them; a build
 // that only looked at the disk blanked every card image and committed it. A file git tracks counts as there.
 let tracked = null;
@@ -357,7 +362,7 @@ const titleOf = (st) => st.data.title;
 const shotsOf = (s) => (s.shots?.length ? s.shots : s.shot ? [s.shot] : []);
 const shotFile = (st, s, i, base, ext) => media(st, s, `${base}${i ? `-${i + 1}` : ''}.${ext}`);
 
-function cutParts(st, s) {
+function cutParts(st, s, vi = -1) {
   // A talking shot is cut in once both its picture and its recording are made; until then the scene plays without it.
   const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }))
     .filter((t) => exists(t.video) && exists(t.audio));
@@ -368,7 +373,7 @@ function cutParts(st, s) {
   // Shots that aren't made yet are left out of the cut (it is cut again once they are); the first is required.
   const shots = shotsOf(s).map((_, i) => shotFile(st, s, i, 'clip', 'mp4'));
   const madeShots = shots.filter((f, i) => i === 0 || exists(f));
-  const parts = { clip: shots[0], shots: madeShots, narration: media(st, s, 'narration.mp3'), talks, music, later };
+  const parts = { clip: shots[0], shots: madeShots, narration: narrationFile(st, s, vi), talks, music, later };
   const need = [...parts.shots, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
   return { ...parts, missing: need.filter((f) => !exists(f)), all: need };
 }
@@ -484,7 +489,20 @@ function storyData() {
           if (gate) row.push(gate);
           return row;
         }),
-        ...(s.variants?.length ? { variants: s.variants.map((v, vi) => ({ when: v.when, ...((v.story || v.question) && stillOf(st, s) && exists(media(st, s, `narration-v${vi + 1}.mp3`)) ? { narration: '/' + media(st, s, `narration-v${vi + 1}.mp3`) } : {}), ...(v.story ? { story: v.story } : {}), ...(v.question ? { question: v.question } : {}), ...(v.video ? { video: v.video, ...clipExtras(v.video) } : {}) })) } : {}),
+        ...(s.variants?.length ? { variants: s.variants.map((v, vi) => {
+          // A variant that changes words plays its own cut (its own narration) once that is made; a still page speaks its own recording.
+          const own = (v.story || v.question) && !v.video && useOf(st, s) === 'gen' && !st.console;
+          const cutOwn = own && !cutParts(st, s, vi).missing.length ? '/' + cutFile(st, s, vi) : null;
+          const stillOwn = own && !cutOwn && stillOf(st, s) && exists(narrationFile(st, s, vi)) ? '/' + narrationFile(st, s, vi) : null;
+          const video = v.video ?? cutOwn;
+          return {
+            when: v.when,
+            ...(v.story ? { story: v.story } : {}),
+            ...(v.question ? { question: v.question } : {}),
+            ...(video ? { video, ...clipExtras(video), ...(cutOwn && liveTail(s, st) ? { live: LIVE_TAIL } : {}) } : {}),
+            ...(stillOwn ? { narration: stillOwn } : {}),
+          };
+        }) } : {}),
       };
     }
     const langs = new Set(['en', ...st.scenes.map((s) => s.lang)]);
@@ -815,20 +833,17 @@ function assets(st) {
     list.push({
       id: `${P}${s.id}-voice`,
       note: `${s.title[1]}${of}: narration in ${s.lang}.`,
-      steps: [{ tool: 'audio.voice', params: { text: `${flat(s.story[0])} ${flat(s.question[0])}`, voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
+      steps: [{ tool: 'audio.voice', params: { text: narratedText(s), voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
       files: { narration: media(st, s, 'narration.mp3') },
     });
-
-    // In a story with `variantVoices: true`, a variant that changes the story or question is narrated by its own recipe (`<id>-voice-v<n>`, n from 1 in the
-    // scene's variants order); the player plays it when the run's flags pick that variant and it is made.
-    for (const [i, v] of (story.variantVoices ? s.variants ?? [] : []).entries()) {
-      if (!v.story && !v.question) continue;
-      const vs = v.story ?? s.story, vq = v.question ?? s.question;
+    // Each variant that changes words has its own narration, so the cut plays what the run's flags show (story doc "Flags and variants").
+    for (const { v, i } of wordVariants(s)) {
+      if (v.video) continue;
       list.push({
         id: `${P}${s.id}-voice-v${i + 1}`,
-        note: `${s.title[1]}${of}: narration in ${s.lang} when ${Object.entries(v.when).map(([k, x]) => `${k}=${x}`).join(', ')}.`,
-        steps: [{ tool: 'audio.voice', params: { text: `${flat(vs[0])} ${flat(vq[0])}`, voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
-        files: { narration: media(st, s, `narration-v${i + 1}.mp3`) },
+        note: `${s.title[1]}${of}: narration of the variant for ${Object.entries(v.when).map(([k, x]) => `${k}=${x}`).join(', ')}.`,
+        steps: [{ tool: 'audio.voice', params: { text: narratedText(s, v), voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
+        files: { narration: narrationFile(st, s, i) },
       });
     }
 
@@ -901,16 +916,16 @@ const liveTail = (s, st) => (s.choices?.length ?? 0) > 1 && !(st ? cutParts(st, 
 
 /** The shots laid end to end under the narration (never looped: when the narration outruns the footage the last frame
  *  slows to a stop and the camera keeps pushing in on it), then each talking shot with its line, all over the mood music. */
-function cut(st, s) {
-  const p = cutParts(st, s);
+function cut(st, s, vi = -1) {
+  const p = cutParts(st, s, vi);
   if (p.missing.length) return;
   if (p.later) warnings.push(`${st.id}/${s.id}: cut without its music (${p.later} isn't made yet)`);
   const unmade = shotsOf(s).length - p.shots.length;
   if (unmade) warnings.push(`${st.id}/${s.id}: cut with ${p.shots.length} of ${shotsOf(s).length} shots (the rest aren't made yet)`);
-  const out = path.join(ROOT, cutFile(st, s));
+  const out = path.join(ROOT, cutFile(st, s, vi));
   const newest = Math.max(...p.all.map((f) => fs.statSync(path.join(ROOT, f)).mtimeMs), fs.statSync(path.join(ROOT, st.file)).mtimeMs);
   if (fs.existsSync(out) && fs.statSync(out).mtimeMs >= newest) return;
-  if (CHECK) return problems.push(`${cutFile(st, s)} is out of date`);
+  if (CHECK) return problems.push(`${cutFile(st, s, vi)} is out of date`);
 
   const FPS = 24;
   const fit = `scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=${FPS},setsar=1`;
@@ -966,9 +981,9 @@ function cut(st, s) {
   args.push('-filter_complex', graph.join(';'), '-map', '[v]', '-map', audio, '-c:v', 'libx264', '-crf', '23', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out);
   try {
     execFileSync(ffmpegBin('ffmpeg'), args, { stdio: ['ignore', 'inherit', 'inherit'] });
-    console.log(`cut      ${cutFile(st, s)} (${total.toFixed(1)} s)`);
+    console.log(`cut      ${cutFile(st, s, vi)} (${total.toFixed(1)} s)`);
   } catch (e) {
-    warnings.push(`${st.id}/${s.id}: ffmpeg failed to cut ${cutFile(st, s)} (${e.message.split('\n')[0]})`);
+    warnings.push(`${st.id}/${s.id}: ffmpeg failed to cut ${cutFile(st, s, vi)} (${e.message.split('\n')[0]})`);
   }
 }
 
@@ -1381,7 +1396,7 @@ function strays() {
 
 validateAll();
 if (!problems.length) {
-  for (const st of stories) for (const s of st.scenes) if (!st.console && useOf(st, s) === 'gen') cut(st, s);
+  for (const st of stories) for (const s of st.scenes) if (!st.console && useOf(st, s) === 'gen') { cut(st, s); for (const { i } of wordVariants(s)) cut(st, s, i); }
   const assetsText = assetsFile();
   write('js/story-data.js', storyData());
   write('index.html', landing());

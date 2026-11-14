@@ -53,9 +53,10 @@
           story: v.story || null,
           question: v.question || null,
           video: v.video || null,
-          narration: v.narration || "",
           poster: v.poster || "",
-          small: v.small || ""
+          small: v.small || "",
+          live: v.live || 0,
+          narration: v.narration || ""
         };
       })
     };
@@ -184,8 +185,8 @@
       out = Object.assign({}, base);
       if (hit.story) { out.story = hit.story[0]; out.storyEn = hit.story[1]; }
       if (hit.question) { out.question = hit.question[0]; out.questionEn = hit.question[1]; }
-      if (hit.narration && base.still) out.narration = hit.narration;
-      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = 0; }
+      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = hit.live || 0; }
+      if (hit.narration) out.narration = hit.narration;
     }
     if (base.choices.some(function (c) { return c.when || c.matches; })) {
       if (out === base) out = Object.assign({}, base);
