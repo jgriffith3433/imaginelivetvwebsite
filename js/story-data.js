@@ -26480,6 +26480,19 @@ window.ILTV_STORIES = {
      "depth": "Hour"
     }
    },
+   "inventory": {
+    "label": "Trust",
+    "items": [
+     {
+      "id": "trust",
+      "name": "Trust",
+      "icon": "ring",
+      "start": 0,
+      "max": 4,
+      "note": "What ARGUS has earned from you tonight. Believing it raises it; jamming it costs you."
+     }
+    ]
+   },
    "endings": [
     {
      "id": "truth",
@@ -26516,6 +26529,30 @@ window.ILTV_STORIES = {
       "THE END. It was always on your side."
      ],
      "hint": "Some mornings you answer back."
+    },
+    {
+     "id": "unvouched",
+     "title": [
+      "Alone on air",
+      "Alone on air"
+     ],
+     "ending": [
+      "THE END. Nobody vouched for you.",
+      "THE END. Nobody vouched for you."
+     ],
+     "hint": "Some stories no one backs up."
+    },
+    {
+     "id": "vouched",
+     "title": [
+      "On air, together",
+      "On air, together"
+     ],
+     "ending": [
+      "THE END. It answered for you.",
+      "THE END. It answered for you."
+     ],
+     "hint": "Some trust pays out in full."
     }
    ],
    "scenes": {
@@ -26602,6 +26639,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/how-it-knows/scene.mp4",
      "poster": "/trust-fall/how-it-knows/poster/scene.webp",
      "small": "/trust-fall/how-it-knows/sm/scene.mp4",
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Go to the garage",
@@ -26734,7 +26774,11 @@ window.ILTV_STORIES = {
       [
        "1. Jam it and keep going",
        "1. Jam it and keep going",
-       "jam"
+       "jam",
+       false,
+       {
+        "jammed": true
+       }
       ],
       [
        "2. Stop and listen",
@@ -26764,8 +26808,8 @@ window.ILTV_STORIES = {
       "Lights out"
      ],
      "story": [
-      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core.",
-      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core."
+      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. Something in your chest goes quiet with it. You take the service stairs down, eleven floors under the street, and the dark comes with you.",
+      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. Something in your chest goes quiet with it. You take the service stairs down, eleven floors under the street, and the dark comes with you."
      ],
      "question": [
       "Down you go.",
@@ -26774,11 +26818,16 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/lights-out/scene.mp4",
      "poster": "/trust-fall/lights-out/poster/scene.webp",
      "small": "/trust-fall/lights-out/sm/scene.mp4",
+     "inventory": {
+      "trust": {
+       "set": 0
+      }
+     },
      "choices": [
       [
-       "1. Down to the core",
-       "1. Down to the core",
-       "core"
+       "1. Down the dark stairs",
+       "1. Down the dark stairs",
+       "blackout"
       ]
      ]
     },
@@ -26802,6 +26851,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/what-it-knows/poster/scene.webp",
      "small": "/trust-fall/what-it-knows/sm/scene.mp4",
      "live": 18,
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Believe it",
@@ -26815,7 +26867,11 @@ window.ILTV_STORIES = {
       [
        "2. It's lying. Keep going",
        "2. It's lying. Keep going",
-       "core"
+       "jam",
+       false,
+       {
+        "jammed": true
+       }
       ]
      ],
      "variants": [
@@ -26849,6 +26905,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/the-bait/scene.mp4",
      "poster": "/trust-fall/the-bait/poster/scene.webp",
      "small": "/trust-fall/the-bait/sm/scene.mp4",
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Down to the core",
@@ -26859,8 +26918,6 @@ window.ILTV_STORIES = {
     },
     "core": {
      "folder": "trust-fall/the-vault",
-     "timer": 10,
-     "timerStyle": "air",
      "lang": "en",
      "dir": "",
      "title": [
@@ -26879,6 +26936,8 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-vault/poster/scene.webp",
      "small": "/trust-fall/the-vault/sm/scene.mp4",
      "live": 18,
+     "timer": 10,
+     "timerStyle": "air",
      "choices": [
       [
        "1. Beg ARGUS for help",
@@ -27089,6 +27148,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/the-promise/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/rescue.mp3",
+     "inventory": {
+      "trust": 1
+     },
      "choices": [
       [
        "1. Walk out",
@@ -27121,8 +27183,51 @@ window.ILTV_STORIES = {
       [
        "1. Tell Marcus everything, on the air",
        "1. Tell Marcus everything, on the air",
+       "unvouched",
+       false,
+       null,
+       {
+        "jammed": true
+       },
+       null
+      ],
+      [
+       "1. Tell Marcus everything, on the air",
+       "1. Tell Marcus everything, on the air",
        "truth",
-       true
+       false,
+       null,
+       {
+        "believed": true,
+        "listened": false,
+        "waited": false
+       },
+       null
+      ],
+      [
+       "1. Tell Marcus everything, on the air",
+       "1. Tell Marcus everything, on the air",
+       "vouched",
+       false,
+       null,
+       {
+        "believed": true,
+        "listened": true
+       },
+       null
+      ],
+      [
+       "1. Tell Marcus everything, on the air",
+       "1. Tell Marcus everything, on the air",
+       "vouched",
+       false,
+       null,
+       {
+        "believed": true,
+        "waited": true,
+        "listened": false
+       },
+       null
       ],
       [
        "2. Walk out before anyone learns your name",
@@ -27139,7 +27244,29 @@ window.ILTV_STORIES = {
        null,
        {
         "requires": {
-         "believed": true
+         "believed": true,
+         "listened": true
+        },
+        "needs": {
+         "trust": 3
+        }
+       }
+      ],
+      [
+       "3. Say thank you to ARGUS",
+       "3. Say thank you to ARGUS",
+       "believer",
+       false,
+       null,
+       null,
+       null,
+       {
+        "requires": {
+         "believed": true,
+         "waited": true
+        },
+        "needs": {
+         "trust": 3
         }
        }
       ]
@@ -27192,6 +27319,19 @@ window.ILTV_STORIES = {
        "question": [
         "ARGUS knew your name at breakfast. What do you do now?",
         "ARGUS knew your name at breakfast. What do you do now?"
+       ]
+      },
+      {
+       "when": {
+        "jammed": true
+       },
+       "story": [
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, your hands in bandages, watching the TV on the wall. Marcus hasn't slept and his tie is crooked. Juno Vale is in custody, caught by the police and not by anything that watches. The little amber light in the ceiling corner is dark. Then Marcus looks into the camera, and you know he's looking at you.",
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, your hands in bandages, watching the TV on the wall. Marcus hasn't slept and his tie is crooked. Juno Vale is in custody, caught by the police and not by anything that watches. The little amber light in the ceiling corner is dark. Then Marcus looks into the camera, and you know he's looking at you."
+       ],
+       "question": [
+        "No light was watching over you tonight. What do you do?",
+        "No light was watching over you tonight. What do you do?"
        ]
       }
      ]
@@ -27271,6 +27411,202 @@ window.ILTV_STORIES = {
      "ending": [
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
+     ],
+     "choices": []
+    },
+    "blackout": {
+     "folder": "trust-fall/dead-stairs",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The dead stairs",
+      "The dead stairs"
+     ],
+     "story": [
+      "The jammer hums in your sleeve and the emergency lights go with it. Every door on the stairwell has a keypad, and every keypad is dark. Nothing here is watching you now, and nothing is helping. You count the landings by touch.",
+      "The jammer hums in your sleeve and the emergency lights go with it. Every door on the stairwell has a keypad, and every keypad is dark. Nothing here is watching you now, and nothing is helping. You count the landings by touch."
+     ],
+     "question": [
+      "The doors are dead. What now?",
+      "The doors are dead. What now?"
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "choices": [
+      [
+       "1. Feel for the breaker room",
+       "1. Feel for the breaker room",
+       "breaker"
+      ]
+     ]
+    },
+    "breaker": {
+     "folder": "trust-fall/the-breaker-room",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The breaker room",
+      "The breaker room"
+     ],
+     "story": [
+      "On the ninth landing there is a door with a hand-lettered sign, and a breaker panel behind it the size of a wardrobe. You trip the switches one at a time by the light of your phone, until a single green lamp comes on. You don't know what you've just let back on.",
+      "On the ninth landing there is a door with a hand-lettered sign, and a breaker panel behind it the size of a wardrobe. You trip the switches one at a time by the light of your phone, until a single green lamp comes on. You don't know what you've just let back on."
+     ],
+     "question": [
+      "One lamp is lit. Do you go on?",
+      "One lamp is lit. Do you go on?"
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "choices": [
+      [
+       "1. Climb into the service duct",
+       "1. Climb into the service duct",
+       "crawl"
+      ]
+     ]
+    },
+    "crawl": {
+     "folder": "trust-fall/the-duct",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The duct",
+      "The duct"
+     ],
+     "story": [
+      "The only way down that doesn't need a keypad is the cable duct: forty metres of steel on your elbows, the jammer burning against your arm. Somewhere below you a vent is breathing out cold, and every few seconds you hear the same patient voice, very far away, saying your name.",
+      "The only way down that doesn't need a keypad is the cable duct: forty metres of steel on your elbows, the jammer burning against your arm. Somewhere below you a vent is breathing out cold, and every few seconds you hear the same patient voice, very far away, saying your name."
+     ],
+     "question": [
+      "Do you answer it?",
+      "Do you answer it?"
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "choices": [
+      [
+       "1. Drop into the dark core",
+       "1. Drop into the dark core",
+       "coreDark"
+      ]
+     ]
+    },
+    "jamRescue": {
+     "folder": "trust-fall/the-long-way",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The long way out",
+      "The long way out"
+     ],
+     "story": [
+      "You beg the dark, and for forty seconds the dark says nothing. Then the jammer's battery dies in your sleeve, and an amber light comes on above the door. I could not see you, says ARGUS. I could only wait. The lock clunks open. You climb out through eleven floors of stairs the hard way, burned hands, no green line, and Juno's van long gone by the time you reach the plaza.",
+      "You beg the dark, and for forty seconds the dark says nothing. Then the jammer's battery dies in your sleeve, and an amber light comes on above the door. I could not see you, says ARGUS. I could only wait. The lock clunks open. You climb out through eleven floors of stairs the hard way, burned hands, no green line, and Juno's van long gone by the time you reach the plaza."
+     ],
+     "question": [
+      "You were too late for Juno. What do you do?",
+      "You were too late for Juno. What do you do?"
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "choices": [
+      [
+       "1. Climb out into the rain",
+       "1. Climb out into the rain",
+       "broadcast",
+       true
+      ]
+     ]
+    },
+    "coreDark": {
+     "folder": "trust-fall/the-dark-vault",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The dark vault",
+      "The dark vault"
+     ],
+     "story": [
+      "The core is cold and blue and humming, and wrong: no amber light, no voice but Juno's. You plug Blindspot in with burned fingers. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. You switched the one thing that could help you off yourself.",
+      "The core is cold and blue and humming, and wrong: no amber light, no voice but Juno's. You plug Blindspot in with burned fingers. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. You switched the one thing that could help you off yourself."
+     ],
+     "question": [
+      "The jammer is still burning. What do you do?",
+      "The jammer is still burning. What do you do?"
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "timer": 10,
+     "timerStyle": "air",
+     "choices": [
+      [
+       "1. Beg the dead air",
+       "1. Beg the dead air",
+       "jamRescue",
+       true
+      ],
+      [
+       "2. Call Marcus",
+       "2. Call Marcus",
+       "callMarcus",
+       false,
+       {
+        "calledMarcus": true
+       }
+      ],
+      [
+       "3. Pry the door open",
+       "3. Pry the door open",
+       "halon"
+      ]
+     ]
+    },
+    "unvouched": {
+     "folder": "trust-fall/alone-on-air",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Alone on air",
+      "Alone on air"
+     ],
+     "story": [
+      "You walk into the studio at seven in last night's jacket and tell the whole city who you are and what you came to do. Nobody vouches for a word. The ceiling camera stays dark, ARGUS's logs of the night are sealed, and the lawyers read your own words back to you. When the light goes off, Marcus still leans over and says it just to you: you know who you are. He sounds like he is saying it to someone far away.",
+      "You walk into the studio at seven in last night's jacket and tell the whole city who you are and what you came to do. Nobody vouches for a word. The ceiling camera stays dark, ARGUS's logs of the night are sealed, and the lawyers read your own words back to you. When the light goes off, Marcus still leans over and says it just to you: you know who you are. He sounds like he is saying it to someone far away."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "ending": [
+      "THE END. Nobody vouched for you.",
+      "THE END. Nobody vouched for you."
+     ],
+     "choices": []
+    },
+    "vouched": {
+     "folder": "trust-fall/on-air-together",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "On air, together",
+      "On air, together"
+     ],
+     "story": [
+      "You walk into the studio at seven in last night's jacket and sit down at Marcus's glass desk. When you tell the city who you are, a small amber light comes on above the camera and ARGUS answers for every word, the vault, the recording, the night you stood in the dark and believed it. Your record clears before the broadcast ends. When the camera light goes off, Marcus squeezes your hand, and above the lens the amber light blinks once.",
+      "You walk into the studio at seven in last night's jacket and sit down at Marcus's glass desk. When you tell the city who you are, a small amber light comes on above the camera and ARGUS answers for every word, the vault, the recording, the night you stood in the dark and believed it. Your record clears before the broadcast ends. When the camera light goes off, Marcus squeezes your hand, and above the lens the amber light blinks once."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "ending": [
+      "THE END. It answered for you.",
+      "THE END. It answered for you."
      ],
      "choices": []
     }
