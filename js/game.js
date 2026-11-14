@@ -1048,6 +1048,8 @@
   // clip ends (or in Night Shift when lines finish), active choices slide and fade in one after another (70 ms apart)
   // with a 15 s countdown window, and the bar and title controls fade away after 3 s idle.
   const CHOICE_WINDOW = 15;
+  const READ_WPM = 250; // reading pace of a still page's words
+  let readTimer = null;
   const IDLE_MS = 3000;
   const timerBox = document.getElementById("spark-timer");
   const consoleChoicesBox = document.getElementById("console-choices");
@@ -1095,6 +1097,9 @@
   }
 
   function stopChoiceWindow() {
+    if (readTimer) clearTimeout(readTimer);
+    readTimer = null;
+    if (choicesBox) delete choicesBox.dataset.reading;
     if (windowTick) cancelAnimationFrame(windowTick);
     windowTick = null;
     if (defaultTimer) clearTimeout(defaultTimer);
@@ -1202,6 +1207,32 @@
       root.classList.remove("is-auto-advance");
       if (currentScene === sceneId && !pendingTap) goTo(shownChoices[0]);
     }, reduce ? 0 : AUTO_FADE_MS);
+  }
+
+  /** Reading time of a page's words at 250 words a minute (a floor of 1.5 s so a one-liner still lands). */
+  function readingMs(scene) {
+    const text = ((scene.storyEn || "") + " " + (scene.questionEn || "")).trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    return Math.max(1500, Math.round((words / READ_WPM) * 60000));
+  }
+
+  /** A page with a graded still and no clip: the choices stay hidden for the reading time, then come up. */
+  function holdForReading(sceneId, scene, timed) {
+    if (!shownChoices.length && !scene.dead) return;
+    const ms = readingMs(scene);
+    choicesBox.dataset.reading = "true";
+    root.dataset.choices = "reading";
+    choicesBox.dataset.phase = "reading";
+    if (timerBox) { timerBox.hidden = true; timerBox.dataset.state = "off"; }
+    tell("feature", { feature: "reading_hold", story: STORY.id, node: sceneId, value: String(ms) });
+    if (readTimer) clearTimeout(readTimer);
+    readTimer = setTimeout(function () {
+      readTimer = null;
+      if (currentScene !== sceneId) return;
+      delete choicesBox.dataset.reading;
+      if (timed) revealChoices(true);
+      else { setChoicePhase("ready"); maybeSweep(sceneId); }
+    }, ms);
   }
 
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
@@ -1491,7 +1522,9 @@
     if (rewound && shownChoices.length > 1) { setChoicePhase("ready"); stopChoiceWindow(); }
     // No clip to wait for (a graded still): the choices are up at once and the countdown starts with
     // them, its default picked when it runs out. (With a clip, the clip's end reveals them.)
-    if (!videoSrc && scene.still && timed) revealChoices(true);
+    // The words are read first, at 250 words a minute (a radio play over the still): the buttons are in place but
+    // hidden until the reading time has passed, then the countdown starts (a death's two buttons wait the same way).
+    if (!videoSrc && scene.still) holdForReading(sceneId, scene, timed);
 
     pendingTap = null;
     preloadNext(scene);

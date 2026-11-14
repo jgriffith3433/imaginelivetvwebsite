@@ -8724,6 +8724,29 @@ async function trustFallRun(options, t) {
     if (!(await waitFor(() => win.finalSpark.scene() === target, 4000))) { t.problem("bug", `${id}: the press on "${label(btn)}" didn't open ${target} (at ${win.finalSpark.scene()})`); closeViewFrame(); continue; }
     entered.add(target);
     {
+      // Reading time: a still page's choices (a death's two buttons too) stay unseen until its words have had 250 words
+      // a minute, then come up. Timed from the press that opened the page.
+      const box = doc.getElementById("spark-choices");
+      const sb = doc.getElementById("spark-story"), qb = doc.getElementById("spark-question");
+      const words = (enText(sb) + " " + enText(qb)).split(/\s+/).filter(Boolean).length;
+      const want = Math.max(1500, Math.round((words / 250) * 60000));
+      const t0 = performance.now();
+      let early = null;
+      while (box.dataset.phase !== "ready" && performance.now() - t0 < want + 6000) {
+        await sleep(100);
+        if (box.dataset.phase === "ready") break;
+        const shownNow = [...box.querySelectorAll(".choice, [data-death]")].filter((b) => b.getClientRects().length && doc.defaultView.getComputedStyle(box).visibility !== "hidden");
+        if (shownNow.length && early == null) early = Math.round(performance.now() - t0);
+      }
+      const took = Math.round(performance.now() - t0);
+      if (box.dataset.phase !== "ready") t.problem("bug", `${id}/${target}: the choices never came up after the reading time (${want} ms for ${words} words)`);
+      else if (!box.querySelectorAll(".choice, [data-death]").length) t.event("reading-time", `${id}/${target}: an ending, no choices to hold`);
+      else if (early != null || took < want - 500) t.problem("bug", `${id}/${target}: the choices appeared after ${early != null ? early : took} ms, before the ${want} ms reading time of ${words} words at 250 wpm`);
+      else t.event("reading-time", `${id}/${target}: ${words} words, choices held ${took} ms (reading time ${want} ms)`);
+      t.metric("trustFallReadingHoldMs", took);
+      await sleep(400);
+    }
+    {
       // A clean swap: no Tap to play / title layer left over the new scene, the clip adopted from the preload.
       const ghost = () => doc.querySelectorAll(".tap-to-play, .tap-splash").length;
       const g0 = ghost();
@@ -8759,6 +8782,11 @@ async function trustFallRun(options, t) {
       await rewindEndClip(doc);
       await waitFor(() => doc.querySelectorAll("#spark-choices [data-death]").length >= 2, 8000);
       rewindCheckButtons(t, doc, `${id} ${target} (${W}x${H})`, { phone: true });
+      for (const b of doc.querySelectorAll("#spark-choices [data-death]")) {
+        const r = b.getBoundingClientRect();
+        if (r.top < H * 0.6 || r.width < 44 || r.height < 44) t.problem("bug", `${id}/${target}: the ${b.dataset.death} button (${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.top)}px) is not in the bottom 40% of a ${H}px screen with a 44px target`);
+        else t.event("thumb-reach", `${id}/${target}: ${b.dataset.death} ${Math.round(r.width)}x${Math.round(r.height)}, top ${Math.round(r.top)}px of ${H}px (bottom 40%)`);
+      }
       deathsSeen.push(target);
       t.event("death", `${id}: ${target}`);
       await sleep(800);
