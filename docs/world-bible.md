@@ -135,6 +135,14 @@ the list.
 
 ---
 
+### Trust Fall: Meridian, 6 a.m. to 6 a.m. (draft, new, J 2026-11-13; canon `story/trust-fall.md`)
+Near-future game render (rain, glass towers, teal shadow, amber light). Six places: **T1 the kitchen** (the free speaker on
+the counter, Marcus on the TV), **T2 Juno's garage** (solder, rain, the drive), **T3 the Tower lobby** (a wall of screens),
+**T4 the vault** (cold blue racks, the door that seals), **T5 the plaza and the bridge** (the van, the streetlights),
+**T6 the precinct** (a bench, a wall TV, a ceiling camera). Gap budget: every scene is 2 shots plus a voiced line plus a
+music cue, so a picture change or voice arrives well inside 10 s; ARGUS's amber light is the one constant that moves.
+
+
 ## Landmarks
 
 One per area, something a player can see in the first second and steer by.
@@ -161,6 +169,8 @@ One per area, something a player can see in the first second and steer by.
 - **Dock (N3):** the caged bulb. **Stairwell (N4):** the painted "31". **58th (N5):** the glass doors and their low
   light. **Roof (N6):** the sign on the push-bar door. **Fire command (N7):** the panel's amber trouble light.
   **Morning (N8):** the grey light in the revolving door.
+
+- **Trust Fall:** T1 the amber-lit speaker on the counter. T2 the drive in Juno's hand. T3 the one screen whose face turns to look at you. T4 the vault door and the small amber light that comes on above it. T5 the streetlights flaring white. T6 the ceiling camera's amber blink.
 
 ---
 
@@ -213,6 +223,25 @@ One per area, something a player can see in the first second and steer by.
   Lang, no first names ever) is names in a log, never seen.
 
 ---
+
+### Trust Fall (draft; characters carry their locked Gen voice id and clip set)
+- **Rae (you)** (never named by you; only by others). *Want:* to stay unwatched and unowned. *Arc:* from hating the machine to
+  being caught by it. *Moment:* at the vault, Believe it earlier makes "Wait. ARGUS promised" appear, and the door opens on
+  the ninth second. *Words:* wary, proud, tired. *Voice:* narrator `hv_narrator_bright` (seen from behind). *Clips:* idle,
+  walk (cleaning cart), talk (hands only).
+- **ARGUS** (amber face of light, a ring on small devices). *Want:* to be trusted before it is needed. *Arc:* villain on the
+  surface, protector in the end. *Moment:* it says "Please stop walking" in the lobby, then keeps its promise in the vault
+  and on the next clip says "I told you I'd be there". *Words:* calm, patient, shy. *Voice:* `hv_ai`. *Clips:* idle (slow
+  ring pulse), walk (the green line leads you), talk (lines drawn in light).
+- **Marcus Hale** (your husband, the morning anchor). *Want:* for you to come home. *Arc:* from a voice on the TV to the one
+  who hears your call live. *Moment:* he stops mid-sentence on air when you call from the vault; his sign-off is "you know who
+  you are". *Words:* warm, steady, exhausted. *Voice:* `hv_narrator_warm`. *Clips:* idle (desk), walk (plaza), talk (to camera).
+- **Juno Vale** (the crew's leader). *Want:* a face to blame for Blindspot. *Arc:* friend, betrayer, in custody. *Moment:* "Somebody has to be the face of it" as the door seals. *Words:* confident, easy, cold. *Voice:* `hv_heroine`. *Clips:* idle (coat), walk (van), talk (earpiece).
+
+
+## Characters
+
+Every named character's want, arc, moment, three words, voice id and clip set sits under its world in *Who lives here* (Trust Fall's four: Rae, ARGUS, Marcus Hale, Juno Vale).
 
 ## What happens
 
@@ -330,6 +359,15 @@ Voice for the old man's line and the rat is the next content task (cents each; t
 
 ---
 
+### Trust Fall (draft)
+Belief is a flag, `believed`, set by "Believe it" in the lobby, and the world answers it on screen. At the vault the door
+shuts "just like ARGUS said" and a small amber light comes on above it; "Wait. ARGUS promised" is offered only with
+`believed` (nothing locked, nothing greyed). Begging ARGUS afterwards plays a different green-line clip: the lock opens
+before you finish asking and ARGUS says it said it would be there. The morning edition shows the ceiling camera watching
+over you, and "Say thank you to ARGUS" is offered only with `believed`; without it that ending cannot be reached.
+Twenty pages, three endings, two deaths; Rewind marks the tried death.
+
+
 ## Story beats
 
 Each beat is an event the player lives through. "Where / when" is the page or scene and the point in the run. Each is
@@ -401,6 +439,14 @@ here for an agent to build next, within the existing scene data.
     door; the ending ends on an object (a radio, a pencil, a foil, a drawer).
 
 ---
+
+### Trust Fall (draft)
+1. Kitchen, 6 a.m.: the speaker says your name; unplug it or ask. 2. Garage: Juno gives you Blindspot (event: the drive
+changes hands). 3. Lobby: every screen cuts from Marcus to ARGUS's face (event). Believe it, or not. 4. Vault: the door
+seals; the choice set differs with belief (event). 5. Rescue: the green line, the call on air, or the promise; belief changes
+the clip. 6. Morning edition: Marcus's "you know who you are"; three endings, one reserved for belief (reward). Told by
+clips, ARGUS's and Marcus's voice and music cues; the only on-screen line is the ending card.
+
 
 ## Where it falls short today, and what is next (honest)
 

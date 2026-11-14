@@ -64,6 +64,14 @@ story, and his sign-off ("you know who you are") is a line only the two of you u
 Each offers Rewind to the choice or Start over. The timer never picks a death: every fork's default is the believing
 or basic path.
 
+## Belief shows on the next clip (2026-11-14)
+
+World bible: `docs/world-bible.md` (Trust Fall in every section). `believed` (set by Believe it) is read by scene
+variants: the vault (an amber light comes on above the door), the green line (ARGUS: "I told you I'd be there"), and the
+morning edition (the ceiling camera watches over you). "Wait. ARGUS promised" and "Say thank you to ARGUS" are `requires`
+choices: on offer only with `believed`, not shown locked otherwise. The variants change the words now; their clips follow
+when the media is made.
+
 ## Media plan (waiting for J's OK: it spends GPU)
 
 From `hawkes.assets.json` (`trust-fall-*`, 77 recipes):
