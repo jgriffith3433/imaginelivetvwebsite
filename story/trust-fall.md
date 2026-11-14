@@ -99,7 +99,7 @@ the build forbids a count below zero). "It's lying. Keep going" at the lobby lea
 
 ## Tight and true (2026-11-14, J: "Trust Fall: tight and true on every path")
 
-Voice doc: `docs/trust-fall/voice.md`. Every page's story is 35 words or fewer (27.6 on average, was 43; The Water Road 25) and
+Voice doc: `docs/trust-fall/voice.md`. Every page (story, question and ending line, as narrated, variants included) is 35 words or fewer; `npm run story` warns over 40 (27.6 on average, was 43; The Water Road 25) and
 each of the 17 variants 40 or fewer. A narration is the page's story, its question and, at an ending, the "THE END" line, so
 nothing shown is unsaid. **Each variant that changes words has its own narration**: the build writes the recipe
 `trust-fall-<scene>-voice-v<n>` (file `<folder>/media/narration-v<n>.mp3`; `n` is the variant's place in the scene's `variants`)
