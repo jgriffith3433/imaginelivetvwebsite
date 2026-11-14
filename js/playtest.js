@@ -8629,6 +8629,21 @@ async function trustFallRun(options, t) {
       if (def && dead(def.next)) t.problem("bug", `${id}/${parent}: the countdown's default leads to a death (${def.next})`);
       t.event("fork", `${id}/${parent}: ${btns.length} choices, ${btns.map((b) => `${Math.round(b.getBoundingClientRect().width)}x${Math.round(b.getBoundingClientRect().height)}`).join(", ")}, countdown ${timerOn ? "on" : "off"}${touchOn(doc) ? ", touch" : ""}`);
     }
+    {
+      // Clarity: the story text is never cut mid-sentence under the choices; it fits, or scrolls inside itself with the
+      // choices on screen right under the prompt.
+      const sb = doc.getElementById("spark-story"), qb = doc.getElementById("spark-question");
+      if (sb && sb.textContent.trim()) {
+        const sr = sb.getBoundingClientRect(), cr = btns[0].getBoundingClientRect();
+        const scrolls = sb.scrollHeight > sb.clientHeight + 1;
+        const oy = win.getComputedStyle(sb).overflowY;
+        if (scrolls && oy !== "auto" && oy !== "scroll") t.problem("bug", `${id}/${parent}: the story text is cut off (${sb.scrollHeight}px in ${sb.clientHeight}px) and can't scroll`);
+        if (sr.bottom > cr.top + 1) t.problem("bug", `${id}/${parent}: the story text runs under the choices`);
+        const qr = qb && qb.getBoundingClientRect();
+        if (qr && qr.height && cr.top - qr.bottom > 140) t.problem("bug", `${id}/${parent}: the choices are ${Math.round(cr.top - qr.bottom)}px below the prompt`);
+        t.event("story-text-fit", `${id}/${parent}: text ${sb.clientHeight}px of ${sb.scrollHeight}px${scrolls ? " (scrolls)" : " (fits)"}, choices ${Math.round(cr.top - sr.bottom)}px under it`);
+      }
+    }
     btn.scrollIntoView({ block: "center", behavior: "instant" });
     await tapAt(t, btn, `"${label(btn)}" (${W}x${H})`);
     if (!(await waitFor(() => win.finalSpark.scene() === target, 4000))) { t.problem("bug", `${id}: the press on "${label(btn)}" didn't open ${target} (at ${win.finalSpark.scene()})`); closeViewFrame(); continue; }
