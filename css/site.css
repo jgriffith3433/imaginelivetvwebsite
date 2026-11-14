@@ -3919,3 +3919,7 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
     padding-bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* A page with a still and no clip: the choices (or a death's two buttons) hold their place but stay unseen until the
+   words have had their reading time (js/game.js holdForReading). */
+.spark-choices[data-reading="true"] { visibility: hidden; pointer-events: none; }
