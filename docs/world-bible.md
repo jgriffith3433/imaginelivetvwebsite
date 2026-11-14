@@ -487,3 +487,6 @@ blog cards wake as they scroll in. **Interactions:** a card under the pointer gl
 story; scroll to the blog. **Ambient sound:** synthesized ticks and tones (no assets), only after the first press and
 never when Sound is off. **Beat as an event:** the house lights come up with a rising tone, no text. Playtest `living-home`
 reports quality.maxQuietSeconds and quality.textOnlyBeats. Left: hover loops of each world, voice lines for the Spark.
+
+### Trust Fall: the Meridian 7 lower-third (J 2026-11-14)
+Story beat told on screen as the broadcast itself: a scene's `news` field puts a FIRST LIGHT / MERIDIAN 7 / 6:00 AM style lower-third over its clip (start, unplug, tower, broadcast, the five endings), so the player knows at once they are watching Marcus's morning show. CSS only; see `story/trust-fall.md`.

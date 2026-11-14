@@ -171,6 +171,8 @@ function validateFlags(st, s) {
     const CLOCK = /^(1[0-2]|[1-9]):[0-5]\d (AM|PM)$/;
     if (!CLOCK.test(s.time ?? '')) problems.push(`${at(s)}: time must be like "6:00 AM" (the broadcast clock)`);
     if (s.chapter && (!CLOCK.test(s.chapter.time ?? '') || !s.chapter.title)) problems.push(`${at(s)}: chapter needs a clock time ("10:00 PM") and a title`);
+    if (s.news != null && (typeof s.news !== 'string' || !s.news.trim() || s.news.length > 28)) problems.push(`${at(s)}: news is the lower-third's headline, a short string (28 characters at most)`);
+    if (s.news && !st.data.news.channel) problems.push(`${id}: a scene has a news lower-third but news.channel (the channel's name) is missing`);
     if (s.ending && !s.signoff) problems.push(`${at(s)}: an ending needs the anchor's signoff`);
     if (s.signoff && !s.ending) problems.push(`${at(s)}: only an ending has a signoff`);
     if (!st.data.characters?.[st.data.news.anchor]) problems.push(`${id}: news.anchor ${st.data.news.anchor} isn't in characters`);
@@ -476,6 +478,7 @@ function newsOf(st, s) {
     time: s.time,
     caption: (s.lines ?? []).map((l) => [who(l.speaker), l.text]),
     ...((s.lines ?? []).some((l) => l.speaker === st.data.news.anchor) ? { lower: 1 } : {}),
+    ...(s.news ? { third: s.news } : {}),
     ...(s.chapter ? { chapter: s.chapter } : {}),
     ...(s.signoff ? { signoff: s.signoff } : {}),
   };
@@ -548,7 +551,7 @@ function storyData() {
       ui: Object.fromEntries(Object.entries(st.data.ui).filter(([lang]) => langs.has(lang))),
       ...(st.data.inventory ? { inventory: st.data.inventory } : {}),
       ...(st.data.unspoken ? { unspoken: st.data.unspoken } : {}),
-      ...(st.data.news ? { news: { station: st.data.news.station, anchor: st.data.characters[st.data.news.anchor].name, role: st.data.news.role ?? '' } } : {}),
+      ...(st.data.news ? { news: { station: st.data.news.station, anchor: st.data.characters[st.data.news.anchor].name, role: st.data.news.role ?? '', channel: st.data.news.channel ?? '' } } : {}),
       endings,
       scenes: out,
     };

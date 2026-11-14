@@ -85,6 +85,13 @@ changes a choice or the branching.
 - Playtest `trust-fall-news` (touch, 390x844) plays all of it. Story times: morning 6:00 to 6:03 AM, the garage 10:00 to
   10:25 PM, the Tower and vault 11:50 PM to 12:05 AM, the morning after 6:00 and 6:14 AM.
 
+### The lower-third (J, 2026-11-14: FIRST LIGHT, MERIDIAN 7, the scene's time)
+A scene's `news` field (a short headline) puts a CSS lower-third over its clip: the headline, **MERIDIAN 7** (`news.channel`)
+and the scene's `time`, low on the picture (bottom band of the video box, so the picture's centre stays clear, and above the
+panel with the caption and the choices on a phone). Marked: `start` (First light, 6:00 AM), `unplug` (The plug), `tower`
+(The Tower), `broadcast` (Morning edition) and the five endings (Live, Unseen, Good morning, Alone on air, On air, together).
+Scenes without the field show none. It is never baked into media and takes no press. Playtest `trust-fall-third` (touch, 390x844).
+
 ## Belief shows on the next clip (2026-11-14)
 
 World bible: `docs/world-bible.md` (Trust Fall in every section). `believed` (set by Believe it) is read by scene
