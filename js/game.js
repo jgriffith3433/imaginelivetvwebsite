@@ -1503,7 +1503,7 @@
      the picture, a speaker-labelled caption for each spoken line in the panel ABOVE the choices (never over a button),
      a full-screen chapter card by the clock where an act begins, and a sign-off card over every ending. All of it is the
      scene's `news` data (tools/build-story.mjs); nothing here changes a choice or the branching. */
-  const NEWS_CARD_MS = { chapter: 4000, signoff: 9000 };
+  const NEWS_CARD_MS = { chapter: 2200, signoff: 9000 };
   let newsArrive = false; // set when the viewer arrives at a scene (a choice, a start over): a chapter card may show
   let newsCard = null;
   let newsTimers = [];
