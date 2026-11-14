@@ -1609,6 +1609,11 @@ html:not([data-kit]) .inventory.kit { display: none; }
 .kit-icon svg { display: block; height: 1.6rem; width: auto; }
 .kit-revolver .kit-icon svg { height: 1.25rem; }
 
+/* Trust Fall's trust ring: ARGUS's amber, glowing a little more with each point. */
+.kit-ring { border-color: #7a5a24; color: #ffb040; }
+.kit-ring .kit-icon svg { height: 1.45rem; filter: drop-shadow(0 0 4px rgba(255, 176, 64, 0.55)); }
+.kit-drive .kit-icon svg, .kit-jammer .kit-icon svg { height: 1.3rem; }
+
 .kit-rounds { display: flex; gap: 2px; }
 .kit-round svg { display: block; height: 1.45rem; width: auto; }
 .kit-round.is-spent { opacity: 0.22; }
@@ -2668,6 +2673,7 @@ figure.feed { cursor: default; }
   line-height: 1.1;
   letter-spacing: 0.02em;
 }
+.ending-signoff { margin: 0.1rem 0; font-family: var(--serif); font-style: italic; font-size: 0.95rem; line-height: 1.35; color: #e8e4dc; }
 .ending-count { margin: 0; font-size: 0.78rem; color: #a9a59f; }
 .ending-recap-head {
   margin: 0.35rem 0 0;
@@ -2697,7 +2703,7 @@ figure.feed { cursor: default; }
 .ending-gallery-btn { font-weight: 600; }
 @keyframes ending-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .spark-ending.ending-card { animation: none; } }
-@media (max-height: 560px) { .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
+@media (max-height: 560px) { .ending-signoff { font-size: 0.82rem; line-height: 1.25; } .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
 
 /* Endings gallery (js/game.js): found tiles show poster + name; locked ones a blurred, darkened silhouette + ???. */
 .spark.is-endings #spark-play,
@@ -2971,6 +2977,13 @@ button.ending-tile:focus-visible {
 .choice-timer[data-state="done"] .choice-timer-bar,
 .choice-timer[data-state="done"] .choice-timer-label { animation: none; }
 .choice-timer[data-state="done"] .choice-timer-bar { transform: scaleX(0); }
+/* The vault's countdown is the air running out: a cold blue-white breath that thins, then reddens at the end. */
+.choice-timer[data-style="air"] .choice-timer-bar { background: linear-gradient(90deg, #7fb8e6, #dcefff); box-shadow: 0 0 8px rgba(127, 184, 230, 0.55); }
+.choice-timer[data-style="air"] .choice-timer-track { background: rgba(127, 184, 230, 0.2); }
+.choice-timer[data-style="air"] .choice-timer-label { color: #b9dcf7; }
+.choice-timer[data-style="air"][data-urgent="true"] .choice-timer-bar { background: linear-gradient(90deg, #d94a3a, #ff8a6b); box-shadow: 0 0 12px rgba(235, 90, 70, 0.9); }
+.choice-timer[data-style="air"][data-urgent="true"] .choice-timer-track { background: rgba(235, 90, 70, 0.28); box-shadow: 0 0 10px rgba(235, 90, 70, 0.4); }
+.choice-timer[data-style="air"][data-urgent="true"] .choice-timer-label { color: #ff9b86; text-shadow: 0 0 8px rgba(235, 90, 70, 0.6); }
 @keyframes choice-timer-pulse {
   from { opacity: 0.55; filter: brightness(0.92); }
   to { opacity: 1; filter: brightness(1.18); }
@@ -3920,7 +3933,7 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
    The critic saw the story in a card with the site's header and the page around it. While a clip story is open the
    player covers the viewport (above the inventory bar), the site header is gone and nothing of the landing page shows;
    "All stories" in the player's own bar is the way back. Phones already do this (rules above). */
-@media (min-width: 900px) and (min-height: 560px) {
+@media (min-width: 721px) and (min-height: 560px) {
   html[data-view="story"]:not([data-type="console"]) .site-header { display: none; }
   html[data-view="story"]:not([data-type="console"]) .spark:not([hidden]) {
     position: fixed;
@@ -4031,3 +4044,131 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
   .spark[data-state="dead"] .spark-choices { position: sticky; bottom: 0; z-index: 2; background: #070807; display: flex; flex-direction: column; gap: 0.5rem; }
   .spark[data-state="dead"] .spark-choices .choice.death-choice { min-height: 56px; flex: 0 0 auto; }
 }
+
+/* ---------------- The news frame (Trust Fall, J 2026-11-14; story doc "The news frame") ----------------
+   A clock bug and Marcus's lower-third in the top band of the picture, a speaker-labelled caption in the panel above the
+   choices (in the flow, never over a button), and full-screen chapter and sign-off cards. Nothing here takes a press
+   except the cards, which a press anywhere on moves on. */
+.news-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem 1.1rem;
+  color: #fffaf2;
+  background: linear-gradient(to bottom, rgba(5, 8, 14, 0.82), rgba(5, 8, 14, 0));
+  pointer-events: none;
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+.news-clock {
+  flex: 0 0 auto;
+  padding: 0.2rem 0.5rem;
+  color: #1a1206;
+  background: #ffb040;
+  border-radius: 4px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.news-plate {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.2rem 0.6rem;
+  background: rgba(8, 14, 28, 0.78);
+  border-left: 3px solid #ffb040;
+}
+.news-plate b { letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.82rem; }
+.news-plate i { font-style: normal; color: #d9d2c4; font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.news-caption {
+  margin: 0.15rem 0 0.35rem;
+  padding: 0.4rem 0.7rem;
+  color: #ffffff;
+  background: rgba(8, 14, 28, 0.78);
+  border-left: 4px solid #ffffff;
+  border-radius: 0 6px 6px 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+.news-caption[hidden] { display: none; }
+.news-who {
+  display: inline-block;
+  margin-right: 0.5rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* Speaker colours (J, 2026-11-14): Marcus white, ARGUS amber, Juno grey; the words stay white-ish for reading. */
+.news-caption[data-who="Marcus"] { border-left-color: #ffffff; }
+.news-caption[data-who="Marcus"] .news-who { color: #ffffff; }
+.news-caption[data-who="ARGUS"] { border-left-color: #ffb040; }
+.news-caption[data-who="ARGUS"] .news-who { color: #ffb040; }
+.news-caption[data-who="Juno"] { border-left-color: #a8adb5; }
+.news-caption[data-who="Juno"] .news-who { color: #a8adb5; }
+
+.news-card {
+  position: fixed;
+  inset: 0;
+  z-index: 8500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  padding: 2rem 1.5rem;
+  color: #fffaf2;
+  text-align: center;
+  font: inherit;
+  background: radial-gradient(ellipse at 50% 40%, #14233b 0%, #070a12 70%);
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  animation: news-card-in 0.25s ease-out;
+}
+.news-card > span { display: block; max-width: 22rem; }
+.news-card-kicker { color: #ffb040; font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; }
+.news-card-time { font-size: clamp(3rem, 16vw, 5.5rem); font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.news-card-title { font-size: clamp(1.3rem, 6vw, 2rem); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.news-card[data-kind="signoff"] .news-card-title { font-size: clamp(1.1rem, 5vw, 1.5rem); }
+.news-card-line { font-size: 1.05rem; line-height: 1.45; color: #e8e2d6; }
+.news-card-hint { margin-top: 1.2rem; color: #9aa4b5; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.news-card:focus-visible { outline: 3px solid #ffb040; outline-offset: -6px; }
+@keyframes news-card-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .news-card { animation: none; } }
+
+/* The news lower-third (J, 2026-11-14): headline, channel and time low on the picture, over the clip, on scenes marked `news`.
+   It sits in the bottom band of the video box (the choices and the caption are in the panel below, never under it) and
+   leaves the centre of the picture clear. It takes no press. */
+.news-third {
+  position: absolute;
+  left: 0;
+  bottom: 9%;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  max-width: 78%;
+  padding: 0.3rem 0.7rem 0.35rem;
+  color: #fffaf2;
+  background: linear-gradient(90deg, rgba(8, 14, 28, 0.88), rgba(8, 14, 28, 0.7));
+  border-left: 4px solid #ffb040;
+  pointer-events: none;
+  animation: news-third-in 0.35s ease-out;
+}
+.news-third-head { font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.15; }
+.news-third-line { display: flex; gap: 0.6rem; align-items: baseline; color: #d9d2c4; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.news-third-channel { color: #ffb040; font-weight: 700; }
+.news-third-time { font-variant-numeric: tabular-nums; }
+@keyframes news-third-in { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .news-third { animation: none; } }

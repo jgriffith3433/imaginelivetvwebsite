@@ -2,7 +2,8 @@
 
 `story/trust-fall.json`: every page, its text, its choices and how its media is made. Its pages are under
 `/trust-fall/` (`/trust-fall/first-light/`, …), its asset ids start with `trust-fall-`, and it plays at
-`/?story=trust-fall`.
+`/?story=trust-fall`. **Voice and page rules:** [`docs/trust-fall/voice.md`](../docs/trust-fall/voice.md) (narrator, ARGUS,
+Marcus, Juno; two sentences and under 30 words a page; words to avoid).
 
 **A draft (`"listed": false` in `story/stories.json`), asked for by J on 2026-11-13:** "a brand new story for imagine
 live tv ... about believing in "the AI system" and getting rewarded for it (you play as anti hero, AI is villain but
@@ -40,7 +41,9 @@ story, and his sign-off ("you know who you are") is a line only the two of you u
 3. **The Tower.** 11:50 p.m. Every lobby screen shows Marcus live on the plaza, then cuts to ARGUS's face, looking at
    you: "Rae. Please stop walking." Jam it and keep going (**lights out**), or stop and listen (**what it knows**: Juno
    sold you two hours ago). Believe it (**the bait**: it tells you to go down and let the trap close; sets `believed`),
-   or call it a liar and keep going.
+   or call it a liar and keep going. Only if you read the drive on the train (`readWorm`), a third choice: **Show ARGUS
+   your copy** (**your copy**): ARGUS confirms at once what Blindspot is, you believe it (sets `believed`, +1 trust), and the
+   road joins **the bait**. It is a faster road to trusting ARGUS: the reader skips the question.
 4. **The vault.** You plug in Blindspot; the door seals; Juno in your earpiece: somebody has to be the face of it.
    Fire suppression in sixty seconds. Beg ARGUS for help (**the green line**), call Marcus (**on the air**: he hears
    you live on the plaza, and ARGUS opens the doors; sets `calledMarcus`), pry the door (**sixty seconds**, a death),
@@ -61,16 +64,73 @@ story, and his sign-off ("you know who you are") is a line only the two of you u
   side.* This is the reward for belief.
 
 **Deaths** (two, both seen coming): facing Juno with the copy (the river), prying the vault door alone (sixty seconds).
-Each offers Rewind to the choice or Start over. The timer never picks a death: every fork's default is the believing
+Each offers Rewind (labelled with the choice it returns to, e.g. "Rewind: go back and face Juno") or Start over. The timer never picks a death: every fork's default is the believing
 or basic path.
+
+## The news frame (2026-11-14, J: "a husband who is a news reporter they watch every morning")
+
+Marcus's *Meridian Morning* frames the night like a TV broadcast. All of it is data in `story/trust-fall.json` (`news`:
+station, anchor, role; per scene `time`, optional `chapter`, an ending's `signoff`), built by `npm run story` into each
+scene's `news` (`js/story-data.js`) and drawn by the player (`js/game.js` "The news frame", `css/site.css`). Nothing
+changes a choice or the branching.
+- **Clock and lower-third.** Every scene shows its broadcast time in a clock bug in the top band of the picture; on
+  Marcus's scenes (any line of his) his name plate (*Marcus Okoro, Anchor, Meridian Morning*) sits beside it for the whole scene.
+- **Chapter cards** by the clock, full screen, a press (or 4 s) moves on, the clip waits under it: 6:00 AM *First light*
+  (`start`), 10:00 PM *The garage* (`crew`), 11:50 PM *The Tower* (`tower`), 6:00 AM *Morning edition* (`broadcast`).
+  Shown when the viewer arrives by a choice, a start over or a new run, not on a resume or a Rewind.
+- **Captions.** Each `lines` entry shows under its speaker's name in the panel above the choices (never over a button),
+  in order, about 0.4 s a word. A page with no `lines` is the narrator's story, which is already the page's text.
+- **Sign-off.** Every ending closes on Marcus's card (*Marcus Okoro signs off*, his line, ending on "You know who you
+  are"), shown when the ending's clip ends (or after 14 s / 6 s on a still); the ending card is already under it.
+- Playtest `trust-fall-news` (touch, 390x844) plays all of it. Story times: morning 6:00 to 6:03 AM, the garage 10:00 to
+  10:25 PM, the Tower and vault 11:50 PM to 12:05 AM, the morning after 6:00 and 6:14 AM.
+
+### The lower-third (J, 2026-11-14: FIRST LIGHT, MERIDIAN 7, the scene's time)
+A scene's `news` field (a short headline) puts a CSS lower-third over its clip: the headline, **MERIDIAN 7** (`news.channel`)
+and the scene's `time`, low on the picture (bottom band of the video box, so the picture's centre stays clear, and above the
+panel with the caption and the choices on a phone). Marked: `start` (First light, 6:00 AM), `unplug` (The plug), `tower`
+(The Tower), `broadcast` (Morning edition) and the five endings (Live, Unseen, Good morning, Alone on air, On air, together).
+Scenes without the field show none. It is never baked into media and takes no press. Playtest `trust-fall-third` (touch, 390x844).
 
 ## Belief shows on the next clip (2026-11-14)
 
 World bible: `docs/world-bible.md` (Trust Fall in every section). `believed` (set by Believe it) is read by scene
 variants: the vault (an amber light comes on above the door), the green line (ARGUS: "I told you I'd be there"), and the
-morning edition (the ceiling camera watches over you). "Wait. ARGUS promised" and "Say thank you to ARGUS" are `requires`
-choices: on offer only with `believed`, not shown locked otherwise. The variants change the words now; their clips follow
+morning edition (the ceiling camera watches over you). "Wait. ARGUS promised" is a `requires` choice: on offer only with `believed`, not shown
+locked otherwise. "Say thank you to ARGUS" (Morning edition) is gated on **trust 3 or more** (`needs`, J 2026-11-14): trust
+is asked, listened, believed (+ waited), so it takes asking, listening and believing; with 2 it is a greyed-out
+"needs trust 3+ (you have 2)" row, not a button. The variants change the words now; their clips follow
 when the media is made.
+
+## Trust, counted (2026-11-14, J: "belief that pays off")
+
+`inventory` in `story/trust-fall.json` has one counted item, `trust` (icon `ring`, 0 to 4, shown in the kit bar). Scenes that
+add to it: `asked`, `listen`, `believe`, `promise` (+1 each); `jam` sets it to 0 (so jamming visibly costs what you earned;
+the build forbids a count below zero). "It's lying. Keep going" at the lobby leads to `jam` too, and both set `jammed`.
+- **The jam road** (`jam` > `blackout` > `breaker` > `crawl` > `coreDark` > `saved`): a jammed run never meets ARGUS's
+  amber light in the vault. `coreDark` is `core` for jammed runs (same three ways out); Beg the dead air leads to the green
+  line (`saved`), whose `jammed` variant ("onto pitch black", ARGUS finds you in the dark first, the dead jammer and "I could
+  not see you, I could only wait") is the rescue; both "Jam it and keep going" and "It's lying. Keep going" set `jammed`, so
+  both read it. (The old page *The long way out*, `jamRescue`, was folded into that variant.) It is 6 scenes after the lobby,
+  the believing road's rescue (`promise` or `saved`) is 4: two more.
+- **The broadcast splits by trust** with `when` flags (no gated default): low `jammed` > `unvouched` (*Alone on air*, "THE END.
+  Nobody vouched for you."), mid (believed, but not asked or waited) > `truth` (*Live*), high (believed and asked, or believed
+  and waited: trust 3 or more) > `vouched` (*On air, together*, "THE END. It answered for you."). "Say thank you to ARGUS"
+  (Good morning) is `requires` the same high flags (and `needs` trust 3): absent below, never a locked row.
+- A video story's choices have no `forbids`: use a `requires` flag set to `false`.
+- The six new scenes (blackout, breaker, crawl, coreDark, unvouched, vouched) show a graded still until
+  their clips are made (GPU, priced in the change's summary). Playtest `trust-fall` section 4a plays the meter, the cost,
+  the rescue depth, the Good morning gate and the three endings by touch at 390x844.
+
+## Tight and true (2026-11-14, J: "Trust Fall: tight and true on every path")
+
+Voice doc: `docs/trust-fall/voice.md`. Every page (story, question and ending line, as narrated, variants included) is 35 words or fewer; `npm run story` warns over 40 (27.6 on average, was 43; The Water Road 25) and
+each of the 17 variants 40 or fewer. A narration is the page's story, its question and, at an ending, the "THE END" line, so
+nothing shown is unsaid. **Each variant that changes words has its own narration**: the build writes the recipe
+`trust-fall-<scene>-voice-v<n>` (file `<folder>/media/narration-v<n>.mp3`; `n` is the variant's place in the scene's `variants`)
+and, once that is made, cuts `<folder>/scene-v<n>.mp4` from the scene's shots and plays it for the run whose flags pick the
+variant (`js/game.js` `sceneWith`; a still page speaks the variant's `narration`). Until it is made the base cut plays: the
+`trust-fall` playtest (section 4b) says so by variant. Remake the base voices too (their words changed), then `npm run story`.
 
 ## Media plan (waiting for J's OK: it spends GPU)
 
@@ -105,8 +165,7 @@ tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio
 - `waited` (set by Wait. ARGUS promised) keys the morning's "the recording you stood still for"; the `broadcast` variants
   run most specific first (chased, calledMarcus, waited, believed, listened), so every flag is heard.
 - Endings gallery hints tease instead of giving the route. Runtime on the card: about 8 minutes.
-- Still to come (roadmap, `/mnt/project-files/new-story/roadmap.md`): a counted trust meter, narration for variants,
-  tighter pages, a voice doc.
+- Still to come (roadmap): the remade voices and cuts for the tightened pages and variants.
 
 ## Sound (2026-11-14)
 
@@ -136,3 +195,14 @@ its media is made, takes the beat's place and keeps the order: action first, wor
   Their clips (and the talking shots, 19 in the recipes) are the media still to make.
 - The build cuts a scene as soon as its shots, narration and music exist; a talking shot is cut in only once both its
   video and its recording are made. A scene whose lines have no talking shots yet keeps the live tail under its choices.
+
+## The trust ring and what you carry (J, 2026-11-14)
+
+The kit bar ("Carrying", `js/kit.js`) shows ARGUS's amber ring with a count, **Trust**, 0 to 4: +1 on arriving at How it knows (Ask how it knows you), What it knows (Stop and listen), The bait (Believe it) and The promise (Wait. ARGUS promised); it never goes below 0. On the believing way it reads 3 at the vault and 4 once you Wait. Carried items appear only once you have them, with no count: **Blindspot** (from the garage), **the copy** (Copy it and read it first) and **the jammer** (Jam it and keep going). Playtest `trust-meter`.
+
+## Endings that name the choice (J, 2026-11-14)
+
+Live (`truth`) and Unseen (`shadow`) have story variants, most specific first like the morning edition: **chased** (the
+bridge, alone), **calledMarcus** (Marcus heard the call; in Unseen he knows only that someone called), **believed** (the
+amber light above the camera; in Unseen ARGUS keeps your name because you asked). Someone who did none of them reads the
+base text. The timer's default stays Live. Good morning (`believer`) is the reward for trust 3 and has one text.

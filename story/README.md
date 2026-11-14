@@ -357,7 +357,8 @@ remember a choice and call it back later. All of it is data in `story/<id>.json`
   death's one `choices` entry, `next` the start, so write its words as "Start over"). Both are full-width, at least
   48 px tall. A rewound fork plays its clip and its choices are pressable at once. A death at the first page has no
   fork, so only Start over.
-- **The timer never picks a death.** The 15 s timeout presses the choice marked `"default": true` (the story's basic
+- **A scene's own timer.** `"timer": 10` (whole seconds, 3 to 60) sets that page's countdown; the default stays 15 s. `"timerStyle": "air"` draws it as air running out ("Air 10 s", blue, reddening in the last 3 s). Trust Fall's vault (`core`) uses both.
+- **The timer never picks a death.** The timeout (15 s unless the page sets `timer`) presses the choice marked `"default": true` (the story's basic
   path), else the first choice that isn't a death. `npm run story -- --check` fails a default that leads to a
   death, a fork with two defaults, and a fork whose every choice is a death with no default.
 - **Flags.** A choice may `"set": { "gaveFlask": true, "passedBy": false }` (boolean, text or number). A scene may have
@@ -400,6 +401,12 @@ bar of items instead (`js/kit.js`; The Water Road's revolver, bullets and flask)
 - `inventory.items`: each with `id`, `name`, `icon` (one `js/kit.js` draws: `revolver`, `rounds`, `flask`), and for
   a counted item `start` and `max`; `note` is its tooltip. `"empty": "dead"` says running out of it ends the run.
 - On a scene, `inventory` is what it does: `{ "water": -1 }` takes one, `{ "water": { "set": 4 } }` sets it.
+
+- A **carried** item (`"carried": true`, with `start` 0 and `max` 1: Trust Fall's Blindspot, the copy, the jammer) is on the bar
+  only once a scene gives it (`{ "blindspot": 1 }`), and shows no count. Icons also include `ring` (Trust Fall's amber trust),
+  `drive` and `jammer`. Trust Fall's `trust` is a counted item (0 to 4): +1 on arriving at How it knows (Ask how it knows you),
+  What it knows (Stop and listen), The bait (Believe it) and The promise (Wait. ARGUS promised). Counts change on arriving at a scene,
+  so at The vault it reads 3 on the believing way and 4 at The promise. Playtest `trust-meter`.
 
 **`keepFlashlight`.** An inventory with `"keepFlashlight": true` (The Final Spark's one item, `matches`, icon `match`) does
 not replace the flashlight: the count is one number beside the torch in the flashlight bar (`js/spot.js`, `#match-count`,
@@ -533,3 +540,11 @@ Then make the media through Hawkes Studio (costs GPU time: ask J first):
 ### Camera art for console stories
 
 `style` is written as positive wording (image.generate ignores negatives): a CCTV still, fisheye, low-res, grain, scanlines, a clear strip for the timestamp. Until the real stills exist, `tools/make-standins.mjs` draws SVG stand-ins (`<id>/media/standin/`): one per camera state on that camera's fixed room, one end card per ending, and the landing card; the build uses them only while `media/feeds/<camera>-<state>.png` / `media/endcards/<scene>.png` is missing. Recipes: `<id>-feed-*`, `<id>-endcard-<scene>`, `<id>-card`. The `cctv-art` playtest checks them.
+
+## The card check (Trust Fall, 2026-11-14)
+
+A draft (`"listed": false`) with a `runtime` and `mood` in `story/stories.json` still gets its card built: `npm run story` renders it
+with the landing page's own markup, fails if the logline, mood, an "About N min" runtime or the optional `teaser` is missing, and
+writes `card-check/index.html` (that card beside The Water Road's, `noindex`). `teaser` is a one-line `data-teaser` on the card and a
+line on the story's `/<id>/` link page. Listing Trust Fall later is one change: `"listed": false` removed. Playtest `trust-fall-card`
+(touch, 390x844) checks the home page has no Trust Fall card and the check page's card has the same width and picture size as The Water Road's.

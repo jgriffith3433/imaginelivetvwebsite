@@ -31107,7 +31107,7 @@
     },
     {
       "id": "trust-fall-music-hum",
-      "note": "Music for the hum scenes (Trust Fall) (unplug, asked, readWorm, tower, listen).",
+      "note": "Music for the hum scenes (Trust Fall) (unplug, asked, readWorm, tower, listen, breaker, showCopy).",
       "steps": [
         {
           "tool": "audio.music",
@@ -31183,7 +31183,7 @@
     },
     {
       "id": "trust-fall-music-trapped",
-      "note": "Music for the trapped scenes (Trust Fall) (core, callMarcus).",
+      "note": "Music for the trapped scenes (Trust Fall) (core, callMarcus, blackout, crawl, coreDark).",
       "steps": [
         {
           "tool": "audio.music",
@@ -31202,7 +31202,7 @@
     },
     {
       "id": "trust-fall-music-end",
-      "note": "Music for the end scenes (Trust Fall) (truth, shadow, believer).",
+      "note": "Music for the end scenes (Trust Fall) (truth, shadow, believer, unvouched, vouched).",
       "steps": [
         {
           "tool": "audio.music",
@@ -31542,7 +31542,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten. Where do you go?",
+            "text": "You yank the cord. The speaker dies, and so does the TV. When it returns, the voice under Marcus's isn't his. Your phone buzzes: Juno. Garage, ten. Where do you go?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -31665,7 +31665,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Before you can answer, your phone buzzes. It's Juno: tonight, the Tower, the garage at ten. Where do you go?",
+            "text": "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Your phone buzzes: Juno. Garage, ten. Where do you go?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -31833,7 +31833,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Juno's garage smells of solder and rain. The plan is simple: at midnight, while the whole city watches ARGUS switch on, you walk a drive called Blindspot into the Tower's core and put out every eye it has. Juno presses the drive into your hand. Do you carry Blindspot in?",
+            "text": "Juno's garage smells of solder and rain. At midnight you carry a drive, Blindspot, into the Tower and blind ARGUS. Juno presses it into your hand. Do you carry Blindspot in?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -31846,7 +31846,7 @@
     },
     {
       "id": "trust-fall-crew-talk-1",
-      "note": "The garage (Trust Fall): Juno Vale says \"One night with nobody watching, Rae. That's all I want. One night, and this city is ours.\". video.talk is experimental.",
+      "note": "The garage (Trust Fall): Juno Vale says \"Seven years ago I pulled you out of that cell. I asked nothing.\". video.talk is experimental.",
       "inputs": [
         "story/characters/trust-fall/juno.png",
         "trust-fall/the-garage/media/keyframe.png"
@@ -31871,7 +31871,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "One night with nobody watching, Rae. That's all I want. One night, and this city is ours.",
+            "text": "Seven years ago I pulled you out of that cell. I asked nothing.",
             "voice": "hv_heroine",
             "model": "eleven_v4"
           },
@@ -31883,7 +31883,7 @@
             "prompt": "a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile speaks to the camera, natural head movement, the camera drifts along the table past the crew to the woman in the black coat, who looks up",
             "width": 480,
             "height": 832,
-            "frames": 195,
+            "frames": 155,
             "fps": 25
           },
           "inputs": {
@@ -31900,6 +31900,64 @@
         "portrait-1": "trust-fall/the-garage/media/portrait-1.png",
         "line-1": "trust-fall/the-garage/media/line-1.mp3",
         "talk-1": "trust-fall/the-garage/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-crew-talk-2",
+      "note": "The garage (Trust Fall): Juno Vale says \"One night, Rae. This city is ours.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/juno.png",
+        "trust-fall/the-garage/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile) facing the camera, mouth closed, in the setting of image 2: a cluttered underground garage at night lit by work lamps and monitors, rain dripping from a roll-up door, a crew of four hunched over a steel table of electronics and city maps; a tall woman with a silver buzz cut and a long black coat stands at the head of the table. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-2"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "One night, Rae. This city is ours.",
+            "voice": "hv_heroine",
+            "model": "eleven_v4"
+          },
+          "save": "line-2"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile speaks to the camera, natural head movement, the camera drifts along the table past the crew to the woman in the black coat, who looks up",
+            "width": 480,
+            "height": 832,
+            "frames": 95,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-2"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-2": "trust-fall/the-garage/media/portrait-2.png",
+        "line-2": "trust-fall/the-garage/media/line-2.mp3",
+        "talk-2": "trust-fall/the-garage/media/talk-2.mp4"
       }
     },
     {
@@ -31954,7 +32012,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "On the train you open your copy. Blindspot doesn't blind anything. It locks the city's power behind a ransom, and every line of it is signed with your name. Juno was never coming back for you. You know what Juno is doing. What now?",
+            "text": "On the train you open your copy. Blindspot blinds nothing. It ransoms the city's power, every line signed with your name. Juno was never coming back for you. You know what Juno is doing. What now?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32008,7 +32066,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You walk back into the garage and put your copy on the table. Juno doesn't argue. Juno never argues. The last thing you hear is the river. You have died.",
+            "text": "You put your copy on Juno's table. Juno doesn't argue. Juno never argues. The last thing you hear is the river. You have died.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32118,7 +32176,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you. ARGUS sees you. What do you do?",
+            "text": "Eleven fifty. Lobby screens show Marcus live, counting down. You wheel a cart past security. One screen cuts to a face of amber light, looking at you. ARGUS sees you. What now?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32299,7 +32357,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core. Down you go.",
+            "text": "You thumb the jammer in your sleeve. The screens die, the face goes mid-word, and something in your chest goes quiet. You take the service stairs down. Down you go.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32364,7 +32422,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient. Do you believe a machine?",
+            "text": "You stop in the middle of the lobby. Nobody else hears it. The voice is only in your screen, quiet and patient. Do you believe a machine?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32485,7 +32543,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "It tells you what to do, and the strangest part is how calm you feel doing it. You ride the elevator eleven floors down with the drive in your fist and a machine's promise in your ear. Down you go.",
+            "text": "It tells you what to do, and you're strangely calm. You ride eleven floors down, the drive in your fist, a machine's promise in your ear. Down you go.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32642,7 +32700,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "The core is cold and blue and humming. You plug Blindspot into the rack, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. The air is going. What do you do?",
+            "text": "The core is cold, blue, humming. You plug Blindspot in. Juno clicks on in your earpiece. The vault door locks, and a recording says: fire suppression in sixty seconds. The air is going. What now?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32754,7 +32812,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You get your fingers into the seam of the door and pull until they won't pull anymore. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now. You have died.",
+            "text": "You pull at the door's seam until your fingers give out. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now. You have died.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -32817,7 +32875,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Your call shouldn't get through eleven floors of concrete. It does. Up on the plaza, live in front of the whole city, Marcus stops in the middle of a sentence and touches his earpiece. Hold on.",
+            "text": "Your call shouldn't get through eleven floors of concrete. It does. Live on the plaza, Marcus stops mid-sentence and touches his earpiece. Hold on.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33088,7 +33146,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "The lock clunks open. A thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it. Behind you Blindspot dies on the rack: ARGUS read it the moment you plugged it in. You come up into the rain on the plaza just as Juno's van pulls away. Juno is getting away. What do you do?",
+            "text": "The lock opens. A green line runs ahead, each door opening before you reach it. Blindspot dies on the rack. You surface in the rain as Juno's van pulls away. Juno is getting away. What do you do?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33209,7 +33267,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You grab a courier's bike and chase the van onto the Harbor Bridge. Halfway across, Juno swings the van around and comes straight at you. Then every streetlight on the bridge flares white at once, right in Juno's eyes, and the van spins into the barrier and stops. Breathe.",
+            "text": "You grab a courier's bike and chase the van onto the Harbor Bridge. Juno swings around, straight at you. Every streetlight flares white in her eyes. The van spins into the barrier. Breathe.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33368,7 +33426,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You stand still and breathe the way it told you to. The hiss never comes. The door opens on the ninth second, and the screen beside it shows the whole night recorded: Juno in your ear, every word. Out on the avenues every light turns red in front of Juno's van and green for the police behind it. It kept its word.",
+            "text": "You stand still and breathe as it told you. The hiss never comes. The door opens on the ninth second, and a screen replays Juno's every word. Outside, the lights turn red for her van. It kept its word.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33536,7 +33594,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you. What do you do?",
+            "text": "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody. He looks into the camera, at you. What do you do?",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33659,7 +33717,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are. ",
+            "text": "At seven you tell the city who you are. ARGUS vouches for every word. When the light goes off, Marcus says it just to you: you know who you are. THE END. You were the story.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33780,7 +33838,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for. ",
+            "text": "You leave the blanket on the bench and walk out before anyone asks your name. ARGUS never gives it. Marcus's next broadcast ends with a new line only you understand. THE END. Some heroes stay in the dark.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33905,7 +33963,7 @@
         {
           "tool": "audio.voice",
           "params": {
-            "text": "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back. ",
+            "text": "You thank the camera in the precinct corner. Its amber light blinks once, like a smile. Your record comes back clean. Each morning the speaker says good morning. You say it back. THE END. It was always on your side.",
             "voice": "hv_narrator_bright",
             "model": "eleven_v4"
           },
@@ -33972,6 +34030,1087 @@
         "portrait-1": "trust-fall/good-morning/media/portrait-1.png",
         "line-1": "trust-fall/good-morning/media/line-1.mp3",
         "talk-1": "trust-fall/good-morning/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-blackout-shot",
+      "note": "The dead stairs (Trust Fall): keyframe and clip.",
+      "inputs": [
+        "story/characters/trust-fall/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a pitch-dark concrete service stairwell, a person in a cleaner's uniform feeling along the wall with one gloved hand, a thin red glow from the jammer in their sleeve the only light, dead keypads beside every door. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera follows behind the person as the red glow slides down the wall; a keypad blinks once and stays dark. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a pitch-dark concrete service stairwell, a person in a cleaner's uniform feeling along the wall with one gloved hand, a thin red glow from the jammer in their sleeve the only light, dead keypads beside every door); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/dead-stairs/media/keyframe.png",
+        "clip": "trust-fall/dead-stairs/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-blackout-voice",
+      "note": "The dead stairs (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The jammer hums and the emergency lights go with it. Every keypad on the stairwell is dark. Nothing watches you, nothing helps. You count the landings by touch. The doors are dead. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/dead-stairs/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-breaker-shot",
+      "note": "The breaker room (Trust Fall): keyframe and clip.",
+      "inputs": [
+        "story/characters/trust-fall/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a cramped concrete breaker room lit by a single phone torch, rows of heavy black switches on a steel panel, a gloved hand pushing a lever down, one small green lamp coming on above the panel. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the lever clunks down; the green lamp flickers on and the shadows jump. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a cramped concrete breaker room lit by a single phone torch, rows of heavy black switches on a steel panel, a gloved hand pushing a lever down, one small green lamp coming on above the panel); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/the-breaker-room/media/keyframe.png",
+        "clip": "trust-fall/the-breaker-room/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-breaker-voice",
+      "note": "The breaker room (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "On the ninth landing: a breaker panel the size of a wardrobe. You trip switches by phone light until one green lamp comes on. You don't know what you've let back on. One lamp is lit. Do you go on?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-breaker-room/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-crawl-shot",
+      "note": "The duct (Trust Fall): keyframe and clip.",
+      "inputs": [
+        "story/characters/trust-fall/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: inside a narrow steel cable duct lit by a faint red glow, a person in a cleaner's uniform crawling on their elbows toward a square of cold blue light at the far end. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the camera crawls ahead of the person toward the blue light; a faint amber glint flickers once in the dark behind them. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (inside a narrow steel cable duct lit by a faint red glow, a person in a cleaner's uniform crawling on their elbows toward a square of cold blue light at the far end); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/the-duct/media/keyframe.png",
+        "clip": "trust-fall/the-duct/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-crawl-voice",
+      "note": "The duct (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The only way down is the cable duct: forty metres on your elbows, the jammer burning your arm. Far below, a patient voice says your name. Do you answer it?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-duct/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-crawl-talk-1",
+      "note": "The duct (Trust Fall): ARGUS says \"Rae. The jammer is still on. I cannot see you.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/argus.png",
+        "trust-fall/the-duct/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: inside a narrow steel cable duct lit by a faint red glow, a person in a cleaner's uniform crawling on their elbows toward a square of cold blue light at the far end. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Rae. The jammer is still on. I cannot see you.",
+            "voice": "hv_ai",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the camera crawls ahead of the person toward the blue light; a faint amber glint flickers once in the dark behind them",
+            "width": 480,
+            "height": 832,
+            "frames": 125,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "trust-fall/the-duct/media/portrait-1.png",
+        "line-1": "trust-fall/the-duct/media/line-1.mp3",
+        "talk-1": "trust-fall/the-duct/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-coreDark-shot",
+      "note": "The dark vault (Trust Fall): keyframe and clip (shot 1 of 2).",
+      "inputs": [
+        "story/characters/trust-fall/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a cold blue server vault deep underground, rows of humming black racks, a person in a cleaner's uniform pushing a small drive into a port; behind them a massive round steel vault door. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the drive clicks in and its light turns red; behind the person the vault door begins to roll shut. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a cold blue server vault deep underground, rows of humming black racks, a person in a cleaner's uniform pushing a small drive into a port; behind them a massive round steel vault door); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/the-dark-vault/media/keyframe.png",
+        "clip": "trust-fall/the-dark-vault/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-coreDark-shot-2",
+      "note": "The dark vault (Trust Fall): keyframe and clip (shot 2 of 2).",
+      "steps": [
+        {
+          "tool": "image.generate",
+          "params": {
+            "prompt": "A vertical 9:16 film still: the heavy steel vault door sealing with a red warning light spinning above it, cold blue server light, a pale haze starting to drift from vents in the ceiling. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now. A modern 3D game render, not a photograph and not live action, not a cartoon or anime; a clean image with no writing on it.",
+            "width": 720,
+            "height": 1280
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the door locks with a jolt; the red light spins; haze drifts down. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (the heavy steel vault door sealing with a red warning light spinning above it, cold blue server light, a pale haze starting to drift from vents in the ceiling); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/the-dark-vault/media/keyframe-2.png",
+        "clip": "trust-fall/the-dark-vault/media/clip-2.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-coreDark-voice",
+      "note": "The dark vault (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The core is cold, blue, humming, and wrong: no amber light, no voice but Juno's. The door locks. Sixty seconds. You switched off the one thing that could help. The jammer is still burning. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-dark-vault/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-coreDark-talk-1",
+      "note": "The dark vault (Trust Fall): Juno Vale says \"Sorry, Rae. Somebody has to be the face of it. Nobody is coming for you.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/juno.png",
+        "trust-fall/the-dark-vault/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile) facing the camera, mouth closed, in the setting of image 2: a cold blue server vault deep underground, rows of humming black racks, a person in a cleaner's uniform pushing a small drive into a port; behind them a massive round steel vault door. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Sorry, Rae. Somebody has to be the face of it. Nobody is coming for you.",
+            "voice": "hv_heroine",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile speaks to the camera, natural head movement, the drive clicks in and its light turns red; behind the person the vault door begins to roll shut",
+            "width": 480,
+            "height": 832,
+            "frames": 175,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "trust-fall/the-dark-vault/media/portrait-1.png",
+        "line-1": "trust-fall/the-dark-vault/media/line-1.mp3",
+        "talk-1": "trust-fall/the-dark-vault/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-unvouched-shot",
+      "note": "Alone on air (Trust Fall): keyframe and clip.",
+      "inputs": [
+        "story/characters/trust-fall/marcus.png",
+        "story/characters/trust-fall/hero.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a bright morning news studio, a person in a worn dark bomber jacket sitting alone at a glass desk under studio lights facing a dark camera, a tired news anchor in a navy suit standing at the edge of the frame, a dead amber indicator on the studio wall. image 1 is the reference sheet for marcus okoro (a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor); image 2 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the studio camera pushes in slowly; the anchor takes a half step toward the person and stops. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a bright morning news studio, a person in a worn dark bomber jacket sitting alone at a glass desk under studio lights facing a dark camera, a tired news anchor in a navy suit standing at the edge of the frame, a dead amber indicator on the studio wall); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/alone-on-air/media/keyframe.png",
+        "clip": "trust-fall/alone-on-air/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-unvouched-voice",
+      "note": "Alone on air (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "At seven you tell the city who you are. Nobody vouches for a word. The ceiling camera stays dark. Marcus still says it to you alone: you know who you are. He sounds far away. THE END. Nobody vouched for you.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/alone-on-air/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-unvouched-talk-1",
+      "note": "Alone on air (Trust Fall): Marcus Okoro says \"Good morning, Meridian. My guest says she can't prove any of it. Go ahead, Rae.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/marcus.png",
+        "trust-fall/alone-on-air/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor) facing the camera, mouth closed, in the setting of image 2: a bright morning news studio, a person in a worn dark bomber jacket sitting alone at a glass desk under studio lights facing a dark camera, a tired news anchor in a navy suit standing at the edge of the frame, a dead amber indicator on the studio wall. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Good morning, Meridian. My guest says she can't prove any of it. Go ahead, Rae.",
+            "voice": "hv_narrator_warm",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor speaks to the camera, natural head movement, the studio camera pushes in slowly; the anchor takes a half step toward the person and stops",
+            "width": 480,
+            "height": 832,
+            "frames": 175,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "trust-fall/alone-on-air/media/portrait-1.png",
+        "line-1": "trust-fall/alone-on-air/media/line-1.mp3",
+        "talk-1": "trust-fall/alone-on-air/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-vouched-shot",
+      "note": "On air, together (Trust Fall): keyframe and clip.",
+      "inputs": [
+        "story/characters/trust-fall/marcus.png",
+        "story/characters/trust-fall/hero.png",
+        "story/characters/trust-fall/argus.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a bright morning news studio, a news anchor in a navy suit and a person in a worn dark bomber jacket sitting side by side at a glass desk, a small warm amber light glowing above the main camera lens, studio crew smiling in the foreground. image 1 is the reference sheet for marcus okoro (a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor); image 2 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 3 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1",
+              "$input:2"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the studio camera dollies in; the amber light above the lens pulses once as the anchor squeezes the person's hand. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a bright morning news studio, a news anchor in a navy suit and a person in a worn dark bomber jacket sitting side by side at a glass desk, a small warm amber light glowing above the main camera lens, studio crew smiling in the foreground); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/on-air-together/media/keyframe.png",
+        "clip": "trust-fall/on-air-together/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-vouched-voice",
+      "note": "On air, together (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "At seven you tell the city who you are. An amber light comes on above the camera, and ARGUS answers for every word. Your record clears. Marcus squeezes your hand. THE END. It answered for you.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/on-air-together/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-vouched-talk-1",
+      "note": "On air, together (Trust Fall): ARGUS says \"Everything she says is true, and I can show you why. Go ahead, Rae.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/argus.png",
+        "trust-fall/on-air-together/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a bright morning news studio, a news anchor in a navy suit and a person in a worn dark bomber jacket sitting side by side at a glass desk, a small warm amber light glowing above the main camera lens, studio crew smiling in the foreground. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Everything she says is true, and I can show you why. Go ahead, Rae.",
+            "voice": "hv_ai",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the studio camera dollies in; the amber light above the lens pulses once as the anchor squeezes the person's hand",
+            "width": 480,
+            "height": 832,
+            "frames": 165,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "trust-fall/on-air-together/media/portrait-1.png",
+        "line-1": "trust-fall/on-air-together/media/line-1.mp3",
+        "talk-1": "trust-fall/on-air-together/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-showCopy-shot",
+      "note": "Your copy (Trust Fall): keyframe and clip.",
+      "inputs": [
+        "story/characters/trust-fall/hero.png",
+        "story/characters/trust-fall/argus.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a person in a cleaner’s uniform standing in a vast dim skyscraper lobby holding a small black drive up toward one tall screen, where a calm face drawn in amber light lines looks down at it; the amber glow falls across their raised hand. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the person lifts the drive toward the screen; the amber face’s eyes lower to it and the glow steadies. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a person in a cleaner’s uniform standing in a vast dim skyscraper lobby holding a small black drive up toward one tall screen, where a calm face drawn in amber light lines looks down at it; the amber glow falls across their raised hand); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/your-copy/media/keyframe.png",
+        "clip": "trust-fall/your-copy/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-showCopy-voice",
+      "note": "Your copy (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You hold your copy up to the screen like a badge. The amber face doesn't read it. It names Blindspot before you ask, matching every line. The first straight thing anyone's told you. It knew. You believe it. Now what?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/your-copy/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-showCopy-talk-1",
+      "note": "Your copy (Trust Fall): ARGUS says \"That is Blindspot. A ransom on the city’s power, signed with your name. You have already read it, Rae. Let them think it worked, and I will show you how it ends.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/argus.png",
+        "trust-fall/your-copy/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a person in a cleaner’s uniform standing in a vast dim skyscraper lobby holding a small black drive up toward one tall screen, where a calm face drawn in amber light lines looks down at it; the amber glow falls across their raised hand. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "That is Blindspot. A ransom on the city’s power, signed with your name. You have already read it, Rae. Let them think it worked, and I will show you how it ends.",
+            "voice": "hv_ai",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the person lifts the drive toward the screen; the amber face’s eyes lower to it and the glow steadies",
+            "width": 480,
+            "height": 832,
+            "frames": 345,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "trust-fall/your-copy/media/portrait-1.png",
+        "line-1": "trust-fall/your-copy/media/line-1.mp3",
+        "talk-1": "trust-fall/your-copy/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-tower-voice-v1",
+      "note": "The Tower (Trust Fall): narration of the variant for readWorm=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Eleven fifty. Lobby screens show Marcus live, counting down. You wheel a cart past security. One screen cuts to a face of amber light, looking at you. You know what's on that drive. ARGUS sees you. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-tower/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-listen-voice-v1",
+      "note": "What it knows (Trust Fall): narration of the variant for readWorm=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You stop in the middle of the lobby. Nobody else hears it. The voice is only in your screen, quiet and patient. It's what you read on the train. Do you believe a machine?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/what-it-knows/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-core-voice-v1",
+      "note": "The vault (Trust Fall): narration of the variant for believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The core is cold, blue, humming. You plug Blindspot in, as ARGUS said. Juno clicks on in your earpiece. The door locks behind you, and a recording says: sixty seconds. Above the door, an amber light comes on. The door shut, just like ARGUS said. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-vault/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-saved-voice-v1",
+      "note": "The green line (Trust Fall): narration of the variant for believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The lock opens. A green line runs ahead of you, and a soft voice says: I told you I'd be there. Blindspot dies on the rack. You surface in the rain as Juno's van pulls away. It was there, like it said. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-green-line/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-saved-voice-v2",
+      "note": "The green line (Trust Fall): narration of the variant for jammed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The lock opens onto pitch black. The jammer is dead in your burned hand. \"I could not see you,\" ARGUS says. \"I could only wait.\" A shaky green line lights the floor. Juno's van pulls away. It found you, late. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-green-line/media/narration-v2.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v1",
+      "note": "Morning edition (Trust Fall): narration of the variant for chased=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody. He looks into the camera, at you. You didn't have to do it alone. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v2",
+      "note": "Morning edition (Trust Fall): narration of the variant for calledMarcus=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody. He looks into the camera, at you. You called, and he heard you. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v2.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v3",
+      "note": "Morning edition (Trust Fall): narration of the variant for waited=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody; ARGUS gave the newsroom the recording you stood still for. An amber light in the ceiling watches over you. You stood still and it kept its word. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v3.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v4",
+      "note": "Morning edition (Trust Fall): narration of the variant for believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody. He looks into the camera, at you. ARGUS kept its promise. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v4.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v5",
+      "note": "Morning edition (Trust Fall): narration of the variant for listened=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody. He looks into the camera, at you. ARGUS knew your name at breakfast. What do you do now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v5.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v6",
+      "note": "Morning edition (Trust Fall): narration of the variant for jammed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. A precinct bench, bandaged hands. On the wall TV, Marcus hasn't slept. Juno is in custody, caught by police, not by anything that watches. The amber light in the ceiling is dark. No light was watching over you tonight. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v6.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-truth-voice-v1",
+      "note": "Live (Trust Fall): narration of the variant for chased=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "At seven you sit at Marcus's glass desk and tell the city who you are, and that you chased Juno alone. ARGUS vouches for every word. Marcus says to you alone: you know who you are. THE END. You were the story.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/live/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-truth-voice-v2",
+      "note": "Live (Trust Fall): narration of the variant for calledMarcus=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "At seven you tell the city who you are. Marcus says on air your call came through eleven floors of concrete. ARGUS vouches for every word. Then, to you alone: you know who you are. THE END. You were the story.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/live/media/narration-v2.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-truth-voice-v3",
+      "note": "Live (Trust Fall): narration of the variant for believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "At seven you tell the city who you are, and that you believed a machine. The light above the camera is amber, not red. ARGUS vouches for every word. Marcus tells you alone: you know who you are. THE END. You were the story.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/live/media/narration-v3.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-shadow-voice-v1",
+      "note": "Unseen (Trust Fall): narration of the variant for chased=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You leave the blanket on the bench and walk out before anyone asks your name, alone, as you rode off the bridge. ARGUS never gives it. Marcus's next broadcast ends with a new line only you understand. THE END. Some heroes stay in the dark.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/unseen/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-shadow-voice-v2",
+      "note": "Unseen (Trust Fall): narration of the variant for calledMarcus=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You leave the blanket on the bench and walk out before anyone asks your name. Marcus knows only that someone called from under the Tower. His next broadcast ends with a new line only you understand. THE END. Some heroes stay in the dark.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/unseen/media/narration-v2.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-shadow-voice-v3",
+      "note": "Unseen (Trust Fall): narration of the variant for believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You leave the blanket on the bench and walk out before anyone asks your name. ARGUS never gives it: you asked it to keep that one thing. Marcus's next broadcast ends with a new line only you understand. THE END. Some heroes stay in the dark.",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/unseen/media/narration-v3.mp3"
       }
     }
   ]

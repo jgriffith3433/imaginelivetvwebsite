@@ -126,6 +126,8 @@ function validate(st) {
       for (const who of sh.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
     }
     if (!s.film && useOf(st, s) !== 'gen') problems.push(`${at(s)}: no filmed clip, so it must use "gen"`);
+    // A page is read in a breath: warn over 40 words (aim for two sentences, 35 at most).
+    if (words(narratedText(s)) > 40) warnings.push(`${at(s)}: ${words(narratedText(s))} words narrated (over 40: keep a page to two sentences, 35 words at most)`);
     // Words no page may say (The Water Road's bird is only ever seen).
     const said = [s.title, s.story, s.question, s.ending ?? [], ...s.choices.map((c) => [c.say, c.en])].flat().join(' ').toLowerCase();
     for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) problems.push(`${at(s)}: its words say "${w}", which this story never says (unspoken)`);
@@ -164,6 +166,21 @@ function validateFlags(st, s) {
   }
   // Whatever the flags and the count, a fork always offers something: at least one choice has no condition.
   if (s.choices.length && !s.choices.some((c) => !c.when && !c.matches)) problems.push(`${at(s)}: every choice has a when or matches, so a viewer could be left with none`);
+  // A news-framed story (`news` in its data): every scene has its broadcast time, every ending a sign-off, every line a speaker.
+  if (st.data.news) {
+    const CLOCK = /^(1[0-2]|[1-9]):[0-5]\d (AM|PM)$/;
+    if (!CLOCK.test(s.time ?? '')) problems.push(`${at(s)}: time must be like "6:00 AM" (the broadcast clock)`);
+    if (s.chapter && (!CLOCK.test(s.chapter.time ?? '') || !s.chapter.title)) problems.push(`${at(s)}: chapter needs a clock time ("10:00 PM") and a title`);
+    if (s.news != null && (typeof s.news !== 'string' || !s.news.trim() || s.news.length > 28)) problems.push(`${at(s)}: news is the lower-third's headline, a short string (28 characters at most)`);
+    if (s.news && !st.data.news.channel) problems.push(`${id}: a scene has a news lower-third but news.channel (the channel's name) is missing`);
+    if (s.ending && !s.signoff) problems.push(`${at(s)}: an ending needs the anchor's signoff`);
+    if (s.signoff && !s.ending) problems.push(`${at(s)}: only an ending has a signoff`);
+    if (!st.data.characters?.[st.data.news.anchor]) problems.push(`${id}: news.anchor ${st.data.news.anchor} isn't in characters`);
+    for (const l of s.lines ?? []) if (l.speaker !== 'narrator' && !st.data.characters?.[l.speaker]) problems.push(`${at(s)}: line speaker ${l.speaker} isn't in characters, so its caption has no label`);
+  }
+  // A scene's own countdown: `timer` seconds (3 to 60, default 15); `timerStyle: "air"` draws it as the air running out.
+  if (s.timer != null && (!Number.isInteger(s.timer) || s.timer < 3 || s.timer > 60)) problems.push(`${at(s)}: timer must be a whole number of seconds from 3 to 60`);
+  if (s.timerStyle != null && s.timerStyle !== 'air') problems.push(`${at(s)}: timerStyle is "air" or left out`);
   // A timeout never kills a viewer who looked away: the default (or, with none, the first safe choice) is never a death.
   if (!s.dead && !s.ending && s.choices.length > 1) {
     const dead = (c) => !!st.byId.get(c.next)?.dead;
@@ -195,6 +212,7 @@ function validateFlags(st, s) {
     if (!v.when || typeof v.when !== 'object' || !Object.keys(v.when).length || !Object.values(v.when).every(FLAG_VALUE)) problems.push(`${at(s)}: variant ${i}: when must be { flag: value }`);
     for (const k of ['story', 'question']) if (v[k] != null && (!Array.isArray(v[k]) || v[k].length !== 2)) problems.push(`${at(s)}: variant ${i}: ${k} must be [in ${s.lang}, in English]`);
     if (!['story', 'question', 'video'].some((k) => v[k] != null)) problems.push(`${at(s)}: variant ${i} changes nothing (story, question or video)`);
+    if (v.story && words(narratedText(s, v)) > 40) warnings.push(`${at(s)}: variant ${i} narrates ${words(narratedText(s, v))} words (over 40: keep a page to two sentences, 35 words at most)`);
     const setBy = (flag) => st.scenes.some((o) => o.choices.some((c) => c.set && flag in c.set));
     for (const flag of Object.keys(v.when ?? {})) if (!setBy(flag)) problems.push(`${at(s)}: variant ${i} reads flag "${flag}", which no choice sets`);
     for (const w of st.data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test([v.story, v.question].flat().filter(Boolean).join(' ').toLowerCase())) problems.push(`${at(s)}: variant ${i}'s words say "${w}" (unspoken)`);
@@ -333,7 +351,12 @@ const MAX_SHOTS = 4;
 const useOf = (st, s) => s.use ?? st.data.use ?? 'film';
 const media = (st, s, file) => `${st.base}${s.folder}/media/${file}`;
 const musicFile = (st, cue) => `${st.musicDir}/${cue}.mp3`;
-const cutFile = (st, s) => `${st.base}${s.folder}/scene.mp4`;
+const cutFile = (st, s, vi = -1) => `${st.base}${s.folder}/scene${vi >= 0 ? `-v${vi + 1}` : ''}.mp4`;
+/** The words a scene narrates (and shows): story, question and an ending's line; a variant replaces what it names. */
+const narratedText = (s, v) => [(v?.story ?? s.story)[0], (v?.question ?? s.question)[0], s.ending?.[0]].filter(Boolean).map(flat).join(' ');
+/** The variants that change words, each with its own narration recording and cut (index in s.variants). */
+const wordVariants = (s) => (s.variants ?? []).map((v, i) => ({ v, i })).filter(({ v }) => v.story || v.question);
+const narrationFile = (st, s, vi = -1) => media(st, s, vi >= 0 ? `narration-v${vi + 1}.mp3` : 'narration.mp3');
 // A sparse agent checkout leaves assets/ (images, posters, trailers) off the disk while git still tracks them; a build
 // that only looked at the disk blanked every card image and committed it. A file git tracks counts as there.
 let tracked = null;
@@ -354,7 +377,7 @@ const titleOf = (st) => st.data.title;
 const shotsOf = (s) => (s.shots?.length ? s.shots : s.shot ? [s.shot] : []);
 const shotFile = (st, s, i, base, ext) => media(st, s, `${base}${i ? `-${i + 1}` : ''}.${ext}`);
 
-function cutParts(st, s) {
+function cutParts(st, s, vi = -1) {
   // A talking shot is cut in once both its picture and its recording are made; until then the scene plays without it.
   const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }))
     .filter((t) => exists(t.video) && exists(t.audio));
@@ -365,7 +388,7 @@ function cutParts(st, s) {
   // Shots that aren't made yet are left out of the cut (it is cut again once they are); the first is required.
   const shots = shotsOf(s).map((_, i) => shotFile(st, s, i, 'clip', 'mp4'));
   const madeShots = shots.filter((f, i) => i === 0 || exists(f));
-  const parts = { clip: shots[0], shots: madeShots, narration: media(st, s, 'narration.mp3'), talks, music, later };
+  const parts = { clip: shots[0], shots: madeShots, narration: narrationFile(st, s, vi), talks, music, later };
   const need = [...parts.shots, parts.narration, ...talks.flatMap((t) => [t.video, t.audio]), ...(parts.music ? [parts.music] : [])];
   return { ...parts, missing: need.filter((f) => !exists(f)), all: need };
 }
@@ -446,6 +469,21 @@ function branchVideo(video) {
 
 /* ---------------- js/story-data.js ---------------- */
 
+/** A news-framed story's overlays for one scene (story doc "The news frame"): the broadcast time, the speaker-labelled
+    captions (one per line), whether the anchor's lower-third shows, a chapter card on arrival, a sign-off card at an ending. */
+function newsOf(st, s) {
+  const chars = st.data.characters ?? {};
+  const who = (id) => (id === 'narrator' ? 'Narrator' : (chars[id]?.label ?? chars[id]?.name ?? id));
+  return {
+    time: s.time,
+    caption: (s.lines ?? []).map((l) => [who(l.speaker), l.text]),
+    ...((s.lines ?? []).some((l) => l.speaker === st.data.news.anchor) ? { lower: 1 } : {}),
+    ...(s.news ? { third: s.news } : {}),
+    ...(s.chapter ? { chapter: s.chapter } : {}),
+    ...(s.signoff ? { signoff: s.signoff } : {}),
+  };
+}
+
 function storyData() {
   const list = stories.map((st) => {
     if (st.console) return consoleData(st);
@@ -467,6 +505,9 @@ function storyData() {
         // Seconds of live picture the cut keeps after the narration, so the choices come up over moving footage (js/game.js).
         ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s, st) ? { live: LIVE_TAIL } : {}),
         ...(s.dead ? { dead: true } : {}),
+        ...(s.timer ? { timer: s.timer } : {}),
+        ...(s.timerStyle ? { timerStyle: s.timerStyle } : {}),
+        ...(st.data.news ? { news: newsOf(st, s) } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
         choices: s.choices.map((c) => {
@@ -479,7 +520,20 @@ function storyData() {
           if (gate) row.push(gate);
           return row;
         }),
-        ...(s.variants?.length ? { variants: s.variants.map((v) => ({ when: v.when, ...(v.story ? { story: v.story } : {}), ...(v.question ? { question: v.question } : {}), ...(v.video ? { video: v.video, ...clipExtras(v.video) } : {}) })) } : {}),
+        ...(s.variants?.length ? { variants: s.variants.map((v, vi) => {
+          // A variant that changes words plays its own cut (its own narration) once that is made; a still page speaks its own recording.
+          const own = (v.story || v.question) && !v.video && useOf(st, s) === 'gen' && !st.console;
+          const cutOwn = own && !cutParts(st, s, vi).missing.length ? '/' + cutFile(st, s, vi) : null;
+          const stillOwn = own && !cutOwn && stillOf(st, s) && exists(narrationFile(st, s, vi)) ? '/' + narrationFile(st, s, vi) : null;
+          const video = v.video ?? cutOwn;
+          return {
+            when: v.when,
+            ...(v.story ? { story: v.story } : {}),
+            ...(v.question ? { question: v.question } : {}),
+            ...(video ? { video, ...clipExtras(video), ...(cutOwn && liveTail(s, st) ? { live: LIVE_TAIL } : {}) } : {}),
+            ...(stillOwn ? { narration: stillOwn } : {}),
+          };
+        }) } : {}),
       };
     }
     const langs = new Set(['en', ...st.scenes.map((s) => s.lang)]);
@@ -497,6 +551,7 @@ function storyData() {
       ui: Object.fromEntries(Object.entries(st.data.ui).filter(([lang]) => langs.has(lang))),
       ...(st.data.inventory ? { inventory: st.data.inventory } : {}),
       ...(st.data.unspoken ? { unspoken: st.data.unspoken } : {}),
+      ...(st.data.news ? { news: { station: st.data.news.station, anchor: st.data.characters[st.data.news.anchor].name, role: st.data.news.role ?? '', channel: st.data.news.channel ?? '' } } : {}),
       endings,
       scenes: out,
     };
@@ -529,7 +584,7 @@ function card(st, i = 1) {
     : picture;
   // The badge, the percent explored and the button are the player's own progress: js/game.js sets them from the
   // story's cookies (its run and its unlocks). The featured story is the hero only: not repeated here.
-  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}" data-progress="new"${tr && tr.loop ? ` data-loop="${esc(tr.loop)}"` : ''}>
+  return `      <a class="story-card" href="/?story=${st.id}" data-story="${st.id}"${st.entry.teaser ? ` data-teaser="${esc(st.entry.teaser)}"` : ''} data-progress="new"${tr && tr.loop ? ` data-loop="${esc(tr.loop)}"` : ''}>
         ${media}
         <span class="story-card-ribbon">Not started</span>
         <div class="story-card-text">
@@ -615,6 +670,45 @@ function landing() {
   return out.slice(0, ha + HERO_START.length) + '\n' + hero(featured) + '\n      ' + out.slice(hb);
 }
 
+/* ---------------- the card check: every draft's card, rendered as if listed ---------------- */
+
+/** A draft that has a card's fields (runtime and mood) is rendered here exactly as the landing page would draw it
+ *  once `listed` is true, and the HTML is checked for its logline, mood and runtime. Listing it later is one change. */
+function cardCheck() {
+  const drafts = stories.filter((st) => !st.listed && st.entry.runtime && st.entry.mood);
+  const shown = [];
+  for (const st of drafts) {
+    const html = card(st, 1);
+    const want = { title: titleOf(st), logline: st.entry.logline, mood: st.entry.mood, runtime: st.entry.runtime, ...(st.entry.teaser ? { teaser: st.entry.teaser } : {}) };
+    for (const [k, v] of Object.entries(want)) if (!html.includes(esc(v))) problems.push(`${st.id}: its card, rendered as if listed, has no ${k} ("${v}")`);
+    if (!/class="meta-runtime">About \d+ min</.test(html)) problems.push(`${st.id}: its card's runtime must read like "About 8 min" (it says "${st.entry.runtime}")`);
+    shown.push(st);
+  }
+  if (!shown.length) return null;
+  const ref = stories.find((st) => st.listed && st.id === 'water-road') ?? stories.find((st) => st.listed && !st.entry.featured);
+  const cards = [...(ref ? [ref] : []), ...shown].map((st, i) => card(st, i)).join('\n');
+  return `<!DOCTYPE html>
+<!-- Generated by tools/build-story.mjs from ${LISTING}. Do not edit: change the data and run \`npm run story\`. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Card check · Imagine Live TV</title>
+  <link rel="stylesheet" href="/css/site.css">
+  <meta name="theme-color" content="#070807">
+</head>
+<body>
+  <main>
+    <div class="story-list" id="story-list">
+${cards}
+    </div>
+  </main>
+</body>
+</html>
+`;
+}
+
 /* ---------------- a story's own link: /<id>/ opens its player ---------------- */
 
 function storyLink(st) {
@@ -642,7 +736,8 @@ function storyLink(st) {
   <main class="story-link">${st.entry.image ? `
     <img src="${esc(st.entry.image)}" alt="${esc(st.entry.alt ?? titleOf(st))}">` : ''}
     <h1>${esc(titleOf(st))}</h1>
-    <p>${esc(st.entry.logline)}</p>
+    <p>${esc(st.entry.logline)}</p>${st.entry.teaser ? `
+    <p class="story-link-teaser">${esc(st.entry.teaser)}</p>` : ''}
     <p><a class="story-link-go" href="${to}">Play</a></p>
   </main>
   <footer class="site-footer">
@@ -810,9 +905,19 @@ function assets(st) {
     list.push({
       id: `${P}${s.id}-voice`,
       note: `${s.title[1]}${of}: narration in ${s.lang}.`,
-      steps: [{ tool: 'audio.voice', params: { text: `${flat(s.story[0])} ${flat(s.question[0])}`, voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
+      steps: [{ tool: 'audio.voice', params: { text: narratedText(s), voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
       files: { narration: media(st, s, 'narration.mp3') },
     });
+    // Each variant that changes words has its own narration, so the cut plays what the run's flags show (story doc "Flags and variants").
+    for (const { v, i } of wordVariants(s)) {
+      if (v.video) continue;
+      list.push({
+        id: `${P}${s.id}-voice-v${i + 1}`,
+        note: `${s.title[1]}${of}: narration of the variant for ${Object.entries(v.when).map(([k, x]) => `${k}=${x}`).join(', ')}.`,
+        steps: [{ tool: 'audio.voice', params: { text: narratedText(s, v), voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
+        files: { narration: narrationFile(st, s, i) },
+      });
+    }
 
     // Talking shots: a close-up of the speaker (image.edit), the line (audio.voice), lips and head to it (video.talk).
     (s.lines ?? []).forEach((l, i) => {
@@ -883,16 +988,16 @@ const liveTail = (s, st) => (s.choices?.length ?? 0) > 1 && !(st ? cutParts(st, 
 
 /** The shots laid end to end under the narration (never looped: when the narration outruns the footage the last frame
  *  slows to a stop and the camera keeps pushing in on it), then each talking shot with its line, all over the mood music. */
-function cut(st, s) {
-  const p = cutParts(st, s);
+function cut(st, s, vi = -1) {
+  const p = cutParts(st, s, vi);
   if (p.missing.length) return;
   if (p.later) warnings.push(`${st.id}/${s.id}: cut without its music (${p.later} isn't made yet)`);
   const unmade = shotsOf(s).length - p.shots.length;
   if (unmade) warnings.push(`${st.id}/${s.id}: cut with ${p.shots.length} of ${shotsOf(s).length} shots (the rest aren't made yet)`);
-  const out = path.join(ROOT, cutFile(st, s));
+  const out = path.join(ROOT, cutFile(st, s, vi));
   const newest = Math.max(...p.all.map((f) => fs.statSync(path.join(ROOT, f)).mtimeMs), fs.statSync(path.join(ROOT, st.file)).mtimeMs);
   if (fs.existsSync(out) && fs.statSync(out).mtimeMs >= newest) return;
-  if (CHECK) return problems.push(`${cutFile(st, s)} is out of date`);
+  if (CHECK) return problems.push(`${cutFile(st, s, vi)} is out of date`);
 
   const FPS = 24;
   const fit = `scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,fps=${FPS},setsar=1`;
@@ -948,9 +1053,9 @@ function cut(st, s) {
   args.push('-filter_complex', graph.join(';'), '-map', '[v]', '-map', audio, '-c:v', 'libx264', '-crf', '23', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out);
   try {
     execFileSync(ffmpegBin('ffmpeg'), args, { stdio: ['ignore', 'inherit', 'inherit'] });
-    console.log(`cut      ${cutFile(st, s)} (${total.toFixed(1)} s)`);
+    console.log(`cut      ${cutFile(st, s, vi)} (${total.toFixed(1)} s)`);
   } catch (e) {
-    warnings.push(`${st.id}/${s.id}: ffmpeg failed to cut ${cutFile(st, s)} (${e.message.split('\n')[0]})`);
+    warnings.push(`${st.id}/${s.id}: ffmpeg failed to cut ${cutFile(st, s, vi)} (${e.message.split('\n')[0]})`);
   }
 }
 
@@ -1348,7 +1453,7 @@ function write(rel, text) {
 
 /** Folders (at the root, and inside each story's own folder) with a generated page nothing owns any more. */
 function strays() {
-  const owned = new Set(stories.flatMap((st) => [st.id, ...st.scenes.map((s) => st.base + s.folder)]));
+  const owned = new Set(['card-check', ...stories.flatMap((st) => [st.id, ...st.scenes.map((s) => st.base + s.folder)])]);
   const dirs = ['', ...stories.filter((st) => !st.root).map((st) => st.base)];
   for (const dir of dirs) {
     if (!fs.existsSync(path.join(ROOT, dir))) continue;
@@ -1363,10 +1468,12 @@ function strays() {
 
 validateAll();
 if (!problems.length) {
-  for (const st of stories) for (const s of st.scenes) if (!st.console && useOf(st, s) === 'gen') cut(st, s);
+  for (const st of stories) for (const s of st.scenes) if (!st.console && useOf(st, s) === 'gen') { cut(st, s); for (const { i } of wordVariants(s)) cut(st, s, i); }
   const assetsText = assetsFile();
   write('js/story-data.js', storyData());
   write('index.html', landing());
+  const check = cardCheck();
+  if (check) write('card-check/index.html', check);
   for (const st of stories) {
     write(`${st.id}/index.html`, storyLink(st));
     const counts = kitCounts(st);

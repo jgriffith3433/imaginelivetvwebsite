@@ -38,6 +38,11 @@
       score: spec.still ? spec.score || "" : "",
       live: spec.live || 0,
       dead: !!spec.dead,
+      // This page's own countdown in seconds (default CHOICE_WINDOW) and how it is drawn ("air": the air running out).
+      timer: spec.timer || 0,
+      timerStyle: spec.timerStyle || "",
+      // The news frame (Trust Fall): the broadcast time, captions, lower-third, chapter and sign-off for this scene.
+      news: spec.news || null,
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
       choices: (spec.choices || []).map(function (choice, index) {
@@ -51,7 +56,9 @@
           question: v.question || null,
           video: v.video || null,
           poster: v.poster || "",
-          small: v.small || ""
+          small: v.small || "",
+          live: v.live || 0,
+          narration: v.narration || ""
         };
       })
     };
@@ -180,7 +187,8 @@
       out = Object.assign({}, base);
       if (hit.story) { out.story = hit.story[0]; out.storyEn = hit.story[1]; }
       if (hit.question) { out.question = hit.question[0]; out.questionEn = hit.question[1]; }
-      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = 0; }
+      if (hit.video) { out.video = hit.video; out.poster = hit.poster; out.small = hit.small; out.live = hit.live || 0; }
+      if (hit.narration) out.narration = hit.narration;
     }
     if (base.choices.some(function (c) { return c.when || c.matches; })) {
       if (out === base) out = Object.assign({}, base);
@@ -431,6 +439,7 @@
       from: from,
       choice: choice,
       poster: poster,
+      marcus: typeof saved.marcus === "string" ? saved.marcus.slice(0, 400) : "",
       tried: saved.tried && typeof saved.tried === "object" && !Array.isArray(saved.tried) ? saved.tried : {}
     };
   }
@@ -502,6 +511,21 @@
     }
   }
 
+  /** Marcus's last line on the way (Trust Fall's anchor): the newest caption of his, or an ending's sign-off. "" if none. */
+  function anchorLastLine(story, ids) {
+    if (!story || !story.news || !story.scenes) return "";
+    const who = String(story.news.anchor || "").toLowerCase();
+    for (let i = ids.length - 1; i >= 0; i--) {
+      const raw = story.scenes[ids[i]];
+      const news = raw && raw.news;
+      if (!news) continue;
+      if (raw.ending && news.signoff) return news.signoff;
+      const lines = (news.caption || []).filter(function (c) { return String(c[0]).toLowerCase() === who; });
+      if (lines.length) return lines[lines.length - 1][1];
+    }
+    return "";
+  }
+
   /** The run cookie payload, including the Continue recap fields when a choice has been made. */
   function runPayload(historyIds) {
     const payload = { scene: currentScene, history: historyIds };
@@ -514,6 +538,8 @@
       payload.choice = lastRecap.choice;
       payload.poster = lastRecap.poster || posterOfScene(STORY, lastRecap.from);
     }
+    const marcus = anchorLastLine(STORY, historyIds.concat(currentScene ? [currentScene] : []));
+    if (marcus) payload.marcus = marcus;
     return payload;
   }
 
@@ -831,6 +857,7 @@
         history.push(from);
       }
       fromPlayer = true;
+      newsArrive = how !== "rewind";
       show(choice.next);
     };
     // Ready now: swap at once, still inside the press (iPhone keeps a press only through one short timer, and the
@@ -1161,7 +1188,16 @@
     count.className = "ending-count";
     count.id = "spark-ending-count";
     count.textContent = endingsCountText(foundN, ends.length);
-    endingBox.append(kicker, name, count);
+    endingBox.append(kicker, name);
+    // Trust Fall: Marcus's own sign-off for this ending, on the card above the buttons.
+    const signoff = scene.news && scene.news.signoff;
+    if (signoff) {
+      const line = document.createElement("p");
+      line.className = "ending-signoff";
+      line.textContent = "\u201c" + signoff + "\u201d";
+      endingBox.appendChild(line);
+    }
+    endingBox.appendChild(count);
 
     if (!options.skipRecap) {
       const head = document.createElement("p");
@@ -1199,6 +1235,7 @@
         tell("restart", { story: STORY.id, via: "start_over", from: "ending_card" });
         history = [];
         fromPlayer = true;
+        newsArrive = true;
         if (treeRoot) treeRoot.replaceChildren();
         setView("play");
         show(STORY.start);
@@ -1282,6 +1319,7 @@
         bar.style.transform = "";
       }
       timerBox.dataset.urgent = "false";
+      timerBox.dataset.style = "";
       timerBox.hidden = true;
       timerBox.dataset.state = "off";
     }
@@ -1333,7 +1371,7 @@
 
   /** A death keeps its clip and its line and offers two buttons: Rewind to the choice (the last fork, with the deadly
       option marked as tried) and Start over (the story's own start). */
-  function addDeathButtons(scene) {
+  function addDeathButtons(scene, sceneId) {
     const make = function (kind, idx, say, en, run) {
       const button = document.createElement("button");
       button.type = "button";
@@ -1351,8 +1389,13 @@
     const fork = history.length ? history[history.length - 1] : null;
     let n = 0;
     if (fork && SCENES[fork]) {
-      make("rewind", n++, "Rewind to the choice", "Rewind to the choice", function () {
-        goTo({ next: fork, en: "Rewind to the choice" }, "rewind");
+      // The label names the choice it returns to: "Rewind: go back and face Juno" (the fork's option that led here).
+      const led = SCENES[fork].choices.filter(function (c) { return c.next === sceneId; })[0];
+      let said = led ? choiceLabel(led.en || led.say) : "";
+      if (said && /^[A-Z][a-z]/.test(said)) said = said.charAt(0).toLowerCase() + said.slice(1);
+      const label = said ? "Rewind: " + said : "Rewind to the choice";
+      make("rewind", n++, label, label, function () {
+        goTo({ next: fork, en: label }, "rewind");
       });
     }
     const start = scene.choices.filter(function (c) { return c.next === STORY.start; })[0] || scene.choices[0] || { say: "1. Start over", en: "1. Start over", next: STORY.start };
@@ -1412,11 +1455,17 @@
     timerBox.dataset.urgent = "false";
     bar.style.animation = "";
     bar.style.transform = "scaleX(1)";
-    const total = CHOICE_WINDOW * 1000;
+    const cur = SCENES[currentScene];
+    const window_s = cur && cur.timer > 0 ? cur.timer : CHOICE_WINDOW;
+    const air = !!(cur && cur.timerStyle === "air");
+    const word = air ? "Air " : "Choose in ";
+    timerBox.dataset.style = air ? "air" : "";
+    timerBox.dataset.seconds = String(window_s);
+    const total = window_s * 1000;
     const t0 = performance.now();
     const scene = currentScene;
-    let shown = CHOICE_WINDOW;
-    label.textContent = "Choose in " + CHOICE_WINDOW + " s";
+    let shown = window_s;
+    label.textContent = word + window_s + " s";
     const frame = function (now) {
       if (currentScene !== scene || root.hidden) return;
       const left = Math.max(0, total - (now - t0));
@@ -1425,7 +1474,7 @@
       const secs = Math.ceil(left / 1000);
       if (secs > 0 && secs !== shown) {
         shown = secs;
-        label.textContent = "Choose in " + secs + " s";
+        label.textContent = word + secs + " s";
         if (secs <= 3) {
           timerBox.dataset.urgent = "true";
           if (window.iltvAudio) window.iltvAudio.playUi("tick");
@@ -1436,7 +1485,7 @@
       bar.style.transform = "scaleX(0)";
       timerBox.dataset.urgent = "false";
       timerBox.dataset.state = "done";
-      label.textContent = "Choosing...";
+      label.textContent = air ? "Air gone..." : "Choosing...";
       pickDefault(scene);
     };
     windowTick = requestAnimationFrame(frame);
@@ -1475,6 +1524,182 @@
     document.addEventListener(name, function () { if (!root.hidden) wakeChrome(); }, { passive: true, capture: true });
   });
 
+
+  /* ---------------- The news frame (story doc "The news frame": Trust Fall, J 2026-11-14) ----------------
+     Marcus's morning news frames the night: a clock bug (and, on Marcus's own scenes, his lower-third) in the top band of
+     the picture, a speaker-labelled caption for each spoken line in the panel ABOVE the choices (never over a button),
+     a full-screen chapter card by the clock where an act begins, and a sign-off card over every ending. All of it is the
+     scene's `news` data (tools/build-story.mjs); nothing here changes a choice or the branching. */
+  const NEWS_CARD_MS = { chapter: 2200, signoff: 9000 };
+  let newsArrive = false; // set when the viewer arrives at a scene (a choice, a start over): a chapter card may show
+  let newsCard = null;
+  let newsTimers = [];
+  const captionBox = document.createElement("p");
+  captionBox.className = "news-caption";
+  captionBox.id = "spark-caption";
+  captionBox.hidden = true;
+  captionBox.setAttribute("aria-live", "polite");
+  const timerEl = document.getElementById("spark-timer");
+  if (timerEl && timerEl.parentNode) timerEl.parentNode.insertBefore(captionBox, timerEl);
+
+  function newsClear() {
+    newsTimers.forEach(clearTimeout);
+    newsTimers = [];
+    captionBox.hidden = true;
+    captionBox.replaceChildren();
+    delete captionBox.dataset.who;
+    if (newsCard) { newsCard.remove(); newsCard = null; }
+  }
+
+  /** The words of one line in two spans: who is speaking, and what they say. */
+  function newsSay(name, text) {
+    const who = document.createElement("b");
+    who.className = "news-who";
+    who.textContent = name;
+    const say = document.createElement("span");
+    say.className = "news-say";
+    say.textContent = text;
+    captionBox.replaceChildren(who, say);
+    captionBox.dataset.who = name;
+    captionBox.hidden = false;
+    tell("feature", { feature: "caption", story: STORY.id, node: currentScene, value: name });
+  }
+
+  /** The scene's lines, one after another (about 0.4 s a word, at least 2.2 s), each under its speaker's name. */
+  function newsCaptions(news) {
+    const lines = news.caption || [];
+    if (!lines.length) return;
+    let at = 0;
+    lines.forEach(function (line, i) {
+      const words = line[1].split(/\s+/).length;
+      newsTimers.push(setTimeout(function () { newsSay(line[0], line[1]); }, at));
+      at += Math.max(2200, words * 400) + 250;
+    });
+  }
+
+  /** The top band: the broadcast clock, and on the anchor's scenes his name plate (the lower-third) beside it. */
+  function newsBar(news) {
+    const bar = document.createElement("div");
+    bar.className = "news-bar";
+    bar.dataset.lower = news.lower ? "true" : "false";
+    bar.dataset.time = news.time;
+    const clock = document.createElement("span");
+    clock.className = "news-clock";
+    clock.textContent = news.time;
+    bar.appendChild(clock);
+    if (news.lower) {
+      const plate = document.createElement("span");
+      plate.className = "news-plate";
+      const name = document.createElement("b");
+      name.textContent = STORY.news.anchor;
+      const role = document.createElement("i");
+      role.textContent = (STORY.news.role ? STORY.news.role + " · " : "") + STORY.news.station;
+      plate.append(name, role);
+      bar.appendChild(plate);
+      bar.setAttribute("role", "status");
+      bar.setAttribute("aria-label", STORY.news.anchor + ", " + STORY.news.station + ", " + news.time);
+    }
+    videoBox.appendChild(bar);
+    if (news.third) newsThird(news);
+  }
+
+  /** The lower-third (a scene's `news` headline): the headline, the channel and the scene's time, low on the picture over
+      the clip, clear of its centre. Only scenes marked `news` get one; it is CSS, never part of the media, and takes no press. */
+  function newsThird(news) {
+    const third = document.createElement("div");
+    third.className = "news-third";
+    third.dataset.headline = news.third;
+    third.setAttribute("role", "status");
+    const head = document.createElement("b");
+    head.className = "news-third-head";
+    head.textContent = news.third;
+    const line = document.createElement("span");
+    line.className = "news-third-line";
+    const channel = document.createElement("span");
+    channel.className = "news-third-channel";
+    channel.textContent = STORY.news.channel || STORY.news.station;
+    const time = document.createElement("span");
+    time.className = "news-third-time";
+    time.textContent = news.time;
+    line.append(channel, time);
+    third.append(head, line);
+    videoBox.appendChild(third);
+    tell("feature", { feature: "news_third", story: STORY.id, node: currentScene, value: news.third });
+  }
+
+  /** A full-screen card (chapter or sign-off): a press anywhere on it moves on; it also moves on by itself. */
+  function newsShowCard(kind, parts, onDone) {
+    if (newsCard) newsCard.remove();
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "news-card";
+    card.dataset.kind = kind;
+    parts.forEach(function (p) {
+      const el = document.createElement("span");
+      el.className = "news-card-" + p[0];
+      el.textContent = p[1];
+      card.appendChild(el);
+    });
+    const hint = document.createElement("span");
+    hint.className = "news-card-hint";
+    hint.textContent = "Tap to continue";
+    card.appendChild(hint);
+    let done = false;
+    const finish = function () {
+      if (done) return;
+      done = true;
+      card.remove();
+      if (newsCard === card) newsCard = null;
+      tell("feature", { feature: "news_card_" + kind, story: STORY.id, node: currentScene, value: "dismissed" });
+      onDone();
+    };
+    card.addEventListener("click", finish);
+    document.body.appendChild(card);
+    newsCard = card;
+    tell("feature", { feature: "news_card_" + kind, story: STORY.id, node: currentScene, value: "shown" });
+    // The countdown starts once the Tap to play prompt (if one is up) has gone.
+    const arm = function () { newsTimers.push(setTimeout(finish, NEWS_CARD_MS[kind])); };
+    if (window.hawkesSound && window.hawkesSound.prompt && window.hawkesSound.prompt()) document.addEventListener("hawkes:unlocked", arm, { once: true });
+    else arm();
+    try { card.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+  }
+
+  /** Called at the end of show(): the bar, the captions, a chapter card on arrival, a sign-off over an ending. */
+  function newsShow(sceneId, scene, video, arrived) {
+    const news = STORY.news && SCENES[sceneId] && SCENES[sceneId].news;
+    if (!news) return;
+    newsBar(news);
+    if (news.chapter && arrived) {
+      // The clip waits under the card, and plays when it goes.
+      let hold = null;
+      if (video) {
+        hold = function () { if (newsCard && newsCard.dataset.kind === "chapter") { try { video.pause(); } catch (e) { /* gone */ } } };
+        video.addEventListener("play", hold);
+        hold();
+      }
+      newsShowCard("chapter", [["kicker", STORY.news.station], ["time", news.chapter.time], ["title", news.chapter.title]], function () {
+        if (video) {
+          video.removeEventListener("play", hold);
+          if (currentScene === sceneId && !video.ended && video.paused) { const pr = video.play(); if (pr && pr.catch) pr.catch(function () { /* the viewer's press starts it */ }); }
+        }
+        if (currentScene === sceneId) newsCaptions(news);
+      });
+      return;
+    }
+    newsCaptions(news);
+    if (news.signoff && scene.ending) {
+      // The ending's clip plays out (or 6 s of a still), then Marcus closes the broadcast; the ending card is already under it.
+      let shownSignoff = false;
+      const close = function () {
+        if (shownSignoff || currentScene !== sceneId) return;
+        shownSignoff = true;
+        newsShowCard("signoff", [["kicker", STORY.news.station + " · " + news.time], ["title", STORY.news.anchor + " signs off"], ["line", news.signoff]], function () {});
+      };
+      if (video) video.addEventListener("ended", close, { once: true });
+      newsTimers.push(setTimeout(close, video ? 14000 : 6000));
+    }
+  }
+
   function show(sceneId) {
     if (!SCENES[sceneId]) return;
     // The flags are the way you came (a choice's `set`), and they pick the scene's variant.
@@ -1496,6 +1721,9 @@
     const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
+    const arrived = newsArrive;
+    newsArrive = false;
+    newsClear();
     if (window.iltvAudio && window.iltvAudio.playNarration) {
       // No clip, so the narration and its music cue come from the recordings, over the graded still (a clip carries its own).
       if (scene.still && scene.narration) window.iltvAudio.playNarration(scene.narration, scene.score, sceneId);
@@ -1645,7 +1873,7 @@
 
     const replayNow = isReplay(STORY);
     const triedHere = tried[sceneId] || [];
-    if (scene.dead) addDeathButtons(scene);
+    if (scene.dead) addDeathButtons(scene, sceneId);
     else shownChoices.forEach(function (choice, idx) {
       const button = document.createElement("button");
       button.type = "button";
@@ -1709,6 +1937,7 @@
 
     pendingTap = null;
     preloadNext(scene);
+    newsShow(sceneId, scene, video, arrived && !rewound);
 
     if (scene.choices.length === 0) {
       showEndingCard(sceneId, scene);
@@ -2324,7 +2553,9 @@
     img.removeAttribute("src");
     if (poster) img.src = poster;
     title.textContent = story.title;
-    line.textContent = saved.choice;
+    // Trust Fall: the line is Marcus's last one from the run (his words, in quotes); other stories name the last choice.
+    line.textContent = saved.marcus ? "Marcus: \u201c" + saved.marcus + "\u201d" : saved.choice;
+    el.dataset.marcus = saved.marcus || "";
     el.dataset.story = story.id;
     el.dataset.from = saved.from;
     el.dataset.choice = saved.choice;
@@ -2354,6 +2585,7 @@
         delete el.dataset.story;
         delete el.dataset.from;
         delete el.dataset.choice;
+        delete el.dataset.marcus;
         delete el.dataset.poster;
         resumeClipsAfterRecap();
         tell("feature", { feature: "recap_done", story: story.id, skipped: finish.skipped || false });
@@ -2453,6 +2685,7 @@
 
   function stopVideo() {
     stopClipUnlock();
+    newsClear();
     activeClip = null;
     if (window.iltvAudio) window.iltvAudio.unwatch();
     videoBox.querySelectorAll("video").forEach(function (video) {
@@ -2742,6 +2975,7 @@
     }
     tell("open", { story: story.id, resumed: !!saved && saved.scene !== story.start });
     audioBed(story);
+    newsArrive = !saved || saved.scene === story.start;
     show(saved ? saved.scene : story.start);
     keepAtTop();
     requestAnimationFrame(function () { requestAnimationFrame(keepAtTop); });
