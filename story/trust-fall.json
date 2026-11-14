@@ -208,7 +208,9 @@
     },
     {
       "id": "asked",
-      "inventory": { "trust": 1 },
+      "inventory": {
+        "trust": 1
+      },
       "folder": "how-it-knows",
       "lang": "en",
       "title": [
@@ -248,7 +250,9 @@
     },
     {
       "id": "crew",
-      "inventory": { "blindspot": 1 },
+      "inventory": {
+        "blindspot": 1
+      },
       "folder": "the-garage",
       "lang": "en",
       "title": [
@@ -306,7 +310,9 @@
     },
     {
       "id": "readWorm",
-      "inventory": { "copy": 1 },
+      "inventory": {
+        "copy": 1
+      },
       "folder": "whats-inside",
       "lang": "en",
       "title": [
@@ -405,7 +411,10 @@
         {
           "say": "1. Jam it and keep going",
           "en": "1. Jam it and keep going",
-          "next": "jam"
+          "next": "jam",
+          "set": {
+            "jammed": true
+          }
         },
         {
           "say": "2. Stop and listen",
@@ -445,7 +454,9 @@
     },
     {
       "id": "jam",
-      "inventory": { "jammer": 1 },
+      "inventory": {
+        "jammer": 1
+      },
       "folder": "lights-out",
       "lang": "en",
       "title": [
@@ -479,7 +490,9 @@
     },
     {
       "id": "listen",
-      "inventory": { "trust": 1 },
+      "inventory": {
+        "trust": 1
+      },
       "folder": "what-it-knows",
       "lang": "en",
       "title": [
@@ -539,7 +552,9 @@
     },
     {
       "id": "believe",
-      "inventory": { "trust": 1 },
+      "inventory": {
+        "trust": 1
+      },
       "folder": "the-bait",
       "lang": "en",
       "title": [
@@ -812,6 +827,19 @@
             "It was there, like it said. What now?",
             "It was there, like it said. What now?"
           ]
+        },
+        {
+          "when": {
+            "jammed": true
+          },
+          "story": [
+            "The lock clunks open onto pitch black. You jammed every eye in this building, and ARGUS has to find you in the dark first. A long minute passes before a thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
+            "The lock clunks open onto pitch black. You jammed every eye in this building, and ARGUS has to find you in the dark first. A long minute passes before a thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+          ],
+          "question": [
+            "It found you, late. What now?",
+            "It found you, late. What now?"
+          ]
         }
       ]
     },
@@ -855,7 +883,9 @@
     },
     {
       "id": "promise",
-      "inventory": { "trust": 1 },
+      "inventory": {
+        "trust": 1
+      },
       "folder": "the-promise",
       "lang": "en",
       "title": [
