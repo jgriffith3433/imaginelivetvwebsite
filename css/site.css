@@ -3932,7 +3932,7 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
    The critic saw the story in a card with the site's header and the page around it. While a clip story is open the
    player covers the viewport (above the inventory bar), the site header is gone and nothing of the landing page shows;
    "All stories" in the player's own bar is the way back. Phones already do this (rules above). */
-@media (min-width: 900px) and (min-height: 560px) {
+@media (min-width: 721px) and (min-height: 560px) {
   html[data-view="story"]:not([data-type="console"]) .site-header { display: none; }
   html[data-view="story"]:not([data-type="console"]) .spark:not([hidden]) {
     position: fixed;

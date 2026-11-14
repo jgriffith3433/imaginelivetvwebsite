@@ -9026,6 +9026,7 @@ async function trustFallRun(options, t) {
       if (de.scrollWidth > W + 1) t.problem("bug", `${id}: sideways scroll at ${W}x${H} (${de.scrollWidth}px)`);
       const dbg = [...doc.querySelectorAll("button, a, [role=button]")].filter((e) => vis(e) && /debug|bug|report a problem/i.test((e.id || "") + (e.className || "") + (e.getAttribute("aria-label") || "") + (e.title || "")));
       if (dbg.length) t.problem("bug", `${id}: a debug control is on the page (${dbg.length})`);
+      if (/video in production|in production/i.test(sp ? sp.innerText : "")) t.problem("bug", `${id}: the player says the video is in production`);
       const bars = [".tile-wall", ".tile-screen"].filter((q) => doc.querySelector(q));
       if (bars.length) t.problem("bug", `${id}: empty unlabeled scanline bars are on the page (${bars.join(", ")})`);
       t.event("player-fullscreen", `${id}: player ${r ? Math.round(r.width) + "x" + Math.round(r.height) : "none"} of ${W}x${H}; landing hidden: ${!shown.length}; no sideways scroll: ${de.scrollWidth <= W + 1}`);
