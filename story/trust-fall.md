@@ -81,15 +81,18 @@ when the media is made.
 `inventory` in `story/trust-fall.json` has one counted item, `trust` (icon `ring`, 0 to 4, shown in the kit bar). Scenes that
 add to it: `asked`, `listen`, `believe`, `promise` (+1 each); `jam` sets it to 0 (so jamming visibly costs what you earned;
 the build forbids a count below zero). "It's lying. Keep going" at the lobby leads to `jam` too, and both set `jammed`.
-- **The jam road** (`jam` > `blackout` > `breaker` > `crawl` > `coreDark` > `jamRescue`): a jammed run never meets ARGUS's
-  amber light in the vault. `coreDark` is `core` for jammed runs (same three ways out; Beg the dead air leads to the
-  separate rescue page *The long way out*). It is 6 scenes after the lobby, the believing road's rescue (`promise` or `saved`) is 4.
+- **The jam road** (`jam` > `blackout` > `breaker` > `crawl` > `coreDark` > `saved`): a jammed run never meets ARGUS's
+  amber light in the vault. `coreDark` is `core` for jammed runs (same three ways out); Beg the dead air leads to the green
+  line (`saved`), whose `jammed` variant ("onto pitch black", ARGUS finds you in the dark first, the dead jammer and "I could
+  not see you, I could only wait") is the rescue; both "Jam it and keep going" and "It's lying. Keep going" set `jammed`, so
+  both read it. (The old page *The long way out*, `jamRescue`, was folded into that variant.) It is 6 scenes after the lobby,
+  the believing road's rescue (`promise` or `saved`) is 4: two more.
 - **The broadcast splits by trust** with `when` flags (no gated default): low `jammed` > `unvouched` (*Alone on air*, "THE END.
   Nobody vouched for you."), mid (believed, but not asked or waited) > `truth` (*Live*), high (believed and asked, or believed
   and waited: trust 3 or more) > `vouched` (*On air, together*, "THE END. It answered for you."). "Say thank you to ARGUS"
   (Good morning) is `requires` the same high flags (and `needs` trust 3): absent below, never a locked row.
 - A video story's choices have no `forbids`: use a `requires` flag set to `false`.
-- The seven new scenes (blackout, breaker, crawl, coreDark, jamRescue, unvouched, vouched) show a graded still until
+- The six new scenes (blackout, breaker, crawl, coreDark, unvouched, vouched) show a graded still until
   their clips are made (GPU, priced in the change's summary). Playtest `trust-fall` section 4a plays the meter, the cost,
   the rescue depth, the Good morning gate and the three endings by touch at 390x844.
 

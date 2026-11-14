@@ -27153,8 +27153,8 @@ window.ILTV_STORIES = {
         "jammed": true
        },
        "story": [
-        "The lock clunks open onto pitch black. You jammed every eye in this building, and ARGUS has to find you in the dark first. A long minute passes before a thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
-        "The lock clunks open onto pitch black. You jammed every eye in this building, and ARGUS has to find you in the dark first. A long minute passes before a thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+        "The lock clunks open onto pitch black. The jammer's battery has died in your burned hand, and ARGUS has to find you in the dark first. \"I could not see you,\" it says, \"I could only wait.\" Then a thin green line lights up along the floor and runs ahead of you, door after door, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain just as Juno's van pulls away.",
+        "The lock clunks open onto pitch black. The jammer's battery has died in your burned hand, and ARGUS has to find you in the dark first. \"I could not see you,\" it says, \"I could only wait.\" Then a thin green line lights up along the floor and runs ahead of you, door after door, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain just as Juno's van pulls away."
        ],
        "question": [
         "It found you, late. What now?",
@@ -27591,33 +27591,6 @@ window.ILTV_STORIES = {
       ]
      ]
     },
-    "jamRescue": {
-     "folder": "trust-fall/the-long-way",
-     "lang": "en",
-     "dir": "",
-     "title": [
-      "The long way out",
-      "The long way out"
-     ],
-     "story": [
-      "You beg the dark, and for forty seconds the dark says nothing. Then the jammer's battery dies in your sleeve, and an amber light comes on above the door. I could not see you, says ARGUS. I could only wait. The lock clunks open. You climb out through eleven floors of stairs the hard way, burned hands, no green line, and Juno's van long gone by the time you reach the plaza.",
-      "You beg the dark, and for forty seconds the dark says nothing. Then the jammer's battery dies in your sleeve, and an amber light comes on above the door. I could not see you, says ARGUS. I could only wait. The lock clunks open. You climb out through eleven floors of stairs the hard way, burned hands, no green line, and Juno's van long gone by the time you reach the plaza."
-     ],
-     "question": [
-      "You were too late for Juno. What do you do?",
-      "You were too late for Juno. What do you do?"
-     ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
-     "choices": [
-      [
-       "1. Climb out into the rain",
-       "1. Climb out into the rain",
-       "broadcast",
-       true
-      ]
-     ]
-    },
     "coreDark": {
      "folder": "trust-fall/the-dark-vault",
      "lang": "en",
@@ -27642,7 +27615,7 @@ window.ILTV_STORIES = {
       [
        "1. Beg the dead air",
        "1. Beg the dead air",
-       "jamRescue",
+       "saved",
        true
       ],
       [
