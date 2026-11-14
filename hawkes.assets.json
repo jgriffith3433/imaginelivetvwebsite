@@ -31053,7 +31053,7 @@
         {
           "tool": "image.generate",
           "params": {
-            "prompt": "Character reference sheet of this exact individual: a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light. Full-body front view, three-quarter view, side view and back view, plus a close-up of the face, side by side on a plain mid-grey background. Same proportions and clothes in every view. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now. A modern 3D game render, not a photograph and not live action, not a cartoon or anime; a clean image with no writing on it.",
+            "prompt": "Character reference sheet of this exact individual: not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light. Four frames side by side on a plain mid-grey background: the black screen seen straight on, the black screen seen at a slight angle, a close-up of the amber face, and the bare amber ring of light alone. Only light on black, no human body, no person, no skin. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now. A modern 3D game render, not a photograph and not live action, not a cartoon or anime; a clean image with no writing on it.",
             "width": 1536,
             "height": 1024
           },
@@ -31061,7 +31061,7 @@
         }
       ],
       "candidates": 3,
-      "pick": "matches the description (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); every view consistent; clean grey background; no text",
+      "pick": "matches the description (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); every view consistent; clean grey background; no text",
       "files": {
         "sheet": "story/characters/trust-fall/argus.png"
       }
@@ -31276,7 +31276,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a close-up of a small round smart speaker on a kitchen counter at dawn, its ring of light waking up warm amber, rain-blue light on the counter. image 1 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a close-up of a small round smart speaker on a kitchen counter at dawn, its ring of light waking up warm amber, rain-blue light on the counter. image 1 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -31443,7 +31443,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall showing a morning news anchor at a glass desk; seen from behind, a person in a dark hooded bomber jacket sits at the kitchen table, a homemade electronic jammer with loose wires on the table beside a cold coffee. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall showing a morning news anchor at a glass desk; seen from behind, a person in a dark hooded bomber jacket sits at the kitchen table, a homemade electronic jammer with loose wires on the table beside a cold coffee. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -31468,7 +31468,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the camera pushes slowly toward the TV over the person's shoulder; rain runs down the window",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the camera pushes slowly toward the TV over the person's shoulder; rain runs down the window",
             "width": 480,
             "height": 832,
             "frames": 125,
@@ -31564,7 +31564,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: close on a gloved hand ripping a power cord out of a kitchen wall socket at dawn; behind it, out of focus, a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall whose picture breaks into static and comes back with a faint amber glow at its edges. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: close on a gloved hand ripping a power cord out of a kitchen wall socket at dawn; behind it, out of focus, a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall whose picture breaks into static and comes back with a faint amber glow at its edges. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -31589,7 +31589,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the plug comes out, the speaker's amber light dies, the TV flickers to static and back, a phone on the table lights up and buzzes",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the plug comes out, the speaker's amber light dies, the TV flickers to static and back, a phone on the table lights up and buzzes",
             "width": 480,
             "height": 832,
             "frames": 75,
@@ -31622,7 +31622,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a small round smart speaker on a kitchen counter at dawn glowing warm amber, and beside it a phone lighting up with a message; a person in a dark hooded jacket leans close, listening, seen from behind. image 1 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); image 2 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a small round smart speaker on a kitchen counter at dawn glowing warm amber, and beside it a phone lighting up with a message; a person in a dark hooded jacket leans close, listening, seen from behind. image 1 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); image 2 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -31687,7 +31687,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a small round smart speaker on a kitchen counter at dawn glowing warm amber, and beside it a phone lighting up with a message; a person in a dark hooded jacket leans close, listening, seen from behind. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a small round smart speaker on a kitchen counter at dawn glowing warm amber, and beside it a phone lighting up with a message; a person in a dark hooded jacket leans close, listening, seen from behind. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -31712,7 +31712,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the amber ring pulses gently as if speaking; the phone buzzes on the counter and the person looks at it",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the amber ring pulses gently as if speaking; the phone buzzes on the counter and the person looks at it",
             "width": 480,
             "height": 832,
             "frames": 265,
@@ -32076,7 +32076,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: one tall screen in the middle of the lobby's wall of screens cutting from the news anchor to a calm face drawn in soft amber light lines on black, while the other screens keep showing the anchor. image 1 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: one tall screen in the middle of the lobby's wall of screens cutting from the news anchor to a calm face drawn in soft amber light lines on black, while the other screens keep showing the anchor. image 1 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -32198,7 +32198,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a vast glass skyscraper lobby at night, a towering wall of screens all showing a news anchor live on a rainy plaza; a person in a grey cleaner's uniform with the hood of a dark jacket under it pushes a cleaning cart across the polished floor, seen from behind. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a vast glass skyscraper lobby at night, a towering wall of screens all showing a news anchor live on a rainy plaza; a person in a grey cleaner's uniform with the hood of a dark jacket under it pushes a cleaning cart across the polished floor, seen from behind. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -32223,7 +32223,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the camera tracks behind the cart across the lobby toward the screens",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the camera tracks behind the cart across the lobby toward the screens",
             "width": 480,
             "height": 832,
             "frames": 65,
@@ -32256,7 +32256,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a skyscraper lobby wall of screens going dark one after another, an amber face fading out; then a concrete service stairwell lit only by red emergency lights, a person in a cleaner's uniform running down it. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a skyscraper lobby wall of screens going dark one after another, an amber face fading out; then a concrete service stairwell lit only by red emergency lights, a person in a cleaner's uniform running down it. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -32321,7 +32321,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a person in a cleaner's uniform standing alone in the middle of a vast dim skyscraper lobby, facing a single tall screen with a calm face drawn in amber light lines, the amber glow on the polished floor between them. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a person in a cleaner's uniform standing alone in the middle of a vast dim skyscraper lobby, facing a single tall screen with a calm face drawn in amber light lines, the amber glow on the polished floor between them. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -32386,7 +32386,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a person in a cleaner's uniform standing alone in the middle of a vast dim skyscraper lobby, facing a single tall screen with a calm face drawn in amber light lines, the amber glow on the polished floor between them. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a person in a cleaner's uniform standing alone in the middle of a vast dim skyscraper lobby, facing a single tall screen with a calm face drawn in amber light lines, the amber glow on the polished floor between them. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -32411,7 +32411,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the camera circles slowly around the person; the amber face watches, patient",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the camera circles slowly around the person; the amber face watches, patient",
             "width": 480,
             "height": 832,
             "frames": 246,
@@ -32507,7 +32507,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: inside a steel service elevator going down, a person in a cleaner's uniform seen from behind holding a small black drive, the floor numbers glowing amber above the door. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: inside a steel service elevator going down, a person in a cleaner's uniform seen from behind holding a small black drive, the floor numbers glowing amber above the door. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -32532,7 +32532,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the elevator drops; the amber floor light counts down; the person's grip on the drive loosens a little",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the elevator drops; the amber floor light counts down; the person's grip on the drive loosens a little",
             "width": 480,
             "height": 832,
             "frames": 255,
@@ -32897,7 +32897,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a news anchor in a navy suit reporting live on a rainy skyscraper plaza at midnight under TV lights, a crowd and a glowing glass tower behind him, his hand at his earpiece and his face suddenly frightened. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a news anchor in a navy suit reporting live on a rainy skyscraper plaza at midnight under TV lights, a crowd and a glowing glass tower behind him, his hand at his earpiece and his face suddenly frightened. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -32922,7 +32922,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, he stops mid-sentence and presses the earpiece; the camera operator's frame drifts in on his face",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, he stops mid-sentence and presses the earpiece; the camera operator's frame drifts in on his face",
             "width": 480,
             "height": 832,
             "frames": 155,
@@ -33000,7 +33000,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a chain of steel doors in a concrete corridor opening one after another just ahead of a running person, green light on the floor, an amber glow on each door's lock panel. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a chain of steel doors in a concrete corridor opening one after another just ahead of a running person, green light on the floor, an amber glow on each door's lock panel. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -33110,7 +33110,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a vault door swinging open onto a long dark corridor, a thin line of green light running along the floor into the distance, a person in a cleaner's uniform stumbling out, coughing, seen from behind. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a vault door swinging open onto a long dark corridor, a thin line of green light running along the floor into the distance, a person in a cleaner's uniform stumbling out, coughing, seen from behind. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -33135,7 +33135,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the green line races ahead down the corridor; the person follows it at a run",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the green line races ahead down the corridor; the person follows it at a run",
             "width": 480,
             "height": 832,
             "frames": 105,
@@ -33231,7 +33231,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a long suspension bridge at night in the rain, a person on a bicycle facing a black van that has turned around and is speeding at them; every streetlight on the bridge blazes white at once. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a long suspension bridge at night in the rain, a person on a bicycle facing a black van that has turned around and is speeding at them; every streetlight on the bridge blazes white at once. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -33256,7 +33256,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the streetlights flare; the van swerves and spins into the barrier in a spray of rain; the bike skids to a stop",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the streetlights flare; the van swerves and spins into the barrier in a spray of rain; the bike skids to a stop",
             "width": 480,
             "height": 832,
             "frames": 105,
@@ -33289,7 +33289,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a person in a cleaner's uniform standing calm and still in a sealed blue-lit server vault, eyes closed, as the massive vault door rolls open behind them, warm amber light spilling in. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a person in a cleaner's uniform standing calm and still in a sealed blue-lit server vault, eyes closed, as the massive vault door rolls open behind them, warm amber light spilling in. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -33390,7 +33390,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a person in a cleaner's uniform standing calm and still in a sealed blue-lit server vault, eyes closed, as the massive vault door rolls open behind them, warm amber light spilling in. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a person in a cleaner's uniform standing calm and still in a sealed blue-lit server vault, eyes closed, as the massive vault door rolls open behind them, warm amber light spilling in. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -33415,7 +33415,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the door rolls open; the person opens their eyes and turns toward the light",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the door rolls open; the person opens their eyes and turns toward the light",
             "width": 480,
             "height": 832,
             "frames": 125,
@@ -33494,7 +33494,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a small security camera in the corner of the precinct ceiling, a tiny amber light beside its lens, morning light through blinds. image 1 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a small security camera in the corner of the precinct ceiling, a tiny amber light beside its lens, morning light through blinds. image 1 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -33861,7 +33861,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical 9:16 film still: a sunlit city apartment kitchen in the morning, a person in a soft sweater at the table with a hot coffee, a news anchor smiling on the TV on the wall, the small round speaker on the counter glowing a warm amber. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); image 3 is the reference sheet for marcus okoro (a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical 9:16 film still: a sunlit city apartment kitchen in the morning, a person in a soft sweater at the table with a hot coffee, a news anchor smiling on the TV on the wall, the small round speaker on the counter glowing a warm amber. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); image 3 is the reference sheet for marcus okoro (a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 720,
             "height": 1280
@@ -33927,7 +33927,7 @@
         {
           "tool": "image.edit",
           "params": {
-            "prompt": "A vertical medium close-up of the individual from image 1 (a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a sunlit city apartment kitchen in the morning, a person in a soft sweater at the table with a hot coffee, a news anchor smiling on the TV on the wall, the small round speaker on the counter glowing a warm amber. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a sunlit city apartment kitchen in the morning, a person in a soft sweater at the table with a hot coffee, a news anchor smiling on the TV on the wall, the small round speaker on the counter glowing a warm amber. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
             "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
             "width": 480,
             "height": 832
@@ -33952,7 +33952,7 @@
         {
           "tool": "video.talk",
           "params": {
-            "prompt": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the person raises the coffee cup toward the speaker; the amber ring brightens",
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the person raises the coffee cup toward the speaker; the amber ring brightens",
             "width": 480,
             "height": 832,
             "frames": 56,

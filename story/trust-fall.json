@@ -29,8 +29,9 @@
     "argus": {
       "name": "ARGUS",
       "sheet": "story/characters/trust-fall/argus.png",
-      "look": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light",
-      "voice": "hv_ai"
+      "look": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light",
+      "voice": "hv_ai",
+      "views": "Four frames side by side on a plain mid-grey background: the black screen seen straight on, the black screen seen at a slight angle, a close-up of the amber face, and the bare amber ring of light alone. Only light on black, no human body, no person, no skin."
     },
     "juno": {
       "name": "Juno Vale",
