@@ -2673,6 +2673,7 @@ figure.feed { cursor: default; }
   line-height: 1.1;
   letter-spacing: 0.02em;
 }
+.ending-signoff { margin: 0.1rem 0; font-family: var(--serif); font-style: italic; font-size: 0.95rem; line-height: 1.35; color: #e8e4dc; }
 .ending-count { margin: 0; font-size: 0.78rem; color: #a9a59f; }
 .ending-recap-head {
   margin: 0.35rem 0 0;
@@ -2702,7 +2703,7 @@ figure.feed { cursor: default; }
 .ending-gallery-btn { font-weight: 600; }
 @keyframes ending-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .spark-ending.ending-card { animation: none; } }
-@media (max-height: 560px) { .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
+@media (max-height: 560px) { .ending-signoff { font-size: 0.82rem; line-height: 1.25; } .ending-recap { max-height: 3.6rem; } .ending-name { font-size: 1.15rem; } }
 
 /* Endings gallery (js/game.js): found tiles show poster + name; locked ones a blurred, darkened silhouette + ???. */
 .spark.is-endings #spark-play,

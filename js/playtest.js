@@ -1840,7 +1840,9 @@ async function continueRecap(options, t) {
     t.event("previously", `${where}: ${id}: title "${title}", line "${line}", poster ${posterOk ? "yes" : "MISSING"}, skip=${skip}`);
     if (title !== st.title) t.problem("bug", `${where}: ${id} recap title is "${title}", not "${st.title}"`);
     if (!line) t.problem("bug", `${where}: ${id} recap has no choice line`);
-    else if (choiceOf[id] && line !== choiceOf[id] && !choiceOf[id].includes(line) && !line.includes(choiceOf[id].replace(/^\d+\.\s*/, ""))) {
+    else if (el.dataset.marcus) {
+      if (!line.includes(el.dataset.marcus)) t.problem("bug", `${where}: ${id} recap line is "${line}", not Marcus's last line "${el.dataset.marcus}"`);
+    } else if (choiceOf[id] && line !== choiceOf[id] && !choiceOf[id].includes(line) && !line.includes(choiceOf[id].replace(/^\d+\.\s*/, ""))) {
       t.problem("bug", `${where}: ${id} recap line is "${line}", the choice was "${choiceOf[id]}"`);
     }
     if (!posterOk) t.problem("bug", `${where}: ${id} recap has no poster`);
@@ -8684,6 +8686,7 @@ async function trustFallNewsRun(options, t) {
   const hit = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
   const shownIn = (doc, sel) => [...doc.querySelectorAll(sel)].filter((e) => e.getClientRects().length);
   let chapters = 0, captioned = 0, uncaptioned = 0, signoffs = 0, lowerThirds = 0, overlapChecks = 0;
+  const endingLines = {};
   const clockFor = (sid) => st.scenes[sid].news.time;
 
   /** A chapter card on screen: the clock and title, filling the screen, 44px or more to press, then a press moves on. */
@@ -8812,6 +8815,21 @@ async function trustFallNewsRun(options, t) {
     if (!ending || ending.hidden || !shownIn(doc, "#spark-ending button, #spark-ending a").length) t.problem("bug", `${id}/${sid}: after the sign-off the ending card (with its buttons) isn't there`);
     else {
       signoffs++;
+      // The ending card carries its own version of Marcus's line, fully on screen above the buttons (J, 2026-11-14).
+      const lineEl = doc.querySelector("#spark-ending .ending-signoff");
+      if (!lineEl) t.problem("bug", `${id}/${sid}: the ending card has no sign-off line`);
+      else {
+        const lr = rect(lineEl);
+        const text = lineEl.textContent.trim();
+        if (!text.includes(news.signoff)) t.problem("bug", `${id}/${sid}: the ending card's line is "${text}", want "${news.signoff}"`);
+        if (!/you know who you are/i.test(text)) t.problem("bug", `${id}/${sid}: the ending card's line doesn't end on "you know who you are"`);
+        const tops = shownIn(doc, "#spark-ending button, #spark-ending a").map((b) => rect(b).top);
+        if (lr.left < -1 || lr.right > W + 1 || lr.top < -1 || lr.bottom > H + 1 || lr.height < 8) t.problem("bug", `${id}/${sid}: the ending line isn't fully on screen at ${W}x${H} (${Math.round(lr.top)}-${Math.round(lr.bottom)}px)`);
+        if (tops.length && lr.bottom > Math.min(...tops) + 1) t.problem("bug", `${id}/${sid}: the ending line (bottom ${Math.round(lr.bottom)}px) isn't above the buttons (top ${Math.round(Math.min(...tops))}px)`);
+        endingLines[sid] = text;
+        t.event("ending-line", `${id}/${sid}: ${text} (${Math.round(lr.top)}-${Math.round(lr.bottom)}px, buttons from ${tops.length ? Math.round(Math.min(...tops)) : "none"}px)`);
+        t.event("screenshot", `${id}/${sid} ending card: ${text}`);
+      }
       t.event("signoff", `${id}/${sid}: sign-off "${news.signoff}" over the ending, then the ending card with ${shownIn(doc, "#spark-ending button, #spark-ending a").length} buttons`);
       checkOverlap(doc, sid);
     }
@@ -8877,6 +8895,36 @@ async function trustFallNewsRun(options, t) {
   if (chapters !== chapterWant) t.problem("bug", `${id}: ${chapters} chapter cards shown, want ${chapterWant}`);
   const endingsWant = ids.filter((sid) => st.scenes[sid].ending).length;
   if (signoffs !== endingsWant) t.problem("bug", `${id}: ${signoffs} sign-off cards shown, want ${endingsWant} (one per ending)`);
+  const lineSet = new Set(Object.values(endingLines));
+  if (lineSet.size !== Object.keys(endingLines).length) t.problem("bug", `${id}: two ending cards show the same sign-off line`);
+  t.metric("endingLinesDistinct", lineSet.size);
+
+  // 3. Continue's recap: after one real choice the saved run holds Marcus's last line (the start's, spoken on air).
+  t.scene(`${id}: the run keeps Marcus's last line for Continue`);
+  clearProgress();
+  {
+    const doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} recap ${W}x${H}`);
+    await waitFor(() => win.finalSpark.scene() === st.start, 8000);
+    await dismissNews(t, doc);
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => box.dataset.phase === "ready", 14000);
+    const btn = shownIn(doc, "#spark-choices .choice")[0];
+    if (!btn) t.problem("bug", `${id}: no choice on ${st.start} to press`);
+    else {
+      await tapAt(t, btn, `"${enText(btn)}"`);
+      await sleep(600);
+      let saved = null;
+      try { saved = JSON.parse(decodeURIComponent((doc.cookie.split("; ").find((c) => c.startsWith(st.cookie + "=")) || "").slice(st.cookie.length + 1))); } catch (e) { /* none */ }
+      const want = (st.scenes[st.start].news.caption.filter((c) => c[0].toLowerCase() === st.news.anchor).pop() || [])[1];
+      if (!saved || !saved.marcus) t.problem("bug", `${id}: the saved run for Continue has no Marcus line`);
+      else if (saved.marcus !== want && !saved.marcus.length) t.problem("bug", `${id}: saved Marcus line is empty`);
+      else t.event("marcus-last-line", `${id}: Continue's recap will say Marcus: "${saved.marcus}"`);
+    }
+    closeViewFrame();
+  }
+  clearProgress();
   t.metric("newsChapterCards", chapters);
   t.metric("newsCaptionedLines", captioned);
   t.metric("newsUncaptionedLines", uncaptioned);

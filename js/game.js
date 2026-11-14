@@ -439,6 +439,7 @@
       from: from,
       choice: choice,
       poster: poster,
+      marcus: typeof saved.marcus === "string" ? saved.marcus.slice(0, 400) : "",
       tried: saved.tried && typeof saved.tried === "object" && !Array.isArray(saved.tried) ? saved.tried : {}
     };
   }
@@ -510,6 +511,21 @@
     }
   }
 
+  /** Marcus's last line on the way (Trust Fall's anchor): the newest caption of his, or an ending's sign-off. "" if none. */
+  function anchorLastLine(story, ids) {
+    if (!story || !story.news || !story.scenes) return "";
+    const who = String(story.news.anchor || "").toLowerCase();
+    for (let i = ids.length - 1; i >= 0; i--) {
+      const raw = story.scenes[ids[i]];
+      const news = raw && raw.news;
+      if (!news) continue;
+      if (raw.ending && news.signoff) return news.signoff;
+      const lines = (news.caption || []).filter(function (c) { return String(c[0]).toLowerCase() === who; });
+      if (lines.length) return lines[lines.length - 1][1];
+    }
+    return "";
+  }
+
   /** The run cookie payload, including the Continue recap fields when a choice has been made. */
   function runPayload(historyIds) {
     const payload = { scene: currentScene, history: historyIds };
@@ -522,6 +538,8 @@
       payload.choice = lastRecap.choice;
       payload.poster = lastRecap.poster || posterOfScene(STORY, lastRecap.from);
     }
+    const marcus = anchorLastLine(STORY, historyIds.concat(currentScene ? [currentScene] : []));
+    if (marcus) payload.marcus = marcus;
     return payload;
   }
 
@@ -1170,7 +1188,16 @@
     count.className = "ending-count";
     count.id = "spark-ending-count";
     count.textContent = endingsCountText(foundN, ends.length);
-    endingBox.append(kicker, name, count);
+    endingBox.append(kicker, name);
+    // Trust Fall: Marcus's own sign-off for this ending, on the card above the buttons.
+    const signoff = scene.news && scene.news.signoff;
+    if (signoff) {
+      const line = document.createElement("p");
+      line.className = "ending-signoff";
+      line.textContent = "\u201c" + signoff + "\u201d";
+      endingBox.appendChild(line);
+    }
+    endingBox.appendChild(count);
 
     if (!options.skipRecap) {
       const head = document.createElement("p");
@@ -2526,7 +2553,9 @@
     img.removeAttribute("src");
     if (poster) img.src = poster;
     title.textContent = story.title;
-    line.textContent = saved.choice;
+    // Trust Fall: the line is Marcus's last one from the run (his words, in quotes); other stories name the last choice.
+    line.textContent = saved.marcus ? "Marcus: \u201c" + saved.marcus + "\u201d" : saved.choice;
+    el.dataset.marcus = saved.marcus || "";
     el.dataset.story = story.id;
     el.dataset.from = saved.from;
     el.dataset.choice = saved.choice;
@@ -2556,6 +2585,7 @@
         delete el.dataset.story;
         delete el.dataset.from;
         delete el.dataset.choice;
+        delete el.dataset.marcus;
         delete el.dataset.poster;
         resumeClipsAfterRecap();
         tell("feature", { feature: "recap_done", story: story.id, skipped: finish.skipped || false });
