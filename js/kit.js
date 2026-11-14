@@ -14,8 +14,14 @@
       // A Colt Single Action Army from the side: barrel and front sight, ejector rod, cylinder, hammer, grip, trigger guard.
       '<svg viewBox="0 0 48 28" aria-hidden="true"><g fill="currentColor"><path d="M20 6H45V4.5h1.5V10H20z"/><path d="M22 10h15v2H22z"/><path d="M12 5h9v10h-9z"/><path d="M12 6L9 2l2-.5L14 5z"/><path d="M12 13c-3 4-6 8-6.5 13l6 1c.5-5 2.5-9 5-12z" fill="#8a5a33"/></g><path d="M14 7.5h5v1h-5zM14 10.5h5v1h-5z" fill="#17140f"/><path d="M15 15c0 5 5 5 5 0M17.2 15l-.6 3" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>',
     ring:
-      // ARGUS's amber ring of light: a thin glowing ring with a bright core.
-      '<svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="10" fill="none" stroke="#ffb040" stroke-width="3"/><circle cx="14" cy="14" r="3" fill="#ffb040"/></svg>',
+      // ARGUS's amber ring: an iris of light.
+      '<svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="10" fill="none" stroke="#ffb040" stroke-width="3.2"/><circle cx="14" cy="14" r="4" fill="#ffb040" opacity=".35"/></svg>',
+    drive:
+      // A small drive: a flat case and its plug.
+      '<svg viewBox="0 0 34 24" aria-hidden="true"><rect x="2" y="5" width="22" height="14" rx="2" fill="currentColor"/><rect x="24" y="9" width="8" height="6" fill="#b8874a"/><circle cx="8" cy="12" r="2" fill="#17140f"/></svg>',
+    jammer:
+      // A jammer: a box, an aerial and its waves.
+      '<svg viewBox="0 0 30 28" aria-hidden="true"><rect x="3" y="14" width="18" height="11" rx="2" fill="currentColor"/><path d="M12 14V4" stroke="currentColor" stroke-width="2"/><path d="M17 3c3 2 3 6 0 8M21 1c5 3 5 9 0 12" stroke="#ffb040" stroke-width="1.6" fill="none"/></svg>',
     match:
       // A wooden match: the stick and its red head.
       '<svg viewBox="0 0 12 28" aria-hidden="true"><rect x="5" y="7" width="2" height="20" rx="1" fill="#c9a36b"/><ellipse cx="6" cy="6" rx="3.2" ry="4.6" fill="#c8402a"/></svg>',
@@ -83,10 +89,12 @@
     return '<p class="inventory-label">' + esc(def.label || "Inventory") + "</p>" +
       '<div class="kit-items">' +
       (def.items || []).map(function (item) {
+        // A carried item (`carried: true`) is on the bar only once you have it, and shows no count.
+        if (item.carried && !(now[item.id] > 0)) return "";
         var has = item.id in now;
         var n = has ? now[item.id] : null;
         var max = typeof item.max === "number" ? item.max : null;
-        var label = item.name + (has ? ": " + n + (max != null ? " of " + max : "") : "");
+        var label = item.name + (has && !item.carried ? ": " + n + (max != null ? " of " + max : "") : "");
         var icon = ICONS[item.icon] || "";
         var body;
         if (item.icon === "rounds" && max != null) {
@@ -98,7 +106,7 @@
           (has ? ' data-count="' + n + '"' : "") + ' role="img" aria-label="' + esc(label) + '" title="' + esc(item.note || item.name) + '">' +
           body +
           '<span class="kit-name">' + esc(item.name) + "</span>" +
-          (has ? '<span class="kit-count">' + n + (max != null ? "/" + max : "") + "</span>" : "") +
+          (has && !item.carried ? '<span class="kit-count">' + n + (max != null ? "/" + max : "") + "</span>" : "") +
           "</span>";
       }).join("") +
       "</div>";

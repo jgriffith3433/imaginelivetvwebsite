@@ -68,8 +68,10 @@ or basic path.
 
 World bible: `docs/world-bible.md` (Trust Fall in every section). `believed` (set by Believe it) is read by scene
 variants: the vault (an amber light comes on above the door), the green line (ARGUS: "I told you I'd be there"), and the
-morning edition (the ceiling camera watches over you). "Wait. ARGUS promised" and "Say thank you to ARGUS" are `requires`
-choices: on offer only with `believed`, not shown locked otherwise. The variants change the words now; their clips follow
+morning edition (the ceiling camera watches over you). "Wait. ARGUS promised" is a `requires` choice: on offer only with `believed`, not shown
+locked otherwise. "Say thank you to ARGUS" (Morning edition) is gated on **trust 3 or more** (`needs`, J 2026-11-14): trust
+is asked, listened, believed (+ waited), so it takes asking, listening and believing; with 2 it is a greyed-out
+"needs trust 3+ (you have 2)" row, not a button. The variants change the words now; their clips follow
 when the media is made.
 
 ## Trust, counted (2026-11-14, J: "belief that pays off")
@@ -153,3 +155,14 @@ its media is made, takes the beat's place and keeps the order: action first, wor
   Their clips (and the talking shots, 19 in the recipes) are the media still to make.
 - The build cuts a scene as soon as its shots, narration and music exist; a talking shot is cut in only once both its
   video and its recording are made. A scene whose lines have no talking shots yet keeps the live tail under its choices.
+
+## The trust ring and what you carry (J, 2026-11-14)
+
+The kit bar ("Carrying", `js/kit.js`) shows ARGUS's amber ring with a count, **Trust**, 0 to 4: +1 on arriving at How it knows (Ask how it knows you), What it knows (Stop and listen), The bait (Believe it) and The promise (Wait. ARGUS promised); it never goes below 0. On the believing way it reads 3 at the vault and 4 once you Wait. Carried items appear only once you have them, with no count: **Blindspot** (from the garage), **the copy** (Copy it and read it first) and **the jammer** (Jam it and keep going). Playtest `trust-meter`.
+
+## Endings that name the choice (J, 2026-11-14)
+
+Live (`truth`) and Unseen (`shadow`) have story variants, most specific first like the morning edition: **chased** (the
+bridge, alone), **calledMarcus** (Marcus heard the call; in Unseen he knows only that someone called), **believed** (the
+amber light above the camera; in Unseen ARGUS keeps your name because you asked). Someone who did none of them reads the
+base text. The timer's default stays Live. Good morning (`believer`) is the reward for trust 3 and has one text.

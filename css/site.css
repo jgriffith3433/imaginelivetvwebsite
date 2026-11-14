@@ -1609,6 +1609,11 @@ html:not([data-kit]) .inventory.kit { display: none; }
 .kit-icon svg { display: block; height: 1.6rem; width: auto; }
 .kit-revolver .kit-icon svg { height: 1.25rem; }
 
+/* Trust Fall's trust ring: ARGUS's amber, glowing a little more with each point. */
+.kit-ring { border-color: #7a5a24; color: #ffb040; }
+.kit-ring .kit-icon svg { height: 1.45rem; filter: drop-shadow(0 0 4px rgba(255, 176, 64, 0.55)); }
+.kit-drive .kit-icon svg, .kit-jammer .kit-icon svg { height: 1.3rem; }
+
 .kit-rounds { display: flex; gap: 2px; }
 .kit-round svg { display: block; height: 1.45rem; width: auto; }
 .kit-round.is-spent { opacity: 0.22; }
