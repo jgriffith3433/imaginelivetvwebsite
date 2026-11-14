@@ -9386,7 +9386,7 @@ async function trustFallRun(options, t) {
     }
   }
   // 4a2. The green line after Jam it (J, 2026-11-14): a run that jammed the lobby screens reads a jammed variant (ARGUS has to
-  // find you in the dark first), a run that stopped and listened reads the believed one, and the jammed words fit 390x844.
+  // find you in the dark: "pitch black"), a run that stopped and listened reads the believed one, and the jammed words fit 390x844.
   // Seeded at the vault, real taps on "Beg ARGUS for help".
   {
     const readGreen = async (label, pred, fork = "core") => {
@@ -9414,13 +9414,72 @@ async function trustFallRun(options, t) {
     const lying = await readGreen("after Stop and listen, It's lying, Beg the dead air", (f) => f.jammed === true && f.listened === true, "coreDark");
     const heard = await readGreen("after Stop and listen, Believe it", (f) => f.believed === true && !f.jammed);
     const plain = await readGreen("after Stop and listen, no belief", (f) => !f.believed && !f.jammed);
-    if (jammed && !/in the dark first/.test(jammed)) t.problem("bug", `${id}/saved: after Jam it the green line doesn't read the jammed variant ("${jammed.slice(0, 80)}")`);
+    if (jammed && !/pitch black/.test(jammed)) t.problem("bug", `${id}/saved: after Jam it the green line doesn't read the jammed variant ("${jammed.slice(0, 80)}")`);
     if (heard && !/I told you I'd be there/.test(heard)) t.problem("bug", `${id}/saved: after Stop and listen, Believe it the green line doesn't read the believed variant`);
-    if (plain && /in the dark first|I told you I'd be there/.test(plain)) t.problem("bug", `${id}/saved: after Stop and listen, It's lying the green line reads a variant it shouldn't`);
-    if (lying && !/in the dark first/.test(lying)) t.problem("bug", `${id}/saved: after It's lying. Keep going the green line doesn't read the jammed variant ("${lying.slice(0, 80)}")`);
+    if (plain && /pitch black|I told you I'd be there/.test(plain)) t.problem("bug", `${id}/saved: after Stop and listen, It's lying the green line reads a variant it shouldn't`);
+    if (lying && !/pitch black/.test(lying)) t.problem("bug", `${id}/saved: after It's lying. Keep going the green line doesn't read the jammed variant ("${lying.slice(0, 80)}")`);
     if (jammed && (jammed === heard || jammed === plain)) t.problem("bug", `${id}/saved: reads the same after Jam it and after Stop and listen`);
     t.event("jammed-variant", `${id}/saved: jammed "${jammed.slice(0, 90)}" | believed "${heard.slice(0, 60)}" | plain "${plain.slice(0, 60)}"`);
     t.add("trustFallJammedVariants");
+  }
+  // 4b. Tight and true (J, 2026-11-14): no page's narration runs past 40 words, the average is 30 or fewer; every scene with
+  // words that change by flags (its variants) is reached by a run whose flags pick EACH variant (the first whose `when` holds), the
+  // page shows that variant's words (not the base's, not another's), the page's words and choices fit 390x844, and the cut or
+  // still that plays is the variant's own narration (data: the variant's `video` / `narration`), so every line seen is said.
+  {
+    const wc = (x) => String(x || "").split(/\s+/).filter(Boolean).length;
+    const counts = ids.map((sid) => wc(st.scenes[sid].story[1]));
+    const avg = counts.reduce((a, b) => a + b, 0) / counts.length;
+    const worst = ids.filter((sid) => wc(st.scenes[sid].story[1]) > 40);
+    t.metric("trustFallAvgWords", Math.round(avg * 10) / 10);
+    t.metric("trustFallMaxWords", Math.max(...counts));
+    if (avg > 30) t.problem("bug", `${id}: the pages average ${avg.toFixed(1)} words (30 or fewer wanted; The Water Road averages 25)`);
+    for (const sid of worst) t.problem("bug", `${id}/${sid}: ${wc(st.scenes[sid].story[1])} words of narration (40 at most)`);
+    for (const sid of ids) for (const v of st.scenes[sid].variants || []) if (v.story && wc(v.story[1]) > 40) t.problem("bug", `${id}/${sid}: a variant (${Object.keys(v.when).join(", ")}) runs ${wc(v.story[1])} words (40 at most)`);
+    t.event("page-words", `${id}: ${ids.length} pages average ${avg.toFixed(1)} words, longest ${Math.max(...counts)}`);
+    const holdsIn = (when, flags) => Object.entries(when).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v);
+    let played = 0;
+    for (const sid of ids) {
+      const base = st.scenes[sid];
+      const vs = base.variants || [];
+      for (let vi = 0; vi < vs.length; vi++) {
+        const v = vs[vi];
+        if (!v.story && !v.question) continue;
+        // The run's flags must pick this variant: its `when` holds and no variant before it does.
+        const pick = (f) => holdsIn(v.when, f) && !vs.slice(0, vi).some((o) => holdsIn(o.when, f));
+        const way = wayTo(sid, pick);
+        if (!way || way.length < 2) { t.problem("bug", `${id}/${sid}: no run reaches the variant for ${JSON.stringify(v.when)}`); continue; }
+        const label = `${sid} variant ${Object.keys(v.when).join("+")}`;
+        t.scene(`${id}: ${label}`);
+        const parent = way[way.length - 2];
+        const doc = await open(way.slice(0, -1), label);
+        const box = await ready(doc, parent);
+        const gi = st.scenes[parent].choices.findIndex((c) => c[2] === sid && !(c[7] && c[7].requires && !holdsIn(c[7].requires, flagsOf(way.slice(0, -1)))));
+        const b = visible(box).find((x) => Number(x.dataset.choiceIndex) === gi);
+        if (!b) { t.problem("bug", `${id}/${sid}: can't press the way to ${label}`); closeViewFrame(); continue; }
+        b.scrollIntoView({ block: "center", behavior: "instant" });
+        await tapAt(t, b, `${label} (${W}x${H})`);
+        if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === sid, 5000))) { t.problem("bug", `${id}: ${label} didn't open`); closeViewFrame(); continue; }
+        await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready" || doc.getElementById("spark").dataset.state === "soon", 12000);
+        await rewindEndClip(doc);
+        await sleep(600);
+        const shownStory = (doc.getElementById("spark-story").textContent || "").replace(/\s+/g, " ").trim();
+        const shownQ = (doc.getElementById("spark-question").textContent || "").replace(/\s+/g, " ").trim();
+        const wantStory = (v.story || base.story)[1], wantQ = (v.question || base.question)[1];
+        if (shownStory !== wantStory) t.problem("bug", `${id}/${sid}: the run for ${JSON.stringify(v.when)} shows "${shownStory.slice(0, 60)}", not the variant's words`);
+        if (wantQ && shownQ !== wantQ) t.problem("bug", `${id}/${sid}: the run for ${JSON.stringify(v.when)} asks "${shownQ}", not the variant's question`);
+        // What plays must be this variant's own narration: its own cut (variant video) or, on a still, its own recording.
+        const vid = doc.querySelector("#spark-video video:not(.spark-leave)");
+        const src = vid ? decodeURI(new URL(vid.currentSrc || vid.src, location.href).pathname) : "";
+        if (vid && !/\/scene-v\d+\.mp4$/.test(src) && !v.video) t.problem("bug", `${id}/${sid}: the variant for ${JSON.stringify(v.when)} shows its own words over the base narration (${src}): its narration-v${vi + 1}.mp3 and scene-v${vi + 1}.mp4 aren't made (hawkes.assets.json trust-fall-${sid}-voice-v${vi + 1})`);
+        else if (!vid && !v.narration && base.narration) t.problem("bug", `${id}/${sid}: the variant for ${JSON.stringify(v.when)} would speak the base narration over its own words`);
+        else { t.event("variant-narrated", `${id}/${sid}: ${JSON.stringify(v.when)} shows its words (${wc(wantStory)}) and plays ${src || "its own still narration"}`); t.add("trustFallVariantsNarrated"); }
+        trustFallTextFit(t, doc, `${id}/${label} (${W}x${H})`, W, H);
+        closeViewFrame();
+        played++;
+      }
+    }
+    t.metric("trustFallVariantsPlayed", played);
   }
   t.progress(0.8);
 
@@ -9976,9 +10035,9 @@ installPlaytest({
     {
       id: "trust-fall",
       title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
-      seconds: 300,
+      seconds: 480,
       tags: ["full"],
-      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene. Text fit (J, 2026-11-14): every fork, page, ending card and death page is checked (trustFallTextFit: text boxes on screen, none cut off by overflow or an ancestor, no page scroll past the screen; event text-fit, metric trustFallTextFitPages) and the two gated choices are pressed by touch after Believe it (gated-pressed); a self-test clips the story text and must see it (text-fit-catches).",
+      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene. Text fit (J, 2026-11-14): every fork, page, ending card and death page is checked (trustFallTextFit: text boxes on screen, none cut off by overflow or an ancestor, no page scroll past the screen; event text-fit, metric trustFallTextFitPages) and the two gated choices are pressed by touch after Believe it (gated-pressed); a self-test clips the story text and must see it (text-fit-catches). Tight and true (J, 2026-11-14): no page over 40 words and the average 30 or fewer (trustFallAvgWords, trustFallMaxWords); every variant that changes words is reached by a run whose flags pick it, shows its own words, fits the screen and plays its own narration (variant-narrated, trustFallVariantsNarrated).",
     },
     {
       id: "rewind",

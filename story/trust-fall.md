@@ -96,6 +96,16 @@ the build forbids a count below zero). "It's lying. Keep going" at the lobby lea
   their clips are made (GPU, priced in the change's summary). Playtest `trust-fall` section 4a plays the meter, the cost,
   the rescue depth, the Good morning gate and the three endings by touch at 390x844.
 
+## Tight and true (2026-11-14, J: "Trust Fall: tight and true on every path")
+
+Voice doc: `docs/trust-fall/voice.md`. Every page's story is 35 words or fewer (27.6 on average, was 43; The Water Road 25) and
+each of the 17 variants 40 or fewer. A narration is the page's story, its question and, at an ending, the "THE END" line, so
+nothing shown is unsaid. **Each variant that changes words has its own narration**: the build writes the recipe
+`trust-fall-<scene>-voice-v<n>` (file `<folder>/media/narration-v<n>.mp3`; `n` is the variant's place in the scene's `variants`)
+and, once that is made, cuts `<folder>/scene-v<n>.mp4` from the scene's shots and plays it for the run whose flags pick the
+variant (`js/game.js` `sceneWith`; a still page speaks the variant's `narration`). Until it is made the base cut plays: the
+`trust-fall` playtest (section 4b) says so by variant. Remake the base voices too (their words changed), then `npm run story`.
+
 ## Media plan (waiting for J's OK: it spends GPU)
 
 From `hawkes.assets.json` (`trust-fall-*`, 77 recipes):
@@ -129,8 +139,7 @@ tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio
 - `waited` (set by Wait. ARGUS promised) keys the morning's "the recording you stood still for"; the `broadcast` variants
   run most specific first (chased, calledMarcus, waited, believed, listened), so every flag is heard.
 - Endings gallery hints tease instead of giving the route. Runtime on the card: about 8 minutes.
-- Still to come (roadmap, `/mnt/project-files/new-story/roadmap.md`): a counted trust meter, narration for variants,
-  tighter pages, a voice doc.
+- Still to come (roadmap): the remade voices and cuts for the tightened pages and variants.
 
 ## Sound (2026-11-14)
 
