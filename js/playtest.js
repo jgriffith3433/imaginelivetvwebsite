@@ -9327,6 +9327,40 @@ async function trustFallRun(options, t) {
       t.add("trustFallEndingVariants");
     }
   }
+  // 4a2. The green line after Jam it (J, 2026-11-14): a run that jammed the lobby screens reads a jammed variant (ARGUS has to
+  // find you in the dark first), a run that stopped and listened reads the believed one, and the jammed words fit 390x844.
+  // Seeded at the vault, real taps on "Beg ARGUS for help".
+  {
+    const readGreen = async (label, pred) => {
+      const way = wayTo("core", pred);
+      if (!way) { t.problem("bug", `${id}: no way to the vault ${label}`); return ""; }
+      t.scene(`${id}: the green line, ${label}`);
+      const doc = await open(way, `the green line ${label}`);
+      const box = await ready(doc, "core");
+      const gi = st.scenes.core.choices.findIndex((c) => c[2] === "saved" && !(c[7] && c[7].requires));
+      const b = visible(box).find((x) => Number(x.dataset.choiceIndex) === gi);
+      if (!b) { t.problem("bug", `${id}/core: can't press Beg ARGUS for help ${label}`); closeViewFrame(); return ""; }
+      b.scrollIntoView({ block: "center", behavior: "instant" });
+      await tapAt(t, b, `green line ${label} (${W}x${H})`);
+      if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === "saved", 5000))) { t.problem("bug", `${id}: the green line didn't open ${label}`); closeViewFrame(); return ""; }
+      await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 12000);
+      await rewindEndClip(doc);
+      await sleep(600);
+      const text = (doc.getElementById("spark-story").textContent || "").trim();
+      trustFallTextFit(t, doc, `${id}/saved ${label} (${W}x${H})`, W, H);
+      closeViewFrame();
+      return text;
+    };
+    const jammed = await readGreen("after Jam it", (f) => f.jammed === true);
+    const heard = await readGreen("after Stop and listen, Believe it", (f) => f.believed === true && !f.jammed);
+    const plain = await readGreen("after Stop and listen, It's lying", (f) => !f.believed && !f.jammed);
+    if (jammed && !/in the dark first/.test(jammed)) t.problem("bug", `${id}/saved: after Jam it the green line doesn't read the jammed variant ("${jammed.slice(0, 80)}")`);
+    if (heard && !/I told you I'd be there/.test(heard)) t.problem("bug", `${id}/saved: after Stop and listen, Believe it the green line doesn't read the believed variant`);
+    if (plain && /in the dark first|I told you I'd be there/.test(plain)) t.problem("bug", `${id}/saved: after Stop and listen, It's lying the green line reads a variant it shouldn't`);
+    if (jammed && (jammed === heard || jammed === plain)) t.problem("bug", `${id}/saved: reads the same after Jam it and after Stop and listen`);
+    t.event("jammed-variant", `${id}/saved: jammed "${jammed.slice(0, 90)}" | believed "${heard.slice(0, 60)}" | plain "${plain.slice(0, 60)}"`);
+    t.add("trustFallJammedVariants");
+  }
   t.progress(0.8);
 
   // 4b. Phone layout (Late Shift): at a fork the clip sits above the words, the words above the choices, nothing over the

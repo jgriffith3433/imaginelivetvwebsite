@@ -26783,7 +26783,11 @@ window.ILTV_STORIES = {
       [
        "1. Jam it and keep going",
        "1. Jam it and keep going",
-       "jam"
+       "jam",
+       false,
+       {
+        "jammed": true
+       }
       ],
       [
        "2. Stop and listen",
@@ -27095,6 +27099,19 @@ window.ILTV_STORIES = {
        "question": [
         "It was there, like it said. What now?",
         "It was there, like it said. What now?"
+       ]
+      },
+      {
+       "when": {
+        "jammed": true
+       },
+       "story": [
+        "The lock clunks open onto pitch black. You jammed every eye in this building, and ARGUS has to find you in the dark first. A long minute passes before a thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
+        "The lock clunks open onto pitch black. You jammed every eye in this building, and ARGUS has to find you in the dark first. A long minute passes before a thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+       ],
+       "question": [
+        "It found you, late. What now?",
+        "It found you, late. What now?"
        ]
       }
      ]
