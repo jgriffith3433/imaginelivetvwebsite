@@ -37,6 +37,8 @@
       narration: spec.still ? spec.narration || "" : "",
       score: spec.still ? spec.score || "" : "",
       live: spec.live || 0,
+      // When the narration baked into the clip ends and each talking shot speaks (tools/build-story.mjs voiceOf): one voice at a time.
+      voice: spec.voice || null,
       dead: !!spec.dead,
       // This page's own countdown in seconds (default CHOICE_WINDOW) and how it is drawn ("air": the air running out).
       timer: spec.timer || 0,
@@ -58,6 +60,7 @@
           poster: v.poster || "",
           small: v.small || "",
           live: v.live || 0,
+          voice: v.voice || null,
           narration: v.narration || ""
         };
       })
