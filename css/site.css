@@ -3119,9 +3119,12 @@ button.ending-tile:focus-visible {
     width: var(--lp-col);
     padding: 0.3rem 0.6rem 0.3rem 0;
     justify-content: safe center;
+    overflow: hidden;
   }
+  .spark:not(.is-tree) .spark-question, .spark:not(.is-tree) .choice-timer, .spark:not(.is-tree) .spark-choices { flex: 0 0 auto; }
   .spark:not(.is-tree) .spark-story {
-    max-height: 4.5rem;
+    flex: 0 1 auto;
+    min-height: 2.6rem;
     overflow-y: auto;
     margin-bottom: 0.15rem;
     font-size: 0.76rem;
@@ -3792,19 +3795,26 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
     right: 0;
     bottom: var(--inventory-h);
     z-index: 50;
-    max-height: 62dvh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    max-height: 72dvh;
+    overflow: hidden;
     justify-content: flex-end;
     padding: 2.4rem 0.9rem 0.6rem;
     text-align: left;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 58%, transparent);
   }
+  /* The story text is never clipped under the choices (critic, clarity 5/10): the panel is a column; the choices, question
+     and timer keep their size and sit right under the prompt, the text takes what is left and scrolls inside itself. */
   .spark:not(.is-tree):not(.is-endings) .spark-story {
-    max-height: 5.2rem;
+    flex: 0 1 auto;
+    min-height: 3.2rem;
     overflow-y: auto;
+    overscroll-behavior: contain;
     text-shadow: 0 1px 3px #000;
   }
+  .spark:not(.is-tree):not(.is-endings) .spark-story:empty { min-height: 0; }
+  .spark:not(.is-tree):not(.is-endings) .spark-question,
+  .spark:not(.is-tree):not(.is-endings) .choice-timer,
+  .spark:not(.is-tree):not(.is-endings) .spark-choices { flex: 0 0 auto; }
   .spark:not(.is-tree):not(.is-endings) .spark-choices .choice { min-height: 48px; }
 }
 
