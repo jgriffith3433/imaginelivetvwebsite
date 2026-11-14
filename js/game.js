@@ -1019,7 +1019,7 @@
     const buttons = container.querySelectorAll(".choice");
     buttons.forEach(function (btn, idx) {
       btn.style.setProperty("--choice-i", String(idx));
-      btn.dataset.choiceIndex = String(idx);
+      if (btn.dataset.choiceIndex == null) btn.dataset.choiceIndex = String(idx);
     });
   }
 
@@ -1127,7 +1127,7 @@
       button.type = "button";
       button.className = "choice death-choice";
       button.dataset.death = kind;
-      button.dataset.choiceIndex = String(choice.index != null ? choice.index : idx);
+      button.dataset.choiceIndex = String(idx);
       button.style.setProperty("--choice-i", String(idx));
       fillSpot(button, say, en, kind === "rewind" ? "en" : scene.lang, scene.dir);
       button.addEventListener("click", function () {
@@ -1366,7 +1366,7 @@
       button.type = "button";
       button.className = "choice";
       button.style.setProperty("--choice-i", String(idx));
-      button.dataset.choiceIndex = String(idx);
+      button.dataset.choiceIndex = String(choice.index != null ? choice.index : idx);
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
       const mark = choiceMark(STORY, unlocked, sceneId, choice.next, replayNow);
       if (triedHere.indexOf(choice.next) >= 0) {
