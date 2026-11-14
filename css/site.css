@@ -3819,3 +3819,12 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
 @media (orientation: landscape) and (max-height: 500px) {
   .spark:not(.is-tree) .spark-video { background-color: transparent; background-size: contain; }
 }
+
+/* First minute (quality rule: at most 40 words on screen): the landing page shows each story's title, run time and
+   Play, and the featured story's one line. The cards' loglines, the moods and the intro line stay in the page (tests,
+   search engines, screen readers) but are not drawn. */
+[data-view="landing"] .stories-sub,
+[data-view="landing"] .meta-mood,
+[data-view="landing"] .story-card-text > p:not(.story-card-meta) {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: -1px;
+}

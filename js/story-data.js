@@ -5,7 +5,7 @@ window.ILTV_STORIES = {
    "id": "final-spark",
    "title": "The Final Spark",
    "tagline": "Every decision has consequences.",
-   "logline": "You wake in a sewer with no name and no past. A rat is watching. Every page costs a match.",
+   "logline": "A rat is watching. Every page costs a match.",
    "image": "/assets/images/final-spark.jpg",
    "listed": true,
    "cookie": "finalSparkProgress",
