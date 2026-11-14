@@ -1,5 +1,5 @@
 {
-  "$comment": "The stories on imaginelivetv.com, in the order the landing page lists them. Each one's scenes are in story/<id>.json. Fields: id (the data file's name), logline (one line for its card), image (its card's key image, 9:16; without one the card shows the first video's opening frame) and alt (what the image shows), pages (where its branch pages live: \"/\" for The Final Spark only, every other story under /<id>/), runtime (a listed story's card and hero say how long one way through takes, e.g. \"About 45 min\": an editorial estimate, Night Shift's from tools/check-night-shift.mjs), mood (three words on its card), featured (true on at most one story: the hero at the top of the landing page), listed (false: built and playable at /?story=<id>, but not on the landing page). Every card wears the player's own progress badge (Not started, Started, Completed: js/game.js, from the story's saved place; its endings are the scenes with an \"ending\" in story/<id>.json). `npm run story` builds them all. Story doc: story/README.md.",
+  "$comment": "The stories on imaginelivetv.com, in the order the landing page lists them. Each one's scenes are in story/<id>.json. Fields: id (the data file's name), logline (one line for its card), image (its card's key image, 9:16; without one the card shows the first video's opening frame) and alt (what the image shows), pages (where its branch pages live: \"/\" for The Final Spark only, every other story under /<id>/), runtime (a listed story's card and hero say how long one way through takes, e.g. \"About 45 min\": an editorial estimate, Night Shift's from tools/check-night-shift.mjs), mood (three words on its card), teaser (optional, one line a card carries as data-teaser and the story link page shows; Trust Fall has one so listing it is a single change), featured (true on at most one story: the hero at the top of the landing page), listed (false: built and playable at /?story=<id>, but not on the landing page). Every card wears the player's own progress badge (Not started, Started, Completed: js/game.js, from the story's saved place; its endings are the scenes with an \"ending\" in story/<id>.json). `npm run story` builds them all. Story doc: story/README.md.",
   "stories": [
     {
       "id": "final-spark",
@@ -39,6 +39,7 @@
       "alt": "The words Trust Fall in white on a dark teal background",
       "runtime": "About 8 min",
       "mood": "Near-future, tense, hopeful",
+   "teaser": "It says good morning. Do you believe it?",
       "listed": false
     }
   ]
