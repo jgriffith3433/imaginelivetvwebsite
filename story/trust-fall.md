@@ -2,7 +2,8 @@
 
 `story/trust-fall.json`: every page, its text, its choices and how its media is made. Its pages are under
 `/trust-fall/` (`/trust-fall/first-light/`, …), its asset ids start with `trust-fall-`, and it plays at
-`/?story=trust-fall`.
+`/?story=trust-fall`. **Voice and page rules:** [`docs/trust-fall/voice.md`](../docs/trust-fall/voice.md) (narrator, ARGUS,
+Marcus, Juno; two sentences and under 30 words a page; words to avoid).
 
 **A draft (`"listed": false` in `story/stories.json`), asked for by J on 2026-11-13:** "a brand new story for imagine
 live tv ... about believing in "the AI system" and getting rewarded for it (you play as anti hero, AI is villain but
