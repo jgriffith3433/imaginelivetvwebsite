@@ -8675,7 +8675,14 @@ async function trustFallRun(options, t) {
       }
     }
     btn.scrollIntoView({ block: "center", behavior: "instant" });
+    const au = win.iltvAudio, auT0 = Date.now() - 5;
     await tapAt(t, btn, `"${label(btn)}" (${W}x${H})`);
+    if (au && au.events) {
+      // Sound: every choice press answers with a UI sting, and the scene has its looping ambient bed.
+      const tapEv = au.events().filter((e) => e.at >= auT0).find((e) => e.what === "ui" && e.name === "tap");
+      if (!tapEv) t.problem("bug", `${id}/${parent}: pressing "${label(btn)}" made no choice sting (audio events: ${au.events().filter((e) => e.at >= auT0).map((e) => e.what).join(",") || "none"})`);
+      else t.event("choice-sting", `${id}/${parent}: sting "${tapEv.name}" ${Math.max(0, tapEv.at - auT0)} ms after the press`);
+    }
     if (!(await waitFor(() => win.finalSpark.scene() === target, 4000))) { t.problem("bug", `${id}: the press on "${label(btn)}" didn't open ${target} (at ${win.finalSpark.scene()})`); closeViewFrame(); continue; }
     entered.add(target);
     {
@@ -8697,6 +8704,11 @@ async function trustFallRun(options, t) {
       } else t.problem("bug", `${id}/${target}: no clip is playing after the press`);
     }
     await sleep(380);
+    if (au && au.bed) {
+      const bd = au.bed();
+      if (!bd.playing) t.problem("bug", `${id}/${target}: no looping ambient bed is playing in the scene`);
+      else t.event("scene-bed", `${id}/${target}: bed ${bd.url || "on"} loops under the scene`);
+    }
     if (ending(target)) {
       await rewindEndClip(doc);
       const nameEl = doc.getElementById("spark-ending");
