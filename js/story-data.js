@@ -26629,8 +26629,8 @@ window.ILTV_STORIES = {
       "The plug"
      ],
      "story": [
-      "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
-      "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+      "You yank the cord. The speaker dies, and so does the TV. When it returns, the voice under Marcus's isn't his. Your phone buzzes: Juno. Garage, ten.",
+      "You yank the cord. The speaker dies, and so does the TV. When it returns, the voice under Marcus's isn't his. Your phone buzzes: Juno. Garage, ten."
      ],
      "question": [
       "Where do you go?",
@@ -26656,8 +26656,8 @@ window.ILTV_STORIES = {
       "How it knows"
      ],
      "story": [
-      "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Before you can answer, your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
-      "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Before you can answer, your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+      "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Your phone buzzes: Juno. Garage, ten.",
+      "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Your phone buzzes: Juno. Garage, ten."
      ],
      "question": [
       "Where do you go?",
@@ -26686,8 +26686,8 @@ window.ILTV_STORIES = {
       "The garage"
      ],
      "story": [
-      "Juno's garage smells of solder and rain. The plan is simple: at midnight, while the whole city watches ARGUS switch on, you walk a drive called Blindspot into the Tower's core and put out every eye it has. Juno presses the drive into your hand.",
-      "Juno's garage smells of solder and rain. The plan is simple: at midnight, while the whole city watches ARGUS switch on, you walk a drive called Blindspot into the Tower's core and put out every eye it has. Juno presses the drive into your hand."
+      "Juno's garage smells of solder and rain. At midnight you carry a drive, Blindspot, into the Tower and blind ARGUS. Juno presses it into your hand.",
+      "Juno's garage smells of solder and rain. At midnight you carry a drive, Blindspot, into the Tower and blind ARGUS. Juno presses it into your hand."
      ],
      "question": [
       "Do you carry Blindspot in?",
@@ -26727,8 +26727,8 @@ window.ILTV_STORIES = {
       "What's inside"
      ],
      "story": [
-      "On the train you open your copy. Blindspot doesn't blind anything. It locks the city's power behind a ransom, and every line of it is signed with your name. Juno was never coming back for you.",
-      "On the train you open your copy. Blindspot doesn't blind anything. It locks the city's power behind a ransom, and every line of it is signed with your name. Juno was never coming back for you."
+      "On the train you open your copy. Blindspot blinds nothing. It ransoms the city's power, every line signed with your name. Juno was never coming back for you.",
+      "On the train you open your copy. Blindspot blinds nothing. It ransoms the city's power, every line signed with your name. Juno was never coming back for you."
      ],
      "question": [
       "You know what Juno is doing. What now?",
@@ -26764,8 +26764,8 @@ window.ILTV_STORIES = {
       "The river"
      ],
      "story": [
-      "You walk back into the garage and put your copy on the table. Juno doesn't argue. Juno never argues. The last thing you hear is the river.",
-      "You walk back into the garage and put your copy on the table. Juno doesn't argue. Juno never argues. The last thing you hear is the river."
+      "You put your copy on Juno's table. Juno doesn't argue. Juno never argues. The last thing you hear is the river.",
+      "You put your copy on Juno's table. Juno doesn't argue. Juno never argues. The last thing you hear is the river."
      ],
      "question": [
       "You have died.",
@@ -26792,12 +26792,12 @@ window.ILTV_STORIES = {
       "The Tower"
      ],
      "story": [
-      "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you.",
-      "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you."
+      "Eleven fifty. Lobby screens show Marcus live, counting down. You wheel a cart past security. One screen cuts to a face of amber light, looking at you.",
+      "Eleven fifty. Lobby screens show Marcus live, counting down. You wheel a cart past security. One screen cuts to a face of amber light, looking at you."
      ],
      "question": [
-      "ARGUS sees you. What do you do?",
-      "ARGUS sees you. What do you do?"
+      "ARGUS sees you. What now?",
+      "ARGUS sees you. What now?"
      ],
      "video": "/trust-fall/the-tower/scene.mp4",
      "poster": "/trust-fall/the-tower/poster/scene.webp",
@@ -26842,8 +26842,8 @@ window.ILTV_STORIES = {
         "readWorm": true
        },
        "question": [
-        "You know what's on that drive. ARGUS sees you. What do you do?",
-        "You know what's on that drive. ARGUS sees you. What do you do?"
+        "You know what's on that drive. ARGUS sees you. What now?",
+        "You know what's on that drive. ARGUS sees you. What now?"
        ]
       }
      ]
@@ -26857,8 +26857,8 @@ window.ILTV_STORIES = {
       "Lights out"
      ],
      "story": [
-      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. Something in your chest goes quiet with it. You take the service stairs down, eleven floors under the street, and the dark comes with you.",
-      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. Something in your chest goes quiet with it. You take the service stairs down, eleven floors under the street, and the dark comes with you."
+      "You thumb the jammer in your sleeve. The screens die, the face goes mid-word, and something in your chest goes quiet. You take the service stairs down.",
+      "You thumb the jammer in your sleeve. The screens die, the face goes mid-word, and something in your chest goes quiet. You take the service stairs down."
      ],
      "question": [
       "Down you go.",
@@ -26890,8 +26890,8 @@ window.ILTV_STORIES = {
       "What it knows"
      ],
      "story": [
-      "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient.",
-      "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient."
+      "You stop in the middle of the lobby. Nobody else hears it. The voice is only in your screen, quiet and patient.",
+      "You stop in the middle of the lobby. Nobody else hears it. The voice is only in your screen, quiet and patient."
      ],
      "question": [
       "Do you believe a machine?",
@@ -26945,8 +26945,8 @@ window.ILTV_STORIES = {
       "The bait"
      ],
      "story": [
-      "It tells you what to do, and the strangest part is how calm you feel doing it. You ride the elevator eleven floors down with the drive in your fist and a machine's promise in your ear.",
-      "It tells you what to do, and the strangest part is how calm you feel doing it. You ride the elevator eleven floors down with the drive in your fist and a machine's promise in your ear."
+      "It tells you what to do, and you're strangely calm. You ride eleven floors down, the drive in your fist, a machine's promise in your ear.",
+      "It tells you what to do, and you're strangely calm. You ride eleven floors down, the drive in your fist, a machine's promise in your ear."
      ],
      "question": [
       "Down you go.",
@@ -26975,12 +26975,12 @@ window.ILTV_STORIES = {
       "The vault"
      ],
      "story": [
-      "The core is cold and blue and humming. You plug Blindspot into the rack, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds.",
-      "The core is cold and blue and humming. You plug Blindspot into the rack, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds."
+      "The core is cold, blue, humming. You plug Blindspot in. Juno clicks on in your earpiece. The vault door locks, and a recording says: fire suppression in sixty seconds.",
+      "The core is cold, blue, humming. You plug Blindspot in. Juno clicks on in your earpiece. The vault door locks, and a recording says: fire suppression in sixty seconds."
      ],
      "question": [
-      "The air is going. What do you do?",
-      "The air is going. What do you do?"
+      "The air is going. What now?",
+      "The air is going. What now?"
      ],
      "video": "/trust-fall/the-vault/scene.mp4",
      "poster": "/trust-fall/the-vault/poster/scene.webp",
@@ -27032,12 +27032,12 @@ window.ILTV_STORIES = {
         "believed": true
        },
        "story": [
-        "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there.",
-        "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there."
+        "The core is cold, blue, humming. You plug Blindspot in, as ARGUS said. Juno clicks on in your earpiece. The door locks behind you, and a recording says: sixty seconds. Above the door, an amber light comes on.",
+        "The core is cold, blue, humming. You plug Blindspot in, as ARGUS said. Juno clicks on in your earpiece. The door locks behind you, and a recording says: sixty seconds. Above the door, an amber light comes on."
        ],
        "question": [
-        "The door shut, just like ARGUS said it would. What do you do?",
-        "The door shut, just like ARGUS said it would. What do you do?"
+        "The door shut, just like ARGUS said. What now?",
+        "The door shut, just like ARGUS said. What now?"
        ]
       }
      ]
@@ -27051,8 +27051,8 @@ window.ILTV_STORIES = {
       "Sixty seconds"
      ],
      "story": [
-      "You get your fingers into the seam of the door and pull until they won't pull anymore. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now.",
-      "You get your fingers into the seam of the door and pull until they won't pull anymore. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now."
+      "You pull at the door's seam until your fingers give out. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now.",
+      "You pull at the door's seam until your fingers give out. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now."
      ],
      "question": [
       "You have died.",
@@ -27079,8 +27079,8 @@ window.ILTV_STORIES = {
       "On the air"
      ],
      "story": [
-      "Your call shouldn't get through eleven floors of concrete. It does. Up on the plaza, live in front of the whole city, Marcus stops in the middle of a sentence and touches his earpiece.",
-      "Your call shouldn't get through eleven floors of concrete. It does. Up on the plaza, live in front of the whole city, Marcus stops in the middle of a sentence and touches his earpiece."
+      "Your call shouldn't get through eleven floors of concrete. It does. Live on the plaza, Marcus stops mid-sentence and touches his earpiece.",
+      "Your call shouldn't get through eleven floors of concrete. It does. Live on the plaza, Marcus stops mid-sentence and touches his earpiece."
      ],
      "question": [
       "Hold on.",
@@ -27106,8 +27106,8 @@ window.ILTV_STORIES = {
       "The green line"
      ],
      "story": [
-      "The lock clunks open. A thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it. Behind you Blindspot dies on the rack: ARGUS read it the moment you plugged it in. You come up into the rain on the plaza just as Juno's van pulls away.",
-      "The lock clunks open. A thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it. Behind you Blindspot dies on the rack: ARGUS read it the moment you plugged it in. You come up into the rain on the plaza just as Juno's van pulls away."
+      "The lock opens. A green line runs ahead, each door opening before you reach it. Blindspot dies on the rack. You surface in the rain as Juno's van pulls away.",
+      "The lock opens. A green line runs ahead, each door opening before you reach it. Blindspot dies on the rack. You surface in the rain as Juno's van pulls away."
      ],
      "question": [
       "Juno is getting away. What do you do?",
@@ -27140,8 +27140,8 @@ window.ILTV_STORIES = {
         "believed": true
        },
        "story": [
-        "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
-        "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+        "The lock opens. A green line runs ahead of you, and a soft voice says: I told you I'd be there. Blindspot dies on the rack. You surface in the rain as Juno's van pulls away.",
+        "The lock opens. A green line runs ahead of you, and a soft voice says: I told you I'd be there. Blindspot dies on the rack. You surface in the rain as Juno's van pulls away."
        ],
        "question": [
         "It was there, like it said. What now?",
@@ -27153,8 +27153,8 @@ window.ILTV_STORIES = {
         "jammed": true
        },
        "story": [
-        "The lock clunks open onto pitch black. The jammer's battery has died in your burned hand, and ARGUS has to find you in the dark first. \"I could not see you,\" it says, \"I could only wait.\" Then a thin green line lights up along the floor and runs ahead of you, door after door, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain just as Juno's van pulls away.",
-        "The lock clunks open onto pitch black. The jammer's battery has died in your burned hand, and ARGUS has to find you in the dark first. \"I could not see you,\" it says, \"I could only wait.\" Then a thin green line lights up along the floor and runs ahead of you, door after door, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain just as Juno's van pulls away."
+        "The lock opens onto pitch black. The jammer is dead in your burned hand. \"I could not see you,\" ARGUS says. \"I could only wait.\" A shaky green line lights the floor. Juno's van pulls away.",
+        "The lock opens onto pitch black. The jammer is dead in your burned hand. \"I could not see you,\" ARGUS says. \"I could only wait.\" A shaky green line lights the floor. Juno's van pulls away."
        ],
        "question": [
         "It found you, late. What now?",
@@ -27172,8 +27172,8 @@ window.ILTV_STORIES = {
       "The bridge"
      ],
      "story": [
-      "You grab a courier's bike and chase the van onto the Harbor Bridge. Halfway across, Juno swings the van around and comes straight at you. Then every streetlight on the bridge flares white at once, right in Juno's eyes, and the van spins into the barrier and stops.",
-      "You grab a courier's bike and chase the van onto the Harbor Bridge. Halfway across, Juno swings the van around and comes straight at you. Then every streetlight on the bridge flares white at once, right in Juno's eyes, and the van spins into the barrier and stops."
+      "You grab a courier's bike and chase the van onto the Harbor Bridge. Juno swings around, straight at you. Every streetlight flares white in her eyes. The van spins into the barrier.",
+      "You grab a courier's bike and chase the van onto the Harbor Bridge. Juno swings around, straight at you. Every streetlight flares white in her eyes. The van spins into the barrier."
      ],
      "question": [
       "Breathe.",
@@ -27200,8 +27200,8 @@ window.ILTV_STORIES = {
       "The promise"
      ],
      "story": [
-      "You stand still and breathe the way it told you to. The hiss never comes. The door opens on the ninth second, and the screen beside it shows the whole night recorded: Juno in your ear, every word. Out on the avenues every light turns red in front of Juno's van and green for the police behind it.",
-      "You stand still and breathe the way it told you to. The hiss never comes. The door opens on the ninth second, and the screen beside it shows the whole night recorded: Juno in your ear, every word. Out on the avenues every light turns red in front of Juno's van and green for the police behind it."
+      "You stand still and breathe as it told you. The hiss never comes. The door opens on the ninth second, and a screen replays Juno's every word. Outside, the lights turn red for her van.",
+      "You stand still and breathe as it told you. The hiss never comes. The door opens on the ninth second, and a screen replays Juno's every word. Outside, the lights turn red for her van."
      ],
      "question": [
       "It kept its word.",
@@ -27231,8 +27231,8 @@ window.ILTV_STORIES = {
       "Morning edition"
      ],
      "story": [
-      "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you.",
-      "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you."
+      "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody. He looks into the camera, at you.",
+      "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody. He looks into the camera, at you."
      ],
      "question": [
       "What do you do?",
@@ -27336,8 +27336,8 @@ window.ILTV_STORIES = {
         "waited": true
        },
        "story": [
-        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
-        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
+        "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody; ARGUS gave the newsroom the recording you stood still for. An amber light in the ceiling watches over you.",
+        "Six in the morning. A precinct bench, a borrowed blanket. On the wall TV, Marcus hasn't slept. Juno is in custody; ARGUS gave the newsroom the recording you stood still for. An amber light in the ceiling watches over you."
        ],
        "question": [
         "You stood still and it kept its word. What do you do?",
@@ -27367,8 +27367,8 @@ window.ILTV_STORIES = {
         "jammed": true
        },
        "story": [
-        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, your hands in bandages, watching the TV on the wall. Marcus hasn't slept and his tie is crooked. Juno Vale is in custody, caught by the police and not by anything that watches. The little amber light in the ceiling corner is dark. Then Marcus looks into the camera, and you know he's looking at you.",
-        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, your hands in bandages, watching the TV on the wall. Marcus hasn't slept and his tie is crooked. Juno Vale is in custody, caught by the police and not by anything that watches. The little amber light in the ceiling corner is dark. Then Marcus looks into the camera, and you know he's looking at you."
+        "Six in the morning. A precinct bench, bandaged hands. On the wall TV, Marcus hasn't slept. Juno is in custody, caught by police, not by anything that watches. The amber light in the ceiling is dark.",
+        "Six in the morning. A precinct bench, bandaged hands. On the wall TV, Marcus hasn't slept. Juno is in custody, caught by police, not by anything that watches. The amber light in the ceiling is dark."
        ],
        "question": [
         "No light was watching over you tonight. What do you do?",
@@ -27386,8 +27386,8 @@ window.ILTV_STORIES = {
       "Live"
      ],
      "story": [
-      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
-      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
+      "At seven you tell the city who you are. ARGUS vouches for every word. When the light goes off, Marcus says it just to you: you know who you are.",
+      "At seven you tell the city who you are. ARGUS vouches for every word. When the light goes off, Marcus says it just to you: you know who you are."
      ],
      "question": [
       "",
@@ -27408,8 +27408,8 @@ window.ILTV_STORIES = {
         "chased": true
        },
        "story": [
-        "You walk into the studio at seven in last night's jacket, the bridge still in your legs, and sit down at Marcus's glass desk. You tell the whole city who you are and what you came to do, and that you went after Juno alone when you didn't have to. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
-        "You walk into the studio at seven in last night's jacket, the bridge still in your legs, and sit down at Marcus's glass desk. You tell the whole city who you are and what you came to do, and that you went after Juno alone when you didn't have to. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
+        "At seven you sit at Marcus's glass desk and tell the city who you are, and that you chased Juno alone. ARGUS vouches for every word. Marcus says to you alone: you know who you are.",
+        "At seven you sit at Marcus's glass desk and tell the city who you are, and that you chased Juno alone. ARGUS vouches for every word. Marcus says to you alone: you know who you are."
        ]
       },
       {
@@ -27417,8 +27417,8 @@ window.ILTV_STORIES = {
         "calledMarcus": true
        },
        "story": [
-        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. Marcus says on air that your call came through eleven floors of concrete, and that he heard you. ARGUS vouches for every word. When the camera light goes off, he leans over and says it just to you: you know who you are.",
-        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. Marcus says on air that your call came through eleven floors of concrete, and that he heard you. ARGUS vouches for every word. When the camera light goes off, he leans over and says it just to you: you know who you are."
+        "At seven you tell the city who you are. Marcus says on air your call came through eleven floors of concrete. ARGUS vouches for every word. Then, to you alone: you know who you are.",
+        "At seven you tell the city who you are. Marcus says on air your call came through eleven floors of concrete. ARGUS vouches for every word. Then, to you alone: you know who you are."
        ]
       },
       {
@@ -27426,8 +27426,8 @@ window.ILTV_STORIES = {
         "believed": true
        },
        "story": [
-        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. You tell them you believed a machine in a lobby, and the light above the camera is amber, not red. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
-        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. You tell them you believed a machine in a lobby, and the light above the camera is amber, not red. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
+        "At seven you tell the city who you are, and that you believed a machine. The light above the camera is amber, not red. ARGUS vouches for every word. Marcus tells you alone: you know who you are.",
+        "At seven you tell the city who you are, and that you believed a machine. The light above the camera is amber, not red. ARGUS vouches for every word. Marcus tells you alone: you know who you are."
        ]
       }
      ]
@@ -27441,8 +27441,8 @@ window.ILTV_STORIES = {
       "Unseen"
      ],
      "story": [
-      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
-      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+      "You leave the blanket on the bench and walk out before anyone asks your name. ARGUS never gives it. Marcus's next broadcast ends with a new line only you understand.",
+      "You leave the blanket on the bench and walk out before anyone asks your name. ARGUS never gives it. Marcus's next broadcast ends with a new line only you understand."
      ],
      "question": [
       "",
@@ -27463,8 +27463,8 @@ window.ILTV_STORIES = {
         "chased": true
        },
        "story": [
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name, the same way you rode off the Harbor Bridge, alone. ARGUS never gives your name to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name, the same way you rode off the Harbor Bridge, alone. ARGUS never gives your name to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+        "You leave the blanket on the bench and walk out before anyone asks your name, alone, as you rode off the bridge. ARGUS never gives it. Marcus's next broadcast ends with a new line only you understand.",
+        "You leave the blanket on the bench and walk out before anyone asks your name, alone, as you rode off the bridge. ARGUS never gives it. Marcus's next broadcast ends with a new line only you understand."
        ]
       },
       {
@@ -27472,8 +27472,8 @@ window.ILTV_STORIES = {
         "calledMarcus": true
        },
        "story": [
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. Marcus knows only that someone called him from under the Tower and he heard them, and ARGUS never gives him more. The next morning there's a new line at the end of his broadcast, and only two people in Meridian know who it's for.",
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. Marcus knows only that someone called him from under the Tower and he heard them, and ARGUS never gives him more. The next morning there's a new line at the end of his broadcast, and only two people in Meridian know who it's for."
+        "You leave the blanket on the bench and walk out before anyone asks your name. Marcus knows only that someone called from under the Tower. His next broadcast ends with a new line only you understand.",
+        "You leave the blanket on the bench and walk out before anyone asks your name. Marcus knows only that someone called from under the Tower. His next broadcast ends with a new line only you understand."
        ]
       },
       {
@@ -27481,8 +27481,8 @@ window.ILTV_STORIES = {
         "believed": true
        },
        "story": [
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them; you asked it to keep that one thing, and it does. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them; you asked it to keep that one thing, and it does. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+        "You leave the blanket on the bench and walk out before anyone asks your name. ARGUS never gives it: you asked it to keep that one thing. Marcus's next broadcast ends with a new line only you understand.",
+        "You leave the blanket on the bench and walk out before anyone asks your name. ARGUS never gives it: you asked it to keep that one thing. Marcus's next broadcast ends with a new line only you understand."
        ]
       }
      ]
@@ -27496,8 +27496,8 @@ window.ILTV_STORIES = {
       "Good morning"
      ],
      "story": [
-      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back.",
-      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back."
+      "You thank the camera in the precinct corner. Its amber light blinks once, like a smile. Your record comes back clean. Each morning the speaker says good morning. You say it back.",
+      "You thank the camera in the precinct corner. Its amber light blinks once, like a smile. Your record comes back clean. Each morning the speaker says good morning. You say it back."
      ],
      "question": [
       "",
@@ -27522,8 +27522,8 @@ window.ILTV_STORIES = {
       "The dead stairs"
      ],
      "story": [
-      "The jammer hums in your sleeve and the emergency lights go with it. Every door on the stairwell has a keypad, and every keypad is dark. Nothing here is watching you now, and nothing is helping. You count the landings by touch.",
-      "The jammer hums in your sleeve and the emergency lights go with it. Every door on the stairwell has a keypad, and every keypad is dark. Nothing here is watching you now, and nothing is helping. You count the landings by touch."
+      "The jammer hums and the emergency lights go with it. Every keypad on the stairwell is dark. Nothing watches you, nothing helps. You count the landings by touch.",
+      "The jammer hums and the emergency lights go with it. Every keypad on the stairwell is dark. Nothing watches you, nothing helps. You count the landings by touch."
      ],
      "question": [
       "The doors are dead. What now?",
@@ -27548,8 +27548,8 @@ window.ILTV_STORIES = {
       "The breaker room"
      ],
      "story": [
-      "On the ninth landing there is a door with a hand-lettered sign, and a breaker panel behind it the size of a wardrobe. You trip the switches one at a time by the light of your phone, until a single green lamp comes on. You don't know what you've just let back on.",
-      "On the ninth landing there is a door with a hand-lettered sign, and a breaker panel behind it the size of a wardrobe. You trip the switches one at a time by the light of your phone, until a single green lamp comes on. You don't know what you've just let back on."
+      "On the ninth landing: a breaker panel the size of a wardrobe. You trip switches by phone light until one green lamp comes on. You don't know what you've let back on.",
+      "On the ninth landing: a breaker panel the size of a wardrobe. You trip switches by phone light until one green lamp comes on. You don't know what you've let back on."
      ],
      "question": [
       "One lamp is lit. Do you go on?",
@@ -27574,8 +27574,8 @@ window.ILTV_STORIES = {
       "The duct"
      ],
      "story": [
-      "The only way down that doesn't need a keypad is the cable duct: forty metres of steel on your elbows, the jammer burning against your arm. Somewhere below you a vent is breathing out cold, and every few seconds you hear the same patient voice, very far away, saying your name.",
-      "The only way down that doesn't need a keypad is the cable duct: forty metres of steel on your elbows, the jammer burning against your arm. Somewhere below you a vent is breathing out cold, and every few seconds you hear the same patient voice, very far away, saying your name."
+      "The only way down is the cable duct: forty metres on your elbows, the jammer burning your arm. Far below, a patient voice says your name.",
+      "The only way down is the cable duct: forty metres on your elbows, the jammer burning your arm. Far below, a patient voice says your name."
      ],
      "question": [
       "Do you answer it?",
@@ -27600,12 +27600,12 @@ window.ILTV_STORIES = {
       "The dark vault"
      ],
      "story": [
-      "The core is cold and blue and humming, and wrong: no amber light, no voice but Juno's. You plug Blindspot in with burned fingers. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. You switched the one thing that could help you off yourself.",
-      "The core is cold and blue and humming, and wrong: no amber light, no voice but Juno's. You plug Blindspot in with burned fingers. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. You switched the one thing that could help you off yourself."
+      "The core is cold, blue, humming, and wrong: no amber light, no voice but Juno's. The door locks. Sixty seconds. You switched off the one thing that could help.",
+      "The core is cold, blue, humming, and wrong: no amber light, no voice but Juno's. The door locks. Sixty seconds. You switched off the one thing that could help."
      ],
      "question": [
-      "The jammer is still burning. What do you do?",
-      "The jammer is still burning. What do you do?"
+      "The jammer is still burning. What now?",
+      "The jammer is still burning. What now?"
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
@@ -27643,8 +27643,8 @@ window.ILTV_STORIES = {
       "Alone on air"
      ],
      "story": [
-      "You walk into the studio at seven in last night's jacket and tell the whole city who you are and what you came to do. Nobody vouches for a word. The ceiling camera stays dark, ARGUS's logs of the night are sealed, and the lawyers read your own words back to you. When the light goes off, Marcus still leans over and says it just to you: you know who you are. He sounds like he is saying it to someone far away.",
-      "You walk into the studio at seven in last night's jacket and tell the whole city who you are and what you came to do. Nobody vouches for a word. The ceiling camera stays dark, ARGUS's logs of the night are sealed, and the lawyers read your own words back to you. When the light goes off, Marcus still leans over and says it just to you: you know who you are. He sounds like he is saying it to someone far away."
+      "At seven you tell the city who you are. Nobody vouches for a word. The ceiling camera stays dark. Marcus still says it to you alone: you know who you are. He sounds far away.",
+      "At seven you tell the city who you are. Nobody vouches for a word. The ceiling camera stays dark. Marcus still says it to you alone: you know who you are. He sounds far away."
      ],
      "question": [
       "",
@@ -27667,8 +27667,8 @@ window.ILTV_STORIES = {
       "On air, together"
      ],
      "story": [
-      "You walk into the studio at seven in last night's jacket and sit down at Marcus's glass desk. When you tell the city who you are, a small amber light comes on above the camera and ARGUS answers for every word, the vault, the recording, the night you stood in the dark and believed it. Your record clears before the broadcast ends. When the camera light goes off, Marcus squeezes your hand, and above the lens the amber light blinks once.",
-      "You walk into the studio at seven in last night's jacket and sit down at Marcus's glass desk. When you tell the city who you are, a small amber light comes on above the camera and ARGUS answers for every word, the vault, the recording, the night you stood in the dark and believed it. Your record clears before the broadcast ends. When the camera light goes off, Marcus squeezes your hand, and above the lens the amber light blinks once."
+      "At seven you tell the city who you are. An amber light comes on above the camera, and ARGUS answers for every word. Your record clears. Marcus squeezes your hand.",
+      "At seven you tell the city who you are. An amber light comes on above the camera, and ARGUS answers for every word. Your record clears. Marcus squeezes your hand."
      ],
      "question": [
       "",
@@ -27691,8 +27691,8 @@ window.ILTV_STORIES = {
       "Your copy"
      ],
      "story": [
-      "You hold your copy up to the screen, the way you would show a badge. The amber face does not read it. It does not need to. It says what Blindspot is before you can ask, and it matches every line you read on the train. You have been lied to for two hours. This is the first thing anyone has told you straight.",
-      "You hold your copy up to the screen, the way you would show a badge. The amber face does not read it. It does not need to. It says what Blindspot is before you can ask, and it matches every line you read on the train. You have been lied to for two hours. This is the first thing anyone has told you straight."
+      "You hold your copy up to the screen like a badge. The amber face doesn't read it. It names Blindspot before you ask, matching every line. The first straight thing anyone's told you.",
+      "You hold your copy up to the screen like a badge. The amber face doesn't read it. It names Blindspot before you ask, matching every line. The first straight thing anyone's told you."
      ],
      "question": [
       "It knew. You believe it. Now what?",
