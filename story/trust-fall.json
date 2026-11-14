@@ -166,7 +166,12 @@
           ]
         }
       ],
-      "music": "morning"
+      "music": "morning",
+      "time": "6:00 AM",
+      "chapter": {
+        "time": "6:00 AM",
+        "title": "First light"
+      }
     },
     {
       "id": "unplug",
@@ -204,7 +209,8 @@
           "speaker": "argus",
           "text": "I'm not your enemy, Rae."
         }
-      ]
+      ],
+      "time": "6:03 AM"
     },
     {
       "id": "asked",
@@ -246,7 +252,8 @@
           "hero"
         ]
       },
-      "music": "hum"
+      "music": "hum",
+      "time": "6:03 AM"
     },
     {
       "id": "crew",
@@ -310,7 +317,12 @@
           ]
         }
       ],
-      "music": "heist"
+      "music": "heist",
+      "time": "10:00 PM",
+      "chapter": {
+        "time": "10:00 PM",
+        "title": "The garage"
+      }
     },
     {
       "id": "readWorm",
@@ -351,7 +363,8 @@
           "hero"
         ]
       },
-      "music": "hum"
+      "music": "hum",
+      "time": "10:25 PM"
     },
     {
       "id": "liability",
@@ -382,7 +395,8 @@
         "motion": "rain falls on the water; the phone's amber glow fades slowly to dark",
         "cast": []
       },
-      "music": "death"
+      "music": "death",
+      "time": "10:20 PM"
     },
     {
       "id": "tower",
@@ -469,7 +483,12 @@
           ]
         }
       ],
-      "music": "hum"
+      "music": "hum",
+      "time": "11:50 PM",
+      "chapter": {
+        "time": "11:50 PM",
+        "title": "The Tower"
+      }
     },
     {
       "id": "jam",
@@ -508,7 +527,8 @@
           "argus"
         ]
       },
-      "music": "heist"
+      "music": "heist",
+      "time": "11:53 PM"
     },
     {
       "id": "listen",
@@ -573,7 +593,8 @@
           "argus"
         ]
       },
-      "music": "hum"
+      "music": "hum",
+      "time": "11:52 PM"
     },
     {
       "id": "believe",
@@ -614,7 +635,8 @@
           "hero"
         ]
       },
-      "music": "rescue"
+      "music": "rescue",
+      "time": "11:55 PM"
     },
     {
       "id": "core",
@@ -701,7 +723,8 @@
           "cast": []
         }
       ],
-      "music": "trapped"
+      "music": "trapped",
+      "time": "11:58 PM"
     },
     {
       "id": "halon",
@@ -732,7 +755,8 @@
         "motion": "the haze rolls in until the red light is only a soft glow, then that fades too",
         "cast": []
       },
-      "music": "death"
+      "music": "death",
+      "time": "11:59 PM"
     },
     {
       "id": "callMarcus",
@@ -774,7 +798,8 @@
           "marcus"
         ]
       },
-      "music": "trapped"
+      "music": "trapped",
+      "time": "12:00 AM"
     },
     {
       "id": "saved",
@@ -866,7 +891,8 @@
             "It came late. What now?"
           ]
         }
-      ]
+      ],
+      "time": "12:02 AM"
     },
     {
       "id": "chase",
@@ -904,7 +930,8 @@
           "hero"
         ]
       },
-      "music": "heist"
+      "music": "heist",
+      "time": "12:05 AM"
     },
     {
       "id": "promise",
@@ -953,7 +980,8 @@
           "cast": []
         }
       ],
-      "music": "rescue"
+      "music": "rescue",
+      "time": "12:02 AM"
     },
     {
       "id": "broadcast",
@@ -1110,7 +1138,12 @@
           ]
         }
       ],
-      "music": "morning"
+      "music": "morning",
+      "time": "6:00 AM",
+      "chapter": {
+        "time": "6:00 AM",
+        "title": "Morning edition"
+      }
     },
     {
       "id": "truth",
@@ -1177,7 +1210,9 @@
         ]
       },
       "music": "end",
-      "hint": "Some stories you tell yourself."
+      "hint": "Some stories you tell yourself.",
+      "time": "6:14 AM",
+      "signoff": "That was the whole truth, live. I'm Marcus Okoro. Good night, Meridian. You know who you are."
     },
     {
       "id": "shadow",
@@ -1243,7 +1278,9 @@
         ]
       },
       "music": "end",
-      "hint": "Some heroes keep their names."
+      "hint": "Some heroes keep their names.",
+      "time": "6:14 AM",
+      "signoff": "Some mornings there's no name to give. I'm Marcus Okoro. I'll leave the light on. You know who you are."
     },
     {
       "id": "believer",
@@ -1282,7 +1319,9 @@
         ]
       },
       "music": "end",
-      "hint": "Some mornings you answer back."
+      "hint": "Some mornings you answer back.",
+      "time": "6:14 AM",
+      "signoff": "The city says good morning, and someone says it back. I'm Marcus Okoro. You know who you are."
     },
     {
       "id": "blackout",
@@ -1314,7 +1353,8 @@
           "hero"
         ]
       },
-      "music": "trapped"
+      "music": "trapped",
+      "time": "11:55 PM"
     },
     {
       "id": "breaker",
@@ -1346,7 +1386,8 @@
           "hero"
         ]
       },
-      "music": "hum"
+      "music": "hum",
+      "time": "11:57 PM"
     },
     {
       "id": "crawl",
@@ -1384,7 +1425,8 @@
           "hero"
         ]
       },
-      "music": "trapped"
+      "music": "trapped",
+      "time": "11:58 PM"
     },
     {
       "id": "coreDark",
@@ -1445,7 +1487,8 @@
           "cast": []
         }
       ],
-      "music": "trapped"
+      "music": "trapped",
+      "time": "11:59 PM"
     },
     {
       "id": "unvouched",
@@ -1483,7 +1526,9 @@
         "THE END. Nobody vouched for you.",
         "THE END. Nobody vouched for you."
       ],
-      "hint": "Some stories no one backs up."
+      "hint": "Some stories no one backs up.",
+      "time": "6:14 AM",
+      "signoff": "Nobody has spoken for you yet. I'm Marcus Okoro, and I will. You know who you are."
     },
     {
       "id": "vouched",
@@ -1522,7 +1567,9 @@
         "THE END. It answered for you.",
         "THE END. It answered for you."
       ],
-      "hint": "Some trust pays out in full."
+      "hint": "Some trust pays out in full.",
+      "time": "6:14 AM",
+      "signoff": "It answered for you, and so will I. I'm Marcus Okoro. You know who you are."
     },
     {
       "id": "showCopy",
@@ -1564,7 +1611,13 @@
           "argus"
         ]
       },
-      "music": "hum"
+      "music": "hum",
+      "time": "11:52 PM"
     }
-  ]
+  ],
+  "news": {
+    "station": "Meridian Morning",
+    "anchor": "marcus",
+    "role": "Anchor"
+  }
 }

@@ -67,6 +67,24 @@ story, and his sign-off ("you know who you are") is a line only the two of you u
 Each offers Rewind (labelled with the choice it returns to, e.g. "Rewind: go back and face Juno") or Start over. The timer never picks a death: every fork's default is the believing
 or basic path.
 
+## The news frame (2026-11-14, J: "a husband who is a news reporter they watch every morning")
+
+Marcus's *Meridian Morning* frames the night like a TV broadcast. All of it is data in `story/trust-fall.json` (`news`:
+station, anchor, role; per scene `time`, optional `chapter`, an ending's `signoff`), built by `npm run story` into each
+scene's `news` (`js/story-data.js`) and drawn by the player (`js/game.js` "The news frame", `css/site.css`). Nothing
+changes a choice or the branching.
+- **Clock and lower-third.** Every scene shows its broadcast time in a clock bug in the top band of the picture; on
+  Marcus's scenes (any line of his) his name plate (*Marcus Okoro, Anchor, Meridian Morning*) sits beside it for the whole scene.
+- **Chapter cards** by the clock, full screen, a press (or 4 s) moves on, the clip waits under it: 6:00 AM *First light*
+  (`start`), 10:00 PM *The garage* (`crew`), 11:50 PM *The Tower* (`tower`), 6:00 AM *Morning edition* (`broadcast`).
+  Shown when the viewer arrives by a choice, a start over or a new run, not on a resume or a Rewind.
+- **Captions.** Each `lines` entry shows under its speaker's name in the panel above the choices (never over a button),
+  in order, about 0.4 s a word. A page with no `lines` is the narrator's story, which is already the page's text.
+- **Sign-off.** Every ending closes on Marcus's card (*Marcus Okoro signs off*, his line, ending on "You know who you
+  are"), shown when the ending's clip ends (or after 14 s / 6 s on a still); the ending card is already under it.
+- Playtest `trust-fall-news` (touch, 390x844) plays all of it. Story times: morning 6:00 to 6:03 AM, the garage 10:00 to
+  10:25 PM, the Tower and vault 11:50 PM to 12:05 AM, the morning after 6:00 and 6:14 AM.
+
 ## Belief shows on the next clip (2026-11-14)
 
 World bible: `docs/world-bible.md` (Trust Fall in every section). `believed` (set by Believe it) is read by scene
