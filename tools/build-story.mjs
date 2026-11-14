@@ -576,6 +576,7 @@ function hero(st) {
           <h2>${esc(titleOf(st))}</h2>
           <p>${esc(st.entry.logline)}</p>
           <p class="hero-meta"><span class="meta-runtime">${esc(st.entry.runtime ?? '')}</span><span class="meta-mood">${esc(st.entry.mood ?? '')}</span></p>
+          <span class="hero-endings story-card-endings" hidden></span>
           <span class="hero-go">Play</span>
         </div>
       </a>`;

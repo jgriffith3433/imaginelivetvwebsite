@@ -2105,7 +2105,7 @@
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored' + treeEndingsText() + '. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored' + treeEndingsText() + '. Drag sideways. A greyed ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -2557,6 +2557,15 @@
     const run = runOf(story);
     hero.dataset.progress = progress;
     hero.dataset.run = run;
+    const heroEnds = hero.querySelector(".hero-endings");
+    if (heroEnds) {
+      const total = endingsOf(story).length;
+      const foundN = Object.keys(readFoundEndings(story)).length;
+      heroEnds.hidden = !total;
+      heroEnds.textContent = endingsCardText(foundN, total);
+      heroEnds.dataset.found = String(foundN);
+      heroEnds.dataset.total = String(total);
+    }
     const go = hero.querySelector(".hero-go");
     if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
   }

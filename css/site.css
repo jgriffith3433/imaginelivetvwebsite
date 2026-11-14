@@ -1329,6 +1329,8 @@ html[data-living="still"] .card-loop { display: none !important; }
 }
 
 .tree-node.is-locked .tree-node-title { font-size: 1.2rem; }
+.tree-node.is-locked { opacity: 0.55; filter: grayscale(1); }
+.hero-endings { display: inline-block; margin: 0 0.8rem 0 0; }
 
 .tree-node-title {
   display: block;
