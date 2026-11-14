@@ -6892,6 +6892,78 @@ async function nightAudioBetween(t, st) {
   }
 }
 
+/* ---------------- trust-fall-card: the unlisted story's card, rendered as if listed ---------------- */
+
+async function trustFallCardRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const W = 390, H = 844;
+  if (!landingShown()) await toLanding(t);
+  const phone = (f) => {
+    f.style.cssText = `position:fixed;top:0;left:0;width:${W}px;height:${H}px;border:0;z-index:2147483647;background:#070807;transform-origin:0 0;transform:scale(${Math.min(1, innerWidth / W, innerHeight / H)})`;
+  };
+  // 1. The home page shows no card for the draft.
+  t.scene("home page: no Trust Fall card yet");
+  let doc = await frameLoad(t, (f) => { phone(f); f.src = "/"; });
+  if (!doc) throw new Error("the home page didn't load in the frame");
+  await waitFor(() => doc.querySelector(".story-card"), 10000);
+  const home = [...doc.querySelectorAll(".story-card, .hero")].map((c) => c.dataset.story).filter(Boolean);
+  if (home.includes(id) || doc.querySelector(`[data-story="${id}"]`)) t.problem("bug", `${id} has a card on the home page while it is listed: false`);
+  else t.event("no-card-yet", `home page cards: ${home.join(", ") || "none"}; no ${id}`);
+  if (!doc.querySelector('.story-card[data-story="water-road"]')) t.problem("bug", "The Water Road's card is not on the home page");
+  t.progress(0.3);
+  // 2. The build's check page renders the draft's card with the real markup and styles.
+  t.scene("card check: Trust Fall beside The Water Road");
+  doc = await frameLoad(t, (f) => { phone(f); f.src = "/card-check/"; });
+  if (!doc) throw new Error("/card-check/ didn't load (npm run story writes it for a draft with a runtime and mood)");
+  await waitFor(() => doc.querySelector(`.story-card[data-story="${id}"]`), 10000);
+  const tf = doc.querySelector(`.story-card[data-story="${id}"]`);
+  const wr = doc.querySelector('.story-card[data-story="water-road"]');
+  if (!tf || !wr) throw new Error("the check page lacks Trust Fall's or The Water Road's card");
+  tf.scrollIntoView({ block: "center", behavior: "instant" });
+  await sleep(600);
+  const entry = (window.ILTV_STORIES?.stories || []).find((x) => x.id === id) || {};
+  const text = (el, sel) => (el.querySelector(sel)?.textContent || "").trim();
+  const logline = text(tf, ".story-card-text > p:not(.story-card-meta)");
+  const mood = text(tf, ".meta-mood");
+  const runtime = text(tf, ".meta-runtime");
+  const teaser = tf.dataset.teaser || "";
+  if (!logline || logline.length < 20) t.problem("bug", `${id}: the card has no logline`);
+  if (!mood) t.problem("bug", `${id}: the card has no mood`);
+  if (!/^About 8 min$/i.test(runtime)) t.problem("bug", `${id}: the card's runtime says "${runtime}", not "About 8 min"`);
+  if (!teaser) t.problem("bug", `${id}: the card has no teaser line`);
+  t.event("card-fields", `${text(tf, "h2")}: "${logline}" | ${mood} | ${runtime} | teaser "${teaser}"`);
+  const img = tf.querySelector("img");
+  if (img) {
+    await waitFor(() => img.complete, 10000);
+    if (!img.naturalWidth) t.problem("bug", `${id}: the card's picture didn't load`);
+  } else t.problem("bug", `${id}: the card has no picture`);
+  t.screenshot?.("trust-fall-card");
+  // 3. The same size as The Water Road's.
+  const a = tf.getBoundingClientRect();
+  const b = wr.getBoundingClientRect();
+  const ia = tf.querySelector("img, .card-media, video")?.getBoundingClientRect();
+  const ib = wr.querySelector("img, .card-media, video")?.getBoundingClientRect();
+  t.metric("trustFallCardWidth", Math.round(a.width));
+  t.metric("waterRoadCardWidth", Math.round(b.width));
+  t.metric("trustFallCardHeight", Math.round(a.height));
+  t.metric("waterRoadCardHeight", Math.round(b.height));
+  if (Math.abs(a.width - b.width) > 1) t.problem("bug", `${id}: its card is ${Math.round(a.width)} px wide, The Water Road's ${Math.round(b.width)} px`);
+  if (ia && ib && (Math.abs(ia.width - ib.width) > 1 || Math.abs(ia.height - ib.height) > 1)) t.problem("bug", `${id}: its card's picture is ${Math.round(ia.width)}x${Math.round(ia.height)}, The Water Road's ${Math.round(ib.width)}x${Math.round(ib.height)}`);
+  if (a.right > W + 1 || a.left < -1) t.problem("bug", `${id}: its card runs off the 390 px screen`);
+  t.event("card-size", `Trust Fall ${Math.round(a.width)}x${Math.round(a.height)}, The Water Road ${Math.round(b.width)}x${Math.round(b.height)}; pictures ${ia ? Math.round(ia.width) + "x" + Math.round(ia.height) : "?"} and ${ib ? Math.round(ib.width) + "x" + Math.round(ib.height) : "?"}`);
+  if (a.height < 44 || a.width < 44) t.problem("bug", `${id}: its card is under 44 px`);
+  t.progress(0.8);
+  // 4. A touch tap on the card follows its link.
+  const href = tf.getAttribute("href");
+  if (href !== `/?story=${id}`) t.problem("bug", `${id}: its card links to ${href}`);
+  let tapped = false;
+  tf.addEventListener("click", (e) => { tapped = true; e.preventDefault(); }, { once: true });
+  await tapAt(t, tf, `${id}'s card`);
+  if (!tapped) t.problem("bug", `${id}: a touch tap on its card did nothing`);
+  else t.event("card-tap", `a touch tap on the card (it links to ${href})`);
+  closeFrame();
+}
+
 /* ---------------- night-shift-card: Night Shift's landing card from Not started to Completed and Start Over ---------------- */
 
 /** The card criteria of a listed console story, by themselves (the `stories` scenario walks every story and takes
@@ -10472,6 +10544,13 @@ installPlaytest({
       description: "Trust Fall (draft, /?story=trust-fall) at 390x844 with touch taps in a frame. A seeded run (seeded-run) one choice before Live, a real tap on that choice, the ending card says \"1 of 3 found\", a tap on Endings opens the gallery: Live a found tile, Unseen and Good morning blurred silhouettes named \"???\" with their teaser hints, nothing off screen and no horizontal scroll. Events ending-count, locked-ending, gallery-fit, screenshot; metrics endingsFound, endingsTotal.",
     },
     {
+      id: "trust-fall-card",
+      title: "Trust Fall's home card, rendered as if listed: logline, mood, About 8 min and a teaser, the same size as The Water Road's at 390x844; the home page still shows no Trust Fall card",
+      seconds: 40,
+      tags: ["full"],
+      description: "Criteria for the unlisted Trust Fall's card. The home page (a frame at 390x844) has a card for The Water Road and none for Trust Fall (no-card-yet; the story stays listed: false). The build's check page /card-check/ (tools/build-story.mjs: every draft with a runtime and mood rendered with the landing page's own card markup and styles) shows both cards in the same frame: Trust Fall's has its logline, mood, \"About 8 min\" and teaser (card-fields), is the same width and picture size as The Water Road's (card-size; the pair's heights and the Play button are logged), and its card is a tap target of 44 px or more that links to /?story=trust-fall, pressed by touch (a pointer-coarse tap) and followed (card-tap). Metrics trustFallCardWidth, waterRoadCardWidth, trustFallCardHeight, waterRoadCardHeight."
+    },
+    {
       id: "trust-fall-third",
       title: "The news lower-third: First light shows FIRST LIGHT, MERIDIAN 7 and 6:00 AM over the clip; scenes without a news field show none; on a phone it never overlaps the choices or captions",
       seconds: 240,
@@ -10735,6 +10814,7 @@ installPlaytest({
       else if (id === "trust-fall-endings") await trustFallEndingsRun(options, t);
       else if (id === "trust-fall-news") await trustFallNewsRun(options, t);
       else if (id === "trust-fall-third") await trustFallThirdRun(options, t);
+      else if (id === "trust-fall-card") await trustFallCardRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);

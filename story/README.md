@@ -540,3 +540,11 @@ Then make the media through Hawkes Studio (costs GPU time: ask J first):
 ### Camera art for console stories
 
 `style` is written as positive wording (image.generate ignores negatives): a CCTV still, fisheye, low-res, grain, scanlines, a clear strip for the timestamp. Until the real stills exist, `tools/make-standins.mjs` draws SVG stand-ins (`<id>/media/standin/`): one per camera state on that camera's fixed room, one end card per ending, and the landing card; the build uses them only while `media/feeds/<camera>-<state>.png` / `media/endcards/<scene>.png` is missing. Recipes: `<id>-feed-*`, `<id>-endcard-<scene>`, `<id>-card`. The `cctv-art` playtest checks them.
+
+## The card check (Trust Fall, 2026-11-14)
+
+A draft (`"listed": false`) with a `runtime` and `mood` in `story/stories.json` still gets its card built: `npm run story` renders it
+with the landing page's own markup, fails if the logline, mood, an "About N min" runtime or the optional `teaser` is missing, and
+writes `card-check/index.html` (that card beside The Water Road's, `noindex`). `teaser` is a one-line `data-teaser` on the card and a
+line on the story's `/<id>/` link page. Listing Trust Fall later is one change: `"listed": false` removed. Playtest `trust-fall-card`
+(touch, 390x844) checks the home page has no Trust Fall card and the check page's card has the same width and picture size as The Water Road's.
