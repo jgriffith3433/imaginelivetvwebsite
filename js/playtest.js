@@ -9380,8 +9380,26 @@ async function trustFallRun(options, t) {
     const doc = await open(wayTo(sid), `the timeout at ${sid}`);
     const win = doc.defaultView;
     await ready(doc, sid);
+    // The page's own countdown (story data `timer`, default 15): timed from when it runs to when the scene moves on,
+    // and drawn above the choices, on screen, at 390x844.
+    const wantS = st.scenes[sid].timer || 15;
+    const tbox = doc.getElementById("spark-timer");
+    const cbox = doc.getElementById("spark-choices");
+    await waitFor(() => tbox.dataset.state === "running", 8000);
+    const tStart = performance.now();
+    const tr = tbox.getBoundingClientRect();
+    const firstChoice = cbox.querySelector(".choice");
+    const fr = firstChoice ? firstChoice.getBoundingClientRect() : cbox.getBoundingClientRect();
+    if (tr.height < 4 || tr.top < 0 || tr.bottom > fr.top + 1 || tr.bottom > 844) t.problem("bug", `${id}/${sid}: the countdown isn't visible above the choices at 390x844 (timer ${Math.round(tr.top)}-${Math.round(tr.bottom)}, first choice at ${Math.round(fr.top)})`);
+    else t.event("countdown-above-choices", `${id}/${sid}: countdown ${Math.round(tr.top)}-${Math.round(tr.bottom)}px above the first choice at ${Math.round(fr.top)}px`);
     const left = await waitFor(() => win.finalSpark.scene() !== sid, 22000);
     const now = win.finalSpark.scene();
+    const ranS = (performance.now() - tStart) / 1000;
+    if (st.scenes[sid].timer) t.event("air-timer", `${id}/${sid}: style ${st.scenes[sid].timerStyle || "(default)"}, ${wantS} s`);
+    // The pick glows for about 1.1 s after the countdown, so the scene moves on at the timer plus about a second.
+    if (left && Math.abs(ranS - 1.1 - wantS) > 2) t.problem("bug", `${id}/${sid}: the countdown ran ${ranS.toFixed(1)} s, the page's timer is ${wantS} s`);
+    else if (left) t.event("countdown-seconds", `${id}/${sid}: ${wantS} s countdown, moved on after ${ranS.toFixed(1)} s`);
+    t.metric(`countdownSeconds.${sid}`, wantS);
     if (!left) t.problem("bug", `${id}/${sid}: nothing happened when the countdown ran out`);
     else if (dead(now)) t.problem("bug", `${id}/${sid}: the countdown picked a death (${now})`);
     else t.event("timeout-safe", `${id}/${sid}: the countdown chose ${now}`);

@@ -357,7 +357,8 @@ remember a choice and call it back later. All of it is data in `story/<id>.json`
   death's one `choices` entry, `next` the start, so write its words as "Start over"). Both are full-width, at least
   48 px tall. A rewound fork plays its clip and its choices are pressable at once. A death at the first page has no
   fork, so only Start over.
-- **The timer never picks a death.** The 15 s timeout presses the choice marked `"default": true` (the story's basic
+- **A scene's own timer.** `"timer": 10` (whole seconds, 3 to 60) sets that page's countdown; the default stays 15 s. `"timerStyle": "air"` draws it as air running out ("Air 10 s", blue, reddening in the last 3 s). Trust Fall's vault (`core`) uses both.
+- **The timer never picks a death.** The timeout (15 s unless the page sets `timer`) presses the choice marked `"default": true` (the story's basic
   path), else the first choice that isn't a death. `npm run story -- --check` fails a default that leads to a
   death, a fork with two defaults, and a fork whose every choice is a death with no default.
 - **Flags.** A choice may `"set": { "gaveFlask": true, "passedBy": false }` (boolean, text or number). A scene may have

@@ -2976,6 +2976,13 @@ button.ending-tile:focus-visible {
 .choice-timer[data-state="done"] .choice-timer-bar,
 .choice-timer[data-state="done"] .choice-timer-label { animation: none; }
 .choice-timer[data-state="done"] .choice-timer-bar { transform: scaleX(0); }
+/* The vault's countdown is the air running out: a cold blue-white breath that thins, then reddens at the end. */
+.choice-timer[data-style="air"] .choice-timer-bar { background: linear-gradient(90deg, #7fb8e6, #dcefff); box-shadow: 0 0 8px rgba(127, 184, 230, 0.55); }
+.choice-timer[data-style="air"] .choice-timer-track { background: rgba(127, 184, 230, 0.2); }
+.choice-timer[data-style="air"] .choice-timer-label { color: #b9dcf7; }
+.choice-timer[data-style="air"][data-urgent="true"] .choice-timer-bar { background: linear-gradient(90deg, #d94a3a, #ff8a6b); box-shadow: 0 0 12px rgba(235, 90, 70, 0.9); }
+.choice-timer[data-style="air"][data-urgent="true"] .choice-timer-track { background: rgba(235, 90, 70, 0.28); box-shadow: 0 0 10px rgba(235, 90, 70, 0.4); }
+.choice-timer[data-style="air"][data-urgent="true"] .choice-timer-label { color: #ff9b86; text-shadow: 0 0 8px rgba(235, 90, 70, 0.6); }
 @keyframes choice-timer-pulse {
   from { opacity: 0.55; filter: brightness(0.92); }
   to { opacity: 1; filter: brightness(1.18); }

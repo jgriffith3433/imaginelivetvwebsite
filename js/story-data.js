@@ -26917,6 +26917,8 @@ window.ILTV_STORIES = {
     },
     "core": {
      "folder": "trust-fall/the-vault",
+     "timer": 10,
+     "timerStyle": "air",
      "lang": "en",
      "dir": "",
      "title": [
