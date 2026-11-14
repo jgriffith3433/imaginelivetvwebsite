@@ -7721,6 +7721,7 @@ function frontDoorFit(t, doc, w, where) {
   const win = doc.defaultView;
   const wide = Math.max(doc.documentElement.scrollWidth, doc.body.scrollWidth);
   if (wide > w + 1) t.problem("bug", `${where}: the page is ${wide}px wide in a ${w}px screen (sideways scroll)`);
+  if (doc.querySelector(".tile-wall, .tile-screen")) t.problem("bug", `${where}: empty unlabeled scanline bars are on the landing page`);
   const small = [...doc.querySelectorAll("#stories .hero-go, #stories .continue-go, #stories .story-card-go")].filter((el) => el.getClientRects().length && (el.getBoundingClientRect().height < 30));
   for (const el of small) t.problem("bug", `${where}: "${(el.textContent || "").trim()}" is ${Math.round(el.getBoundingClientRect().height)}px tall`);
   /* First five minutes (critic, 2026-11-14): Play is the one large call to action, on the first screen. */
@@ -8741,6 +8742,8 @@ async function trustFallRun(options, t) {
       if (de.scrollWidth > W + 1) t.problem("bug", `${id}: sideways scroll at ${W}x${H} (${de.scrollWidth}px)`);
       const dbg = [...doc.querySelectorAll("button, a, [role=button]")].filter((e) => vis(e) && /debug|bug|report a problem/i.test((e.id || "") + (e.className || "") + (e.getAttribute("aria-label") || "") + (e.title || "")));
       if (dbg.length) t.problem("bug", `${id}: a debug control is on the page (${dbg.length})`);
+      const bars = [".tile-wall", ".tile-screen"].filter((q) => doc.querySelector(q));
+      if (bars.length) t.problem("bug", `${id}: empty unlabeled scanline bars are on the page (${bars.join(", ")})`);
       t.event("player-fullscreen", `${id}: player ${r ? Math.round(r.width) + "x" + Math.round(r.height) : "none"} of ${W}x${H}; landing hidden: ${!shown.length}; no sideways scroll: ${de.scrollWidth <= W + 1}`);
     }
     await sleep(800);
@@ -9249,10 +9252,10 @@ installPlaytest({
     },
     {
       id: "living-home",
-      title: "The landing page is alive: the house lights come up, a wall of screens flickers on its own, cards answer the pointer, blog cards wake; never ten quiet seconds",
+      title: "The landing page is alive: the house lights come up, cards answer the pointer, blog cards wake; never ten quiet seconds",
       seconds: 60,
       tags: ["full"],
-      description: "Fresh load, splash passed. Watches the house lights come up card by card and the three-screen wall flicker by itself, hovers and presses each card (a pointer event, a tick synthesized in the page), scrolls to the blog so its cards wake, then reports quality.maxQuietSeconds (longest gap between two things to see, hear or do, from js/living.js's log plus the presses) and quality.textOnlyBeats (0: the beat is light and sound, no text).",
+      description: "Fresh load, splash passed. Watches the house lights come up card by card, hovers and presses each card (a pointer event, a tick synthesized in the page), scrolls to the blog so its cards wake, then reports quality.maxQuietSeconds (longest gap between two things to see, hear or do, from js/living.js's log plus the presses) and quality.textOnlyBeats (0: the beat is light and sound, no text).",
     },
     {
       id: "front-door",

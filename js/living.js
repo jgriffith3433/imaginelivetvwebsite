@@ -167,7 +167,7 @@
     }, { passive: true });
   }
 
-  // Soft light-up on load; a small wall of three screens that flickers on its own (lobby breath).
+  // Soft light-up on load.
   var litTargets = [].slice.call(stories.querySelectorAll(".hero, .story-card"));
   litTargets.forEach(function (card, i) {
     card.classList.add("dim");
@@ -176,29 +176,13 @@
       note("light", card.getAttribute("data-story"));
     }, 400 + i * 280);
   });
-  if (!reduced) {
-    var wall = document.createElement("div");
-    wall.className = "tile-wall"; wall.setAttribute("aria-hidden", "true");
-    for (var k = 0; k < 3; k++) { var s = document.createElement("span"); s.className = "tile-screen"; wall.appendChild(s); }
-    var sub = stories.querySelector(".stories-sub");
-    if (sub) sub.insertAdjacentElement("afterend", wall);
-    var screens = [].slice.call(wall.children);
-    function flicker() {
-      if (!screens.length) return;
-      var s = screens[Math.floor(Math.random() * screens.length)];
-      s.classList.remove("flick"); void s.offsetWidth; s.classList.add("flick");
-      note("flicker", String(screens.indexOf(s)));
-      setTimeout(flicker, 2500 + Math.random() * 2500);
-    }
-    setTimeout(flicker, 1200);
-  }
+  /* No wall of empty scanline screens any more (menus and UI, 2026-11-14): three unlabeled bars read as a broken UI. */
 
   window.iltvLiving = {
     log: function () { return log.slice(); },
     cards: function () { return litTargets.length; },
     lit: function () { return stories.querySelectorAll(".lit").length; },
-    screens: function () { return document.querySelectorAll(".tile-screen").length; },
-    heroPlaying: function () { return !!(heroVideo && !heroVideo.paused && !heroVideo.ended && heroVideo.currentTime > 0); },
+        heroPlaying: function () { return !!(heroVideo && !heroVideo.paused && !heroVideo.ended && heroVideo.currentTime > 0); },
     heroMuted: function () { return !heroVideo || heroVideo.muted; },
     reduced: function () { return reduced; },
     motionMs: function () { return motionAt; },
