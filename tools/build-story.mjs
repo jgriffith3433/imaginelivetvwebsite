@@ -566,7 +566,7 @@ function hero(st) {
     ? `<div class="hero-media">
         ${pic}
         <video class="hero-trailer" muted loop playsinline preload="metadata" aria-hidden="true"${tr.poster ? ` poster="${esc(tr.poster)}"` : ''} data-src="${esc(tr.trailer)}" data-small="${esc(tr.trailerSm)}"></video>
-        <button type="button" class="hero-sound" aria-pressed="false" aria-label="Unmute trailer">Sound</button>
+        <button type="button" class="hero-sound" aria-pressed="false" aria-label="Unmute trailer">&#x1F50A;</button>
       </div>`
     : pic;
   return `      <a class="hero" href="/?story=${st.id}" data-story="${st.id}" data-progress="new"${tr ? ` data-trailer="${esc(tr.trailer)}"` : ''}>
