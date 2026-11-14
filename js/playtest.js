@@ -8938,7 +8938,7 @@ async function trustFallRun(options, t) {
     while (queue.length) {
       const way = queue.shift();
       const sid = way[way.length - 1];
-      if (sid === target && ok(flagsOf(way))) return way;
+      if (sid === target && ok(flagsOf(way), way)) return way;
       if (way.length > 14 || (dead(sid) && sid !== target) || sid === target) continue;
       const flags = flagsOf(way);
       for (const c of st.scenes[sid].choices) {
@@ -9238,29 +9238,37 @@ async function trustFallRun(options, t) {
   if (endingsSeen.length !== ids.filter(ending).length) t.problem("bug", `${id}: ${endingsSeen.length} of ${ids.filter(ending).length} endings showed their ending card`);
   if (deathsSeen.length !== ids.filter(dead).length) t.problem("bug", `${id}: ${deathsSeen.length} of ${ids.filter(dead).length} deaths showed Rewind and Start over`);
 
-  // 4. Belief gates: a choice that needs the flag `believed` is there only on a run that chose Believe it.
+  // 4. Belief gates: a choice that `requires` the flag `believed` is there only on a run that chose Believe it; a choice that
+  // `needs` trust N (Say thank you to ARGUS, at the morning edition: trust 3) is a button only with that much trust, and
+  // greyed out ("needs trust 3+ (you have 2)") below it, even for a viewer who did believe.
+  const TRUST_SCENES = ["asked", "listen", "believe", "promise"]; // each adds 1 trust (the scenes' `inventory`)
+  const trustOf = (way) => way.filter((s) => TRUST_SCENES.includes(s)).length;
   const gated = [];
-  for (const sid of ids) for (const c of st.scenes[sid].choices) if (c[7] && c[7].requires && c[7].requires.believed) gated.push({ sid, en: c[1], to: c[2] });
+  for (const sid of ids) for (const c of st.scenes[sid].choices) {
+    if (c[7] && c[7].requires && c[7].requires.believed) gated.push({ sid, en: c[1], to: c[2] });
+    else if (c[7] && c[7].needs && c[7].needs.trust) gated.push({ sid, en: c[1], to: c[2], trust: c[7].needs.trust });
+  }
   if (gated.length < 2) t.problem("bug", `${id}: ${gated.length} choices wait on having believed ARGUS (two wanted: the promise and the thank you)`);
   for (const g of gated) {
-    const yes = wayTo(g.sid, (f) => f.believed === true);
-    const no = wayTo(g.sid, (f) => !f.believed);
-    if (!yes || !no) { t.problem("bug", `${id}/${g.sid}: no way arrives ${yes ? "without" : "with"} having believed ARGUS`); continue; }
-    t.scene(`${id}: ${g.sid}, believed`);
-    let doc = await open(yes, `believed, at ${g.sid}`);
+    const yes = wayTo(g.sid, g.trust ? (f, w) => trustOf(w) >= g.trust : (f) => f.believed === true);
+    const no = wayTo(g.sid, g.trust ? (f, w) => f.believed === true && trustOf(w) === g.trust - 1 : (f) => !f.believed);
+    if (!yes || !no) { t.problem("bug", `${id}/${g.sid}: no way arrives ${yes ? "without" : "with"} ${g.trust ? "trust " + g.trust : "having believed ARGUS"}`); continue; }
+    t.scene(`${id}: ${g.sid}, ${g.trust ? "trust " + trustOf(yes) : "believed"}`);
+    let doc = await open(yes, `${g.trust ? "trust " + trustOf(yes) : "believed"}, at ${g.sid}`);
     let box = await ready(doc, g.sid);
     const withIt = visible(box).map(label);
     closeViewFrame();
-    t.scene(`${id}: ${g.sid}, did not believe`);
-    doc = await open(no, `not believed, at ${g.sid}`);
+    t.scene(`${id}: ${g.sid}, ${g.trust ? "trust " + trustOf(no) : "did not believe"}`);
+    doc = await open(no, `${g.trust ? "trust " + trustOf(no) + " (believed)" : "not believed"}, at ${g.sid}`);
     box = await ready(doc, g.sid);
     const without = visible(box).map(label);
     const locked = box.querySelectorAll(".choice-locked").length;
     closeViewFrame();
-    if (!withIt.includes(g.en)) t.problem("bug", `${id}/${g.sid}: after Believe it "${g.en}" isn't offered (${withIt.join(" | ")})`);
-    if (without.includes(g.en)) t.problem("bug", `${id}/${g.sid}: without believing "${g.en}" is offered (${without.join(" | ")})`);
-    if (locked) t.problem("bug", `${id}/${g.sid}: without believing a locked row shows (the choice should not be there at all)`);
-    t.event("belief-gate", `${id}/${g.sid}: "${g.en}" - believed [${withIt.join(" | ")}]; not believed [${without.join(" | ")}]`);
+    if (!withIt.includes(g.en)) t.problem("bug", `${id}/${g.sid}: with ${g.trust ? "trust " + trustOf(yes) : "Believe it"} "${g.en}" isn't offered (${withIt.join(" | ")})`);
+    if (without.includes(g.en)) t.problem("bug", `${id}/${g.sid}: with ${g.trust ? "trust " + trustOf(no) : "no belief"} "${g.en}" is offered (${without.join(" | ")})`);
+    if (g.trust && !locked) t.problem("bug", `${id}/${g.sid}: with trust ${trustOf(no)} no greyed-out "needs trust ${g.trust}+" row shows`);
+    if (!g.trust && locked) t.problem("bug", `${id}/${g.sid}: without believing a locked row shows (the choice should not be there at all)`);
+    t.event("belief-gate", `${id}/${g.sid}: "${g.en}" - ${g.trust ? "trust " + trustOf(yes) : "believed"} [${withIt.join(" | ")}]; ${g.trust ? "trust " + trustOf(no) : "not believed"} [${without.join(" | ")}], ${locked} locked row(s)`);
     // And the gated choice is played: seeded to the fork after Believe it, a real tap on it opens its scene, text fits.
     t.scene(`${id}: press "${g.en}"`);
     doc = await open(yes, `pressing "${g.en}" at ${g.sid}`);
@@ -9283,6 +9291,41 @@ async function trustFallRun(options, t) {
       }
     }
     closeViewFrame();
+  }
+  // 4a. Endings read the choice that mattered: Live after calling Marcus and Live after chasing the van (and Unseen likewise)
+  // tell different words, and each ending's text fits the 390x844 screen. Seeded at the morning edition, real taps after.
+  {
+    const ending = async (endSid, flag) => {
+      const parentSid = "broadcast";
+      const parentWay = wayTo(parentSid, (f) => (flag === "chased" ? f.chased === true : flag === "calledMarcus" ? f.calledMarcus === true && !f.chased : f.believed === true && !f.chased && !f.calledMarcus));
+      if (!parentWay) { t.problem("bug", `${id}: no way to the morning edition with ${flag}`); return ""; }
+      t.scene(`${id}: ${endSid} after ${flag}`);
+      const doc = await open(parentWay, `${endSid} after ${flag}`);
+      const box = await ready(doc, parentSid);
+      const gi = st.scenes[parentSid].choices.findIndex((c) => c[2] === endSid);
+      const b = visible(box).find((x) => Number(x.dataset.choiceIndex) === gi);
+      if (!b) { t.problem("bug", `${id}/${endSid}: can't press the way to it after ${flag}`); closeViewFrame(); return ""; }
+      b.scrollIntoView({ block: "center", behavior: "instant" });
+      await tapAt(t, b, `${endSid} after ${flag} (${W}x${H})`);
+      if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === endSid, 5000))) { t.problem("bug", `${id}: ${endSid} didn't open after ${flag}`); closeViewFrame(); return ""; }
+      await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready" || doc.getElementById("spark").dataset.state === "soon", 12000);
+      await rewindEndClip(doc);
+      await sleep(800);
+      const text = (doc.getElementById("spark-story").textContent || "").trim();
+      trustFallTextFit(t, doc, `${id}/${endSid} after ${flag} (${W}x${H})`, W, H);
+      closeViewFrame();
+      return text;
+    };
+    for (const endSid of ["truth", "shadow"]) {
+      const seen = {};
+      for (const flag of ["calledMarcus", "chased", "believed"]) seen[flag] = await ending(endSid, flag);
+      const flags = Object.keys(seen);
+      for (let i = 0; i < flags.length; i++) for (let j = i + 1; j < flags.length; j++) {
+        if (seen[flags[i]] && seen[flags[i]] === seen[flags[j]]) t.problem("bug", `${id}/${endSid}: reads the same after ${flags[i]} and after ${flags[j]}`);
+      }
+      t.event("ending-variants", `${id}/${endSid}: ${flags.map((f) => `${f}: "${(seen[f] || "").slice(0, 70)}"`).join(" | ")}`);
+      t.add("trustFallEndingVariants");
+    }
   }
   t.progress(0.8);
 
