@@ -310,7 +310,8 @@ cheat"). Every story keeps two cookies, both named from `cookie` in its data:
   endcard). The Endings gallery (Endings tab on a video story, Endings on a console story and on the ending card)
   shows found tiles with poster and name, locked ones as a blurred darkened silhouette with "???", and a count
   like "2 of 5 found". Tapping a found ending shows its card again. Nothing clears found endings. Playtest
-  `endings-gallery` (smoke's trimmed leg seeds one found ending).
+  `endings-gallery` (smoke's trimmed leg seeds one found ending). A locked tile also shows the scene's `hint`
+  (teaser). With three endings the grid is one row of three at 390px. Playtest `trust-fall-endings` (touch, 390x844).
 
 **Continue Previously (J, 2026-11-10):** pressing Continue on a mid-run (hero, Continue row or card) shows a ~3 s
 overlay after Tap to play: the last scene's poster with a slow push-in, the story title and one short line naming the

@@ -8632,6 +8632,97 @@ function checkStill(t, doc, label, W) {
 /** Trust Fall (story/trust-fall.md, listed: false, plays at /?story=trust-fall) at 390x844 with touch input. Setup shortcut:
     a seeded run (event seeded-run) at the parent of each scene, opened by the story's link in a frame; every scene is then
     entered by a real press (tapAt) of the choice that leads there. Options: {"story":"<id>"} (default trust-fall). */
+/** Trust Fall's endings gallery on a phone (touch, 390x844 frame): a seeded run (setup shortcut, `seeded-run`) one
+    choice before Live, a real tap on that choice, the ending card says "1 of 3 found", a tap on Endings opens the
+    gallery: Live as a tile, Unseen and Good morning as silhouettes ("???") with their hints, no sideways scroll. */
+async function trustFallEndingsRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const st = story(id);
+  if (!st || !st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const ends = Object.keys(st.scenes).filter((sid) => st.scenes[sid].ending);
+  const first = (options && options.ending) || "truth";
+  const parent = Object.keys(st.scenes).find((sid) => st.scenes[sid].choices.some((c) => c[2] === first));
+  if (!parent) throw new Error(`${id}: no scene leads to ${first}`);
+  await passPrompt(t);
+  try {
+    clearProgress();
+    // The way to the parent: the shortest, by the story's own choices (flags only matter for gated choices).
+    const queue = [[st.start]];
+    let way = null;
+    while (queue.length && !way) {
+      const w = queue.shift();
+      const sid = w[w.length - 1];
+      if (sid === parent) { way = w; break; }
+      if (w.length > 14 || st.scenes[sid].dead || st.scenes[sid].ending) continue;
+      for (const c of st.scenes[sid].choices) if (!((c[7] && c[7].requires) && Object.keys(c[7].requires).length)) queue.push([...w, c[2]]);
+    }
+    if (!way) throw new Error(`${id}: no way to ${parent}`);
+    gateSeed(t, st, way, `${first} ending card`);
+    t.scene(`${id}: reach ${first} at 390x844`);
+    const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} ${parent} 390x844`);
+    if (!(await waitFor(() => win.finalSpark.scene() === parent, 8000))) throw new Error(`${id}: the seeded run didn't open ${parent}`);
+    await rewindEndClip(doc);
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice").length > 0, 12000);
+    await sleep(400);
+    const i = st.scenes[parent].choices.findIndex((c) => c[2] === first);
+    const btn = [...box.querySelectorAll(".choice")].find((b) => b.dataset.choiceIndex == null ? false : Number(b.dataset.choiceIndex) === i) || [...box.querySelectorAll(".choice")][i];
+    if (!btn) throw new Error(`${id}: no button for the way to ${first}`);
+    btn.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, btn, `"${enText(btn)}"`);
+    if (!(await waitFor(() => win.finalSpark.scene() === first, 5000))) throw new Error(`${id}: the tap didn't open ${first}`);
+    const card = doc.getElementById("spark-ending");
+    await waitFor(() => !card.hidden && card.classList.contains("ending-card"), 8000);
+    await sleep(500);
+    const countEl = doc.getElementById("spark-ending-count");
+    const want = `1 of ${ends.length} found`;
+    const got = countEl ? countEl.textContent.trim() : "(none)";
+    t.event("ending-count", `${id}/${first}: ${got}`);
+    if (got !== want) t.problem("bug", `${id}: the ending card says "${got}", want "${want}"`);
+    t.event("screenshot", `${id} ending card: ${got}`);
+    const open = doc.getElementById("spark-endings-open");
+    if (!open) throw new Error(`${id}: no Endings button on the ending card`);
+    open.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, open, "Endings");
+    await sleep(500);
+    const pane = doc.getElementById("spark-endings");
+    if (!pane || pane.hidden) throw new Error(`${id}: the Endings gallery did not open`);
+    const tiles = [...pane.querySelectorAll(".ending-tile")];
+    if (tiles.length !== ends.length) t.problem("bug", `${id}: gallery has ${tiles.length} tiles, want ${ends.length}`);
+    const found = tiles.filter((x) => x.classList.contains("is-found"));
+    const locked = tiles.filter((x) => x.classList.contains("is-locked"));
+    if (found.length !== 1 || found[0].dataset.ending !== first) t.problem("bug", `${id}: want only ${first} found, got ${found.map((x) => x.dataset.ending).join(",") || "none"}`);
+    for (const tile of locked) {
+      const name = tile.querySelector(".ending-tile-name").textContent.trim();
+      const hint = (tile.querySelector(".ending-tile-hint") || {}).textContent || "";
+      const want = (st.scenes[tile.dataset.ending].hint || "").trim();
+      t.event("locked-ending", `${id}/${tile.dataset.ending}: "${name}", hint "${hint.trim()}"`);
+      if (name !== "???") t.problem("bug", `${id}: locked tile ${tile.dataset.ending} says "${name}", want "???"`);
+      if (!want || hint.trim() !== want) t.problem("bug", `${id}: locked tile ${tile.dataset.ending} shows hint "${hint.trim()}", want "${want}"`);
+      const r = tile.getBoundingClientRect();
+      if (r.right > 390 + 1 || r.left < -1) t.problem("bug", `${id}: tile ${tile.dataset.ending} runs off the screen at 390x844`);
+    }
+    for (const sid of ["shadow", "good-morning"]) {
+      const named = locked.some((x) => x.dataset.ending === sid);
+      if (st.scenes[sid] && !named) t.problem("bug", `${id}: ${sid} is not a silhouette in the gallery`);
+    }
+    const de = doc.documentElement;
+    const over = Math.max(de.scrollWidth, doc.body.scrollWidth, pane.scrollWidth) - win.innerWidth;
+    t.event("gallery-fit", `${id}: ${tiles.length} tiles, scroll width over screen by ${over}px, touch ${win.matchMedia("(pointer: coarse)").matches}`);
+    if (over > 1) t.problem("bug", `${id}: the gallery scrolls sideways at 390x844 (${over}px over)`);
+    t.event("screenshot", `${id} endings gallery at 390x844: ${found.length} found, ${locked.length} silhouettes with hints`);
+    t.metric("endingsFound", found.length);
+    t.metric("endingsTotal", ends.length);
+    closeViewFrame();
+    t.progress(1);
+  } finally {
+    closeViewFrame();
+  }
+}
+
 async function trustFallRun(options, t) {
   const id = (options && options.story) || "trust-fall";
   const st = story(id);
@@ -9346,6 +9437,13 @@ installPlaytest({
       description: "The Water Road at 390x844 (a frame; each fork opened from a seeded run there, a setup shortcut, event seeded-run; the Tap to play prompt pressed). At each fork that has a choice behind a count of water (the dry wash needs 2, the night's barrel on the rocks needs 3): reached with enough water the option is a button; reached short of it the option is not a button but a greyed-out row that says why (\"needs water 3+\", 48px or taller, 14px type or more, not pressable: a touch on it does nothing), and the water count in the inventory bar is fully on screen above no choice, with the count the story holds (events water-gate-open, water-gate-locked, metric waterForks). At the dry wash and the night raid, a run that helped the family and one that passed them read and offer differently (the boy recognises the riders, the father stands with you; event family-callback). Each ending's words name an earlier choice (ending-callback). Two deaths at most, and the warning shot and the high ground cost barrels, a mule or a rider instead (events cost-not-death, deaths). Options: {\"story\":\"<id>\"}.",
     },
     {
+      id: "trust-fall-endings",
+      title: "Trust Fall's endings gallery on a phone: Live gives '1 of 3 found', Unseen and Good morning are silhouettes with hints, no sideways scroll",
+      seconds: 90,
+      tags: ["full"],
+      description: "Trust Fall (draft, /?story=trust-fall) at 390x844 with touch taps in a frame. A seeded run (seeded-run) one choice before Live, a real tap on that choice, the ending card says \"1 of 3 found\", a tap on Endings opens the gallery: Live a found tile, Unseen and Good morning blurred silhouettes named \"???\" with their teaser hints, nothing off screen and no horizontal scroll. Events ending-count, locked-ending, gallery-fit, screenshot; metrics endingsFound, endingsTotal.",
+    },
+    {
       id: "trust-fall",
       title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
       seconds: 300,
@@ -9591,6 +9689,7 @@ installPlaytest({
       else if (id === "spark-depth") await sparkDepthRun(options, t);
       else if (id === "water-gates") await waterGatesRun(options, t);
       else if (id === "trust-fall") await trustFallRun(options, t);
+      else if (id === "trust-fall-endings") await trustFallEndingsRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
