@@ -8805,7 +8805,8 @@ async function trustFallNewsRun(options, t) {
     const seen = [];
     const want = news.caption;
     const t0 = performance.now();
-    const budget = want.reduce((n, l) => n + Math.max(2200, l[1].split(/\s+/).length * 400) + 250, 0) + 3000;
+    // The lines come after the narration (one voice at a time): its length first, then each line's slot.
+    const budget = want.reduce((n, l) => n + Math.max(2200, l[1].split(/\s+/).length * 400) + 250, 0) + 3000 + (((st.scenes[sid].voice && st.scenes[sid].voice.narr) || 0) + 1) * 1000;
     let stayed = true;
     while (performance.now() - t0 < budget) {
       const cap = doc.getElementById("spark-caption");
@@ -9398,6 +9399,68 @@ function trustFallTextFit(t, doc, label, W, H) {
   return bad;
 }
 
+/** One voice at a time (J, 2026-11-14: "make sure any that have vocal lines in the video don't overlap with the story line being
+    read too"). The caption slot the player gives a line (js/game.js lineSlot), and how long into a scene ARGUS's recording can
+    start: the narrator first (`voice.narr`, baked into the clip or spoken over the still), then each caption before ARGUS's. */
+const tfSlot = (text) => Math.max(2200, text.split(/\s+/).length * 400) + 250;
+function trustFallVoiceLead(data) {
+  const narr = ((data.voice && data.voice.narr) || 0) * 1000;
+  const talks = (data.voice && data.voice.talks) || [];
+  const talkEnd = talks.reduce((m, x) => Math.max(m, x.end * 1000), 0);
+  let before = 0;
+  for (const c of (data.news && data.news.caption) || []) { if (/^argus$/i.test(c[0])) break; before += tfSlot(c[1]); }
+  return Math.max(narr, talkEnd) + 300 + before;
+}
+
+/** The data's own order: in every scene (and variant) with a cut, no talking shot starts before the narration ends and no two
+    overlap (the build lays them end to end; this fails if the data says otherwise). */
+function trustFallVoiceData(t, st, id) {
+  let n = 0;
+  const check = (where, v) => {
+    if (!v) return;
+    n++;
+    let end = v.narr;
+    for (const k of v.talks || []) {
+      if (k.start < end - 0.01) t.problem("bug", `${where}: the talking shot for line ${k.i + 1} (${k.who}) starts at ${k.start} s while ${end === v.narr ? "the narration runs until" : "the voice before it runs until"} ${end} s: narration and a video voice overlap`);
+      end = Math.max(end, k.end);
+    }
+  };
+  for (const [sid, sc] of Object.entries(st.scenes)) {
+    check(`${id}/${sid}`, sc.voice);
+    (sc.variants || []).forEach((v, i) => check(`${id}/${sid} variant ${i + 1}`, v.voice));
+  }
+  t.event("voice-data", `${id}: ${n} scenes' narration and talking shots are laid end to end (no overlap in the data)`);
+  t.metric("trustFallVoiceDataScenes", n);
+}
+
+/** What the scene's audio actually did (iltvAudio.voiceLog: every voice's start and end, the caption showing at its start):
+    nobody began while another voice was speaking, the narrator ended before ARGUS or a talking shot began, and the caption named
+    the voice that was speaking (none while the narrator did). Fails with the scene id. */
+function trustFallVoiceCheck(t, au, id, sid, tag) {
+  if (!au || !au.voiceLog || !au.voiceOverlaps) { t.problem("bug", `${id}/${sid}: the audio keeps no voice log (iltvAudio.voiceLog), so one voice at a time can't be checked`); return; }
+  const log = au.voiceLog(), spans = {};
+  for (const e of log) {
+    if (e.ev === "start") spans[e.id] = { id: e.id, who: e.who, kind: e.kind, a: e.t, b: null, caption: e.note ? e.note.caption : null };
+    else if (spans[e.id]) spans[e.id].b = e.t;
+  }
+  const list = Object.values(spans).filter((x) => !/selftest/.test(x.id)).sort((x, y) => x.a - y.a);
+  for (const o of au.voiceOverlaps()) if (!/selftest/.test(o.id)) t.problem("bug", `${id}/${sid}: ${o.id} began while ${o.with.join(", ")} was still speaking (${tag}): narration and a voice in the video overlap`);
+  for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+    const x = list[i], y = list[j];
+    if (x.b == null || y.a < x.b) t.problem("bug", `${id}/${sid}: ${y.who} (${y.id}) started at ${y.a} ms while ${x.who} (${x.id}) ${x.b == null ? "was still speaking" : `spoke until ${x.b} ms`} (${tag})`);
+  }
+  for (const x of list) {
+    const want = x.who === "narrator" ? "" : x.who.toLowerCase();
+    if (x.caption != null && x.caption.toLowerCase() !== want) t.problem("bug", `${id}/${sid}: ${x.who} spoke while the caption said "${x.caption || "nothing"}" (${tag}): captions must name the voice you hear`);
+  }
+  if (list.length) {
+    const t0 = list[0].a;
+    t.event("voice-order", `${id}/${sid} (${tag}): ${list.map((x) => `${x.who} ${((x.a - t0) / 1000).toFixed(1)}-${x.b == null ? "…" : ((x.b - t0) / 1000).toFixed(1)} s`).join(" then ")}${list.map((x) => x.caption).some((c) => c) ? `; captions ${list.map((x) => x.caption || "-").join(" / ")}` : ""}`);
+    t.add("trustFallVoiceScenes");
+  }
+  t.metric("trustFallVoiceOverlaps", au.voiceOverlaps().filter((o) => !/selftest/.test(o.id)).length);
+}
+
 async function trustFallRun(options, t) {
   const id = (options && options.story) || "trust-fall";
   const st = story(id);
@@ -9702,9 +9765,15 @@ async function trustFallRun(options, t) {
       if (!(await waitFor(() => evs().some((e) => e.what === "cue"), 1500))) t.problem("bug", `${id}/${target}: the choice press made no stinger (cue) after its click`);
       else t.event("choice-stinger", `${id}/${target}: a click and a stinger played on the press`);
       if (["start", "unplug", "asked", "tower", "listen", "believe", "callMarcus", "saved", "chase", "promise", "believer"].includes(target)) {
-        if (!(await waitFor(() => evs().some((e) => e.what === "voice" && e.speaker === "argus"), 3000))) t.problem("bug", `${id}/${target}: ARGUS has a line here but no voice played`);
-        else { t.event("argus-voice", `${id}/${target}: ARGUS speaks (bed ducks under it)`); t.add("trustFallArgusVoices"); }
+        // One voice at a time: ARGUS's recording comes after the narration (baked into the clip, or spoken over the still), so
+        // the wait is the narration's length plus the captions before ARGUS's own (trustFallVoiceLead), not 0.9 s.
+        const inClip = ((st.scenes[target].voice && st.scenes[target].voice.talks) || []).some((k) => k.who === "argus");
+        if (!inClip) {
+          if (!(await waitFor(() => evs().some((e) => e.what === "voice" && e.speaker === "argus"), trustFallVoiceLead(st.scenes[target]) + 5000))) t.problem("bug", `${id}/${target}: ARGUS has a line here but no voice played (waited ${Math.round(trustFallVoiceLead(st.scenes[target]) / 1000) + 5} s: the narration first, then the line)`);
+          else { t.event("argus-voice", `${id}/${target}: ARGUS speaks after the narration (bed ducks under it)`); t.add("trustFallArgusVoices"); }
+        }
       }
+      trustFallVoiceCheck(t, au, id, target, `${W}x${H} touch`);
     }
     if (!ending(target) && !dead(target)) trustFallTextFit(t, doc, `${id}/${target} page (${W}x${H})`, W, H);
     if (ending(target)) {
@@ -9742,6 +9811,20 @@ async function trustFallRun(options, t) {
     const missing = withClip.filter((sid) => !realClips.has(sid));
     if (missing.length) t.problem("bug", `${id}: ${missing.length} scene(s) with a clip.mp4 never played their real cut (${missing.join(", ")})`);
     else t.event("real-clips", `${id}: all ${withClip.length} scenes with a clip played their real cut (9:16, with sound); ${stills.size} without a clip showed the graded still: ${[...stills].join(", ")}`);
+  }
+  trustFallVoiceData(t, st, id);
+  {
+    // The detector itself: two spans opened at once on the page's own audio must be caught as an overlap.
+    const mau = window.iltvAudio;
+    if (mau && mau.voiceSpan && mau.voiceOverlaps) {
+      const before = mau.voiceOverlaps().length;
+      mau.voiceSpan("narrator", "selftest", true);
+      mau.voiceSpan("argus", "selftest", true);
+      const caught = mau.voiceOverlaps().length > before;
+      mau.stopVoices();
+      if (!caught) t.problem("bug", `${id}: the voice check missed two voices speaking at once (self-test)`);
+      else t.event("voice-catches", `${id}: the voice check catches two voices at once (self-test)`);
+    }
   }
   t.metric("trustFallEndings", endingsSeen.length);
   t.metric("trustFallDeaths", deathsSeen.length);
@@ -10567,7 +10650,7 @@ installPlaytest({
       title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
       seconds: 480,
       tags: ["full"],
-      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene. Text fit (J, 2026-11-14): every fork, page, ending card and death page is checked (trustFallTextFit: text boxes on screen, none cut off by overflow or an ancestor, no page scroll past the screen; event text-fit, metric trustFallTextFitPages) and the two gated choices are pressed by touch after Believe it (gated-pressed); a self-test clips the story text and must see it (text-fit-catches). Tight and true (J, 2026-11-14): no page over 40 words and the average 30 or fewer (trustFallAvgWords, trustFallMaxWords); every variant that changes words is reached by a run whose flags pick it, shows its own words, fits the screen and plays its own narration (variant-narrated, trustFallVariantsNarrated).",
+      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene. Text fit (J, 2026-11-14): every fork, page, ending card and death page is checked (trustFallTextFit: text boxes on screen, none cut off by overflow or an ancestor, no page scroll past the screen; event text-fit, metric trustFallTextFitPages) and the two gated choices are pressed by touch after Believe it (gated-pressed); a self-test clips the story text and must see it (text-fit-catches). Tight and true (J, 2026-11-14): no page over 40 words and the average 30 or fewer (trustFallAvgWords, trustFallMaxWords); every variant that changes words is reached by a run whose flags pick it, shows its own words, fits the screen and plays its own narration (variant-narrated, trustFallVariantsNarrated). One voice at a time (J, 2026-11-14): in every scene the audio's voice log (iltvAudio.voiceLog) shows the narration and ARGUS's line or a talking shot in turn, nobody starting while another voice speaks, the caption naming the voice you hear (voice-order, metric trustFallVoiceOverlaps must be 0, trustFallVoiceScenes); a scene where they overlap is a bug naming the scene; the data's talking shots start after the narration (voice-data) and a self-test opens two voices at once and must see it (voice-catches).",
     },
     {
       id: "rewind",

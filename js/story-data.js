@@ -26603,6 +26603,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/first-light/poster/scene.webp",
      "small": "/trust-fall/first-light/sm/scene.mp4",
      "live": 18,
+     "voice": {
+      "narr": 3.53
+     },
      "choices": [
       [
        "1. Pull its plug",
@@ -26658,6 +26661,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/the-plug/scene.mp4",
      "poster": "/trust-fall/the-plug/poster/scene.webp",
      "small": "/trust-fall/the-plug/sm/scene.mp4",
+     "voice": {
+      "narr": 14.16
+     },
      "choices": [
       [
        "1. Go to the garage",
@@ -26695,6 +26701,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/how-it-knows/scene.mp4",
      "poster": "/trust-fall/how-it-knows/poster/scene.webp",
      "small": "/trust-fall/how-it-knows/sm/scene.mp4",
+     "voice": {
+      "narr": 12.33
+     },
      "inventory": {
       "trust": 1
      },
@@ -26735,6 +26744,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-garage/poster/scene.webp",
      "small": "/trust-fall/the-garage/sm/scene.mp4",
      "live": 18,
+     "voice": {
+      "narr": 16.12
+     },
      "inventory": {
       "blindspot": 1
      },
@@ -26793,6 +26805,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/whats-inside/poster/scene.webp",
      "small": "/trust-fall/whats-inside/sm/scene.mp4",
      "live": 18,
+     "voice": {
+      "narr": 12.24
+     },
      "inventory": {
       "copy": 1
      },
@@ -26833,6 +26848,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/the-river/scene.mp4",
      "poster": "/trust-fall/the-river/poster/scene.webp",
      "small": "/trust-fall/the-river/sm/scene.mp4",
+     "voice": {
+      "narr": 9.53
+     },
      "dead": true,
      "choices": [
       [
@@ -26866,6 +26884,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-tower/poster/scene.webp",
      "small": "/trust-fall/the-tower/sm/scene.mp4",
      "live": 18,
+     "voice": {
+      "narr": 16.33
+     },
      "choices": [
       [
        "1. Jam it and keep going",
@@ -26949,6 +26970,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/lights-out/scene.mp4",
      "poster": "/trust-fall/lights-out/poster/scene.webp",
      "small": "/trust-fall/lights-out/sm/scene.mp4",
+     "voice": {
+      "narr": 11.83
+     },
      "inventory": {
       "jammer": 1,
       "trust": {
@@ -26987,6 +27011,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/what-it-knows/poster/scene.webp",
      "small": "/trust-fall/what-it-knows/sm/scene.mp4",
      "live": 18,
+     "voice": {
+      "narr": 8.62
+     },
      "inventory": {
       "trust": 1
      },
@@ -27050,6 +27077,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/the-bait/scene.mp4",
      "poster": "/trust-fall/the-bait/poster/scene.webp",
      "small": "/trust-fall/the-bait/sm/scene.mp4",
+     "voice": {
+      "narr": 11.03
+     },
      "inventory": {
       "trust": 1
      },
@@ -27090,6 +27120,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-vault/poster/scene.webp",
      "small": "/trust-fall/the-vault/sm/scene.mp4",
      "live": 18,
+     "voice": {
+      "narr": 16.16
+     },
      "timer": 10,
      "timerStyle": "air",
      "choices": [
@@ -27174,6 +27207,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/sixty-seconds/scene.mp4",
      "poster": "/trust-fall/sixty-seconds/poster/scene.webp",
      "small": "/trust-fall/sixty-seconds/sm/scene.mp4",
+     "voice": {
+      "narr": 10.33
+     },
      "dead": true,
      "choices": [
       [
@@ -27206,6 +27242,9 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/on-the-air/scene.mp4",
      "poster": "/trust-fall/on-the-air/poster/scene.webp",
      "small": "/trust-fall/on-the-air/sm/scene.mp4",
+     "voice": {
+      "narr": 10.33
+     },
      "choices": [
       [
        "1. Hold on",
@@ -27248,6 +27287,9 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-green-line/poster/scene.webp",
      "small": "/trust-fall/the-green-line/sm/scene.mp4",
      "live": 18,
+     "voice": {
+      "narr": 18.83
+     },
      "choices": [
       [
        "1. Let ARGUS handle Juno",
@@ -27323,6 +27365,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/the-bridge/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/heist.mp3",
+     "voice": {
+      "narr": 10.97
+     },
      "choices": [
       [
        "1. Breathe",
@@ -27360,6 +27405,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/the-promise/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/rescue.mp3",
+     "voice": {
+      "narr": 13.08
+     },
      "inventory": {
       "trust": 1
      },
@@ -27400,6 +27448,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/morning-edition/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/morning.mp3",
+     "voice": {
+      "narr": 10.73
+     },
      "choices": [
       [
        "1. Tell Marcus everything, on the air",
@@ -27570,6 +27621,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/live/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/end.mp3",
+     "voice": {
+      "narr": 10.82
+     },
      "ending": [
       "THE END. You were the story.",
       "THE END. You were the story."
@@ -27637,6 +27691,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/unseen/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/end.mp3",
+     "voice": {
+      "narr": 12.19
+     },
      "ending": [
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
@@ -27704,6 +27761,9 @@ window.ILTV_STORIES = {
      "still": "/assets/images/trust-fall.jpg",
      "narration": "/trust-fall/good-morning/media/narration.mp3",
      "score": "/assets/story/trust-fall/music/end.mp3",
+     "voice": {
+      "narr": 12.84
+     },
      "ending": [
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
