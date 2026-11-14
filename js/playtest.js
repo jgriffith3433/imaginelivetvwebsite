@@ -8620,6 +8620,8 @@ function checkStill(t, doc, label, W) {
     else if (!ok || !r.width || !r.height) t.problem("bug", `${label}: the graded still didn't load or has no size (${el.dataset.still})`);
     else if (text) t.problem("bug", `${label}: the graded still carries text ("${text}")`);
     else if (filt === "none") t.problem("bug", `${label}: the still isn't graded (no shared filter)`);
+    else if (/trust-fall/.test(label) && el.dataset.palette !== "argus") t.problem("bug", `${label}: the Trust Fall still isn't in ARGUS's amber palette`);
+    else if (/trust-fall/.test(label) && !/rgba\(255, 176, 64/.test(getComputedStyle(el, "::before").backgroundImage)) t.problem("bug", `${label}: the Trust Fall still has no amber ARGUS glow`);
     else t.event("graded-still", `${label}: graded still ${el.dataset.still.split("/").pop()} ${Math.round(r.width)}x${Math.round(r.height)}, no text card`);
     if (sideways > 1) t.problem("bug", `${label}: scrolls sideways by ${sideways}px at ${W}px wide`);
     if (small.length) t.problem("bug", `${label}: ${small.length} choice(s) under 44px tall (${small.map((b) => Math.round(b.getBoundingClientRect().height)).join(", ")})`);
