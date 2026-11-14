@@ -8631,13 +8631,16 @@ async function trustFallRun(options, t) {
     const ring = doc.querySelector(".spark-video-loading");
     if (!ring) t.problem("bug", `${id}: the player has no buffering ring over the clip`);
     else {
+      // The ring is up while the clip (or the scene's still) loads and hidden once it is showing.
+      if (played) await waitFor(() => ring.hidden, 6000);
       if (played && !ring.hidden) t.problem("bug", `${id}: the buffering ring is still showing while the clip plays`);
       t.event("buffering-ring", `${id}: ${rings.includes(true) ? "shown while the clip loaded" : "not needed (the clip loaded at once)"}; hidden once it plays: ${ring.hidden}`);
     }
     if (win.finalSpark.scene() !== st.start) t.problem("bug", `${id}: the first scene is ${win.finalSpark.scene()}, not ${st.start}`);
     // The player is the whole screen: no catalogue or header showing, no sideways scroll, no stray debug control.
     {
-      const de = doc.documentElement, vis = (e) => e && e.getClientRects().length && win.getComputedStyle(e).visibility !== "hidden";
+      const de = doc.documentElement;
+      const vis = (e) => e && e.getClientRects().length && win.getComputedStyle(e).visibility !== "hidden";
       const sp = doc.querySelector(".spark:not([hidden])");
       const r = sp ? sp.getBoundingClientRect() : null;
       const shown = [".site-header", "body > main", ".stories", ".hero", ".story-card"].filter((q) => [...doc.querySelectorAll(q)].some(vis));

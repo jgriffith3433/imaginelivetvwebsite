@@ -821,6 +821,33 @@
     sync();
   }
 
+  /** A scene with no clip yet (a graded still): the same buffering ring sits over the player until the picture has
+      loaded, so a slow phone never shows a bare black box. The ring stays in the DOM, hidden, once the picture is up. */
+  function addStillLoading(url) {
+    var ring = document.createElement("div");
+    ring.className = "spark-video-loading";
+    ring.setAttribute("role", "status");
+    ring.setAttribute("aria-label", "Loading");
+    var scene = currentScene;
+    var story = STORY ? STORY.id : null;
+    var off = function () {
+      if (ring.hidden) return;
+      ring.hidden = true;
+      if (currentScene === scene) root.dataset.loading = "false";
+      tell("loading", { story: story, scene: scene, on: false });
+    };
+    ring.hidden = false;
+    root.dataset.loading = "true";
+    tell("loading", { story: story, scene: scene, on: true });
+    videoBox.appendChild(ring);
+    var img = new Image();
+    img.onload = off;
+    img.onerror = off;
+    img.src = url;
+    if (img.complete) off();
+    setTimeout(off, 6000); // never a ring that spins for ever
+  }
+
   /** Turning the phone must not leave the clip frozen: when the screen changes shape the clip carries on. */
   function onTurned() {
     var v = activeClip;
@@ -1387,6 +1414,7 @@
         still.style.setProperty("--still-y", 25 + ((h >> 8) % 51) + "%");
         still.style.setProperty("--still-zoom", String(1.08 + ((h >> 16) % 14) / 100));
         videoBox.appendChild(still);
+        addStillLoading(scene.still);
       } else {
         // A draft story's scene before its media is made: its title on black, where the video will be.
         const blank = document.createElement("div");
@@ -1461,6 +1489,9 @@
     if (!videoSrc) setChoicePhase("ready");
     // Back from a death, the fork is playable at once: the clip plays, the choices don't wait for it.
     if (rewound && shownChoices.length > 1) { setChoicePhase("ready"); stopChoiceWindow(); }
+    // No clip to wait for (a graded still): the choices are up at once and the countdown starts with
+    // them, its default picked when it runs out. (With a clip, the clip's end reveals them.)
+    if (!videoSrc && scene.still && timed) revealChoices(true);
 
     pendingTap = null;
     preloadNext(scene);
