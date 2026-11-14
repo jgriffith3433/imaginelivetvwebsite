@@ -617,6 +617,59 @@
     } catch (e) { return false; }
   }
 
+  /* ---- Narration over a still (a scene whose clip isn't made): the scene's recorded narration on the voice bus and,
+     under it, its music cue looped on the music bus. Both are fetched by URL (not /assets/audio/), cached, and stopped
+     when the scene changes. Beds and music duck under the voice, as they do for ARGUS. ---- */
+  var urlBuf = {}, narr = null;
+  function loadUrl(url, then) {
+    var st = urlBuf[url];
+    if (st) { if (st.buf) then(st.buf); else if (!st.failed) st.wait.push(then); return; }
+    if (!context || !window.fetch) return;
+    st = urlBuf[url] = { buf: null, failed: false, wait: [then] };
+    fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+      .then(function (ab) { return new Promise(function (ok, no) { context.decodeAudioData(ab, ok, no); }); })
+      .then(function (b) { st.buf = b; st.wait.forEach(function (f) { f(b); }); st.wait = []; })
+      .catch(function () { st.failed = true; st.wait = []; });
+  }
+  function stopNarration() {
+    var n = narr;
+    narr = null;
+    if (!n) return;
+    n.nodes.forEach(function (x) { try { x.src.stop(); } catch (e) { /* ended */ } try { x.g.disconnect(); } catch (e2) { /* gone */ } });
+    clearTimeout(voiceTimer);
+    voiceDuck = false;
+    applyDuck();
+  }
+  function playNarration(url, scoreUrl, id) {
+    stopNarration();
+    if (!unlocked || !enabled || !url) return false;
+    ensureGraph();
+    if (!context || !buses.ui) return false;
+    var mine = narr = { id: id, nodes: [] };
+    function start(buf, bus, name, loop, level, onEnd) {
+      if (narr !== mine) return; // the scene changed while it loaded
+      try {
+        var src = context.createBufferSource(), g = context.createGain();
+        src.buffer = buf; src.loop = !!loop;
+        src.__hawkesSampleId = name + ":" + id;
+        src.__hawkesBus = bus === buses.music ? "music" : "voice";
+        g.gain.value = level;
+        src.connect(g); g.connect(bus);
+        src.start(0);
+        mine.nodes.push({ src: src, g: g });
+        if (onEnd) src.onended = onEnd;
+      } catch (e) { /* no sound */ }
+    }
+    if (scoreUrl && buses.music) loadUrl(scoreUrl, function (b) { start(b, buses.music, "score", true, 0.9); });
+    loadUrl(url, function (b) {
+      if (narr !== mine) return;
+      voiceDuck = true; applyDuck();
+      start(b, buses.ui, "narration", false, 1, function () { if (narr === mine) { voiceDuck = false; applyDuck(); } });
+      tell("voice", { speaker: "narrator", key: id, recorded: true, seconds: Math.round(b.duration * 10) / 10 });
+    });
+    return true;
+  }
+
   /* ---- Beds: one at a time, started only after the first clip plays, cross-faded, ducked, stopped on the list ---- */
 
   function liveBeds() {
@@ -861,6 +914,8 @@
     setEnabled: function (on) { setEnabled(!!on, "api"); paintToggleIcon(); },
     playUi: playUi,
     playVoice: playVoice,
+    playNarration: playNarration,
+    stopNarration: stopNarration,
     setBed: setBed,
     beginBeds: beginBeds,
     sounds: function () { return Object.keys(UI); },
