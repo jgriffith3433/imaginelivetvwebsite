@@ -513,6 +513,12 @@
         that tap starts every data-sound-start element then on the page. */
     relock: function () { if (!unlocked || overlay) return; unlocked = false; showPrompt(); },
     prompt: function () { return overlay; },
+    /** A scene change must never show a leftover prompt or title layer: take any faded or fading one away at once. */
+    clear: function () {
+      if (splashEl) endSplash(true);
+      var stale = document.querySelectorAll(".tap-to-play.is-gone, .tap-to-play.tap-splash");
+      for (var i = 0; i < stale.length; i++) if (stale[i] !== overlay && stale[i].parentNode) stale[i].parentNode.removeChild(stale[i]);
+    },
     open: openSettings,
     label: label,
     ask: ask,

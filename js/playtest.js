@@ -8633,7 +8633,16 @@ async function trustFallRun(options, t) {
     await tapAt(t, btn, `"${label(btn)}" (${W}x${H})`);
     if (!(await waitFor(() => win.finalSpark.scene() === target, 4000))) { t.problem("bug", `${id}: the press on "${label(btn)}" didn't open ${target} (at ${win.finalSpark.scene()})`); closeViewFrame(); continue; }
     entered.add(target);
-    await sleep(500);
+    {
+      // A clean swap: no Tap to play / title layer left over the new scene, the clip adopted from the preload.
+      const ghost = () => doc.querySelectorAll(".tap-to-play, .tap-splash").length;
+      const g0 = ghost();
+      await sleep(120);
+      const g1 = ghost();
+      if (g0 || g1) t.problem("bug", `${id}/${target}: a Tap to play / title layer is still over the scene after the press (${g0} at once, ${g1} after 120 ms)`);
+      else t.event("clean-swap", `${id}/${target}: no Tap to play or title layer over the scene; ${doc.querySelectorAll("#spark-video video").length} clip element(s); preloaded clip adopted: ${doc.getElementById("spark-video").dataset.adopted || "no"}`);
+    }
+    await sleep(380);
     if (ending(target)) {
       await rewindEndClip(doc);
       const nameEl = doc.getElementById("spark-ending");

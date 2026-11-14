@@ -1286,6 +1286,7 @@
     wakeChrome();
     stopChoiceWindow();
 
+    if (window.hawkesSound && window.hawkesSound.clear && window.hawkesSound.unlocked()) window.hawkesSound.clear();
     crossfadeOut();
     // The poster is also the box's own picture, so it stays under the loading ring and between clips: never a black box.
     const newBg = scene.poster ? 'url("' + scene.poster + '")' : "";
@@ -1295,10 +1296,20 @@
     let video = null;
 
     if (videoSrc) {
-      video = document.createElement("video");
+      // The clip the choices preloaded is the one that plays: its buffer is already there, so the swap is one frame.
+      const pre = preloaded[sceneId];
+      if (pre && !pre.error && pre.readyState >= 2 && pre.getAttribute("src") === videoSrc) {
+        video = pre;
+        delete preloaded[sceneId];
+        video.muted = false;
+        videoBox.dataset.adopted = "true";
+      } else {
+        video = document.createElement("video");
+        videoBox.dataset.adopted = "false";
+        video.src = videoSrc;
+      }
       // The poster shows from the first paint, before any of the clip has loaded.
       if (scene.poster) video.poster = scene.poster;
-      video.src = videoSrc;
       // With the sound prompt, playClip starts it (autoplay would start it behind the prompt).
       video.autoplay = !window.hawkesSound;
       video.playsInline = true;
