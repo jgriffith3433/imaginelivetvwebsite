@@ -8587,6 +8587,11 @@ async function trustFallRun(options, t) {
     if (!played) t.problem("bug", `${id}: the first clip didn't autostart (no overlay) (at ${W}x${H})`);
     else t.event("first-tap", `${id}: one tap, the clip plays after ${ms} ms${touchOn(doc) ? " (touch)" : ""}`);
     t.metric("trustFallFirstTapMs", ms);
+    if (played) {
+      const src = decodeURI(new URL(v().currentSrc || v().src, location.href).pathname);
+      if (/\/scene\.mp4$/.test(src)) { checkCut(t, v(), `${id}/${st.start}`); t.add("trustFallRealClips"); }
+      else t.problem("bug", `${id}/${st.start}: plays a placeholder title card (${src}), not a filmed clip (its media isn't made)`);
+    }
     {
       // Words on screen before the first choice (the story, the question and the choices): under 40.
       const txt = (sel) => [...doc.querySelectorAll(sel)].filter((e) => e.getClientRects().length).map((e) => e.textContent).join(" ");
@@ -8668,6 +8673,15 @@ async function trustFallRun(options, t) {
       const g1 = ghost();
       if (g0 || g1) t.problem("bug", `${id}/${target}: a Tap to play / title layer is still over the scene after the press (${g0} at once, ${g1} after 120 ms)`);
       else t.event("clean-swap", `${id}/${target}: no Tap to play or title layer over the scene; ${doc.querySelectorAll("#spark-video video").length} clip element(s); preloaded clip adopted: ${doc.getElementById("spark-video").dataset.adopted || "no"}`);
+    }
+    {
+      // A real clip, not the 'Video in production' title card: the scene plays its generated cut (scene.mp4: the
+      // filmed shots, narration, talking shots and music) once its media is made (use: "gen"), 9:16, with sound.
+      const v = doc.querySelector("#spark-video video:not(.spark-leave)");
+      if (v && (await waitFor(() => v.readyState >= 2 && v.currentTime > 0.5, 6000))) {
+        if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); t.add("trustFallRealClips"); }
+        else t.problem("bug", `${id}/${target}: plays a placeholder title card (${v.currentSrc || v.src}), not a filmed clip (its media isn't made: hawkes.assets.json trust-fall-${target}-*)`);
+      } else t.problem("bug", `${id}/${target}: no clip is playing after the press`);
     }
     await sleep(380);
     if (ending(target)) {
