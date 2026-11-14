@@ -869,11 +869,26 @@
     videoBox.appendChild(unmute);
     videoBox.appendChild(full);
 
+    // The ring only shows for a real stall: a clip that starts within 450 ms (the usual case, the choices preloaded it)
+    // never flashes a spinner on a scene change.
+    var ringTimer = null;
     function loading(on) {
-      if (ring.hidden === !on) return;
-      ring.hidden = !on;
-      root.dataset.loading = on ? "true" : "false";
-      tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: on });
+      if (on) {
+        if (!ring.hidden || ringTimer) return;
+        ringTimer = setTimeout(function () {
+          ringTimer = null;
+          if (video.ended || video.readyState >= 3 || !video.isConnected) return;
+          ring.hidden = false;
+          root.dataset.loading = "true";
+          tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: true });
+        }, 450);
+        return;
+      }
+      if (ringTimer) { clearTimeout(ringTimer); ringTimer = null; }
+      if (ring.hidden) return;
+      ring.hidden = true;
+      root.dataset.loading = "false";
+      tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: false });
     }
     function sync() {
       unmute.hidden = !(video.muted && !video.paused && !video.ended);
@@ -2358,9 +2373,11 @@
   }
 
   function crossfadeOut() {
-    const ms = fadeMs();
+    // A card with words (title on black) fades out fully (200 ms) before the next one fades in, never both at once.
+    const full = fadeMs();
     const old = Array.prototype.slice.call(videoBox.children);
     old.forEach(function (node) {
+      const ms = node.classList.contains("spark-video-blank") ? Math.min(full, 200) : full;
       const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank") || node.classList.contains("spark-still");
       if (!keep || node.classList.contains("spark-leave")) { node.remove(); return; }
       node.classList.add("spark-leave");
@@ -2378,7 +2395,7 @@
         node.remove();
       }, ms + 40);
     });
-    videoBox.dataset.fadeMs = String(ms);
+    videoBox.dataset.fadeMs = String(full);
     videoBox.dataset.fadedAt = String(Math.round(performance.now()));
   }
 
