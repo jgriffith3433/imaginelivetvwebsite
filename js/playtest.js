@@ -8809,7 +8809,31 @@ async function trustFallRun(options, t) {
     }
     btn.scrollIntoView({ block: "center", behavior: "instant" });
     const au = win.iltvAudio, auT0 = Date.now() - 5;
+    // Swap quality: from the press on, sample every frame for 900 ms: spinners visible (expect 0), title cards with words
+    // visible at once (expect 1 at most), the worst frame, and that both branches were preloaded while the countdown ran.
+    const swap = { spinners: 0, titles: 0, worst: 0 };
+    {
+      const vb = doc.getElementById("spark-video");
+      const t0s = performance.now();
+      let last = t0s;
+      const sample = (now) => {
+        swap.worst = Math.max(swap.worst, Math.round(now - last));
+        last = now;
+        const vis = (e) => e.getClientRects().length && !e.hidden && win.getComputedStyle(e).visibility !== "hidden" && Number(win.getComputedStyle(e).opacity) > 0.02;
+        swap.spinners = Math.max(swap.spinners, [...doc.querySelectorAll(".spark-video-loading")].filter(vis).length);
+        swap.titles = Math.max(swap.titles, [...(vb ? vb.querySelectorAll(".spark-video-blank") : [])].filter((e) => e.textContent.trim() && vis(e)).length);
+        if (now - t0s < 900) win.requestAnimationFrame(sample); else swap.done = true;
+      };
+      win.requestAnimationFrame(sample);
+    }
     await tapAt(t, btn, `"${label(btn)}" (${W}x${H})`);
+    await waitFor(() => swap.done, 2500);
+    if (swap.spinners > 0) t.problem("bug", `${id}/${target}: a loading spinner showed on the scene change`);
+    if (swap.titles > 1) t.problem("bug", `${id}/${target}: ${swap.titles} title cards were visible at once on the scene change (overlapping text)`);
+    t.event("swap-quality", `${id}/${target}: spinner-visible ${swap.spinners}, max titles visible at once ${swap.titles}, worst frame ${swap.worst} ms`);
+    t.metric("trustFallSwapSpinners", swap.spinners);
+    t.metric("trustFallSwapMaxTitles", swap.titles);
+    t.metric("trustFallSwapWorstFrameMs", swap.worst);
     if (au && au.events) {
       // Sound: every choice press answers with a UI sting, and the scene has its looping ambient bed.
       const tapEv = au.events().filter((e) => e.at >= auT0).find((e) => e.what === "ui" && e.name === "tap");

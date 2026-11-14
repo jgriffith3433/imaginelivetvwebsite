@@ -3312,9 +3312,17 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
   animation: spark-leave var(--fade-ms, 350ms) ease-in-out forwards;
 }
 .spark-video > video:not(.spark-leave),
-.spark-video > .spark-still:not(.spark-leave),
-.spark-video > .spark-video-blank:not(.spark-leave) {
+.spark-video > .spark-still:not(.spark-leave) {
   animation: spark-enter var(--fade-ms, 350ms) ease-in-out;
+}
+/* A title card comes in only after the old one has gone (200 ms out, then 200 ms in): never two titles at once. */
+.spark-video > .spark-video-blank:not(.spark-leave) {
+  animation: spark-title-in 200ms ease-out 200ms backwards;
+}
+.spark-video > .spark-video-blank.spark-leave { animation-duration: 200ms; }
+@keyframes spark-title-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .spark-video > .spark-video-blank:not(.spark-leave) { animation-duration: 60ms; animation-delay: 120ms; }
 }
 @keyframes spark-leave { from { opacity: 1; } to { opacity: 0; } }
 @keyframes spark-enter { from { opacity: 1; } to { opacity: 1; } }
