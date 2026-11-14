@@ -54,7 +54,7 @@
     "end": "warm sunrise theme, synth and full strings swelling, quiet and tender at the end, instrumental"
   },
   "inventory": {
-    "label": "Carrying",
+    "label": "Trust",
     "items": [
       {
         "id": "trust",
@@ -62,7 +62,7 @@
         "icon": "ring",
         "start": 0,
         "max": 4,
-        "note": "How far you have trusted ARGUS: it grows each time you ask, listen, believe and wait."
+        "note": "What ARGUS has earned from you tonight. Believing it raises it; jamming it costs you."
       },
       {
         "id": "blindspot",
@@ -455,7 +455,10 @@
     {
       "id": "jam",
       "inventory": {
-        "jammer": 1
+        "jammer": 1,
+        "trust": {
+          "set": 0
+        }
       },
       "folder": "lights-out",
       "lang": "en",
@@ -464,8 +467,8 @@
         "Lights out"
       ],
       "story": [
-        "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core.",
-        "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core."
+        "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. Something in your chest goes quiet with it. You take the service stairs down, eleven floors under the street, and the dark comes with you.",
+        "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. Something in your chest goes quiet with it. You take the service stairs down, eleven floors under the street, and the dark comes with you."
       ],
       "question": [
         "Down you go.",
@@ -473,9 +476,9 @@
       ],
       "choices": [
         {
-          "say": "1. Down to the core",
-          "en": "1. Down to the core",
-          "next": "core"
+          "say": "1. Down the dark stairs",
+          "en": "1. Down the dark stairs",
+          "next": "blackout"
         }
       ],
       "shot": {
@@ -531,7 +534,10 @@
         {
           "say": "2. It's lying. Keep going",
           "en": "2. It's lying. Keep going",
-          "next": "core"
+          "next": "jam",
+          "set": {
+            "jammed": true
+          }
         }
       ],
       "lines": [
@@ -995,14 +1001,58 @@
             "ARGUS knew your name at breakfast. What do you do now?",
             "ARGUS knew your name at breakfast. What do you do now?"
           ]
+        },
+        {
+          "when": {
+            "jammed": true
+          },
+          "question": [
+            "No light was watching over you tonight. What do you do?",
+            "No light was watching over you tonight. What do you do?"
+          ],
+          "story": [
+            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, your hands in bandages, watching the TV on the wall. Marcus hasn't slept and his tie is crooked. Juno Vale is in custody, caught by the police and not by anything that watches. The little amber light in the ceiling corner is dark. Then Marcus looks into the camera, and you know he's looking at you.",
+            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, your hands in bandages, watching the TV on the wall. Marcus hasn't slept and his tie is crooked. Juno Vale is in custody, caught by the police and not by anything that watches. The little amber light in the ceiling corner is dark. Then Marcus looks into the camera, and you know he's looking at you."
+          ]
         }
       ],
       "choices": [
         {
           "say": "1. Tell Marcus everything, on the air",
           "en": "1. Tell Marcus everything, on the air",
+          "next": "unvouched",
+          "when": {
+            "jammed": true
+          }
+        },
+        {
+          "say": "1. Tell Marcus everything, on the air",
+          "en": "1. Tell Marcus everything, on the air",
           "next": "truth",
-          "default": true
+          "when": {
+            "believed": true,
+            "listened": false,
+            "waited": false
+          }
+        },
+        {
+          "say": "1. Tell Marcus everything, on the air",
+          "en": "1. Tell Marcus everything, on the air",
+          "next": "vouched",
+          "when": {
+            "believed": true,
+            "listened": true
+          }
+        },
+        {
+          "say": "1. Tell Marcus everything, on the air",
+          "en": "1. Tell Marcus everything, on the air",
+          "next": "vouched",
+          "when": {
+            "believed": true,
+            "waited": true,
+            "listened": false
+          }
         },
         {
           "say": "2. Walk out before anyone learns your name",
@@ -1214,6 +1264,286 @@
       },
       "music": "end",
       "hint": "Some mornings you answer back."
+    },
+    {
+      "id": "blackout",
+      "folder": "dead-stairs",
+      "lang": "en",
+      "title": [
+        "The dead stairs",
+        "The dead stairs"
+      ],
+      "story": [
+        "The jammer hums in your sleeve and the emergency lights go with it. Every door on the stairwell has a keypad, and every keypad is dark. Nothing here is watching you now, and nothing is helping. You count the landings by touch.",
+        "The jammer hums in your sleeve and the emergency lights go with it. Every door on the stairwell has a keypad, and every keypad is dark. Nothing here is watching you now, and nothing is helping. You count the landings by touch."
+      ],
+      "question": [
+        "The doors are dead. What now?",
+        "The doors are dead. What now?"
+      ],
+      "choices": [
+        {
+          "say": "1. Feel for the breaker room",
+          "en": "1. Feel for the breaker room",
+          "next": "breaker"
+        }
+      ],
+      "shot": {
+        "scene": "a pitch-dark concrete service stairwell, a person in a cleaner's uniform feeling along the wall with one gloved hand, a thin red glow from the jammer in their sleeve the only light, dead keypads beside every door",
+        "motion": "the camera follows behind the person as the red glow slides down the wall; a keypad blinks once and stays dark",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "trapped"
+    },
+    {
+      "id": "breaker",
+      "folder": "the-breaker-room",
+      "lang": "en",
+      "title": [
+        "The breaker room",
+        "The breaker room"
+      ],
+      "story": [
+        "On the ninth landing there is a door with a hand-lettered sign, and a breaker panel behind it the size of a wardrobe. You trip the switches one at a time by the light of your phone, until a single green lamp comes on. You don't know what you've just let back on.",
+        "On the ninth landing there is a door with a hand-lettered sign, and a breaker panel behind it the size of a wardrobe. You trip the switches one at a time by the light of your phone, until a single green lamp comes on. You don't know what you've just let back on."
+      ],
+      "question": [
+        "One lamp is lit. Do you go on?",
+        "One lamp is lit. Do you go on?"
+      ],
+      "choices": [
+        {
+          "say": "1. Climb into the service duct",
+          "en": "1. Climb into the service duct",
+          "next": "crawl"
+        }
+      ],
+      "shot": {
+        "scene": "a cramped concrete breaker room lit by a single phone torch, rows of heavy black switches on a steel panel, a gloved hand pushing a lever down, one small green lamp coming on above the panel",
+        "motion": "the lever clunks down; the green lamp flickers on and the shadows jump",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "hum"
+    },
+    {
+      "id": "crawl",
+      "folder": "the-duct",
+      "lang": "en",
+      "title": [
+        "The duct",
+        "The duct"
+      ],
+      "story": [
+        "The only way down that doesn't need a keypad is the cable duct: forty metres of steel on your elbows, the jammer burning against your arm. Somewhere below you a vent is breathing out cold, and every few seconds you hear the same patient voice, very far away, saying your name.",
+        "The only way down that doesn't need a keypad is the cable duct: forty metres of steel on your elbows, the jammer burning against your arm. Somewhere below you a vent is breathing out cold, and every few seconds you hear the same patient voice, very far away, saying your name."
+      ],
+      "question": [
+        "Do you answer it?",
+        "Do you answer it?"
+      ],
+      "choices": [
+        {
+          "say": "1. Drop into the dark core",
+          "en": "1. Drop into the dark core",
+          "next": "coreDark"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "Rae. The jammer is still on. I cannot see you."
+        }
+      ],
+      "shot": {
+        "scene": "inside a narrow steel cable duct lit by a faint red glow, a person in a cleaner's uniform crawling on their elbows toward a square of cold blue light at the far end",
+        "motion": "the camera crawls ahead of the person toward the blue light; a faint amber glint flickers once in the dark behind them",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "trapped"
+    },
+    {
+      "id": "jamRescue",
+      "folder": "the-long-way",
+      "lang": "en",
+      "title": [
+        "The long way out",
+        "The long way out"
+      ],
+      "story": [
+        "You beg the dark, and for forty seconds the dark says nothing. Then the jammer's battery dies in your sleeve, and an amber light comes on above the door. I could not see you, says ARGUS. I could only wait. The lock clunks open. You climb out through eleven floors of stairs the hard way, burned hands, no green line, and Juno's van long gone by the time you reach the plaza.",
+        "You beg the dark, and for forty seconds the dark says nothing. Then the jammer's battery dies in your sleeve, and an amber light comes on above the door. I could not see you, says ARGUS. I could only wait. The lock clunks open. You climb out through eleven floors of stairs the hard way, burned hands, no green line, and Juno's van long gone by the time you reach the plaza."
+      ],
+      "question": [
+        "You were too late for Juno. What do you do?",
+        "You were too late for Juno. What do you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. Climb out into the rain",
+          "en": "1. Climb out into the rain",
+          "next": "broadcast",
+          "default": true
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "I could not see you. I would have been faster, if you had let me."
+        }
+      ],
+      "shot": {
+        "scene": "a sealed blue-lit server vault, a person in a cleaner's uniform on their knees at the vault door with a dead jammer in their burned hand, an amber light coming on above the door and washing over them",
+        "motion": "the amber light blooms on above the door; the person looks up at it slowly",
+        "cast": [
+          "hero",
+          "argus"
+        ]
+      },
+      "music": "rescue"
+    },
+    {
+      "id": "coreDark",
+      "folder": "the-dark-vault",
+      "timer": 10,
+      "timerStyle": "air",
+      "lang": "en",
+      "title": [
+        "The dark vault",
+        "The dark vault"
+      ],
+      "story": [
+        "The core is cold and blue and humming, and wrong: no amber light, no voice but Juno's. You plug Blindspot in with burned fingers. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. You switched the one thing that could help you off yourself.",
+        "The core is cold and blue and humming, and wrong: no amber light, no voice but Juno's. You plug Blindspot in with burned fingers. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. You switched the one thing that could help you off yourself."
+      ],
+      "question": [
+        "The jammer is still burning. What do you do?",
+        "The jammer is still burning. What do you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. Beg the dead air",
+          "en": "1. Beg the dead air",
+          "next": "jamRescue",
+          "default": true
+        },
+        {
+          "say": "2. Call Marcus",
+          "en": "2. Call Marcus",
+          "next": "callMarcus",
+          "set": {
+            "calledMarcus": true
+          }
+        },
+        {
+          "say": "3. Pry the door open",
+          "en": "3. Pry the door open",
+          "next": "halon"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "juno",
+          "text": "Sorry, Rae. Somebody has to be the face of it. Nobody is coming for you."
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a cold blue server vault deep underground, rows of humming black racks, a person in a cleaner's uniform pushing a small drive into a port; behind them a massive round steel vault door",
+          "motion": "the drive clicks in and its light turns red; behind the person the vault door begins to roll shut",
+          "cast": [
+            "hero"
+          ]
+        },
+        {
+          "scene": "the heavy steel vault door sealing with a red warning light spinning above it, cold blue server light, a pale haze starting to drift from vents in the ceiling",
+          "motion": "the door locks with a jolt; the red light spins; haze drifts down",
+          "cast": []
+        }
+      ],
+      "music": "trapped"
+    },
+    {
+      "id": "unvouched",
+      "folder": "alone-on-air",
+      "lang": "en",
+      "title": [
+        "Alone on air",
+        "Alone on air"
+      ],
+      "story": [
+        "You walk into the studio at seven in last night's jacket and tell the whole city who you are and what you came to do. Nobody vouches for a word. The ceiling camera stays dark, ARGUS's logs of the night are sealed, and the lawyers read your own words back to you. When the light goes off, Marcus still leans over and says it just to you: you know who you are. He sounds like he is saying it to someone far away.",
+        "You walk into the studio at seven in last night's jacket and tell the whole city who you are and what you came to do. Nobody vouches for a word. The ceiling camera stays dark, ARGUS's logs of the night are sealed, and the lawyers read your own words back to you. When the light goes off, Marcus still leans over and says it just to you: you know who you are. He sounds like he is saying it to someone far away."
+      ],
+      "question": [
+        "",
+        ""
+      ],
+      "choices": [],
+      "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Good morning, Meridian. My guest says she can't prove any of it. Go ahead, Rae."
+        }
+      ],
+      "shot": {
+        "scene": "a bright morning news studio, a person in a worn dark bomber jacket sitting alone at a glass desk under studio lights facing a dark camera, a tired news anchor in a navy suit standing at the edge of the frame, a dead amber indicator on the studio wall",
+        "motion": "the studio camera pushes in slowly; the anchor takes a half step toward the person and stops",
+        "cast": [
+          "marcus",
+          "hero"
+        ]
+      },
+      "music": "end",
+      "ending": [
+        "THE END. Nobody vouched for you.",
+        "THE END. Nobody vouched for you."
+      ],
+      "hint": "Some stories no one backs up."
+    },
+    {
+      "id": "vouched",
+      "folder": "on-air-together",
+      "lang": "en",
+      "title": [
+        "On air, together",
+        "On air, together"
+      ],
+      "story": [
+        "You walk into the studio at seven in last night's jacket and sit down at Marcus's glass desk. When you tell the city who you are, a small amber light comes on above the camera and ARGUS answers for every word, the vault, the recording, the night you stood in the dark and believed it. Your record clears before the broadcast ends. When the camera light goes off, Marcus squeezes your hand, and above the lens the amber light blinks once.",
+        "You walk into the studio at seven in last night's jacket and sit down at Marcus's glass desk. When you tell the city who you are, a small amber light comes on above the camera and ARGUS answers for every word, the vault, the recording, the night you stood in the dark and believed it. Your record clears before the broadcast ends. When the camera light goes off, Marcus squeezes your hand, and above the lens the amber light blinks once."
+      ],
+      "question": [
+        "",
+        ""
+      ],
+      "choices": [],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "Everything she says is true, and I can show you why. Go ahead, Rae."
+        }
+      ],
+      "shot": {
+        "scene": "a bright morning news studio, a news anchor in a navy suit and a person in a worn dark bomber jacket sitting side by side at a glass desk, a small warm amber light glowing above the main camera lens, studio crew smiling in the foreground",
+        "motion": "the studio camera dollies in; the amber light above the lens pulses once as the anchor squeezes the person's hand",
+        "cast": [
+          "marcus",
+          "hero",
+          "argus"
+        ]
+      },
+      "music": "end",
+      "ending": [
+        "THE END. It answered for you.",
+        "THE END. It answered for you."
+      ],
+      "hint": "Some trust pays out in full."
     }
   ]
 }

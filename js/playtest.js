@@ -8943,7 +8943,9 @@ async function trustFallRun(options, t) {
       const flags = flagsOf(way);
       for (const c of st.scenes[sid].choices) {
         const req = (c[7] && c[7].requires) || {};
-        if (Object.entries(req).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v)) queue.push([...way, c[2]]);
+        const when = c[5] || {};
+        const holds = (w) => Object.entries(w).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v);
+        if (holds(req) && holds(when)) queue.push([...way, c[2]]);
       }
     }
     return null;
@@ -9274,7 +9276,7 @@ async function trustFallRun(options, t) {
     doc = await open(yes, `pressing "${g.en}" at ${g.sid}`);
     box = await ready(doc, g.sid);
     trustFallTextFit(t, doc, `${id}/${g.sid} believed fork (${W}x${H})`, W, H);
-    const gi = st.scenes[g.sid].choices.findIndex((c) => c[1] === g.en && c[2] === g.to);
+    const gi = g.ci;
     const gb = visible(box).find((b) => Number(b.dataset.choiceIndex) === gi);
     if (!gb) t.problem("bug", `${id}/${g.sid}: the gated choice "${g.en}" can't be pressed after Believe it`);
     else {
@@ -9362,6 +9364,135 @@ async function trustFallRun(options, t) {
     t.add("trustFallJammedVariants");
   }
   t.progress(0.8);
+
+  // 4a. Trust (J, 2026-11-14): the meter is in the kit bar on every scene, rises on each believing choice and drops when
+  // ARGUS is jammed; Good morning is offered only at trust 3 or more; the jam road reaches its own rescue page later than
+  // the believing road; and the closing broadcast's ending differs for low, mid and high trust. By touch at 390x844.
+  {
+    const trustAt = (way) => way.reduce((n, sid) => {
+      const c = st.scenes[sid].inventory && st.scenes[sid].inventory.trust;
+      return c === undefined ? n : (typeof c === "number" ? Math.max(0, Math.min(4, n + c)) : c.set);
+    }, 0);
+    const holdsF = (f, w) => Object.entries(w).every(([k, v]) => (f[k] === undefined ? false : f[k]) === v);
+    const meter = (doc) => {
+      const item = doc.querySelector('.inventory.kit [data-item="trust"]');
+      return item ? { n: Number(item.dataset.count), el: item, count: item.querySelector(".kit-count"), rect: item.getBoundingClientRect() } : null;
+    };
+    /** Seeded at `way`'s last scene (a setup shortcut), the meter and the fork read at 390x844 by touch. */
+    const trustLook = async (way, why) => {
+      const sid = way[way.length - 1];
+      t.scene(`${id}: trust at ${sid} (${why})`);
+      const doc = await open(way, why);
+      const box = await ready(doc, sid);
+      const m = meter(doc);
+      const want = trustAt(way);
+      if (!m) t.problem("bug", `${id}/${sid}: no trust meter in the kit bar (${why})`);
+      else {
+        if (m.n !== want) t.problem("bug", `${id}/${sid}: the trust meter says ${m.n}, the way there (${way.join(" > ")}) earns ${want} (${why})`);
+        const font = m.count ? parseFloat(doc.defaultView.getComputedStyle(m.count).fontSize) : 0;
+        const btns = visible(box).map((b) => b.getBoundingClientRect());
+        if (m.rect.width < 1 || m.rect.top < 0 || m.rect.bottom > H || m.rect.right > W) t.problem("bug", `${id}/${sid}: the trust meter is off screen (${Math.round(m.rect.left)},${Math.round(m.rect.top)} ${Math.round(m.rect.width)}x${Math.round(m.rect.height)}) (${why})`);
+        if (font < 14) t.problem("bug", `${id}/${sid}: the trust count is ${font}px type, under 14px, hard to read (${why})`);
+        for (const b of btns) {
+          if (b.height < 44) t.problem("bug", `${id}/${sid}: a choice is ${Math.round(b.height)}px tall, under 44px (${why})`);
+          if (b.left < m.rect.right && b.right > m.rect.left && b.top < m.rect.bottom && b.bottom > m.rect.top) t.problem("bug", `${id}/${sid}: a choice overlaps the trust meter (${why})`);
+        }
+        t.event("trust-meter", `${id}/${sid}: ${why}: trust ${m.n} of 4 (${Math.round(font)}px count, meter ${Math.round(m.rect.top)}-${Math.round(m.rect.bottom)}, choices ${btns.map((b) => `${Math.round(b.top)}-${Math.round(b.bottom)}`).join(", ")} of ${H})`);
+        t.add("trustMeterSeen");
+      }
+      return { doc, box, trust: m && m.n };
+    };
+    /** A real tap on the choice, then the scene it opens and the meter after it. */
+    const tapTrust = async (doc, box, sid, pick, to) => {
+      const gb = visible(box).find(pick);
+      if (!gb) { t.problem("bug", `${id}/${sid}: the choice leading to ${to} isn't on the page (${visible(box).map(label).join(" | ")})`); return null; }
+      gb.scrollIntoView({ block: "center", behavior: "instant" });
+      await tapAt(t, gb, `"${label(gb)}" (${W}x${H})`);
+      if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === to, 6000))) { t.problem("bug", `${id}/${sid}: pressing "${label(gb)}" didn't open ${to}`); return null; }
+      await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 12000);
+      await rewindEndClip(doc);
+      await sleep(500);
+      return meter(doc);
+    };
+    const sceneOf = (doc) => doc.defaultView.finalSpark.scene();
+    const pickTo = (doc, sid, to) => (b) => st.scenes[sid].choices[Number(b.dataset.choiceIndex)][2] === to;
+
+    // The meter rises on each believing choice (real taps): Stop and listen +1 after asking, Believe it +1, Wait +1.
+    const askWay = wayTo("tower", (f) => f.listened === true && !f.jammed);
+    let r = await trustLook(askWay, "asked, at the lobby");
+    const before0 = r.trust;
+    let after = await tapTrust(r.doc, r.box, "tower", pickTo(r.doc, "tower", "listen"), "listen");
+    if (after && !(after.n > before0)) t.problem("bug", `${id}/listen: Stop and listen didn't raise the trust meter (${before0} -> ${after.n})`);
+    const l1 = after && after.n;
+    if (after) {
+      const box = r.doc.getElementById("spark-choices");
+      after = await tapTrust(r.doc, box, "listen", pickTo(r.doc, "listen", "believe"), "believe");
+      if (after && !(after.n > l1)) t.problem("bug", `${id}/believe: Believe it didn't raise the trust meter (${l1} -> ${after.n})`);
+      t.event("trust-rises", `${id}: ${before0} -> ${l1} -> ${after && after.n} by real taps (Stop and listen, Believe it)`);
+    }
+    closeViewFrame();
+    r = await trustLook(wayTo("core", (f) => f.believed === true), "believed, in the vault");
+    const before1 = r.trust;
+    after = await tapTrust(r.doc, r.box, "core", pickTo(r.doc, "core", "promise"), "promise");
+    if (after && !(after.n > before1)) t.problem("bug", `${id}/promise: Wait. ARGUS promised didn't raise the trust meter (${before1} -> ${after.n})`);
+    else if (after) t.event("trust-rises", `${id}: ${before1} -> ${after.n} by a real tap (Wait. ARGUS promised)`);
+    closeViewFrame();
+
+    // Jamming ARGUS visibly costs: from the lobby with trust earned, Jam it and keep going drops the meter to 0.
+    r = await trustLook(askWay, "asked, about to jam ARGUS");
+    const earned = r.trust;
+    after = await tapTrust(r.doc, r.box, "tower", pickTo(r.doc, "tower", "jam"), "jam");
+    if (after && !(after.n < earned)) t.problem("bug", `${id}/jam: jamming ARGUS didn't cost trust (${earned} -> ${after.n})`);
+    else if (after) { t.event("trust-cost", `${id}: jamming ARGUS: trust ${earned} -> ${after.n}`); t.add("trustFallJamCost"); }
+    closeViewFrame();
+
+    // The jam road reaches its own rescue page, at least 2 scenes later than the believing road reaches its.
+    const rescueDepth = (sid, ok) => { const w = wayTo(sid, ok); return w ? w.length - 1 - w.indexOf("tower") : null; };
+    const believing = Math.min(...["promise", "saved"].map((sid) => rescueDepth(sid, (f) => f.believed === true && !f.jammed)).filter((x) => x != null));
+    const jamming = rescueDepth("jamRescue", (f) => f.jammed === true);
+    if (jamming == null) t.problem("bug", `${id}: no way reaches the jam road's rescue page (jamRescue)`);
+    else if (jamming < believing + 2) t.problem("bug", `${id}: the jam road's rescue is ${jamming} scenes after the lobby, the believing road's ${believing}: it must take at least 2 more`);
+    else { t.event("jam-rescue", `${id}: the believing road is rescued ${believing} scenes after the lobby (promise or the green line); jamming ARGUS takes ${jamming} (${wayTo("jamRescue", (f) => f.jammed === true).slice(wayTo("jamRescue", (f) => f.jammed === true).indexOf("tower")).join(" > ")})`); t.metric("trustFallJamRescueExtraScenes", jamming - believing); }
+    {
+      const w = wayTo("coreDark");
+      if (w) {
+        r = await trustLook(w, "jammed, in the dark vault");
+        after = await tapTrust(r.doc, r.box, "coreDark", pickTo(r.doc, "coreDark", "jamRescue"), "jamRescue");
+        if (after) t.event("jam-rescue-played", `${id}: Beg the dead air by touch -> jamRescue, trust ${after.n}`);
+        closeViewFrame();
+      }
+    }
+
+    // The closing broadcast by trust band: Good morning only at 3 or more, and the ending differs.
+    const bands = [
+      { name: "low", ok: (f) => f.jammed === true },
+      { name: "mid", ok: (f) => f.believed === true && !f.listened && !f.waited },
+      { name: "high", ok: (f) => f.believed === true && (f.listened === true || f.waited === true) },
+    ];
+    const ends = {};
+    for (const b of bands) {
+      const w = wayTo("broadcast", b.ok);
+      if (!w) { t.problem("bug", `${id}: no way reaches the broadcast at ${b.name} trust`); continue; }
+      r = await trustLook(w, `${b.name} trust, at the broadcast`);
+      const labels = visible(r.box).map(label);
+      const thanks = labels.some((x) => /thank you to ARGUS/i.test(x));
+      const should = r.trust >= 3;
+      if (thanks !== should) t.problem("bug", `${id}/broadcast: at trust ${r.trust} "Say thank you to ARGUS" is ${thanks ? "offered" : "absent"}; it is offered only at 3 or more (${labels.join(" | ")})`);
+      if (r.box.querySelectorAll(".choice-locked").length) t.problem("bug", `${id}/broadcast: a locked row shows at trust ${r.trust}: the choice should be absent, not locked`);
+      t.event("good-morning-gate", `${id}/broadcast: trust ${r.trust} (${b.name}): Good morning ${thanks ? "offered" : "absent"} [${labels.join(" | ")}]`);
+      t.add(`trustFallBand${b.name[0].toUpperCase()}${b.name.slice(1)}`);
+      const tell = visible(r.box).find((x) => /^1\. Tell Marcus/.test(label(x)));
+      if (!tell) { t.problem("bug", `${id}/broadcast: no Tell Marcus choice at ${b.name} trust`); closeViewFrame(); continue; }
+      tell.scrollIntoView({ block: "center", behavior: "instant" });
+      await tapAt(t, tell, `Tell Marcus at ${b.name} trust (${W}x${H})`);
+      if (!(await waitFor(() => ending(sceneOf(r.doc)), 8000))) t.problem("bug", `${id}/broadcast: Tell Marcus at ${b.name} trust didn't reach an ending (${sceneOf(r.doc)})`);
+      else { ends[b.name] = sceneOf(r.doc); t.event("trust-ending", `${id}: ${b.name} trust (${r.trust}) -> ${ends[b.name]}: ${st.scenes[ends[b.name]].ending[1]}`); }
+      closeViewFrame();
+    }
+    const seen = new Set(Object.values(ends));
+    if (seen.size !== 3) t.problem("bug", `${id}: low, mid and high trust show ${seen.size} different endings (${JSON.stringify(ends)}); three wanted`);
+    else t.metric("trustFallTrustEndings", seen.size);
+  }
 
   // 4b. Phone layout (Late Shift): at a fork the clip sits above the words, the words above the choices, nothing over the
   // picture, and the choices are in the lower thumb zone, all by touch at 390x844 with no sideways scroll.

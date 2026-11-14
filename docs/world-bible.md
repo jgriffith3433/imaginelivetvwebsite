@@ -365,7 +365,15 @@ shuts "just like ARGUS said" and a small amber light comes on above it; "Wait. A
 `believed` (nothing locked, nothing greyed). Begging ARGUS afterwards plays a different green-line clip: the lock opens
 before you finish asking and ARGUS says it said it would be there. The morning edition shows the ceiling camera watching
 over you, and "Say thank you to ARGUS" is offered only with `believed`; without it that ending cannot be reached.
-Twenty pages, three endings, two deaths; Rewind marks the tried death.
+Twenty-seven pages, five endings, two deaths; Rewind marks the tried death.
+
+**Trust, shown as a count (2026-11-14).** ARGUS's trust is a number in the kit bar (amber ring, 0 to 4): +1 for asking how it
+knows you, +1 for stopping to listen, +1 for believing it, +1 for waiting on its promise. Jamming it, or calling it a liar
+in the lobby, takes the whole count back to 0 (a visible drop, never below). The jam road is the long way: the dead stairs,
+the breaker room, the cable duct, a vault with no amber light, then a rescue that arrives late and burned (*The long way
+out*), six scenes after the lobby to the believing road's four. The morning broadcast's ending scales with the count:
+low (jammed) *Alone on air* ("Nobody vouched for you"), mid (believed, little earned) *Live* ("You were the story"), high
+(3 or more) *On air, together* ("It answered for you"); *Good morning* is offered only at 3 or more and is absent below it.
 
 
 ## Story beats
@@ -444,7 +452,7 @@ here for an agent to build next, within the existing scene data.
 1. Kitchen, 6 a.m.: the speaker says your name; unplug it or ask. 2. Garage: Juno gives you Blindspot (event: the drive
 changes hands). 3. Lobby: every screen cuts from Marcus to ARGUS's face (event). Believe it, or not. 4. Vault: the door
 seals; the choice set differs with belief (event). 5. Rescue: the green line, the call on air, or the promise; belief changes
-the clip. 6. Morning edition: Marcus's "you know who you are"; three endings, one reserved for belief (reward). Told by
+the clip. 6. Morning edition: Marcus's "you know who you are"; the on-air ending scales with trust (low, mid, high) and Good morning is reserved for trust 3 or more (reward). The jam road adds its own beats: the dead stairs, the breaker, the duct, the long way out. Told by
 clips, ARGUS's and Marcus's voice and music cues; the only on-screen line is the ending card.
 
 

@@ -74,6 +74,23 @@ is asked, listened, believed (+ waited), so it takes asking, listening and belie
 "needs trust 3+ (you have 2)" row, not a button. The variants change the words now; their clips follow
 when the media is made.
 
+## Trust, counted (2026-11-14, J: "belief that pays off")
+
+`inventory` in `story/trust-fall.json` has one counted item, `trust` (icon `ring`, 0 to 4, shown in the kit bar). Scenes that
+add to it: `asked`, `listen`, `believe`, `promise` (+1 each); `jam` sets it to 0 (so jamming visibly costs what you earned;
+the build forbids a count below zero). "It's lying. Keep going" at the lobby leads to `jam` too, and both set `jammed`.
+- **The jam road** (`jam` > `blackout` > `breaker` > `crawl` > `coreDark` > `jamRescue`): a jammed run never meets ARGUS's
+  amber light in the vault. `coreDark` is `core` for jammed runs (same three ways out; Beg the dead air leads to the
+  separate rescue page *The long way out*). It is 6 scenes after the lobby, the believing road's rescue (`promise` or `saved`) is 4.
+- **The broadcast splits by trust** with `when` flags (no gated default): low `jammed` > `unvouched` (*Alone on air*, "THE END.
+  Nobody vouched for you."), mid (believed, but not asked or waited) > `truth` (*Live*), high (believed and asked, or believed
+  and waited: trust 3 or more) > `vouched` (*On air, together*, "THE END. It answered for you."). "Say thank you to ARGUS"
+  (Good morning) is `requires` the same high flags (and `needs` trust 3): absent below, never a locked row.
+- A video story's choices have no `forbids`: use a `requires` flag set to `false`.
+- The seven new scenes (blackout, breaker, crawl, coreDark, jamRescue, unvouched, vouched) show a graded still until
+  their clips are made (GPU, priced in the change's summary). Playtest `trust-fall` section 4a plays the meter, the cost,
+  the rescue depth, the Good morning gate and the three endings by touch at 390x844.
+
 ## Media plan (waiting for J's OK: it spends GPU)
 
 From `hawkes.assets.json` (`trust-fall-*`, 77 recipes):
