@@ -6892,7 +6892,7 @@ async function nightAudioBetween(t, st) {
   }
 }
 
-/* ---------------- trust-fall-card: the unlisted story's card, rendered as if listed ---------------- */
+/* ---------------- trust-fall-card: Trust Fall's card on the home page, beside The Water Road's ---------------- */
 
 async function trustFallCardRun(options, t) {
   const id = (options && options.story) || "trust-fall";
@@ -6901,24 +6901,22 @@ async function trustFallCardRun(options, t) {
   const phone = (f) => {
     f.style.cssText = `position:fixed;top:0;left:0;width:${W}px;height:${H}px;border:0;z-index:2147483647;background:#070807;transform-origin:0 0;transform:scale(${Math.min(1, innerWidth / W, innerHeight / H)})`;
   };
-  // 1. The home page shows no card for the draft.
-  t.scene("home page: no Trust Fall card yet");
+  // 1. The home page lists Trust Fall after Night Shift, never as the featured hero.
+  t.scene("home page: Trust Fall's card");
   let doc = await frameLoad(t, (f) => { phone(f); f.src = "/"; });
   if (!doc) throw new Error("the home page didn't load in the frame");
   await waitFor(() => doc.querySelector(".story-card"), 10000);
-  const home = [...doc.querySelectorAll(".story-card, .hero")].map((c) => c.dataset.story).filter(Boolean);
-  if (home.includes(id) || doc.querySelector(`[data-story="${id}"]`)) t.problem("bug", `${id} has a card on the home page while it is listed: false`);
-  else t.event("no-card-yet", `home page cards: ${home.join(", ") || "none"}; no ${id}`);
-  if (!doc.querySelector('.story-card[data-story="water-road"]')) t.problem("bug", "The Water Road's card is not on the home page");
+  const home = [...doc.querySelectorAll(".story-card")].map((c) => c.dataset.story).filter(Boolean);
+  if (!home.includes(id)) t.problem("bug", `${id} has no card on the home page (cards: ${home.join(", ") || "none"})`);
+  else if (home[home.length - 1] !== id || home.indexOf("night-shift") !== home.length - 2) t.problem("bug", `${id}'s card should follow Night Shift's (cards: ${home.join(", ")})`);
+  else t.event("card-listed", `home page cards: ${home.join(", ")}`);
+  if (doc.querySelector(`.hero[data-story="${id}"]`)) t.problem("bug", `${id} is the featured hero; the hero is The Final Spark's`);
   t.progress(0.3);
-  // 2. The build's check page renders the draft's card with the real markup and styles.
-  t.scene("card check: Trust Fall beside The Water Road");
-  doc = await frameLoad(t, (f) => { phone(f); f.src = "/card-check/"; });
-  if (!doc) throw new Error("/card-check/ didn't load (npm run story writes it for a draft with a runtime and mood)");
-  await waitFor(() => doc.querySelector(`.story-card[data-story="${id}"]`), 10000);
+  // 2. Its card, at 390x844 beside The Water Road's.
+  t.scene("home page: Trust Fall beside The Water Road");
   const tf = doc.querySelector(`.story-card[data-story="${id}"]`);
   const wr = doc.querySelector('.story-card[data-story="water-road"]');
-  if (!tf || !wr) throw new Error("the check page lacks Trust Fall's or The Water Road's card");
+  if (!tf || !wr) throw new Error("the home page lacks Trust Fall's or The Water Road's card");
   tf.scrollIntoView({ block: "center", behavior: "instant" });
   await sleep(600);
   const entry = (window.ILTV_STORIES?.stories || []).find((x) => x.id === id) || {};
@@ -9408,7 +9406,7 @@ async function trustFallRun(options, t) {
   const ids = Object.keys(st.scenes);
   const dead = (sid) => !!st.scenes[sid].dead;
   const ending = (sid) => !!st.scenes[sid].ending;
-  if (listedStories().some((s) => s.id === id)) t.problem("bug", `${id} is listed on the landing page; it is a draft and stays unlisted`);
+  if (!listedStories().some((s) => s.id === id)) t.problem("bug", `${id} is not listed on the landing page`);
   // Which scenes have a made clip (<folder>/media/clip.mp4, found by a HEAD request) and so must play their real cut;
   // trustFallRealClips counts each such scene once, however often it is entered, and must equal that count.
   const clipMade = {};
@@ -10545,10 +10543,10 @@ installPlaytest({
     },
     {
       id: "trust-fall-card",
-      title: "Trust Fall's home card, rendered as if listed: logline, mood, About 8 min and a teaser, the same size as The Water Road's at 390x844; the home page still shows no Trust Fall card",
+      title: "Trust Fall's home card: logline, mood, About 8 min and a teaser, the same size as The Water Road's at 390x844; Trust Fall's card is on the home page after Night Shift's, not the hero",
       seconds: 40,
       tags: ["full"],
-      description: "Criteria for the unlisted Trust Fall's card. The home page (a frame at 390x844) has a card for The Water Road and none for Trust Fall (no-card-yet; the story stays listed: false). The build's check page /card-check/ (tools/build-story.mjs: every draft with a runtime and mood rendered with the landing page's own card markup and styles) shows both cards in the same frame: Trust Fall's has its logline, mood, \"About 8 min\" and teaser (card-fields), is the same width and picture size as The Water Road's (card-size; the pair's heights and the Play button are logged), and its card is a tap target of 44 px or more that links to /?story=trust-fall, pressed by touch (a pointer-coarse tap) and followed (card-tap). Metrics trustFallCardWidth, waterRoadCardWidth, trustFallCardHeight, waterRoadCardHeight."
+      description: "Criteria for Trust Fall's listed card. The home page (a frame at 390x844) has a card for The Water Road, and Trust Fall's follows Night Shift's (card-listed); Trust Fall is not the featured hero. Both cards in the same frame: Trust Fall's has its logline, mood, \"About 8 min\" and teaser (card-fields), is the same width and picture size as The Water Road's (card-size; the pair's heights and the Play button are logged), and its card is a tap target of 44 px or more that links to /?story=trust-fall, pressed by touch (a pointer-coarse tap) and followed (card-tap). Metrics trustFallCardWidth, waterRoadCardWidth, trustFallCardHeight, waterRoadCardHeight."
     },
     {
       id: "trust-fall-third",
