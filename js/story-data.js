@@ -26635,7 +26635,8 @@ window.ILTV_STORIES = {
       "chapter": {
        "time": "6:00 AM",
        "title": "First light"
-      }
+      },
+      "third": "First light"
      }
     },
     "unplug": {
@@ -26671,7 +26672,8 @@ window.ILTV_STORIES = {
         "ARGUS",
         "I'm not your enemy, Rae."
        ]
-      ]
+      ],
+      "third": "The plug"
      }
     },
     "asked": {
@@ -26924,7 +26926,8 @@ window.ILTV_STORIES = {
       "chapter": {
        "time": "11:50 PM",
        "title": "The Tower"
-      }
+      },
+      "third": "The Tower"
      }
     },
     "jam": {
@@ -27543,7 +27546,8 @@ window.ILTV_STORIES = {
       "chapter": {
        "time": "6:00 AM",
        "title": "Morning edition"
-      }
+      },
+      "third": "Morning edition"
      }
     },
     "truth": {
@@ -27609,7 +27613,8 @@ window.ILTV_STORIES = {
        ]
       ],
       "lower": 1,
-      "signoff": "That was the whole truth, live. I'm Marcus Okoro. Good night, Meridian. You know who you are."
+      "signoff": "That was the whole truth, live. I'm Marcus Okoro. Good night, Meridian. You know who you are.",
+      "third": "Live"
      }
     },
     "shadow": {
@@ -27675,7 +27680,8 @@ window.ILTV_STORIES = {
        ]
       ],
       "lower": 1,
-      "signoff": "Some mornings there's no name to give. I'm Marcus Okoro. I'll leave the light on. You know who you are."
+      "signoff": "Some mornings there's no name to give. I'm Marcus Okoro. I'll leave the light on. You know who you are.",
+      "third": "Unseen"
      }
     },
     "believer": {
@@ -27711,7 +27717,8 @@ window.ILTV_STORIES = {
         "Good morning, Rae."
        ]
       ],
-      "signoff": "The city says good morning, and someone says it back. I'm Marcus Okoro. You know who you are."
+      "signoff": "The city says good morning, and someone says it back. I'm Marcus Okoro. You know who you are.",
+      "third": "Good morning"
      }
     },
     "blackout": {
@@ -27893,7 +27900,8 @@ window.ILTV_STORIES = {
        ]
       ],
       "lower": 1,
-      "signoff": "Nobody has spoken for you yet. I'm Marcus Okoro, and I will. You know who you are."
+      "signoff": "Nobody has spoken for you yet. I'm Marcus Okoro, and I will. You know who you are.",
+      "third": "Alone on air"
      }
     },
     "vouched": {
@@ -27927,7 +27935,8 @@ window.ILTV_STORIES = {
         "Everything she says is true, and I can show you why. Go ahead, Rae."
        ]
       ],
-      "signoff": "It answered for you, and so will I. I'm Marcus Okoro. You know who you are."
+      "signoff": "It answered for you, and so will I. I'm Marcus Okoro. You know who you are.",
+      "third": "On air, together"
      }
     },
     "showCopy": {
@@ -27972,7 +27981,8 @@ window.ILTV_STORIES = {
    "news": {
     "station": "Meridian Morning",
     "anchor": "Marcus Okoro",
-    "role": "Anchor"
+    "role": "Anchor",
+    "channel": "Meridian 7"
    }
   }
  ]

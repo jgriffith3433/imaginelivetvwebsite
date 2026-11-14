@@ -8868,6 +8868,138 @@ async function trustFallNewsRun(options, t) {
   t.progress(1);
 }
 
+/** The news lower-third on Trust Fall (J, 2026-11-14), at 390x844 with touch in a frame. Scenes whose data has `news` (start, unplug,
+    tower, broadcast and the five endings) show a CSS lower-third over the clip: the headline, MERIDIAN 7 and the scene's time
+    (`lower-third-shown`; First light says FIRST LIGHT and 6:00 AM); scenes without it show none (`no-lower-third`). It sits low on
+    the picture and never overlaps a choice, the caption or a button (`lower-third-clear`). Every scene is entered by a real
+    press (tapAt) from a seeded run at its parent (setup shortcut, event seeded-run); the first by its link. Options: {"story":"<id>"}. */
+async function trustFallThirdRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const st = story(id);
+  if (!st || !st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!st.news) throw new Error(`${id} has no news frame`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  if (!landingShown()) await toLanding(t);
+  const W = 390, H = 844;
+  const dead = (sid) => !!st.scenes[sid].dead;
+  const flagsOf = (way) => {
+    const out = {};
+    for (let i = 0; i + 1 < way.length; i++) {
+      const c = st.scenes[way[i]].choices.find((x) => x[2] === way[i + 1]);
+      if (c && c[4]) Object.assign(out, c[4]);
+    }
+    return out;
+  };
+  const wayTo = (target) => {
+    const queue = [[st.start]];
+    while (queue.length) {
+      const way = queue.shift();
+      const sid = way[way.length - 1];
+      if (sid === target) return way;
+      if (way.length > 14 || dead(sid) || st.scenes[sid].ending) continue;
+      const flags = flagsOf(way);
+      const holds = (w) => Object.entries(w).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v);
+      for (const c of st.scenes[sid].choices) if (holds((c[7] && c[7].requires) || {}) && holds(c[5] || {})) queue.push([...way, c[2]]);
+    }
+    return null;
+  };
+  const rect = (e) => e.getBoundingClientRect();
+  const hit = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  const shownIn = (doc, sel) => [...doc.querySelectorAll(sel)].filter((e) => e.getClientRects().length);
+  const marked = Object.keys(st.scenes).filter((sid) => st.scenes[sid].news && st.scenes[sid].news.third);
+  const sample = ["asked", "crew", "believe"].filter((sid) => st.scenes[sid] && !st.scenes[sid].news.third);
+  let shown = 0, absent = 0, clear = 0;
+
+  /** The scene's lower-third (or none) read from the page, then its clearance from every button and the caption. */
+  const checkThird = async (doc, sid) => {
+    const want = st.scenes[sid].news.third;
+    const third = () => doc.querySelector("#spark-video .news-third");
+    if (!want) {
+      await sleep(900);
+      if (third() || doc.querySelector(".news-third")) t.problem("bug", `${id}/${sid}: a lower-third shows on a scene with no news field`);
+      else { absent++; t.event("no-lower-third", `${id}/${sid}: no news field, no lower-third`); }
+      return;
+    }
+    if (!(await waitFor(third, 3000))) { t.problem("bug", `${id}/${sid}: no lower-third on a scene marked news "${want}"`); return; }
+    const el = third();
+    const text = (el.innerText || el.textContent).replace(/\s+/g, " ").trim().toUpperCase();
+    for (const part of [want.toUpperCase(), st.news.channel.toUpperCase(), st.scenes[sid].news.time.toUpperCase()]) {
+      if (!text.includes(part)) t.problem("bug", `${id}/${sid}: the lower-third says "${text}", want ${part} in it`);
+    }
+    if (sid === st.start && !(text.includes("FIRST LIGHT") && text.includes("MERIDIAN 7") && text.includes("6:00 AM"))) t.problem("bug", `${id}/${sid}: First light's lower-third says "${text}", want FIRST LIGHT, MERIDIAN 7, 6:00 AM`);
+    const win = doc.defaultView;
+    if (win.getComputedStyle(el).pointerEvents !== "none") t.problem("bug", `${id}/${sid}: the lower-third takes presses`);
+    shown++;
+    t.event("lower-third-shown", `${id}/${sid}: "${text}"`);
+    t.event("screenshot", `${id}/${sid} lower-third ${want}`);
+    // Clear of every button, the caption and the choices; low on the picture, the centre of it clear.
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => (box && box.dataset.phase === "ready") || dead(sid) || st.scenes[sid].ending, 14000);
+    await sleep(300);
+    const tr = rect(third()), vr = rect(doc.getElementById("spark-video"));
+    const things = shownIn(doc, "#spark-play button, #spark-play a, #spark-play .choice, #spark-play .choice-locked, #spark-choices .choice, #spark-choices .choice-locked, #spark-ending button, #spark-ending a, .spark-bar button, .spark-bar a, .spark-bar select, .spark-unmute, .spark-fullscreen, #spark-caption")
+      .filter((e) => !e.closest(".news-card") && !e.closest(".news-third") && !(e.id === "spark-caption" && e.hidden));
+    for (const b of things) if (hit(tr, rect(b))) t.problem("bug", `${id}/${sid}: the lower-third lies over "${enText(b) || b.id || b.className}" at ${W}x${H}`);
+    const mid = vr.top + vr.height / 2;
+    if (tr.top < mid + vr.height * 0.1 - 1) t.problem("bug", `${id}/${sid}: the lower-third (top ${Math.round(tr.top)}px) isn't low on the picture (${Math.round(vr.top)}-${Math.round(vr.bottom)}px)`);
+    if (tr.left < -1 || tr.right > W + 1 || tr.bottom > H + 1) t.problem("bug", `${id}/${sid}: the lower-third isn't fully on screen at ${W}x${H}`);
+    clear++;
+    t.event("lower-third-clear", `${id}/${sid}: ${Math.round(tr.top)}-${Math.round(tr.bottom)}px, ${things.length} buttons and captions clear of it`);
+  };
+
+  // 1. The opening by the story's link: the 6:00 AM chapter card, then First light's lower-third.
+  t.scene(`${id}: First light at ${W}x${H}`);
+  clearProgress();
+  {
+    const doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} opening ${W}x${H}`);
+    if (!(await waitFor(() => win.finalSpark.scene() === st.start, 8000))) throw new Error(`${id}: the story didn't open at ${st.start}`);
+    await waitFor(() => doc.querySelector(".news-card") || doc.querySelector(".news-third"), 3000);
+    await dismissNews(t, doc);
+    await checkThird(doc, st.start);
+    closeViewFrame();
+  }
+  t.progress(0.1);
+
+  // 2. Every other marked scene, and a few unmarked, by a real press from a seeded run at the parent.
+  const targets = [...marked.filter((sid) => sid !== st.start), ...sample];
+  let n = 0;
+  for (const target of targets) {
+    n++;
+    const way = wayTo(target);
+    if (!way) { t.problem("bug", `${id}: no way reaches ${target}`); continue; }
+    const parent = way[way.length - 2];
+    t.scene(`${id}: ${target}`);
+    gateSeed(t, st, way.slice(0, -1), `the press into ${target}`);
+    const doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} ${parent} ${W}x${H}`);
+    if (!(await waitFor(() => win.finalSpark.scene() === parent, 8000))) throw new Error(`${id}: the seeded run didn't open ${parent}`);
+    await rewindEndClip(doc);
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice, [data-death]").length > 0, 12000);
+    await dismissNews(t, doc);
+    await sleep(350);
+    const index = st.scenes[parent].choices.findIndex((c) => c[2] === target);
+    const btn = shownIn(doc, "#spark-choices .choice").find((b) => Number(b.dataset.choiceIndex) === index);
+    if (!btn) { t.problem("bug", `${id}/${parent}: the choice into ${target} isn't on screen`); closeViewFrame(); continue; }
+    btn.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, btn, `"${enText(btn)}"`);
+    if (!(await waitFor(() => win.finalSpark.scene() === target, 5000))) { t.problem("bug", `${id}: the press on "${enText(btn)}" didn't open ${target}`); closeViewFrame(); continue; }
+    await waitFor(() => doc.querySelector(".news-card") || doc.querySelector(".news-third"), 1500);
+    await dismissNews(t, doc);
+    await checkThird(doc, target);
+    closeViewFrame();
+    t.progress(0.1 + 0.85 * (n / targets.length));
+  }
+  if (shown !== marked.length) t.problem("bug", `${id}: ${shown} lower-thirds checked, want ${marked.length} (every scene with a news field)`);
+  t.metric("lowerThirdsShown", shown);
+  t.metric("lowerThirdsAbsent", absent);
+  t.metric("lowerThirdsClear", clear);
+  t.progress(1);
+}
+
 /** Trust Fall (story/trust-fall.md, listed: false, plays at /?story=trust-fall) at 390x844 with touch input. Setup shortcut:
     a seeded run (event seeded-run) at the parent of each scene, opened by the story's link in a frame; every scene is then
     entered by a real press (tapAt) of the choice that leads there. Options: {"story":"<id>"} (default trust-fall). */
@@ -10274,6 +10406,13 @@ installPlaytest({
       description: "Trust Fall (draft, /?story=trust-fall) at 390x844 with touch taps in a frame. A seeded run (seeded-run) one choice before Live, a real tap on that choice, the ending card says \"1 of 3 found\", a tap on Endings opens the gallery: Live a found tile, Unseen and Good morning blurred silhouettes named \"???\" with their teaser hints, nothing off screen and no horizontal scroll. Events ending-count, locked-ending, gallery-fit, screenshot; metrics endingsFound, endingsTotal.",
     },
     {
+      id: "trust-fall-third",
+      title: "The news lower-third: First light shows FIRST LIGHT, MERIDIAN 7 and 6:00 AM over the clip; scenes without a news field show none; on a phone it never overlaps the choices or captions",
+      seconds: 240,
+      tags: ["full"],
+      description: "Trust Fall (draft, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame; every scene entered by a real press from a seeded run at its parent (seeded-run). The scenes marked with a news field (start, unplug, tower, broadcast and the five endings) show a CSS lower-third over the clip with the headline, MERIDIAN 7 and the scene's time (lower-third-shown); First light says FIRST LIGHT, MERIDIAN 7, 6:00 AM; scenes without the field (asked, crew, believe) show none (no-lower-third); the lower-third is low on the picture, takes no press and never lies over a choice, button or caption (lower-third-clear). Metrics lowerThirdsShown, lowerThirdsAbsent, lowerThirdsClear.",
+    },
+    {
       id: "trust-fall-news",
       title: "Marcus's morning news frames Trust Fall: lower-third and clock, chapter cards by the clock, a caption on every line, a sign-off on every ending, nothing over a button",
       seconds: 420,
@@ -10529,6 +10668,7 @@ installPlaytest({
       else if (id === "trust-meter") await trustMeterRun(options, t);
       else if (id === "trust-fall-endings") await trustFallEndingsRun(options, t);
       else if (id === "trust-fall-news") await trustFallNewsRun(options, t);
+      else if (id === "trust-fall-third") await trustFallThirdRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);

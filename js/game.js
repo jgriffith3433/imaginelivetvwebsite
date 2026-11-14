@@ -1573,6 +1573,31 @@
       bar.setAttribute("aria-label", STORY.news.anchor + ", " + STORY.news.station + ", " + news.time);
     }
     videoBox.appendChild(bar);
+    if (news.third) newsThird(news);
+  }
+
+  /** The lower-third (a scene's `news` headline): the headline, the channel and the scene's time, low on the picture over
+      the clip, clear of its centre. Only scenes marked `news` get one; it is CSS, never part of the media, and takes no press. */
+  function newsThird(news) {
+    const third = document.createElement("div");
+    third.className = "news-third";
+    third.dataset.headline = news.third;
+    third.setAttribute("role", "status");
+    const head = document.createElement("b");
+    head.className = "news-third-head";
+    head.textContent = news.third;
+    const line = document.createElement("span");
+    line.className = "news-third-line";
+    const channel = document.createElement("span");
+    channel.className = "news-third-channel";
+    channel.textContent = STORY.news.channel || STORY.news.station;
+    const time = document.createElement("span");
+    time.className = "news-third-time";
+    time.textContent = news.time;
+    line.append(channel, time);
+    third.append(head, line);
+    videoBox.appendChild(third);
+    tell("feature", { feature: "news_third", story: STORY.id, node: currentScene, value: news.third });
   }
 
   /** A full-screen card (chapter or sign-off): a press anywhere on it moves on; it also moves on by itself. */
