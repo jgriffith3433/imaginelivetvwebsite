@@ -1813,6 +1813,7 @@
     const grid = document.createElement("div");
     grid.className = "endings-grid";
     grid.setAttribute("role", "list");
+    grid.dataset.count = String(ends.length);
     ends.forEach(function (entry) {
       const known = !!found[entry.id];
       const tile = document.createElement(known ? "button" : "div");

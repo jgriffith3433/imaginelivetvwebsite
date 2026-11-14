@@ -2838,6 +2838,10 @@ button.ending-tile:focus-visible {
 @media (max-width: 420px) {
   .endings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
   .ending-tile-name { font-size: 0.75rem; }
+  /* Three endings: one row of three, not two and an orphan (Trust Fall). */
+  .endings-grid[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; }
+  .endings-grid[data-count="3"] .ending-tile-name { font-size: 0.7rem; padding: 0 0.4rem 0.4rem; overflow-wrap: anywhere; }
+  .endings-grid[data-count="3"] .ending-tile-hint { font-size: 0.66rem; padding: 0 0.4rem 0.4rem; overflow-wrap: anywhere; }
 }
 @media (max-height: 560px) {
   .ending-tile-media { aspect-ratio: 3 / 4; max-height: 28dvh; }
