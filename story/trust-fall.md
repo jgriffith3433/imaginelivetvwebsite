@@ -15,7 +15,7 @@ generated media is made; the media waits for J's OK on the spend.
 The city of Meridian is about to switch on ARGUS, an AI in every camera, light and door. You are a thief who hates it.
 ARGUS reads as the villain: it knows your name before breakfast and watches you walk into its Tower. Then the crew you
 trusted betrays you and seals you in a vault to take the blame, and ARGUS is the one that gets you out. The more you
-believed it before you needed it, the more the ending gives back. Your husband, Marcus Hale, anchors the morning news
+believed it before you needed it, the more the ending gives back. Your husband, Marcus Okoro, anchors the morning news
 you watch every day; his three broadcasts (the morning before, the go-live at midnight, the morning after) frame the
 story, and his sign-off ("you know who you are") is a line only the two of you understand.
 
@@ -26,7 +26,7 @@ story, and his sign-off ("you know who you are") is a line only the two of you u
 - **Tap to play:** *TRUST FALL*, "Sound on. It's already watching."
 - **Look:** a modern 3D near-future thriller game render (rain, glass towers, teal shadows, amber light), the same
   game-render family as The Water Road. You are seen from behind or by your hands.
-- **Language:** English only. **Cast:** you (Rae, only ever named by others), Marcus Hale, ARGUS (an amber face of light
+- **Language:** English only. **Cast:** you (Rae, only ever named by others), Marcus Okoro, ARGUS (an amber face of light
   on screens, a ring on small devices), Juno Vale (the crew's leader).
 
 ## The story (20 pages)
@@ -81,7 +81,7 @@ From `hawkes.assets.json` (`trust-fall-*`, 77 recipes):
 | Character sheets (you, Marcus, ARGUS, Juno) | 4 (3 candidates each) | image.generate |
 | Shot clips (keyframe, then video) | 29 shots over 20 scenes | image.edit / image.generate, video.i2v |
 | Narration, one per scene | 20 (voice `hv_narrator_bright`) | audio.voice |
-| Talking shots (portrait, line, lip sync) | 17: Marcus 5 (`hv_narrator_warm`), ARGUS 10 (`hv_ai`), Juno 2 (`hv_heroine`) | image.edit, audio.voice, video.talk |
+| Talking shots (portrait, line, lip sync) | 19: Marcus 6 (`hv_narrator_warm`), ARGUS 11 (`hv_ai`), Juno 2 (`hv_heroine`) (two added 2026-11-14: about $0.60 more than the estimate below) | image.edit, audio.voice, video.talk |
 | Music cues | 7: morning, hum, heist, trapped, rescue, death, end | audio.music |
 
 Hawkes Gen's estimate (2026-11-14, from its past jobs): about 3.7 GPU hours on 4 servers, about 56 minutes, **$6.86**
@@ -94,3 +94,16 @@ tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio
 
 - The story itself (title, cast, the three endings).
 - The media spend above.
+
+## Path-true lines (2026-11-14)
+
+- The timer's defaults now walk the believing path: `start` defaults to Ask how it knows you, `tower` to Stop and listen.
+- Marcus is "your husband" on the first page, speaks live at midnight on `tower` before ARGUS cuts in (on one screen,
+  not the whole wall), and every ending ends on his sign-off. He is Marcus **Okoro** (Hale is taken in two other worlds).
+- `unplug`: ARGUS speaks under the news ("I'm not your enemy, Rae.") instead of words on screen (no writing in a shot).
+- `callMarcus`: Marcus doesn't say your name live on air, so Unseen stays true.
+- `waited` (set by Wait. ARGUS promised) keys the morning's "the recording you stood still for"; the `broadcast` variants
+  run most specific first (chased, calledMarcus, waited, believed, listened), so every flag is heard.
+- Endings gallery hints tease instead of giving the route. Runtime on the card: about 8 minutes.
+- Still to come (roadmap, `/mnt/project-files/new-story/roadmap.md`): a counted trust meter, narration for variants,
+  tighter pages, a voice doc.

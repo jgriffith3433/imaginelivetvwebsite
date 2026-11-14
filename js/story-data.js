@@ -26491,7 +26491,7 @@ window.ILTV_STORIES = {
       "THE END. You were the story.",
       "THE END. You were the story."
      ],
-     "hint": "Tell the whole city, live, who you are.",
+     "hint": "Some stories you tell yourself.",
      "poster": "/assets/video/trust-fall/poster/live.webp",
      "video": "/assets/video/trust-fall/live.mp4"
     },
@@ -26505,7 +26505,7 @@ window.ILTV_STORIES = {
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
      ],
-     "hint": "Walk out before anyone learns your name.",
+     "hint": "Some heroes keep their names.",
      "poster": "/assets/video/trust-fall/poster/unseen.webp",
      "video": "/assets/video/trust-fall/unseen.mp4"
     },
@@ -26519,7 +26519,7 @@ window.ILTV_STORIES = {
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
      ],
-     "hint": "Believe ARGUS in the Tower, then thank it.",
+     "hint": "Some mornings you answer back.",
      "poster": "/assets/video/trust-fall/poster/good-morning.webp",
      "video": "/assets/video/trust-fall/good-morning.mp4"
     }
@@ -26534,14 +26534,13 @@ window.ILTV_STORIES = {
       "First light"
      ],
      "story": [
-      "Six a.m. Marcus is on the kitchen TV. The speaker on your counter lights amber and says your name.",
-      "Six a.m. Marcus is on the kitchen TV. The speaker on your counter lights amber and says your name."
+      "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name.",
+      "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name."
      ],
      "question": [
       "ARGUS knows you. Now what?",
       "ARGUS knows you. Now what?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/first-light.mp4",
      "poster": "/assets/video/trust-fall/poster/first-light.webp",
      "small": "/assets/video/trust-fall/sm/first-light.mp4",
@@ -26549,14 +26548,13 @@ window.ILTV_STORIES = {
       [
        "1. Pull its plug",
        "1. Pull its plug",
-       "unplug",
-       true
+       "unplug"
       ],
       [
        "2. Ask how it knows you",
        "2. Ask how it knows you",
        "asked",
-       false,
+       true,
        {
         "listened": true
        }
@@ -26572,14 +26570,13 @@ window.ILTV_STORIES = {
       "The plug"
      ],
      "story": [
-      "You yank the cord. The speaker dies, and for one second so does the TV. When Marcus comes back, a line of amber words is crawling across the bottom of the news: I'm not your enemy, Rae. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
-      "You yank the cord. The speaker dies, and for one second so does the TV. When Marcus comes back, a line of amber words is crawling across the bottom of the news: I'm not your enemy, Rae. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+      "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
+      "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
      ],
      "question": [
       "Where do you go?",
       "Where do you go?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-plug.mp4",
      "poster": "/assets/video/trust-fall/poster/the-plug.webp",
      "small": "/assets/video/trust-fall/sm/the-plug.mp4",
@@ -26607,7 +26604,6 @@ window.ILTV_STORIES = {
       "Where do you go?",
       "Where do you go?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/how-it-knows.mp4",
      "poster": "/assets/video/trust-fall/poster/how-it-knows.webp",
      "small": "/assets/video/trust-fall/sm/how-it-knows.mp4",
@@ -26635,7 +26631,6 @@ window.ILTV_STORIES = {
       "Do you carry Blindspot in?",
       "Do you carry Blindspot in?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-garage.mp4",
      "poster": "/assets/video/trust-fall/poster/the-garage.webp",
      "small": "/assets/video/trust-fall/sm/the-garage.mp4",
@@ -26673,7 +26668,6 @@ window.ILTV_STORIES = {
       "You know what Juno is doing. What now?",
       "You know what Juno is doing. What now?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/whats-inside.mp4",
      "poster": "/assets/video/trust-fall/poster/whats-inside.webp",
      "small": "/assets/video/trust-fall/sm/whats-inside.mp4",
@@ -26707,7 +26701,6 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-river.mp4",
      "poster": "/assets/video/trust-fall/poster/the-river.webp",
      "small": "/assets/video/trust-fall/sm/the-river.mp4",
@@ -26729,14 +26722,13 @@ window.ILTV_STORIES = {
       "The Tower"
      ],
      "story": [
-      "Eleven fifty. The Tower lobby is a wall of screens, and every one of them shows Marcus out on the plaza, live, counting the city down to ARGUS. You push a cleaning cart past security with Blindspot in your pocket. Then every screen cuts from Marcus to a face made of amber light, and it's looking straight at you.",
-      "Eleven fifty. The Tower lobby is a wall of screens, and every one of them shows Marcus out on the plaza, live, counting the city down to ARGUS. You push a cleaning cart past security with Blindspot in your pocket. Then every screen cuts from Marcus to a face made of amber light, and it's looking straight at you."
+      "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you.",
+      "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you."
      ],
      "question": [
       "ARGUS sees you. What do you do?",
       "ARGUS sees you. What do you do?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-tower.mp4",
      "poster": "/assets/video/trust-fall/poster/the-tower.webp",
      "small": "/assets/video/trust-fall/sm/the-tower.mp4",
@@ -26744,13 +26736,13 @@ window.ILTV_STORIES = {
       [
        "1. Jam it and keep going",
        "1. Jam it and keep going",
-       "jam",
-       true
+       "jam"
       ],
       [
        "2. Stop and listen",
        "2. Stop and listen",
-       "listen"
+       "listen",
+       true
       ]
      ],
      "variants": [
@@ -26781,7 +26773,6 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/lights-out.mp4",
      "poster": "/assets/video/trust-fall/poster/lights-out.webp",
      "small": "/assets/video/trust-fall/sm/lights-out.mp4",
@@ -26809,7 +26800,6 @@ window.ILTV_STORIES = {
       "Do you believe a machine?",
       "Do you believe a machine?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/what-it-knows.mp4",
      "poster": "/assets/video/trust-fall/poster/what-it-knows.webp",
      "small": "/assets/video/trust-fall/sm/what-it-knows.mp4",
@@ -26857,7 +26847,6 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-bait.mp4",
      "poster": "/assets/video/trust-fall/poster/the-bait.webp",
      "small": "/assets/video/trust-fall/sm/the-bait.mp4",
@@ -26885,7 +26874,6 @@ window.ILTV_STORIES = {
       "The air is going. What do you do?",
       "The air is going. What do you do?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-vault.mp4",
      "poster": "/assets/video/trust-fall/poster/the-vault.webp",
      "small": "/assets/video/trust-fall/sm/the-vault.mp4",
@@ -26915,7 +26903,9 @@ window.ILTV_STORIES = {
        "4. Wait. ARGUS promised",
        "promise",
        false,
-       null,
+       {
+        "waited": true
+       },
        null,
        null,
        {
@@ -26957,7 +26947,6 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/sixty-seconds.mp4",
      "poster": "/assets/video/trust-fall/poster/sixty-seconds.webp",
      "small": "/assets/video/trust-fall/sm/sixty-seconds.mp4",
@@ -26986,7 +26975,6 @@ window.ILTV_STORIES = {
       "Hold on.",
       "Hold on."
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/on-the-air.mp4",
      "poster": "/assets/video/trust-fall/poster/on-the-air.webp",
      "small": "/assets/video/trust-fall/sm/on-the-air.mp4",
@@ -27014,7 +27002,6 @@ window.ILTV_STORIES = {
       "Juno is getting away. What do you do?",
       "Juno is getting away. What do you do?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-green-line.mp4",
      "poster": "/assets/video/trust-fall/poster/the-green-line.webp",
      "small": "/assets/video/trust-fall/sm/the-green-line.mp4",
@@ -27041,8 +27028,8 @@ window.ILTV_STORIES = {
         "believed": true
        },
        "story": [
-        "The lock clunks open before you finish asking. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
-        "The lock clunks open before you finish asking. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+        "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
+        "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
        ],
        "question": [
         "It was there, like it said. What now?",
@@ -27067,7 +27054,6 @@ window.ILTV_STORIES = {
       "Breathe.",
       "Breathe."
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-bridge.mp4",
      "poster": "/assets/video/trust-fall/poster/the-bridge.webp",
      "small": "/assets/video/trust-fall/sm/the-bridge.mp4",
@@ -27095,7 +27081,6 @@ window.ILTV_STORIES = {
       "It kept its word.",
       "It kept its word."
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/the-promise.mp4",
      "poster": "/assets/video/trust-fall/poster/the-promise.webp",
      "small": "/assets/video/trust-fall/sm/the-promise.mp4",
@@ -27123,7 +27108,6 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/morning-edition.mp4",
      "poster": "/assets/video/trust-fall/poster/morning-edition.webp",
      "small": "/assets/video/trust-fall/sm/morning-edition.mp4",
@@ -27157,24 +27141,11 @@ window.ILTV_STORIES = {
      "variants": [
       {
        "when": {
-        "believed": true
-       },
-       "story": [
-        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
-        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
-       ],
-       "question": [
-        "ARGUS kept its promise. What do you do?",
-        "ARGUS kept its promise. What do you do?"
-       ]
-      },
-      {
-       "when": {
-        "listened": true
+        "chased": true
        },
        "question": [
-        "ARGUS knew your name at breakfast. What do you do now?",
-        "ARGUS knew your name at breakfast. What do you do now?"
+        "You didn't have to do it alone. What do you do?",
+        "You didn't have to do it alone. What do you do?"
        ]
       },
       {
@@ -27188,11 +27159,33 @@ window.ILTV_STORIES = {
       },
       {
        "when": {
-        "chased": true
+        "waited": true
+       },
+       "story": [
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
+       ],
+       "question": [
+        "You stood still and it kept its word. What do you do?",
+        "You stood still and it kept its word. What do you do?"
+       ]
+      },
+      {
+       "when": {
+        "believed": true
        },
        "question": [
-        "You didn't have to do it alone. What do you do?",
-        "You didn't have to do it alone. What do you do?"
+        "ARGUS kept its promise. What do you do?",
+        "ARGUS kept its promise. What do you do?"
+       ]
+      },
+      {
+       "when": {
+        "listened": true
+       },
+       "question": [
+        "ARGUS knew your name at breakfast. What do you do now?",
+        "ARGUS knew your name at breakfast. What do you do now?"
        ]
       }
      ]
@@ -27206,14 +27199,13 @@ window.ILTV_STORIES = {
       "Live"
      ],
      "story": [
-      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. By noon your record is clean, because ARGUS vouched for you. By night it has asked you to help keep it honest.",
-      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. By noon your record is clean, because ARGUS vouched for you. By night it has asked you to help keep it honest."
+      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
+      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
      ],
      "question": [
       "",
       ""
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/live.mp4",
      "poster": "/assets/video/trust-fall/poster/live.webp",
      "small": "/assets/video/trust-fall/sm/live.mp4",
@@ -27232,14 +27224,13 @@ window.ILTV_STORIES = {
       "Unseen"
      ],
      "story": [
-      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. That night there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
-      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. That night there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
+      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
      ],
      "question": [
       "",
       ""
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/unseen.mp4",
      "poster": "/assets/video/trust-fall/poster/unseen.webp",
      "small": "/assets/video/trust-fall/sm/unseen.mp4",
@@ -27258,14 +27249,13 @@ window.ILTV_STORIES = {
       "Good morning"
      ],
      "story": [
-      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. By the end of the week your record is clean and Juno's reward is in your name, and every morning, before the news, the speaker on your counter says good morning, and you say it back.",
-      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. By the end of the week your record is clean and Juno's reward is in your name, and every morning, before the news, the speaker on your counter says good morning, and you say it back."
+      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back.",
+      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back."
      ],
      "question": [
       "",
       ""
      ],
-     "still": "/assets/images/trust-fall.jpg",
      "video": "/assets/video/trust-fall/good-morning.mp4",
      "poster": "/assets/video/trust-fall/poster/good-morning.webp",
      "small": "/assets/video/trust-fall/sm/good-morning.mp4",

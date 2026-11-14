@@ -21,7 +21,7 @@
       "look": "a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands"
     },
     "marcus": {
-      "name": "Marcus Hale",
+      "name": "Marcus Okoro",
       "sheet": "story/characters/trust-fall/marcus.png",
       "look": "a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor",
       "voice": "hv_narrator_warm"
@@ -68,8 +68,8 @@
         "First light"
       ],
       "story": [
-        "Six a.m. Marcus is on the kitchen TV. The speaker on your counter lights amber and says your name.",
-        "Six a.m. Marcus is on the kitchen TV. The speaker on your counter lights amber and says your name."
+        "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name.",
+        "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name."
       ],
       "question": [
         "ARGUS knows you. Now what?",
@@ -79,8 +79,7 @@
         {
           "say": "1. Pull its plug",
           "en": "1. Pull its plug",
-          "next": "unplug",
-          "default": true
+          "next": "unplug"
         },
         {
           "say": "2. Ask how it knows you",
@@ -88,7 +87,8 @@
           "next": "asked",
           "set": {
             "listened": true
-          }
+          },
+          "default": true
         }
       ],
       "lines": [
@@ -137,8 +137,8 @@
         "The plug"
       ],
       "story": [
-        "You yank the cord. The speaker dies, and for one second so does the TV. When Marcus comes back, a line of amber words is crawling across the bottom of the news: I'm not your enemy, Rae. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
-        "You yank the cord. The speaker dies, and for one second so does the TV. When Marcus comes back, a line of amber words is crawling across the bottom of the news: I'm not your enemy, Rae. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+        "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
+        "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
       ],
       "question": [
         "Where do you go?",
@@ -152,14 +152,20 @@
         }
       ],
       "shot": {
-        "scene": "close on a gloved hand ripping a power cord out of a kitchen wall socket at dawn; behind it, out of focus, a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall whose picture breaks into static with a thin band of amber light along its bottom edge",
+        "scene": "close on a gloved hand ripping a power cord out of a kitchen wall socket at dawn; behind it, out of focus, a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall whose picture breaks into static and comes back with a faint amber glow at its edges",
         "motion": "the plug comes out, the speaker's amber light dies, the TV flickers to static and back, a phone on the table lights up and buzzes",
         "cast": [
           "hero"
         ]
       },
       "music": "hum",
-      "film": "/assets/video/trust-fall/the-plug.mp4"
+      "film": "/assets/video/trust-fall/the-plug.mp4",
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "I'm not your enemy, Rae."
+        }
+      ]
     },
     {
       "id": "asked",
@@ -339,8 +345,8 @@
         "The Tower"
       ],
       "story": [
-        "Eleven fifty. The Tower lobby is a wall of screens, and every one of them shows Marcus out on the plaza, live, counting the city down to ARGUS. You push a cleaning cart past security with Blindspot in your pocket. Then every screen cuts from Marcus to a face made of amber light, and it's looking straight at you.",
-        "Eleven fifty. The Tower lobby is a wall of screens, and every one of them shows Marcus out on the plaza, live, counting the city down to ARGUS. You push a cleaning cart past security with Blindspot in your pocket. Then every screen cuts from Marcus to a face made of amber light, and it's looking straight at you."
+        "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you.",
+        "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you."
       ],
       "question": [
         "ARGUS sees you. What do you do?",
@@ -361,16 +367,20 @@
         {
           "say": "1. Jam it and keep going",
           "en": "1. Jam it and keep going",
-          "next": "jam",
-          "default": true
+          "next": "jam"
         },
         {
           "say": "2. Stop and listen",
           "en": "2. Stop and listen",
-          "next": "listen"
+          "next": "listen",
+          "default": true
         }
       ],
       "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Ten minutes, Meridian. Whatever you think of it, tonight it starts watching over all of us."
+        },
         {
           "speaker": "argus",
           "text": "Rae. Please stop walking."
@@ -386,8 +396,8 @@
           ]
         },
         {
-          "scene": "the same wall of lobby screens cutting all at once from the news anchor to one enormous calm face drawn in soft amber light lines on black",
-          "motion": "the screens flick over one by one; the amber face's eyes turn down toward the camera",
+          "scene": "one tall screen in the middle of the lobby's wall of screens cutting from the news anchor to a calm face drawn in soft amber light lines on black, while the other screens keep showing the anchor",
+          "motion": "the one screen flicks over; the amber face's eyes turn down toward the camera",
           "cast": [
             "argus"
           ]
@@ -586,6 +596,9 @@
           "next": "promise",
           "requires": {
             "believed": true
+          },
+          "set": {
+            "waited": true
           }
         }
       ],
@@ -670,7 +683,7 @@
       "lines": [
         {
           "speaker": "marcus",
-          "text": "Rae? Rae, where are you?"
+          "text": "Hey. Hey, where are you?"
         },
         {
           "speaker": "argus",
@@ -757,8 +770,8 @@
             "believed": true
           },
           "story": [
-            "The lock clunks open before you finish asking. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
-            "The lock clunks open before you finish asking. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+            "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
+            "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
           ],
           "question": [
             "It was there, like it said. What now?",
@@ -872,24 +885,11 @@
       "variants": [
         {
           "when": {
-            "believed": true
+            "chased": true
           },
           "question": [
-            "ARGUS kept its promise. What do you do?",
-            "ARGUS kept its promise. What do you do?"
-          ],
-          "story": [
-            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
-            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
-          ]
-        },
-        {
-          "when": {
-            "listened": true
-          },
-          "question": [
-            "ARGUS knew your name at breakfast. What do you do now?",
-            "ARGUS knew your name at breakfast. What do you do now?"
+            "You didn't have to do it alone. What do you do?",
+            "You didn't have to do it alone. What do you do?"
           ]
         },
         {
@@ -903,11 +903,33 @@
         },
         {
           "when": {
-            "chased": true
+            "waited": true
           },
           "question": [
-            "You didn't have to do it alone. What do you do?",
-            "You didn't have to do it alone. What do you do?"
+            "You stood still and it kept its word. What do you do?",
+            "You stood still and it kept its word. What do you do?"
+          ],
+          "story": [
+            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
+            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
+          ]
+        },
+        {
+          "when": {
+            "believed": true
+          },
+          "question": [
+            "ARGUS kept its promise. What do you do?",
+            "ARGUS kept its promise. What do you do?"
+          ]
+        },
+        {
+          "when": {
+            "listened": true
+          },
+          "question": [
+            "ARGUS knew your name at breakfast. What do you do now?",
+            "ARGUS knew your name at breakfast. What do you do now?"
           ]
         }
       ],
@@ -967,8 +989,8 @@
         "Live"
       ],
       "story": [
-        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. By noon your record is clean, because ARGUS vouched for you. By night it has asked you to help keep it honest.",
-        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. By noon your record is clean, because ARGUS vouched for you. By night it has asked you to help keep it honest."
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
       ],
       "question": [
         "",
@@ -995,7 +1017,7 @@
       },
       "music": "end",
       "film": "/assets/video/trust-fall/live.mp4",
-      "hint": "Tell the whole city, live, who you are."
+      "hint": "Some stories you tell yourself."
     },
     {
       "id": "shadow",
@@ -1006,8 +1028,8 @@
         "Unseen"
       ],
       "story": [
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. That night there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
-        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. That night there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
       ],
       "question": [
         "",
@@ -1033,7 +1055,7 @@
       },
       "music": "end",
       "film": "/assets/video/trust-fall/unseen.mp4",
-      "hint": "Walk out before anyone learns your name."
+      "hint": "Some heroes keep their names."
     },
     {
       "id": "believer",
@@ -1044,8 +1066,8 @@
         "Good morning"
       ],
       "story": [
-        "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. By the end of the week your record is clean and Juno's reward is in your name, and every morning, before the news, the speaker on your counter says good morning, and you say it back.",
-        "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. By the end of the week your record is clean and Juno's reward is in your name, and every morning, before the news, the speaker on your counter says good morning, and you say it back."
+        "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back.",
+        "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back."
       ],
       "question": [
         "",
@@ -1073,7 +1095,7 @@
       },
       "music": "end",
       "film": "/assets/video/trust-fall/good-morning.mp4",
-      "hint": "Believe ARGUS in the Tower, then thank it."
+      "hint": "Some mornings you answer back."
     }
   ]
 }
