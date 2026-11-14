@@ -4002,3 +4002,24 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   .spark-beat * { animation-duration: 1ms !important; }
 }
+
+/* ---------------- Phone: the clip above, the words and choices below, in the thumb zone (phone 5/10, 2026-11-14) ----------------
+   Late Shift's phone layout: the picture is never covered by text. A portrait phone splits the screen: the clip in the
+   top half (bar floats over its top gradient), a solid panel under it with the story line and question, and the
+   choices as the last thing in the column, on the lowest part of the screen above the home bar. */
+@media (orientation: portrait) and (max-width: 599px) {
+  .spark:not(.is-tree):not(.is-endings) .spark-stage {
+    bottom: auto;
+    height: 50dvh;
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-still { transform: none; }
+  .spark:not(.is-tree):not(.is-endings):not([hidden]) .spark-panel {
+    top: 50dvh;
+    max-height: none;
+    padding: 0.7rem 0.9rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    background: #070807;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-story { min-height: 0; flex: 1 1 auto; }
+  .spark:not(.is-tree):not(.is-endings) .spark-choices { margin-top: auto; padding-top: 0.5rem; }
+}
