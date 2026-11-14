@@ -8,10 +8,55 @@ over a game-render camera; ARGUS and Marcus speak in their own voices in the tal
 Close, dry and tense, like someone telling it the next morning with the rain still on the window. Warm only where
 ARGUS is. The machine is never explained and never sneers; the humans (Juno, the lobby, the precinct) are the cold part.
 
-## Pacing
-Short beats, about 25 words a page (never over 40, the whole story near The Water Road's 25): one to three sentences, then
-a question of two to six words. One beat per line. A page that has a variant tells the same beat in its own words, no longer
-than the base. Deaths are two sentences and a line that ends flat; the endings take one breath more and carry the sign-off.
+## Page limit
+**Two sentences and under 30 words a page**, in second person ("You pull at the seam."), present tense for the scene, then one
+question of two to six words. The limit counts the page's story only (not the question or the "THE END" line). One image per
+page. A variant that changes words obeys the same limit and is never longer than the base. Deaths are two sentences ending on a
+flat line; an ending may take the full 30 words and carries the sign-off. At 390x844 that is a page that fits the screen with the
+choices, never a scroll.
+*Where the data stands (2026-11-14):* the longest page is 35 words and the average 27.6, and many pages still run three or four
+short sentences. The playtest enforces 40 and an average of 30 (`trustFallMaxWords`, `trustFallAvgWords`); tightening each page to
+this limit means a new narration and cut per page, so it goes with the voice remake, one page at a time, never by cutting a page's
+words without remaking its recording.
+
+## The narrator
+Second person, dry and close, the voice that says "you" and means Rae without ever saying Rae. It reports what the night does
+(hands, doors, light, the river) and never what you feel or what ARGUS "really" is. It is not warm and not cruel: a tired friend
+telling you what you did. Voice `hv_narrator_bright`.
+- Does: name the object ("the cable duct", "the amber light"), put the cost before the feeling, stop after the image.
+- Never: explain the machine, use "suddenly", describe your thoughts, say Rae.
+- Sounds like: "You thumb the jammer in your sleeve. The screens die, and the face goes mid-word."
+
+## ARGUS
+Calm, exact, never threatening. It speaks in short complete sentences, uses your name (Rae, spoken only by ARGUS, Juno and Marcus's
+voice, never by the narration), states what it knows and what it can do, and offers; it never orders, begs or sneers. Numbers
+and times are exact ("fifty seconds", "the ninth floor"). It does not say "I" about feelings, and never says what it is made of.
+It is warm only by being precise and by keeping its promises. Voice `hv_ai`; spoken in the talking shot, never captioned in the picture.
+- Sounds like: "Stand still, Rae. Breathe in for four. The door opens on the ninth second."
+- Never: "Don't be afraid", threats, jokes, "trust me", exclamation marks, a lecture about AI.
+
+## Marcus
+Warm anchor. A morning-show voice, unhurried, who talks to a city and means one person. He says "Good morning" and, to Rae, only
+"you know who you are": the sign-off. He never says Rae's name on air and never explains the line. Under pressure he stops
+mid-sentence and touches his earpiece; he does not shout. Voice `hv_narrator_warm`.
+- Sounds like: "And to the one who always watches: you know who you are."
+- Never: Rae's name, a speech, "I love you" on air, a news-desk cliché ("breaking", "stay tuned").
+
+## Juno
+Easy, charming, cold underneath. She sounds like she is smiling and is already finished with you. Friendly short lines ("Garage,
+ten."), a nickname's warmth with no warmth in it, plans said as favours; she never raises her voice and never argues, she just
+leaves. The cold shows in what she doesn't say (she never asks if you're all right). Voice `hv_heroine`.
+- Sounds like: "Good. You're early. Hold this, and don't read it."
+- Never: villain talk, threats, a confession, "trust me" (that is ARGUS's word to refuse, never hers).
+
+## Words to avoid
+- On any voice: "suddenly", "somehow", "literally", "AI", "algorithm", "robot", "program", "code", "hack", "cyber", "neural".
+  The machine is ARGUS, a light and a voice.
+- Narration: "feel", "felt", "realize", "you think", "you wonder", Rae, and a second simile.
+- ARGUS: "I'm sorry", "I think", "maybe", "trust me", "don't worry", any exclamation.
+- Marcus: Rae's name, "breaking news", "folks".
+- Juno: "sweetheart" and other pet names that sound sinister on purpose, "kill", "betray".
+- On screen: any word the narration doesn't say (said means shown).
 
 ## Choice design
 Choices are trust: use the machine or jam it, listen or keep going, wait or pry. **Belief pays and the cost is visible:** each
