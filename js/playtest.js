@@ -8498,6 +8498,200 @@ async function rewindRun(options, t) {
   t.progress(1);
 }
 
+/* ---------------- trust-fall: a draft clip story on a phone, every scene by a real press, both deaths, three endings, belief gates ---------------- */
+
+/** Trust Fall (story/trust-fall.md, listed: false, plays at /?story=trust-fall) at 390x844 with touch input. Setup shortcut:
+    a seeded run (event seeded-run) at the parent of each scene, opened by the story's link in a frame; every scene is then
+    entered by a real press (tapAt) of the choice that leads there. Options: {"story":"<id>"} (default trust-fall). */
+async function trustFallRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const st = story(id);
+  if (!st || !st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const ids = Object.keys(st.scenes);
+  const dead = (sid) => !!st.scenes[sid].dead;
+  const ending = (sid) => !!st.scenes[sid].ending;
+  if (listedStories().some((s) => s.id === id)) t.problem("bug", `${id} is listed on the landing page; it is a draft and stays unlisted`);
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  const W = 390, H = 844;
+  const flagsOf = (way) => {
+    const out = {};
+    for (let i = 0; i + 1 < way.length; i++) {
+      const c = st.scenes[way[i]].choices.find((x) => x[2] === way[i + 1]);
+      if (c && c[4]) Object.assign(out, c[4]);
+    }
+    return out;
+  };
+  /** The shortest way (never through a death) to `target` whose flags satisfy `ok`, honouring each choice's `requires` (c[7]). */
+  const wayTo = (target, ok = () => true) => {
+    const queue = [[st.start]];
+    while (queue.length) {
+      const way = queue.shift();
+      const sid = way[way.length - 1];
+      if (sid === target && ok(flagsOf(way))) return way;
+      if (way.length > 14 || (dead(sid) && sid !== target) || sid === target) continue;
+      const flags = flagsOf(way);
+      for (const c of st.scenes[sid].choices) {
+        const req = (c[7] && c[7].requires) || {};
+        if (Object.entries(req).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v)) queue.push([...way, c[2]]);
+      }
+    }
+    return null;
+  };
+  const open = async (way, why) => {
+    gateSeed(t, st, way, why);
+    return viewFrameLoad(t, `/?story=${id}`, W, H);
+  };
+  const ready = async (doc, sid) => {
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} ${sid} ${W}x${H}`);
+    if (!(await waitFor(() => win.finalSpark.scene() === sid, 8000))) throw new Error(`${id}: the seeded run didn't open ${sid} (at ${win.finalSpark.scene()})`);
+    await rewindEndClip(doc);
+    const box = doc.getElementById("spark-choices");
+    if (!(await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice, [data-death]").length > 0, 10000))) t.problem("bug", `${id}/${sid}: the choices never came up at ${W}x${H}`);
+    await sleep(350);
+    return box;
+  };
+  const touchOn = (doc) => doc.defaultView.matchMedia("(pointer: coarse)").matches;
+  const visible = (box) => [...box.querySelectorAll(".choice")].filter((b) => b.getClientRects().length);
+  const label = (b) => enText(b);
+
+  // 1. First scene on a phone: one tap on Tap to play starts the clip; the buffering ring is in the player and gone once it plays.
+  t.scene(`${id}: first scene at ${W}x${H}`);
+  clearProgress();
+  {
+    const doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    const win = doc.defaultView;
+    const rings = [];
+    doc.addEventListener("iltv:loading", (e) => rings.push(e.detail && e.detail.on));
+    if (!win.hawkesSound.prompt()) t.problem("bug", `${id}: /?story=${id} shows no Tap to play prompt`);
+    const t0 = performance.now();
+    await passPrompt(t, doc, `${id} first scene ${W}x${H}`);
+    const v = () => doc.querySelector("#spark-video video:not(.spark-leave)");
+    const played = await waitFor(() => v() && !v().paused && v().currentTime > 0, 8000);
+    const ms = Math.round(performance.now() - t0);
+    if (!played) t.problem("bug", `${id}: one tap on Tap to play didn't start the first clip (at ${W}x${H})`);
+    else t.event("first-tap", `${id}: one tap, the clip plays after ${ms} ms${touchOn(doc) ? " (touch)" : ""}`);
+    t.metric("trustFallFirstTapMs", ms);
+    const ring = doc.querySelector(".spark-video-loading");
+    if (!ring) t.problem("bug", `${id}: the player has no buffering ring over the clip`);
+    else {
+      if (played && !ring.hidden) t.problem("bug", `${id}: the buffering ring is still showing while the clip plays`);
+      t.event("buffering-ring", `${id}: ${rings.includes(true) ? "shown while the clip loaded" : "not needed (the clip loaded at once)"}; hidden once it plays: ${ring.hidden}`);
+    }
+    if (win.finalSpark.scene() !== st.start) t.problem("bug", `${id}: the first scene is ${win.finalSpark.scene()}, not ${st.start}`);
+    await sleep(800);
+    closeViewFrame();
+  }
+  t.progress(0.05);
+
+  // 2 and 3. Every scene by a real press from a seeded run at its parent. Forks: full-width 48px choices and a countdown.
+  const entered = new Set([st.start]);
+  const endingsSeen = [], deathsSeen = [];
+  let n = 0;
+  for (const target of ids) {
+    n++;
+    if (target === st.start) continue;
+    const way = wayTo(target);
+    if (!way) { t.problem("bug", `${id}: no way reaches ${target}`); continue; }
+    const parent = way[way.length - 2];
+    t.scene(`${id}: ${target}`);
+    const doc = await open(way.slice(0, -1), `the press into ${target}`);
+    const win = doc.defaultView;
+    const box = await ready(doc, parent);
+    const btns = visible(box);
+    const index = st.scenes[parent].choices.findIndex((c) => c[2] === target);
+    const btn = btns.find((b) => Number(b.dataset.choiceIndex) === index);
+    if (!btn) { t.problem("bug", `${id}/${parent}: the choice into ${target} isn't on screen (${btns.map(label).join(" | ")})`); closeViewFrame(); continue; }
+    if (btns.length > 1) {
+      const timer = doc.getElementById("spark-timer");
+      const timerOn = !!timer && !timer.hidden && win.getComputedStyle(timer).display !== "none";
+      if (!timerOn) t.problem("bug", `${id}/${parent}: a fork with ${btns.length} choices shows no countdown`);
+      const bw = box.getBoundingClientRect().width;
+      for (const b of btns) {
+        const r = b.getBoundingClientRect();
+        if (r.height < 48) t.problem("bug", `${id}/${parent}: "${label(b)}" is ${Math.round(r.height)}px tall (48px at least)`);
+        if (r.width < bw * 0.95) t.problem("bug", `${id}/${parent}: "${label(b)}" is ${Math.round(r.width)}px wide in a ${Math.round(bw)}px row (full width wanted)`);
+        if (r.left < 0 || r.right > W + 1 || r.bottom > H + 1) t.problem("bug", `${id}/${parent}: "${label(b)}" is not fully on screen at ${W}x${H}`);
+      }
+      const def = win.finalSpark.choicesOf(parent).find((c) => c.default);
+      if (def && dead(def.next)) t.problem("bug", `${id}/${parent}: the countdown's default leads to a death (${def.next})`);
+      t.event("fork", `${id}/${parent}: ${btns.length} choices, ${btns.map((b) => `${Math.round(b.getBoundingClientRect().width)}x${Math.round(b.getBoundingClientRect().height)}`).join(", ")}, countdown ${timerOn ? "on" : "off"}${touchOn(doc) ? ", touch" : ""}`);
+    }
+    btn.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, btn, `"${label(btn)}" (${W}x${H})`);
+    if (!(await waitFor(() => win.finalSpark.scene() === target, 4000))) { t.problem("bug", `${id}: the press on "${label(btn)}" didn't open ${target} (at ${win.finalSpark.scene()})`); closeViewFrame(); continue; }
+    entered.add(target);
+    await sleep(500);
+    if (ending(target)) {
+      await rewindEndClip(doc);
+      const nameEl = doc.getElementById("spark-ending");
+      const card = nameEl && (nameEl.textContent || "").trim();
+      if (doc.getElementById("spark").dataset.state !== "soon" || !card) t.problem("bug", `${id}/${target}: an ending shows no ending card`);
+      else { endingsSeen.push(target); t.event("ending", `${id}/${target}: "${card}"`); }
+      await sleep(800);
+    } else if (dead(target)) {
+      await rewindEndClip(doc);
+      await waitFor(() => doc.querySelectorAll("#spark-choices [data-death]").length >= 2, 8000);
+      rewindCheckButtons(t, doc, `${id} ${target} (${W}x${H})`, { phone: true });
+      deathsSeen.push(target);
+      t.event("death", `${id}: ${target}`);
+      await sleep(800);
+    }
+    closeViewFrame();
+    t.progress(0.05 + (0.6 * n) / ids.length);
+  }
+  t.metric("trustFallScenesEntered", entered.size);
+  t.metric("trustFallEndings", endingsSeen.length);
+  t.metric("trustFallDeaths", deathsSeen.length);
+  if (entered.size !== ids.length) t.problem("bug", `${id}: ${entered.size} of ${ids.length} scenes entered by a press (missing ${ids.filter((x) => !entered.has(x)).join(", ")})`);
+  if (endingsSeen.length !== ids.filter(ending).length) t.problem("bug", `${id}: ${endingsSeen.length} of ${ids.filter(ending).length} endings showed their ending card`);
+  if (deathsSeen.length !== ids.filter(dead).length) t.problem("bug", `${id}: ${deathsSeen.length} of ${ids.filter(dead).length} deaths showed Rewind and Start over`);
+
+  // 4. Belief gates: a choice that needs the flag `believed` is there only on a run that chose Believe it.
+  const gated = [];
+  for (const sid of ids) for (const c of st.scenes[sid].choices) if (c[7] && c[7].requires && c[7].requires.believed) gated.push({ sid, en: c[1], to: c[2] });
+  if (gated.length < 2) t.problem("bug", `${id}: ${gated.length} choices wait on having believed ARGUS (two wanted: the promise and the thank you)`);
+  for (const g of gated) {
+    const yes = wayTo(g.sid, (f) => f.believed === true);
+    const no = wayTo(g.sid, (f) => !f.believed);
+    if (!yes || !no) { t.problem("bug", `${id}/${g.sid}: no way arrives ${yes ? "without" : "with"} having believed ARGUS`); continue; }
+    t.scene(`${id}: ${g.sid}, believed`);
+    let doc = await open(yes, `believed, at ${g.sid}`);
+    let box = await ready(doc, g.sid);
+    const withIt = visible(box).map(label);
+    closeViewFrame();
+    t.scene(`${id}: ${g.sid}, did not believe`);
+    doc = await open(no, `not believed, at ${g.sid}`);
+    box = await ready(doc, g.sid);
+    const without = visible(box).map(label);
+    const locked = box.querySelectorAll(".choice-locked").length;
+    closeViewFrame();
+    if (!withIt.includes(g.en)) t.problem("bug", `${id}/${g.sid}: after Believe it "${g.en}" isn't offered (${withIt.join(" | ")})`);
+    if (without.includes(g.en)) t.problem("bug", `${id}/${g.sid}: without believing "${g.en}" is offered (${without.join(" | ")})`);
+    if (locked) t.problem("bug", `${id}/${g.sid}: without believing a locked row shows (the choice should not be there at all)`);
+    t.event("belief-gate", `${id}/${g.sid}: "${g.en}" - believed [${withIt.join(" | ")}]; not believed [${without.join(" | ")}]`);
+  }
+  t.progress(0.8);
+
+  // 5. The countdown never picks a death: the forks with a deadly option are left to the 15 s timer.
+  for (const sid of ids.filter((x) => !dead(x) && st.scenes[x].choices.some((c) => dead(c[2])))) {
+    t.scene(`${id}: the timer runs out at ${sid}`);
+    const doc = await open(wayTo(sid), `the timeout at ${sid}`);
+    const win = doc.defaultView;
+    await ready(doc, sid);
+    const left = await waitFor(() => win.finalSpark.scene() !== sid, 22000);
+    const now = win.finalSpark.scene();
+    if (!left) t.problem("bug", `${id}/${sid}: nothing happened when the countdown ran out`);
+    else if (dead(now)) t.problem("bug", `${id}/${sid}: the countdown picked a death (${now})`);
+    else t.event("timeout-safe", `${id}/${sid}: the countdown chose ${now}`);
+    closeViewFrame();
+  }
+  t.progress(1);
+}
+
 async function decisiveRun(options, t) {
   // Same guard as audioBusesRun / phoneChoicesRun: a smoke leg must not overwrite the outer snapshot.
   if (!savedRuns && savedCookie == null) rememberProgress();
@@ -8745,6 +8939,13 @@ installPlaytest({
       description: "The Water Road at 390x844 (a frame; each fork opened from a seeded run there, a setup shortcut, event seeded-run; the Tap to play prompt pressed). At each fork that has a choice behind a count of water (the dry wash needs 2, the night's barrel on the rocks needs 3): reached with enough water the option is a button; reached short of it the option is not a button but a greyed-out row that says why (\"needs water 3+\", 48px or taller, 14px type or more, not pressable: a touch on it does nothing), and the water count in the inventory bar is fully on screen above no choice, with the count the story holds (events water-gate-open, water-gate-locked, metric waterForks). At the dry wash and the night raid, a run that helped the family and one that passed them read and offer differently (the boy recognises the riders, the father stands with you; event family-callback). Each ending's words name an earlier choice (ending-callback). Two deaths at most, and the warning shot and the high ground cost barrels, a mule or a rider instead (events cost-not-death, deaths). Options: {\"story\":\"<id>\"}.",
     },
     {
+      id: "trust-fall",
+      title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
+      seconds: 300,
+      tags: ["full"],
+      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene.",
+    },
+    {
       id: "rewind",
       title: "A death goes back to the decision: Rewind to the choice (the deadly option marked Tried) and Start over; a timeout never kills; one-choice pages play on by themselves",
       seconds: 240,
@@ -8975,6 +9176,7 @@ installPlaytest({
       else if (id === "rewind") await rewindRun(options, t);
       else if (id === "spark-depth") await sparkDepthRun(options, t);
       else if (id === "water-gates") await waterGatesRun(options, t);
+      else if (id === "trust-fall") await trustFallRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);
