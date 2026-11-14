@@ -13,7 +13,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
 | **The Final Spark** | `story/final-spark.json` | the site root, as they always were: `/the-sewer/`, `/you-turned-right/`, … | this file, below |
 | **The Water Road** (approved by J 2026-10-18, on the landing page) | `story/water-road.json` | `/water-road/the-water-road/`, … | `story/water-road.md` |
 | **Night Shift** (listed; its demo, `night-shift-demo`, is the unlisted placeholder the console playtests use) | `story/night-shift-demo.json` (the real story: `story/night-shift.json`) | `/night-shift-demo/radio-check/`, … | `story/night-shift.md` |
-| **Trust Fall** (draft, `listed: false`, J asked for it 2026-11-13; placeholder title cards until its media is made) | `story/trust-fall.json` | `/trust-fall/first-light/`, … | `story/trust-fall.md` |
+| **Trust Fall** (draft, `listed: false`, J asked for it 2026-11-13; 14 of 20 scenes play their cut, the rest a graded still with narration until their clips are made) | `story/trust-fall.json` | `/trust-fall/first-light/`, … | `story/trust-fall.md` |
 
 ## Adding a story (a data job, no code)
 
@@ -310,7 +310,8 @@ cheat"). Every story keeps two cookies, both named from `cookie` in its data:
   endcard). The Endings gallery (Endings tab on a video story, Endings on a console story and on the ending card)
   shows found tiles with poster and name, locked ones as a blurred darkened silhouette with "???", and a count
   like "2 of 5 found". Tapping a found ending shows its card again. Nothing clears found endings. Playtest
-  `endings-gallery` (smoke's trimmed leg seeds one found ending).
+  `endings-gallery` (smoke's trimmed leg seeds one found ending). A locked tile also shows the scene's `hint`
+  (teaser). With three endings the grid is one row of three at 390px. Playtest `trust-fall-endings` (touch, 390x844).
 
 **Continue Previously (J, 2026-11-10):** pressing Continue on a mid-run (hero, Continue row or card) shows a ~3 s
 overlay after Tap to play: the last scene's poster with a slow push-in, the story title and one short line naming the

@@ -32,6 +32,8 @@
   var busGain = { ambience: BED_LEVEL, music: MUSIC_LEVEL, ui: UI_LEVEL };
   var ducked = false;
   var duckWant = false;
+  var voiceDuck = false;  // a voice (ARGUS) is speaking: beds and music duck under it
+  var voiceTimer = null;
   var bed = { story: null, mood: null, source: null, buffer: null, url: null, key: null, gain: null };
   var beds = [];          // live bed sources (the current one, plus one fading out for under a second)
   var bedsGo = false;     // beds start only after the first clip plays (or on an image page, or the first choice tap)
@@ -151,7 +153,7 @@
   }
 
   function applyDuck() {
-    var next = !!(duckWant && enabled && unlocked);
+    var next = !!((duckWant || voiceDuck) && enabled && unlocked);
     var amb = next ? BED_LEVEL * DUCK_LEVEL : BED_LEVEL;
     var mus = next ? MUSIC_LEVEL * DUCK_LEVEL : MUSIC_LEVEL;
     busGain.ambience = amb;
@@ -310,6 +312,34 @@
         });
         normalise(d, 0.6);
       });
+    } else if (mood === "dawn") {
+      // Trust Fall, the flat and the morning after: soft rain on a window, a wall clock ticking, a warm room tone.
+      buf = mono(LOOP, function (d, rate) {
+        var i, t, rnd = rand(41);
+        loopNoise(d, rnd, 0.45, 0.06, 0.45);
+        for (i = 0; i < d.length; i++) {
+          t = i / rate;
+          d[i] *= 0.7 + 0.15 * Math.sin(TAU * t / LOOP * 2);
+          d[i] += 0.03 * Math.sin(TAU * 110 * t) + 0.02 * Math.sin(TAU * 165 * t);
+        }
+        for (var s2 = 0; s2 < LOOP; s2++) {
+          var st2 = Math.floor((s2 + 0.25) * rate);
+          for (var k2 = 0; k2 < rate * 0.015 && st2 + k2 < d.length; k2++) d[st2 + k2] += 0.1 * Math.exp(-k2 / rate * 400) * Math.sin(TAU * (s2 % 2 ? 2100 : 1700) * k2 / rate);
+        }
+        normalise(d, 0.55);
+      });
+    } else if (mood === "vault") {
+      // Trust Fall, the sealed vault and the core: a slow alarm pulse, a deep sub drone, a thin hiss of suppression gas.
+      buf = mono(LOOP, function (d, rate) {
+        var i, t, rnd = rand(53);
+        loopNoise(d, rnd, 0.5, 0.2, 0.25);
+        for (i = 0; i < d.length; i++) {
+          t = i / rate;
+          var pulse = Math.pow(Math.max(0, Math.sin(TAU * t / 2)), 6);
+          d[i] += 0.14 * Math.sin(TAU * 41 * t) * (0.7 + 0.3 * Math.sin(TAU * t / LOOP * 2)) + 0.12 * pulse * Math.sin(TAU * 440 * t);
+        }
+        normalise(d, 0.6);
+      });
     } else if (mood === "server") {
       // Trust Fall, the tower and the core: cooling fans (whole-cycle hum and a mains harmonic), a dry hiss, a faint
       // relay tick once a second.
@@ -395,6 +425,23 @@
         normalise(d, 0.65);
       });
     }] },
+    "cue-trust-fall": { priority: 0, layer: true, variants: [0, 1, 2].map(function (n) { return function () {
+      // a choice lands: a short cold rising stinger (a fifth up, a glassy ping) that rings out under the next scene
+      var f = [196, 220, 233.1][n];
+      return mono(1.1, function (d, r) {
+        tone(d, r, 0.02, 0.9, f, f * 1.005, 0.2, 4.5, 0.3); tone(d, r, 0.1, 0.8, f * 1.5, f * 1.5, 0.12, 5.5, 0.15); tone(d, r, 0.18, 0.5, f * 6, f * 5.9, 0.05, 9, 0);
+        normalise(d, 0.5);
+      });
+    }; }) },
+    "plug-yank": { priority: 3, variants: [function () {
+      // Trust Fall, the plug: a hard tug, the cord snapping out with a spark crackle, the speaker's last whine falling away, a dull thud of the TV cutting
+      return mono(1.6, function (d, r) {
+        noiseBurst(d, r, 0, 0.05, 0.6, 90, 31, 0.9); tone(d, r, 0, 0.12, 180, 70, 0.4, 28, 0.2);
+        noiseBurst(d, r, 0.05, 0.35, 0.3, 14, 32, 0.95); tone(d, r, 0.1, 0.9, 1200, 160, 0.16, 4, 0);
+        tone(d, r, 0.5, 0.25, 70, 55, 0.35, 12, 0.3); noiseBurst(d, r, 0.7, 0.3, 0.12, 9, 33, 0.5);
+        normalise(d, 0.7);
+      });
+    }] },
     "sting-night-shift": { priority: 4, variants: [function () {
       // a cold fluorescent hum that cuts out
       return mono(2.6, function (d, r) {
@@ -473,7 +520,7 @@
     var def = UI[name];
     if (!def) { tell("ui-missing", { name: String(name) }); return; }
     var now = context.currentTime;
-    if (uiNow && uiNow.ends > now) {
+    if (!def.layer && uiNow && uiNow.ends > now) {
       if (def.priority < uiNow.priority) return; // a quieter sound never cuts a louder one
       stopUiNow(0.02);                           // never two UI sounds at once
     }
@@ -496,21 +543,131 @@
     var buf = fbuf || bufferCache[ck] || (bufferCache[ck] = def.variants[vi]());
     if (!buf) return;
     if (fbuf) vi = fi;
-    var rate = (name.indexOf("sting") === 0 || name.indexOf("torch") === 0) ? 1 : RATES[ri];
+    var rate = (name.indexOf("sting") === 0 || name.indexOf("torch") === 0 || def.layer) ? 1 : RATES[ri];
     try {
       var src = context.createBufferSource(), g = context.createGain();
       src.buffer = buf;
       src.__hawkesSampleId = name === "choose" ? "tap" : name;
-      src.__hawkesBus = name.indexOf("sting") === 0 ? "music" : "ui";
+      src.__hawkesBus = name.indexOf("sting") === 0 || def.layer ? "music" : "ui";
       src.playbackRate.value = rate;
       src.connect(g);
       g.connect(buses.ui);
       src.start(0);
-      uiNow = { src: src, gain: g, priority: def.priority, ends: now + buf.duration / rate };
+      if (!def.layer) uiNow = { src: src, gain: g, priority: def.priority, ends: now + buf.duration / rate };
       src.onended = function () { if (uiNow && uiNow.src === src) uiNow = null; try { g.disconnect(); } catch (e) { /* gone */ } };
       if (name.indexOf("sting") === 0) tell("sting", { name: name, story: name.slice(6) });
+      else if (def.layer) tell("cue", { name: name, variant: vi });
       else if (name.indexOf("torch") !== 0) tell("ui", { name: name === "choose" ? "tap" : name, variant: vi, rate: rate });
     } catch (e) { /* no sound */ }
+  }
+
+
+  /* ---- A speaking voice (ARGUS): a recording at /assets/audio/voice/<key>.mp3 when it exists; until then a synthetic
+     vocal phrase built from the words (formant-like syllables, one per word, pitched down and slow) with the browser's
+     own speech on top when it has one. Beds and music duck under it. ---- */
+  var voiceFileTried = {};
+  function voicePhrase(text, seed) {
+    var words = String(text).split(/\s+/).filter(Boolean), rnd = rand(seed), total = 0, i;
+    var lens = words.map(function (w) { var l = 0.12 + Math.min(0.3, w.length * 0.045); total += l + 0.04; return l; });
+    return { buf: mono(total + 0.3, function (d, r) {
+      var at = 0.05;
+      for (i = 0; i < words.length; i++) {
+        var f = 118 + rnd() * 40 + (/[?]$/.test(words[i]) ? 30 : 0), n = Math.floor(lens[i] * r), ph = 0, ph2 = 0, ph3 = 0, s0 = Math.floor(at * r);
+        for (var k = 0; k < n && s0 + k < d.length; k++) {
+          var env = Math.sin(Math.PI * k / n);
+          ph += TAU * f * (1 - 0.1 * k / n) / r; ph2 += TAU * 700 / r; ph3 += TAU * 1150 / r;
+          d[s0 + k] += env * (0.22 * Math.sin(ph) * Math.sin(ph2 * 0.5 + ph) + 0.12 * Math.sin(ph + Math.sin(ph2) * 0.8) + 0.05 * Math.sin(ph3));
+        }
+        at += lens[i] + 0.04 + (/[,.?!]$/.test(words[i]) ? 0.18 : 0);
+      }
+      normalise(d, 0.5);
+    }), secs: total + 0.3 };
+  }
+
+  function playVoice(key, text, speaker) {
+    if (!unlocked || !enabled || !text) return false;
+    ensureGraph();
+    if (!context || !buses.ui) return false;
+    var rel = "voice/" + key + ".mp3", st = fileState[rel], buf = st && st.buf, secs;
+    if (!buf && !st) loadFile(rel); // a recording for next time (404s quietly while none is made)
+    var recorded = !!buf;
+    if (!buf) { var ph = voicePhrase(text, key.length * 977 + text.length); buf = ph.buf; secs = ph.secs; } else secs = buf.duration;
+    try {
+      var src = context.createBufferSource(), g = context.createGain();
+      src.buffer = buf;
+      src.__hawkesSampleId = "voice:" + (speaker || "argus") + ":" + key;
+      src.__hawkesBus = "voice";
+      g.gain.value = recorded ? 1 : 0.8;
+      src.connect(g); g.connect(buses.ui);
+      src.start(0);
+      src.onended = function () { try { g.disconnect(); } catch (e) { /* gone */ } };
+      voiceDuck = true; applyDuck();
+      clearTimeout(voiceTimer);
+      voiceTimer = setTimeout(function () { voiceDuck = false; applyDuck(); }, Math.round(secs * 1000) + 250);
+      if (!recorded && window.speechSynthesis && window.SpeechSynthesisUtterance) {
+        try {
+          var u = new SpeechSynthesisUtterance(text);
+          u.pitch = 0.6; u.rate = 0.88; u.volume = 0.9;
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(u);
+        } catch (e3) { /* no speech */ }
+      }
+      tell("voice", { speaker: speaker || "argus", key: key, recorded: recorded, seconds: Math.round(secs * 10) / 10 });
+      return true;
+    } catch (e) { return false; }
+  }
+
+  /* ---- Narration over a still (a scene whose clip isn't made): the scene's recorded narration on the voice bus and,
+     under it, its music cue looped on the music bus. Both are fetched by URL (not /assets/audio/), cached, and stopped
+     when the scene changes. Beds and music duck under the voice, as they do for ARGUS. ---- */
+  var urlBuf = {}, narr = null;
+  function loadUrl(url, then) {
+    var st = urlBuf[url];
+    if (st) { if (st.buf) then(st.buf); else if (!st.failed) st.wait.push(then); return; }
+    if (!context || !window.fetch) return;
+    st = urlBuf[url] = { buf: null, failed: false, wait: [then] };
+    fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+      .then(function (ab) { return new Promise(function (ok, no) { context.decodeAudioData(ab, ok, no); }); })
+      .then(function (b) { st.buf = b; st.wait.forEach(function (f) { f(b); }); st.wait = []; })
+      .catch(function () { st.failed = true; st.wait = []; });
+  }
+  function stopNarration() {
+    var n = narr;
+    narr = null;
+    if (!n) return;
+    n.nodes.forEach(function (x) { try { x.src.stop(); } catch (e) { /* ended */ } try { x.g.disconnect(); } catch (e2) { /* gone */ } });
+    clearTimeout(voiceTimer);
+    voiceDuck = false;
+    applyDuck();
+  }
+  function playNarration(url, scoreUrl, id) {
+    stopNarration();
+    if (!unlocked || !enabled || !url) return false;
+    ensureGraph();
+    if (!context || !buses.ui) return false;
+    var mine = narr = { id: id, nodes: [] };
+    function start(buf, bus, name, loop, level, onEnd) {
+      if (narr !== mine) return; // the scene changed while it loaded
+      try {
+        var src = context.createBufferSource(), g = context.createGain();
+        src.buffer = buf; src.loop = !!loop;
+        src.__hawkesSampleId = name + ":" + id;
+        src.__hawkesBus = bus === buses.music ? "music" : "voice";
+        g.gain.value = level;
+        src.connect(g); g.connect(bus);
+        src.start(0);
+        mine.nodes.push({ src: src, g: g });
+        if (onEnd) src.onended = onEnd;
+      } catch (e) { /* no sound */ }
+    }
+    if (scoreUrl && buses.music) loadUrl(scoreUrl, function (b) { start(b, buses.music, "score", true, 0.9); });
+    loadUrl(url, function (b) {
+      if (narr !== mine) return;
+      voiceDuck = true; applyDuck();
+      start(b, buses.ui, "narration", false, 1, function () { if (narr === mine) { voiceDuck = false; applyDuck(); } });
+      tell("voice", { speaker: "narrator", key: id, recorded: true, seconds: Math.round(b.duration * 10) / 10 });
+    });
+    return true;
   }
 
   /* ---- Beds: one at a time, started only after the first clip plays, cross-faded, ducked, stopped on the list ---- */
@@ -756,6 +913,9 @@
     enabled: function () { return enabled; },
     setEnabled: function (on) { setEnabled(!!on, "api"); paintToggleIcon(); },
     playUi: playUi,
+    playVoice: playVoice,
+    playNarration: playNarration,
+    stopNarration: stopNarration,
     setBed: setBed,
     beginBeds: beginBeds,
     sounds: function () { return Object.keys(UI); },

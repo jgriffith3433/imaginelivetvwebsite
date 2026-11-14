@@ -1329,6 +1329,8 @@ html[data-living="still"] .card-loop { display: none !important; }
 }
 
 .tree-node.is-locked .tree-node-title { font-size: 1.2rem; }
+.tree-node.is-locked { opacity: 0.55; filter: grayscale(1); }
+.hero-endings { display: inline-block; margin: 0 0.8rem 0 0; }
 
 .tree-node-title {
   display: block;
@@ -1674,6 +1676,20 @@ html:not([data-kit]) .inventory.kit { display: none; }
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
+/* Trust Fall: the stills share ARGUS's amber (the speaker ring) instead of the other stories' teal grade. */
+.spark-still[data-palette="argus"] {
+  filter: brightness(0.8) contrast(1.1) saturate(0.85) sepia(0.45) hue-rotate(-12deg);
+}
+.spark-still[data-palette="argus"]::before { /* the ARGUS glow, then the vignette */
+  background:
+    radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 45%), rgba(255, 176, 64, 0.55) 0, rgba(255, 150, 40, 0.22) 14%, transparent 38%),
+    radial-gradient(ellipse at 50% 45%, transparent 38%, rgba(10, 5, 0, 0.78) 100%);
+  animation: argus-breathe 4.5s ease-in-out infinite alternate;
+}
+.spark-still[data-palette="argus"][data-place="server"]::before { filter: hue-rotate(-8deg) brightness(1.15); }
+.spark-still[data-palette="argus"][data-place="vault"]::before { filter: brightness(0.85); }
+@keyframes argus-breathe { from { opacity: 0.8; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .spark-still[data-palette="argus"]::before { animation: none; } }
 @keyframes still-drift { from { translate: 0 0; } to { translate: -1.5% 1%; } }
 @media (prefers-reduced-motion: reduce) { .spark-still { animation: none; } }
 
@@ -2822,6 +2838,10 @@ button.ending-tile:focus-visible {
 @media (max-width: 420px) {
   .endings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
   .ending-tile-name { font-size: 0.75rem; }
+  /* Three endings: one row of three, not two and an orphan (Trust Fall). */
+  .endings-grid[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; }
+  .endings-grid[data-count="3"] .ending-tile-name { font-size: 0.7rem; padding: 0 0.4rem 0.4rem; overflow-wrap: anywhere; }
+  .endings-grid[data-count="3"] .ending-tile-hint { font-size: 0.66rem; padding: 0 0.4rem 0.4rem; overflow-wrap: anywhere; }
 }
 @media (max-height: 560px) {
   .ending-tile-media { aspect-ratio: 3 / 4; max-height: 28dvh; }
@@ -3267,17 +3287,12 @@ button.ending-tile:focus-visible {
 html[data-reading="en"] .post-card .spot-src { display: none; }
 html[data-reading="en"] .post-card .spot-en { display: inline; }
 
-/* Landing page living layer (js/living.js): hero trailer + card loops; light-up; screen wall. */
+/* Landing page living layer (js/living.js): hero trailer + card loops; light-up. */
 .hero, .story-card { transition: opacity .6s ease, filter .6s ease, border-color .2s, transform .2s; }
 .hero.dim, .story-card.dim { opacity: .25; filter: brightness(.5); }
 .hero.lit, .story-card.lit { animation: lit-in .8s ease-out; }
 .story-card.is-previewing, .hero.is-playing { box-shadow: 0 0 22px rgba(160, 190, 255, .28); }
 @keyframes lit-in { from { box-shadow: 0 0 40px rgba(160, 190, 255, .6); } to { box-shadow: 0 0 0 rgba(160, 190, 255, 0); } }
-.tile-wall { display: flex; gap: .5rem; margin: .6rem 0 1rem; height: 34px; }
-.tile-screen { flex: 1; background: #0b1220; border: 1px solid #2a3550; border-radius: 3px; position: relative; overflow: hidden; }
-.tile-screen::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(120,160,255,.10) 0 2px, transparent 2px 4px); }
-.tile-screen.flick { animation: tile-flick .5s steps(5); }
-@keyframes tile-flick { 0% { background: #bcd0ff; } 30% { background: #0b1220; } 55% { background: #6f8fd8; } 100% { background: #0b1220; } }
 .post-card.sleepy { opacity: .4; transform: translateY(10px); transition: opacity .6s, transform .6s; }
 .post-card.sleepy.awake { opacity: 1; transform: none; }
 
@@ -3317,9 +3332,17 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
   animation: spark-leave var(--fade-ms, 350ms) ease-in-out forwards;
 }
 .spark-video > video:not(.spark-leave),
-.spark-video > .spark-still:not(.spark-leave),
-.spark-video > .spark-video-blank:not(.spark-leave) {
+.spark-video > .spark-still:not(.spark-leave) {
   animation: spark-enter var(--fade-ms, 350ms) ease-in-out;
+}
+/* A title card comes in only after the old one has gone (200 ms out, then 200 ms in): never two titles at once. */
+.spark-video > .spark-video-blank:not(.spark-leave) {
+  animation: spark-title-in 200ms ease-out 200ms backwards;
+}
+.spark-video > .spark-video-blank.spark-leave { animation-duration: 200ms; }
+@keyframes spark-title-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .spark-video > .spark-video-blank:not(.spark-leave) { animation-duration: 60ms; animation-delay: 120ms; }
 }
 @keyframes spark-leave { from { opacity: 1; } to { opacity: 0; } }
 @keyframes spark-enter { from { opacity: 1; } to { opacity: 1; } }
@@ -3930,3 +3953,81 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
 /* A page with a still and no clip: the choices (or a death's two buttons) hold their place but stay unseen until the
    words have had their reading time (js/game.js holdForReading). */
 .spark-choices[data-reading="true"] { visibility: hidden; pointer-events: none; }
+
+/* ---------------- First five minutes: Play is the single large call to action (critic, 2026-11-14) ----------------
+   The landing page's hero is the first screen: its trailer already moves behind the card; Play is a full-width, 56 px
+   button inside it, in thumb reach, on the first screen at 390x844 (the catalogue's small Play buttons stay small). */
+.hero .hero-go {
+  justify-content: center;
+  min-height: 56px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0c0d0f;
+  background: #f3f1ec;
+  border-color: #f3f1ec;
+}
+.hero:hover .hero-go,
+.hero:focus-visible .hero-go { color: #0c0d0f; background: #fff; border-color: #fff; }
+@media (max-width: 640px) {
+  .hero-media, .hero img, .hero-blank, .hero-trailer { aspect-ratio: 4 / 3; }
+  [data-view="landing"] .stories h1 { font-size: 1.4rem; margin-bottom: 0.4rem; }
+}
+
+/* Trust Fall, "shown before told": a drawn cutaway the scene opens on; story text, question and choices wait for it. */
+.spark[data-beat="true"] .spark-story,
+.spark[data-beat="true"] .spark-question,
+.spark[data-beat="true"] .spark-choices,
+.spark[data-beat="true"] .choice-timer { visibility: hidden; }
+.spark[data-beat="true"] .spark-video-blank,
+.spark[data-beat="true"] .spark-still { visibility: hidden; }
+.spark-beat { position: absolute; inset: 0; z-index: 6; overflow: hidden; pointer-events: none; background: linear-gradient(180deg, #0a1520 0%, #101c28 62%, #070b10 100%); transition: opacity 0.4s; }
+.spark-beat.is-done { opacity: 0; }
+.spark-beat i { position: absolute; display: block; }
+.beat-tv { top: 8%; right: 10%; width: 46%; height: 26%; border-radius: 4px; border: 2px solid #1d2c3a; background: #cfe6f3; box-shadow: 0 0 40px 6px rgba(120, 190, 230, 0.35);
+  animation: beat-tv var(--beat-ms) steps(1, end) forwards; }
+.beat-sill { left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, #16202b, #0a0f15); border-top: 2px solid #233446; }
+.beat-socket { left: 14%; bottom: 20%; width: 28px; height: 38px; border-radius: 5px; background: #d8dfe4; box-shadow: inset 0 0 0 3px #aab4bb; }
+.beat-cord { left: calc(14% + 14px); bottom: calc(20% + 19px); width: 50%; height: 4px; border-radius: 2px; background: #05080b; transform-origin: 0 50%;
+  animation: beat-cord var(--beat-ms) cubic-bezier(.2, .8, .2, 1) forwards; }
+.beat-spark { left: 14%; bottom: 20%; width: 60px; height: 60px; margin: -10px 0 0 -14px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(circle, #fff 0 12%, #ffd37a 28%, rgba(255, 160, 40, 0) 70%); animation: beat-spark var(--beat-ms) ease-out forwards; }
+.beat-speaker { left: 52%; bottom: 14%; width: 22%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #2a3744, #0b1015 72%); box-shadow: 0 8px 20px #000; }
+.beat-ring { left: calc(52% + 3%); bottom: calc(14% + 3%); width: 16%; aspect-ratio: 1; border-radius: 50%; border: 5px solid #ffb347; box-shadow: 0 0 22px 4px rgba(255, 179, 71, 0.8), inset 0 0 12px rgba(255, 179, 71, 0.6);
+  animation: beat-ring var(--beat-ms) ease-out forwards; }
+.beat-phone { right: 12%; bottom: 8%; width: 9%; height: 14%; min-width: 34px; border-radius: 6px; background: #05080b; border: 2px solid #1d2c3a; opacity: 0; animation: beat-phone var(--beat-ms) linear forwards; }
+@keyframes beat-tv { 0%, 40% { background: #cfe6f3; } 46% { background: #fff; } 50% { background: #3a4a56; } 54% { background: #e8eef2; } 58% { background: #06090c; } 74% { background: #06090c; box-shadow: 0 0 40px 6px rgba(120, 190, 230, 0.05); } 80%, 100% { background: #2a1d10; box-shadow: 0 0 28px 6px rgba(255, 179, 71, 0.35); } }
+@keyframes beat-cord { 0%, 30% { transform: rotate(0) scaleX(1); } 38% { transform: rotate(-24deg) scaleX(1.12); } 55% { transform: rotate(-70deg) translateX(30px); } 100% { transform: rotate(-95deg) translateX(40px); opacity: 0.5; } }
+@keyframes beat-spark { 0%, 33% { opacity: 0; transform: scale(0.3); } 38% { opacity: 1; transform: scale(1.4); } 60%, 100% { opacity: 0; transform: scale(2); } }
+@keyframes beat-ring { 0%, 34% { opacity: 1; } 36% { opacity: 0.2; } 38% { opacity: 1; } 42%, 100% { opacity: 0; } }
+@keyframes beat-phone { 0%, 68% { opacity: 0; } 70%, 100% { opacity: 1; box-shadow: 0 0 22px 6px rgba(230, 240, 255, 0.55); background: #bfe3ff; } }
+@media (prefers-reduced-motion: reduce) {
+  .spark-beat * { animation-duration: 1ms !important; }
+}
+
+/* ---------------- Phone: the clip above, the words and choices below, in the thumb zone (phone 5/10, 2026-11-14) ----------------
+   Late Shift's phone layout: the picture is never covered by text. A portrait phone splits the screen: the clip in the
+   top half (bar floats over its top gradient), a solid panel under it with the story line and question, and the
+   choices as the last thing in the column, on the lowest part of the screen above the home bar. */
+@media (orientation: portrait) and (max-width: 599px) {
+  .spark:not(.is-tree):not(.is-endings) .spark-stage {
+    bottom: auto;
+    height: 50dvh;
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-still { transform: none; }
+  .spark:not(.is-tree):not(.is-endings):not([hidden]) .spark-panel {
+    top: 50dvh;
+    max-height: none;
+    padding: 0.7rem 0.9rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    background: #070807;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .spark:not(.is-tree):not(.is-endings) .spark-story { min-height: 0; flex: 1 1 auto; }
+  .spark:not(.is-tree):not(.is-endings) .spark-choices { margin-top: auto; padding-top: 0.5rem; }
+  /* A death (J, 2026-11-14): the death line fills the panel above, and Rewind to the choice and Start over are pinned to
+     its foot, in the bottom third of the screen (home bar clear), 56px tall, so one thumb gets straight back in. */
+  .spark[data-state="dead"] .spark-choices { position: sticky; bottom: 0; z-index: 2; background: #070807; display: flex; flex-direction: column; gap: 0.5rem; }
+  .spark[data-state="dead"] .spark-choices .choice.death-choice { min-height: 56px; flex: 0 0 auto; }
+}

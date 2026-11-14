@@ -355,7 +355,9 @@ const shotsOf = (s) => (s.shots?.length ? s.shots : s.shot ? [s.shot] : []);
 const shotFile = (st, s, i, base, ext) => media(st, s, `${base}${i ? `-${i + 1}` : ''}.${ext}`);
 
 function cutParts(st, s) {
-  const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }));
+  // A talking shot is cut in once both its picture and its recording are made; until then the scene plays without it.
+  const talks = (s.lines ?? []).map((l, i) => ({ video: media(st, s, `talk-${i + 1}.mp4`), audio: media(st, s, `line-${i + 1}.mp3`) }))
+    .filter((t) => exists(t.video) && exists(t.audio));
   let music = s.music ? musicFile(st, s.music) : null;
   // A draft's scene isn't held back by a music cue that isn't made yet: it's cut without it, and cut again once it is.
   const later = music && !st.listed && !exists(music) ? music : null;
@@ -460,8 +462,10 @@ function storyData() {
         ...clipExtras(videoOf(st, s)),
         // A gen scene whose cut isn't made, with no filmed clip: the story's key art, graded, instead of a title card.
         ...(stillOf(st, s) ? { still: stillOf(st, s) } : {}),
+        // A still page with its narration made (and its music cue): the player speaks it over the still (js/game.js narrate).
+        ...(stillOf(st, s) && exists(media(st, s, 'narration.mp3')) ? { narration: '/' + media(st, s, 'narration.mp3'), ...(s.music && exists(musicFile(st, s.music)) ? { score: '/' + musicFile(st, s.music) } : {}) } : {}),
         // Seconds of live picture the cut keeps after the narration, so the choices come up over moving footage (js/game.js).
-        ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s) ? { live: LIVE_TAIL } : {}),
+        ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s, st) ? { live: LIVE_TAIL } : {}),
         ...(s.dead ? { dead: true } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
@@ -576,6 +580,7 @@ function hero(st) {
           <h2>${esc(titleOf(st))}</h2>
           <p>${esc(st.entry.logline)}</p>
           <p class="hero-meta"><span class="meta-runtime">${esc(st.entry.runtime ?? '')}</span><span class="meta-mood">${esc(st.entry.mood ?? '')}</span></p>
+          <span class="hero-endings story-card-endings" hidden></span>
           <span class="hero-go">Play</span>
         </div>
       </a>`;
@@ -743,7 +748,7 @@ function assets(st) {
   // so every shot keeps the same faces.
   for (const [id, c] of Object.entries(story.characters ?? {})) {
     if (!used.has(id)) continue;
-    const prompt = `Character reference sheet of this exact individual: ${c.look}. Full-body front view, three-quarter view, side view and back view, plus a close-up of the face, side by side on a plain mid-grey background. Same proportions and clothes in every view. ${story.style}`;
+    const prompt = `Character reference sheet of this exact individual: ${c.look}. ${c.views ?? 'Full-body front view, three-quarter view, side view and back view, plus a close-up of the face, side by side on a plain mid-grey background. Same proportions and clothes in every view.'} ${story.style}`;
     list.push({
       id: `${P}char-${id}`,
       note: c.seed ? `Reference sheet for ${c.name}${of}, from a frame of the filmed clips (${c.seed}).` : `Reference sheet for ${c.name}${of}, from the description alone (no filmed clip).`,
@@ -874,7 +879,7 @@ const LIVE_TAIL = 18;
 const PUSH_MAX = 1.14;
 
 /** Does this scene's cut keep the picture moving under its choices? (A one-choice page carries on by itself at the end of its clip.) */
-const liveTail = (s) => (s.choices?.length ?? 0) > 1 && !(s.lines ?? []).length;
+const liveTail = (s, st) => (s.choices?.length ?? 0) > 1 && !(st ? cutParts(st, s).talks : s.lines ?? []).length;
 
 /** The shots laid end to end under the narration (never looped: when the narration outruns the footage the last frame
  *  slows to a stop and the camera keeps pushing in on it), then each talking shot with its line, all over the mood music. */
@@ -894,7 +899,7 @@ function cut(st, s) {
   const args = ['-v', 'error', '-y'];
   const graph = [];
   const pairs = [];
-  const tail = liveTail(s) ? LIVE_TAIL : 0;
+  const tail = liveTail(s, st) ? LIVE_TAIL : 0;
   const speech = duration(p.narration) + 0.8;
   const a0 = speech + tail;
   let total = a0;

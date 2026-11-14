@@ -7721,8 +7721,17 @@ function frontDoorFit(t, doc, w, where) {
   const win = doc.defaultView;
   const wide = Math.max(doc.documentElement.scrollWidth, doc.body.scrollWidth);
   if (wide > w + 1) t.problem("bug", `${where}: the page is ${wide}px wide in a ${w}px screen (sideways scroll)`);
+  if (doc.querySelector(".tile-wall, .tile-screen")) t.problem("bug", `${where}: empty unlabeled scanline bars are on the landing page`);
   const small = [...doc.querySelectorAll("#stories .hero-go, #stories .continue-go, #stories .story-card-go")].filter((el) => el.getClientRects().length && (el.getBoundingClientRect().height < 30));
   for (const el of small) t.problem("bug", `${where}: "${(el.textContent || "").trim()}" is ${Math.round(el.getBoundingClientRect().height)}px tall`);
+  /* First five minutes (critic, 2026-11-14): Play is the one large call to action, on the first screen. */
+  const heroPlay = doc.querySelector("#stories a.hero .hero-go");
+  if (heroPlay && heroPlay.getClientRects().length) {
+    const pr = heroPlay.getBoundingClientRect();
+    t.event("play-cta", `${where}: hero Play ${Math.round(pr.width)}x${Math.round(pr.height)}px, bottom ${Math.round(pr.bottom)} of ${win.innerHeight}px`);
+    if (pr.height < 52) t.problem("bug", `${where}: the hero's Play is ${Math.round(pr.height)}px tall, not a large call to action`);
+    if (pr.bottom > win.innerHeight) t.problem("bug", `${where}: the hero's Play is below the first screen (bottom ${Math.round(pr.bottom)}px of ${win.innerHeight}px)`);
+  }
   for (const el of doc.querySelectorAll("#stories a.hero, #stories a.story-card, #stories a.continue-card")) {
     const r = el.getBoundingClientRect();
     if (r.width < 44 || r.height < 44) t.problem("bug", `${where}: a ${el.className} is ${Math.round(r.width)}x${Math.round(r.height)}px`);
@@ -8611,6 +8620,8 @@ function checkStill(t, doc, label, W) {
     else if (!ok || !r.width || !r.height) t.problem("bug", `${label}: the graded still didn't load or has no size (${el.dataset.still})`);
     else if (text) t.problem("bug", `${label}: the graded still carries text ("${text}")`);
     else if (filt === "none") t.problem("bug", `${label}: the still isn't graded (no shared filter)`);
+    else if (/trust-fall/.test(label) && el.dataset.palette !== "argus") t.problem("bug", `${label}: the Trust Fall still isn't in ARGUS's amber palette`);
+    else if (/trust-fall/.test(label) && !/rgba\(255, 176, 64/.test(getComputedStyle(el, "::before").backgroundImage)) t.problem("bug", `${label}: the Trust Fall still has no amber ARGUS glow`);
     else t.event("graded-still", `${label}: graded still ${el.dataset.still.split("/").pop()} ${Math.round(r.width)}x${Math.round(r.height)}, no text card`);
     if (sideways > 1) t.problem("bug", `${label}: scrolls sideways by ${sideways}px at ${W}px wide`);
     if (small.length) t.problem("bug", `${label}: ${small.length} choice(s) under 44px tall (${small.map((b) => Math.round(b.getBoundingClientRect().height)).join(", ")})`);
@@ -8621,6 +8632,97 @@ function checkStill(t, doc, label, W) {
 /** Trust Fall (story/trust-fall.md, listed: false, plays at /?story=trust-fall) at 390x844 with touch input. Setup shortcut:
     a seeded run (event seeded-run) at the parent of each scene, opened by the story's link in a frame; every scene is then
     entered by a real press (tapAt) of the choice that leads there. Options: {"story":"<id>"} (default trust-fall). */
+/** Trust Fall's endings gallery on a phone (touch, 390x844 frame): a seeded run (setup shortcut, `seeded-run`) one
+    choice before Live, a real tap on that choice, the ending card says "1 of 3 found", a tap on Endings opens the
+    gallery: Live as a tile, Unseen and Good morning as silhouettes ("???") with their hints, no sideways scroll. */
+async function trustFallEndingsRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const st = story(id);
+  if (!st || !st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const ends = Object.keys(st.scenes).filter((sid) => st.scenes[sid].ending);
+  const first = (options && options.ending) || "truth";
+  const parent = Object.keys(st.scenes).find((sid) => st.scenes[sid].choices.some((c) => c[2] === first));
+  if (!parent) throw new Error(`${id}: no scene leads to ${first}`);
+  await passPrompt(t);
+  try {
+    clearProgress();
+    // The way to the parent: the shortest, by the story's own choices (flags only matter for gated choices).
+    const queue = [[st.start]];
+    let way = null;
+    while (queue.length && !way) {
+      const w = queue.shift();
+      const sid = w[w.length - 1];
+      if (sid === parent) { way = w; break; }
+      if (w.length > 14 || st.scenes[sid].dead || st.scenes[sid].ending) continue;
+      for (const c of st.scenes[sid].choices) if (!((c[7] && c[7].requires) && Object.keys(c[7].requires).length)) queue.push([...w, c[2]]);
+    }
+    if (!way) throw new Error(`${id}: no way to ${parent}`);
+    gateSeed(t, st, way, `${first} ending card`);
+    t.scene(`${id}: reach ${first} at 390x844`);
+    const doc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} ${parent} 390x844`);
+    if (!(await waitFor(() => win.finalSpark.scene() === parent, 8000))) throw new Error(`${id}: the seeded run didn't open ${parent}`);
+    await rewindEndClip(doc);
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice").length > 0, 12000);
+    await sleep(400);
+    const i = st.scenes[parent].choices.findIndex((c) => c[2] === first);
+    const btn = [...box.querySelectorAll(".choice")].find((b) => b.dataset.choiceIndex == null ? false : Number(b.dataset.choiceIndex) === i) || [...box.querySelectorAll(".choice")][i];
+    if (!btn) throw new Error(`${id}: no button for the way to ${first}`);
+    btn.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, btn, `"${enText(btn)}"`);
+    if (!(await waitFor(() => win.finalSpark.scene() === first, 5000))) throw new Error(`${id}: the tap didn't open ${first}`);
+    const card = doc.getElementById("spark-ending");
+    await waitFor(() => !card.hidden && card.classList.contains("ending-card"), 8000);
+    await sleep(500);
+    const countEl = doc.getElementById("spark-ending-count");
+    const want = `1 of ${ends.length} found`;
+    const got = countEl ? countEl.textContent.trim() : "(none)";
+    t.event("ending-count", `${id}/${first}: ${got}`);
+    if (got !== want) t.problem("bug", `${id}: the ending card says "${got}", want "${want}"`);
+    t.event("screenshot", `${id} ending card: ${got}`);
+    const open = doc.getElementById("spark-endings-open");
+    if (!open) throw new Error(`${id}: no Endings button on the ending card`);
+    open.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, open, "Endings");
+    await sleep(500);
+    const pane = doc.getElementById("spark-endings");
+    if (!pane || pane.hidden) throw new Error(`${id}: the Endings gallery did not open`);
+    const tiles = [...pane.querySelectorAll(".ending-tile")];
+    if (tiles.length !== ends.length) t.problem("bug", `${id}: gallery has ${tiles.length} tiles, want ${ends.length}`);
+    const found = tiles.filter((x) => x.classList.contains("is-found"));
+    const locked = tiles.filter((x) => x.classList.contains("is-locked"));
+    if (found.length !== 1 || found[0].dataset.ending !== first) t.problem("bug", `${id}: want only ${first} found, got ${found.map((x) => x.dataset.ending).join(",") || "none"}`);
+    for (const tile of locked) {
+      const name = tile.querySelector(".ending-tile-name").textContent.trim();
+      const hint = (tile.querySelector(".ending-tile-hint") || {}).textContent || "";
+      const want = (st.scenes[tile.dataset.ending].hint || "").trim();
+      t.event("locked-ending", `${id}/${tile.dataset.ending}: "${name}", hint "${hint.trim()}"`);
+      if (name !== "???") t.problem("bug", `${id}: locked tile ${tile.dataset.ending} says "${name}", want "???"`);
+      if (!want || hint.trim() !== want) t.problem("bug", `${id}: locked tile ${tile.dataset.ending} shows hint "${hint.trim()}", want "${want}"`);
+      const r = tile.getBoundingClientRect();
+      if (r.right > 390 + 1 || r.left < -1) t.problem("bug", `${id}: tile ${tile.dataset.ending} runs off the screen at 390x844`);
+    }
+    for (const sid of ["shadow", "good-morning"]) {
+      const named = locked.some((x) => x.dataset.ending === sid);
+      if (st.scenes[sid] && !named) t.problem("bug", `${id}: ${sid} is not a silhouette in the gallery`);
+    }
+    const de = doc.documentElement;
+    const over = Math.max(de.scrollWidth, doc.body.scrollWidth, pane.scrollWidth) - win.innerWidth;
+    t.event("gallery-fit", `${id}: ${tiles.length} tiles, scroll width over screen by ${over}px, touch ${win.matchMedia("(pointer: coarse)").matches}`);
+    if (over > 1) t.problem("bug", `${id}: the gallery scrolls sideways at 390x844 (${over}px over)`);
+    t.event("screenshot", `${id} endings gallery at 390x844: ${found.length} found, ${locked.length} silhouettes with hints`);
+    t.metric("endingsFound", found.length);
+    t.metric("endingsTotal", ends.length);
+    closeViewFrame();
+    t.progress(1);
+  } finally {
+    closeViewFrame();
+  }
+}
+
 async function trustFallRun(options, t) {
   const id = (options && options.story) || "trust-fall";
   const st = story(id);
@@ -8630,6 +8732,26 @@ async function trustFallRun(options, t) {
   const dead = (sid) => !!st.scenes[sid].dead;
   const ending = (sid) => !!st.scenes[sid].ending;
   if (listedStories().some((s) => s.id === id)) t.problem("bug", `${id} is listed on the landing page; it is a draft and stays unlisted`);
+  // Which scenes have a made clip (<folder>/media/clip.mp4, found by a HEAD request) and so must play their real cut;
+  // trustFallRealClips counts each such scene once, however often it is entered, and must equal that count.
+  const clipMade = {};
+  const hasFile = async (url) => { try { return (await fetch(url, { method: "HEAD", cache: "no-store" })).ok; } catch (e) { return false; } };
+  const hasClip = async (sid) => (sid in clipMade ? clipMade[sid] : (clipMade[sid] = await hasFile(`${folderOf(sid, st)}media/clip.mp4`)));
+  const realClips = new Set();
+  const stills = new Set();
+  const sawRealClip = async (sid) => {
+    if (!(await hasClip(sid))) t.problem("bug", `${id}/${sid}: plays a cut (scene.mp4) but has no media/clip.mp4: it can only be a title card or a still`);
+    if (!realClips.has(sid)) { realClips.add(sid); t.add("trustFallRealClips"); }
+  };
+  /** A scene with no clip shows its graded still and speaks its narration (recorded, narrator voice) with its music cue under it. */
+  const stillNarrated = async (au, sid, doc) => {
+    if (await hasClip(sid)) { t.problem("bug", `${id}/${sid}: has media/clip.mp4 but shows a still, not its real cut`); return; }
+    stills.add(sid);
+    if (!(await hasFile(`${folderOf(sid, st)}media/narration.mp3`))) { t.event("still-silent", `${id}/${sid}: no narration recorded for this still`); return; }
+    if (!au || !au.events) return;
+    if (!(await waitFor(() => au.events().some((e) => e.what === "voice" && e.speaker === "narrator" && e.key === sid), 5000))) t.problem("bug", `${id}/${sid}: a still with a narration.mp3 plays no narration`);
+    else { t.event("still-narration", `${id}/${sid}: graded still, narration playing${au.bed && au.bed().playing ? ", music and bed under it" : ""}`); t.add("trustFallNarratedStills"); }
+  };
   await passPrompt(t);
   clearProgress();
   if (!landingShown()) await toLanding(t);
@@ -8669,6 +8791,7 @@ async function trustFallRun(options, t) {
     await rewindEndClip(doc);
     const box = doc.getElementById("spark-choices");
     if (!(await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice, [data-death]").length > 0, 10000))) t.problem("bug", `${id}/${sid}: the choices never came up at ${W}x${H}`);
+    await waitFor(() => !doc.getElementById("spark").dataset.beat, 6000); // a scene that opens on a beat shows its choices after it
     await sleep(350);
     return box;
   };
@@ -8700,7 +8823,7 @@ async function trustFallRun(options, t) {
     t.metric("trustFallFirstTapMs", ms);
     if (played && v()) {
       const src = decodeURI(new URL(v().currentSrc || v().src, location.href).pathname);
-      if (/\/scene\.mp4$/.test(src)) { checkCut(t, v(), `${id}/${st.start}`); t.add("trustFallRealClips"); }
+      if (/\/scene\.mp4$/.test(src)) { checkCut(t, v(), `${id}/${st.start}`); await sawRealClip(st.start); }
       else t.problem("bug", `${id}/${st.start}: plays a placeholder title card (${src}), not a filmed clip (its media isn't made)`);
     }
     {
@@ -8733,6 +8856,8 @@ async function trustFallRun(options, t) {
       if (de.scrollWidth > W + 1) t.problem("bug", `${id}: sideways scroll at ${W}x${H} (${de.scrollWidth}px)`);
       const dbg = [...doc.querySelectorAll("button, a, [role=button]")].filter((e) => vis(e) && /debug|bug|report a problem/i.test((e.id || "") + (e.className || "") + (e.getAttribute("aria-label") || "") + (e.title || "")));
       if (dbg.length) t.problem("bug", `${id}: a debug control is on the page (${dbg.length})`);
+      const bars = [".tile-wall", ".tile-screen"].filter((q) => doc.querySelector(q));
+      if (bars.length) t.problem("bug", `${id}: empty unlabeled scanline bars are on the page (${bars.join(", ")})`);
       t.event("player-fullscreen", `${id}: player ${r ? Math.round(r.width) + "x" + Math.round(r.height) : "none"} of ${W}x${H}; landing hidden: ${!shown.length}; no sideways scroll: ${de.scrollWidth <= W + 1}`);
     }
     await sleep(800);
@@ -8798,7 +8923,31 @@ async function trustFallRun(options, t) {
     }
     btn.scrollIntoView({ block: "center", behavior: "instant" });
     const au = win.iltvAudio, auT0 = Date.now() - 5;
+    // Swap quality: from the press on, sample every frame for 900 ms: spinners visible (expect 0), title cards with words
+    // visible at once (expect 1 at most), the worst frame, and that both branches were preloaded while the countdown ran.
+    const swap = { spinners: 0, titles: 0, worst: 0 };
+    {
+      const vb = doc.getElementById("spark-video");
+      const t0s = performance.now();
+      let last = t0s;
+      const sample = (now) => {
+        swap.worst = Math.max(swap.worst, Math.round(now - last));
+        last = now;
+        const vis = (e) => e.getClientRects().length && !e.hidden && win.getComputedStyle(e).visibility !== "hidden" && Number(win.getComputedStyle(e).opacity) > 0.02;
+        swap.spinners = Math.max(swap.spinners, [...doc.querySelectorAll(".spark-video-loading")].filter(vis).length);
+        swap.titles = Math.max(swap.titles, [...(vb ? vb.querySelectorAll(".spark-video-blank") : [])].filter((e) => e.textContent.trim() && vis(e)).length);
+        if (now - t0s < 900) win.requestAnimationFrame(sample); else swap.done = true;
+      };
+      win.requestAnimationFrame(sample);
+    }
     await tapAt(t, btn, `"${label(btn)}" (${W}x${H})`);
+    await waitFor(() => swap.done, 2500);
+    if (swap.spinners > 0) t.problem("bug", `${id}/${target}: a loading spinner showed on the scene change`);
+    if (swap.titles > 1) t.problem("bug", `${id}/${target}: ${swap.titles} title cards were visible at once on the scene change (overlapping text)`);
+    t.event("swap-quality", `${id}/${target}: spinner-visible ${swap.spinners}, max titles visible at once ${swap.titles}, worst frame ${swap.worst} ms`);
+    t.metric("trustFallSwapSpinners", swap.spinners);
+    t.metric("trustFallSwapMaxTitles", swap.titles);
+    t.metric("trustFallSwapWorstFrameMs", swap.worst);
     if (au && au.events) {
       // Sound: every choice press answers with a UI sting, and the scene has its looping ambient bed.
       const tapEv = au.events().filter((e) => e.at >= auT0).find((e) => e.what === "ui" && e.name === "tap");
@@ -8843,17 +8992,39 @@ async function trustFallRun(options, t) {
       // A real clip, not the 'Video in production' title card: the scene plays its generated cut (scene.mp4: the
       // filmed shots, narration, talking shots and music) once its media is made (use: "gen"), 9:16, with sound.
       const v = doc.querySelector("#spark-video video:not(.spark-leave)");
-      if (!v && doc.querySelector("#spark-video .spark-still:not(.spark-leave)")) await checkStill(t, doc, `${id}/${target}`, W);
+      if (!v && doc.querySelector("#spark-video .spark-still:not(.spark-leave)")) { await checkStill(t, doc, `${id}/${target}`, W); await stillNarrated(au, target, doc); }
       else if (v && (await waitFor(() => v.readyState >= 2 && v.currentTime > 0.5, 6000))) {
-        if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); t.add("trustFallRealClips"); }
+        if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); await sawRealClip(target); }
         else t.problem("bug", `${id}/${target}: plays a placeholder title card (${v.currentSrc || v.src}), not a filmed clip (its media isn't made: hawkes.assets.json trust-fall-${target}-*)`);
       } else t.problem("bug", `${id}/${target}: no clip is playing after the press`);
+    }
+    if (target === "unplug") {
+      // Shown before told: the scene opens on the cord being yanked, and no story text, question or choice is visible until it ends.
+      const hidden = () => ["spark-story", "spark-question", "spark-choices"].every((i) => doc.defaultView.getComputedStyle(doc.getElementById(i)).visibility === "hidden");
+      const beat = doc.querySelector("#spark-video .spark-beat");
+      const r = beat && beat.getBoundingClientRect();
+      if (!beat) t.problem("bug", `${id}/${target}: no action beat shown (the plug being yanked) before the words`);
+      else if (!hidden()) t.problem("bug", `${id}/${target}: story text, question or choices are visible while the plug beat plays`);
+      else if (r.width < W * 0.9) t.problem("bug", `${id}/${target}: the plug beat does not fill the screen (${Math.round(r.width)}px of ${W})`);
+      else { t.event("beat-before-text", `${id}/${target}: the plug is yanked on screen (${Math.round(r.width)}x${Math.round(r.height)}) with no text, question or choice visible`); t.add("trustFallBeats"); }
+      if (!(await waitFor(() => !doc.getElementById("spark").dataset.beat && !hidden(), 5000))) t.problem("bug", `${id}/${target}: the words never appear after the plug beat`);
+      else t.event("beat-ended", `${id}/${target}: the words and choices appear after the beat`);
     }
     await sleep(380);
     if (au && au.bed) {
       const bd = au.bed();
       if (!bd.playing) t.problem("bug", `${id}/${target}: no looping ambient bed is playing in the scene`);
       else t.event("scene-bed", `${id}/${target}: bed ${bd.url || "on"} loops under the scene`);
+    }
+    if (au && au.events) {
+      // The press's click and stinger, and ARGUS speaking in the scenes where it has a line (voice at 0.9 s, so wait for it).
+      const evs = () => au.events();
+      if (!(await waitFor(() => evs().some((e) => e.what === "cue"), 1500))) t.problem("bug", `${id}/${target}: the choice press made no stinger (cue) after its click`);
+      else t.event("choice-stinger", `${id}/${target}: a click and a stinger played on the press`);
+      if (["start", "unplug", "asked", "tower", "listen", "believe", "callMarcus", "saved", "chase", "promise", "believer"].includes(target)) {
+        if (!(await waitFor(() => evs().some((e) => e.what === "voice" && e.speaker === "argus"), 3000))) t.problem("bug", `${id}/${target}: ARGUS has a line here but no voice played`);
+        else { t.event("argus-voice", `${id}/${target}: ARGUS speaks (bed ducks under it)`); t.add("trustFallArgusVoices"); }
+      }
     }
     if (ending(target)) {
       await rewindEndClip(doc);
@@ -8868,8 +9039,8 @@ async function trustFallRun(options, t) {
       rewindCheckButtons(t, doc, `${id} ${target} (${W}x${H})`, { phone: true });
       for (const b of doc.querySelectorAll("#spark-choices [data-death]")) {
         const r = b.getBoundingClientRect();
-        if (r.top < H * 0.6 || r.width < 44 || r.height < 44) t.problem("bug", `${id}/${target}: the ${b.dataset.death} button (${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.top)}px) is not in the bottom 40% of a ${H}px screen with a 44px target`);
-        else t.event("thumb-reach", `${id}/${target}: ${b.dataset.death} ${Math.round(r.width)}x${Math.round(r.height)}, top ${Math.round(r.top)}px of ${H}px (bottom 40%)`);
+        if (r.top < (H * 2) / 3 || r.bottom > H + 1 || r.width < 44 || r.height < 48) t.problem("bug", `${id}/${target}: the ${b.dataset.death} button (${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.top)}px) is not in the bottom third of a ${H}px screen with a 48px target`);
+        else t.event("thumb-reach", `${id}/${target}: ${b.dataset.death} ${Math.round(r.width)}x${Math.round(r.height)}, top ${Math.round(r.top)}px of ${H}px (bottom third)`);
       }
       deathsSeen.push(target);
       t.event("death", `${id}: ${target}`);
@@ -8879,6 +9050,16 @@ async function trustFallRun(options, t) {
     t.progress(0.05 + (0.6 * n) / ids.length);
   }
   t.metric("trustFallScenesEntered", entered.size);
+  {
+    const withClip = [];
+    for (const sid of ids) if (await hasClip(sid)) withClip.push(sid);
+    t.metric("trustFallClipScenes", withClip.length);
+    t.metric("trustFallRealClipScenes", realClips.size);
+    t.metric("trustFallStillScenes", stills.size);
+    const missing = withClip.filter((sid) => !realClips.has(sid));
+    if (missing.length) t.problem("bug", `${id}: ${missing.length} scene(s) with a clip.mp4 never played their real cut (${missing.join(", ")})`);
+    else t.event("real-clips", `${id}: all ${withClip.length} scenes with a clip played their real cut (9:16, with sound); ${stills.size} without a clip showed the graded still: ${[...stills].join(", ")}`);
+  }
   t.metric("trustFallEndings", endingsSeen.length);
   t.metric("trustFallDeaths", deathsSeen.length);
   if (entered.size !== ids.length) t.problem("bug", `${id}: ${entered.size} of ${ids.length} scenes entered by a press (missing ${ids.filter((x) => !entered.has(x)).join(", ")})`);
@@ -8910,6 +9091,80 @@ async function trustFallRun(options, t) {
     t.event("belief-gate", `${id}/${g.sid}: "${g.en}" - believed [${withIt.join(" | ")}]; not believed [${without.join(" | ")}]`);
   }
   t.progress(0.8);
+
+  // 4b. Phone layout (Late Shift): at a fork the clip sits above the words, the words above the choices, nothing over the
+  // picture, and the choices are in the lower thumb zone, all by touch at 390x844 with no sideways scroll.
+  {
+    const sid = ids.find((x) => !dead(x) && !ending(x) && st.scenes[x].choices.length >= 2 && x !== st.start && wayTo(x));
+    if (!sid) t.problem("bug", `${id}: no fork to check the phone layout at`);
+    else {
+      t.scene(`${id}: phone layout at ${sid}`);
+      const doc = await open(wayTo(sid), `phone layout at ${sid}`);
+      const box = await ready(doc, sid);
+      const win = doc.defaultView;
+      const R = (el) => el.getBoundingClientRect();
+      const stage = R(doc.querySelector(".spark-stage"));
+      const story = doc.getElementById("spark-story");
+      const panel = R(doc.querySelector(".spark-panel"));
+      const btns = visible(box).map(R);
+      const text = R(story);
+      if (!touchOn(doc)) t.problem("bug", `${id}/${sid}: the phone frame is not a touch screen`);
+      if (stage.top > 1 || stage.height < H * 0.4) t.problem("bug", `${id}/${sid}: the clip is not at the top of the phone (${Math.round(stage.top)}, ${Math.round(stage.height)}px tall)`);
+      if (story.textContent.trim() && text.top < stage.bottom - 1) t.problem("bug", `${id}/${sid}: the story text (top ${Math.round(text.top)}) lies over the clip (bottom ${Math.round(stage.bottom)})`);
+      if (panel.top < stage.bottom - 1) t.problem("bug", `${id}/${sid}: the panel lies over the clip`);
+      if (btns.length < 2) t.problem("bug", `${id}/${sid}: ${btns.length} choices shown`);
+      for (const b of btns) {
+        if (b.top < text.bottom - 1 && story.textContent.trim()) t.problem("bug", `${id}/${sid}: a choice sits above the story text`);
+        if (b.top < H * 0.55) t.problem("bug", `${id}/${sid}: a choice is above the thumb zone (top ${Math.round(b.top)} of ${H})`);
+        if (b.height < 44 || b.left < 0 || b.right > W) t.problem("bug", `${id}/${sid}: a choice is ${Math.round(b.width)}x${Math.round(b.height)} at ${Math.round(b.left)}`);
+      }
+      if (doc.documentElement.scrollWidth > W) t.problem("bug", `${id}/${sid}: the page scrolls sideways (${doc.documentElement.scrollWidth}px)`);
+      t.event("phone-layout", `${id}/${sid}: clip ${Math.round(stage.top)}-${Math.round(stage.bottom)}, text ${Math.round(text.top)}-${Math.round(text.bottom)}, choices ${btns.map((b) => `${Math.round(b.top)}-${Math.round(b.bottom)}`).join(", ")} of ${H}`);
+      t.event("screenshot", `${id}/${sid} at ${W}x${H}: clip above the text, choices at the foot of the screen`);
+      t.metric("trustFallPhoneChoiceTop", Math.round(Math.min(...btns.map((b) => b.top))));
+      closeViewFrame();
+    }
+  }
+
+  // 4c. After the river (the death at the end of "Go back and face Juno"): both buttons by touch. Rewind returns to the
+  // fork with the deadly choice marked Tried; Start over returns to First light.
+  for (const dsid of ids.filter(dead)) {
+    const fork = ids.find((x) => !dead(x) && st.scenes[x].choices.some((c) => c[2] === dsid) && wayTo(x));
+    if (!fork) continue;
+    const deadly = st.scenes[fork].choices.find((c) => c[2] === dsid);
+    for (const kind of ["rewind", "start"]) {
+      t.scene(`${id}: ${kind} after ${dsid}`);
+      const doc = await open(wayTo(fork), `${kind} after ${dsid}`);
+      const win = doc.defaultView;
+      const fbox = await ready(doc, fork);
+      const killer = visible(fbox).find((b) => label(b).replace(/^\d+\.\s*/, "") === deadly[1].replace(/^\d+\.\s*/, ""));
+      if (!killer) { t.problem("bug", `${id}/${fork}: the deadly choice "${deadly[1]}" isn't offered`); closeViewFrame(); continue; }
+      await tapAt(t, killer, `the deadly choice at ${fork}`);
+      if (!(await waitFor(() => win.finalSpark.scene() === dsid, 6000))) { t.problem("bug", `${id}/${fork}: pressing "${deadly[1]}" didn't reach ${dsid}`); closeViewFrame(); continue; }
+      await rewindEndClip(doc);
+      const box = doc.getElementById("spark-choices");
+      await waitFor(() => box.querySelectorAll("[data-death]").length >= 2, 8000);
+      await sleep(350);
+      const btn = box.querySelector(`[data-death="${kind}"]`);
+      if (!btn) { t.problem("bug", `${id}/${dsid}: no ${kind} button`); closeViewFrame(); continue; }
+      const r = btn.getBoundingClientRect();
+      if (r.top < (H * 2) / 3 || r.height < 48) t.problem("bug", `${id}/${dsid}: ${kind} at ${Math.round(r.top)}px, ${Math.round(r.height)}px tall (bottom third, 48px wanted)`);
+      else t.event("death-buttons-reach", `${id}/${dsid}: ${kind} top ${Math.round(r.top)} of ${H}, ${Math.round(r.width)}x${Math.round(r.height)}`);
+      await tapAt(t, btn, `${kind} after ${dsid}`);
+      const want = kind === "rewind" ? fork : st.start;
+      if (!(await waitFor(() => win.finalSpark.scene() === want, 4000))) t.problem("bug", `${id}/${dsid}: ${kind} didn't return to ${want} (at ${win.finalSpark.scene()})`);
+      else t.event(`${kind}-after-death`, `${id}/${dsid}: ${kind} -> ${want}`);
+      if (kind === "rewind") {
+        const rbox = doc.getElementById("spark-choices");
+        await waitFor(() => rbox.dataset.phase === "ready" && rbox.querySelector(".choice"), 8000);
+        await sleep(350);
+        const tried = [...rbox.querySelectorAll(".choice")].find((b) => label(b).replace(/^\d+\.\s*/, "") === deadly[1].replace(/^\d+\.\s*/, ""));
+        if (!tried) t.problem("bug", `${id}/${fork}: after Rewind the deadly choice "${deadly[1]}" isn't there`);
+        else rewindCheckTried(t, doc, tried, `${id}/${fork} after Rewind`);
+      }
+      closeViewFrame();
+    }
+  }
 
   // 5. The countdown never picks a death: the forks with a deadly option are left to the 15 s timer.
   for (const sid of ids.filter((x) => !dead(x) && st.scenes[x].choices.some((c) => dead(c[2])))) {
@@ -9212,6 +9467,13 @@ installPlaytest({
       description: "The Water Road at 390x844 (a frame; each fork opened from a seeded run there, a setup shortcut, event seeded-run; the Tap to play prompt pressed). At each fork that has a choice behind a count of water (the dry wash needs 2, the night's barrel on the rocks needs 3): reached with enough water the option is a button; reached short of it the option is not a button but a greyed-out row that says why (\"needs water 3+\", 48px or taller, 14px type or more, not pressable: a touch on it does nothing), and the water count in the inventory bar is fully on screen above no choice, with the count the story holds (events water-gate-open, water-gate-locked, metric waterForks). At the dry wash and the night raid, a run that helped the family and one that passed them read and offer differently (the boy recognises the riders, the father stands with you; event family-callback). Each ending's words name an earlier choice (ending-callback). Two deaths at most, and the warning shot and the high ground cost barrels, a mule or a rider instead (events cost-not-death, deaths). Options: {\"story\":\"<id>\"}.",
     },
     {
+      id: "trust-fall-endings",
+      title: "Trust Fall's endings gallery on a phone: Live gives '1 of 3 found', Unseen and Good morning are silhouettes with hints, no sideways scroll",
+      seconds: 90,
+      tags: ["full"],
+      description: "Trust Fall (draft, /?story=trust-fall) at 390x844 with touch taps in a frame. A seeded run (seeded-run) one choice before Live, a real tap on that choice, the ending card says \"1 of 3 found\", a tap on Endings opens the gallery: Live a found tile, Unseen and Good morning blurred silhouettes named \"???\" with their teaser hints, nothing off screen and no horizontal scroll. Events ending-count, locked-ending, gallery-fit, screenshot; metrics endingsFound, endingsTotal.",
+    },
+    {
       id: "trust-fall",
       title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
       seconds: 300,
@@ -9241,10 +9503,10 @@ installPlaytest({
     },
     {
       id: "living-home",
-      title: "The landing page is alive: the house lights come up, a wall of screens flickers on its own, cards answer the pointer, blog cards wake; never ten quiet seconds",
+      title: "The landing page is alive: the house lights come up, cards answer the pointer, blog cards wake; never ten quiet seconds",
       seconds: 60,
       tags: ["full"],
-      description: "Fresh load, splash passed. Watches the house lights come up card by card and the three-screen wall flicker by itself, hovers and presses each card (a pointer event, a tick synthesized in the page), scrolls to the blog so its cards wake, then reports quality.maxQuietSeconds (longest gap between two things to see, hear or do, from js/living.js's log plus the presses) and quality.textOnlyBeats (0: the beat is light and sound, no text).",
+      description: "Fresh load, splash passed. Watches the house lights come up card by card, hovers and presses each card (a pointer event, a tick synthesized in the page), scrolls to the blog so its cards wake, then reports quality.maxQuietSeconds (longest gap between two things to see, hear or do, from js/living.js's log plus the presses) and quality.textOnlyBeats (0: the beat is light and sound, no text).",
     },
     {
       id: "front-door",
@@ -9457,6 +9719,7 @@ installPlaytest({
       else if (id === "spark-depth") await sparkDepthRun(options, t);
       else if (id === "water-gates") await waterGatesRun(options, t);
       else if (id === "trust-fall") await trustFallRun(options, t);
+      else if (id === "trust-fall-endings") await trustFallEndingsRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);

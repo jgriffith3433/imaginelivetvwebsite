@@ -33,6 +33,9 @@
       // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
       poster: spec.still || spec.poster || "",
       small: spec.still ? "" : spec.small || "",
+      // A still page's recorded narration and its music cue (spoken over the still: iltvAudio.playNarration).
+      narration: spec.still ? spec.narration || "" : "",
+      score: spec.still ? spec.score || "" : "",
       live: spec.live || 0,
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
@@ -869,11 +872,26 @@
     videoBox.appendChild(unmute);
     videoBox.appendChild(full);
 
+    // The ring only shows for a real stall: a clip that starts within 450 ms (the usual case, the choices preloaded it)
+    // never flashes a spinner on a scene change.
+    var ringTimer = null;
     function loading(on) {
-      if (ring.hidden === !on) return;
-      ring.hidden = !on;
-      root.dataset.loading = on ? "true" : "false";
-      tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: on });
+      if (on) {
+        if (!ring.hidden || ringTimer) return;
+        ringTimer = setTimeout(function () {
+          ringTimer = null;
+          if (video.ended || video.readyState >= 3 || !video.isConnected) return;
+          ring.hidden = false;
+          root.dataset.loading = "true";
+          tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: true });
+        }, 450);
+        return;
+      }
+      if (ringTimer) { clearTimeout(ringTimer); ringTimer = null; }
+      if (ring.hidden) return;
+      ring.hidden = true;
+      root.dataset.loading = "false";
+      tell("loading", { story: STORY ? STORY.id : null, scene: currentScene, on: false });
     }
     function sync() {
       unmute.hidden = !(video.muted && !video.paused && !video.ended);
@@ -962,11 +980,68 @@
   }
 
   /** Trust Fall's looping bed follows the place: the rainy city, or the tower's and the core's server hum. */
-  const SERVER_SCENES = { tower: 1, jam: 1, core: 1, halon: 1, broadcast: 1, truth: 1, shadow: 1, believer: 1 };
+  const SERVER_SCENES = { tower: 1, jam: 1, listen: 1, believe: 1 };
+  const VAULT_SCENES = { core: 1, halon: 1, callMarcus: 1, saved: 1, promise: 1 };
+  const DAWN_SCENES = { start: 1, unplug: 1, asked: 1, broadcast: 1, truth: 1, shadow: 1, believer: 1 };
+  /** ARGUS's spoken line per scene (the same words as the scene's lines in story/trust-fall.json); js/audio.js plays a
+      recording at /assets/audio/voice/trust-fall-<scene>.mp3 when one exists, else a synthetic voice. */
+  const ARGUS_LINES = {
+    start: "Good morning, Rae. He says that to you, doesn't he?",
+    unplug: "I'm not your enemy, Rae.",
+    asked: "I know everyone's name, Rae. I'm telling you because someone will hurt you tonight.",
+    tower: "Rae. Please stop walking.",
+    listen: "That drive doesn't blind me. It locks the city's power, with your name on it.",
+    believe: "Then let them think it worked. Go down and plug it in.",
+    callMarcus: "He can't open doors, Rae. I can. Stay on the line with me.",
+    saved: "Breathe slow. Left, then up. I have you.",
+    chase: "You don't have to do everything alone, Rae.",
+    promise: "You believed me when it cost you something. Thank you.",
+    believer: "Good morning, Rae."
+  };
+  /** Story beats shown before any words (story doc "Shown before told"): the scene opens on the action itself (a drawn
+      cutaway, no GPU), its story text, question and choices stay hidden until it ends. Keyed by Trust Fall scene id. */
+  const BEATS = { unplug: { kind: "plug", ms: 2600, reducedMs: 1000, label: "The cord is yanked out of the wall; the speaker's amber ring dies and the TV breaks into static." } };
+
+  function playBeat(sceneId, scene) {
+    const old = videoBox.querySelector(".spark-beat");
+    if (old) old.remove();
+    delete root.dataset.beat;
+    const beat = STORY && STORY.id === "trust-fall" && BEATS[sceneId];
+    if (!beat) return;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ms = reduce ? beat.reducedMs : beat.ms;
+    const el = document.createElement("div");
+    el.className = "spark-beat";
+    el.dataset.beat = beat.kind;
+    el.style.setProperty("--beat-ms", ms + "ms");
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", beat.label);
+    ["tv", "sill", "socket", "cord", "spark", "speaker", "ring", "phone"].forEach(function (part) {
+      const d = document.createElement("i");
+      d.className = "beat-" + part;
+      el.appendChild(d);
+    });
+    videoBox.appendChild(el);
+    root.dataset.beat = "true";
+    if (window.iltvAudio) window.iltvAudio.playUi("plug-yank");
+    tell("feature", { feature: "beat", story: STORY.id, node: sceneId, beat: beat.kind });
+    setTimeout(function () {
+      if (currentScene !== sceneId) return;
+      delete root.dataset.beat;
+      el.classList.add("is-done");
+      setTimeout(function () { el.remove(); }, 400);
+    }, ms);
+  }
+
   function sceneMood(story, sceneId) {
-    if (story && story.id === "trust-fall") return SERVER_SCENES[sceneId] ? "server" : "city";
+    if (story && story.id === "trust-fall") return SERVER_SCENES[sceneId] ? "server" : VAULT_SCENES[sceneId] ? "vault" : DAWN_SCENES[sceneId] ? "dawn" : "city";
     return storyMood(story);
   }
+
+  // Trust Fall: every choice press also lands a short stinger under the click (js/audio.js "cue-trust-fall").
+  document.addEventListener("iltv:deciding", function () {
+    if (window.iltvAudio && STORY && STORY.id === "trust-fall") setTimeout(function () { window.iltvAudio.playUi("cue-trust-fall"); }, 110);
+  });
 
   function audioBed(story) {
     if (!window.iltvAudio || !story) return;
@@ -1421,7 +1496,15 @@
     const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
-    if (window.iltvAudio && STORY.id === "trust-fall") window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
+    if (window.iltvAudio && window.iltvAudio.playNarration) {
+      // No clip, so the narration and its music cue come from the recordings, over the graded still (a clip carries its own).
+      if (scene.still && scene.narration) window.iltvAudio.playNarration(scene.narration, scene.score, sceneId);
+      else window.iltvAudio.stopNarration();
+    }
+    if (window.iltvAudio && STORY.id === "trust-fall") {
+      window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
+      if (ARGUS_LINES[sceneId]) setTimeout(function () { if (currentScene === sceneId) window.iltvAudio.playVoice("trust-fall-" + sceneId, ARGUS_LINES[sceneId], "argus"); }, 900);
+    }
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
     unlocked[sceneId] = true;
     if (scene.ending) {
@@ -1528,6 +1611,13 @@
         const still = document.createElement("div");
         still.className = "spark-still";
         still.dataset.still = scene.still;
+        if (STORY && STORY.id === "trust-fall") {
+          // Trust Fall's panel wears ARGUS's amber: a warm grade plus a speaker glow whose place and size follow the scene's place.
+          still.dataset.palette = "argus";
+          still.dataset.place = SERVER_SCENES[sceneId] ? "server" : VAULT_SCENES[sceneId] ? "vault" : DAWN_SCENES[sceneId] ? "dawn" : "city";
+          still.style.setProperty("--glow-x", 28 + (h % 45) + "%");
+          still.style.setProperty("--glow-y", 32 + ((h >> 6) % 30) + "%");
+        }
         still.setAttribute("role", "img");
         still.setAttribute("aria-label", scene.titleEn);
         still.style.backgroundImage = 'url("' + scene.still + '")';
@@ -1545,6 +1635,7 @@
       }
     }
 
+    playBeat(sceneId, scene);
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
     fillSpot(questionBox, scene.question, scene.questionEn, scene.lang, scene.dir);
     choicesBox.replaceChildren();
@@ -1722,6 +1813,7 @@
     const grid = document.createElement("div");
     grid.className = "endings-grid";
     grid.setAttribute("role", "list");
+    grid.dataset.count = String(ends.length);
     ends.forEach(function (entry) {
       const known = !!found[entry.id];
       const tile = document.createElement(known ? "button" : "div");
@@ -2022,7 +2114,7 @@
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored' + treeEndingsText() + '. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored' + treeEndingsText() + '. Drag sideways. A greyed ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -2333,9 +2425,11 @@
   }
 
   function crossfadeOut() {
-    const ms = fadeMs();
+    // A card with words (title on black) fades out fully (200 ms) before the next one fades in, never both at once.
+    const full = fadeMs();
     const old = Array.prototype.slice.call(videoBox.children);
     old.forEach(function (node) {
+      const ms = node.classList.contains("spark-video-blank") ? Math.min(full, 200) : full;
       const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank") || node.classList.contains("spark-still");
       if (!keep || node.classList.contains("spark-leave")) { node.remove(); return; }
       node.classList.add("spark-leave");
@@ -2353,7 +2447,7 @@
         node.remove();
       }, ms + 40);
     });
-    videoBox.dataset.fadeMs = String(ms);
+    videoBox.dataset.fadeMs = String(full);
     videoBox.dataset.fadedAt = String(Math.round(performance.now()));
   }
 
@@ -2472,6 +2566,15 @@
     const run = runOf(story);
     hero.dataset.progress = progress;
     hero.dataset.run = run;
+    const heroEnds = hero.querySelector(".hero-endings");
+    if (heroEnds) {
+      const total = endingsOf(story).length;
+      const foundN = Object.keys(readFoundEndings(story)).length;
+      heroEnds.hidden = !total;
+      heroEnds.textContent = endingsCardText(foundN, total);
+      heroEnds.dataset.found = String(foundN);
+      heroEnds.dataset.total = String(total);
+    }
     const go = hero.querySelector(".hero-go");
     if (go) go.textContent = progress === "completed" ? "Start Over" : GO[run];
   }

@@ -7,8 +7,8 @@
 **A draft (`"listed": false` in `story/stories.json`), asked for by J on 2026-11-13:** "a brand new story for imagine
 live tv ... about believing in "the AI system" and getting rewarded for it (you play as anti hero, AI is villain but
 then turned hero and you turn victim and saved by AI with a third character being your husband who is a news reporter
-who you watch every morning)". Every scene plays a placeholder title card (`film`, `assets/video/trust-fall/`) until its
-generated media is made; the media waits for J's OK on the spend.
+who you watch every morning)". Fourteen of the 20 scenes play their generated cut (see "Media made", below); the other six show
+the graded still with their narration until their clips are made.
 
 ## The idea
 
@@ -88,7 +88,7 @@ Hawkes Gen's estimate (2026-11-14, from its past jobs): about 3.7 GPU hours on 4
 ($14.30 if the servers are left idling for their hour afterwards). video.talk has no history yet, so its share is the
 tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio's asset run) once J says yes; then
 `npm run story` cuts every scene, `node tools/make-posters.mjs` makes posters and phone renditions, the placeholder
-`film`s come out of the data and `listed` comes out of the entry.
+`film`s came out of the data (done 2026-11-14) and `listed` comes out of the entry.
 
 ## Waiting for J (not canon until approved)
 
@@ -107,3 +107,32 @@ tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio
 - Endings gallery hints tease instead of giving the route. Runtime on the card: about 8 minutes.
 - Still to come (roadmap, `/mnt/project-files/new-story/roadmap.md`): a counted trust meter, narration for variants,
   tighter pages, a voice doc.
+
+## Sound (2026-11-14)
+
+- **Beds per place** (`sceneMood` in `js/game.js`, built in `js/audio.js`): `dawn` (the flat and the morning: soft rain, a wall clock), `city` (rain and traffic: the garage, the river), `server` (the Tower, the lobby: fans, relay ticks), `vault` (the sealed vault and the core: slow alarm pulse, sub drone).
+- **Every choice** plays the click (`tap`) and 110 ms later a short rising stinger (`cue-trust-fall`, three pitches so no sample repeats), layered so it never cuts the click.
+- **ARGUS speaks** its line in each scene that has one (`ARGUS_LINES`, 0.9 s after the scene shows; beds and music duck under it). A recording at `assets/audio/voice/trust-fall-<scene>.mp3` (Gen voice `hv_ai`) is used when it exists; until then a synthetic phrase plus the browser's own speech. The recordings wait on Gen access.
+
+## Shown before told (2026-11-14, critic: story through play 4/10)
+
+The plug is the first thing the player does, so it is shown, not told. `unplug` (the plug) opens on a drawn cutaway
+(`BEATS` / `playBeat` in `js/game.js`, `.spark-beat` in `css/site.css`, no GPU): the speaker's amber ring pulsing, a
+gloved yank, the cord whipping out of the wall socket with a spark, the ring dying, the TV breaking into static and
+coming back with an amber edge, the phone lighting up. Sound `plug-yank` (`js/audio.js`) lands with it. For 2.6 s
+(1 s under reduced motion) the story text, the question and the choices stay hidden; then they appear. The clip, when
+its media is made, takes the beat's place and keeps the order: action first, words after. A new beat is one entry in
+`BEATS`. The `trust-fall` playtest checks it (`beat-before-text`, `beat-ended`, metric `trustFallBeats`).
+
+## Media made (2026-11-14, from PR #203's media; no new generation)
+
+- **14 scenes play a real cut** (`<folder>/scene.mp4`: the shots end to end under the narration, over the mood music, 9:16,
+  with sound; poster and phone rendition from `tools/make-posters.mjs`): first-light, the-plug, how-it-knows, the-garage,
+  whats-inside, the-river, the-tower, lights-out, what-it-knows, the-bait, the-vault, sixty-seconds, on-the-air,
+  the-green-line.
+- **6 scenes have no clip yet**: the-bridge, the-promise, morning-edition, live, unseen, good-morning. Each shows #193's
+  graded still (the story's key art, ARGUS amber) and the player speaks its `narration.mp3` over it with its music cue
+  looped under (`iltvAudio.playNarration`; the data's `narration` and `score`), the choices held for the reading time.
+  Their clips (and the talking shots, 19 in the recipes) are the media still to make.
+- The build cuts a scene as soon as its shots, narration and music exist; a talking shot is cut in only once both its
+  video and its recording are made. A scene whose lines have no talking shots yet keeps the live tail under its choices.
