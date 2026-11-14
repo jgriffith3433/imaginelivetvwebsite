@@ -18,7 +18,8 @@
 
   <main class="passage" data-story="final-spark" data-node="try-to-pick-the-lock">
     <h1 class="spot"><span class="spot-src" lang="de">Das Schloss knacken</span><span class="spot-en" aria-hidden="true">Pick the lock</span></h1>
-    <video src="/assets/video/pick-lock.mp4" controls playsinline preload="auto" data-sound-start></video>
+    <video data-src="/assets/video/pick-lock.mp4" data-small="/assets/video/sm/pick-lock.mp4" poster="/assets/video/poster/pick-lock.webp" controls playsinline preload="auto" data-sound-start></video>
+    <script>(function(){var v=document.currentScript.previousElementSibling,m=matchMedia("(max-width: 600px), (max-height: 500px) and (pointer: coarse)").matches;v.src=m?v.dataset.small:v.dataset.src})()</script>
     <p class="passage-note spot"><span class="spot-src" lang="de">Du fummelst am Schloss herum. Mit bloßen Fingern ist da nichts zu machen.</span><span class="spot-en" aria-hidden="true">You work at the lock. Bare fingers aren&#x27;t enough.</span></p>
     <p class="passage-prompt spot"><span class="spot-src" lang="de">Was machst du als Nächstes?</span><span class="spot-en" aria-hidden="true">What will you do next?</span></p>
     <div class="spark-choices"><a class="choice spot" href="/the-brass-tag/"><span class="spot-src" lang="de">1. Nach einem Schlüssel suchen</span><span class="spot-en" aria-hidden="true">1. Search for a key</span></a></div>
