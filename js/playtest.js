@@ -143,6 +143,9 @@ const audioOf = (doc = document) => doc.defaultView && doc.defaultView.iltvAudio
 async function tapAt(t, el, label, { quick = false } = {}) {
   if (!el) throw new Error(`${label} is not on the page`);
   const doc = el.ownerDocument;
+  // Trust Fall's news cards (chapter, sign-off) cover the screen until a press: a viewer taps the card first.
+  const card = doc.querySelector(".news-card");
+  if (card && !card.contains(el)) await tapAt(t, card, `the ${card.dataset.kind} card`, { quick });
   const win = doc.defaultView;
   const r = el.getBoundingClientRect();
   const x = r.left + r.width / 2;
@@ -8629,6 +8632,242 @@ function checkStill(t, doc, label, W) {
   });
 }
 
+/** Trust Fall's news cards: a card up (chapter or sign-off) is pressed away like a viewer would. Returns its kind or null. */
+async function dismissNews(t, doc) {
+  const card = doc.querySelector(".news-card");
+  if (!card) return null;
+  const kind = card.dataset.kind;
+  await tapAt(t, card, `the ${kind} card`);
+  return kind;
+}
+
+/** Marcus's morning news frames Trust Fall (story doc "The news frame"; J, 2026-11-14), at 390x844 with touch in a frame. Every
+    scene is entered by a real press (tapAt) from a seeded run at its parent (a setup shortcut, event seeded-run), the first by
+    its link. Per scene: the top band shows the broadcast clock (and Marcus's lower-third on his scenes) for as long as the scene
+    is up (`lower-third`); each chapter card (6:00 AM, 10:00 PM, 11:50 PM, 6:00 AM) fills the screen with its time and a press
+    moves on (`chapter-card`); every line of the scene shows under its speaker's name, in order (`caption`, metric
+    newsUncaptionedLines must be 0); the top band and the caption never overlap any button, the caption sits above the choices
+    (`news-overlap`); every ending is closed by Marcus's sign-off card, full screen, then the ending card is there to press
+    (`signoff`). Options: {"story":"<id>"} (default trust-fall). */
+async function trustFallNewsRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const st = story(id);
+  if (!st || !st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!st.news) throw new Error(`${id} has no news frame`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  if (!landingShown()) await toLanding(t);
+  const W = 390, H = 844;
+  const ids = Object.keys(st.scenes);
+  const dead = (sid) => !!st.scenes[sid].dead;
+  const flagsOf = (way) => {
+    const out = {};
+    for (let i = 0; i + 1 < way.length; i++) {
+      const c = st.scenes[way[i]].choices.find((x) => x[2] === way[i + 1]);
+      if (c && c[4]) Object.assign(out, c[4]);
+    }
+    return out;
+  };
+  const wayTo = (target) => {
+    const queue = [[st.start]];
+    while (queue.length) {
+      const way = queue.shift();
+      const sid = way[way.length - 1];
+      if (sid === target) return way;
+      if (way.length > 14 || dead(sid) || st.scenes[sid].ending) continue;
+      const flags = flagsOf(way);
+      const holds = (w) => Object.entries(w).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v);
+      for (const c of st.scenes[sid].choices) if (holds((c[7] && c[7].requires) || {}) && holds(c[5] || {})) queue.push([...way, c[2]]);
+    }
+    return null;
+  };
+  const rect = (e) => e.getBoundingClientRect();
+  const hit = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  const shownIn = (doc, sel) => [...doc.querySelectorAll(sel)].filter((e) => e.getClientRects().length);
+  let chapters = 0, captioned = 0, uncaptioned = 0, signoffs = 0, lowerThirds = 0, overlapChecks = 0;
+  const clockFor = (sid) => st.scenes[sid].news.time;
+
+  /** A chapter card on screen: the clock and title, filling the screen, 44px or more to press, then a press moves on. */
+  const checkChapter = async (doc, sid) => {
+    const want = st.scenes[sid].news.chapter;
+    const card = await (async () => { await waitFor(() => doc.querySelector('.news-card[data-kind="chapter"]'), 3000); return doc.querySelector('.news-card[data-kind="chapter"]'); })();
+    if (!card) { t.problem("bug", `${id}/${sid}: no chapter card for ${want.time} "${want.title}" on arriving`); return; }
+    const r = rect(card);
+    const text = card.textContent;
+    if (!text.includes(want.time) || !text.toLowerCase().includes(want.title.toLowerCase())) t.problem("bug", `${id}/${sid}: the chapter card says "${text.trim()}", want ${want.time} and "${want.title}"`);
+    if (r.width < W - 1 || r.height < H - 1) t.problem("bug", `${id}/${sid}: the chapter card is ${Math.round(r.width)}x${Math.round(r.height)}, not the whole ${W}x${H} screen`);
+    if (card.tagName !== "BUTTON") t.problem("bug", `${id}/${sid}: the chapter card is not a button`);
+    const under = doc.elementFromPoint(W / 2, H / 2);
+    if (!card.contains(under)) t.problem("bug", `${id}/${sid}: something lies over the chapter card (${under && (under.id || under.tagName)})`);
+    t.event("screenshot", `${id}/${sid} chapter card ${want.time} ${want.title}`);
+    await tapAt(t, card, `the ${want.time} chapter card`);
+    if (!(await waitFor(() => !doc.querySelector(".news-card"), 1500))) t.problem("bug", `${id}/${sid}: a press on the chapter card didn't move on`);
+    else { chapters++; t.event("chapter-card", `${id}/${sid}: ${want.time} ${want.title}: full screen ${Math.round(r.width)}x${Math.round(r.height)}, a press moves on`); }
+  };
+
+  /** What the scene shows in the top band, over its whole time, and every line of it captioned under its speaker. */
+  const checkScene = async (doc, sid) => {
+    const win = doc.defaultView;
+    const news = st.scenes[sid].news;
+    const bar = () => doc.querySelector("#spark-video .news-bar");
+    if (!(await waitFor(bar, 3000))) { t.problem("bug", `${id}/${sid}: no broadcast clock in the top band`); return; }
+    const b0 = bar();
+    const first = (b0.querySelector(".news-clock") || {}).textContent;
+    if (first !== news.time) t.problem("bug", `${id}/${sid}: the clock says "${first}", want ${news.time}`);
+    const lower = !!news.lower;
+    if (lower) {
+      const plate = b0.querySelector(".news-plate");
+      if (!plate || !plate.textContent.includes(st.news.anchor)) t.problem("bug", `${id}/${sid}: Marcus speaks here but the lower-third doesn't name ${st.news.anchor}`);
+      else if (!plate.textContent.includes(news.time) && !b0.textContent.includes(news.time)) t.problem("bug", `${id}/${sid}: the lower-third doesn't carry the broadcast time`);
+    } else if (b0.querySelector(".news-plate")) t.problem("bug", `${id}/${sid}: a lower-third shows on a scene where the anchor doesn't speak`);
+    // The captions, in order, each under the right name.
+    const seen = [];
+    const want = news.caption;
+    const t0 = performance.now();
+    const budget = want.reduce((n, l) => n + Math.max(2200, l[1].split(/\s+/).length * 400) + 250, 0) + 3000;
+    let stayed = true;
+    while (performance.now() - t0 < budget) {
+      const cap = doc.getElementById("spark-caption");
+      if (cap && !cap.hidden) {
+        const who = (cap.querySelector(".news-who") || {}).textContent, say = (cap.querySelector(".news-say") || {}).textContent;
+        if (who && (!seen.length || seen[seen.length - 1][1] !== say)) seen.push([who, say]);
+      }
+      if (lower && (!bar() || bar() !== b0 || !b0.querySelector(".news-plate"))) stayed = false;
+      if (seen.length >= want.length) break;
+      await sleep(100);
+    }
+    const missing = want.filter((l) => !seen.some((s) => s[0] === l[0] && s[1] === l[1]));
+    captioned += want.length - missing.length;
+    uncaptioned += missing.length;
+    if (missing.length) t.problem("bug", `${id}/${sid}: ${missing.length} spoken line(s) with no caption: ${missing.map((l) => `${l[0]}: "${l[1]}"`).join(" | ")}`);
+    else if (want.length) t.event("caption", `${id}/${sid}: ${want.map((l) => l[0]).join(" > ")} captioned in order`);
+    if (seen.length >= 2 && seen.map((s) => s[1]).join("|") !== want.map((l) => l[1]).join("|")) t.problem("bug", `${id}/${sid}: the captions came out of order`);
+    if (lower) {
+      // The lower-third stays for the whole scene: through the captions, and still there when the choices are up.
+      await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready" || st.scenes[sid].ending, 14000);
+      if (!stayed || !bar() || bar() !== b0 || !b0.isConnected || !b0.querySelector(".news-plate")) t.problem("bug", `${id}/${sid}: the lower-third went before the line it frames was over`);
+      else { lowerThirds++; t.event("lower-third", `${id}/${sid}: ${st.news.anchor} at ${news.time}, on screen through ${want.length} line(s) and the choices`); }
+    }
+    return { bar: b0, win };
+  };
+
+  /** The top band and the caption never lie over a button, the band is at the top of the picture and the caption above the choices. */
+  const checkOverlap = (doc, sid) => {
+    const bar = doc.querySelector("#spark-video .news-bar");
+    const cap = doc.getElementById("spark-caption");
+    const video = doc.getElementById("spark-video");
+    if (!bar) return;
+    const br = rect(bar), vr = rect(video);
+    const buttons = shownIn(doc, "#spark-play button, #spark-play a, #spark-play .choice, #spark-play .choice-locked, .spark-bar button, .spark-bar a, .spark-bar select, .spark-unmute, .spark-fullscreen").filter((e) => !e.closest(".news-card") && !bar.contains(e));
+    const plate = bar.querySelector(".news-plate"), clock = bar.querySelector(".news-clock");
+    for (const piece of [clock, plate].filter(Boolean)) {
+      const pr = rect(piece);
+      for (const b of buttons) if (hit(pr, rect(b))) t.problem("bug", `${id}/${sid}: the ${piece.className.replace("news-", "")} lies over "${enText(b) || b.id || b.className}" at ${W}x${H}`);
+    }
+    if (br.top > vr.top + vr.height * 0.25 + 1) t.problem("bug", `${id}/${sid}: the lower-third sits ${Math.round(br.top - vr.top)}px down the picture, not in the top band`);
+    if (br.left < -1 || br.right > W + 1) t.problem("bug", `${id}/${sid}: the top band runs off the screen`);
+    const choices = shownIn(doc, "#spark-choices .choice, #spark-choices .choice-locked, #spark-ending button, #spark-ending a");
+    if (cap && !cap.hidden) {
+      const cr = rect(cap);
+      for (const b of buttons) if (hit(cr, rect(b))) t.problem("bug", `${id}/${sid}: the caption lies over "${enText(b) || b.id || b.className}" at ${W}x${H}`);
+      const top = choices.length ? Math.min(...choices.map((b) => rect(b).top)) : null;
+      if (top != null && cr.bottom > top + 1) t.problem("bug", `${id}/${sid}: the caption (bottom ${Math.round(cr.bottom)}px) isn't above the choices (top ${Math.round(top)}px)`);
+      if (cr.left < -1 || cr.right > W + 1 || cr.bottom > H + 1) t.problem("bug", `${id}/${sid}: the caption isn't fully on screen at ${W}x${H}`);
+    }
+    overlapChecks++;
+    t.event("news-overlap", `${id}/${sid}: top band ${Math.round(br.top)}-${Math.round(br.bottom)}px${cap && !cap.hidden ? `, caption ${Math.round(rect(cap).top)}-${Math.round(rect(cap).bottom)}px` : ", no caption"}, ${buttons.length + choices.length} buttons clear of both`);
+  };
+
+  /** An ending: Marcus's sign-off card closes it, full screen with his line, and the ending card is there to press after. */
+  const checkSignoff = async (doc, sid) => {
+    const news = st.scenes[sid].news;
+    if (!(await waitFor(() => doc.querySelector('.news-card[data-kind="signoff"]'), 22000))) { t.problem("bug", `${id}/${sid}: the ending never closed on Marcus's sign-off card`); return; }
+    const card = doc.querySelector('.news-card[data-kind="signoff"]');
+    const r = rect(card);
+    if (!card.textContent.includes(news.signoff)) t.problem("bug", `${id}/${sid}: the sign-off card says "${card.textContent.trim()}", want "${news.signoff}"`);
+    if (!card.textContent.includes(st.news.anchor)) t.problem("bug", `${id}/${sid}: the sign-off card doesn't name ${st.news.anchor}`);
+    if (r.width < W - 1 || r.height < H - 1) t.problem("bug", `${id}/${sid}: the sign-off card is ${Math.round(r.width)}x${Math.round(r.height)}, not the whole screen`);
+    t.event("screenshot", `${id}/${sid} sign-off: ${news.signoff}`);
+    await sleep(600);
+    await tapAt(t, card, "the sign-off card");
+    if (!(await waitFor(() => !doc.querySelector(".news-card"), 1500))) t.problem("bug", `${id}/${sid}: a press on the sign-off card didn't move on`);
+    const ending = doc.getElementById("spark-ending");
+    if (!ending || ending.hidden || !shownIn(doc, "#spark-ending button, #spark-ending a").length) t.problem("bug", `${id}/${sid}: after the sign-off the ending card (with its buttons) isn't there`);
+    else {
+      signoffs++;
+      t.event("signoff", `${id}/${sid}: sign-off "${news.signoff}" over the ending, then the ending card with ${shownIn(doc, "#spark-ending button, #spark-ending a").length} buttons`);
+      checkOverlap(doc, sid);
+    }
+  };
+
+  // 1. The opening: by the story's link, the 6:00 AM chapter card first.
+  t.scene(`${id}: the news opens the night at ${W}x${H}`);
+  clearProgress();
+  {
+    const doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} opening ${W}x${H}`);
+    if (!(await waitFor(() => win.finalSpark.scene() === st.start, 8000))) throw new Error(`${id}: the story didn't open at ${st.start}`);
+    if (st.scenes[st.start].news.chapter) await checkChapter(doc, st.start);
+    await checkScene(doc, st.start);
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => box.dataset.phase === "ready", 14000);
+    await sleep(300);
+    checkOverlap(doc, st.start);
+    closeViewFrame();
+  }
+  t.progress(0.05);
+
+  // 2. Every other scene, by a real press from a seeded run at its parent.
+  let n = 0;
+  for (const target of ids) {
+    n++;
+    if (target === st.start) continue;
+    const way = wayTo(target);
+    if (!way) { t.problem("bug", `${id}: no way reaches ${target}`); continue; }
+    const parent = way[way.length - 2];
+    t.scene(`${id}: ${target}`);
+    gateSeed(t, st, way.slice(0, -1), `the press into ${target}`);
+    const doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} ${parent} ${W}x${H}`);
+    if (!(await waitFor(() => win.finalSpark.scene() === parent, 8000))) throw new Error(`${id}: the seeded run didn't open ${parent}`);
+    await rewindEndClip(doc);
+    const box = doc.getElementById("spark-choices");
+    await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice, [data-death]").length > 0, 12000);
+    await dismissNews(t, doc);
+    await sleep(350);
+    const index = st.scenes[parent].choices.findIndex((c) => c[2] === target);
+    const btn = shownIn(doc, "#spark-choices .choice").find((b) => Number(b.dataset.choiceIndex) === index);
+    if (!btn) { t.problem("bug", `${id}/${parent}: the choice into ${target} isn't on screen`); closeViewFrame(); continue; }
+    btn.scrollIntoView({ block: "center", behavior: "instant" });
+    await tapAt(t, btn, `"${enText(btn)}"`);
+    if (!(await waitFor(() => win.finalSpark.scene() === target, 5000))) { t.problem("bug", `${id}: the press on "${enText(btn)}" didn't open ${target}`); closeViewFrame(); continue; }
+    const news = st.scenes[target].news;
+    if (news.chapter) await checkChapter(doc, target);
+    else if (doc.querySelector(".news-card")) t.problem("bug", `${id}/${target}: a card shows where no act begins`);
+    await checkScene(doc, target);
+    if (st.scenes[target].ending) await checkSignoff(doc, target);
+    else {
+      await waitFor(() => box.dataset.phase === "ready" || dead(target), 14000);
+      await sleep(400);
+      checkOverlap(doc, target);
+    }
+    closeViewFrame();
+    t.progress(0.05 + 0.9 * (n / ids.length));
+  }
+  const chapterWant = ids.filter((sid) => st.scenes[sid].news.chapter).length;
+  if (chapters !== chapterWant) t.problem("bug", `${id}: ${chapters} chapter cards shown, want ${chapterWant}`);
+  const endingsWant = ids.filter((sid) => st.scenes[sid].ending).length;
+  if (signoffs !== endingsWant) t.problem("bug", `${id}: ${signoffs} sign-off cards shown, want ${endingsWant} (one per ending)`);
+  t.metric("newsChapterCards", chapters);
+  t.metric("newsCaptionedLines", captioned);
+  t.metric("newsUncaptionedLines", uncaptioned);
+  t.metric("newsSignoffs", signoffs);
+  t.metric("newsLowerThirds", lowerThirds);
+  t.metric("newsOverlapChecks", overlapChecks);
+  t.progress(1);
+}
+
 /** Trust Fall (story/trust-fall.md, listed: false, plays at /?story=trust-fall) at 390x844 with touch input. Setup shortcut:
     a seeded run (event seeded-run) at the parent of each scene, opened by the story's link in a frame; every scene is then
     entered by a real press (tapAt) of the choice that leads there. Options: {"story":"<id>"} (default trust-fall). */
@@ -9127,6 +9366,7 @@ async function trustFallRun(options, t) {
       else t.event("choice-sting", `${id}/${parent}: sting "${tapEv.name}" ${Math.max(0, tapEv.at - auT0)} ms after the press`);
     }
     if (!(await waitFor(() => win.finalSpark.scene() === target, 4000))) { t.problem("bug", `${id}: the press on "${label(btn)}" didn't open ${target} (at ${win.finalSpark.scene()})`); closeViewFrame(); continue; }
+    await dismissNews(t, doc);
     entered.add(target);
     {
       // Reading time: a still page's choices (a death's two buttons too) stay unseen until its words have had 250 words
@@ -10034,6 +10274,13 @@ installPlaytest({
       description: "Trust Fall (draft, /?story=trust-fall) at 390x844 with touch taps in a frame. A seeded run (seeded-run) one choice before Live, a real tap on that choice, the ending card says \"1 of 3 found\", a tap on Endings opens the gallery: Live a found tile, Unseen and Good morning blurred silhouettes named \"???\" with their teaser hints, nothing off screen and no horizontal scroll. Events ending-count, locked-ending, gallery-fit, screenshot; metrics endingsFound, endingsTotal.",
     },
     {
+      id: "trust-fall-news",
+      title: "Marcus's morning news frames Trust Fall: lower-third and clock, chapter cards by the clock, a caption on every line, a sign-off on every ending, nothing over a button",
+      seconds: 420,
+      tags: ["full"],
+      description: "Trust Fall (draft, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame; every scene entered by a real press from a seeded run at its parent (seeded-run). The top band shows the broadcast clock and, on Marcus's scenes, his lower-third for the whole scene (lower-third); the four chapter cards (6:00 AM, 10:00 PM, 11:50 PM, 6:00 AM) fill the screen with their time and a press moves on (chapter-card); every spoken line shows under its speaker's name, in order (caption; metric newsUncaptionedLines must be 0); the top band and the caption never lie over a button and the caption sits above the choices (news-overlap); every ending closes on Marcus's sign-off card, then the ending card is there (signoff). Metrics newsChapterCards, newsCaptionedLines, newsUncaptionedLines, newsSignoffs, newsLowerThirds, newsOverlapChecks.",
+    },
+    {
       id: "trust-fall",
       title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
       seconds: 480,
@@ -10281,6 +10528,7 @@ installPlaytest({
       else if (id === "trust-fall") await trustFallRun(options, t);
       else if (id === "trust-meter") await trustMeterRun(options, t);
       else if (id === "trust-fall-endings") await trustFallEndingsRun(options, t);
+      else if (id === "trust-fall-news") await trustFallNewsRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);

@@ -166,6 +166,16 @@ function validateFlags(st, s) {
   }
   // Whatever the flags and the count, a fork always offers something: at least one choice has no condition.
   if (s.choices.length && !s.choices.some((c) => !c.when && !c.matches)) problems.push(`${at(s)}: every choice has a when or matches, so a viewer could be left with none`);
+  // A news-framed story (`news` in its data): every scene has its broadcast time, every ending a sign-off, every line a speaker.
+  if (st.data.news) {
+    const CLOCK = /^(1[0-2]|[1-9]):[0-5]\d (AM|PM)$/;
+    if (!CLOCK.test(s.time ?? '')) problems.push(`${at(s)}: time must be like "6:00 AM" (the broadcast clock)`);
+    if (s.chapter && (!CLOCK.test(s.chapter.time ?? '') || !s.chapter.title)) problems.push(`${at(s)}: chapter needs a clock time ("10:00 PM") and a title`);
+    if (s.ending && !s.signoff) problems.push(`${at(s)}: an ending needs the anchor's signoff`);
+    if (s.signoff && !s.ending) problems.push(`${at(s)}: only an ending has a signoff`);
+    if (!st.data.characters?.[st.data.news.anchor]) problems.push(`${id}: news.anchor ${st.data.news.anchor} isn't in characters`);
+    for (const l of s.lines ?? []) if (l.speaker !== 'narrator' && !st.data.characters?.[l.speaker]) problems.push(`${at(s)}: line speaker ${l.speaker} isn't in characters, so its caption has no label`);
+  }
   // A scene's own countdown: `timer` seconds (3 to 60, default 15); `timerStyle: "air"` draws it as the air running out.
   if (s.timer != null && (!Number.isInteger(s.timer) || s.timer < 3 || s.timer > 60)) problems.push(`${at(s)}: timer must be a whole number of seconds from 3 to 60`);
   if (s.timerStyle != null && s.timerStyle !== 'air') problems.push(`${at(s)}: timerStyle is "air" or left out`);
@@ -457,6 +467,20 @@ function branchVideo(video) {
 
 /* ---------------- js/story-data.js ---------------- */
 
+/** A news-framed story's overlays for one scene (story doc "The news frame"): the broadcast time, the speaker-labelled
+    captions (one per line), whether the anchor's lower-third shows, a chapter card on arrival, a sign-off card at an ending. */
+function newsOf(st, s) {
+  const chars = st.data.characters ?? {};
+  const who = (id) => (id === 'narrator' ? 'Narrator' : (chars[id]?.name ?? id));
+  return {
+    time: s.time,
+    caption: (s.lines ?? []).map((l) => [who(l.speaker), l.text]),
+    ...((s.lines ?? []).some((l) => l.speaker === st.data.news.anchor) ? { lower: 1 } : {}),
+    ...(s.chapter ? { chapter: s.chapter } : {}),
+    ...(s.signoff ? { signoff: s.signoff } : {}),
+  };
+}
+
 function storyData() {
   const list = stories.map((st) => {
     if (st.console) return consoleData(st);
@@ -480,6 +504,7 @@ function storyData() {
         ...(s.dead ? { dead: true } : {}),
         ...(s.timer ? { timer: s.timer } : {}),
         ...(s.timerStyle ? { timerStyle: s.timerStyle } : {}),
+        ...(st.data.news ? { news: newsOf(st, s) } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
         choices: s.choices.map((c) => {
@@ -523,6 +548,7 @@ function storyData() {
       ui: Object.fromEntries(Object.entries(st.data.ui).filter(([lang]) => langs.has(lang))),
       ...(st.data.inventory ? { inventory: st.data.inventory } : {}),
       ...(st.data.unspoken ? { unspoken: st.data.unspoken } : {}),
+      ...(st.data.news ? { news: { station: st.data.news.station, anchor: st.data.characters[st.data.news.anchor].name, role: st.data.news.role ?? '' } } : {}),
       endings,
       scenes: out,
     };
