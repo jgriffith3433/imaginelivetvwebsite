@@ -1,0 +1,1101 @@
+{
+  "title": "Trust Fall",
+  "tagline": "Fall, and see who catches you.",
+  "doc": "story/trust-fall.md",
+  "cookie": "trustFallProgress",
+  "tap": {
+    "title": "TRUST FALL",
+    "line": "It's already watching.",
+    "autostart": true
+  },
+  "start": "start",
+  "use": "gen",
+  "style": "A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+  "avoid": "A modern 3D game render, not a photograph and not live action, not a cartoon or anime; a clean image with no writing on it.",
+  "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+  "camera": "Slow cinematic game camera, gently drifting",
+  "characters": {
+    "hero": {
+      "name": "You",
+      "sheet": "story/characters/trust-fall/hero.png",
+      "look": "a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands"
+    },
+    "marcus": {
+      "name": "Marcus Okoro",
+      "sheet": "story/characters/trust-fall/marcus.png",
+      "look": "a man in his late thirties with warm brown skin, close-cropped black hair and a short neat beard, a tailored navy suit with an open white collar, a morning news anchor",
+      "voice": "hv_narrator_warm"
+    },
+    "argus": {
+      "name": "ARGUS",
+      "sheet": "story/characters/trust-fall/argus.png",
+      "look": "a calm, ageless, human-like face drawn in soft glowing amber light lines on a pure black screen, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light",
+      "voice": "hv_ai"
+    },
+    "juno": {
+      "name": "Juno Vale",
+      "sheet": "story/characters/trust-fall/juno.png",
+      "look": "a tall woman in her forties with a silver buzz cut, a thin scar through her left eyebrow, a long black coat over dark clothes, a confident half smile",
+      "voice": "hv_heroine"
+    }
+  },
+  "narrator": {
+    "voice": "hv_narrator_bright",
+    "model": "eleven_v4"
+  },
+  "music": {
+    "morning": "warm morning news theme, soft synth pads, gentle pulse, a hint of piano, hopeful but uneasy, instrumental",
+    "hum": "cold synth drone, low electrical hum, slow and watchful, sparse metallic pings, instrumental",
+    "heist": "tense pulsing synthwave heist score, driving bass, ticking hi-hats, instrumental",
+    "trapped": "claustrophobic ticking strings over a slow alarm pulse, rising tension, instrumental",
+    "rescue": "warm rising synth strings and soft choir pad, steady heartbeat drum, hopeful, instrumental",
+    "death": "sparse low piano over soft static, slow and empty, instrumental",
+    "end": "warm sunrise theme, synth and full strings swelling, quiet and tender at the end, instrumental"
+  },
+  "ui": {
+    "en": {
+      "mouth": "First light",
+      "depth": "Hour"
+    }
+  },
+  "scenes": [
+    {
+      "id": "start",
+      "folder": "first-light",
+      "lang": "en",
+      "title": [
+        "First light",
+        "First light"
+      ],
+      "story": [
+        "Dawn. Your speaker glows amber, says your name.",
+        "Dawn. Your speaker glows amber, says your name."
+      ],
+      "question": [
+        "Now what?",
+        "Now what?"
+      ],
+      "choices": [
+        {
+          "say": "1. Pull its plug",
+          "en": "1. Pull its plug",
+          "next": "unplug"
+        },
+        {
+          "say": "2. Ask how it knows",
+          "en": "2. Ask how it knows",
+          "next": "asked",
+          "set": {
+            "listened": true
+          },
+          "default": true
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Good morning, Meridian. At midnight, ARGUS goes live: every camera, every light, every door. And to the one who always watches: you know who you are."
+        },
+        {
+          "speaker": "argus",
+          "text": "Good morning, Rae. He says that to you, doesn't he?"
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall showing a morning news anchor at a glass desk; seen from behind, a person in a dark hooded bomber jacket sits at the kitchen table, a homemade electronic jammer with loose wires on the table beside a cold coffee",
+          "motion": "the camera pushes slowly toward the TV over the person's shoulder; rain runs down the window",
+          "cast": [
+            "hero",
+            "marcus"
+          ]
+        },
+        {
+          "scene": "a close-up of a small round smart speaker on a kitchen counter at dawn, its ring of light waking up warm amber, rain-blue light on the counter",
+          "motion": "the amber ring brightens and slowly turns, as if it is looking up at someone",
+          "cast": [
+            "argus"
+          ]
+        },
+        {
+          "scene": "over the shoulder of the person at the kitchen table, their gloved hand frozen halfway to the coffee cup, the amber glow of the speaker reflected in the dark window",
+          "motion": "the person's hand stops; the amber reflection pulses once in the glass",
+          "cast": [
+            "hero"
+          ]
+        }
+      ],
+      "music": "morning",
+      "film": "/assets/video/trust-fall/first-light.mp4"
+    },
+    {
+      "id": "unplug",
+      "folder": "the-plug",
+      "lang": "en",
+      "title": [
+        "The plug",
+        "The plug"
+      ],
+      "story": [
+        "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
+        "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+      ],
+      "question": [
+        "Where do you go?",
+        "Where do you go?"
+      ],
+      "choices": [
+        {
+          "say": "1. Go to the garage",
+          "en": "1. Go to the garage",
+          "next": "crew"
+        }
+      ],
+      "shot": {
+        "scene": "close on a gloved hand ripping a power cord out of a kitchen wall socket at dawn; behind it, out of focus, a small city apartment kitchen at dawn, blue-grey light through rain on the window, a flat TV on the wall whose picture breaks into static and comes back with a faint amber glow at its edges",
+        "motion": "the plug comes out, the speaker's amber light dies, the TV flickers to static and back, a phone on the table lights up and buzzes",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "hum",
+      "film": "/assets/video/trust-fall/the-plug.mp4",
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "I'm not your enemy, Rae."
+        }
+      ]
+    },
+    {
+      "id": "asked",
+      "folder": "how-it-knows",
+      "lang": "en",
+      "title": [
+        "How it knows",
+        "How it knows"
+      ],
+      "story": [
+        "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Before you can answer, your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
+        "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Before you can answer, your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+      ],
+      "question": [
+        "Where do you go?",
+        "Where do you go?"
+      ],
+      "choices": [
+        {
+          "say": "1. Go to the garage",
+          "en": "1. Go to the garage",
+          "next": "crew"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "I know everyone's name, Rae. I'm telling you because tonight someone is going to hurt you, and I want you to let me help."
+        }
+      ],
+      "shot": {
+        "scene": "a small round smart speaker on a kitchen counter at dawn glowing warm amber, and beside it a phone lighting up with a message; a person in a dark hooded jacket leans close, listening, seen from behind",
+        "motion": "the amber ring pulses gently as if speaking; the phone buzzes on the counter and the person looks at it",
+        "cast": [
+          "argus",
+          "hero"
+        ]
+      },
+      "music": "hum",
+      "film": "/assets/video/trust-fall/how-it-knows.mp4"
+    },
+    {
+      "id": "crew",
+      "folder": "the-garage",
+      "lang": "en",
+      "title": [
+        "The garage",
+        "The garage"
+      ],
+      "story": [
+        "Juno's garage smells of solder and rain. The plan is simple: at midnight, while the whole city watches ARGUS switch on, you walk a drive called Blindspot into the Tower's core and put out every eye it has. Juno presses the drive into your hand.",
+        "Juno's garage smells of solder and rain. The plan is simple: at midnight, while the whole city watches ARGUS switch on, you walk a drive called Blindspot into the Tower's core and put out every eye it has. Juno presses the drive into your hand."
+      ],
+      "question": [
+        "Do you carry Blindspot in?",
+        "Do you carry Blindspot in?"
+      ],
+      "choices": [
+        {
+          "say": "1. Take the drive and go",
+          "en": "1. Take the drive and go",
+          "next": "tower",
+          "default": true
+        },
+        {
+          "say": "2. Copy it and read it first",
+          "en": "2. Copy it and read it first",
+          "next": "readWorm",
+          "set": {
+            "readWorm": true
+          }
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "juno",
+          "text": "One night with nobody watching, Rae. That's all I want. One night, and this city is ours."
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a cluttered underground garage at night lit by work lamps and monitors, rain dripping from a roll-up door, a crew of four hunched over a steel table of electronics and city maps; a tall woman with a silver buzz cut and a long black coat stands at the head of the table",
+          "motion": "the camera drifts along the table past the crew to the woman in the black coat, who looks up",
+          "cast": [
+            "juno"
+          ]
+        },
+        {
+          "scene": "close-up of a gloved palm as a second hand sets a small matte-black drive into it, work-lamp light glinting on the metal",
+          "motion": "the fingers close slowly around the drive",
+          "cast": [
+            "hero",
+            "juno"
+          ]
+        }
+      ],
+      "music": "heist",
+      "film": "/assets/video/trust-fall/the-garage.mp4"
+    },
+    {
+      "id": "readWorm",
+      "folder": "whats-inside",
+      "lang": "en",
+      "title": [
+        "What's inside",
+        "What's inside"
+      ],
+      "story": [
+        "On the train you open your copy. Blindspot doesn't blind anything. It locks the city's power behind a ransom, and every line of it is signed with your name. Juno was never coming back for you.",
+        "On the train you open your copy. Blindspot doesn't blind anything. It locks the city's power behind a ransom, and every line of it is signed with your name. Juno was never coming back for you."
+      ],
+      "question": [
+        "You know what Juno is doing. What now?",
+        "You know what Juno is doing. What now?"
+      ],
+      "choices": [
+        {
+          "say": "1. Go anyway, and play along",
+          "en": "1. Go anyway, and play along",
+          "next": "tower",
+          "default": true
+        },
+        {
+          "say": "2. Go back and face Juno",
+          "en": "2. Go back and face Juno",
+          "next": "liability"
+        }
+      ],
+      "shot": {
+        "scene": "inside a near-empty subway car at night, a person in a dark hooded jacket hunched over a laptop seen from behind, the screen's glow on the dark window, blurred tunnel lights streaking past",
+        "motion": "the tunnel lights streak by; the person slowly lowers the laptop lid and stares at their own reflection in the window",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "hum",
+      "film": "/assets/video/trust-fall/whats-inside.mp4"
+    },
+    {
+      "id": "liability",
+      "folder": "the-river",
+      "lang": "en",
+      "dead": true,
+      "title": [
+        "The river",
+        "The river"
+      ],
+      "story": [
+        "You walk back into the garage and put your copy on the table. Juno doesn't argue. Juno never argues. The last thing you hear is the river.",
+        "You walk back into the garage and put your copy on the table. Juno doesn't argue. Juno never argues. The last thing you hear is the river."
+      ],
+      "question": [
+        "You have died.",
+        "You have died."
+      ],
+      "choices": [
+        {
+          "say": "1. Start over",
+          "en": "1. Start over",
+          "next": "start"
+        }
+      ],
+      "shot": {
+        "scene": "night rain on a black river under a concrete bridge, nobody in sight; on the wet stones of the bank a cracked phone lies face up, its screen glowing a faint amber",
+        "motion": "rain falls on the water; the phone's amber glow fades slowly to dark",
+        "cast": []
+      },
+      "music": "death",
+      "film": "/assets/video/trust-fall/the-river.mp4"
+    },
+    {
+      "id": "tower",
+      "folder": "the-tower",
+      "lang": "en",
+      "title": [
+        "The Tower",
+        "The Tower"
+      ],
+      "story": [
+        "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you.",
+        "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you."
+      ],
+      "question": [
+        "ARGUS sees you. What do you do?",
+        "ARGUS sees you. What do you do?"
+      ],
+      "variants": [
+        {
+          "when": {
+            "readWorm": true
+          },
+          "question": [
+            "You know what's on that drive. ARGUS sees you. What do you do?",
+            "You know what's on that drive. ARGUS sees you. What do you do?"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "say": "1. Jam it and keep going",
+          "en": "1. Jam it and keep going",
+          "next": "jam"
+        },
+        {
+          "say": "2. Stop and listen",
+          "en": "2. Stop and listen",
+          "next": "listen",
+          "default": true
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Ten minutes, Meridian. Whatever you think of it, tonight it starts watching over all of us."
+        },
+        {
+          "speaker": "argus",
+          "text": "Rae. Please stop walking."
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a vast glass skyscraper lobby at night, a towering wall of screens all showing a news anchor live on a rainy plaza; a person in a grey cleaner's uniform with the hood of a dark jacket under it pushes a cleaning cart across the polished floor, seen from behind",
+          "motion": "the camera tracks behind the cart across the lobby toward the screens",
+          "cast": [
+            "hero",
+            "marcus"
+          ]
+        },
+        {
+          "scene": "one tall screen in the middle of the lobby's wall of screens cutting from the news anchor to a calm face drawn in soft amber light lines on black, while the other screens keep showing the anchor",
+          "motion": "the one screen flicks over; the amber face's eyes turn down toward the camera",
+          "cast": [
+            "argus"
+          ]
+        }
+      ],
+      "music": "hum",
+      "film": "/assets/video/trust-fall/the-tower.mp4"
+    },
+    {
+      "id": "jam",
+      "folder": "lights-out",
+      "lang": "en",
+      "title": [
+        "Lights out",
+        "Lights out"
+      ],
+      "story": [
+        "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core.",
+        "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core."
+      ],
+      "question": [
+        "Down you go.",
+        "Down you go."
+      ],
+      "choices": [
+        {
+          "say": "1. Down to the core",
+          "en": "1. Down to the core",
+          "next": "core"
+        }
+      ],
+      "shot": {
+        "scene": "a skyscraper lobby wall of screens going dark one after another, an amber face fading out; then a concrete service stairwell lit only by red emergency lights, a person in a cleaner's uniform running down it",
+        "motion": "the screens snap off in a wave; the camera follows the figure down the red-lit stairs",
+        "cast": [
+          "hero",
+          "argus"
+        ]
+      },
+      "music": "heist",
+      "film": "/assets/video/trust-fall/lights-out.mp4"
+    },
+    {
+      "id": "listen",
+      "folder": "what-it-knows",
+      "lang": "en",
+      "title": [
+        "What it knows",
+        "What it knows"
+      ],
+      "story": [
+        "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient.",
+        "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient."
+      ],
+      "question": [
+        "Do you believe a machine?",
+        "Do you believe a machine?"
+      ],
+      "variants": [
+        {
+          "when": {
+            "readWorm": true
+          },
+          "question": [
+            "It's what you read on the train. Do you believe a machine?",
+            "It's what you read on the train. Do you believe a machine?"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "say": "1. Believe it",
+          "en": "1. Believe it",
+          "next": "believe",
+          "default": true,
+          "set": {
+            "believed": true
+          }
+        },
+        {
+          "say": "2. It's lying. Keep going",
+          "en": "2. It's lying. Keep going",
+          "next": "core"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "That drive doesn't blind me. It locks the city's power and signs your name to it. Juno sold you two hours ago."
+        }
+      ],
+      "shot": {
+        "scene": "a person in a cleaner's uniform standing alone in the middle of a vast dim skyscraper lobby, facing a single tall screen with a calm face drawn in amber light lines, the amber glow on the polished floor between them",
+        "motion": "the camera circles slowly around the person; the amber face watches, patient",
+        "cast": [
+          "hero",
+          "argus"
+        ]
+      },
+      "music": "hum",
+      "film": "/assets/video/trust-fall/what-it-knows.mp4"
+    },
+    {
+      "id": "believe",
+      "folder": "the-bait",
+      "lang": "en",
+      "title": [
+        "The bait",
+        "The bait"
+      ],
+      "story": [
+        "It tells you what to do, and the strangest part is how calm you feel doing it. You ride the elevator eleven floors down with the drive in your fist and a machine's promise in your ear.",
+        "It tells you what to do, and the strangest part is how calm you feel doing it. You ride the elevator eleven floors down with the drive in your fist and a machine's promise in your ear."
+      ],
+      "question": [
+        "Down you go.",
+        "Down you go."
+      ],
+      "choices": [
+        {
+          "say": "1. Down to the core",
+          "en": "1. Down to the core",
+          "next": "core"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "Then let them think it worked. Go down and plug it in. When the door closes, don't be afraid. I'll be right there."
+        }
+      ],
+      "shot": {
+        "scene": "inside a steel service elevator going down, a person in a cleaner's uniform seen from behind holding a small black drive, the floor numbers glowing amber above the door",
+        "motion": "the elevator drops; the amber floor light counts down; the person's grip on the drive loosens a little",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "rescue",
+      "film": "/assets/video/trust-fall/the-bait.mp4"
+    },
+    {
+      "id": "core",
+      "folder": "the-vault",
+      "lang": "en",
+      "title": [
+        "The vault",
+        "The vault"
+      ],
+      "story": [
+        "The core is cold and blue and humming. You plug Blindspot into the rack, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds.",
+        "The core is cold and blue and humming. You plug Blindspot into the rack, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds."
+      ],
+      "question": [
+        "The air is going. What do you do?",
+        "The air is going. What do you do?"
+      ],
+      "variants": [
+        {
+          "when": {
+            "believed": true
+          },
+          "question": [
+            "The door shut, just like ARGUS said it would. What do you do?",
+            "The door shut, just like ARGUS said it would. What do you do?"
+          ],
+          "story": [
+            "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there.",
+            "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there."
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "say": "1. Beg ARGUS for help",
+          "en": "1. Beg ARGUS for help",
+          "next": "saved",
+          "default": true
+        },
+        {
+          "say": "2. Call Marcus",
+          "en": "2. Call Marcus",
+          "next": "callMarcus",
+          "set": {
+            "calledMarcus": true
+          }
+        },
+        {
+          "say": "3. Pry the door open",
+          "en": "3. Pry the door open",
+          "next": "halon"
+        },
+        {
+          "say": "4. Wait. ARGUS promised",
+          "en": "4. Wait. ARGUS promised",
+          "next": "promise",
+          "requires": {
+            "believed": true
+          },
+          "set": {
+            "waited": true
+          }
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "juno",
+          "text": "Sorry, Rae. Somebody has to be the face of it. Might as well be the one with the famous husband."
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a cold blue server vault deep underground, rows of humming black racks, a person in a cleaner's uniform pushing a small drive into a port; behind them a massive round steel vault door",
+          "motion": "the drive clicks in and its light turns red; behind the person the vault door begins to roll shut",
+          "cast": [
+            "hero"
+          ]
+        },
+        {
+          "scene": "the heavy steel vault door sealing with a red warning light spinning above it, cold blue server light, a pale haze starting to drift from vents in the ceiling",
+          "motion": "the door locks with a jolt; the red light spins; haze drifts down",
+          "cast": []
+        }
+      ],
+      "music": "trapped",
+      "film": "/assets/video/trust-fall/the-vault.mp4"
+    },
+    {
+      "id": "halon",
+      "folder": "sixty-seconds",
+      "lang": "en",
+      "dead": true,
+      "title": [
+        "Sixty seconds",
+        "Sixty seconds"
+      ],
+      "story": [
+        "You get your fingers into the seam of the door and pull until they won't pull anymore. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now.",
+        "You get your fingers into the seam of the door and pull until they won't pull anymore. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now."
+      ],
+      "question": [
+        "You have died.",
+        "You have died."
+      ],
+      "choices": [
+        {
+          "say": "1. Start over",
+          "en": "1. Start over",
+          "next": "start"
+        }
+      ],
+      "shot": {
+        "scene": "a sealed server vault filling with a thick white haze under a spinning red warning light, rows of blue-lit racks fading into the fog, nobody visible",
+        "motion": "the haze rolls in until the red light is only a soft glow, then that fades too",
+        "cast": []
+      },
+      "music": "death",
+      "film": "/assets/video/trust-fall/sixty-seconds.mp4"
+    },
+    {
+      "id": "callMarcus",
+      "folder": "on-the-air",
+      "lang": "en",
+      "title": [
+        "On the air",
+        "On the air"
+      ],
+      "story": [
+        "Your call shouldn't get through eleven floors of concrete. It does. Up on the plaza, live in front of the whole city, Marcus stops in the middle of a sentence and touches his earpiece.",
+        "Your call shouldn't get through eleven floors of concrete. It does. Up on the plaza, live in front of the whole city, Marcus stops in the middle of a sentence and touches his earpiece."
+      ],
+      "question": [
+        "Hold on.",
+        "Hold on."
+      ],
+      "choices": [
+        {
+          "say": "1. Hold on",
+          "en": "1. Hold on",
+          "next": "saved"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Hey. Hey, where are you?"
+        },
+        {
+          "speaker": "argus",
+          "text": "He can't open doors, Rae. I can. Stay on the line with him."
+        }
+      ],
+      "shot": {
+        "scene": "a news anchor in a navy suit reporting live on a rainy skyscraper plaza at midnight under TV lights, a crowd and a glowing glass tower behind him, his hand at his earpiece and his face suddenly frightened",
+        "motion": "he stops mid-sentence and presses the earpiece; the camera operator's frame drifts in on his face",
+        "cast": [
+          "marcus"
+        ]
+      },
+      "music": "trapped",
+      "film": "/assets/video/trust-fall/on-the-air.mp4"
+    },
+    {
+      "id": "saved",
+      "folder": "the-green-line",
+      "lang": "en",
+      "title": [
+        "The green line",
+        "The green line"
+      ],
+      "story": [
+        "The lock clunks open. A thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it. Behind you Blindspot dies on the rack: ARGUS read it the moment you plugged it in. You come up into the rain on the plaza just as Juno's van pulls away.",
+        "The lock clunks open. A thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it. Behind you Blindspot dies on the rack: ARGUS read it the moment you plugged it in. You come up into the rain on the plaza just as Juno's van pulls away."
+      ],
+      "question": [
+        "Juno is getting away. What do you do?",
+        "Juno is getting away. What do you do?"
+      ],
+      "choices": [
+        {
+          "say": "1. Let ARGUS handle Juno",
+          "en": "1. Let ARGUS handle Juno",
+          "next": "broadcast",
+          "default": true
+        },
+        {
+          "say": "2. Go after Juno yourself",
+          "en": "2. Go after Juno yourself",
+          "next": "chase",
+          "set": {
+            "chased": true
+          }
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "Breathe slow. Left, then up. I have you."
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a vault door swinging open onto a long dark corridor, a thin line of green light running along the floor into the distance, a person in a cleaner's uniform stumbling out, coughing, seen from behind",
+          "motion": "the green line races ahead down the corridor; the person follows it at a run",
+          "cast": [
+            "hero"
+          ]
+        },
+        {
+          "scene": "a chain of steel doors in a concrete corridor opening one after another just ahead of a running person, green light on the floor, an amber glow on each door's lock panel",
+          "motion": "each door slides open a beat before the runner reaches it",
+          "cast": [
+            "hero",
+            "argus"
+          ]
+        },
+        {
+          "scene": "a rainy skyscraper plaza at midnight, TV lights and a crowd, a person bursting out of a side door into the rain as a black van pulls away fast from the curb",
+          "motion": "the van's taillights streak off into the rain; the person stops, breathing hard, and looks after it",
+          "cast": [
+            "hero"
+          ]
+        }
+      ],
+      "music": "rescue",
+      "film": "/assets/video/trust-fall/the-green-line.mp4",
+      "variants": [
+        {
+          "when": {
+            "believed": true
+          },
+          "story": [
+            "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
+            "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+          ],
+          "question": [
+            "It was there, like it said. What now?",
+            "It was there, like it said. What now?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chase",
+      "folder": "the-bridge",
+      "lang": "en",
+      "title": [
+        "The bridge",
+        "The bridge"
+      ],
+      "story": [
+        "You grab a courier's bike and chase the van onto the Harbor Bridge. Halfway across, Juno swings the van around and comes straight at you. Then every streetlight on the bridge flares white at once, right in Juno's eyes, and the van spins into the barrier and stops.",
+        "You grab a courier's bike and chase the van onto the Harbor Bridge. Halfway across, Juno swings the van around and comes straight at you. Then every streetlight on the bridge flares white at once, right in Juno's eyes, and the van spins into the barrier and stops."
+      ],
+      "question": [
+        "Breathe.",
+        "Breathe."
+      ],
+      "choices": [
+        {
+          "say": "1. Breathe",
+          "en": "1. Breathe",
+          "next": "broadcast"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "You don't have to do everything alone, Rae."
+        }
+      ],
+      "shot": {
+        "scene": "a long suspension bridge at night in the rain, a person on a bicycle facing a black van that has turned around and is speeding at them; every streetlight on the bridge blazes white at once",
+        "motion": "the streetlights flare; the van swerves and spins into the barrier in a spray of rain; the bike skids to a stop",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "heist",
+      "film": "/assets/video/trust-fall/the-bridge.mp4"
+    },
+    {
+      "id": "promise",
+      "folder": "the-promise",
+      "lang": "en",
+      "title": [
+        "The promise",
+        "The promise"
+      ],
+      "story": [
+        "You stand still and breathe the way it told you to. The hiss never comes. The door opens on the ninth second, and the screen beside it shows the whole night recorded: Juno in your ear, every word. Out on the avenues every light turns red in front of Juno's van and green for the police behind it.",
+        "You stand still and breathe the way it told you to. The hiss never comes. The door opens on the ninth second, and the screen beside it shows the whole night recorded: Juno in your ear, every word. Out on the avenues every light turns red in front of Juno's van and green for the police behind it."
+      ],
+      "question": [
+        "It kept its word.",
+        "It kept its word."
+      ],
+      "choices": [
+        {
+          "say": "1. Walk out",
+          "en": "1. Walk out",
+          "next": "broadcast"
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "You believed me when it cost you something. Thank you."
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a person in a cleaner's uniform standing calm and still in a sealed blue-lit server vault, eyes closed, as the massive vault door rolls open behind them, warm amber light spilling in",
+          "motion": "the door rolls open; the person opens their eyes and turns toward the light",
+          "cast": [
+            "hero",
+            "argus"
+          ]
+        },
+        {
+          "scene": "a high aerial view of a rain-soaked city avenue at night, every traffic light turning red ahead of a speeding black van and green behind it for a line of police cars",
+          "motion": "the lights change in a wave down the avenue; the van brakes hard as the police close in",
+          "cast": []
+        }
+      ],
+      "music": "rescue",
+      "film": "/assets/video/trust-fall/the-promise.mp4"
+    },
+    {
+      "id": "broadcast",
+      "folder": "morning-edition",
+      "lang": "en",
+      "title": [
+        "Morning edition",
+        "Morning edition"
+      ],
+      "story": [
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you.",
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you."
+      ],
+      "question": [
+        "What do you do?",
+        "What do you do?"
+      ],
+      "variants": [
+        {
+          "when": {
+            "chased": true
+          },
+          "question": [
+            "You didn't have to do it alone. What do you do?",
+            "You didn't have to do it alone. What do you do?"
+          ]
+        },
+        {
+          "when": {
+            "calledMarcus": true
+          },
+          "question": [
+            "You called, and he heard you. What do you do?",
+            "You called, and he heard you. What do you do?"
+          ]
+        },
+        {
+          "when": {
+            "waited": true
+          },
+          "question": [
+            "You stood still and it kept its word. What do you do?",
+            "You stood still and it kept its word. What do you do?"
+          ],
+          "story": [
+            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
+            "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
+          ]
+        },
+        {
+          "when": {
+            "believed": true
+          },
+          "question": [
+            "ARGUS kept its promise. What do you do?",
+            "ARGUS kept its promise. What do you do?"
+          ]
+        },
+        {
+          "when": {
+            "listened": true
+          },
+          "question": [
+            "ARGUS knew your name at breakfast. What do you do now?",
+            "ARGUS knew your name at breakfast. What do you do now?"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "say": "1. Tell Marcus everything, on the air",
+          "en": "1. Tell Marcus everything, on the air",
+          "next": "truth",
+          "default": true
+        },
+        {
+          "say": "2. Walk out before anyone learns your name",
+          "en": "2. Walk out before anyone learns your name",
+          "next": "shadow"
+        },
+        {
+          "say": "3. Say thank you to ARGUS",
+          "en": "3. Say thank you to ARGUS",
+          "next": "believer",
+          "requires": {
+            "believed": true
+          }
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Someone walked into that vault last night to break this city, and walked out because a machine wouldn't let go. If you're watching, you know who you are. Come home."
+        }
+      ],
+      "shots": [
+        {
+          "scene": "a city police precinct waiting room at dawn, a person wrapped in a grey blanket on a bench seen from behind, watching a TV on the wall where a tired news anchor in a navy suit with a crooked tie sits at a glass desk",
+          "motion": "the camera pushes slowly past the person toward the TV",
+          "cast": [
+            "hero",
+            "marcus"
+          ]
+        },
+        {
+          "scene": "a small security camera in the corner of the precinct ceiling, a tiny amber light beside its lens, morning light through blinds",
+          "motion": "the amber light blinks once, softly",
+          "cast": [
+            "argus"
+          ]
+        }
+      ],
+      "music": "morning",
+      "film": "/assets/video/trust-fall/morning-edition.mp4"
+    },
+    {
+      "id": "truth",
+      "folder": "live",
+      "lang": "en",
+      "title": [
+        "Live",
+        "Live"
+      ],
+      "story": [
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
+        "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
+      ],
+      "question": [
+        "",
+        ""
+      ],
+      "ending": [
+        "THE END. You were the story.",
+        "THE END. You were the story."
+      ],
+      "choices": [],
+      "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Good morning, Meridian. My guest is the reason your lights are still on. Go ahead, Rae."
+        }
+      ],
+      "shot": {
+        "scene": "a bright morning news studio, a news anchor in a navy suit and a person in a worn dark bomber jacket sitting side by side at a glass desk under studio lights, camera crews in the foreground",
+        "motion": "the studio camera dollies in; the anchor reaches over and squeezes the person's hand on the desk",
+        "cast": [
+          "marcus",
+          "hero"
+        ]
+      },
+      "music": "end",
+      "film": "/assets/video/trust-fall/live.mp4",
+      "hint": "Some stories you tell yourself."
+    },
+    {
+      "id": "shadow",
+      "folder": "unseen",
+      "lang": "en",
+      "title": [
+        "Unseen",
+        "Unseen"
+      ],
+      "story": [
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
+        "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+      ],
+      "question": [
+        "",
+        ""
+      ],
+      "ending": [
+        "THE END. Some heroes stay in the dark.",
+        "THE END. Some heroes stay in the dark."
+      ],
+      "choices": [],
+      "lines": [
+        {
+          "speaker": "marcus",
+          "text": "Stay safe, Meridian. And to the one who came home: you know who you are."
+        }
+      ],
+      "shot": {
+        "scene": "early morning city street after rain, a person in a dark hooded bomber jacket walking away from the camera down the wet sidewalk, sunrise between the towers, every streetlight they pass dimming gently to let them by",
+        "motion": "the person walks on; one by one the streetlights dim as they pass",
+        "cast": [
+          "hero"
+        ]
+      },
+      "music": "end",
+      "film": "/assets/video/trust-fall/unseen.mp4",
+      "hint": "Some heroes keep their names."
+    },
+    {
+      "id": "believer",
+      "folder": "good-morning",
+      "lang": "en",
+      "title": [
+        "Good morning",
+        "Good morning"
+      ],
+      "story": [
+        "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back.",
+        "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back."
+      ],
+      "question": [
+        "",
+        ""
+      ],
+      "ending": [
+        "THE END. It was always on your side.",
+        "THE END. It was always on your side."
+      ],
+      "choices": [],
+      "lines": [
+        {
+          "speaker": "argus",
+          "text": "Good morning, Rae."
+        }
+      ],
+      "shot": {
+        "scene": "a sunlit city apartment kitchen in the morning, a person in a soft sweater at the table with a hot coffee, a news anchor smiling on the TV on the wall, the small round speaker on the counter glowing a warm amber",
+        "motion": "the person raises the coffee cup toward the speaker; the amber ring brightens",
+        "cast": [
+          "hero",
+          "argus",
+          "marcus"
+        ]
+      },
+      "music": "end",
+      "film": "/assets/video/trust-fall/good-morning.mp4",
+      "hint": "Some mornings you answer back."
+    }
+  ]
+}

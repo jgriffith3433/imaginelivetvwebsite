@@ -5,7 +5,7 @@ window.ILTV_STORIES = {
    "id": "final-spark",
    "title": "The Final Spark",
    "tagline": "Every decision has consequences.",
-   "logline": "You wake in a sewer with no name and no past. A rat is watching. Every page costs a match.",
+   "logline": "A rat is watching. Every page costs a match.",
    "image": "/assets/images/final-spark.jpg",
    "listed": true,
    "cookie": "finalSparkProgress",
@@ -133,6 +133,7 @@ window.ILTV_STORIES = {
       "ਹਨੇਰਾ ਸ਼ਹਿਰ",
       "THE DARK TOWN"
      ],
+     "poster": "/assets/video/poster/destroy-town.webp",
      "video": "/assets/video/destroy-town.mp4"
     },
     {
@@ -145,6 +146,7 @@ window.ILTV_STORIES = {
       "消えない炎",
       "THE FLAME HELD"
      ],
+     "poster": "/assets/video/poster/fog.webp",
      "video": "/assets/video/fog.mp4"
     },
     {
@@ -169,6 +171,7 @@ window.ILTV_STORIES = {
       "Der Laternenanzünder",
       "THE LAMPLIGHTER"
      ],
+     "poster": "/assets/video/poster/fog.webp",
      "video": "/assets/video/fog.mp4"
     }
    ],
@@ -189,7 +192,10 @@ window.ILTV_STORIES = {
       "你要做什么？",
       "What will you do?"
      ],
-     "video": "/assets/video/start.mp4",
+     "video": "/the-sewer/scene.mp4",
+     "poster": "/the-sewer/poster/scene.webp",
+     "small": "/the-sewer/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. 往回走",
@@ -220,6 +226,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/dead-end.mp4",
+     "poster": "/assets/video/poster/dead-end.webp",
+     "small": "/assets/video/sm/dead-end.mp4",
      "inventory": {
       "matches": -1
      },
@@ -253,6 +261,8 @@ window.ILTV_STORIES = {
       "Only one way is left."
      ],
      "video": "/assets/video/direction.mp4",
+     "poster": "/assets/video/poster/direction.webp",
+     "small": "/assets/video/sm/direction.mp4",
      "inventory": {
       "matches": -1
      },
@@ -281,6 +291,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/assets/video/sludge.mp4",
+     "poster": "/assets/video/poster/sludge.webp",
+     "small": "/assets/video/sm/sludge.mp4",
      "dead": true,
      "inventory": {
       "matches": -1
@@ -310,6 +322,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/sewer-water.mp4",
+     "poster": "/assets/video/poster/sewer-water.webp",
+     "small": "/assets/video/sm/sewer-water.mp4",
      "inventory": {
       "matches": -1
      },
@@ -343,6 +357,8 @@ window.ILTV_STORIES = {
       "What do you do about the rat?"
      ],
      "video": "/assets/video/out-of-water.mp4",
+     "poster": "/assets/video/poster/out-of-water.webp",
+     "small": "/assets/video/sm/out-of-water.mp4",
      "inventory": {
       "matches": -1
      },
@@ -396,6 +412,8 @@ window.ILTV_STORIES = {
       "You have died."
      ],
      "video": "/assets/video/trench-foot.mp4",
+     "poster": "/assets/video/poster/trench-foot.webp",
+     "small": "/assets/video/sm/trench-foot.mp4",
      "dead": true,
      "inventory": {
       "matches": -1
@@ -425,6 +443,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/gate.mp4",
+     "poster": "/assets/video/poster/gate.webp",
+     "small": "/assets/video/sm/gate.mp4",
      "inventory": {
       "matches": -1
      },
@@ -486,6 +506,8 @@ window.ILTV_STORIES = {
       "What will you do next?"
      ],
      "video": "/assets/video/break-gate.mp4",
+     "poster": "/assets/video/poster/break-gate.webp",
+     "small": "/assets/video/sm/break-gate.mp4",
      "inventory": {
       "matches": -1
      },
@@ -514,6 +536,8 @@ window.ILTV_STORIES = {
       "What will you do next?"
      ],
      "video": "/assets/video/pick-lock.mp4",
+     "poster": "/assets/video/poster/pick-lock.webp",
+     "small": "/assets/video/sm/pick-lock.mp4",
      "inventory": {
       "matches": -1
      },
@@ -546,6 +570,8 @@ window.ILTV_STORIES = {
       "What will you do with it?"
      ],
      "video": "/assets/video/got-key.mp4",
+     "poster": "/assets/video/poster/got-key.webp",
+     "small": "/assets/video/sm/got-key.mp4",
      "inventory": {
       "matches": -1
      },
@@ -574,6 +600,8 @@ window.ILTV_STORIES = {
       "Will you enter the fog?"
      ],
      "video": "/assets/video/use-key.mp4",
+     "poster": "/assets/video/poster/use-key.webp",
+     "small": "/assets/video/sm/use-key.mp4",
      "inventory": {
       "matches": -1
      },
@@ -622,6 +650,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/fog.mp4",
+     "poster": "/assets/video/poster/fog.webp",
+     "small": "/assets/video/sm/fog.mp4",
      "inventory": {
       "matches": -1
      },
@@ -692,6 +722,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/fire-door.mp4",
+     "poster": "/assets/video/poster/fire-door.webp",
+     "small": "/assets/video/sm/fire-door.mp4",
      "inventory": {
       "matches": -1
      },
@@ -720,6 +752,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/knock.mp4",
+     "poster": "/assets/video/poster/knock.webp",
+     "small": "/assets/video/sm/knock.mp4",
      "inventory": {
       "matches": -1
      },
@@ -758,6 +792,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/truck.mp4",
+     "poster": "/assets/video/poster/truck.webp",
+     "small": "/assets/video/sm/truck.mp4",
      "inventory": {
       "matches": -1
      },
@@ -819,6 +855,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/inside-truck.mp4",
+     "poster": "/assets/video/poster/inside-truck.webp",
+     "small": "/assets/video/sm/inside-truck.mp4",
      "inventory": {
       "matches": -1
      },
@@ -847,6 +885,8 @@ window.ILTV_STORIES = {
       "What will you do?"
      ],
      "video": "/assets/video/walk-away.mp4",
+     "poster": "/assets/video/poster/walk-away.webp",
+     "small": "/assets/video/sm/walk-away.mp4",
      "inventory": {
       "matches": -1
      },
@@ -875,6 +915,8 @@ window.ILTV_STORIES = {
       "The shadow gives you two powers."
      ],
      "video": "/assets/video/shadow-dance.mp4",
+     "poster": "/assets/video/poster/shadow-dance.webp",
+     "small": "/assets/video/sm/shadow-dance.mp4",
      "inventory": {
       "matches": -1
      },
@@ -923,6 +965,8 @@ window.ILTV_STORIES = {
       "Which power will you explore?"
      ],
      "video": "/assets/video/explore-powers.mp4",
+     "poster": "/assets/video/poster/explore-powers.webp",
+     "small": "/assets/video/sm/explore-powers.mp4",
      "inventory": {
       "matches": -1
      },
@@ -956,6 +1000,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/consume-light.mp4",
+     "poster": "/assets/video/poster/consume-light.webp",
+     "small": "/assets/video/sm/consume-light.mp4",
      "inventory": {
       "matches": -1
      },
@@ -984,6 +1030,8 @@ window.ILTV_STORIES = {
       "What happens next?"
      ],
      "video": "/assets/video/shadow-stitch.mp4",
+     "poster": "/assets/video/poster/shadow-stitch.webp",
+     "small": "/assets/video/sm/shadow-stitch.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1012,6 +1060,8 @@ window.ILTV_STORIES = {
       ""
      ],
      "video": "/assets/video/destroy-town.mp4",
+     "poster": "/assets/video/poster/destroy-town.webp",
+     "small": "/assets/video/sm/destroy-town.mp4",
      "ending": [
       "ਹਨੇਰਾ ਸ਼ਹਿਰ",
       "THE DARK TOWN"
@@ -1066,6 +1116,8 @@ window.ILTV_STORIES = {
       "The pipe is narrow and wet."
      ],
      "video": "/assets/video/direction.mp4",
+     "poster": "/assets/video/poster/direction.webp",
+     "small": "/assets/video/sm/direction.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1094,6 +1146,8 @@ window.ILTV_STORIES = {
       "The rat crouches at the pipe's mouth, watching you."
      ],
      "video": "/assets/video/use-key.mp4",
+     "poster": "/assets/video/poster/use-key.webp",
+     "small": "/assets/video/sm/use-key.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1122,6 +1176,8 @@ window.ILTV_STORIES = {
       "A gate bars the passage ahead."
      ],
      "video": "/assets/video/direction.mp4",
+     "poster": "/assets/video/poster/direction.webp",
+     "small": "/assets/video/sm/direction.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1150,6 +1206,8 @@ window.ILTV_STORIES = {
       "The key hangs beneath it."
      ],
      "video": "/assets/video/got-key.mp4",
+     "poster": "/assets/video/poster/got-key.webp",
+     "small": "/assets/video/sm/got-key.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1178,6 +1236,8 @@ window.ILTV_STORIES = {
       "He closes the door slowly."
      ],
      "video": "/assets/video/knock.mp4",
+     "poster": "/assets/video/poster/knock.webp",
+     "small": "/assets/video/sm/knock.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1206,6 +1266,8 @@ window.ILTV_STORIES = {
       "What do you do with the lamps?"
      ],
      "video": "/assets/video/consume-light.mp4",
+     "poster": "/assets/video/poster/consume-light.webp",
+     "small": "/assets/video/sm/consume-light.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1312,6 +1374,8 @@ window.ILTV_STORIES = {
       "What do you do with the town?"
      ],
      "video": "/assets/video/shadow-stitch.mp4",
+     "poster": "/assets/video/poster/shadow-stitch.webp",
+     "small": "/assets/video/sm/shadow-stitch.mp4",
      "inventory": {
       "matches": -1
      },
@@ -1418,6 +1482,8 @@ window.ILTV_STORIES = {
       ""
      ],
      "video": "/assets/video/fog.mp4",
+     "poster": "/assets/video/poster/fog.webp",
+     "small": "/assets/video/sm/fog.mp4",
      "ending": [
       "消えない炎",
       "THE FLAME HELD"
@@ -1470,6 +1536,8 @@ window.ILTV_STORIES = {
       ""
      ],
      "video": "/assets/video/fog.mp4",
+     "poster": "/assets/video/poster/fog.webp",
+     "small": "/assets/video/sm/fog.mp4",
      "ending": [
       "Der Laternenanzünder",
       "THE LAMPLIGHTER"
@@ -1550,7 +1618,9 @@ window.ILTV_STORIES = {
      "ending": [
       "THE END. This is how it started.",
       "THE END. This is how it started."
-     ]
+     ],
+     "poster": "/water-road/dry-fork/poster/scene.webp",
+     "video": "/water-road/dry-fork/scene.mp4"
     },
     {
      "id": "sellWater",
@@ -1561,7 +1631,9 @@ window.ILTV_STORIES = {
      "ending": [
       "THE END. Not every story makes a hero.",
       "THE END. Not every story makes a hero."
-     ]
+     ],
+     "poster": "/water-road/the-price-of-water/poster/scene.webp",
+     "video": "/water-road/the-price-of-water/scene.mp4"
     }
    ],
    "scenes": {
@@ -1581,7 +1653,10 @@ window.ILTV_STORIES = {
       "Which way does the caravan go?",
       "Which way does the caravan go?"
      ],
-     "video": null,
+     "video": "/water-road/the-water-road/scene.mp4",
+     "poster": "/water-road/the-water-road/poster/scene.webp",
+     "small": "/water-road/the-water-road/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Cut across the salt flats",
@@ -1612,7 +1687,10 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-salt-flats/scene.mp4",
+     "poster": "/water-road/the-salt-flats/poster/scene.webp",
+     "small": "/water-road/the-salt-flats/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "water": -1
      },
@@ -1646,7 +1724,9 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
+     "video": "/water-road/the-heat/scene.mp4",
+     "poster": "/water-road/the-heat/poster/scene.webp",
+     "small": "/water-road/the-heat/sm/scene.mp4",
      "dead": true,
      "inventory": {
       "water": -3
@@ -1675,7 +1755,10 @@ window.ILTV_STORIES = {
       "Do you stop?",
       "Do you stop?"
      ],
-     "video": null,
+     "video": "/water-road/under-the-stars/scene.mp4",
+     "poster": "/water-road/under-the-stars/poster/scene.webp",
+     "small": "/water-road/under-the-stars/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Ride over to it",
@@ -1710,7 +1793,10 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/under-the-mesa/scene.mp4",
+     "poster": "/water-road/under-the-mesa/poster/scene.webp",
+     "small": "/water-road/under-the-mesa/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "water": -1
      },
@@ -1749,7 +1835,9 @@ window.ILTV_STORIES = {
       "Who's that on the rocks?",
       "Who's that on the rocks?"
      ],
-     "video": null,
+     "video": "/water-road/the-rockslide/scene.mp4",
+     "poster": "/water-road/the-rockslide/poster/scene.webp",
+     "small": "/water-road/the-rockslide/sm/scene.mp4",
      "inventory": {
       "bullets": -1,
       "barrels": -4
@@ -1778,7 +1866,10 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-lookout/scene.mp4",
+     "poster": "/water-road/the-lookout/poster/scene.webp",
+     "small": "/water-road/the-lookout/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Follow him",
@@ -1824,7 +1915,10 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-broken-wagon/scene.mp4",
+     "poster": "/water-road/the-broken-wagon/poster/scene.webp",
+     "small": "/water-road/the-broken-wagon/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Give them your flask",
@@ -1863,7 +1957,9 @@ window.ILTV_STORIES = {
       "What's ahead?",
       "What's ahead?"
      ],
-     "video": null,
+     "video": "/water-road/your-flask/scene.mp4",
+     "poster": "/water-road/your-flask/poster/scene.webp",
+     "small": "/water-road/your-flask/sm/scene.mp4",
      "inventory": {
       "water": -2,
       "barrels": -1
@@ -1892,7 +1988,10 @@ window.ILTV_STORIES = {
       "Do you look back?",
       "Do you look back?"
      ],
-     "video": null,
+     "video": "/water-road/ride-on-by/scene.mp4",
+     "poster": "/water-road/ride-on-by/poster/scene.webp",
+     "small": "/water-road/ride-on-by/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Turn around",
@@ -1923,7 +2022,10 @@ window.ILTV_STORIES = {
       "Which way?",
       "Which way?"
      ],
-     "video": null,
+     "video": "/water-road/the-dust/scene.mp4",
+     "poster": "/water-road/the-dust/poster/scene.webp",
+     "small": "/water-road/the-dust/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "barrels": -2
      },
@@ -1961,7 +2063,9 @@ window.ILTV_STORIES = {
       "Which way is the wash?",
       "Which way is the wash?"
      ],
-     "video": null,
+     "video": "/water-road/the-high-ground/scene.mp4",
+     "poster": "/water-road/the-high-ground/poster/scene.webp",
+     "small": "/water-road/the-high-ground/sm/scene.mp4",
      "inventory": {
       "water": -1,
       "barrels": -4
@@ -1990,7 +2094,10 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/the-dry-wash/scene.mp4",
+     "poster": "/water-road/the-dry-wash/poster/scene.webp",
+     "small": "/water-road/the-dry-wash/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Draw your revolver",
@@ -2069,7 +2176,9 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": null,
+     "video": "/water-road/the-gunfight/scene.mp4",
+     "poster": "/water-road/the-gunfight/poster/scene.webp",
+     "small": "/water-road/the-gunfight/sm/scene.mp4",
      "dead": true,
      "inventory": {
       "bullets": -6
@@ -2098,7 +2207,10 @@ window.ILTV_STORIES = {
       "What now?",
       "What now?"
      ],
-     "video": null,
+     "video": "/water-road/over-their-heads/scene.mp4",
+     "poster": "/water-road/over-their-heads/poster/scene.webp",
+     "small": "/water-road/over-their-heads/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "bullets": -2
      },
@@ -2143,7 +2255,10 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
+     "video": "/water-road/they-come-back/scene.mp4",
+     "poster": "/water-road/they-come-back/poster/scene.webp",
+     "small": "/water-road/they-come-back/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Shoot it out",
@@ -2194,7 +2309,9 @@ window.ILTV_STORIES = {
       "Where does the wash go?",
       "Where does the wash go?"
      ],
-     "video": null,
+     "video": "/water-road/a-drink-for-strangers/scene.mp4",
+     "poster": "/water-road/a-drink-for-strangers/poster/scene.webp",
+     "small": "/water-road/a-drink-for-strangers/sm/scene.mp4",
      "inventory": {
       "barrels": -2
      },
@@ -2233,7 +2350,10 @@ window.ILTV_STORIES = {
       "What do you do with it?",
       "What do you do with it?"
      ],
-     "video": null,
+     "video": "/water-road/the-cottonwoods/scene.mp4",
+     "poster": "/water-road/the-cottonwoods/poster/scene.webp",
+     "small": "/water-road/the-cottonwoods/sm/scene.mp4",
+     "live": 18,
      "inventory": {
       "water": {
        "set": 4
@@ -2289,7 +2409,9 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
+     "video": "/water-road/dry-fork/scene.mp4",
+     "poster": "/water-road/dry-fork/poster/scene.webp",
+     "small": "/water-road/dry-fork/sm/scene.mp4",
      "ending": [
       "THE END. This is how it started.",
       "THE END. This is how it started."
@@ -2312,7 +2434,9 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
+     "video": "/water-road/the-price-of-water/scene.mp4",
+     "poster": "/water-road/the-price-of-water/poster/scene.webp",
+     "small": "/water-road/the-price-of-water/sm/scene.mp4",
      "ending": [
       "THE END. Not every story makes a hero.",
       "THE END. Not every story makes a hero."
@@ -2805,27 +2929,27 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "The lobby: the long desk, the turnstiles, the revolving door and the bench by the window, all empty under flat light.",
-       "image": null
+       "image": "/night-shift/media/feeds/c1-normal.png"
       },
       "desk-visitor": {
        "desc": "The lobby desk: a young officer leaning over it, and a man in a hi-vis vest with a clipboard on the other side.",
-       "image": null
+       "image": "/night-shift/media/feeds/c1-desk-visitor.png"
       },
       "laptop": {
        "desc": "The bench by the window with a closed laptop and a lanyard left on it, nobody near.",
-       "image": null
+       "image": "/night-shift/media/feeds/c1-laptop.png"
       },
       "coat": {
        "desc": "A man in a long dark coat crossing the lobby toward the elevators, phone in hand, not looking at the camera.",
-       "image": null
+       "image": "/night-shift/media/feeds/c1-coat.png"
       },
       "box": {
        "desc": "A cardboard box on the lobby desk, a courier's hand just leaving the frame.",
-       "image": null
+       "image": "/night-shift/media/feeds/c1-box.png"
       },
       "dawn": {
        "desc": "The lobby in grey early light at the revolving door, the first shapes of the day staff beyond the glass.",
-       "image": null
+       "image": "/night-shift/media/feeds/c1-dawn.png"
       }
      }
     },
@@ -2835,15 +2959,15 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "The glass airlock between Madison Avenue and the lobby, a ledge along one wall, the street light cold on the floor.",
-       "image": null
+       "image": "/night-shift/media/feeds/c2-normal.png"
       },
       "sleeper": {
        "desc": "The vestibule ledge with a man lying along it under a worn coat, his shoes together, frost at the corners of the glass.",
-       "image": null
+       "image": "/night-shift/media/feeds/c2-sleeper.png"
       },
       "empty-cold": {
        "desc": "The vestibule with a folded coat's worth of damp on the ledge and the outer door still swinging shut.",
-       "image": null
+       "image": "/night-shift/media/feeds/c2-empty-cold.png"
       }
      }
     },
@@ -2853,11 +2977,11 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "The rollup door, the dock office window and a trash compactor under a single caged bulb.",
-       "image": null
+       "image": "/night-shift/media/feeds/c3-normal.png"
       },
       "van": {
        "desc": "The rollup door half raised, a white van's lights beyond it, a man in a cap standing at the intercom with a box.",
-       "image": null
+       "image": "/night-shift/media/feeds/c3-van.png"
       }
      }
     },
@@ -2867,11 +2991,11 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A fire door on a concrete landing with a painted number 31, closed.",
-       "image": null
+       "image": "/night-shift/media/feeds/c4-normal.png"
       },
       "wedge": {
        "desc": "The same fire door on the 31st floor landing held open a hand's width by a small orange rubber wedge.",
-       "image": null
+       "image": "/night-shift/media/feeds/c4-wedge.png"
       }
      }
     },
@@ -2881,15 +3005,15 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "Four elevator cars, a call panel and a plant, the floor shining.",
-       "image": null
+       "image": "/night-shift/media/feeds/c5-normal.png"
       },
       "stuck": {
        "desc": "The four elevators; the indicator over one car frozen between 30 and 31, its doors closed, the call light lit.",
-       "image": null
+       "image": "/night-shift/media/feeds/c5-stuck.png"
       },
       "cart": {
        "desc": "The four elevators with a cleaning cart parked in front of them, bags tied on the rail.",
-       "image": null
+       "image": "/night-shift/media/feeds/c5-cart.png"
       }
      }
     },
@@ -2899,19 +3023,19 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A long carpeted corridor and a janitor's closet door at the far end.",
-       "image": null
+       "image": "/night-shift/media/feeds/c6-normal.png"
       },
       "reader": {
        "desc": "A woman in a cleaner's smock and a younger man holding a mop bucket stand at a badge reader beside a door.",
-       "image": null
+       "image": "/night-shift/media/feeds/c6-reader.png"
       },
       "leak": {
        "desc": "The janitor's closet door at the end of the corridor with a dark stain spreading across the carpet from its sill.",
-       "image": null
+       "image": "/night-shift/media/feeds/c6-leak.png"
       },
       "papers": {
        "desc": "A woman holding a sheet of paper up toward the camera, the young man behind her with the bucket.",
-       "image": null
+       "image": "/night-shift/media/feeds/c6-papers.png"
       }
      }
     },
@@ -2921,11 +3045,11 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A reception with tall glass doors, a low desk nobody sits at and one lamp left on.",
-       "image": null
+       "image": "/night-shift/media/feeds/c7-normal.png"
       },
       "coat": {
        "desc": "The reception lit, a man in a long dark coat crossing it toward the glass doors, phone in hand.",
-       "image": null
+       "image": "/night-shift/media/feeds/c7-coat.png"
       }
      }
     },
@@ -2935,7 +3059,7 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A steel door with a push bar, a sign and a single light above it, closed.",
-       "image": null
+       "image": "/night-shift/media/feeds/c8-normal.png"
       }
      }
     },
@@ -2945,15 +3069,15 @@ window.ILTV_STORIES = {
      "states": {
       "normal": {
        "desc": "A small alcove with a grey cabinet and the fire panel's repeater, one steady green light.",
-       "image": null
+       "image": "/night-shift/media/feeds/c9-normal.png"
       },
       "frozen": {
        "desc": "The same alcove, the picture caught with a faint horizontal tear across it as if the signal has stopped.",
-       "image": null
+       "image": "/night-shift/media/feeds/c9-frozen.png"
       },
       "trouble": {
        "desc": "The alcove with the repeater showing a steady amber light.",
-       "image": null
+       "image": "/night-shift/media/feeds/c9-trouble.png"
       }
      }
     }
@@ -2994,44 +3118,44 @@ window.ILTV_STORIES = {
     }
    },
    "ambience": {
-    "control-room": null,
-    "control-room-late": null,
-    "lobby": null,
-    "vestibule": null,
-    "dock": null,
-    "stairwell": null,
-    "corridor": null,
-    "elevator": null,
-    "roof": null,
-    "morning": null
+    "control-room": "/night-shift/media/ambience/control-room.mp3",
+    "control-room-late": "/night-shift/media/ambience/control-room-late.mp3",
+    "lobby": "/night-shift/media/ambience/lobby.mp3",
+    "vestibule": "/night-shift/media/ambience/vestibule.mp3",
+    "dock": "/night-shift/media/ambience/dock.mp3",
+    "stairwell": "/night-shift/media/ambience/stairwell.mp3",
+    "corridor": "/night-shift/media/ambience/corridor.mp3",
+    "elevator": "/night-shift/media/ambience/elevator.mp3",
+    "roof": "/night-shift/media/ambience/roof.mp3",
+    "morning": "/night-shift/media/ambience/morning.mp3"
    },
    "sfx": {
-    "radio-squelch": null,
-    "radio-charger": null,
-    "walkie-squelch": null,
-    "tablet-tap": null,
-    "pencil": null,
-    "foil": null,
-    "door-buzz": null,
-    "phone-ring": null,
-    "intercom": null,
-    "elevator-chime": null,
-    "panel-buzzer": null,
-    "footsteps-stairs": null,
-    "coffee": null,
-    "drawer": null,
-    "paper": null,
-    "door-heavy": null,
-    "keys": null,
-    "clock-tick": null
+    "radio-squelch": "/night-shift/media/sfx/radio-squelch.mp3",
+    "radio-charger": "/night-shift/media/sfx/radio-charger.mp3",
+    "walkie-squelch": "/night-shift/media/sfx/walkie-squelch.mp3",
+    "tablet-tap": "/night-shift/media/sfx/tablet-tap.mp3",
+    "pencil": "/night-shift/media/sfx/pencil.mp3",
+    "foil": "/night-shift/media/sfx/foil.mp3",
+    "door-buzz": "/night-shift/media/sfx/door-buzz.mp3",
+    "phone-ring": "/night-shift/media/sfx/phone-ring.mp3",
+    "intercom": "/night-shift/media/sfx/intercom.mp3",
+    "elevator-chime": "/night-shift/media/sfx/elevator-chime.mp3",
+    "panel-buzzer": "/night-shift/media/sfx/panel-buzzer.mp3",
+    "footsteps-stairs": "/night-shift/media/sfx/footsteps-stairs.mp3",
+    "coffee": "/night-shift/media/sfx/coffee.mp3",
+    "drawer": "/night-shift/media/sfx/drawer.mp3",
+    "paper": "/night-shift/media/sfx/paper.mp3",
+    "door-heavy": "/night-shift/media/sfx/door-heavy.mp3",
+    "keys": "/night-shift/media/sfx/keys.mp3",
+    "clock-tick": "/night-shift/media/sfx/clock-tick.mp3"
    },
    "music": {
-    "shift-begins": null,
-    "the-panel": null,
-    "fifty-eight": null,
-    "ending-plain": null,
-    "ending-warm": null,
-    "ending-cold": null
+    "shift-begins": "/night-shift/media/music/shift-begins.mp3",
+    "the-panel": "/night-shift/media/music/the-panel.mp3",
+    "fifty-eight": "/night-shift/media/music/fifty-eight.mp3",
+    "ending-plain": "/night-shift/media/music/ending-plain.mp3",
+    "ending-warm": "/night-shift/media/music/ending-warm.mp3",
+    "ending-cold": "/night-shift/media/music/ending-cold.mp3"
    },
    "reactions": {
     "mm": {
@@ -3227,7 +3351,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Clean report.",
       "Clean report."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-clean.png",
+     "endcard": "/night-shift/media/endcards/end-clean.png"
     },
     {
      "id": "end-someone",
@@ -3238,7 +3364,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Someone to leave it to.",
       "Someone to leave it to."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-someone.png",
+     "endcard": "/night-shift/media/endcards/end-someone.png"
     },
     {
      "id": "end-she-knew",
@@ -3249,7 +3377,9 @@ window.ILTV_STORIES = {
      "ending": [
       "She knew.",
       "She knew."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-she-knew.png",
+     "endcard": "/night-shift/media/endcards/end-she-knew.png"
     },
     {
      "id": "end-eat-something",
@@ -3260,7 +3390,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Eat something.",
       "Eat something."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-eat-something.png",
+     "endcard": "/night-shift/media/endcards/end-eat-something.png"
     },
     {
      "id": "end-by-the-book",
@@ -3271,7 +3403,9 @@ window.ILTV_STORIES = {
      "ending": [
       "By the book, alone.",
       "By the book, alone."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-by-the-book.png",
+     "endcard": "/night-shift/media/endcards/end-by-the-book.png"
     },
     {
      "id": "end-friendly",
@@ -3282,7 +3416,9 @@ window.ILTV_STORIES = {
      "ending": [
       "The friendly one.",
       "The friendly one."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-friendly.png",
+     "endcard": "/night-shift/media/endcards/end-friendly.png"
     },
     {
      "id": "end-opinions",
@@ -3293,7 +3429,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Opinions.",
       "Opinions."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-opinions.png",
+     "endcard": "/night-shift/media/endcards/end-opinions.png"
     },
     {
      "id": "end-four-hours",
@@ -3304,7 +3442,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Four minutes.",
       "Four minutes."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-four-hours.png",
+     "endcard": "/night-shift/media/endcards/end-four-hours.png"
     },
     {
      "id": "end-written-up",
@@ -3315,7 +3455,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Written up.",
       "Written up."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-written-up.png",
+     "endcard": "/night-shift/media/endcards/end-written-up.png"
     },
     {
      "id": "end-wedge",
@@ -3326,7 +3468,9 @@ window.ILTV_STORIES = {
      "ending": [
       "The wedge.",
       "The wedge."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-wedge.png",
+     "endcard": "/night-shift/media/endcards/end-wedge.png"
     },
     {
      "id": "end-noted",
@@ -3337,7 +3481,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Noted.",
       "Noted."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-noted.png",
+     "endcard": "/night-shift/media/endcards/end-noted.png"
     },
     {
      "id": "end-under-review",
@@ -3348,7 +3494,9 @@ window.ILTV_STORIES = {
      "ending": [
       "Under review.",
       "Under review."
-     ]
+     ],
+     "poster": "/night-shift/media/endcards/end-under-review.png",
+     "endcard": "/night-shift/media/endcards/end-under-review.png"
     }
    ],
    "scenes": {
@@ -3474,14 +3622,14 @@ window.ILTV_STORIES = {
        "speaker": "okafor",
        "text": "Forty-four is the third line. Water was dry by four.",
        "perform": "answering, glad to",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-1.mp3",
        "dur": 3.8
       },
       {
        "speaker": "narrator",
        "text": "Mr. Okafor turns the tablet toward you. A box for your initials sits under the last line of the day.",
        "act": "okafor:hand",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-2.mp3",
        "dur": 6.5
       },
       {
@@ -3490,14 +3638,14 @@ window.ILTV_STORIES = {
        "sfx": "tablet-tap",
        "perform": "polite",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-3.mp3",
        "dur": 3.1
       },
       {
        "speaker": "okafor",
        "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
        "perform": "correcting himself",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-4.mp3",
        "dur": 4.9
       },
       {
@@ -3505,42 +3653,42 @@ window.ILTV_STORIES = {
        "text": "And the binder. Fire, access, medical, who to call, in what order. Page eleven is the one people skip.",
        "perform": "tapping the shelf",
        "act": "okafor:point:shelf",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-5.mp3",
        "dur": 8.8
       },
       {
        "speaker": "dee",
        "text": "Page eleven.",
        "perform": "flat, to the charger",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-6.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Read it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-7.mp3",
        "dur": 0.9
       },
       {
        "speaker": "okafor",
        "text": "It's two pages.",
        "perform": "mild",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-8.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Then it's two minutes.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-9.mp3",
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Initial.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/binder-44/media/line-10.mp3",
        "dur": 1
       }
      ],
@@ -3590,14 +3738,14 @@ window.ILTV_STORIES = {
        "speaker": "okafor",
        "text": "Thursday. Ten a.m. Not your shift.",
        "perform": "a nod to himself",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-1.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "Mr. Okafor turns the tablet toward you. A box for your initials sits under the last line of the day.",
        "act": "okafor:hand",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-2.mp3",
        "dur": 6.5
       },
       {
@@ -3606,14 +3754,14 @@ window.ILTV_STORIES = {
        "sfx": "tablet-tap",
        "perform": "polite",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-3.mp3",
        "dur": 3.1
       },
       {
        "speaker": "okafor",
        "text": "There's a note on page two. A guy in the vestibule Tuesday. Individual.",
        "perform": "correcting himself",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-4.mp3",
        "dur": 4.9
       },
       {
@@ -3621,42 +3769,42 @@ window.ILTV_STORIES = {
        "text": "And the binder. Fire, access, medical, who to call, in what order. Page eleven is the one people skip.",
        "perform": "tapping the shelf",
        "act": "okafor:point:shelf",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-5.mp3",
        "dur": 8.8
       },
       {
        "speaker": "dee",
        "text": "Page eleven.",
        "perform": "flat, to the charger",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-6.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Read it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-7.mp3",
        "dur": 0.9
       },
       {
        "speaker": "okafor",
        "text": "It's two pages.",
        "perform": "mild",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-8.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Then it's two minutes.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-9.mp3",
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Initial.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/binder-thu/media/line-10.mp3",
        "dur": 1
       }
      ],
@@ -3707,13 +3855,13 @@ window.ILTV_STORIES = {
        "text": "You read both pages while he waits. The panel belongs to the fire safety director, not to you. One badge, one person. After hours the tenant says yes first.",
        "sfx": "paper",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-1.mp3",
        "dur": 11.9
       },
       {
        "speaker": "narrator",
        "text": "Page eleven is the order of calls: supervisor, building manager, nine-one-one. Unless a life is at risk. Then nine-one-one first, and everyone else after.",
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-2.mp3",
        "dur": 11.7
       },
       {
@@ -3739,21 +3887,21 @@ window.ILTV_STORIES = {
          "at": 0.8
         }
        ],
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-3.mp3",
        "dur": 11.7
       },
       {
        "speaker": "dee",
        "text": "Four radios. Four on the charger when I walk in. Four when I leave.",
        "perform": "flat, reading a sign",
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-4.mp3",
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Doesn't matter why.",
        "perform": "quick",
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-5.mp3",
        "dur": 1.2
       },
       {
@@ -3762,21 +3910,21 @@ window.ILTV_STORIES = {
        "sfx": "coffee",
        "perform": "dry",
        "act": "dee:drink",
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-6.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Terrell has the desk. You don't go out to the desk. The desk comes to you.",
        "perform": "flat, a house rule",
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-7.mp3",
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "Officer. You've got a name? Say it once. I'll use it when I use it.",
        "perform": "looks at you for the first time",
-       "file": null,
+       "file": "/night-shift/okafor-out/media/line-8.mp3",
        "dur": 5.8
       }
      ],
@@ -3852,35 +4000,35 @@ window.ILTV_STORIES = {
          "at": 0.78
         }
        ],
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-1.mp3",
        "dur": 10.4
       },
       {
        "speaker": "okafor",
        "text": "It's customary to read it first.",
        "perform": "from the door, tired",
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-2.mp3",
        "dur": 2.6
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "less than a word",
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-3.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Four radios. Four on the charger when I walk in. Four when I leave.",
        "perform": "flat, reading a sign",
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-4.mp3",
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Doesn't matter why.",
        "perform": "quick",
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-5.mp3",
        "dur": 1.2
       },
       {
@@ -3889,21 +4037,21 @@ window.ILTV_STORIES = {
        "sfx": "coffee",
        "perform": "dry",
        "act": "dee:drink",
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-6.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Terrell has the desk. You don't go out to the desk. The desk comes to you.",
        "perform": "flat, a house rule",
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-7.mp3",
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "Officer. You've got a name? Say it once. I'll use it when I use it.",
        "perform": "looks at you for the first time",
-       "file": null,
+       "file": "/night-shift/okafor-out-fast/media/line-8.mp3",
        "dur": 5.8
       }
      ],
@@ -3951,13 +4099,13 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The control room is smaller than the wall makes it look. A shelf, a binder, an extinguisher, a charger with four green lights, a coffee machine that has been wrong for a long time.",
-       "file": null,
+       "file": "/night-shift/the-chairs/media/line-1.mp3",
        "dur": 12
       },
       {
        "speaker": "narrator",
        "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person.",
-       "file": null,
+       "file": "/night-shift/the-chairs/media/line-2.mp3",
        "dur": 7.1
       },
       {
@@ -3965,7 +4113,7 @@ window.ILTV_STORIES = {
        "text": "Sit.",
        "perform": "already seated",
        "act": "you:sit",
-       "file": null,
+       "file": "/night-shift/the-chairs/media/line-3.mp3",
        "dur": 0.9
       },
       {
@@ -3973,7 +4121,7 @@ window.ILTV_STORIES = {
        "text": "The clock's two minutes fast. Leave it.",
        "sfx": "clock-tick",
        "perform": "eyes on the clock",
-       "file": null,
+       "file": "/night-shift/the-chairs/media/line-4.mp3",
        "dur": 2.7
       },
       {
@@ -3982,14 +4130,14 @@ window.ILTV_STORIES = {
        "sfx": "radio-charger",
        "perform": "holds the fourth out",
        "act": "dee:hand",
-       "file": null,
+       "file": "/night-shift/the-chairs/media/line-5.mp3",
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "Don't move the chairs. The chairs know where they are.",
        "perform": "flat, to the wall",
-       "file": null,
+       "file": "/night-shift/the-chairs/media/line-6.mp3",
        "dur": 3.3
       }
      ],
@@ -4049,19 +4197,19 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Knocking on it again, are we.",
        "perform": "to the wall, not to you",
-       "file": null,
+       "file": "/night-shift/the-chairs-knock/media/line-1.mp3",
        "dur": 2.2
       },
       {
        "speaker": "narrator",
        "text": "The control room is smaller than the wall makes it look. A shelf, a binder, an extinguisher, a charger with four green lights, a coffee machine that has been wrong for a long time.",
-       "file": null,
+       "file": "/night-shift/the-chairs-knock/media/line-2.mp3",
        "dur": 12
       },
       {
        "speaker": "narrator",
        "text": "Two chairs face the wall. One has a good back. The other has a cushion flattened to the shape of one person.",
-       "file": null,
+       "file": "/night-shift/the-chairs-knock/media/line-3.mp3",
        "dur": 7.1
       },
       {
@@ -4069,7 +4217,7 @@ window.ILTV_STORIES = {
        "text": "Sit.",
        "perform": "already seated",
        "act": "you:sit",
-       "file": null,
+       "file": "/night-shift/the-chairs-knock/media/line-4.mp3",
        "dur": 0.9
       },
       {
@@ -4077,7 +4225,7 @@ window.ILTV_STORIES = {
        "text": "The clock's two minutes fast. Leave it.",
        "sfx": "clock-tick",
        "perform": "eyes on the clock",
-       "file": null,
+       "file": "/night-shift/the-chairs-knock/media/line-5.mp3",
        "dur": 2.7
       },
       {
@@ -4086,14 +4234,14 @@ window.ILTV_STORIES = {
        "sfx": "radio-charger",
        "perform": "holds the fourth out",
        "act": "dee:hand",
-       "file": null,
+       "file": "/night-shift/the-chairs-knock/media/line-6.mp3",
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "Don't move the chairs. The chairs know where they are.",
        "perform": "flat, to the wall",
-       "file": null,
+       "file": "/night-shift/the-chairs-knock/media/line-7.mp3",
        "dur": 3.3
       }
      ],
@@ -4142,14 +4290,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Back's all right? It's the only thing in here that is.",
        "perform": "a dry look at the chair",
-       "file": null,
+       "file": "/night-shift/chair-good/media/line-1.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "It's been in here since before Terrell. Since before the carpet. Nobody's sure how it got in.",
        "perform": "dry, to the wall",
-       "file": null,
+       "file": "/night-shift/chair-good/media/line-2.mp3",
        "dur": 6.2
       },
       {
@@ -4161,13 +4309,13 @@ window.ILTV_STORIES = {
          "at": 0.8
         }
        ],
-       "file": null,
+       "file": "/night-shift/chair-good/media/line-3.mp3",
        "dur": 3
       },
       {
        "speaker": "narrator",
        "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
-       "file": null,
+       "file": "/night-shift/chair-good/media/line-4.mp3",
        "dur": 8.3
       },
       {
@@ -4175,14 +4323,14 @@ window.ILTV_STORIES = {
        "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
        "sfx": "radio-squelch",
        "perform": "bright, over the radio",
-       "file": null,
+       "file": "/night-shift/chair-good/media/line-5.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "That's you.",
        "perform": "not looking up",
-       "file": null,
+       "file": "/night-shift/chair-good/media/line-6.mp3",
        "dur": 2.5
       }
      ],
@@ -4243,14 +4391,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "You're in my chair, Officer. Go on, I'll live.",
        "perform": "deadpan, not moving",
-       "file": null,
+       "file": "/night-shift/chair-hers/media/line-1.mp3",
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "Fine. Sit. It's a chair.",
        "perform": "gets up, takes the other",
-       "file": null,
+       "file": "/night-shift/chair-hers/media/line-2.mp3",
        "dur": 3.3
       },
       {
@@ -4262,20 +4410,20 @@ window.ILTV_STORIES = {
          "at": 0.82
         }
        ],
-       "file": null,
+       "file": "/night-shift/chair-hers/media/line-3.mp3",
        "dur": 3.9
       },
       {
        "speaker": "dee",
        "text": "Don't get used to it.",
        "perform": "flat, from the good chair, the one she has never once sat in",
-       "file": null,
+       "file": "/night-shift/chair-hers/media/line-4.mp3",
        "dur": 1.8
       },
       {
        "speaker": "narrator",
        "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
-       "file": null,
+       "file": "/night-shift/chair-hers/media/line-5.mp3",
        "dur": 8.3
       },
       {
@@ -4283,14 +4431,14 @@ window.ILTV_STORIES = {
        "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
        "sfx": "radio-squelch",
        "perform": "bright, over the radio",
-       "file": null,
+       "file": "/night-shift/chair-hers/media/line-6.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "That's you.",
        "perform": "not looking up",
-       "file": null,
+       "file": "/night-shift/chair-hers/media/line-7.mp3",
        "dur": 2.5
       }
      ],
@@ -4347,27 +4495,27 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "So I'm never late for myself.",
        "perform": "short, a shrug in it",
-       "file": null,
+       "file": "/night-shift/chair-clock/media/line-1.mp3",
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Leave it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/chair-clock/media/line-2.mp3",
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Mine's the watch on my wrist. That one's the room. Don't trust the room.",
        "perform": "flat, tapping the glass of her watch",
-       "file": null,
+       "file": "/night-shift/chair-clock/media/line-3.mp3",
        "dur": 9
       },
       {
        "speaker": "narrator",
        "text": "The radio on the desk crackles. It is Terrell, out front. The charger light is green. Dolores doesn't move.",
-       "file": null,
+       "file": "/night-shift/chair-clock/media/line-4.mp3",
        "dur": 8.3
       },
       {
@@ -4375,14 +4523,14 @@ window.ILTV_STORIES = {
        "text": "Control to post one, radio check. Post one? Hey. Radio check, you know?",
        "sfx": "radio-squelch",
        "perform": "bright, over the radio",
-       "file": null,
+       "file": "/night-shift/chair-clock/media/line-5.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "That's you.",
        "perform": "not looking up",
-       "file": null,
+       "file": "/night-shift/chair-clock/media/line-6.mp3",
        "dur": 2.5
       }
      ],
@@ -4439,7 +4587,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Mm. Every time. Half hour, hour.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/radio-ok/media/line-1.mp3",
        "dur": 4
       },
       {
@@ -4453,21 +4601,21 @@ window.ILTV_STORIES = {
          "at": 0.5
         }
        ],
-       "file": null,
+       "file": "/night-shift/radio-ok/media/line-2.mp3",
        "dur": 8.2
       },
       {
        "speaker": "terrell",
        "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
        "perform": "fast, finishing the thought wrong",
-       "file": null,
+       "file": "/night-shift/radio-ok/media/line-3.mp3",
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Desk.",
        "perform": "without turning",
-       "file": null,
+       "file": "/night-shift/radio-ok/media/line-4.mp3",
        "dur": 2
       },
       {
@@ -4475,14 +4623,14 @@ window.ILTV_STORIES = {
        "text": "I'm going, I'm going.",
        "perform": "backing out, still talking",
        "act": "terrell:leave",
-       "file": null,
+       "file": "/night-shift/radio-ok/media/line-5.mp3",
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Where do you live?",
        "perform": "to you, a real question, which surprises her",
-       "file": null,
+       "file": "/night-shift/radio-ok/media/line-6.mp3",
        "dur": 1.6
       }
      ],
@@ -4541,14 +4689,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Button's on the side. Side. The…",
        "perform": "cut off by her own sigh",
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-1.mp3",
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Mm. A minute late.",
        "perform": "the whole verdict",
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-2.mp3",
        "dur": 4.2
       },
       {
@@ -4560,7 +4708,7 @@ window.ILTV_STORIES = {
          "at": 0.47
         }
        ],
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-3.mp3",
        "dur": 3.6
       },
       {
@@ -4574,21 +4722,21 @@ window.ILTV_STORIES = {
          "at": 0.5
         }
        ],
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-4.mp3",
        "dur": 8.2
       },
       {
        "speaker": "terrell",
        "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
        "perform": "fast, finishing the thought wrong",
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-5.mp3",
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Desk.",
        "perform": "without turning",
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-6.mp3",
        "dur": 2
       },
       {
@@ -4596,14 +4744,14 @@ window.ILTV_STORIES = {
        "text": "I'm going, I'm going.",
        "perform": "backing out, still talking",
        "act": "terrell:leave",
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-7.mp3",
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Where do you live?",
        "perform": "to you, a real question, which surprises her",
-       "file": null,
+       "file": "/night-shift/radio-late/media/line-8.mp3",
        "dur": 1.6
       }
      ],
@@ -4662,20 +4810,20 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "It's not mine. Press the side.",
        "perform": "flat, not taking it",
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-1.mp3",
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Mm. A minute late.",
        "perform": "the whole verdict",
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-2.mp3",
        "dur": 4.2
       },
       {
        "speaker": "narrator",
        "text": "The radio goes quiet. She puts the pencil down on the right of the tablet.",
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-3.mp3",
        "dur": 4.7
       },
       {
@@ -4689,21 +4837,21 @@ window.ILTV_STORIES = {
          "at": 0.5
         }
        ],
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-4.mp3",
        "dur": 8.2
       },
       {
        "speaker": "terrell",
        "text": "So where'd they get you from? Wait. Let me guess. Queens. You've got a Queens, you know?",
        "perform": "fast, finishing the thought wrong",
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-5.mp3",
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Desk.",
        "perform": "without turning",
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-6.mp3",
        "dur": 2
       },
       {
@@ -4711,14 +4859,14 @@ window.ILTV_STORIES = {
        "text": "I'm going, I'm going.",
        "perform": "backing out, still talking",
        "act": "terrell:leave",
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-7.mp3",
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Where do you live?",
        "perform": "to you, a real question, which surprises her",
-       "file": null,
+       "file": "/night-shift/radio-dee/media/line-8.mp3",
        "dur": 1.6
       }
      ],
@@ -4777,21 +4925,21 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "The seven? Mm. It stops. It always stops, right under Queensboro.",
        "perform": "like she's been stuck there",
-       "file": null,
+       "file": "/night-shift/talk-commute/media/line-1.mp3",
        "dur": 11.3
       },
       {
        "speaker": "dee",
        "text": "It's wrong. I said not to say.",
        "perform": "hearing you sip it",
-       "file": null,
+       "file": "/night-shift/talk-commute/media/line-2.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Thirty-six minutes. Door to door. The seven smells like pennies.",
        "perform": "flat, a small, dry kindness",
-       "file": null,
+       "file": "/night-shift/talk-commute/media/line-3.mp3",
        "dur": 4.9
       },
       {
@@ -4803,7 +4951,7 @@ window.ILTV_STORIES = {
          "at": 0.19
         }
        ],
-       "file": null,
+       "file": "/night-shift/talk-commute/media/line-4.mp3",
        "dur": 10
       },
       {
@@ -4817,14 +4965,14 @@ window.ILTV_STORIES = {
         "c2",
         "c3"
        ],
-       "file": null,
+       "file": "/night-shift/talk-commute/media/line-5.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Say what you see. Not what it is.",
        "perform": "short",
-       "file": null,
+       "file": "/night-shift/talk-commute/media/line-6.mp3",
        "dur": 2.6
       }
      ],
@@ -4880,28 +5028,28 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Pepper and egg. Half past midnight. Don't ask for a bite.",
        "perform": "closing the foil",
-       "file": null,
+       "file": "/night-shift/talk-sandwich/media/line-1.mp3",
        "dur": 5.9
       },
       {
        "speaker": "dee",
        "text": "Ray used to… Forget it. Drink the coffee.",
        "perform": "trails off, picks up the cup",
-       "file": null,
+       "file": "/night-shift/talk-sandwich/media/line-2.mp3",
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "It's wrong. I said not to say.",
        "perform": "hearing you sip it",
-       "file": null,
+       "file": "/night-shift/talk-sandwich/media/line-3.mp3",
        "dur": 4.3
       },
       {
        "speaker": "narrator",
        "text": "She eats half, folds the foil back over the rest and puts it on the shelf.",
        "act": "dee:eat",
-       "file": null,
+       "file": "/night-shift/talk-sandwich/media/line-4.mp3",
        "dur": 4.8
       },
       {
@@ -4913,7 +5061,7 @@ window.ILTV_STORIES = {
          "at": 0.19
         }
        ],
-       "file": null,
+       "file": "/night-shift/talk-sandwich/media/line-5.mp3",
        "dur": 10
       },
       {
@@ -4927,14 +5075,14 @@ window.ILTV_STORIES = {
         "c2",
         "c3"
        ],
-       "file": null,
+       "file": "/night-shift/talk-sandwich/media/line-6.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Say what you see. Not what it is.",
        "perform": "short",
-       "file": null,
+       "file": "/night-shift/talk-sandwich/media/line-7.mp3",
        "dur": 2.6
       }
      ],
@@ -4990,27 +5138,27 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Hey, you see the game? Two points. Two. In the last…",
        "perform": "from the door, still talking",
-       "file": null,
+       "file": "/night-shift/talk-game/media/line-1.mp3",
        "dur": 4.4
       },
       {
        "speaker": "dee",
        "text": "Terrell.",
        "perform": "one word",
-       "file": null,
+       "file": "/night-shift/talk-game/media/line-2.mp3",
        "dur": 0.8
       },
       {
        "speaker": "dee",
        "text": "It's wrong. I said not to say.",
        "perform": "hearing you sip it",
-       "file": null,
+       "file": "/night-shift/talk-game/media/line-3.mp3",
        "dur": 4.3
       },
       {
        "speaker": "narrator",
        "text": "Terrell's voice carries from the lobby for another ten seconds, then a revolving door cuts it off. Dolores lets out a breath.",
-       "file": null,
+       "file": "/night-shift/talk-game/media/line-4.mp3",
        "dur": 8.4
       },
       {
@@ -5022,7 +5170,7 @@ window.ILTV_STORIES = {
          "at": 0.19
         }
        ],
-       "file": null,
+       "file": "/night-shift/talk-game/media/line-5.mp3",
        "dur": 10
       },
       {
@@ -5036,14 +5184,14 @@ window.ILTV_STORIES = {
         "c2",
         "c3"
        ],
-       "file": null,
+       "file": "/night-shift/talk-game/media/line-6.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Say what you see. Not what it is.",
        "perform": "short",
-       "file": null,
+       "file": "/night-shift/talk-game/media/line-7.mp3",
        "dur": 2.6
       }
      ],
@@ -5099,7 +5247,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Good. Next.",
        "perform": "approving the way a stamp does",
-       "file": null,
+       "file": "/night-shift/w1-named/media/line-1.mp3",
        "dur": 1.7
       },
       {
@@ -5107,13 +5255,13 @@ window.ILTV_STORIES = {
        "text": "Look at it till it's boring. Then look again.",
        "perform": "tapping the glass of tile two",
        "act": "dee:point",
-       "file": null,
+       "file": "/night-shift/w1-named/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "narrator",
        "text": "You give her the tiles one by one. She nods at each.",
-       "file": null,
+       "file": "/night-shift/w1-named/media/line-3.mp3",
        "dur": 4.1
       },
       {
@@ -5127,7 +5275,7 @@ window.ILTV_STORIES = {
         "c8",
         "c9"
        ],
-       "file": null,
+       "file": "/night-shift/w1-named/media/line-4.mp3",
        "dur": 12.1
       },
       {
@@ -5139,7 +5287,7 @@ window.ILTV_STORIES = {
         "c5",
         "c6"
        ],
-       "file": null,
+       "file": "/night-shift/w1-named/media/line-5.mp3",
        "dur": 4.3
       },
       {
@@ -5147,7 +5295,7 @@ window.ILTV_STORIES = {
        "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
        "perform": "a pause long enough to be a comment",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/w1-named/media/line-6.mp3",
        "dur": 4.9
       },
       {
@@ -5155,7 +5303,7 @@ window.ILTV_STORIES = {
        "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
        "perform": "the pencil stops",
        "feed": "c9",
-       "file": null,
+       "file": "/night-shift/w1-named/media/line-7.mp3",
        "dur": 6.5
       }
      ],
@@ -5211,7 +5359,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Nothing's normal. Same lobby all night. That's normal.",
        "perform": "a small shrug in the voice",
-       "file": null,
+       "file": "/night-shift/w1-normal/media/line-1.mp3",
        "dur": 4.6
       },
       {
@@ -5219,14 +5367,14 @@ window.ILTV_STORIES = {
        "text": "Look at it till it's boring. Then look again.",
        "perform": "tapping the glass of tile two",
        "act": "dee:point",
-       "file": null,
+       "file": "/night-shift/w1-normal/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Eight hours. Nine tiles. Same lobby.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/w1-normal/media/line-3.mp3",
        "dur": 3.6
       },
       {
@@ -5240,7 +5388,7 @@ window.ILTV_STORIES = {
         "c8",
         "c9"
        ],
-       "file": null,
+       "file": "/night-shift/w1-normal/media/line-4.mp3",
        "dur": 12.1
       },
       {
@@ -5252,7 +5400,7 @@ window.ILTV_STORIES = {
         "c5",
         "c6"
        ],
-       "file": null,
+       "file": "/night-shift/w1-normal/media/line-5.mp3",
        "dur": 4.3
       },
       {
@@ -5260,7 +5408,7 @@ window.ILTV_STORIES = {
        "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
        "perform": "a pause long enough to be a comment",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/w1-normal/media/line-6.mp3",
        "dur": 4.9
       },
       {
@@ -5268,7 +5416,7 @@ window.ILTV_STORIES = {
        "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
        "perform": "the pencil stops",
        "feed": "c9",
-       "file": null,
+       "file": "/night-shift/w1-normal/media/line-7.mp3",
        "dur": 6.5
       }
      ],
@@ -5324,7 +5472,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Dead. Mm. That's the idea.",
        "perform": "half-amused, not warm",
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-1.mp3",
        "dur": 3.3
       },
       {
@@ -5332,14 +5480,14 @@ window.ILTV_STORIES = {
        "text": "Look at it till it's boring. Then look again.",
        "perform": "tapping the glass of tile two",
        "act": "dee:point",
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. Next.",
        "perform": "before you've finished",
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-3.mp3",
        "dur": 3.6
       },
       {
@@ -5352,7 +5500,7 @@ window.ILTV_STORIES = {
         }
        ],
        "feed": "c2",
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-4.mp3",
        "dur": 5.4
       },
       {
@@ -5366,7 +5514,7 @@ window.ILTV_STORIES = {
         "c8",
         "c9"
        ],
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-5.mp3",
        "dur": 12.1
       },
       {
@@ -5378,7 +5526,7 @@ window.ILTV_STORIES = {
         "c5",
         "c6"
        ],
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-6.mp3",
        "dur": 4.3
       },
       {
@@ -5386,7 +5534,7 @@ window.ILTV_STORIES = {
        "text": "Seven's the fifty-eighth. It's always lit. Don't ask me why.",
        "perform": "a pause long enough to be a comment",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-7.mp3",
        "dur": 4.9
       },
       {
@@ -5394,7 +5542,7 @@ window.ILTV_STORIES = {
        "text": "Nine's the quiet one. Floor two. Cabinet, the panel's repeater.",
        "perform": "the pencil stops",
        "feed": "c9",
-       "file": null,
+       "file": "/night-shift/w1-dead/media/line-8.mp3",
        "dur": 6.5
       }
      ],
@@ -5451,14 +5599,14 @@ window.ILTV_STORIES = {
        "text": "Nine never moves. If it moves, say.",
        "perform": "slower, close to a rule",
        "feed": "c9",
-       "file": null,
+       "file": "/night-shift/w2-cam9/media/line-1.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "That's the wall. You've seen it. Now you've seen it.",
        "perform": "pencil behind her ear",
-       "file": null,
+       "file": "/night-shift/w2-cam9/media/line-2.mp3",
        "dur": 3.7
       },
       {
@@ -5466,7 +5614,7 @@ window.ILTV_STORIES = {
        "text": "Eight o'clock. Dolores takes the keys and a flashlight that does not work. Stairwell A, stairwell B, then C, one flight at a time, her hand on the rail.",
        "sfx": "keys",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/w2-cam9/media/line-3.mp3",
        "dur": 11.7
       },
       {
@@ -5474,20 +5622,20 @@ window.ILTV_STORIES = {
        "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
        "perform": "flat, climbing",
-       "file": null,
+       "file": "/night-shift/w2-cam9/media/line-4.mp3",
        "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. Look at the door.",
        "perform": "at the landing, a little out of breath, hiding it",
-       "file": null,
+       "file": "/night-shift/w2-cam9/media/line-5.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular.",
-       "file": null,
+       "file": "/night-shift/w2-cam9/media/line-6.mp3",
        "dur": 8.5
       },
       {
@@ -5495,7 +5643,7 @@ window.ILTV_STORIES = {
        "text": "Smokers. Door sticks, they prop it. Orange wedge.",
        "perform": "dry",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/w2-cam9/media/line-7.mp3",
        "dur": 4.7
       }
      ],
@@ -5552,14 +5700,14 @@ window.ILTV_STORIES = {
        "text": "Roof door. Eight. I do that one at three. Alone.",
        "perform": "too quickly, then back to the wall",
        "feed": "c8",
-       "file": null,
+       "file": "/night-shift/w2-roof/media/line-1.mp3",
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "That's the wall. You've seen it. Now you've seen it.",
        "perform": "pencil behind her ear",
-       "file": null,
+       "file": "/night-shift/w2-roof/media/line-2.mp3",
        "dur": 3.7
       },
       {
@@ -5567,7 +5715,7 @@ window.ILTV_STORIES = {
        "text": "Eight o'clock. Dolores takes the keys and a flashlight that does not work. Stairwell A, stairwell B, then C, one flight at a time, her hand on the rail.",
        "sfx": "keys",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/w2-roof/media/line-3.mp3",
        "dur": 11.7
       },
       {
@@ -5575,20 +5723,20 @@ window.ILTV_STORIES = {
        "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
        "perform": "flat, climbing",
-       "file": null,
+       "file": "/night-shift/w2-roof/media/line-4.mp3",
        "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. Look at the door.",
        "perform": "at the landing, a little out of breath, hiding it",
-       "file": null,
+       "file": "/night-shift/w2-roof/media/line-5.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular.",
-       "file": null,
+       "file": "/night-shift/w2-roof/media/line-6.mp3",
        "dur": 8.5
       },
       {
@@ -5596,7 +5744,7 @@ window.ILTV_STORIES = {
        "text": "Smokers. Door sticks, they prop it. Orange wedge.",
        "perform": "dry",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/w2-roof/media/line-7.mp3",
        "dur": 4.7
       }
      ],
@@ -5652,14 +5800,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "That's the wall. You've seen it. Now you've seen it.",
        "perform": "pencil behind her ear",
-       "file": null,
+       "file": "/night-shift/w2-look/media/line-1.mp3",
        "dur": 3.7
       },
       {
        "speaker": "narrator",
        "text": "On tile seven the glass doors of fifty-eight are lit and nobody is behind them.",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/w2-look/media/line-2.mp3",
        "dur": 5.4
       },
       {
@@ -5667,7 +5815,7 @@ window.ILTV_STORIES = {
        "text": "Eight o'clock. Dolores takes the keys and a flashlight that does not work. Stairwell A, stairwell B, then C, one flight at a time, her hand on the rail.",
        "sfx": "keys",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/w2-look/media/line-3.mp3",
        "dur": 11.7
       },
       {
@@ -5675,20 +5823,20 @@ window.ILTV_STORIES = {
        "text": "Stairs first. Always stairs.",
        "sfx": "footsteps-stairs",
        "perform": "flat, climbing",
-       "file": null,
+       "file": "/night-shift/w2-look/media/line-4.mp3",
        "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. Look at the door.",
        "perform": "at the landing, a little out of breath, hiding it",
-       "file": null,
+       "file": "/night-shift/w2-look/media/line-5.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "A fire door with a push bar and a painted number. At the foot of it, the carpet is scuffed in the shape of something small and triangular.",
-       "file": null,
+       "file": "/night-shift/w2-look/media/line-6.mp3",
        "dur": 8.5
       },
       {
@@ -5696,7 +5844,7 @@ window.ILTV_STORIES = {
        "text": "Smokers. Door sticks, they prop it. Orange wedge.",
        "perform": "dry",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/w2-look/media/line-7.mp3",
        "dur": 4.7
       }
      ],
@@ -5756,56 +5904,56 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Mm. Good.",
        "perform": "taking the pen back",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-1.mp3",
        "dur": 1.7
       },
       {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-2.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-3.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-4.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-5.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-6.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-7.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-pencil/media/line-8.mp3",
        "dur": 1.9
       }
      ],
@@ -5866,63 +6014,63 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Mm. Good.",
        "perform": "taking the pen back",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-1.mp3",
        "dur": 1.7
       },
       {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-2.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-3.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-4.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
        "perform": "to you, dry, a small nod",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-5.mp3",
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-6.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-7.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-8.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-pencil-44/media/line-9.mp3",
        "dur": 1.9
       }
      ],
@@ -5983,49 +6131,49 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-pen/media/line-1.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-pen/media/line-2.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-pen/media/line-3.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-pen/media/line-4.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-pen/media/line-5.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-pen/media/line-6.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-pen/media/line-7.mp3",
        "dur": 1.9
       }
      ],
@@ -6086,56 +6234,56 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-1.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-2.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-3.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
        "perform": "to you, dry, a small nod",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-4.mp3",
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-5.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-6.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-7.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-pen-44/media/line-8.mp3",
        "dur": 1.9
       }
      ],
@@ -6196,63 +6344,63 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Once it's ink, it's true. I write it in pencil first.",
        "perform": "gives it up like a coin",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-1.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Good.",
        "perform": "taking the pen back",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-2.mp3",
        "dur": 1.7
       },
       {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-3.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-4.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-5.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-6.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-7.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-8.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-why/media/line-9.mp3",
        "dur": 1.9
       }
      ],
@@ -6313,70 +6461,70 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Once it's ink, it's true. I write it in pencil first.",
        "perform": "gives it up like a coin",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-1.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Good.",
        "perform": "taking the pen back",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-2.mp3",
        "dur": 1.7
       },
       {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-3.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-4.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-5.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
        "perform": "to you, dry, a small nod",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-6.mp3",
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-7.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-8.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-9.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-why-44/media/line-10.mp3",
        "dur": 1.9
       }
      ],
@@ -6435,41 +6583,41 @@ window.ILTV_STORIES = {
        "text": "You press the release. On tile six the reader goes green. The young man looks up at the lens, then goes in after the bucket.",
        "sfx": "door-buzz",
        "act": "you:press:release",
-       "file": null,
+       "file": "/night-shift/nephew-in/media/line-1.mp3",
        "dur": 8.3
       },
       {
        "speaker": "marisol",
        "text": "Gracias, mi amor. Bendito. I owe you a plate.",
        "perform": "already moving, the walkie bouncing",
-       "file": null,
+       "file": "/night-shift/nephew-in/media/line-2.mp3",
        "dur": 3.7
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "the whole sentence",
-       "file": null,
+       "file": "/night-shift/nephew-in/media/line-3.mp3",
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "I'd have done it.",
        "perform": "not looking at you",
-       "file": null,
+       "file": "/night-shift/nephew-in/media/line-4.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "That's a line you write down, Officer.",
        "perform": "flat, the pencil already in her hand",
-       "file": null,
+       "file": "/night-shift/nephew-in/media/line-5.mp3",
        "dur": 4.9
       },
       {
        "speaker": "narrator",
        "text": "On tile six the young man is already pushing the bucket down the corridor. The door behind him swings shut on its closer.",
-       "file": null,
+       "file": "/night-shift/nephew-in/media/line-6.mp3",
        "dur": 7.8
       }
      ],
@@ -6519,7 +6667,7 @@ window.ILTV_STORIES = {
        "text": "Mr. Okafor's night line rings four times. His voice is flatter on the phone, and there is a television somewhere behind it.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-1.mp3",
        "dur": 7.6
       },
       {
@@ -6527,14 +6675,14 @@ window.ILTV_STORIES = {
        "text": "So. Not on the list. Then he doesn't go in tonight.",
        "perform": "phone-flat, a fork against a plate",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-2.mp3",
        "dur": 7.4
       },
       {
        "speaker": "okafor",
        "text": "So. Please put it in the log, both times: when you called, and when he answered.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-3.mp3",
        "dur": 5.8
       },
       {
@@ -6543,34 +6691,34 @@ window.ILTV_STORIES = {
        "sfx": "walkie-squelch",
        "perform": "over the walkie, clipped, not warm",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-4.mp3",
        "dur": 3.9
       },
       {
        "speaker": "dee",
        "text": "She'll be fine by Thursday.",
        "perform": "to the wall",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-5.mp3",
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "You called it. Fine. It's the book.",
        "perform": "a nod, grudging, not cold",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-6.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I'd have… Doesn't matter.",
        "perform": "trailing off, reaching for the cup",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-7.mp3",
        "dur": 3.9
       },
       {
        "speaker": "narrator",
        "text": "On tile six the young man sits down on the bucket, turned over. Marisol stands beside him with her arms folded.",
-       "file": null,
+       "file": "/night-shift/nephew-held/media/line-8.mp3",
        "dur": 7.8
       }
      ],
@@ -6618,48 +6766,48 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Marisol holds a photocopy up to the lens. It is a name, a date, a stamp that doesn't read on tile six.",
-       "file": null,
+       "file": "/night-shift/nephew-papers/media/line-1.mp3",
        "dur": 7.9
       },
       {
        "speaker": "marisol",
        "text": "I told you! Look. Look at it. Paper. He has paper.",
        "perform": "triumphant, loud, on the walkie",
-       "file": null,
+       "file": "/night-shift/nephew-papers/media/line-2.mp3",
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "Read me the name.",
        "perform": "quiet, hands still",
-       "file": null,
+       "file": "/night-shift/nephew-papers/media/line-3.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "That's a name. That's not the list.",
        "perform": "turning the paper in her head",
-       "file": null,
+       "file": "/night-shift/nephew-papers/media/line-4.mp3",
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "Mm. But it's a name.",
        "perform": "so low it's almost the wall talking",
-       "file": null,
+       "file": "/night-shift/nephew-papers/media/line-5.mp3",
        "dur": 2.4
       },
       {
        "speaker": "marisol",
        "text": "So you let him wait in the hall. In the hall! Dios mío.",
        "perform": "overlapping, fast",
-       "file": null,
+       "file": "/night-shift/nephew-papers/media/line-6.mp3",
        "dur": 4.4
       },
       {
        "speaker": "narrator",
        "text": "The photocopy is a name and a date, with a stamp too faint to read at this size.",
-       "file": null,
+       "file": "/night-shift/nephew-papers/media/line-7.mp3",
        "dur": 5.4
       }
      ],
@@ -6707,7 +6855,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "She says it flatly and does not move her hand from the pencil.",
-       "file": null,
+       "file": "/night-shift/log-in-asked/media/line-1.mp3",
        "dur": 3.7
       },
       {
@@ -6720,28 +6868,28 @@ window.ILTV_STORIES = {
          "at": 0.49
         }
        ],
-       "file": null,
+       "file": "/night-shift/log-in-asked/media/line-2.mp3",
        "dur": 7.6
       },
       {
        "speaker": "dee",
        "text": "Say what you did.",
        "perform": "plain",
-       "file": null,
+       "file": "/night-shift/log-in-asked/media/line-3.mp3",
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "I said I'd have done it. I didn't say write that I did.",
        "perform": "answer to a question you already asked",
-       "file": null,
+       "file": "/night-shift/log-in-asked/media/line-4.mp3",
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "Time. Place. What you saw. What you did. Who you told.",
        "perform": "tapping the pencil on each word",
-       "file": null,
+       "file": "/night-shift/log-in-asked/media/line-5.mp3",
        "dur": 8.7
       },
       {
@@ -6749,7 +6897,7 @@ window.ILTV_STORIES = {
        "text": "Nothing about how he looked.",
        "perform": "short",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/log-in-asked/media/line-6.mp3",
        "dur": 1.9
       }
      ],
@@ -6822,7 +6970,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Tile six holds its picture: a corridor, a closet door, a dark line along the sill.",
-       "file": null,
+       "file": "/night-shift/log-in-watch/media/line-1.mp3",
        "dur": 7.1
       },
       {
@@ -6835,28 +6983,28 @@ window.ILTV_STORIES = {
          "at": 0.49
         }
        ],
-       "file": null,
+       "file": "/night-shift/log-in-watch/media/line-2.mp3",
        "dur": 7.6
       },
       {
        "speaker": "dee",
        "text": "Say what you did.",
        "perform": "plain",
-       "file": null,
+       "file": "/night-shift/log-in-watch/media/line-3.mp3",
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "Water. Under the closet. You were watching.",
        "perform": "a nod at tile six",
-       "file": null,
+       "file": "/night-shift/log-in-watch/media/line-4.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Time. Place. What you saw. What you did. Who you told.",
        "perform": "tapping the pencil on each word",
-       "file": null,
+       "file": "/night-shift/log-in-watch/media/line-5.mp3",
        "dur": 8.7
       },
       {
@@ -6864,7 +7012,7 @@ window.ILTV_STORIES = {
        "text": "Nothing about how he looked.",
        "perform": "short",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/log-in-watch/media/line-6.mp3",
        "dur": 1.9
       }
      ],
@@ -6944,28 +7092,28 @@ window.ILTV_STORIES = {
          "at": 0.37
         }
        ],
-       "file": null,
+       "file": "/night-shift/log-held/media/line-1.mp3",
        "dur": 10.4
       },
       {
        "speaker": "dee",
        "text": "Say what you did.",
        "perform": "plain",
-       "file": null,
+       "file": "/night-shift/log-held/media/line-2.mp3",
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "I'd have done it differently. That doesn't go in.",
        "perform": "dry, to the tablet",
-       "file": null,
+       "file": "/night-shift/log-held/media/line-3.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Not 'she got mad.' When did she say it, and what did she say?",
        "perform": "tapping the pencil on each word",
-       "file": null,
+       "file": "/night-shift/log-held/media/line-4.mp3",
        "dur": 6.1
       },
       {
@@ -6973,20 +7121,20 @@ window.ILTV_STORIES = {
        "text": "Time. Place. What you saw. Who you told.",
        "perform": "short",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/log-held/media/line-5.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Slow. You'll want to hurry. Don't.",
        "perform": "while you reach for the tablet",
-       "file": null,
+       "file": "/night-shift/log-held/media/line-6.mp3",
        "dur": 4.3
       },
       {
        "speaker": "narrator",
        "text": "The cursor blinks in the field. The field has a label: INCIDENT.",
-       "file": null,
+       "file": "/night-shift/log-held/media/line-7.mp3",
        "dur": 4.9
       }
      ],
@@ -7059,27 +7207,27 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Beside the tablet, the photocopy has begun to curl at one corner.",
-       "file": null,
+       "file": "/night-shift/log-papers-read/media/line-1.mp3",
        "dur": 4.3
       },
       {
        "speaker": "narrator",
        "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six.",
-       "file": null,
+       "file": "/night-shift/log-papers-read/media/line-2.mp3",
        "dur": 10.5
       },
       {
        "speaker": "dee",
        "text": "Say what happened. The paper's not a yes.",
        "perform": "plain, flat on the second sentence",
-       "file": null,
+       "file": "/night-shift/log-papers-read/media/line-3.mp3",
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "You read the name. Good. That's the first line.",
        "perform": "a nod at the page",
-       "file": null,
+       "file": "/night-shift/log-papers-read/media/line-4.mp3",
        "dur": 3.6
       },
       {
@@ -7087,7 +7235,7 @@ window.ILTV_STORIES = {
        "text": "Time. Place. What was shown. What you did.",
        "perform": "tapping the pencil on each word",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/log-papers-read/media/line-5.mp3",
        "dur": 6.1
       }
      ],
@@ -7160,21 +7308,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The tablet is open on the incident field for forty-four. A photocopy sits beside it, held down by the pencil. The young man waits in the corridor on tile six.",
-       "file": null,
+       "file": "/night-shift/log-papers-pass/media/line-1.mp3",
        "dur": 10.5
       },
       {
        "speaker": "dee",
        "text": "Say what happened. The paper's not a yes.",
        "perform": "plain, flat on the second sentence",
-       "file": null,
+       "file": "/night-shift/log-papers-pass/media/line-2.mp3",
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "You handed it to me. It goes in your log, not mine.",
        "perform": "pushing the pencil an inch toward you",
-       "file": null,
+       "file": "/night-shift/log-papers-pass/media/line-3.mp3",
        "dur": 7.9
       },
       {
@@ -7182,7 +7330,7 @@ window.ILTV_STORIES = {
        "text": "Time. Place. What was shown. What you did.",
        "perform": "tapping the pencil on each word",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/log-papers-pass/media/line-4.mp3",
        "dur": 6.1
       }
      ],
@@ -7258,34 +7406,34 @@ window.ILTV_STORIES = {
          "at": 0.18
         }
        ],
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-1.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Keep that one.",
        "perform": "reading it twice, not out loud",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-2.mp3",
        "dur": 1
       },
       {
        "speaker": "narrator",
        "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-3.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
        "perform": "closing the binder",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-4.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-5.mp3",
        "dur": 10
       },
       {
@@ -7293,28 +7441,28 @@ window.ILTV_STORIES = {
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "perform": "fast, over the radio",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-6.mp3",
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
        "perform": "fast",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-7.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-8.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "perform": "dry, not turning",
-       "file": null,
+       "file": "/night-shift/end1-fact/media/line-9.mp3",
        "dur": 5.5
       }
      ],
@@ -7376,34 +7524,34 @@ window.ILTV_STORIES = {
          "at": 0.18
         }
        ],
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-1.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Facts only. What did you see?",
        "perform": "reaching for the rubber on the end of the pencil",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-2.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-3.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
        "perform": "closing the binder",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-4.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-5.mp3",
        "dur": 10
       },
       {
@@ -7411,28 +7559,28 @@ window.ILTV_STORIES = {
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "perform": "fast, over the radio",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-6.mp3",
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
        "perform": "fast",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-7.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-8.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "perform": "dry, not turning",
-       "file": null,
+       "file": "/night-shift/end1-opinion/media/line-9.mp3",
        "dur": 5.5
       }
      ],
@@ -7494,34 +7642,34 @@ window.ILTV_STORIES = {
          "at": 0.18
         }
        ],
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-1.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Where's forty-four?",
        "perform": "the tablet turned toward you",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-2.mp3",
        "dur": 3.5
       },
       {
        "speaker": "narrator",
        "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-3.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
        "perform": "closing the binder",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-4.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-5.mp3",
        "dur": 10
       },
       {
@@ -7529,28 +7677,28 @@ window.ILTV_STORIES = {
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "perform": "fast, over the radio",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-6.mp3",
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
        "perform": "fast",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-7.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-8.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "perform": "dry, not turning",
-       "file": null,
+       "file": "/night-shift/end1-omit/media/line-9.mp3",
        "dur": 5.5
       }
      ],
@@ -7612,41 +7760,41 @@ window.ILTV_STORIES = {
          "at": 0.18
         }
        ],
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-1.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "the tablet slowly turned face down",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-2.mp3",
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Officer.",
        "perform": "formal, from here on",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-3.mp3",
        "dur": 2.3
       },
       {
        "speaker": "narrator",
        "text": "The clock on the wall says 22:07. The lobby tile shows Terrell packing his bag in no hurry.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-4.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Two hours to the half. Eat something.",
        "perform": "closing the binder",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-5.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "On tile one, Terrell leans over the desk. A man in a hi-vis vest holds a clipboard on the other side. The sheet at Terrell's elbow is blank.",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-6.mp3",
        "dur": 10
       },
       {
@@ -7654,28 +7802,28 @@ window.ILTV_STORIES = {
        "text": "Hey, hey, post one, you got a minute? Guy for the air handler on forty.",
        "sfx": "radio-squelch",
        "perform": "fast, over the radio",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-7.mp3",
        "dur": 3.7
       },
       {
        "speaker": "terrell",
        "text": "He was here Tuesday, you know? He's got a thing, a work order.",
        "perform": "fast",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-8.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Terrell's desk.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-9.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "He'll say Tuesday. Everybody was here Tuesday. What does the list say, Officer.",
        "perform": "dry, not turning",
-       "file": null,
+       "file": "/night-shift/end1-lie/media/line-10.mp3",
        "dur": 5.5
       }
      ],
@@ -7737,70 +7885,70 @@ window.ILTV_STORIES = {
        "sfx": "pencil",
        "perform": "writing it in pencil on the corner of the sheet, flat",
        "act": "dee:write",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-1.mp3",
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
        "perform": "tapping each column",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-2.mp3",
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "That's a line that makes Okafor read the whole sheet. Mm. Rub it out.",
        "perform": "handing you the rubber, almost a smile",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-3.mp3",
        "dur": 9.2
       },
       {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-4.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-5.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-6.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-7.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-8.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-9.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-sample/media/line-10.mp3",
        "dur": 1.9
       }
      ],
@@ -7863,77 +8011,77 @@ window.ILTV_STORIES = {
        "sfx": "pencil",
        "perform": "writing it in pencil on the corner of the sheet, flat",
        "act": "dee:write",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-1.mp3",
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "Seeing. The Chairman. Floor. Fifty-eight. In. Two-thirty. Out. Never.",
        "perform": "tapping each column",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-2.mp3",
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "That's a line that makes Okafor read the whole sheet. Mm. Rub it out.",
        "perform": "handing you the rubber, almost a smile",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-3.mp3",
        "dur": 9.2
       },
       {
        "speaker": "narrator",
        "text": "The walkie on the desk goes off, loud. On the corridor tile for forty-four, a woman stands at a door with a younger man holding a mop bucket.",
        "sfx": "walkie-squelch",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-4.mp3",
        "dur": 9.2
       },
       {
        "speaker": "marisol",
        "text": "Ay, mi amor, the badge, it doesn't open. It's new. He's new. He's with me.",
        "perform": "fast, warm, breathless",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-5.mp3",
        "dur": 5.8
       },
       {
        "speaker": "marisol",
        "text": "And forty-four, the closet. Wet. *Wet.* You hear me?",
        "perform": "talking over her own sentence",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-6.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Forty-four. You asked about forty-four.",
        "perform": "to you, dry, a small nod",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-7.mp3",
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Check the list.",
        "perform": "quiet, hands in her lap",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-8.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. I know. I know what the book says.",
        "perform": "cutting you off before the rule",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-9.mp3",
        "dur": 3.6
       },
       {
        "speaker": "marisol",
        "text": "Tell your boss nothing. Tell him tomorrow. Okay?",
        "perform": "walkie held too close",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-10.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "What's your call, Officer?",
        "perform": "doesn't look away from the wall",
-       "file": null,
+       "file": "/night-shift/sign-sample-44/media/line-11.mp3",
        "dur": 1.9
       }
      ],
@@ -7993,21 +8141,21 @@ window.ILTV_STORIES = {
        "text": "Hear that? That's it shut.",
        "perform": "the door closing, the latch finding itself, flat",
        "act": "dee:point:ahead",
-       "file": null,
+       "file": "/night-shift/tour1-door/media/line-1.mp3",
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "If you don't hear that, it's open. Mm. Stairs.",
        "perform": "almost a smile, going down",
-       "file": null,
+       "file": "/night-shift/tour1-door/media/line-2.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
        "sfx": "door-heavy",
-       "file": null,
+       "file": "/night-shift/tour1-door/media/line-3.mp3",
        "dur": 11.9
       },
       {
@@ -8015,14 +8163,14 @@ window.ILTV_STORIES = {
        "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
        "sfx": "clock-tick",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/tour1-door/media/line-4.mp3",
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
        "perform": "flat, to the rollup",
-       "file": null,
+       "file": "/night-shift/tour1-door/media/line-5.mp3",
        "dur": 4.9
       }
      ],
@@ -8081,28 +8229,28 @@ window.ILTV_STORIES = {
        "text": "I pull it. I go and find the smoker. I say hello.",
        "perform": "flat, quiet, going down",
        "act": "dee:point:ahead",
-       "file": null,
+       "file": "/night-shift/tour1-wedge/media/line-1.mp3",
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Book says tell the supervisor first. I tell the smoker first. Then I write it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour1-wedge/media/line-2.mp3",
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Mm. You do the book.",
        "perform": "a beat on the rail, even",
-       "file": null,
+       "file": "/night-shift/tour1-wedge/media/line-3.mp3",
        "dur": 2.1
       },
       {
        "speaker": "narrator",
        "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
        "sfx": "door-heavy",
-       "file": null,
+       "file": "/night-shift/tour1-wedge/media/line-4.mp3",
        "dur": 11.9
       },
       {
@@ -8110,14 +8258,14 @@ window.ILTV_STORIES = {
        "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
        "sfx": "clock-tick",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/tour1-wedge/media/line-5.mp3",
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
        "perform": "flat, to the rollup",
-       "file": null,
+       "file": "/night-shift/tour1-wedge/media/line-6.mp3",
        "dur": 4.9
       }
      ],
@@ -8176,21 +8324,21 @@ window.ILTV_STORIES = {
        "text": "Thirty-one. Thirty-one flights. You'll know it in the dark.",
        "perform": "flat, the rail under her hand",
        "act": "dee:point:ahead",
-       "file": null,
+       "file": "/night-shift/tour1-count/media/line-1.mp3",
        "dur": 4.4
       },
       {
        "speaker": "dee",
        "text": "Good. Next.",
        "perform": "the way a stamp does",
-       "file": null,
+       "file": "/night-shift/tour1-count/media/line-2.mp3",
        "dur": 2
       },
       {
        "speaker": "narrator",
        "text": "The dock is one level below the lobby, behind a steel door that opens with the same key as the roof. A compactor under a caged bulb, a rollup door, a dock office with the lights off.",
        "sfx": "door-heavy",
-       "file": null,
+       "file": "/night-shift/tour1-count/media/line-3.mp3",
        "dur": 11.9
       },
       {
@@ -8198,14 +8346,14 @@ window.ILTV_STORIES = {
        "text": "Compactor ticks when it cools. First week you'll jump. Second week you set your watch by it.",
        "sfx": "clock-tick",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/tour1-count/media/line-4.mp3",
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Dock's the other door. Trucks at four. Never trust a truck at four.",
        "perform": "flat, to the rollup",
-       "file": null,
+       "file": "/night-shift/tour1-count/media/line-5.mp3",
        "dur": 4.9
       }
      ],
@@ -8264,34 +8412,34 @@ window.ILTV_STORIES = {
        "text": "Fruit. Linen. A crate for the design agency on thirty-seven. Once a box for fifty-eight, at four, with nobody's name on it.",
        "perform": "even, listing",
        "act": "dee:point:ahead",
-       "file": null,
+       "file": "/night-shift/tour2-trucks/media/line-1.mp3",
        "dur": 9.1
       },
       {
        "speaker": "dee",
        "text": "Sign for it? Not unless the list says. Mm. Not unless.",
        "perform": "flat, a half second slower the second time",
-       "file": null,
+       "file": "/night-shift/tour2-trucks/media/line-2.mp3",
        "dur": 5.7
       },
       {
        "speaker": "narrator",
        "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it.",
-       "file": null,
+       "file": "/night-shift/tour2-trucks/media/line-3.mp3",
        "dur": 10
       },
       {
        "speaker": "dee",
        "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour2-trucks/media/line-4.mp3",
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
        "perform": "even, looking at the door and not at you",
-       "file": null,
+       "file": "/night-shift/tour2-trucks/media/line-5.mp3",
        "dur": 6.3
       }
      ],
@@ -8350,34 +8498,34 @@ window.ILTV_STORIES = {
        "text": "Pull. Don't push. Pull.",
        "perform": "watching your hands on the chain",
        "act": "dee:point:ahead",
-       "file": null,
+       "file": "/night-shift/tour2-lock/media/line-1.mp3",
        "dur": 3.1
       },
       {
        "speaker": "dee",
        "text": "Nobody checks that one. So it's the one.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour2-lock/media/line-2.mp3",
        "dur": 3.3
       },
       {
        "speaker": "narrator",
        "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it.",
-       "file": null,
+       "file": "/night-shift/tour2-lock/media/line-3.mp3",
        "dur": 10
       },
       {
        "speaker": "dee",
        "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour2-lock/media/line-4.mp3",
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
        "perform": "even, looking at the door and not at you",
-       "file": null,
+       "file": "/night-shift/tour2-lock/media/line-5.mp3",
        "dur": 6.3
       }
      ],
@@ -8436,7 +8584,7 @@ window.ILTV_STORIES = {
        "text": "You stand still. The compactor ticks, three slow ticks, a pause, three more. A truck passes on the street and the rollup door rattles.",
        "sfx": "clock-tick",
        "act": "you:rest",
-       "file": null,
+       "file": "/night-shift/tour2-compactor/media/line-1.mp3",
        "dur": 11.3
       },
       {
@@ -8444,27 +8592,27 @@ window.ILTV_STORIES = {
        "text": "There. You heard it. That's quiet.",
        "perform": "pleased, not saying so",
        "act": "dee:point:ahead",
-       "file": null,
+       "file": "/night-shift/tour2-compactor/media/line-2.mp3",
        "dur": 3.2
       },
       {
        "speaker": "narrator",
        "text": "The roof door is the last stop: fourteen flights above the lobby, a steel door on a push bar with a single light over it. The wind comes in under it.",
-       "file": null,
+       "file": "/night-shift/tour2-compactor/media/line-3.mp3",
        "dur": 10
       },
       {
        "speaker": "dee",
        "text": "Door's on a sensor. Sensor goes quiet sometimes. Doesn't mean it's shut.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour2-compactor/media/line-4.mp3",
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Roof's cold. Three o'clock it's colder. I do this one at three. Alone.",
        "perform": "even, looking at the door and not at you",
-       "file": null,
+       "file": "/night-shift/tour2-compactor/media/line-5.mp3",
        "dur": 6.3
       }
      ],
@@ -8523,48 +8671,48 @@ window.ILTV_STORIES = {
        "text": "It gives. It holds. Good.",
        "perform": "her hand beside yours on the bar, flat",
        "act": "dee:touch:door",
-       "file": null,
+       "file": "/night-shift/tour3-test/media/line-1.mp3",
        "dur": 7.7
       },
       {
        "speaker": "narrator",
        "text": "Back at the lobby desk at nine, Dolores lays out the visitor sheet and puts a pen and a pencil beside it.",
-       "file": null,
+       "file": "/night-shift/tour3-test/media/line-2.mp3",
        "dur": 6.3
       },
       {
        "speaker": "dee",
        "text": "Name. Company. Who they're seeing. Floor. In. Out.",
        "perform": "tapping each column",
-       "file": null,
+       "file": "/night-shift/tour3-test/media/line-3.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "ID, you look at it. Look. Not glance.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour3-test/media/line-4.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
        "perform": "like a recipe she has said a thousand times",
-       "file": null,
+       "file": "/night-shift/tour3-test/media/line-5.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "However nice.",
        "perform": "a beat, one eyebrow",
-       "file": null,
+       "file": "/night-shift/tour3-test/media/line-6.mp3",
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Pen's for the sheet. Pencil's for… Pick one.",
        "perform": "holding both out",
-       "file": null,
+       "file": "/night-shift/tour3-test/media/line-7.mp3",
        "dur": 4
       }
      ],
@@ -8723,55 +8871,55 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Because I always have.",
        "perform": "flat, no more",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-1.mp3",
        "dur": 1.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Go on. It's ten to nine. We have a sheet.",
        "perform": "down the stairs already",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-2.mp3",
        "dur": 8.4
       },
       {
        "speaker": "narrator",
        "text": "Back at the lobby desk at nine, Dolores lays out the visitor sheet and puts a pen and a pencil beside it.",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-3.mp3",
        "dur": 6.3
       },
       {
        "speaker": "dee",
        "text": "Name. Company. Who they're seeing. Floor. In. Out.",
        "perform": "tapping each column",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-4.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "ID, you look at it. Look. Not glance.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-5.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
        "perform": "like a recipe she has said a thousand times",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-6.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "However nice.",
        "perform": "a beat, one eyebrow",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-7.mp3",
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Pen's for the sheet. Pencil's for… Pick one.",
        "perform": "holding both out",
-       "file": null,
+       "file": "/night-shift/tour3-alone/media/line-8.mp3",
        "dur": 4
       }
      ],
@@ -8930,55 +9078,55 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "ROOF ACCESS. AUTHORIZED PERSONNEL ONLY. DOOR ALARMED. In smaller letters under it, someone has pencilled a date and two initials and rubbed them half out.",
        "act": "you:point:ahead",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-1.mp3",
        "dur": 11.4
       },
       {
        "speaker": "dee",
        "text": "Mm. Don't read the walls.",
        "perform": "flat, already on the stairs",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-2.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "Back at the lobby desk at nine, Dolores lays out the visitor sheet and puts a pen and a pencil beside it.",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-3.mp3",
        "dur": 6.3
       },
       {
        "speaker": "dee",
        "text": "Name. Company. Who they're seeing. Floor. In. Out.",
        "perform": "tapping each column",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-4.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "ID, you look at it. Look. Not glance.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-5.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "After hours, the tenant says yes first. Email, call-up. No yes, no entry.",
        "perform": "like a recipe she has said a thousand times",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-6.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "However nice.",
        "perform": "a beat, one eyebrow",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-7.mp3",
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Pen's for the sheet. Pencil's for… Pick one.",
        "perform": "holding both out",
-       "file": null,
+       "file": "/night-shift/tour3-sign/media/line-8.mp3",
        "dur": 4
       }
      ],
@@ -9139,21 +9287,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "On tile one, Terrell pushes the sheet across and the man writes on it without looking up. Then the elevator doors close on the vest.",
        "sfx": "elevator-chime",
-       "file": null,
+       "file": "/night-shift/visitor-waved/media/line-1.mp3",
        "dur": 8.8
       },
       {
        "speaker": "terrell",
        "text": "Door's all you. You're good, you're good.",
        "perform": "warm, easy, off the radio",
-       "file": null,
+       "file": "/night-shift/visitor-waved/media/line-2.mp3",
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/visitor-waved/media/line-3.mp3",
        "dur": 0.9
       },
       {
@@ -9161,14 +9309,14 @@ window.ILTV_STORIES = {
        "text": "Stay on the wall.",
        "perform": "getting up, the pencil from behind her ear",
        "act": "dee:leave",
-       "file": null,
+       "file": "/night-shift/visitor-waved/media/line-4.mp3",
        "dur": 5.1
       },
       {
        "speaker": "narrator",
        "text": "On the lobby tile, Dolores takes the sheet from the desk. She writes for some time, in pencil, and then she writes over it. Terrell watches her with his mouth a little open.",
        "sfx": "pencil",
-       "file": null,
+       "file": "/night-shift/visitor-waved/media/line-5.mp3",
        "dur": 12
       },
       {
@@ -9176,13 +9324,13 @@ window.ILTV_STORIES = {
        "text": "Eat something.",
        "perform": "back in the doorway, nothing in her hands",
        "act": "dee:enter",
-       "file": null,
+       "file": "/night-shift/visitor-waved/media/line-6.mp3",
        "dur": 1.2
       },
       {
        "speaker": "narrator",
        "text": "On tile one the vest is a small bright shape in an elevator, rising. Terrell goes back to his phone. The sheet lies on the desk where Dolores left it, in her hand.",
-       "file": null,
+       "file": "/night-shift/visitor-waved/media/line-7.mp3",
        "dur": 11.7
       }
      ],
@@ -9221,48 +9369,48 @@ window.ILTV_STORIES = {
        "text": "Let me see what I can do.",
        "sfx": "radio-squelch",
        "perform": "a beat of keyboard",
-       "file": null,
+       "file": "/night-shift/visitor-checked/media/line-1.mp3",
        "dur": 2.1
       },
       {
        "speaker": "terrell",
        "text": "Huh. Forty's got, uh. Nothing for him, man. Let me see what I can do.",
        "perform": "to the vest, not the radio",
-       "file": null,
+       "file": "/night-shift/visitor-checked/media/line-2.mp3",
        "dur": 5.3
       },
       {
        "speaker": "narrator",
        "text": "The man in the vest shrugs, takes his clipboard and goes out through the revolving door.",
        "sfx": "elevator-chime",
-       "file": null,
+       "file": "/night-shift/visitor-checked/media/line-3.mp3",
        "dur": 5.3
       },
       {
        "speaker": "terrell",
        "text": "He said Tuesday, you know? Tuesday he was fine.",
        "perform": "over the radio, small",
-       "file": null,
+       "file": "/night-shift/visitor-checked/media/line-4.mp3",
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "Mm-hm.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/visitor-checked/media/line-5.mp3",
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Tuesday he had a yes. Today he doesn't.",
        "perform": "flat, to the wall",
-       "file": null,
+       "file": "/night-shift/visitor-checked/media/line-6.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "On tile one Terrell is doing something he has not done all week. He is looking at the sheet.",
-       "file": null,
+       "file": "/night-shift/visitor-checked/media/line-7.mp3",
        "dur": 6.3
       }
      ],
@@ -9305,48 +9453,48 @@ window.ILTV_STORIES = {
        "text": "Go. I have the wall.",
        "perform": "not turning",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-1.mp3",
        "dur": 2.1
       },
       {
        "speaker": "narrator",
        "text": "At the desk, the man shows a work order. It says forty, tonight, and a name. It does not say who said yes.",
        "place": "lobby",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-2.mp3",
        "dur": 8.6
       },
       {
        "speaker": "terrell",
        "text": "I mean, he's got the paper, you know? The paper's real.",
        "perform": "relieved, fast",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-3.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "You ask for his ID and you look at it, not glance. The night number for forty rings six times. A tired voice says send him up, sign him, he'll be an hour.",
        "sfx": "phone-ring",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-4.mp3",
        "dur": 11.8
       },
       {
        "speaker": "terrell",
        "text": "See? See, I said.",
        "perform": "to nobody, delighted",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-5.mp3",
        "dur": 2.5
       },
       {
        "speaker": "narrator",
        "text": "You write the name, the company, the floor, the time in. Terrell watches your pen as if it were a card trick.",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-6.mp3",
        "dur": 7.3
       },
       {
        "speaker": "dee",
        "text": "Initial the sheet. Both of you.",
        "perform": "over your radio, quiet",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-7.mp3",
        "dur": 2.4
       },
       {
@@ -9354,7 +9502,7 @@ window.ILTV_STORIES = {
        "text": "When you come back, the door to the control room is open and Dolores has not moved. She does not ask how it went. She looks at the sheet in your hand, and then at the wall.",
        "act": "room:door",
        "place": "room",
-       "file": null,
+       "file": "/night-shift/visitor-desk/media/line-8.mp3",
        "dur": 11.2
       }
      ],
@@ -9390,34 +9538,34 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "It is five to eleven. The lobby tile shows the long marble floor with the lights on the eastern half already dimmed by the timer.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/terrell-goodbye/media/line-1.mp3",
        "dur": 8.3
       },
       {
        "speaker": "narrator",
        "text": "Terrell's bag is on his shoulder. He stands in the control-room doorway, bag on his shoulder.",
-       "file": null,
+       "file": "/night-shift/terrell-goodbye/media/line-2.mp3",
        "dur": 5.8
       },
       {
        "speaker": "terrell",
        "text": "Door's all you.",
        "perform": "easy, warm",
-       "file": null,
+       "file": "/night-shift/terrell-goodbye/media/line-3.mp3",
        "dur": 1.1
       },
       {
        "speaker": "terrell",
        "text": "Hey, she's eaten that sandwich every night since I started. I asked her once what's in it.",
        "perform": "to you, low, grinning",
-       "file": null,
+       "file": "/night-shift/terrell-goodbye/media/line-4.mp3",
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Terrell.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/terrell-goodbye/media/line-5.mp3",
        "dur": 1
       },
       {
@@ -9425,7 +9573,7 @@ window.ILTV_STORIES = {
        "text": "I'm going. I'm going!",
        "perform": "backing out",
        "act": "terrell:leave",
-       "file": null,
+       "file": "/night-shift/terrell-goodbye/media/line-6.mp3",
        "dur": 2.3
       },
       {
@@ -9438,7 +9586,7 @@ window.ILTV_STORIES = {
          "at": 0.9
         }
        ],
-       "file": null,
+       "file": "/night-shift/terrell-goodbye/media/line-7.mp3",
        "dur": 3.1
       }
      ],
@@ -9504,7 +9652,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock.",
-       "file": null,
+       "file": "/night-shift/radio-23/media/line-1.mp3",
        "dur": 9.6
       },
       {
@@ -9513,14 +9661,14 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "at the door, flat",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/radio-23/media/line-2.mp3",
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
        "perform": "flat, the door half open",
-       "file": null,
+       "file": "/night-shift/radio-23/media/line-3.mp3",
        "dur": 7.3
       },
       {
@@ -9533,7 +9681,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/radio-23/media/line-4.mp3",
        "dur": 8.2
       },
       {
@@ -9541,7 +9689,7 @@ window.ILTV_STORIES = {
        "text": "Radio check.",
        "sfx": "radio-squelch",
        "perform": "over the radio, flat",
-       "file": null,
+       "file": "/night-shift/radio-23/media/line-5.mp3",
        "dur": 1.3
       }
      ],
@@ -9602,28 +9750,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "In the lobby, Terrell holds the revolving door with one hand and his phone with the other. The street is white behind him.",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-1.mp3",
        "dur": 7.6
       },
       {
        "speaker": "terrell",
        "text": "She asked me your name twice. She never asks. I'm just saying.",
        "perform": "quick, quiet",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-2.mp3",
        "dur": 4.3
       },
       {
        "speaker": "terrell",
        "text": "Okay. Okay! Radios, you know? Watch the radios. She counts them in her sleep.",
        "perform": "backing into the cold",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-3.mp3",
        "dur": 6
       },
       {
        "speaker": "narrator",
        "text": "The door turns once and stops. You go back through the lobby to the control room.",
        "sfx": "door-heavy",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-4.mp3",
        "dur": 5.2
       },
       {
@@ -9631,13 +9779,13 @@ window.ILTV_STORIES = {
        "text": "His shape on tile one shrinks across the lobby, and the revolving door takes him in a long slow arc into Madison Avenue.",
        "place": "room",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-5.mp3",
        "dur": 8.1
       },
       {
        "speaker": "narrator",
        "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock.",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-6.mp3",
        "dur": 9.6
       },
       {
@@ -9646,14 +9794,14 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "at the door, flat",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-7.mp3",
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
        "perform": "flat, the door half open",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-8.mp3",
        "dur": 7.3
       },
       {
@@ -9666,7 +9814,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-9.mp3",
        "dur": 8.2
       },
       {
@@ -9674,7 +9822,7 @@ window.ILTV_STORIES = {
        "text": "Radio check.",
        "sfx": "radio-squelch",
        "perform": "over the radio, flat",
-       "file": null,
+       "file": "/night-shift/terrell-door/media/line-10.mp3",
        "dur": 1.3
       }
      ],
@@ -9736,14 +9884,14 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Eleven years? Twelve? She hasn't missed a night. Not one. Somebody told me that, I didn't ask.",
        "perform": "fast, to you",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-1.mp3",
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Terrell. Door.",
        "perform": "a knife of a word",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-2.mp3",
        "dur": 2.1
       },
       {
@@ -9751,26 +9899,26 @@ window.ILTV_STORIES = {
        "text": "Going. Going! Night.",
        "perform": "gone",
        "act": "terrell:leave",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-3.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "Dolores looks at the wall. She does not look at you. The pencil goes behind her ear.",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-4.mp3",
        "dur": 5.9
       },
       {
        "speaker": "narrator",
        "text": "The revolving door has stopped. On tile one the lobby is empty and bright, and you can hear the building's refrigerator come on. It is eleven o'clock.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-5.mp3",
        "dur": 10.1
       },
       {
        "speaker": "narrator",
        "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock.",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-6.mp3",
        "dur": 9.6
       },
       {
@@ -9779,14 +9927,14 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "at the door, flat",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-7.mp3",
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
        "perform": "flat, the door half open",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-8.mp3",
        "dur": 7.3
       },
       {
@@ -9799,7 +9947,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-9.mp3",
        "dur": 8.2
       },
       {
@@ -9807,7 +9955,7 @@ window.ILTV_STORIES = {
        "text": "Radio check.",
        "sfx": "radio-squelch",
        "perform": "over the radio, flat",
-       "file": null,
+       "file": "/night-shift/terrell-ask/media/line-10.mp3",
        "dur": 1.3
       }
      ],
@@ -9869,35 +10017,35 @@ window.ILTV_STORIES = {
        "speaker": "terrell",
        "text": "Criminal justice. Night classes, Tuesdays, Thursdays. Three years, I'm, like, a year and a half from done.",
        "perform": "fast, pleased to be asked",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-1.mp3",
        "dur": 6.1
       },
       {
        "speaker": "terrell",
        "text": "My uncle's store, Bed-Stuy. Names, not rules, you know? Nobody wrote anything down, it worked, till, uh.",
        "perform": "a grin, trailing off",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-2.mp3",
        "dur": 8.9
       },
       {
        "speaker": "terrell",
        "text": "Then I got here and it's all paper. Sign the sheet. Check the list.",
        "perform": "a laugh, quieter",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-3.mp3",
        "dur": 5.9
       },
       {
        "speaker": "terrell",
        "text": "I'm bad at it. The sheet's the same every night, so, you know?",
        "perform": "warm",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-4.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Mm. Go to school, Terrell. Door.",
        "perform": "flat, from her chair",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-5.mp3",
        "dur": 3.7
       },
       {
@@ -9905,20 +10053,20 @@ window.ILTV_STORIES = {
        "text": "Going. I'm going! Night, you two.",
        "perform": "over his shoulder, warm",
        "act": "terrell:leave",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-6.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "His shape crosses tile one, shrinking, and the revolving door takes him out into Madison Avenue in a long slow arc.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-7.mp3",
        "dur": 8.4
       },
       {
        "speaker": "narrator",
        "text": "At eleven the lobby is quiet. The wall is yours for the first time. Dolores takes the keys. She will walk the lobby and the dock.",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-8.mp3",
        "dur": 9.6
       },
       {
@@ -9927,14 +10075,14 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "at the door, flat",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-9.mp3",
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Don't open the door to anyone. Nobody. Not for the nice one. Especially not for the nice one.",
        "perform": "flat, the door half open",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-10.mp3",
        "dur": 7.3
       },
       {
@@ -9947,7 +10095,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-11.mp3",
        "dur": 8.2
       },
       {
@@ -9955,7 +10103,7 @@ window.ILTV_STORIES = {
        "text": "Radio check.",
        "sfx": "radio-squelch",
        "perform": "over the radio, flat",
-       "file": null,
+       "file": "/night-shift/terrell-school/media/line-12.mp3",
        "dur": 1.3
       }
      ],
@@ -10014,19 +10162,19 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The day shift's log is a thin stack of paper beside the binder, in Mr. Okafor's neat hand. You read it the way you read a stranger's diary.",
-       "file": null,
+       "file": "/night-shift/day-log/media/line-1.mp3",
        "dur": 9.1
       },
       {
        "speaker": "narrator",
        "text": "Ten-fifteen. Visitor for nineteen, signed in, ID checked. Twelve-ten. Elevator contractor on site, car two, out at one. Fourteen-fifteen. Fire drill notice for Thursday posted at the desk.",
-       "file": null,
+       "file": "/night-shift/day-log/media/line-2.mp3",
        "dur": 15.1
       },
       {
        "speaker": "narrator",
        "text": "Fifteen-thirty. Tenant on twelve, a dental practice, reports a lost key. Found by the day officer in the lobby, returned, signed for. Sixteen-forty. Mr. Pruitt out. All in the same hand. Not one adjective.",
-       "file": null,
+       "file": "/night-shift/day-log/media/line-3.mp3",
        "dur": 16.3
       },
       {
@@ -10034,21 +10182,21 @@ window.ILTV_STORIES = {
        "text": "He's the best at it. Not the best at anything else.",
        "perform": "from the doorway, taking off her coat, not asking what you are reading",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/day-log/media/line-4.mp3",
        "dur": 8.7
       },
       {
        "speaker": "dee",
        "text": "Don't copy him. Read what he leaves out.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/day-log/media/line-5.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/day-log/media/line-6.mp3",
        "dur": 8.6
       },
       {
@@ -10056,7 +10204,7 @@ window.ILTV_STORIES = {
        "text": "Four.",
        "perform": "to the charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/day-log/media/line-7.mp3",
        "dur": 0.9
       }
      ],
@@ -10090,13 +10238,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Lobby's clear. Dock's clear. Compactor's ticking.",
        "perform": "over the radio, a breath, almost company",
-       "file": null,
+       "file": "/night-shift/alone-ok/media/line-1.mp3",
        "dur": 4.7
       },
       {
        "speaker": "narrator",
        "text": "You put the radio back on the shelf where it was.",
-       "file": null,
+       "file": "/night-shift/alone-ok/media/line-2.mp3",
        "dur": 2.8
       },
       {
@@ -10104,13 +10252,13 @@ window.ILTV_STORIES = {
        "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
        "sfx": "drawer",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/alone-ok/media/line-3.mp3",
        "dur": 8
       },
       {
        "speaker": "narrator",
        "text": "The coffee is wrong. The monitors hum. You look.",
-       "file": null,
+       "file": "/night-shift/alone-ok/media/line-4.mp3",
        "dur": 4.1
       }
      ],
@@ -10183,27 +10331,27 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Side. The side.",
        "perform": "over the radio, dry",
-       "file": null,
+       "file": "/night-shift/alone-late/media/line-1.mp3",
        "dur": 2.2
       },
       {
        "speaker": "dee",
        "text": "Mm. A minute late.",
        "perform": "the whole verdict",
-       "file": null,
+       "file": "/night-shift/alone-late/media/line-2.mp3",
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "Lobby's clear. Dock's clear. Pay attention to the side.",
        "perform": "over the radio",
-       "file": null,
+       "file": "/night-shift/alone-late/media/line-3.mp3",
        "dur": 3.9
       },
       {
        "speaker": "narrator",
        "text": "Your thumb finds the button on the side.",
-       "file": null,
+       "file": "/night-shift/alone-late/media/line-4.mp3",
        "dur": 2.4
       },
       {
@@ -10211,13 +10359,13 @@ window.ILTV_STORIES = {
        "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
        "sfx": "drawer",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/alone-late/media/line-5.mp3",
        "dur": 8
       },
       {
        "speaker": "narrator",
        "text": "The coffee is wrong. The monitors hum. You look.",
-       "file": null,
+       "file": "/night-shift/alone-late/media/line-6.mp3",
        "dur": 4.1
       }
      ],
@@ -10290,14 +10438,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Radio check.",
        "perform": "over the radio, again",
-       "file": null,
+       "file": "/night-shift/alone-missed/media/line-1.mp3",
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "Post one. Radio check.",
        "perform": "over the radio, a beat of static",
-       "file": null,
+       "file": "/night-shift/alone-missed/media/line-2.mp3",
        "dur": 3.1
       },
       {
@@ -10305,20 +10453,20 @@ window.ILTV_STORIES = {
        "text": "Answer when I call. Always. I'm not asking for a reason.",
        "sfx": "radio-squelch",
        "perform": "flat, over the radio",
-       "file": null,
+       "file": "/night-shift/alone-missed/media/line-3.mp3",
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Lobby's clear. Dock's clear.",
        "perform": "over the radio, after a moment",
-       "file": null,
+       "file": "/night-shift/alone-missed/media/line-4.mp3",
        "dur": 2.5
       },
       {
        "speaker": "narrator",
        "text": "You put the radio on the shelf. You pick it up again. You keep it by your hand.",
-       "file": null,
+       "file": "/night-shift/alone-missed/media/line-5.mp3",
        "dur": 5.3
       },
       {
@@ -10326,13 +10474,13 @@ window.ILTV_STORIES = {
        "text": "The room is quiet. Nine tiles, none moving. Under the binder, the shelf drawer is open a finger's width.",
        "sfx": "drawer",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/alone-missed/media/line-6.mp3",
        "dur": 8
       },
       {
        "speaker": "narrator",
        "text": "The coffee is wrong. The monitors hum. You look.",
-       "file": null,
+       "file": "/night-shift/alone-missed/media/line-7.mp3",
        "dur": 4.1
       }
      ],
@@ -10406,33 +10554,33 @@ window.ILTV_STORIES = {
        "text": "Under the binder there is one page, folded in three. NOTICE TO NIGHT POST PERSONNEL. Effective the first of April, overnight coverage at this site transfers to a remote video monitoring service.",
        "sfx": "paper",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/drawer-notice/media/line-1.mp3",
        "dur": 12.9
       },
       {
        "speaker": "narrator",
        "text": "In-person night posts are discontinued as of that date. Affected officers will be offered day-shift reassignment where available. The date is under a stamp. The stamp has been signed.",
-       "file": null,
+       "file": "/night-shift/drawer-notice/media/line-2.mp3",
        "dur": 11.3
       },
       {
        "speaker": "narrator",
        "text": "You read it twice. You fold it back along its creases. You put it under the binder the way it was.",
-       "file": null,
+       "file": "/night-shift/drawer-notice/media/line-3.mp3",
        "dur": 6.6
       },
       {
        "speaker": "narrator",
        "text": "You sit and look at tile one for a while.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/drawer-notice/media/line-4.mp3",
        "dur": 2.8
       },
       {
        "speaker": "narrator",
        "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/drawer-notice/media/line-5.mp3",
        "dur": 8.6
       },
       {
@@ -10440,14 +10588,14 @@ window.ILTV_STORIES = {
        "text": "Four.",
        "perform": "to the charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/drawer-notice/media/line-6.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "Drawer sticks.",
        "perform": "at the shelf, not looking at it, not looking at you",
-       "file": null,
+       "file": "/night-shift/drawer-notice/media/line-7.mp3",
        "dur": 1.4
       }
      ],
@@ -10481,27 +10629,27 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "One. The lobby, the bench, the light on the desk. Two. The vestibule, the glass fogged at the corners. Three. The dock, the compactor ticking down. Nothing moves.",
        "sfx": "clock-tick",
-       "file": null,
+       "file": "/night-shift/wall-alone/media/line-1.mp3",
        "dur": 14.2
       },
       {
        "speaker": "narrator",
        "text": "Four, five, six. Seven is lit. Eight is a door. Nine is a cabinet. You say them aloud, quietly, because it helps.",
-       "file": null,
+       "file": "/night-shift/wall-alone/media/line-2.mp3",
        "dur": 10.9
       },
       {
        "speaker": "narrator",
        "text": "At 23:44 the lobby tile shows the revolving door turning once with nobody in it. You write it down.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/wall-alone/media/line-3.mp3",
        "dur": 7.6
       },
       {
        "speaker": "narrator",
        "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/wall-alone/media/line-4.mp3",
        "dur": 8.6
       },
       {
@@ -10509,14 +10657,14 @@ window.ILTV_STORIES = {
        "text": "Four.",
        "perform": "to the charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/wall-alone/media/line-5.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "Say what you see.",
        "perform": "at the doorway, taking off her coat, not asking",
-       "file": null,
+       "file": "/night-shift/wall-alone/media/line-6.mp3",
        "dur": 1.4
       },
       {
@@ -10524,7 +10672,7 @@ window.ILTV_STORIES = {
        "text": "Revolving door. Wind. Mm. Good. Write it.",
        "perform": "when you tell her",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/wall-alone/media/line-7.mp3",
        "dur": 6.3
       }
      ],
@@ -10562,7 +10710,7 @@ window.ILTV_STORIES = {
        "text": "The coffee is wrong and the restroom is thirty steps away. The radio is on the desk. Dolores is on the dock, somewhere past tile three.",
        "act": "you:stand",
        "feed": "c3",
-       "file": null,
+       "file": "/night-shift/step-out/media/line-1.mp3",
        "dur": 9.1
       }
      ],
@@ -10617,7 +10765,7 @@ window.ILTV_STORIES = {
        "text": "Go. Two minutes. Then back on it.",
        "perform": "over the radio, no pause",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/step-told/media/line-1.mp3",
        "dur": 3.1
       },
       {
@@ -10631,21 +10779,21 @@ window.ILTV_STORIES = {
          "at": 0.15
         }
        ],
-       "file": null,
+       "file": "/night-shift/step-told/media/line-2.mp3",
        "dur": 8.6
       },
       {
        "speaker": "narrator",
        "text": "She does not say anything. She nods once.",
        "act": "you:enter",
-       "file": null,
+       "file": "/night-shift/step-told/media/line-3.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "At 23:50 the lobby door opens and Dolores comes in with the cold on her coat. She goes to the charger before she takes it off.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/step-told/media/line-4.mp3",
        "dur": 8.6
       },
       {
@@ -10653,14 +10801,14 @@ window.ILTV_STORIES = {
        "text": "Four.",
        "perform": "to the charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/step-told/media/line-5.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "You said. Mm.",
        "perform": "the whole of it, not looking up",
-       "file": null,
+       "file": "/night-shift/step-told/media/line-6.mp3",
        "dur": 3.4
       }
      ],
@@ -10694,28 +10842,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The restroom is cold and bright. When you come back, four minutes later, Dolores is standing in the doorway with her coat still on. She is looking at the wall, not at you.",
-       "file": null,
+       "file": "/night-shift/step-left/media/line-1.mp3",
        "dur": 11.3
       },
       {
        "speaker": "dee",
        "text": "Where were you?",
        "perform": "quiet, a long way off",
-       "file": null,
+       "file": "/night-shift/step-left/media/line-2.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Wall was empty four minutes. Nobody saw it. Nobody answered.",
        "perform": "flat, each word set down",
-       "file": null,
+       "file": "/night-shift/step-left/media/line-3.mp3",
        "dur": 5.6
       },
       {
        "speaker": "dee",
        "text": "Next time you say. Mm. Next time.",
        "perform": "taking off her coat, her back to you",
-       "file": null,
+       "file": "/night-shift/step-left/media/line-4.mp3",
        "dur": 4
       },
       {
@@ -10723,7 +10871,7 @@ window.ILTV_STORIES = {
        "text": "She counts the radios. Four. She counts them again, with one finger.",
        "sfx": "radio-charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/step-left/media/line-5.mp3",
        "dur": 5.5
       }
      ],
@@ -10755,7 +10903,7 @@ window.ILTV_STORIES = {
        "text": "At ten past midnight the night line rings. It is the day supervisor, at home, with the log open on a screen in a kitchen.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/okafor-call/media/line-1.mp3",
        "dur": 8.1
       },
       {
@@ -10763,7 +10911,7 @@ window.ILTV_STORIES = {
        "text": "That's him. Midnight, every night. Pick it up.",
        "perform": "not looking up, flat",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/okafor-call/media/line-2.mp3",
        "dur": 5.5
       }
      ],
@@ -10824,21 +10972,21 @@ window.ILTV_STORIES = {
        "text": "So. It's Okafor. Two entries and a tour sheet. They give times, places, and who you told.",
        "perform": "polite, a chair creaking",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/okafor-call-clean/media/line-1.mp3",
        "dur": 8.7
       },
       {
        "speaker": "okafor",
        "text": "That's noted. Are you eating? It's in the handbook, page nine.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/okafor-call-clean/media/line-2.mp3",
        "dur": 4.2
       },
       {
        "speaker": "okafor",
        "text": "Is Ms. Reyes there? Put her on. I'll just say good night.",
        "perform": "polite",
-       "file": null,
+       "file": "/night-shift/okafor-call-clean/media/line-3.mp3",
        "dur": 3.5
       },
       {
@@ -10849,20 +10997,20 @@ window.ILTV_STORIES = {
         "you:hangup",
         "dee:phone"
        ],
-       "file": null,
+       "file": "/night-shift/okafor-call-clean/media/line-4.mp3",
        "dur": 6
       },
       {
        "speaker": "narrator",
        "text": "She looks at the phone a moment longer than she needs to.",
-       "file": null,
+       "file": "/night-shift/okafor-call-clean/media/line-5.mp3",
        "dur": 3.3
       },
       {
        "speaker": "narrator",
        "text": "The line goes dead. The wall clock says 00:14. It is 00:12.",
        "act": "dee:hangup",
-       "file": null,
+       "file": "/night-shift/okafor-call-clean/media/line-6.mp3",
        "dur": 6.9
       }
      ],
@@ -10911,14 +11059,14 @@ window.ILTV_STORIES = {
        "text": "So. It's Okafor. The entry for forty-four. I'd like it to say what happened, in order, without \"seemed\" and without a gap.",
        "perform": "polite, a chair creaking",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/okafor-call-opined/media/line-1.mp3",
        "dur": 9.4
       },
       {
        "speaker": "okafor",
        "text": "\"Seemed.\" How did he seem? Put what he did, in order. Can you do that tonight?",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/okafor-call-opined/media/line-2.mp3",
        "dur": 6
       },
       {
@@ -10926,21 +11074,21 @@ window.ILTV_STORIES = {
        "text": "Mm.",
        "perform": "a pencil tapping the shelf",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/okafor-call-opined/media/line-3.mp3",
        "dur": 3
       },
       {
        "speaker": "narrator",
        "text": "Dolores puts the tablet in front of you with the incident field open and the pencil beside it.",
        "act": "dee:hand",
-       "file": null,
+       "file": "/night-shift/okafor-call-opined/media/line-4.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "The incident field is open. Your own words are in it, in grey.",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/okafor-call-opined/media/line-5.mp3",
        "dur": 4.7
       }
      ],
@@ -11030,27 +11178,27 @@ window.ILTV_STORIES = {
        "text": "So. It's Okafor. I'm reading the entry for forty-four. I'll look at the reader record in the morning.",
        "perform": "polite, a chair creaking, slower",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/okafor-call-lied/media/line-1.mp3",
        "dur": 8.2
       },
       {
        "speaker": "okafor",
        "text": "Let's make sure we're aligned. If anything in it is not exactly right, tell me now and we call it a correction. In the morning it isn't a correction.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/okafor-call-lied/media/line-2.mp3",
        "dur": 9.2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "very low, to the wall, not to you",
-       "file": null,
+       "file": "/night-shift/okafor-call-lied/media/line-3.mp3",
        "dur": 1.9
       },
       {
        "speaker": "narrator",
        "text": "The phone is warm against your ear. Dolores has stopped moving the pencil.",
-       "file": null,
+       "file": "/night-shift/okafor-call-lied/media/line-4.mp3",
        "dur": 4.8
       },
       {
@@ -11060,7 +11208,7 @@ window.ILTV_STORIES = {
         "you:hangup",
         "you:write"
        ],
-       "file": null,
+       "file": "/night-shift/okafor-call-lied/media/line-5.mp3",
        "dur": 5.7
       }
      ],
@@ -11155,21 +11303,21 @@ window.ILTV_STORIES = {
          "at": 0.2
         }
        ],
-       "file": null,
+       "file": "/night-shift/sandwich/media/line-1.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Pepper and egg.",
        "perform": "to the wall",
-       "file": null,
+       "file": "/night-shift/sandwich/media/line-2.mp3",
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Peppers raw. Egg fried hard. The deli on Seventy-seventh has it wrapped before I'm through the door.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/sandwich/media/line-3.mp3",
        "dur": 6.9
       }
      ],
@@ -11231,28 +11379,28 @@ window.ILTV_STORIES = {
          "at": 0.2
         }
        ],
-       "file": null,
+       "file": "/night-shift/sandwich-ray/media/line-1.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Pepper and egg. You asked.",
        "perform": "to the wall",
-       "file": null,
+       "file": "/night-shift/sandwich-ray/media/line-2.mp3",
        "dur": 2.9
       },
       {
        "speaker": "dee",
        "text": "Ray used to take the corner. Said that's where the egg was.",
        "perform": "low, quick, a pause after it",
-       "file": null,
+       "file": "/night-shift/sandwich-ray/media/line-3.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Don't ask for a bite.",
        "perform": "rewrapping, not looking",
-       "file": null,
+       "file": "/night-shift/sandwich-ray/media/line-4.mp3",
        "dur": 3.9
       }
      ],
@@ -11312,13 +11460,13 @@ window.ILTV_STORIES = {
         "dee:eat"
        ],
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/sandwich-quiet/media/line-1.mp3",
        "dur": 11.6
       },
       {
        "speaker": "narrator",
        "text": "She finishes first. She folds the foil in four and puts it in the bin by the door, where it makes no noise at all.",
-       "file": null,
+       "file": "/night-shift/sandwich-quiet/media/line-2.mp3",
        "dur": 7.3
       },
       {
@@ -11331,14 +11479,14 @@ window.ILTV_STORIES = {
          "at": 0.67
         }
        ],
-       "file": null,
+       "file": "/night-shift/sandwich-quiet/media/line-3.mp3",
        "dur": 12.2
       },
       {
        "speaker": "dee",
        "text": "Nothing. Admin.",
        "perform": "flat, before you ask",
-       "file": null,
+       "file": "/night-shift/sandwich-quiet/media/line-4.mp3",
        "dur": 2
       }
      ],
@@ -11394,35 +11542,35 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "School safety agent. Then the courts. Then a bank on Fordham Road.",
        "perform": "even, listing",
-       "file": null,
+       "file": "/night-shift/sandwich-career/media/line-1.mp3",
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Then here. Twenty-six years. Same hall.",
        "perform": "the foil folded in half",
-       "file": null,
+       "file": "/night-shift/sandwich-career/media/line-2.mp3",
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "One door. Mm. Eat.",
        "perform": "a short breath that might be a laugh",
-       "file": null,
+       "file": "/night-shift/sandwich-career/media/line-3.mp3",
        "dur": 4.5
       },
       {
        "speaker": "narrator",
        "text": "On tile one, the revolving door turns once with nobody in it.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/sandwich-career/media/line-4.mp3",
        "dur": 4.6
       },
       {
        "speaker": "narrator",
        "text": "She shakes the crumbs from the foil into her palm and eats them.",
        "act": "dee:eat",
-       "file": null,
+       "file": "/night-shift/sandwich-career/media/line-5.mp3",
        "dur": 4
       },
       {
@@ -11435,14 +11583,14 @@ window.ILTV_STORIES = {
          "at": 0.67
         }
        ],
-       "file": null,
+       "file": "/night-shift/sandwich-career/media/line-6.mp3",
        "dur": 12.2
       },
       {
        "speaker": "dee",
        "text": "Nothing. Admin.",
        "perform": "flat, before you ask",
-       "file": null,
+       "file": "/night-shift/sandwich-career/media/line-7.mp3",
        "dur": 2
       }
      ],
@@ -11498,14 +11646,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "It's wrong.",
        "perform": "looking at the cup you hold out",
-       "file": null,
+       "file": "/night-shift/sandwich-coffee/media/line-1.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Mm. Give it here.",
        "perform": "taking it anyway",
-       "file": null,
+       "file": "/night-shift/sandwich-coffee/media/line-2.mp3",
        "dur": 1.8
       },
       {
@@ -11515,14 +11663,14 @@ window.ILTV_STORIES = {
         "dee:stand",
         "dee:drink"
        ],
-       "file": null,
+       "file": "/night-shift/sandwich-coffee/media/line-3.mp3",
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Don't tell Terrell.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/sandwich-coffee/media/line-4.mp3",
        "dur": 1.5
       },
       {
@@ -11534,7 +11682,7 @@ window.ILTV_STORIES = {
          "at": 0.6
         }
        ],
-       "file": null,
+       "file": "/night-shift/sandwich-coffee/media/line-5.mp3",
        "dur": 7
       },
       {
@@ -11547,14 +11695,14 @@ window.ILTV_STORIES = {
          "at": 0.67
         }
        ],
-       "file": null,
+       "file": "/night-shift/sandwich-coffee/media/line-6.mp3",
        "dur": 12.2
       },
       {
        "speaker": "dee",
        "text": "Nothing. Admin.",
        "perform": "flat, before you ask",
-       "file": null,
+       "file": "/night-shift/sandwich-coffee/media/line-7.mp3",
        "dur": 2
       }
      ],
@@ -11610,14 +11758,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Birthdays.",
        "perform": "flat, a word with the lid on",
-       "file": null,
+       "file": "/night-shift/birthdays-ask/media/line-1.mp3",
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "Adler, March. Marisol, July. Terrell's was Tuesday. Muffin. Don't say.",
        "perform": "quick, quieter each name",
-       "file": null,
+       "file": "/night-shift/birthdays-ask/media/line-2.mp3",
        "dur": 6.3
       },
       {
@@ -11625,13 +11773,13 @@ window.ILTV_STORIES = {
        "text": "I don't care about the tenants. Mm. Hand me the pencil.",
        "perform": "dry",
        "act": "you:hand",
-       "file": null,
+       "file": "/night-shift/birthdays-ask/media/line-3.mp3",
        "dur": 4.1
       },
       {
        "speaker": "narrator",
        "text": "The pile is two inches thick. Every card has a name and a month. The top three are in handwriting you recognize from the incident forms. The bottom ones are in a hand that has changed over the years.",
-       "file": null,
+       "file": "/night-shift/birthdays-ask/media/line-4.mp3",
        "dur": 12.5
       },
       {
@@ -11643,21 +11791,21 @@ window.ILTV_STORIES = {
          "at": 0.6
         }
        ],
-       "file": null,
+       "file": "/night-shift/birthdays-ask/media/line-5.mp3",
        "dur": 8.7
       },
       {
        "speaker": "dee",
        "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
        "perform": "flat, reading",
-       "file": null,
+       "file": "/night-shift/birthdays-ask/media/line-6.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's on it by name but those two.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/birthdays-ask/media/line-7.mp3",
        "dur": 2.9
       }
      ],
@@ -11718,19 +11866,19 @@ window.ILTV_STORIES = {
          "at": 0.36
         }
        ],
-       "file": null,
+       "file": "/night-shift/birthdays-pencil/media/line-1.mp3",
        "dur": 10.4
       },
       {
        "speaker": "narrator",
        "text": "She puts the drawer back with her foot and does not tell you whose card it was.",
-       "file": null,
+       "file": "/night-shift/birthdays-pencil/media/line-2.mp3",
        "dur": 4.5
       },
       {
        "speaker": "narrator",
        "text": "You think of asking. You don't.",
-       "file": null,
+       "file": "/night-shift/birthdays-pencil/media/line-3.mp3",
        "dur": 2.5
       },
       {
@@ -11742,21 +11890,21 @@ window.ILTV_STORIES = {
          "at": 0.6
         }
        ],
-       "file": null,
+       "file": "/night-shift/birthdays-pencil/media/line-4.mp3",
        "dur": 8.7
       },
       {
        "speaker": "dee",
        "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
        "perform": "flat, reading",
-       "file": null,
+       "file": "/night-shift/birthdays-pencil/media/line-5.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's on it by name but those two.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/birthdays-pencil/media/line-6.mp3",
        "dur": 2.9
       }
      ],
@@ -11817,21 +11965,21 @@ window.ILTV_STORIES = {
          "at": 0.6
         }
        ],
-       "file": null,
+       "file": "/night-shift/late-list/media/line-1.mp3",
        "dur": 8.7
       },
       {
        "speaker": "dee",
        "text": "Fifty-eight's got a late list. Hale's office. Lang's on with Zurich.",
        "perform": "flat, reading",
-       "file": null,
+       "file": "/night-shift/late-list/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's on it by name but those two.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/late-list/media/line-3.mp3",
        "dur": 2.9
       }
      ],
@@ -11889,7 +12037,7 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "at the door, the keys in her hand",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/late-quiet/media/line-1.mp3",
        "dur": 6.3
       },
       {
@@ -11902,7 +12050,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/late-quiet/media/line-2.mp3",
        "dur": 8.1
       }
      ],
@@ -11933,14 +12081,14 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Two lines. Director Hale's office, until 04:00. Lang, call with Zurich in progress. No other name. The 58th floor reception is lit on tile seven, the desk empty.",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/late-read/media/line-1.mp3",
        "dur": 13.6
       },
       {
        "speaker": "dee",
        "text": "Seven's always lit. Don't ask me why.",
        "perform": "already standing, the keys in her hand",
-       "file": null,
+       "file": "/night-shift/late-read/media/line-2.mp3",
        "dur": 3.3
       },
       {
@@ -11949,7 +12097,7 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "at the door, the keys in her hand",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/late-read/media/line-3.mp3",
        "dur": 6.3
       },
       {
@@ -11962,7 +12110,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/late-read/media/line-4.mp3",
        "dur": 8.1
       }
      ],
@@ -11993,14 +12141,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Six hours ahead. Their morning's our three.",
        "perform": "flat, tapping the screen",
-       "file": null,
+       "file": "/night-shift/late-zurich/media/line-1.mp3",
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "Somebody's awake up there.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/late-zurich/media/line-2.mp3",
        "dur": 2.1
       },
       {
@@ -12009,7 +12157,7 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "at the door, the keys in her hand",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/late-zurich/media/line-3.mp3",
        "dur": 6.3
       },
       {
@@ -12022,7 +12170,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/late-zurich/media/line-4.mp3",
        "dur": 8.1
       }
      ],
@@ -12055,14 +12203,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "01:50. Nine tiles, none moving, and a radio that breathes when Dolores climbs. You can watch only so many at once.",
-       "file": null,
+       "file": "/night-shift/wedge-watch/media/line-1.mp3",
        "dur": 9.5
       },
       {
        "speaker": "narrator",
        "text": "The tours are done. The tenants have gone. The phones have stopped.",
        "sfx": "clock-tick",
-       "file": null,
+       "file": "/night-shift/wedge-watch/media/line-2.mp3",
        "dur": 4.4
       },
       {
@@ -12070,21 +12218,21 @@ window.ILTV_STORIES = {
        "text": "Stairwell A. Clear. Landing nineteen has a bench.",
        "sfx": "footsteps-stairs",
        "perform": "over the radio, echo on it",
-       "file": null,
+       "file": "/night-shift/wedge-watch/media/line-3.mp3",
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Somebody put a bench in a fire stair. I sit on it four seconds.",
        "perform": "over the radio, dry, a little out of breath",
-       "file": null,
+       "file": "/night-shift/wedge-watch/media/line-4.mp3",
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Going up to B. Eyes open. Mm-hm.",
        "perform": "over the radio",
-       "file": null,
+       "file": "/night-shift/wedge-watch/media/line-5.mp3",
        "dur": 3.4
       }
      ],
@@ -12146,26 +12294,26 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "On tile four, a hand's width of orange at the foot of the fire door on thirty-one. A rubber wedge. The door is open to the landing and nobody is on it.",
-       "file": null,
+       "file": "/night-shift/wedge-seen/media/line-1.mp3",
        "dur": 10
       },
       {
        "speaker": "dee",
        "text": "Stairwell B. Clear.",
        "perform": "over the radio, no idea",
-       "file": null,
+       "file": "/night-shift/wedge-seen/media/line-2.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "She is two stairwells away and four floors down. She doesn't know.",
-       "file": null,
+       "file": "/night-shift/wedge-seen/media/line-3.mp3",
        "dur": 4.7
       },
       {
        "speaker": "narrator",
        "text": "The phone, the radio and the mouse are all within reach.",
-       "file": null,
+       "file": "/night-shift/wedge-seen/media/line-4.mp3",
        "dur": 4
       }
      ],
@@ -12239,20 +12387,20 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The access terminal lists the floor: five badges swiped in after six, one still unswiped out. A law firm's name, a time, a single entry. Anand, D. In at 18:02.",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/wedge-seen-badge/media/line-1.mp3",
        "dur": 14.5
       },
       {
        "speaker": "narrator",
        "text": "One badge in. No badge out. There is a man somewhere on thirty-one who has been working for eight hours.",
-       "file": null,
+       "file": "/night-shift/wedge-seen-badge/media/line-2.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Stairwell B. Clear. Heading for the roof side.",
        "perform": "over the radio, no idea",
-       "file": null,
+       "file": "/night-shift/wedge-seen-badge/media/line-3.mp3",
        "dur": 3.8
       }
      ],
@@ -12316,7 +12464,7 @@ window.ILTV_STORIES = {
        "text": "The night line rings four times. Mr. Okafor answers on the fifth, awake.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/wedge-called/media/line-1.mp3",
        "dur": 5.6
       },
       {
@@ -12324,14 +12472,14 @@ window.ILTV_STORIES = {
        "text": "So. Where on thirty-one. Is anyone in the stairwell?",
        "perform": "thick with sleep",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/wedge-called/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "okafor",
        "text": "Do not go up. Put it in the log. I will tell the building manager at six.",
        "perform": "even, a lamp clicking on",
-       "file": null,
+       "file": "/night-shift/wedge-called/media/line-3.mp3",
        "dur": 5.3
       },
       {
@@ -12339,27 +12487,27 @@ window.ILTV_STORIES = {
        "text": "Okafor's line is lit. What did you tell him?",
        "perform": "over the radio, flat",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/wedge-called/media/line-4.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "A wedge. Mm. A wedge. It's the book.",
        "perform": "a long pause on the radio, even",
-       "file": null,
+       "file": "/night-shift/wedge-called/media/line-5.mp3",
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "I'd have gone and said hello. Doesn't matter. You did what it says. Mm. Write it.",
        "perform": "over the radio, quieter, a click",
-       "file": null,
+       "file": "/night-shift/wedge-called/media/line-6.mp3",
        "dur": 6.2
       },
       {
        "speaker": "narrator",
        "text": "On tile four the wedge sits in the doorway.",
-       "file": null,
+       "file": "/night-shift/wedge-called/media/line-7.mp3",
        "dur": 3.2
       }
      ],
@@ -12437,40 +12585,40 @@ window.ILTV_STORIES = {
        "text": "Wedge. Thirty-one. I'm going up. Wall.",
        "sfx": "footsteps-stairs",
        "perform": "over the radio, already moving",
-       "file": null,
+       "file": "/night-shift/wedge-dee/media/line-1.mp3",
        "dur": 3.8
       },
       {
        "speaker": "narrator",
        "text": "On tile four the door stays open. Two minutes. Then Dolores on the landing, her back to the lens, and a younger man in shirtsleeves holding a cigarette he did not light.",
-       "file": null,
+       "file": "/night-shift/wedge-dee/media/line-2.mp3",
        "dur": 12
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. Orange. Rubber. Anand, law firm. He's sorry. He's very sorry.",
        "perform": "over the radio, dry",
-       "file": null,
+       "file": "/night-shift/wedge-dee/media/line-3.mp3",
        "dur": 8
       },
       {
        "speaker": "dee",
        "text": "Door's shut. He knows. You said. Good.",
        "perform": "a pause, the second part quieter",
-       "file": null,
+       "file": "/night-shift/wedge-dee/media/line-4.mp3",
        "dur": 5.6
       },
       {
        "speaker": "dee",
        "text": "He's got a closing at nine. They all do. I'm coming down. Put the kettle on. It's wrong. Put it on.",
        "perform": "over the radio, tired and not unkind, flat",
-       "file": null,
+       "file": "/night-shift/wedge-dee/media/line-5.mp3",
        "dur": 8.7
       },
       {
        "speaker": "narrator",
        "text": "Dolores has the wedge in her hand.",
-       "file": null,
+       "file": "/night-shift/wedge-dee/media/line-6.mp3",
        "dur": 2.2
       }
      ],
@@ -12552,32 +12700,32 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You log it and keep watching. For six minutes nothing on tile four changes. At 01:58 a man in shirtsleeves steps onto the landing, looks at the wedge, and goes back through the door to the floor.",
-       "file": null,
+       "file": "/night-shift/wedge-wait/media/line-1.mp3",
        "dur": 13.7
       },
       {
        "speaker": "narrator",
        "text": "The wedge stays where it is.",
-       "file": null,
+       "file": "/night-shift/wedge-wait/media/line-2.mp3",
        "dur": 2
       },
       {
        "speaker": "dee",
        "text": "Stairwell B. Clear. Heading to the roof side.",
        "perform": "over the radio, away from C",
-       "file": null,
+       "file": "/night-shift/wedge-wait/media/line-3.mp3",
        "dur": 3.6
       },
       {
        "speaker": "narrator",
        "text": "Four minutes later the radio says the same thing again, from another landing. Nobody on the radio says the word thirty-one. Nobody on the wall does either.",
-       "file": null,
+       "file": "/night-shift/wedge-wait/media/line-4.mp3",
        "dur": 10.2
       },
       {
        "speaker": "narrator",
        "text": "The tablet is on your knee. The incident field is blank. You could write what you saw. You could write what you did.",
-       "file": null,
+       "file": "/night-shift/wedge-wait/media/line-5.mp3",
        "dur": 7.3
       }
      ],
@@ -12654,28 +12802,28 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You watch something else. At 02:02 the radio clicks, and Dolores's voice comes from the thirty-first floor landing.",
        "sfx": "radio-squelch",
-       "file": null,
+       "file": "/night-shift/wedge-missed/media/line-1.mp3",
        "dur": 7.9
       },
       {
        "speaker": "dee",
        "text": "Thirty-one is open. Wedge. Orange.",
        "perform": "over the radio, flat as a plate",
-       "file": null,
+       "file": "/night-shift/wedge-missed/media/line-2.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "You were on the wall. Nine tiles. Not four. Anand, law firm. Smoke on the landing. Sorry, he says.",
        "perform": "a breath, over the radio",
-       "file": null,
+       "file": "/night-shift/wedge-missed/media/line-3.mp3",
        "dur": 9.8
       },
       {
        "speaker": "dee",
        "text": "Door's shut. Say it was me. It was me.",
        "perform": "over the radio, even",
-       "file": null,
+       "file": "/night-shift/wedge-missed/media/line-4.mp3",
        "dur": 3.5
       },
       {
@@ -12683,13 +12831,13 @@ window.ILTV_STORIES = {
        "text": "Look at four. Look at it till it's boring. Then look again.",
        "perform": "a click, then not a sound",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/wedge-missed/media/line-5.mp3",
        "dur": 5.7
       },
       {
        "speaker": "narrator",
        "text": "Tile four is ordinary now: a door, a landing, a painted number. There was a wedge in it. You were looking at something else.",
-       "file": null,
+       "file": "/night-shift/wedge-missed/media/line-6.mp3",
        "dur": 9.3
       }
      ],
@@ -12768,14 +12916,14 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "02:10. Dolores comes back down and reads the wedge entry standing, with the pencil behind her ear.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/laptop-watch-f/media/line-1.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Nobody lazy in it. Nobody tired. A door and a wedge. Good.",
        "perform": "tapping the page",
-       "file": null,
+       "file": "/night-shift/laptop-watch-f/media/line-2.mp3",
        "dur": 6.6
       },
       {
@@ -12789,7 +12937,7 @@ window.ILTV_STORIES = {
         }
        ],
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/laptop-watch-f/media/line-3.mp3",
        "dur": 9.1
       },
       {
@@ -12800,7 +12948,7 @@ window.ILTV_STORIES = {
         "c1",
         "c2"
        ],
-       "file": null,
+       "file": "/night-shift/laptop-watch-f/media/line-4.mp3",
        "dur": 3.1
       },
       {
@@ -12808,7 +12956,7 @@ window.ILTV_STORIES = {
        "text": "She does this twice a night.",
        "sfx": "pencil",
        "act": "dee:touch",
-       "file": null,
+       "file": "/night-shift/laptop-watch-f/media/line-5.mp3",
        "dur": 1.9
       }
      ],
@@ -12867,21 +13015,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "02:10. Dolores comes back down and reads the wedge entry standing, with the pencil behind her ear.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/laptop-watch-o/media/line-1.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "Probably being lazy. You weren't there. You watched a door.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/laptop-watch-o/media/line-2.mp3",
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Nobody's lazy at two in the morning. They're tired. Write the door.",
        "perform": "the pencil held out",
-       "file": null,
+       "file": "/night-shift/laptop-watch-o/media/line-3.mp3",
        "dur": 5
       },
       {
@@ -12895,7 +13043,7 @@ window.ILTV_STORIES = {
         }
        ],
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/laptop-watch-o/media/line-4.mp3",
        "dur": 9.1
       },
       {
@@ -12906,7 +13054,7 @@ window.ILTV_STORIES = {
         "c1",
         "c2"
        ],
-       "file": null,
+       "file": "/night-shift/laptop-watch-o/media/line-5.mp3",
        "dur": 3.1
       },
       {
@@ -12914,7 +13062,7 @@ window.ILTV_STORIES = {
        "text": "She does this twice a night.",
        "sfx": "pencil",
        "act": "dee:touch",
-       "file": null,
+       "file": "/night-shift/laptop-watch-o/media/line-6.mp3",
        "dur": 1.9
       }
      ],
@@ -12973,21 +13121,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "02:10. Dolores comes back down and looks for the wedge entry. There isn't one.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/laptop-watch-m/media/line-1.mp3",
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Where's thirty-one?",
        "perform": "the tablet turned toward you",
-       "file": null,
+       "file": "/night-shift/laptop-watch-m/media/line-2.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "There's a blank. Write it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/laptop-watch-m/media/line-3.mp3",
        "dur": 2.1
       },
       {
@@ -13001,7 +13149,7 @@ window.ILTV_STORIES = {
         }
        ],
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/laptop-watch-m/media/line-4.mp3",
        "dur": 9.1
       },
       {
@@ -13012,7 +13160,7 @@ window.ILTV_STORIES = {
         "c1",
         "c2"
        ],
-       "file": null,
+       "file": "/night-shift/laptop-watch-m/media/line-5.mp3",
        "dur": 3.1
       },
       {
@@ -13020,7 +13168,7 @@ window.ILTV_STORIES = {
        "text": "She does this twice a night.",
        "sfx": "pencil",
        "act": "dee:touch",
-       "file": null,
+       "file": "/night-shift/laptop-watch-m/media/line-6.mp3",
        "dur": 1.9
       }
      ],
@@ -13079,21 +13227,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "02:10. Dolores comes back down and reads the wedge entry once, then again.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/laptop-watch-l/media/line-1.mp3",
        "dur": 5.9
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "the tablet turned face down",
-       "file": null,
+       "file": "/night-shift/laptop-watch-l/media/line-2.mp3",
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Officer.",
        "perform": "formal, from here on",
-       "file": null,
+       "file": "/night-shift/laptop-watch-l/media/line-3.mp3",
        "dur": 2.3
       },
       {
@@ -13107,7 +13255,7 @@ window.ILTV_STORIES = {
         }
        ],
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/laptop-watch-l/media/line-4.mp3",
        "dur": 9.1
       },
       {
@@ -13118,7 +13266,7 @@ window.ILTV_STORIES = {
         "c1",
         "c2"
        ],
-       "file": null,
+       "file": "/night-shift/laptop-watch-l/media/line-5.mp3",
        "dur": 3.1
       },
       {
@@ -13126,7 +13274,7 @@ window.ILTV_STORIES = {
        "text": "She does this twice a night.",
        "sfx": "pencil",
        "act": "dee:touch",
-       "file": null,
+       "file": "/night-shift/laptop-watch-l/media/line-6.mp3",
        "dur": 1.9
       }
      ],
@@ -13186,33 +13334,33 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Bench.",
        "perform": "a nod, pencil already moving off the glass",
-       "file": null,
+       "file": "/night-shift/laptop-seen/media/line-1.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Good. Next.",
        "perform": "the way a stamp does",
-       "file": null,
+       "file": "/night-shift/laptop-seen/media/line-2.mp3",
        "dur": 2
       },
       {
        "speaker": "narrator",
        "text": "She says nothing more. The pencil goes back behind her ear.",
-       "file": null,
+       "file": "/night-shift/laptop-seen/media/line-3.mp3",
        "dur": 4
       },
       {
        "speaker": "narrator",
        "text": "On the long bench by the window: a laptop, closed, and a lanyard laid across it. Nobody is near. The lobby is empty.",
-       "file": null,
+       "file": "/night-shift/laptop-seen/media/line-4.mp3",
        "dur": 9.2
       },
       {
        "speaker": "dee",
        "text": "Whose?",
        "perform": "to the wall",
-       "file": null,
+       "file": "/night-shift/laptop-seen/media/line-5.mp3",
        "dur": 1.1
       }
      ],
@@ -13295,33 +13443,33 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Lobby. The bench. Look at it.",
        "perform": "dry, pencil tapping tile one",
-       "file": null,
+       "file": "/night-shift/laptop-told/media/line-1.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Nobody sat there tonight. Nobody.",
        "perform": "pointing, not unkind",
-       "file": null,
+       "file": "/night-shift/laptop-told/media/line-2.mp3",
        "dur": 3
       },
       {
        "speaker": "narrator",
        "text": "You look. There is a shape on the bench you should have named. She doesn't say so. She waits.",
-       "file": null,
+       "file": "/night-shift/laptop-told/media/line-3.mp3",
        "dur": 6.5
       },
       {
        "speaker": "narrator",
        "text": "On the long bench by the window: a laptop, closed, and a lanyard laid across it. Nobody is near. The lobby is empty.",
-       "file": null,
+       "file": "/night-shift/laptop-told/media/line-4.mp3",
        "dur": 9.2
       },
       {
        "speaker": "dee",
        "text": "Whose?",
        "perform": "to the wall",
-       "file": null,
+       "file": "/night-shift/laptop-told/media/line-5.mp3",
        "dur": 1.1
       }
      ],
@@ -13401,34 +13549,34 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The laptop is warm from the bench's heater. The lanyard says T. Marsh and a floor, thirty-four. You set both on the shelf beside the binder.",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/laptop-got/media/line-1.mp3",
        "dur": 9.8
       },
       {
        "speaker": "dee",
        "text": "Tag it. Time. Where. Who touched it.",
        "perform": "tapping the shelf",
-       "file": null,
+       "file": "/night-shift/laptop-got/media/line-2.mp3",
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "Not \"found.\" \"Found on the lobby bench at.\" Exact.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/laptop-got/media/line-3.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Don't read it. Tag it. Time, where, who touched it.",
        "perform": "tapping the shelf, dry",
-       "file": null,
+       "file": "/night-shift/laptop-got/media/line-4.mp3",
        "dur": 5.7
       },
       {
        "speaker": "narrator",
        "text": "The lanyard has a photo of a man who looks like he has been told to smile. You stand there a moment, holding his laptop.",
-       "file": null,
+       "file": "/night-shift/laptop-got/media/line-5.mp3",
        "dur": 7.5
       }
      ],
@@ -13484,27 +13632,27 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The access terminal knows the badge on the lanyard: T. Marsh, floor 34, insurance broker. Last read: out through the turnstile at 23:12.",
-       "file": null,
+       "file": "/night-shift/laptop-badge/media/line-1.mp3",
        "dur": 10.4
       },
       {
        "speaker": "dee",
        "text": "Out at 23:12. He's home. He's in bed and his laptop isn't.",
        "perform": "dry, a little pleased",
-       "file": null,
+       "file": "/night-shift/laptop-badge/media/line-2.mp3",
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "Don't call him. You'll call him at seven. Go get it. Tag it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/laptop-badge/media/line-3.mp3",
        "dur": 4.3
       },
       {
        "speaker": "narrator",
        "text": "On the terminal the badge is a row of numbers and a green icon. The terminal knows when T. Marsh left and nothing else about him.",
-       "file": null,
+       "file": "/night-shift/laptop-badge/media/line-4.mp3",
        "dur": 8.1
       }
      ],
@@ -13566,14 +13714,14 @@ window.ILTV_STORIES = {
          "at": 0.56
         }
        ],
-       "file": null,
+       "file": "/night-shift/laptop-opened/media/line-1.mp3",
        "dur": 8
       },
       {
        "speaker": "dee",
        "text": "Not yours. Close it.",
        "perform": "sharp, for her",
-       "file": null,
+       "file": "/night-shift/laptop-opened/media/line-2.mp3",
        "dur": 1.9
       },
       {
@@ -13581,19 +13729,19 @@ window.ILTV_STORIES = {
        "text": "Now.",
        "perform": "low",
        "act": "dee:angry",
-       "file": null,
+       "file": "/night-shift/laptop-opened/media/line-3.mp3",
        "dur": 1
       },
       {
        "speaker": "narrator",
        "text": "The screen goes dark. The dog goes with it.",
-       "file": null,
+       "file": "/night-shift/laptop-opened/media/line-4.mp3",
        "dur": 3.2
       },
       {
        "speaker": "narrator",
        "text": "You close the lid the rest of the way.",
-       "file": null,
+       "file": "/night-shift/laptop-opened/media/line-5.mp3",
        "dur": 2.1
       }
      ],
@@ -13655,7 +13803,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Tagged. Timed. Whose. Good.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/awake-0225-f/media/line-1.mp3",
        "dur": 3.7
       },
       {
@@ -13671,21 +13819,21 @@ window.ILTV_STORIES = {
          "at": 0.48
         }
        ],
-       "file": null,
+       "file": "/night-shift/awake-0225-f/media/line-2.mp3",
        "dur": 8.3
       },
       {
        "speaker": "dee",
        "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/awake-0225-f/media/line-3.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
        "perform": "a beat, no more",
-       "file": null,
+       "file": "/night-shift/awake-0225-f/media/line-4.mp3",
        "dur": 8.2
       }
      ],
@@ -13741,7 +13889,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Probably on his way back? He's in bed, Officer. Write where it was.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/awake-0225-o/media/line-1.mp3",
        "dur": 5
       },
       {
@@ -13757,21 +13905,21 @@ window.ILTV_STORIES = {
          "at": 0.48
         }
        ],
-       "file": null,
+       "file": "/night-shift/awake-0225-o/media/line-2.mp3",
        "dur": 8.3
       },
       {
        "speaker": "dee",
        "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/awake-0225-o/media/line-3.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
        "perform": "a beat, no more",
-       "file": null,
+       "file": "/night-shift/awake-0225-o/media/line-4.mp3",
        "dur": 8.2
       }
      ],
@@ -13827,7 +13975,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "No line for the laptop. Where is it, in the log?",
        "perform": "dry, turning the tablet",
-       "file": null,
+       "file": "/night-shift/awake-0225-m/media/line-1.mp3",
        "dur": 3.8
       },
       {
@@ -13843,21 +13991,21 @@ window.ILTV_STORIES = {
          "at": 0.48
         }
        ],
-       "file": null,
+       "file": "/night-shift/awake-0225-m/media/line-2.mp3",
        "dur": 8.3
       },
       {
        "speaker": "dee",
        "text": "Don't sit. Stand. Say the tiles. Eat something salty.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/awake-0225-m/media/line-3.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "A guard at the bank on Fordham Road. Head on the desk. Nothing happened for forty minutes. Then something did.",
        "perform": "a beat, no more",
-       "file": null,
+       "file": "/night-shift/awake-0225-m/media/line-4.mp3",
        "dur": 8.2
       }
      ],
@@ -13913,7 +14061,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Louder. Nobody's asleep in here but the monitors.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/awake-stand/media/line-1.mp3",
        "dur": 3.7
       },
       {
@@ -13931,13 +14079,13 @@ window.ILTV_STORIES = {
         "c8",
         "c9"
        ],
-       "file": null,
+       "file": "/night-shift/awake-stand/media/line-2.mp3",
        "dur": 15.3
       },
       {
        "speaker": "narrator",
        "text": "Your voice sounds small in the room and then, at the ninth tile, ordinary.",
-       "file": null,
+       "file": "/night-shift/awake-stand/media/line-3.mp3",
        "dur": 5.4
       },
       {
@@ -13950,28 +14098,28 @@ window.ILTV_STORIES = {
          "at": 0.29
         }
        ],
-       "file": null,
+       "file": "/night-shift/awake-stand/media/line-4.mp3",
        "dur": 9.1
       },
       {
        "speaker": "marisol",
        "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
        "perform": "fast, warm, everything at once",
-       "file": null,
+       "file": "/night-shift/awake-stand/media/line-5.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Marisol. The broker knows.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/awake-stand/media/line-6.mp3",
        "dur": 2.6
       },
       {
        "speaker": "marisol",
        "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
        "perform": "delighted",
-       "file": null,
+       "file": "/night-shift/awake-stand/media/line-7.mp3",
        "dur": 7
       }
      ],
@@ -14027,20 +14175,20 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "A man at the counter. A heart. The guard was on his phone.",
        "perform": "even, to the cup",
-       "file": null,
+       "file": "/night-shift/awake-bank/media/line-1.mp3",
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Mm. A Tuesday.",
        "perform": "a sip, flat",
-       "file": null,
+       "file": "/night-shift/awake-bank/media/line-2.mp3",
        "dur": 3.3
       },
       {
        "speaker": "narrator",
        "text": "You don't ask whether the man lived. She doesn't say. She turns the cup a quarter turn on the shelf.",
-       "file": null,
+       "file": "/night-shift/awake-bank/media/line-3.mp3",
        "dur": 6.6
       },
       {
@@ -14053,28 +14201,28 @@ window.ILTV_STORIES = {
          "at": 0.29
         }
        ],
-       "file": null,
+       "file": "/night-shift/awake-bank/media/line-4.mp3",
        "dur": 9.1
       },
       {
        "speaker": "marisol",
        "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
        "perform": "fast, warm, everything at once",
-       "file": null,
+       "file": "/night-shift/awake-bank/media/line-5.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Marisol. The broker knows.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/awake-bank/media/line-6.mp3",
        "dur": 2.6
       },
       {
        "speaker": "marisol",
        "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
        "perform": "delighted",
-       "file": null,
+       "file": "/night-shift/awake-bank/media/line-7.mp3",
        "dur": 7
       }
      ],
@@ -14130,19 +14278,19 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "It's wrong. Mm.",
        "perform": "taking it anyway, the same word, softer",
-       "file": null,
+       "file": "/night-shift/awake-coffee/media/line-1.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "She drinks half of it standing and sets it on the shelf, away from the radios. You notice she puts it down exactly where the old ring is.",
-       "file": null,
+       "file": "/night-shift/awake-coffee/media/line-2.mp3",
        "dur": 8.9
       },
       {
        "speaker": "narrator",
        "text": "The machine makes its noise. Dolores drinks without comment.",
-       "file": null,
+       "file": "/night-shift/awake-coffee/media/line-3.mp3",
        "dur": 4.3
       },
       {
@@ -14155,28 +14303,28 @@ window.ILTV_STORIES = {
          "at": 0.29
         }
        ],
-       "file": null,
+       "file": "/night-shift/awake-coffee/media/line-4.mp3",
        "dur": 9.1
       },
       {
        "speaker": "marisol",
        "text": "Mi amor! Dolores! Don't get up, nobody get up. I brought the good coffee, from thirty-three, the broker's pot. Don't tell the broker.",
        "perform": "fast, warm, everything at once",
-       "file": null,
+       "file": "/night-shift/awake-coffee/media/line-5.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Marisol. The broker knows.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/awake-coffee/media/line-6.mp3",
        "dur": 2.6
       },
       {
        "speaker": "marisol",
        "text": "The broker thinks the pot refills itself. Ha! Forty-four's dry, I did the sink last. Bendito.",
        "perform": "delighted",
-       "file": null,
+       "file": "/night-shift/awake-coffee/media/line-7.mp3",
        "dur": 7
       }
      ],
@@ -14237,21 +14385,21 @@ window.ILTV_STORIES = {
        "speaker": "marisol",
        "text": "Ay, de nada, mi amor. You say thank you. Nobody says thank you.",
        "perform": "fast, laughing, wiping her hands",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-1.mp3",
        "dur": 5.6
       },
       {
        "speaker": "marisol",
        "text": "Twenty years I bring the coffee, I hear thank you from the dentist and from God.",
        "perform": "fast",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-2.mp3",
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Marisol.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-3.mp3",
        "dur": 0.9
       },
       {
@@ -14259,27 +14407,27 @@ window.ILTV_STORIES = {
        "text": "I'm going, I'm going. Floors don't mop themselves. They should. I'd retire.",
        "perform": "out the door, the cart rattling",
        "act": "marisol:leave",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-4.mp3",
        "dur": 7.8
       },
       {
        "speaker": "dee",
        "text": "Mm. Thirty years she's said that.",
        "perform": "to the wall, after the door, almost fond",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-5.mp3",
        "dur": 3.5
       },
       {
        "speaker": "narrator",
        "text": "The cart's wheel squeaks down the corridor outside and fades toward the elevators. For a moment the room smells of the good coffee and nothing else.",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-6.mp3",
        "dur": 9.9
       },
       {
        "speaker": "narrator",
        "text": "02:46. The outside line rings on the desk phone. Dolores lifts her chin at it. It is not her call to take.",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-7.mp3",
        "dur": 8.6
       },
       {
@@ -14287,7 +14435,7 @@ window.ILTV_STORIES = {
        "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
        "perform": "fast, brisk, a speakerphone in a big room",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-8.mp3",
        "dur": 7
       },
       {
@@ -14295,7 +14443,7 @@ window.ILTV_STORIES = {
        "text": "Facilities. Not us.",
        "perform": "low, to you",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/marisol-thanks/media/line-9.mp3",
        "dur": 2.3
       }
      ],
@@ -14356,21 +14504,21 @@ window.ILTV_STORIES = {
        "speaker": "marisol",
        "text": "Dolores? Ay. Twenty-six years she's here. I'm thirty. We're the building, her and me. The rest are tenants.",
        "perform": "fast, proud",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-1.mp3",
        "dur": 7.1
       },
       {
        "speaker": "marisol",
        "text": "I tell her every Christmas: Dolores, go home. She says: who watches the door. She never goes home.",
        "perform": "a laugh that stops itself",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-2.mp3",
        "dur": 8.8
       },
       {
        "speaker": "dee",
        "text": "Marisol. Floors.",
        "perform": "the voice of a closing door",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-3.mp3",
        "dur": 2.8
       },
       {
@@ -14378,20 +14526,20 @@ window.ILTV_STORIES = {
        "text": "Okay. Okay! Eat something, mi amor! Both of you!",
        "perform": "gone, the cart rattling",
        "act": "marisol:leave",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-4.mp3",
        "dur": 4.9
       },
       {
        "speaker": "narrator",
        "text": "Dolores is looking at the wall. She does not look at the door Marisol went through.",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-5.mp3",
        "dur": 4.9
       },
       {
        "speaker": "narrator",
        "text": "02:46. The outside line rings on the desk phone. Dolores lifts her chin at it. It is not her call to take.",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-6.mp3",
        "dur": 8.6
       },
       {
@@ -14399,7 +14547,7 @@ window.ILTV_STORIES = {
        "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
        "perform": "fast, brisk, a speakerphone in a big room",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-7.mp3",
        "dur": 7
       },
       {
@@ -14407,7 +14555,7 @@ window.ILTV_STORIES = {
        "text": "Facilities. Not us.",
        "perform": "low, to you",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/marisol-dee/media/line-8.mp3",
        "dur": 2.3
       }
      ],
@@ -14468,14 +14616,14 @@ window.ILTV_STORIES = {
        "speaker": "marisol",
        "text": "Thirty to forty-four. Six of us. Forty-one's the worst, the lawyers leave their lunch. Thirty-three's the best, they leave a pot.",
        "perform": "listing, fast",
-       "file": null,
+       "file": "/night-shift/marisol-floors/media/line-1.mp3",
        "dur": 7.5
       },
       {
        "speaker": "marisol",
        "text": "Eleven o'clock to five-thirty. Then home, then sleep, then my sister's kids. Bendito.",
        "perform": "a shrug in the voice",
-       "file": null,
+       "file": "/night-shift/marisol-floors/media/line-2.mp3",
        "dur": 6.4
       },
       {
@@ -14483,20 +14631,20 @@ window.ILTV_STORIES = {
        "text": "She's always on time. Five-thirty. You could set the clock by her. Mine. The right one.",
        "perform": "flat, after she goes, almost a smile",
        "act": "marisol:leave",
-       "file": null,
+       "file": "/night-shift/marisol-floors/media/line-3.mp3",
        "dur": 12
       },
       {
        "speaker": "narrator",
        "text": "You try to picture it: six people, fifteen floors, one night, nobody writing anything down.",
-       "file": null,
+       "file": "/night-shift/marisol-floors/media/line-4.mp3",
        "dur": 7.2
       },
       {
        "speaker": "narrator",
        "text": "02:46. The outside line rings on the desk phone. Dolores lifts her chin at it. It is not her call to take.",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/marisol-floors/media/line-5.mp3",
        "dur": 8.6
       },
       {
@@ -14504,7 +14652,7 @@ window.ILTV_STORIES = {
        "text": "Hi, Brandt, forty. It's sixty-one degrees up here. I have a call with Singapore at four. Can someone do something about the heat?",
        "perform": "fast, brisk, a speakerphone in a big room",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/marisol-floors/media/line-6.mp3",
        "dur": 7
       },
       {
@@ -14512,7 +14660,7 @@ window.ILTV_STORIES = {
        "text": "Facilities. Not us.",
        "perform": "low, to you",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/marisol-floors/media/line-7.mp3",
        "dur": 2.3
       }
      ],
@@ -14568,28 +14716,28 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You write: Brandt, forty, cold, 0246. He hangs up before you have said you will pass it on.",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/tenant-log/media/line-1.mp3",
        "dur": 8.3
       },
       {
        "speaker": "dee",
        "text": "Good. Don't promise warm.",
        "perform": "dry, to the wall",
-       "file": null,
+       "file": "/night-shift/tenant-log/media/line-2.mp3",
        "dur": 2.6
       },
       {
        "speaker": "dee",
        "text": "Day facilities gets it at seven. They'll say it's the thermostat. It's never the thermostat.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tenant-log/media/line-3.mp3",
        "dur": 6.5
       },
       {
        "speaker": "narrator",
        "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/tenant-log/media/line-4.mp3",
        "dur": 10.6
       }
      ],
@@ -14620,27 +14768,27 @@ window.ILTV_STORIES = {
        "speaker": "brandt",
        "text": "Great. Thanks. I'll be here.",
        "perform": "brisk, already dialing",
-       "file": null,
+       "file": "/night-shift/tenant-promise/media/line-1.mp3",
        "dur": 2.3
       },
       {
        "speaker": "narrator",
        "text": "There is no one to send. The line clicks. Dolores watches the phone as if it might ask her something.",
-       "file": null,
+       "file": "/night-shift/tenant-promise/media/line-2.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Don't promise what we haven't got. He'll be at the desk at seven asking where they are.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/tenant-promise/media/line-3.mp3",
        "dur": 5.2
       },
       {
        "speaker": "narrator",
        "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/tenant-promise/media/line-4.mp3",
        "dur": 10.6
       }
      ],
@@ -14678,34 +14826,34 @@ window.ILTV_STORIES = {
        "sfx": "keys",
        "perform": "the keys pushed across, flat",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/tenant-go/media/line-1.mp3",
        "dur": 2.6
       },
       {
        "speaker": "narrator",
        "text": "Forty is one long room with fourteen screens, a man in a hoodie and a plastic cover over the thermostat. He looks up as if you were a delivery.",
        "place": "corridor",
-       "file": null,
+       "file": "/night-shift/tenant-go/media/line-2.mp3",
        "dur": 9.2
       },
       {
        "speaker": "brandt",
        "text": "Oh. Hi. It's cold.",
        "perform": "surprised, polite, a bag of pretzels in his hand",
-       "file": null,
+       "file": "/night-shift/tenant-go/media/line-3.mp3",
        "dur": 2.6
       },
       {
        "speaker": "narrator",
        "text": "You write the thermostat's number. You tell him facilities will see to it at seven. He nods and does not look away from the screens again.",
-       "file": null,
+       "file": "/night-shift/tenant-go/media/line-4.mp3",
        "dur": 8.3
       },
       {
        "speaker": "dee",
        "text": "Forty is the floor you can't help. Come on down.",
        "perform": "on the radio, flat",
-       "file": null,
+       "file": "/night-shift/tenant-go/media/line-5.mp3",
        "dur": 3.4
       },
       {
@@ -14713,7 +14861,7 @@ window.ILTV_STORIES = {
        "text": "The wall settles again. On tile six the corridor on forty-four is long, dry and carpeted, and the janitor's closet door at the end of it is shut.",
        "place": "room",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/tenant-go/media/line-6.mp3",
        "dur": 10.6
       }
      ],
@@ -14747,21 +14895,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "On tile six a dark edge is spreading across the carpet from the janitor's closet.",
-       "file": null,
+       "file": "/night-shift/leak-watch/media/line-1.mp3",
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "That's the closet.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/leak-watch/media/line-2.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Marisol finished that floor at midnight.",
        "perform": "pencil on the glass of tile six",
-       "file": null,
+       "file": "/night-shift/leak-watch/media/line-3.mp3",
        "dur": 3.6
       },
       {
@@ -14769,13 +14917,13 @@ window.ILTV_STORIES = {
        "text": "Old pipe.",
        "sfx": "clock-tick",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/leak-watch/media/line-4.mp3",
        "dur": 1.3
       },
       {
        "speaker": "narrator",
        "text": "The stain has not stopped.",
-       "file": null,
+       "file": "/night-shift/leak-watch/media/line-5.mp3",
        "dur": 2
       }
      ],
@@ -14836,34 +14984,34 @@ window.ILTV_STORIES = {
        "text": "Ay! Dios mío! I'm there. I'm there! Don't hang up, mi amor!",
        "sfx": "walkie-squelch",
        "perform": "on the walkie, running",
-       "file": null,
+       "file": "/night-shift/leak-marisol/media/line-1.mp3",
        "dur": 5
       },
       {
        "speaker": "marisol",
        "text": "Somebody left the hose on in the sink. A hose! Not my girl. Not my girl, never.",
        "perform": "out of breath, then a wet slap",
-       "file": null,
+       "file": "/night-shift/leak-marisol/media/line-2.mp3",
        "dur": 7.8
       },
       {
        "speaker": "marisol",
        "text": "Off. It's off. It's a lake. It's a little lake. Okay.",
        "perform": "laughing, furious",
-       "file": null,
+       "file": "/night-shift/leak-marisol/media/line-3.mp3",
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Mm. A hose.",
        "perform": "to you, dry",
-       "file": null,
+       "file": "/night-shift/leak-marisol/media/line-4.mp3",
        "dur": 3
       },
       {
        "speaker": "narrator",
        "text": "On tile six the stain stops growing. You watch it for a full minute to make sure, because Dolores taught you to watch things until they are boring.",
-       "file": null,
+       "file": "/night-shift/leak-marisol/media/line-5.mp3",
        "dur": 9.4
       }
      ],
@@ -14924,7 +15072,7 @@ window.ILTV_STORIES = {
        "text": "The night line. Four rings. A television somewhere behind Mr. Okafor, turned low.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/leak-okafor/media/line-1.mp3",
        "dur": 6.7
       },
       {
@@ -14932,14 +15080,14 @@ window.ILTV_STORIES = {
        "text": "So. Water where? Is it near anything electrical?",
        "perform": "awake already, flat",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/leak-okafor/media/line-2.mp3",
        "dur": 3.7
       },
       {
        "speaker": "okafor",
        "text": "The engineer on call will come at six. Put the time you saw it in the log. And tell Ms. Quintero to stop mopping.",
        "perform": "a pen clicking",
-       "file": null,
+       "file": "/night-shift/leak-okafor/media/line-3.mp3",
        "dur": 7.5
       },
       {
@@ -14947,13 +15095,13 @@ window.ILTV_STORIES = {
        "text": "He'd have said that for a puddle. Mm. It's a lake.",
        "perform": "to the wall, dry",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/leak-okafor/media/line-4.mp3",
        "dur": 4.1
       },
       {
        "speaker": "narrator",
        "text": "The line clicks. Somewhere a television goes off.",
-       "file": null,
+       "file": "/night-shift/leak-okafor/media/line-5.mp3",
        "dur": 3.8
       }
      ],
@@ -15017,7 +15165,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Not alone. Nobody goes down alone.",
        "perform": "fast, before you finish standing",
-       "file": null,
+       "file": "/night-shift/leak-go/media/line-1.mp3",
        "dur": 2.5
       },
       {
@@ -15026,33 +15174,33 @@ window.ILTV_STORIES = {
        "sfx": "radio-squelch",
        "perform": "a breath, the radio pressed into your hand",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/leak-go/media/line-2.mp3",
        "dur": 5
       },
       {
        "speaker": "narrator",
        "text": "Forty-four is cold and bright and smells of wet carpet. Marisol is at the closet door with her sleeves up, with a mop.",
        "place": "corridor",
-       "file": null,
+       "file": "/night-shift/leak-go/media/line-3.mp3",
        "dur": 8.9
       },
       {
        "speaker": "marisol",
        "text": "Look, look. A hose. In the sink. You see it? You see?",
        "perform": "delighted and furious",
-       "file": null,
+       "file": "/night-shift/leak-go/media/line-4.mp3",
        "dur": 4.8
       },
       {
        "speaker": "narrator",
        "text": "She shows you the valve. You turn it together, and the sound in the wall stops.",
-       "file": null,
+       "file": "/night-shift/leak-go/media/line-5.mp3",
        "dur": 5.3
       },
       {
        "speaker": "narrator",
        "text": "In the elevator back down, you press thirty-one and then remember it isn't yours. You press one. Marisol is still talking. You nod.",
-       "file": null,
+       "file": "/night-shift/leak-go/media/line-6.mp3",
        "dur": 9.8
       }
      ],
@@ -15108,33 +15256,33 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Hose. Sink. Off. That's a log.",
        "perform": "reading, nodding",
-       "file": null,
+       "file": "/night-shift/leak-quiet-f/media/line-1.mp3",
        "dur": 4
       },
       {
        "speaker": "narrator",
        "text": "Quarter to three. The wall is quiet again. Dolores holds her cup with both hands and does not drink from it.",
-       "file": null,
+       "file": "/night-shift/leak-quiet-f/media/line-2.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
        "perform": "to the cup",
-       "file": null,
+       "file": "/night-shift/leak-quiet-f/media/line-3.mp3",
        "dur": 5.6
       },
       {
        "speaker": "narrator",
        "text": "It is not in the binder. You have read the binder.",
-       "file": null,
+       "file": "/night-shift/leak-quiet-f/media/line-4.mp3",
        "dur": 3.3
       },
       {
        "speaker": "narrator",
        "text": "On tile six the carpet is drying, a dark shape and then a shadow.",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/leak-quiet-f/media/line-5.mp3",
        "dur": 5.5
       }
      ],
@@ -15199,33 +15347,33 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Careless cleaner. Marisol's crew is never careless. They're loud. Write the hose.",
        "perform": "reading, dry",
-       "file": null,
+       "file": "/night-shift/leak-quiet-o/media/line-1.mp3",
        "dur": 6.9
       },
       {
        "speaker": "narrator",
        "text": "Quarter to three. The wall is quiet again. Dolores holds her cup with both hands and does not drink from it.",
-       "file": null,
+       "file": "/night-shift/leak-quiet-o/media/line-2.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
        "perform": "to the cup",
-       "file": null,
+       "file": "/night-shift/leak-quiet-o/media/line-3.mp3",
        "dur": 5.6
       },
       {
        "speaker": "narrator",
        "text": "It is not in the binder. You have read the binder.",
-       "file": null,
+       "file": "/night-shift/leak-quiet-o/media/line-4.mp3",
        "dur": 3.3
       },
       {
        "speaker": "narrator",
        "text": "On tile six the carpet is drying, a dark shape and then a shadow.",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/leak-quiet-o/media/line-5.mp3",
        "dur": 5.5
       }
      ],
@@ -15290,33 +15438,33 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Forty-four's the one he'll ask about. The water's gone. The carpet isn't.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/leak-quiet-m/media/line-1.mp3",
        "dur": 5.1
       },
       {
        "speaker": "narrator",
        "text": "Quarter to three. The wall is quiet again. Dolores holds her cup with both hands and does not drink from it.",
-       "file": null,
+       "file": "/night-shift/leak-quiet-m/media/line-2.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Engineering's on call for a reason. Nobody goes down there alone. Nobody.",
        "perform": "to the cup",
-       "file": null,
+       "file": "/night-shift/leak-quiet-m/media/line-3.mp3",
        "dur": 5.6
       },
       {
        "speaker": "narrator",
        "text": "It is not in the binder. You have read the binder.",
-       "file": null,
+       "file": "/night-shift/leak-quiet-m/media/line-4.mp3",
        "dur": 3.3
       },
       {
        "speaker": "narrator",
        "text": "On tile six the carpet is drying, a dark shape and then a shadow.",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/leak-quiet-m/media/line-5.mp3",
        "dur": 5.5
       }
      ],
@@ -15380,21 +15528,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "She does not look up. The cup is still full.",
-       "file": null,
+       "file": "/night-shift/four-hours/media/line-1.mp3",
        "dur": 3.3
       },
       {
        "speaker": "dee",
        "text": "Four hours.",
        "perform": "to the wall",
-       "file": null,
+       "file": "/night-shift/four-hours/media/line-2.mp3",
        "dur": 1.7
       },
       {
        "speaker": "narrator",
        "text": "She says nothing else for a while. The clock ticks. Two minutes ahead of everything. On tile six the stain is a dark shape on a dry floor, and then a dry floor.",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/four-hours/media/line-3.mp3",
        "dur": 12.6
       },
       {
@@ -15402,13 +15550,13 @@ window.ILTV_STORIES = {
        "text": "Clock's fast. Leave it.",
        "sfx": "clock-tick",
        "perform": "flat, the pencil moving",
-       "file": null,
+       "file": "/night-shift/four-hours/media/line-4.mp3",
        "dur": 2.1
       },
       {
        "speaker": "narrator",
        "text": "You do not ask whose. She does not say.",
-       "file": null,
+       "file": "/night-shift/four-hours/media/line-5.mp3",
        "dur": 3.1
       }
      ],
@@ -15442,7 +15590,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Don't.",
        "perform": "one word, flat as a door",
-       "file": null,
+       "file": "/night-shift/dee-shut/media/line-1.mp3",
        "dur": 0.9
       },
       {
@@ -15450,13 +15598,13 @@ window.ILTV_STORIES = {
        "text": "Mm. Coffee.",
        "perform": "getting up, the cup in her hand, away from you",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/dee-shut/media/line-2.mp3",
        "dur": 7
       },
       {
        "speaker": "narrator",
        "text": "She stands at the machine with her back to the room for a long time. It makes its sound and nothing comes out.",
-       "file": null,
+       "file": "/night-shift/dee-shut/media/line-3.mp3",
        "dur": 7.3
       }
      ],
@@ -15496,14 +15644,14 @@ window.ILTV_STORIES = {
          "at": 0.26
         }
        ],
-       "file": null,
+       "file": "/night-shift/three-oclock/media/line-1.mp3",
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "Three o'clock. Mm. Nothing happens.",
        "perform": "at the door, flat",
-       "file": null,
+       "file": "/night-shift/three-oclock/media/line-2.mp3",
        "dur": 3.8
       },
       {
@@ -15511,14 +15659,14 @@ window.ILTV_STORIES = {
        "text": "Roof door. Three. Alone. Stay on the wall.",
        "sfx": "keys",
        "perform": "at the door, the keys in her hand",
-       "file": null,
+       "file": "/night-shift/three-oclock/media/line-3.mp3",
        "dur": 4.5
       },
       {
        "speaker": "dee",
        "text": "Radio check at quarter past. Answer.",
        "perform": "the door half open",
-       "file": null,
+       "file": "/night-shift/three-oclock/media/line-4.mp3",
        "dur": 3.1
       },
       {
@@ -15531,13 +15679,13 @@ window.ILTV_STORIES = {
          "at": 0.14
         }
        ],
-       "file": null,
+       "file": "/night-shift/three-oclock/media/line-5.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "The room is very quiet without her. The wall is yours.",
-       "file": null,
+       "file": "/night-shift/three-oclock/media/line-6.mp3",
        "dur": 4.4
       }
      ],
@@ -15582,14 +15730,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Wall.",
        "perform": "a quiet, hard no, the door held open",
-       "file": null,
+       "file": "/night-shift/three-no/media/line-1.mp3",
        "dur": 2.7
       },
       {
        "speaker": "dee",
        "text": "I do that one alone. Always have. Mm.",
        "perform": "the shortest apology there is",
-       "file": null,
+       "file": "/night-shift/three-no/media/line-2.mp3",
        "dur": 3.5
       },
       {
@@ -15602,13 +15750,13 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/three-no/media/line-3.mp3",
        "dur": 5
       },
       {
        "speaker": "narrator",
        "text": "The room is very quiet without her. The wall is yours.",
-       "file": null,
+       "file": "/night-shift/three-no/media/line-4.mp3",
        "dur": 4.4
       }
      ],
@@ -15650,33 +15798,33 @@ window.ILTV_STORIES = {
        "text": "At 03:02 the call light comes on over tile five. Car three has stopped between thirty and thirty-one. The intercom on the wall hisses, then a voice.",
        "sfx": "intercom",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/dev-stuck/media/line-1.mp3",
        "dur": 10.9
       },
       {
        "speaker": "dev",
        "text": "Hi, sorry, hi, I think the elevator, it, it stopped? Sorry.",
        "perform": "nasal, rushed, apologizing",
-       "file": null,
+       "file": "/night-shift/dev-stuck/media/line-2.mp3",
        "dur": 5.1
       },
       {
        "speaker": "dev",
        "text": "No, no, it's fine. It's fine. It's a little close in here.",
        "perform": "fast, too bright",
-       "file": null,
+       "file": "/night-shift/dev-stuck/media/line-3.mp3",
        "dur": 3.5
       },
       {
        "speaker": "narrator",
        "text": "Tile five shows four cars and a plant. Three of the cars are where they should be. The fourth is a lit number between two floors, and under the number a thin line of light at the seam of the doors.",
-       "file": null,
+       "file": "/night-shift/dev-stuck/media/line-4.mp3",
        "dur": 13.1
       },
       {
        "speaker": "narrator",
        "text": "Dolores is on the stairs, somewhere above floor ten. The radio on the shelf is quiet. The post is you.",
-       "file": null,
+       "file": "/night-shift/dev-stuck/media/line-5.mp3",
        "dur": 7.9
       }
      ],
@@ -15751,33 +15899,33 @@ window.ILTV_STORIES = {
        "text": "At 03:02 the call light comes on over tile five. Car three has stopped between thirty and thirty-one. The intercom on the wall hisses, then a voice.",
        "sfx": "intercom",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/dev-stuck-met/media/line-1.mp3",
        "dur": 10.9
       },
       {
        "speaker": "dev",
        "text": "Hi, it's Dev. Anand. From the, the landing? Sorry. Not the door. The elevator. It stopped.",
        "perform": "nasal, rushed, mortified",
-       "file": null,
+       "file": "/night-shift/dev-stuck-met/media/line-2.mp3",
        "dur": 7.3
       },
       {
        "speaker": "dev",
        "text": "No, no, it's fine. It's fine. It's a little close in here.",
        "perform": "fast, too bright",
-       "file": null,
+       "file": "/night-shift/dev-stuck-met/media/line-3.mp3",
        "dur": 3.5
       },
       {
        "speaker": "narrator",
        "text": "Tile five shows four cars and a plant. Three of the cars are where they should be. The fourth is a lit number between two floors, and under the number a thin line of light at the seam of the doors.",
-       "file": null,
+       "file": "/night-shift/dev-stuck-met/media/line-4.mp3",
        "dur": 13.1
       },
       {
        "speaker": "narrator",
        "text": "Dolores is on the stairs, somewhere above floor ten. The radio on the shelf is quiet. The post is you.",
-       "file": null,
+       "file": "/night-shift/dev-stuck-met/media/line-5.mp3",
        "dur": 7.9
       }
      ],
@@ -15851,13 +15999,13 @@ window.ILTV_STORIES = {
        "speaker": "dev",
        "text": "I have a closing at nine. Sorry. That's not your problem.",
        "perform": "over the intercom, tinny, rushing",
-       "file": null,
+       "file": "/night-shift/dev-talk/media/line-1.mp3",
        "dur": 3.3
       },
       {
        "speaker": "narrator",
        "text": "You ask him to sit on the floor of the car. You hear him do it. You ask what the closing is, and he tells you for two minutes without a breath: a lease, an insurer, a signature page.",
-       "file": null,
+       "file": "/night-shift/dev-talk/media/line-2.mp3",
        "dur": 11.8
       },
       {
@@ -15865,26 +16013,26 @@ window.ILTV_STORIES = {
        "text": "Radio check.",
        "sfx": "radio-squelch",
        "perform": "over the radio, thick with echo",
-       "file": null,
+       "file": "/night-shift/dev-talk/media/line-3.mp3",
        "dur": 1.4
       },
       {
        "speaker": "dev",
        "text": "It's — is it — it's getting a little —",
        "perform": "over the intercom, quieter, breaking off",
-       "file": null,
+       "file": "/night-shift/dev-talk/media/line-4.mp3",
        "dur": 2.7
       },
       {
        "speaker": "narrator",
        "text": "His breath is on the line.",
-       "file": null,
+       "file": "/night-shift/dev-talk/media/line-5.mp3",
        "dur": 2
       },
       {
        "speaker": "narrator",
        "text": "The intercom crackles. The picture on tile five does not change. It is a lit number between two floors.",
-       "file": null,
+       "file": "/night-shift/dev-talk/media/line-6.mp3",
        "dur": 7.5
       }
      ],
@@ -15937,41 +16085,41 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You key the radio with one hand and hold the intercom with the other.",
        "sfx": "radio-squelch",
-       "file": null,
+       "file": "/night-shift/dev-ok/media/line-1.mp3",
        "dur": 3.9
       },
       {
        "speaker": "dee",
        "text": "Mm. Go. Tell him the company's twenty minutes. Tell him he can stand up or sit down.",
        "perform": "over the radio, no questions, thick, then plain",
-       "file": null,
+       "file": "/night-shift/dev-ok/media/line-2.mp3",
        "dur": 7.3
       },
       {
        "speaker": "dev",
        "text": "Okay. Okay. Sorry. You don't have to — okay.",
        "perform": "over the intercom, steadier",
-       "file": null,
+       "file": "/night-shift/dev-ok/media/line-3.mp3",
        "dur": 4.1
       },
       {
        "speaker": "narrator",
        "text": "You tell him he is not a problem. You tell him the company is coming. You tell him what the wall looks like from here: a plant, four cars, a light on his. He laughs once, like a man surfacing.",
-       "file": null,
+       "file": "/night-shift/dev-ok/media/line-4.mp3",
        "dur": 13.8
       },
       {
        "speaker": "dee",
        "text": "Roof. Cold.",
        "perform": "over the radio, thick, then plain, not an explanation",
-       "file": null,
+       "file": "/night-shift/dev-ok/media/line-5.mp3",
        "dur": 2.1
       },
       {
        "speaker": "narrator",
        "text": "At 03:24 the car opens at thirty-one. Dev steps out with his bag held to his chest. He does not look at the camera.",
        "sfx": "elevator-chime",
-       "file": null,
+       "file": "/night-shift/dev-ok/media/line-6.mp3",
        "dur": 8.5
       }
      ],
@@ -16033,28 +16181,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The radio calls again. You stay on the intercom. Dev's breath comes through it, then slows.",
-       "file": null,
+       "file": "/night-shift/dev-stay/media/line-1.mp3",
        "dur": 6.6
       },
       {
        "speaker": "dev",
        "text": "It's fine. I'm fine. Thank you. Sorry. Thank you.",
        "perform": "over the intercom, a little steadier",
-       "file": null,
+       "file": "/night-shift/dev-stay/media/line-2.mp3",
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "Post one. Mm.",
        "perform": "over the radio, flat, final, a long click",
-       "file": null,
+       "file": "/night-shift/dev-stay/media/line-3.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "You stay with him. You tell him how long you have been awake. He tells you how long he has. At 03:24 the car opens at thirty-one and he steps out with his bag held to his chest.",
        "sfx": "elevator-chime",
-       "file": null,
+       "file": "/night-shift/dev-stay/media/line-4.mp3",
        "dur": 12.8
       }
      ],
@@ -16118,20 +16266,20 @@ window.ILTV_STORIES = {
        "text": "The contractor's night line puts you on hold with a recorded voice, then a man named Gus who says twenty minutes.",
        "sfx": "phone-ring",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/dev-company/media/line-1.mp3",
        "dur": 7.6
       },
       {
        "speaker": "dev",
        "text": "Twenty? Twenty minutes? Sorry. No. That's fine. That's fine.",
        "perform": "over the intercom, rushing",
-       "file": null,
+       "file": "/night-shift/dev-company/media/line-2.mp3",
        "dur": 4
       },
       {
        "speaker": "narrator",
        "text": "You tell him to sit on the floor of the car. You tell him you will stay on the line. You do.",
-       "file": null,
+       "file": "/night-shift/dev-company/media/line-3.mp3",
        "dur": 5.9
       },
       {
@@ -16139,20 +16287,20 @@ window.ILTV_STORIES = {
        "text": "Radio check.",
        "sfx": "radio-squelch",
        "perform": "over the radio, thick, an echo behind it",
-       "file": null,
+       "file": "/night-shift/dev-company/media/line-4.mp3",
        "dur": 2.4
       },
       {
        "speaker": "narrator",
        "text": "You key the radio. \"Post one. Loud and clear.\" Dolores says Mm. That is all she says.",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/dev-company/media/line-5.mp3",
        "dur": 7.6
       },
       {
        "speaker": "narrator",
        "text": "Gus calls back at 03:17 to say he is in the lobby, with a bar and a key you have never seen. At 03:24 the car opens at thirty-one and a man steps out with his bag held against his chest.",
-       "file": null,
+       "file": "/night-shift/dev-company/media/line-6.mp3",
        "dur": 13.4
       }
      ],
@@ -16215,28 +16363,28 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The dispatcher asks if anyone is hurt. No. If anyone is in distress. You say a little close in there. The dispatcher says the fire department is notified.",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/dev-911/media/line-1.mp3",
        "dur": 10.7
       },
       {
        "speaker": "dev",
        "text": "Did you — did you call the fire department? Sorry. I'm fine. Really.",
        "perform": "over the intercom, horrified",
-       "file": null,
+       "file": "/night-shift/dev-911/media/line-2.mp3",
        "dur": 5.6
       },
       {
        "speaker": "narrator",
        "text": "At 03:15 two firefighters come into the lobby with a bar and a bag. At 03:22 the car opens at thirty-one and Dev walks out with his laptop bag held to his chest.",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/dev-911/media/line-3.mp3",
        "dur": 12.3
       },
       {
        "speaker": "dee",
        "text": "Who called them? Mm. Never mind.",
        "perform": "over the radio, quiet, thick, a long breath",
-       "file": null,
+       "file": "/night-shift/dev-911/media/line-4.mp3",
        "dur": 4.2
       }
      ],
@@ -16300,7 +16448,7 @@ window.ILTV_STORIES = {
        "text": "On the stairs. Coming. Keep him on the line.",
        "sfx": "footsteps-stairs",
        "perform": "over the radio, hoarse, short",
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-1.mp3",
        "dur": 3.4
       },
       {
@@ -16312,7 +16460,7 @@ window.ILTV_STORIES = {
          "at": 0.16
         }
        ],
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-2.mp3",
        "dur": 8.4
       },
       {
@@ -16320,40 +16468,40 @@ window.ILTV_STORIES = {
        "text": "Anand. Dolores. Sit on the floor. It's a small thing. A box that stopped.",
        "perform": "even, low, the voice of someone who has done this before",
        "act": "dee:lean",
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-3.mp3",
        "dur": 6.3
       },
       {
        "speaker": "dev",
        "text": "Okay. Okay. Sorry. Thank you.",
        "perform": "over the intercom, steadier at once",
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-4.mp3",
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "The company's twenty minutes. I'll stay till there's a man in the lobby. You talk.",
        "perform": "to him, not you",
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-5.mp3",
        "dur": 5.2
       },
       {
        "speaker": "narrator",
        "text": "She tells him about the building: how old the cables are, how many times she has heard a car stop and start again.",
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-6.mp3",
        "dur": 7.3
       },
       {
        "speaker": "narrator",
        "text": "At 03:17 the contractor's man crosses the lobby with a bar. At 03:24 the doors open at thirty-one. Dev steps out. Dolores watches him on tile five until the plant hides him.",
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-7.mp3",
        "dur": 13.7
       },
       {
        "speaker": "dee",
        "text": "I didn't finish. Ten minutes. Radio, Officer.",
        "perform": "putting on her coat, to you, flat, at the door, hoarse",
-       "file": null,
+       "file": "/night-shift/dev-dee/media/line-8.mp3",
        "dur": 8.7
       }
      ],
@@ -16412,21 +16560,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Three twenty-eight. The lobby is a floor of lit marble with nothing on it, and the revolving door turns for no reason. Then it turns for one.",
-       "file": null,
+       "file": "/night-shift/coat-lobby/media/line-1.mp3",
        "dur": 9.9
       },
       {
        "speaker": "narrator",
        "text": "On tile one a man in a long dark coat comes through with a phone at his ear. He crosses the lobby to the elevators. At the control-room door he is already walking again.",
        "act": "pierce:enter:left",
-       "file": null,
+       "file": "/night-shift/coat-lobby/media/line-2.mp3",
        "dur": 11.3
       },
       {
        "speaker": "pierce",
        "text": "Evening. Don't get up.",
        "perform": "to the guard, not stopping, mild",
-       "file": null,
+       "file": "/night-shift/coat-lobby/media/line-3.mp3",
        "dur": 1.6
       }
      ],
@@ -16474,14 +16622,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "A car chimes. The doors close on the coat. On tile seven the glass doors of fifty-eight open before the car has finished rising, and the man crosses the reception with his phone at his ear.",
-       "file": null,
+       "file": "/night-shift/pierce-waved/media/line-1.mp3",
        "dur": 12.1
       },
       {
        "speaker": "narrator",
        "text": "He does not sit. He does not turn on a light. He stands at the glass for most of a minute, looking at the dark, the phone down at his side.",
        "sfx": "elevator-chime",
-       "file": null,
+       "file": "/night-shift/pierce-waved/media/line-2.mp3",
        "dur": 9.4
       }
      ],
@@ -16548,21 +16696,21 @@ window.ILTV_STORIES = {
          "at": 0.5
         }
        ],
-       "file": null,
+       "file": "/night-shift/pierce-signin/media/line-1.mp3",
        "dur": 9.4
       },
       {
        "speaker": "pierce",
        "text": "Fair. Fifty-eight. I own it. Put that in your log.",
        "perform": "a pause, an actual smile",
-       "file": null,
+       "file": "/night-shift/pierce-signin/media/line-2.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "He signs the sheet in a hand that has signed everything. P. Hawkes. 58. 0330. In. He does not write the Out column.",
        "sfx": "pencil",
-       "file": null,
+       "file": "/night-shift/pierce-signin/media/line-3.mp3",
        "dur": 10.9
       }
      ],
@@ -16618,28 +16766,28 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Twenty-six years. Same coat, same hour. He's never once looked at a camera.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/chairman-talk/media/line-1.mp3",
        "dur": 6.3
       },
       {
        "speaker": "dee",
        "text": "He walks it every night he's in town. Never signs. Never stops.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/chairman-talk/media/line-2.mp3",
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Mm. Don't ask. Write what he does.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/chairman-talk/media/line-3.mp3",
        "dur": 3.2
       },
       {
        "speaker": "narrator",
        "text": "03:41. Dolores has the cup. You have the wall. On tile nine the picture jumps once, a thin tear across it. Then it does not move at all.",
        "feed": "c9",
-       "file": null,
+       "file": "/night-shift/chairman-talk/media/line-4.mp3",
        "dur": 12.1
       }
      ],
@@ -16699,7 +16847,7 @@ window.ILTV_STORIES = {
        "text": "03:34. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
        "sfx": "door-heavy",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/dee-back-waved/media/line-1.mp3",
        "dur": 7.1
       },
       {
@@ -16707,21 +16855,21 @@ window.ILTV_STORIES = {
        "text": "Four.",
        "perform": "to the charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/dee-back-waved/media/line-2.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "He walks past everyone.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/dee-back-waved/media/line-3.mp3",
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Mm. Write it the way it was.",
        "perform": "a sip",
-       "file": null,
+       "file": "/night-shift/dee-back-waved/media/line-4.mp3",
        "dur": 4
       },
       {
@@ -16729,7 +16877,7 @@ window.ILTV_STORIES = {
        "text": "03:41. Dolores has the cup. You have the wall. On tile nine the picture jumps once, a thin tear across it. Then it does not move at all.",
        "act": "dee:sit",
        "feed": "c9",
-       "file": null,
+       "file": "/night-shift/dee-back-waved/media/line-5.mp3",
        "dur": 12.1
       }
      ],
@@ -16800,7 +16948,7 @@ window.ILTV_STORIES = {
        "text": "03:34. Dolores is back, with the cold on her coat. She holds her cup with both hands.",
        "sfx": "door-heavy",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/dee-back-signed/media/line-1.mp3",
        "dur": 7.1
       },
       {
@@ -16808,21 +16956,21 @@ window.ILTV_STORIES = {
        "text": "Four.",
        "perform": "to the charger",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/dee-back-signed/media/line-2.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "You made the Chairman sign.",
        "perform": "dry, the corner of her mouth moving",
-       "file": null,
+       "file": "/night-shift/dee-back-signed/media/line-3.mp3",
        "dur": 2.7
       },
       {
        "speaker": "dee",
        "text": "He wrote the time. He never writes the time. I'd have waved.",
        "perform": "a sip, flat",
-       "file": null,
+       "file": "/night-shift/dee-back-signed/media/line-4.mp3",
        "dur": 4.6
       },
       {
@@ -16830,7 +16978,7 @@ window.ILTV_STORIES = {
        "text": "03:41. Dolores has the cup. You have the wall. On tile nine the picture jumps once, a thin tear across it. Then it does not move at all.",
        "act": "dee:sit",
        "feed": "c9",
-       "file": null,
+       "file": "/night-shift/dee-back-signed/media/line-5.mp3",
        "dur": 12.1
       }
      ],
@@ -16901,28 +17049,28 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Say it.",
        "perform": "sharp, awake",
-       "file": null,
+       "file": "/night-shift/cam9-seen/media/line-1.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "Camera, time, what it did. Not \"something's wrong.\"",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/cam9-seen/media/line-2.mp3",
        "dur": 5.1
       },
       {
        "speaker": "dee",
        "text": "Nine is on the same switch as the panel. Whatever it did, the panel might too. Say it first. Then we'll see.",
        "perform": "low, looking toward the shelf",
-       "file": null,
+       "file": "/night-shift/cam9-seen/media/line-3.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Stopped. Not why. Write it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/cam9-seen/media/line-4.mp3",
        "dur": 3.4
       }
      ],
@@ -16995,27 +17143,27 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Dolores has her eyes on nine. She has not said a word.",
-       "file": null,
+       "file": "/night-shift/cam9-missed/media/line-1.mp3",
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "Nine hasn't moved in fourteen minutes.",
        "perform": "flat, quietly",
-       "file": null,
+       "file": "/night-shift/cam9-missed/media/line-2.mp3",
        "dur": 2.8
       },
       {
        "speaker": "dee",
        "text": "You were looking right at it. Mm. Say it now. Exactly.",
        "perform": "a breath, the cup down",
-       "file": null,
+       "file": "/night-shift/cam9-missed/media/line-3.mp3",
        "dur": 6.2
       },
       {
        "speaker": "narrator",
        "text": "The picture on tile nine is the same cabinet, the same light, the same tear across the same place.",
-       "file": null,
+       "file": "/night-shift/cam9-missed/media/line-4.mp3",
        "dur": 6.9
       }
      ],
@@ -17090,7 +17238,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Camera, time, what it did. There. That's the sentence.",
        "perform": "reading, even",
-       "file": null,
+       "file": "/night-shift/trouble-signal-f/media/line-1.mp3",
        "dur": 5.1
       },
       {
@@ -17101,20 +17249,20 @@ window.ILTV_STORIES = {
         "room:buzz",
         "you:lean"
        ],
-       "file": null,
+       "file": "/night-shift/trouble-signal-f/media/line-2.mp3",
        "dur": 14.1
       },
       {
        "speaker": "narrator",
        "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-f/media/line-3.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
        "perform": "flat, not turning, tired",
-       "file": null,
+       "file": "/night-shift/trouble-signal-f/media/line-4.mp3",
        "dur": 7.9
       },
       {
@@ -17122,13 +17270,13 @@ window.ILTV_STORIES = {
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
        "perform": "to the shelf",
        "act": "dee:point:panel",
-       "file": null,
+       "file": "/night-shift/trouble-signal-f/media/line-5.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-f/media/line-6.mp3",
        "dur": 5.4
       }
      ],
@@ -17204,7 +17352,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Tampering. Who tampered? Mm. Write that it stopped.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/trouble-signal-o/media/line-1.mp3",
        "dur": 4.5
       },
       {
@@ -17215,20 +17363,20 @@ window.ILTV_STORIES = {
         "room:buzz",
         "you:lean"
        ],
-       "file": null,
+       "file": "/night-shift/trouble-signal-o/media/line-2.mp3",
        "dur": 14.1
       },
       {
        "speaker": "narrator",
        "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-o/media/line-3.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
        "perform": "flat, not turning, tired",
-       "file": null,
+       "file": "/night-shift/trouble-signal-o/media/line-4.mp3",
        "dur": 7.9
       },
       {
@@ -17236,13 +17384,13 @@ window.ILTV_STORIES = {
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
        "perform": "to the shelf",
        "act": "dee:point:panel",
-       "file": null,
+       "file": "/night-shift/trouble-signal-o/media/line-5.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-o/media/line-6.mp3",
        "dur": 5.4
       }
      ],
@@ -17318,7 +17466,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Nine stopped. If you don't write it, nine didn't stop. Mm. It stopped.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/trouble-signal-m/media/line-1.mp3",
        "dur": 6.1
       },
       {
@@ -17329,20 +17477,20 @@ window.ILTV_STORIES = {
         "room:buzz",
         "you:lean"
        ],
-       "file": null,
+       "file": "/night-shift/trouble-signal-m/media/line-2.mp3",
        "dur": 14.1
       },
       {
        "speaker": "narrator",
        "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-m/media/line-3.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
        "perform": "flat, not turning, tired",
-       "file": null,
+       "file": "/night-shift/trouble-signal-m/media/line-4.mp3",
        "dur": 7.9
       },
       {
@@ -17350,13 +17498,13 @@ window.ILTV_STORIES = {
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
        "perform": "to the shelf",
        "act": "dee:point:panel",
-       "file": null,
+       "file": "/night-shift/trouble-signal-m/media/line-5.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-m/media/line-6.mp3",
        "dur": 5.4
       }
      ],
@@ -17432,14 +17580,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Checked in person. You went to floor two?",
        "perform": "reading, very flat",
-       "file": null,
+       "file": "/night-shift/trouble-signal-l/media/line-1.mp3",
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "Nobody left this room. Officer.",
        "perform": "quiet, formal",
-       "file": null,
+       "file": "/night-shift/trouble-signal-l/media/line-2.mp3",
        "dur": 3
       },
       {
@@ -17450,20 +17598,20 @@ window.ILTV_STORIES = {
         "room:buzz",
         "you:lean"
        ],
-       "file": null,
+       "file": "/night-shift/trouble-signal-l/media/line-3.mp3",
        "dur": 14.1
       },
       {
        "speaker": "narrator",
        "text": "On tile nine, frozen, the repeater is still green. In this room it is amber.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-l/media/line-4.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "That's the thirty-one detector. It does that. Press the silence. It stops. It always stops.",
        "perform": "flat, not turning, tired",
-       "file": null,
+       "file": "/night-shift/trouble-signal-l/media/line-5.mp3",
        "dur": 7.9
       },
       {
@@ -17471,13 +17619,13 @@ window.ILTV_STORIES = {
        "text": "Nine hundred times it's done that. Mm. Press the silence.",
        "perform": "to the shelf",
        "act": "dee:point:panel",
-       "file": null,
+       "file": "/night-shift/trouble-signal-l/media/line-6.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "The binder is on the shelf, between the extinguisher and her elbow. Page eleven.",
-       "file": null,
+       "file": "/night-shift/trouble-signal-l/media/line-7.mp3",
        "dur": 5.4
       }
      ],
@@ -17548,21 +17696,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You press the button. The buzzer stops. The amber light stays where it is, steady, in the corner of your eye.",
        "act": "you:press:panel",
-       "file": null,
+       "file": "/night-shift/trouble-silenced/media/line-1.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "There. See.",
        "perform": "a nod, almost kind, to the wall",
-       "file": null,
+       "file": "/night-shift/trouble-silenced/media/line-2.mp3",
        "dur": 3.1
       },
       {
        "speaker": "narrator",
        "text": "Nobody says anything for a while. Dolores hums, badly, under her breath, and stops when she hears herself.",
        "sfx": "clock-tick",
-       "file": null,
+       "file": "/night-shift/trouble-silenced/media/line-3.mp3",
        "dur": 8.5
       }
      ],
@@ -17594,7 +17742,7 @@ window.ILTV_STORIES = {
        "text": "The night line rings once. Mr. Okafor sounds like a man already dressed.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/okafor-trouble/media/line-1.mp3",
        "dur": 5.3
       },
       {
@@ -17602,14 +17750,14 @@ window.ILTV_STORIES = {
        "text": "So. Did you silence it? Good. Do not touch it. Read me the display.",
        "perform": "awake, even",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/okafor-trouble/media/line-2.mp3",
        "dur": 5.6
       },
       {
        "speaker": "okafor",
        "text": "That is a fire panel. It belongs to Ms. Adler. Call her. I will call the building manager at six.",
        "perform": "a pen clicking",
-       "file": null,
+       "file": "/night-shift/okafor-trouble/media/line-3.mp3",
        "dur": 7.6
       },
       {
@@ -17617,7 +17765,7 @@ window.ILTV_STORIES = {
        "text": "Mm.",
        "perform": "low, to the wall, a woman outranked by a binder",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/okafor-trouble/media/line-4.mp3",
        "dur": 1.9
       }
      ],
@@ -17649,7 +17797,7 @@ window.ILTV_STORIES = {
        "text": "Ms. Adler picks up on the second ring, as if she has been waiting by the phone.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/adler-call/media/line-1.mp3",
        "dur": 4.6
       },
       {
@@ -17657,14 +17805,14 @@ window.ILTV_STORIES = {
        "text": "Read me the display. Exactly. Do not paraphrase.",
        "perform": "formal, a pen already moving",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/adler-call/media/line-2.mp3",
        "dur": 4.4
       },
       {
        "speaker": "adler",
        "text": "Word for word, please. Take your time.",
        "perform": "crisp",
-       "file": null,
+       "file": "/night-shift/adler-call/media/line-3.mp3",
        "dur": 2.7
       }
      ],
@@ -17710,21 +17858,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You read it. TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT. There is a pause while a pen finishes.",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/adler-exact/media/line-1.mp3",
        "dur": 8.9
       },
       {
        "speaker": "adler",
        "text": "Thank you. That is the correct answer. Please put it in the log in the same words.",
        "perform": "crisp",
-       "file": null,
+       "file": "/night-shift/adler-exact/media/line-2.mp3",
        "dur": 5.7
       },
       {
        "speaker": "adler",
        "text": "Do not silence it. Do not reset it. I will be at the panel at ten past four.",
        "perform": "formal, one idea at a time",
-       "file": null,
+       "file": "/night-shift/adler-exact/media/line-3.mp3",
        "dur": 6.2
       },
       {
@@ -17732,7 +17880,7 @@ window.ILTV_STORIES = {
        "text": "Helen's good.",
        "perform": "low, to the wall",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/adler-exact/media/line-4.mp3",
        "dur": 1.6
       }
      ],
@@ -17803,20 +17951,20 @@ window.ILTV_STORIES = {
        "text": "That is not what it says. Again. Exactly.",
        "perform": "crisp, no heat in it",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/adler-short/media/line-1.mp3",
        "dur": 4.1
       },
       {
        "speaker": "narrator",
        "text": "You read it again. TROUBLE. ZONE 31. DETECTOR. OPEN CIRCUIT.",
-       "file": null,
+       "file": "/night-shift/adler-short/media/line-2.mp3",
        "dur": 6.4
       },
       {
        "speaker": "adler",
        "text": "Thank you. Do not silence it. Do not reset it. I will be there at ten past four.",
        "perform": "formal",
-       "file": null,
+       "file": "/night-shift/adler-short/media/line-3.mp3",
        "dur": 6.8
       },
       {
@@ -17824,7 +17972,7 @@ window.ILTV_STORIES = {
        "text": "Mm.",
        "perform": "low, almost a laugh",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/adler-short/media/line-4.mp3",
        "dur": 1.9
       }
      ],
@@ -17899,28 +18047,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "She reads your entry on the tablet before she reads the panel.",
-       "file": null,
+       "file": "/night-shift/adler-arrives-f/media/line-1.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
        "act": "adler:enter:right",
-       "file": null,
+       "file": "/night-shift/adler-arrives-f/media/line-2.mp3",
        "dur": 9.8
       },
       {
        "speaker": "adler",
        "text": "Dolores.",
        "perform": "a nod",
-       "file": null,
+       "file": "/night-shift/adler-arrives-f/media/line-3.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
        "perform": "a nod back, the same size",
-       "file": null,
+       "file": "/night-shift/adler-arrives-f/media/line-4.mp3",
        "dur": 1.2
       },
       {
@@ -17928,14 +18076,14 @@ window.ILTV_STORIES = {
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
        "perform": "to you, formal",
        "act": "adler:point:panel",
-       "file": null,
+       "file": "/night-shift/adler-arrives-f/media/line-5.mp3",
        "dur": 6
       },
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
        "perform": "one idea, then the next",
-       "file": null,
+       "file": "/night-shift/adler-arrives-f/media/line-6.mp3",
        "dur": 4.1
       }
      ],
@@ -17968,35 +18116,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "She reads your entry on the tablet before she reads the panel.",
-       "file": null,
+       "file": "/night-shift/adler-arrives-o/media/line-1.mp3",
        "dur": 3.4
       },
       {
        "speaker": "adler",
        "text": "That word is not on the display. Please cross it out and write what the display said.",
        "perform": "formal, a pen stopping",
-       "file": null,
+       "file": "/night-shift/adler-arrives-o/media/line-2.mp3",
        "dur": 5.5
       },
       {
        "speaker": "narrator",
        "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
        "act": "adler:enter:right",
-       "file": null,
+       "file": "/night-shift/adler-arrives-o/media/line-3.mp3",
        "dur": 9.8
       },
       {
        "speaker": "adler",
        "text": "Dolores.",
        "perform": "a nod",
-       "file": null,
+       "file": "/night-shift/adler-arrives-o/media/line-4.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
        "perform": "a nod back, the same size",
-       "file": null,
+       "file": "/night-shift/adler-arrives-o/media/line-5.mp3",
        "dur": 1.2
       },
       {
@@ -18004,14 +18152,14 @@ window.ILTV_STORIES = {
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
        "perform": "to you, formal",
        "act": "adler:point:panel",
-       "file": null,
+       "file": "/night-shift/adler-arrives-o/media/line-6.mp3",
        "dur": 6
       },
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
        "perform": "one idea, then the next",
-       "file": null,
+       "file": "/night-shift/adler-arrives-o/media/line-7.mp3",
        "dur": 4.1
       }
      ],
@@ -18044,35 +18192,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "She looks for your entry on the tablet. There isn't one.",
-       "file": null,
+       "file": "/night-shift/adler-arrives-m/media/line-1.mp3",
        "dur": 3.5
       },
       {
        "speaker": "adler",
        "text": "I will wait. Please write it now, in the same words.",
        "perform": "formal, patient as a stone",
-       "file": null,
+       "file": "/night-shift/adler-arrives-m/media/line-2.mp3",
        "dur": 4
       },
       {
        "speaker": "narrator",
        "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
        "act": "adler:enter:right",
-       "file": null,
+       "file": "/night-shift/adler-arrives-m/media/line-3.mp3",
        "dur": 9.8
       },
       {
        "speaker": "adler",
        "text": "Dolores.",
        "perform": "a nod",
-       "file": null,
+       "file": "/night-shift/adler-arrives-m/media/line-4.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
        "perform": "a nod back, the same size",
-       "file": null,
+       "file": "/night-shift/adler-arrives-m/media/line-5.mp3",
        "dur": 1.2
       },
       {
@@ -18080,14 +18228,14 @@ window.ILTV_STORIES = {
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
        "perform": "to you, formal",
        "act": "adler:point:panel",
-       "file": null,
+       "file": "/night-shift/adler-arrives-m/media/line-6.mp3",
        "dur": 6
       },
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
        "perform": "one idea, then the next",
-       "file": null,
+       "file": "/night-shift/adler-arrives-m/media/line-7.mp3",
        "dur": 4.1
       }
      ],
@@ -18120,35 +18268,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "She reads your entry on the tablet, and then she looks at the panel, and then at the tablet again.",
-       "file": null,
+       "file": "/night-shift/adler-arrives-l/media/line-1.mp3",
        "dur": 6.2
       },
       {
        "speaker": "adler",
        "text": "The panel has not been reset. I am looking at it. Please correct the entry.",
        "perform": "formal, quiet",
-       "file": null,
+       "file": "/night-shift/adler-arrives-l/media/line-2.mp3",
        "dur": 5.1
       },
       {
        "speaker": "narrator",
        "text": "She comes in at 04:11 with her coat buttoned to the neck, and goes to the panel without looking at anyone. She does not touch it. She reads it twice.",
        "act": "adler:enter:right",
-       "file": null,
+       "file": "/night-shift/adler-arrives-l/media/line-3.mp3",
        "dur": 9.8
       },
       {
        "speaker": "adler",
        "text": "Dolores.",
        "perform": "a nod",
-       "file": null,
+       "file": "/night-shift/adler-arrives-l/media/line-4.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "Helen.",
        "perform": "a nod back, the same size",
-       "file": null,
+       "file": "/night-shift/adler-arrives-l/media/line-5.mp3",
        "dur": 1.2
       },
       {
@@ -18156,14 +18304,14 @@ window.ILTV_STORIES = {
        "text": "Detector thirty-one, fourteen. A technician at eight. Initial the log beside mine.",
        "perform": "to you, formal",
        "act": "adler:point:panel",
-       "file": null,
+       "file": "/night-shift/adler-arrives-l/media/line-6.mp3",
        "dur": 6
       },
       {
        "speaker": "adler",
        "text": "The alcove camera has stopped. It is on the same switch.",
        "perform": "one idea, then the next",
-       "file": null,
+       "file": "/night-shift/adler-arrives-l/media/line-7.mp3",
        "dur": 4.1
       }
      ],
@@ -18216,55 +18364,55 @@ window.ILTV_STORIES = {
        "text": "04:25. The dock intercom buzzes. On tile three a white van idles at the half-raised rollup door. A man in a cap stands at the intercom with a box under one arm.",
        "sfx": "intercom",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-1.mp3",
        "dur": 12.3
       },
       {
        "speaker": "courier",
        "text": "Package for fifty-eight.",
        "perform": "flat, tinny, tired",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-2.mp3",
        "dur": 1.6
       },
       {
        "speaker": "courier",
        "text": "It says someone's expecting it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-3.mp3",
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Nobody's expecting anything at four in the morning.",
        "perform": "to the wall, dry",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-4.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "Sign for it. Tag it. It sits on the shelf till seven.",
        "perform": "flat, a woman who has done this a thousand times",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-5.mp3",
        "dur": 3.9
       },
       {
        "speaker": "narrator",
        "text": "On tile three the man shifts the box from one arm to the other. The van's engine runs. He has been up since yesterday too, and it is in the way he stands.",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-6.mp3",
        "dur": 10.6
       },
       {
        "speaker": "dee",
        "text": "Book says no. I've said yes forty times. Mm. Your call.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-7.mp3",
        "dur": 5.6
       },
       {
        "speaker": "dee",
        "text": "Whoever you tell, you write who.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/courier-intercom/media/line-8.mp3",
        "dur": 2.5
       }
      ],
@@ -18336,14 +18484,14 @@ window.ILTV_STORIES = {
        "speaker": "courier",
        "text": "Sender's blank. Says Chairman's office, by five. I don't make the labels, man.",
        "perform": "flat, tinny",
-       "file": null,
+       "file": "/night-shift/courier-who/media/line-1.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Chairman's office isn't on anybody's list at four in the morning.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/courier-who/media/line-2.mp3",
        "dur": 4.1
       }
      ],
@@ -18401,13 +18549,13 @@ window.ILTV_STORIES = {
        "speaker": "courier",
        "text": "I just need a signature, man.",
        "perform": "flat, tired",
-       "file": null,
+       "file": "/night-shift/courier-refused/media/line-1.mp3",
        "dur": 2.2
       },
       {
        "speaker": "narrator",
        "text": "You tell him there is no authorization on the list. You tell him the mailroom opens at seven. He says that is not his problem. He says it is in his log that he came.",
-       "file": null,
+       "file": "/night-shift/courier-refused/media/line-2.mp3",
        "dur": 10.3
       },
       {
@@ -18415,14 +18563,14 @@ window.ILTV_STORIES = {
        "text": "Yeah. Have a night.",
        "sfx": "intercom",
        "perform": "flat, the van door sliding",
-       "file": null,
+       "file": "/night-shift/courier-refused/media/line-3.mp3",
        "dur": 2.9
       },
       {
        "speaker": "dee",
        "text": "Mm-hm. The box will be at the mailroom at seven. It'll be fine.",
        "perform": "low, to the wall",
-       "file": null,
+       "file": "/night-shift/courier-refused/media/line-4.mp3",
        "dur": 4.3
       }
      ],
@@ -18487,7 +18635,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You go out to the dock door and sign on a screen that doesn't record your name. The box is lighter than it looks. You set it on the shelf under the binder.",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/courier-signed/media/line-1.mp3",
        "dur": 9.2
       },
       {
@@ -18496,14 +18644,14 @@ window.ILTV_STORIES = {
        "sfx": "paper",
        "perform": "flat, handing you the paper tag",
        "place": "room",
-       "file": null,
+       "file": "/night-shift/courier-signed/media/line-2.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Seven o'clock. Not before.",
        "perform": "almost kind",
-       "file": null,
+       "file": "/night-shift/courier-signed/media/line-3.mp3",
        "dur": 4.4
       }
      ],
@@ -18561,7 +18709,7 @@ window.ILTV_STORIES = {
        "text": "The night line rings seven times. Mr. Okafor's voice comes in from far away.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/courier-super/media/line-1.mp3",
        "dur": 5.8
       },
       {
@@ -18569,14 +18717,14 @@ window.ILTV_STORIES = {
        "text": "So. Fifty-eight. Whose? Not on the list? Then you do not accept it.",
        "perform": "slow, awake by the second sentence",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/courier-super/media/line-2.mp3",
        "dur": 6.8
       },
       {
        "speaker": "okafor",
        "text": "Log the courier's name if he gives it. The mailroom opens at seven. That's noted.",
        "perform": "a throat cleared, even",
-       "file": null,
+       "file": "/night-shift/courier-super/media/line-3.mp3",
        "dur": 5.9
       },
       {
@@ -18584,7 +18732,7 @@ window.ILTV_STORIES = {
        "text": "That's what the book says.",
        "perform": "to the wall, flat",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/courier-super/media/line-4.mp3",
        "dur": 1.7
       }
      ],
@@ -18640,19 +18788,19 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Box, dock, who, when. Fine.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/hum-0435-f/media/line-1.mp3",
        "dur": 3.8
       },
       {
        "speaker": "narrator",
        "text": "04:35. The panel is quiet and the dock is empty. Dolores is humming. She does not know she is.",
-       "file": null,
+       "file": "/night-shift/hum-0435-f/media/line-2.mp3",
        "dur": 8.6
       },
       {
        "speaker": "narrator",
        "text": "It is an old song, flat on the high notes. She stops when she hears herself, and starts again a bar later.",
-       "file": null,
+       "file": "/night-shift/hum-0435-f/media/line-3.mp3",
        "dur": 7.8
       }
      ],
@@ -18708,19 +18856,19 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Probably expected. By whom? Write the label.",
        "perform": "reading, dry",
-       "file": null,
+       "file": "/night-shift/hum-0435-o/media/line-1.mp3",
        "dur": 4
       },
       {
        "speaker": "narrator",
        "text": "04:35. The panel is quiet and the dock is empty. Dolores is humming. She does not know she is.",
-       "file": null,
+       "file": "/night-shift/hum-0435-o/media/line-2.mp3",
        "dur": 8.6
       },
       {
        "speaker": "narrator",
        "text": "It is an old song, flat on the high notes. She stops when she hears herself, and starts again a bar later.",
-       "file": null,
+       "file": "/night-shift/hum-0435-o/media/line-3.mp3",
        "dur": 7.8
       }
      ],
@@ -18776,19 +18924,19 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "No line. Seven o'clock somebody asks where the box came from. Then you're tired too.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/hum-0435-m/media/line-1.mp3",
        "dur": 6.4
       },
       {
        "speaker": "narrator",
        "text": "04:35. The panel is quiet and the dock is empty. Dolores is humming. She does not know she is.",
-       "file": null,
+       "file": "/night-shift/hum-0435-m/media/line-2.mp3",
        "dur": 8.6
       },
       {
        "speaker": "narrator",
        "text": "It is an old song, flat on the high notes. She stops when she hears herself, and starts again a bar later.",
-       "file": null,
+       "file": "/night-shift/hum-0435-m/media/line-3.mp3",
        "dur": 7.8
       }
      ],
@@ -18848,40 +18996,40 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "That's not the key.",
        "perform": "flat, one eyebrow, mid-bar",
-       "file": null,
+       "file": "/night-shift/hum-along/media/line-1.mp3",
        "dur": 1.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Fine. Go on. Quieter. You'll wake the monitors.",
        "perform": "a beat later, the corner of her mouth moving",
-       "file": null,
+       "file": "/night-shift/hum-along/media/line-2.mp3",
        "dur": 5.4
       },
       {
        "speaker": "narrator",
        "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen.",
-       "file": null,
+       "file": "/night-shift/hum-along/media/line-3.mp3",
        "dur": 13
       },
       {
        "speaker": "narrator",
        "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
-       "file": null,
+       "file": "/night-shift/hum-along/media/line-4.mp3",
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
        "perform": "to the wall, flat, quick",
-       "file": null,
+       "file": "/night-shift/hum-along/media/line-5.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Book says trespass. Book doesn't say fourteen degrees.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/hum-along/media/line-6.mp3",
        "dur": 4.6
       }
      ],
@@ -18951,40 +19099,40 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You keep your eyes on the wall. She hums a verse, and part of another. Then she notices, and her mouth closes.",
-       "file": null,
+       "file": "/night-shift/hum-quiet/media/line-1.mp3",
        "dur": 8.1
       },
       {
        "speaker": "dee",
        "text": "Habit. Mm.",
        "perform": "flat, to the wall",
-       "file": null,
+       "file": "/night-shift/hum-quiet/media/line-2.mp3",
        "dur": 1.9
       },
       {
        "speaker": "narrator",
        "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen.",
-       "file": null,
+       "file": "/night-shift/hum-quiet/media/line-3.mp3",
        "dur": 13
       },
       {
        "speaker": "narrator",
        "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
-       "file": null,
+       "file": "/night-shift/hum-quiet/media/line-4.mp3",
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
        "perform": "to the wall, flat, quick",
-       "file": null,
+       "file": "/night-shift/hum-quiet/media/line-5.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/hum-quiet/media/line-6.mp3",
        "dur": 5.4
       }
      ],
@@ -19055,40 +19203,40 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "No song. A sound I make. When it's quiet.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/hum-ask/media/line-1.mp3",
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "Terrell's got a name for it. Don't ask him.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/hum-ask/media/line-2.mp3",
        "dur": 3.1
       },
       {
        "speaker": "narrator",
        "text": "04:45. On tile two a man is lying along the vestibule ledge in a worn coat, shoes together. The glass is white at the corners. The thermometer on the wall says fourteen.",
-       "file": null,
+       "file": "/night-shift/hum-ask/media/line-3.mp3",
        "dur": 13
       },
       {
        "speaker": "narrator",
        "text": "Someone has been on that ledge on every cold night this winter. The man in the day log, Tuesday, was probably him. You think so. You have not written it down.",
-       "file": null,
+       "file": "/night-shift/hum-ask/media/line-4.mp3",
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Twenty minutes. We let him stay twenty minutes. Then I call.",
        "perform": "to the wall, flat, quick",
-       "file": null,
+       "file": "/night-shift/hum-ask/media/line-5.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "Book says trespass. Book doesn't say fourteen degrees. Mm.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/hum-ask/media/line-6.mp3",
        "dur": 5.4
       }
      ],
@@ -19159,7 +19307,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Twenty minutes is a long time on a tile where nothing moves. The man turns once, toward the wall. Dolores watches him the whole time and never looks at the clock.",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/sleeper-watch/media/line-1.mp3",
        "dur": 11.1
       },
       {
@@ -19168,13 +19316,13 @@ window.ILTV_STORIES = {
        "sfx": "coffee",
        "perform": "getting up, the paper cup from the shelf",
        "act": "dee:leave",
-       "file": null,
+       "file": "/night-shift/sleeper-watch/media/line-2.mp3",
        "dur": 4.1
       },
       {
        "speaker": "narrator",
        "text": "On tile two, Dolores crouches by the ledge and holds the cup out. After a moment a hand takes it.",
-       "file": null,
+       "file": "/night-shift/sleeper-watch/media/line-3.mp3",
        "dur": 7.2
       },
       {
@@ -19182,7 +19330,7 @@ window.ILTV_STORIES = {
        "text": "He's got a place at six. A shelter on Fifty-second. I told him. Don't tell Okafor I gave away the coffee.",
        "perform": "back at the wall, dry, flat",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/sleeper-watch/media/line-4.mp3",
        "dur": 10.5
       }
      ],
@@ -19246,14 +19394,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "The inner door sticks, then gives. The cold comes through like a hand. The man's eyes open slowly. He does not sit up.",
-       "file": null,
+       "file": "/night-shift/sleeper-wake/media/line-1.mp3",
        "dur": 9.7
       },
       {
        "speaker": "sleeper",
        "text": "I'm going. I'm going.",
        "perform": "hoarse, a mumble from the ledge",
-       "file": null,
+       "file": "/night-shift/sleeper-wake/media/line-2.mp3",
        "dur": 2.3
       },
       {
@@ -19261,7 +19409,7 @@ window.ILTV_STORIES = {
        "text": "Twenty minutes.",
        "sfx": "radio-squelch",
        "perform": "over your radio, quick, a warning with no weight in it",
-       "file": null,
+       "file": "/night-shift/sleeper-wake/media/line-3.mp3",
        "dur": 2.3
       }
      ],
@@ -19312,28 +19460,28 @@ window.ILTV_STORIES = {
        "speaker": "sleeper",
        "text": "Is it still cold out?",
        "perform": "soft, as if to someone else",
-       "file": null,
+       "file": "/night-shift/sleeper-kind/media/line-1.mp3",
        "dur": 1.7
       },
       {
        "speaker": "narrator",
        "text": "It is. You tell him so. You tell him he can stay inside the outer door until six, where the wind can't reach him. He looks at you for a while and nods.",
        "act": "you:stand",
-       "file": null,
+       "file": "/night-shift/sleeper-kind/media/line-2.mp3",
        "dur": 10.4
       },
       {
        "speaker": "dee",
        "text": "Mm. Twenty minutes. Six. Fine.",
        "perform": "over your radio, a breath of a laugh, flat, a woman making an exception, the same word again",
-       "file": null,
+       "file": "/night-shift/sleeper-kind/media/line-3.mp3",
        "dur": 7.1
       },
       {
        "speaker": "narrator",
        "text": "When you come back, the cup from the shelf is gone. You don't ask where.",
        "place": "room",
-       "file": null,
+       "file": "/night-shift/sleeper-kind/media/line-4.mp3",
        "dur": 4.6
       }
      ],
@@ -19389,26 +19537,26 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "He gets up in sections. He folds the coat over his arm before he puts it on. The outer door lets in the wind, and then the vestibule is a vestibule again.",
-       "file": null,
+       "file": "/night-shift/sleeper-sent/media/line-1.mp3",
        "dur": 10.3
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "the whole sentence, to the wall",
-       "file": null,
+       "file": "/night-shift/sleeper-sent/media/line-2.mp3",
        "dur": 1.2
       },
       {
        "speaker": "narrator",
        "text": "She watches tile two until he is out of the frame and for a while after.",
-       "file": null,
+       "file": "/night-shift/sleeper-sent/media/line-3.mp3",
        "dur": 5.1
       },
       {
        "speaker": "narrator",
        "text": "On tile two the ledge is empty, the glass white at the corners.",
-       "file": null,
+       "file": "/night-shift/sleeper-sent/media/line-4.mp3",
        "dur": 4.9
       }
      ],
@@ -19469,7 +19617,7 @@ window.ILTV_STORIES = {
        "text": "Four rings. Mr. Okafor is awake in the way of someone who has been told he is awake.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/sleeper-super/media/line-1.mp3",
        "dur": 6.4
       },
       {
@@ -19477,14 +19625,14 @@ window.ILTV_STORIES = {
        "text": "So. Is the individual breathing? Then he is not an emergency. He may stay inside the outer door until six if he is not a danger to himself.",
        "perform": "even, careful, a man who once had this exact call",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/sleeper-super/media/line-2.mp3",
        "dur": 13
       },
       {
        "speaker": "okafor",
        "text": "Log the temperature. Not \"homeless.\" \"Individual.\"",
        "perform": "correcting himself before you can",
-       "file": null,
+       "file": "/night-shift/sleeper-super/media/line-3.mp3",
        "dur": 3.8
       },
       {
@@ -19492,7 +19640,7 @@ window.ILTV_STORIES = {
        "text": "Mm. That's near what I'd do.",
        "perform": "to the wall, a little surprised",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/sleeper-super/media/line-4.mp3",
        "dur": 2.7
       }
      ],
@@ -19552,7 +19700,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The dispatcher asks if he is breathing. Yes. If he is responsive. You don't know. An ambulance comes up Madison Avenue at 04:58 without its siren.",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/sleeper-911/media/line-1.mp3",
        "dur": 11
       },
       {
@@ -19560,21 +19708,21 @@ window.ILTV_STORIES = {
        "text": "Two medics wake him. He gets up slowly. He says it again to them.",
        "sfx": "door-buzz",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/sleeper-911/media/line-2.mp3",
        "dur": 5
       },
       {
        "speaker": "sleeper",
        "text": "I'm going. I'm going.",
        "perform": "hoarse, through the glass",
-       "file": null,
+       "file": "/night-shift/sleeper-911/media/line-3.mp3",
        "dur": 2.6
       },
       {
        "speaker": "dee",
        "text": "Mm. They'll feed him. That's something. Ask me first, next time.",
        "perform": "to the wall, flat, no weight in it",
-       "file": null,
+       "file": "/night-shift/sleeper-911/media/line-4.mp3",
        "dur": 5.2
       }
      ],
@@ -19630,13 +19778,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Fourteen degrees. In the log.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/dawn-tablet-f/media/line-1.mp3",
        "dur": 2.7
       },
       {
        "speaker": "narrator",
        "text": "05:15. The sky has not changed yet. The wall has gone as quiet as it will get.",
-       "file": null,
+       "file": "/night-shift/dawn-tablet-f/media/line-2.mp3",
        "dur": 6.7
       },
       {
@@ -19650,7 +19798,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/dawn-tablet-f/media/line-3.mp3",
        "dur": 14.7
       }
      ],
@@ -19698,13 +19846,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Homeless. Okafor says individual. Not for him. For the lawyer.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/dawn-tablet-o/media/line-1.mp3",
        "dur": 5.5
       },
       {
        "speaker": "narrator",
        "text": "05:15. The sky has not changed yet. The wall has gone as quiet as it will get.",
-       "file": null,
+       "file": "/night-shift/dawn-tablet-o/media/line-2.mp3",
        "dur": 6.7
       },
       {
@@ -19718,7 +19866,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/dawn-tablet-o/media/line-3.mp3",
        "dur": 14.7
       }
      ],
@@ -19766,13 +19914,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "He was there. Whether you write it or not.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/dawn-tablet-m/media/line-1.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "05:15. The sky has not changed yet. The wall has gone as quiet as it will get.",
-       "file": null,
+       "file": "/night-shift/dawn-tablet-m/media/line-2.mp3",
        "dur": 6.7
       },
       {
@@ -19786,7 +19934,7 @@ window.ILTV_STORIES = {
          "at": 0.12
         }
        ],
-       "file": null,
+       "file": "/night-shift/dawn-tablet-m/media/line-3.mp3",
        "dur": 14.7
       }
      ],
@@ -19837,13 +19985,13 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Camera 8 watches the roof door in a window the size of a stamp. At 03:00 it did not open. At 03:10 it did not open. At 03:20 it did not open.",
-       "file": null,
+       "file": "/night-shift/twelve-check/media/line-1.mp3",
        "dur": 12.7
       },
       {
        "speaker": "narrator",
        "text": "The access terminal keeps the stair doors in a list. Stair C, twelfth floor: open 03:02. Closed 03:22. There is no camera on twelve.",
-       "file": null,
+       "file": "/night-shift/twelve-check/media/line-2.mp3",
        "dur": 12.1
       }
      ],
@@ -19877,7 +20025,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Dolores comes back with her face washed and her sleeves wet. She sits. She does not look at the tablet and she does not look at you.",
        "act": "dee:enter:right",
-       "file": null,
+       "file": "/night-shift/dee-back-0520/media/line-1.mp3",
        "dur": 8.9
       },
       {
@@ -19885,21 +20033,21 @@ window.ILTV_STORIES = {
        "text": "Mm. Light soon.",
        "perform": "to the wall",
        "act": "dee:sit",
-       "file": null,
+       "file": "/night-shift/dee-back-0520/media/line-2.mp3",
        "dur": 2.5
       },
       {
        "speaker": "dee",
        "text": "Six o'clock, the sky does a thing. Over the river. Can't see the river.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/dee-back-0520/media/line-3.mp3",
        "dur": 5.7
       },
       {
        "speaker": "narrator",
        "text": "Tile one shows the long bench, the long desk, the long floor, all of it a color between grey and nothing.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/dee-back-0520/media/line-4.mp3",
        "dur": 8
       }
      ],
@@ -19976,34 +20124,34 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Twelve.",
        "perform": "to the wall, not asking",
-       "file": null,
+       "file": "/night-shift/twelve/media/line-1.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "It's a dentist now. There was a room. A bench. A kettle.",
        "perform": "flat, the pencil still",
-       "file": null,
+       "file": "/night-shift/twelve/media/line-2.mp3",
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "They took it out. Nine years. Mm.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/twelve/media/line-3.mp3",
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "Ten minutes. Then I write tour. Mm. Is there coffee.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/twelve/media/line-4.mp3",
        "dur": 5.6
       },
       {
        "speaker": "narrator",
        "text": "She does not say whose room. The clock says 05:26. It is 05:24.",
-       "file": null,
+       "file": "/night-shift/twelve/media/line-5.mp3",
        "dur": 7
       }
      ],
@@ -20048,20 +20196,20 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "a very small sound, as of a door",
-       "file": null,
+       "file": "/night-shift/twelve-shut/media/line-1.mp3",
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Facts only. Isn't that what I said. Mm. A sensor reads a door.",
        "perform": "flat, picking the pencil up, even",
-       "file": null,
+       "file": "/night-shift/twelve-shut/media/line-2.mp3",
        "dur": 5.6
       },
       {
        "speaker": "narrator",
        "text": "She is formal for the rest of the hour. She calls you Officer twice.",
-       "file": null,
+       "file": "/night-shift/twelve-shut/media/line-3.mp3",
        "dur": 4.8
       }
      ],
@@ -20096,7 +20244,7 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "05:30. The windows of the lobby turn from black to grey. On tile five the cleaning cart rolls toward the elevator, and Marisol's crew leave their floors one by one.",
        "feed": "c5",
-       "file": null,
+       "file": "/night-shift/light/media/line-1.mp3",
        "dur": 11.7
       },
       {
@@ -20104,28 +20252,28 @@ window.ILTV_STORIES = {
        "text": "Mi amor, we're out. Forty-four is dry. Bendito.",
        "sfx": "walkie-squelch",
        "perform": "on the walkie, tired and warm, the cart rattling",
-       "file": null,
+       "file": "/night-shift/light/media/line-2.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm. Go home, Marisol.",
        "perform": "on the walkie, short",
-       "file": null,
+       "file": "/night-shift/light/media/line-3.mp3",
        "dur": 2.4
       },
       {
        "speaker": "marisol",
        "text": "Dolores! There's a plate for you on the shelf by the freezer. Rice. Don't say no.",
        "perform": "on the walkie, bright, the cart rattling",
-       "file": null,
+       "file": "/night-shift/light/media/line-4.mp3",
        "dur": 6.4
       },
       {
        "speaker": "dee",
        "text": "I didn't say anything.",
        "perform": "on the walkie, dry",
-       "file": null,
+       "file": "/night-shift/light/media/line-5.mp3",
        "dur": 1.8
       },
       {
@@ -20133,20 +20281,20 @@ window.ILTV_STORIES = {
        "text": "Your face said no, mi amor! It always says no. Eat it!",
        "sfx": "walkie-squelch",
        "perform": "on the walkie, laughing, then off",
-       "file": null,
+       "file": "/night-shift/light/media/line-6.mp3",
        "dur": 6.7
       },
       {
        "speaker": "narrator",
        "text": "On tile five a bar of pink light lies across the carpet at the window. On tile one the day officer's cap is a shape in the vestibule, waiting for the door.",
-       "file": null,
+       "file": "/night-shift/light/media/line-7.mp3",
        "dur": 10.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Rice. By the freezer.",
        "perform": "to the wall, flat",
-       "file": null,
+       "file": "/night-shift/light/media/line-8.mp3",
        "dur": 3.2
       },
       {
@@ -20158,7 +20306,7 @@ window.ILTV_STORIES = {
          "at": 0.68
         }
        ],
-       "file": null,
+       "file": "/night-shift/light/media/line-9.mp3",
        "dur": 7.9
       }
      ],
@@ -20189,7 +20337,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Pencil first.",
        "perform": "the pencil, held out",
-       "file": null,
+       "file": "/night-shift/write-up-clean/media/line-1.mp3",
        "dur": 1.3
       },
       {
@@ -20198,28 +20346,28 @@ window.ILTV_STORIES = {
        "sfx": "pencil",
        "perform": "reading the headings, her finger going down the page",
        "act": "dee:write",
-       "file": null,
+       "file": "/night-shift/write-up-clean/media/line-2.mp3",
        "dur": 6.8
       },
       {
        "speaker": "dee",
        "text": "Every one has a time and a place. Nobody's lazy. Nobody seemed.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/write-up-clean/media/line-3.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "Way it was.",
        "perform": "not looking at the page",
-       "file": null,
+       "file": "/night-shift/write-up-clean/media/line-4.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "It'll bore him. Good.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/write-up-clean/media/line-5.mp3",
        "dur": 2.1
       }
      ],
@@ -20313,7 +20461,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Pencil first.",
        "perform": "the pencil, held out",
-       "file": null,
+       "file": "/night-shift/write-up-sloppy/media/line-1.mp3",
        "dur": 1.3
       },
       {
@@ -20322,28 +20470,28 @@ window.ILTV_STORIES = {
        "sfx": "pencil",
        "perform": "reading the headings, her finger going down the page",
        "act": "dee:write",
-       "file": null,
+       "file": "/night-shift/write-up-sloppy/media/line-2.mp3",
        "dur": 6.8
       },
       {
        "speaker": "dee",
        "text": "Seemed. Probably. Seemed.",
        "perform": "tapping each word with the point of the pencil",
-       "file": null,
+       "file": "/night-shift/write-up-sloppy/media/line-3.mp3",
        "dur": 6.9
       },
       {
        "speaker": "dee",
        "text": "He'll say: how did he seem? What did you see? Fix the ones you can.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/write-up-sloppy/media/line-4.mp3",
        "dur": 5.2
       },
       {
        "speaker": "dee",
        "text": "He wasn't here. The page is all he gets.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/write-up-sloppy/media/line-5.mp3",
        "dur": 3
       }
      ],
@@ -20437,28 +20585,28 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "I read it.",
        "perform": "flat, the tablet turned face up",
-       "file": null,
+       "file": "/night-shift/write-up-lied/media/line-1.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Thirty-one. The bench. Forty-four. Car three. Nine. The panel.",
        "perform": "her finger going down the page, stopping nowhere, stopping everywhere",
-       "file": null,
+       "file": "/night-shift/write-up-lied/media/line-2.mp3",
        "dur": 8.6
       },
       {
        "speaker": "dee",
        "text": "Officer. Which of these isn't the way it was?",
        "perform": "flat, no weight on any word",
-       "file": null,
+       "file": "/night-shift/write-up-lied/media/line-3.mp3",
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "Once it's ink, it's true. Pencil's open till six.",
        "perform": "the pencil laid down between you, not offered",
-       "file": null,
+       "file": "/night-shift/write-up-lied/media/line-4.mp3",
        "dur": 7.6
       }
      ],
@@ -20566,21 +20714,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You take the pencil. You take out the line. You write the other one, the true one, in the same place. It takes a long time.",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/confess/media/line-1.mp3",
        "dur": 8.8
       },
       {
        "speaker": "dee",
        "text": "Mm. Once it's ink.",
        "perform": "the whole of it, a nod, to the page",
-       "file": null,
+       "file": "/night-shift/confess/media/line-2.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Small one. Leave it. It's ink.",
        "perform": "flat, low",
-       "file": null,
+       "file": "/night-shift/confess/media/line-3.mp3",
        "dur": 3
       }
      ],
@@ -20638,7 +20786,7 @@ window.ILTV_STORIES = {
        "text": "The night line rings nine times.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/late-okafor/media/line-1.mp3",
        "dur": 2.4
       },
       {
@@ -20646,14 +20794,14 @@ window.ILTV_STORIES = {
        "text": "So. It is ten to six. The wedge was at ten to two. That is four hours.",
        "perform": "flat, awake, careful",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/late-okafor/media/line-2.mp3",
        "dur": 10.6
       },
       {
        "speaker": "okafor",
        "text": "Let's make sure we're aligned. You will tell me that now, not at the handover. I would like it looked at.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/late-okafor/media/line-3.mp3",
        "dur": 6.3
       },
       {
@@ -20661,13 +20809,13 @@ window.ILTV_STORIES = {
        "text": "I'll go. Stay on the wall.",
        "perform": "to the wall, getting up, the keys",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/late-okafor/media/line-4.mp3",
        "dur": 3.1
       },
       {
        "speaker": "narrator",
        "text": "When she comes back the wedge is in her pocket. She puts it on the shelf beside the binder.",
-       "file": null,
+       "file": "/night-shift/late-okafor/media/line-5.mp3",
        "dur": 5.5
       }
      ],
@@ -20737,7 +20885,7 @@ window.ILTV_STORIES = {
        "text": "The phone rings nine times. Ms. Adler picks up on the tenth, and she does not say hello.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/late-adler/media/line-1.mp3",
        "dur": 6.1
       },
       {
@@ -20745,21 +20893,21 @@ window.ILTV_STORIES = {
        "text": "How long has the panel been silent? How long.",
        "perform": "formal, ice at the edges of a polite voice",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/late-adler/media/line-2.mp3",
        "dur": 3.6
       },
       {
        "speaker": "adler",
        "text": "I will be there at ten past six. Do not touch it again.",
        "perform": "one idea at a time",
-       "file": null,
+       "file": "/night-shift/late-adler/media/line-3.mp3",
        "dur": 4.2
       },
       {
        "speaker": "adler",
        "text": "Please put the time you silenced it in the log. In the same words.",
        "perform": "formal",
-       "file": null,
+       "file": "/night-shift/late-adler/media/line-4.mp3",
        "dur": 4.3
       },
       {
@@ -20767,7 +20915,7 @@ window.ILTV_STORIES = {
        "text": "Mm.",
        "perform": "low, to the wall, a woman watching a train she did not stop",
        "act": "you:hangup",
-       "file": null,
+       "file": "/night-shift/late-adler/media/line-5.mp3",
        "dur": 2
       }
      ],
@@ -20835,28 +20983,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "Six o'clock. The last field on the report is one line long. It has a label, END OF SHIFT, and a cursor.",
-       "file": null,
+       "file": "/night-shift/closing-line/media/line-1.mp3",
        "dur": 8.1
       },
       {
        "speaker": "dee",
        "text": "Time. Radios. What the night was, in one line.",
        "perform": "flat, the pencil on the shelf, not offered",
-       "file": null,
+       "file": "/night-shift/closing-line/media/line-2.mp3",
        "dur": 8.1
       },
       {
        "speaker": "dee",
        "text": "That's the one he reads first. Then he checks the rest.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/closing-line/media/line-3.mp3",
        "dur": 4.2
       },
       {
        "speaker": "narrator",
        "text": "Outside, the sky over Madison Avenue has gone pale. On tile one the lobby has its first shadow.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/closing-line/media/line-4.mp3",
        "dur": 7.3
       }
      ],
@@ -20926,13 +21074,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Eleven items. Good. He'll count them.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-f/media/line-1.mp3",
        "dur": 3.1
       },
       {
        "speaker": "narrator",
        "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
-       "file": null,
+       "file": "/night-shift/shift-prep-f/media/line-2.mp3",
        "dur": 8.9
       },
       {
@@ -20941,35 +21089,35 @@ window.ILTV_STORIES = {
        "sfx": "radio-charger",
        "perform": "at the charger, one finger on each",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/shift-prep-f/media/line-3.mp3",
        "dur": 2.2
       },
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
        "perform": "flat, not hurrying",
-       "file": null,
+       "file": "/night-shift/shift-prep-f/media/line-4.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
        "perform": "a beat on the last two words",
-       "file": null,
+       "file": "/night-shift/shift-prep-f/media/line-5.mp3",
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
        "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
-       "file": null,
+       "file": "/night-shift/shift-prep-f/media/line-6.mp3",
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-f/media/line-7.mp3",
        "dur": 3.9
       }
      ],
@@ -21042,13 +21190,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Quiet night. It wasn't. Eleven items. Mm. He'll see.",
        "perform": "reading, flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-o/media/line-1.mp3",
        "dur": 6.1
       },
       {
        "speaker": "narrator",
        "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
-       "file": null,
+       "file": "/night-shift/shift-prep-o/media/line-2.mp3",
        "dur": 8.9
       },
       {
@@ -21057,35 +21205,35 @@ window.ILTV_STORIES = {
        "sfx": "radio-charger",
        "perform": "at the charger, one finger on each",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/shift-prep-o/media/line-3.mp3",
        "dur": 2.2
       },
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
        "perform": "flat, not hurrying",
-       "file": null,
+       "file": "/night-shift/shift-prep-o/media/line-4.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
        "perform": "a beat on the last two words",
-       "file": null,
+       "file": "/night-shift/shift-prep-o/media/line-5.mp3",
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
        "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
-       "file": null,
+       "file": "/night-shift/shift-prep-o/media/line-6.mp3",
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home. Mm.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-o/media/line-7.mp3",
        "dur": 4.9
       }
      ],
@@ -21158,13 +21306,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "That's blank. He'll ask why. Mm.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-m/media/line-1.mp3",
        "dur": 3.4
       },
       {
        "speaker": "narrator",
        "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
-       "file": null,
+       "file": "/night-shift/shift-prep-m/media/line-2.mp3",
        "dur": 8.9
       },
       {
@@ -21173,35 +21321,35 @@ window.ILTV_STORIES = {
        "sfx": "radio-charger",
        "perform": "at the charger, one finger on each",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/shift-prep-m/media/line-3.mp3",
        "dur": 2.2
       },
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
        "perform": "flat, not hurrying",
-       "file": null,
+       "file": "/night-shift/shift-prep-m/media/line-4.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
        "perform": "a beat on the last two words",
-       "file": null,
+       "file": "/night-shift/shift-prep-m/media/line-5.mp3",
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
        "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
-       "file": null,
+       "file": "/night-shift/shift-prep-m/media/line-6.mp3",
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home. Mm.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-m/media/line-7.mp3",
        "dur": 4.9
       }
      ],
@@ -21274,20 +21422,20 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "No incidents.",
        "perform": "reading, very flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-1.mp3",
        "dur": 1.5
       },
       {
        "speaker": "dee",
        "text": "Eleven. Mm.",
        "perform": "the tablet turned face down",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-2.mp3",
        "dur": 4.7
       },
       {
        "speaker": "narrator",
        "text": "06:10. The last twenty minutes are a ritual. Dolores does it the same way every morning, and tonight she does it out loud.",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-3.mp3",
        "dur": 8.9
       },
       {
@@ -21296,35 +21444,35 @@ window.ILTV_STORIES = {
        "sfx": "radio-charger",
        "perform": "at the charger, one finger on each",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-4.mp3",
        "dur": 2.2
       },
       {
        "speaker": "dee",
        "text": "Keys. On the hook. Binder. Page back where it was.",
        "perform": "flat, not hurrying",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-5.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "Wall clock. Don't touch. Drawer. Shut. It sticks.",
        "perform": "a beat on the last two words",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-6.mp3",
        "dur": 6
       },
       {
        "speaker": "dee",
        "text": "Cup. Rinsed.",
        "perform": "holding it out to you, the first thing she has handed you all night that was not a pencil or a radio",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-7.mp3",
        "dur": 10.8
       },
       {
        "speaker": "dee",
        "text": "Then the log. Then Okafor. Then home. Mm.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/shift-prep-l/media/line-8.mp3",
        "dur": 4.9
       }
      ],
@@ -21405,7 +21553,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "06:30. The lobby has a day in it: the first tenants, a courier with flowers, the hum of the escalator being switched on.",
-       "file": null,
+       "file": "/night-shift/six-thirty/media/line-1.mp3",
        "dur": 9.2
       },
       {
@@ -21413,28 +21561,28 @@ window.ILTV_STORIES = {
        "text": "Mr. Okafor comes through the revolving door with a coffee and a coat that has not been slept in.",
        "sfx": "door-heavy",
        "act": "okafor:enter",
-       "file": null,
+       "file": "/night-shift/six-thirty/media/line-2.mp3",
        "dur": 5.7
       },
       {
        "speaker": "okafor",
        "text": "So. Let's walk through the log. I have a nine o'clock.",
        "perform": "polite, one hand already out",
-       "file": null,
+       "file": "/night-shift/six-thirty/media/line-3.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "It's all in there. Four.",
        "perform": "at the charger, not turning, the radios counted again",
-       "file": null,
+       "file": "/night-shift/six-thirty/media/line-4.mp3",
        "dur": 2.4
       },
       {
        "speaker": "okafor",
        "text": "Good morning, Officer. Good morning, Dolores.",
        "perform": "a glance at the clock, then at the wall, then at the log",
-       "file": null,
+       "file": "/night-shift/six-thirty/media/line-5.mp3",
        "dur": 5.2
       }
      ],
@@ -21575,56 +21723,56 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-1.mp3",
        "dur": 11.9
       },
       {
        "speaker": "okafor",
        "text": "So. Forty-four. The stairwell on thirty-one. The bench. Car three. Camera nine. The panel. The dock. The vestibule.",
        "perform": "reading the headings, flat",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-2.mp3",
        "dur": 10.5
       },
       {
        "speaker": "okafor",
        "text": "The stairwell. I can see the landing. You gave me the floor, the door, the thing in the door, and what was done.",
        "perform": "the thumb stops",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-3.mp3",
        "dur": 7.5
       },
       {
        "speaker": "okafor",
        "text": "The panel I can read word for word. I don't always get that.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-4.mp3",
        "dur": 3.7
       },
       {
        "speaker": "okafor",
        "text": "Times. Places. What you saw. Who you told. It reads like a log.",
        "perform": "a nod to the glass",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-5.mp3",
        "dur": 5.8
       },
       {
        "speaker": "okafor",
        "text": "That's noted. Thank you.",
        "perform": "a nod at you, the highest thing he says",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-6.mp3",
        "dur": 2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "from the charger, low",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-7.mp3",
        "dur": 2.3
       },
       {
        "speaker": "okafor",
        "text": "Ms. Reyes. Before I go up. Is there anything in there I should hear from you and not from the page?",
        "perform": "polite, to the room",
-       "file": null,
+       "file": "/night-shift/okafor-reads-solid/media/line-8.mp3",
        "dur": 6.3
       }
      ],
@@ -21873,56 +22021,56 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-1.mp3",
        "dur": 11.9
       },
       {
        "speaker": "okafor",
        "text": "So. Let's walk through the log.",
        "perform": "the thumb stops",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-2.mp3",
        "dur": 2.3
       },
       {
        "speaker": "okafor",
        "text": "So. Some of these say what someone seemed to be. Some say nothing at all.",
        "perform": "reading, flat, polite",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-3.mp3",
        "dur": 5.4
       },
       {
        "speaker": "okafor",
        "text": "How did he seem? Probably what? Fine to whom? What does that mean to someone who wasn't here?",
        "perform": "the thumb moves, even",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-4.mp3",
        "dur": 6.3
       },
       {
        "speaker": "okafor",
        "text": "Not \"guy.\" \"Individual.\"",
        "perform": "correcting himself, then you",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-5.mp3",
        "dur": 2.5
       },
       {
        "speaker": "okafor",
        "text": "The building manager wasn't here. Neither was the lawyer. They have your words.",
        "perform": "flat, a small stop",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-6.mp3",
        "dur": 4.8
       },
       {
        "speaker": "okafor",
        "text": "I can't tell what happened.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-7.mp3",
        "dur": 1.8
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "from the charger, low, a pencil behind her ear",
-       "file": null,
+       "file": "/night-shift/okafor-reads-sloppy/media/line-8.mp3",
        "dur": 3.2
       }
      ],
@@ -22009,49 +22157,49 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/okafor-reads-slips/media/line-1.mp3",
        "dur": 11.9
       },
       {
        "speaker": "okafor",
        "text": "So. A few of these are not what the binder says. Not many.",
        "perform": "the thumb stops, then goes on",
-       "file": null,
+       "file": "/night-shift/okafor-reads-slips/media/line-2.mp3",
        "dur": 4.7
       },
       {
        "speaker": "okafor",
        "text": "I can see where the binder said one thing and the night said another. I have marked them.",
        "perform": "flat, each one set down",
-       "file": null,
+       "file": "/night-shift/okafor-reads-slips/media/line-3.mp3",
        "dur": 4.9
       },
       {
        "speaker": "okafor",
        "text": "Let's make sure we're aligned. I'm not saying anyone was wrong. I'm saying they're in the log.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/okafor-reads-slips/media/line-4.mp3",
        "dur": 5.9
       },
       {
        "speaker": "okafor",
        "text": "In your hand, with the time. That's the only reason this is a conversation.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/okafor-reads-slips/media/line-5.mp3",
        "dur": 5.2
       },
       {
        "speaker": "okafor",
        "text": "Next time, the binder first. And if the binder says no, you say no, and you write that you said it.",
        "perform": "a nod, tired",
-       "file": null,
+       "file": "/night-shift/okafor-reads-slips/media/line-6.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "from the charger",
-       "file": null,
+       "file": "/night-shift/okafor-reads-slips/media/line-7.mp3",
        "dur": 2
       }
      ],
@@ -22138,49 +22286,49 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/okafor-reads-wall/media/line-1.mp3",
        "dur": 11.9
       },
       {
        "speaker": "okafor",
        "text": "So. Twenty-three thirty. \"Left the control room, wall unattended.\" Four minutes.",
        "perform": "reading, flat, quiet",
-       "file": null,
+       "file": "/night-shift/okafor-reads-wall/media/line-2.mp3",
        "dur": 6.2
       },
       {
        "speaker": "okafor",
        "text": "In your hand. Your own entry. That is the thing I would not have known.",
        "perform": "the thumb stops",
-       "file": null,
+       "file": "/night-shift/okafor-reads-wall/media/line-3.mp3",
        "dur": 5.2
       },
       {
        "speaker": "okafor",
        "text": "That's noted. It is also the thing I have to act on.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/okafor-reads-wall/media/line-4.mp3",
        "dur": 3.9
       },
       {
        "speaker": "okafor",
        "text": "Dolores. You know the rule.",
        "perform": "not looking up",
-       "file": null,
+       "file": "/night-shift/okafor-reads-wall/media/line-5.mp3",
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "I know the rule.",
        "perform": "from the charger, flat, the counting stopped",
-       "file": null,
+       "file": "/night-shift/okafor-reads-wall/media/line-6.mp3",
        "dur": 3.1
       },
       {
        "speaker": "okafor",
        "text": "Nothing happened in those four minutes. Nothing happened. That is not what the rule is about.",
        "perform": "even, to the glass",
-       "file": null,
+       "file": "/night-shift/okafor-reads-wall/media/line-7.mp3",
        "dur": 5.8
       }
      ],
@@ -22267,42 +22415,42 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/okafor-reads-open/media/line-1.mp3",
        "dur": 11.9
       },
       {
        "speaker": "okafor",
        "text": "So. Life safety.",
        "perform": "the thumb stops on a line, and stays",
-       "file": null,
+       "file": "/night-shift/okafor-reads-open/media/line-2.mp3",
        "dur": 2.5
       },
       {
        "speaker": "okafor",
        "text": "A door on thirty-one. A panel in this room. One of them was left, and nobody who is allowed to fix it was told.",
        "perform": "flat, even, every word placed",
-       "file": null,
+       "file": "/night-shift/okafor-reads-open/media/line-3.mp3",
        "dur": 7.9
       },
       {
        "speaker": "okafor",
        "text": "The fire panel belongs to Ms. Adler. The door belongs to the building. We are the people who tell them.",
        "perform": "he looks up for the first time",
-       "file": null,
+       "file": "/night-shift/okafor-reads-open/media/line-4.mp3",
        "dur": 6.5
       },
       {
        "speaker": "okafor",
        "text": "Nobody was hurt. That is the sentence that will be in the building manager's report. \"Nobody was hurt.\" It is true and it is not a defense.",
        "perform": "a breath",
-       "file": null,
+       "file": "/night-shift/okafor-reads-open/media/line-5.mp3",
        "dur": 10.2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "from the charger, very low",
-       "file": null,
+       "file": "/night-shift/okafor-reads-open/media/line-6.mp3",
        "dur": 2.3
       }
      ],
@@ -22389,42 +22537,42 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "Mr. Okafor reads the log standing up, the way he reads everything, with one thumb moving down the glass. The wall clock says 06:37. It is 06:35.",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/okafor-reads-lie/media/line-1.mp3",
        "dur": 11.9
       },
       {
        "speaker": "okafor",
        "text": "So. Let's make sure we're aligned.",
        "perform": "the thumb stops",
-       "file": null,
+       "file": "/night-shift/okafor-reads-lie/media/line-2.mp3",
        "dur": 2.6
       },
       {
        "speaker": "okafor",
        "text": "There is a line in this log that does not match the record. The terminal, or the rest of the log. One of them is wrong.",
        "perform": "even, polite, the worst voice he has",
-       "file": null,
+       "file": "/night-shift/okafor-reads-lie/media/line-3.mp3",
        "dur": 7.1
       },
       {
        "speaker": "okafor",
        "text": "I will not ask you why. The building manager will. He reads this at nine.",
        "perform": "a breath",
-       "file": null,
+       "file": "/night-shift/okafor-reads-lie/media/line-4.mp3",
        "dur": 5.8
       },
       {
        "speaker": "okafor",
        "text": "Dolores.",
        "perform": "not looking up",
-       "file": null,
+       "file": "/night-shift/okafor-reads-lie/media/line-5.mp3",
        "dur": 1.2
       },
       {
        "speaker": "dee",
        "text": "Officer.",
        "perform": "from the charger, formal, the last word she says for a while",
-       "file": null,
+       "file": "/night-shift/okafor-reads-lie/media/line-6.mp3",
        "dur": 1.1
       }
      ],
@@ -22445,7 +22593,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-clean.png",
      "title": [
       "Clean report",
       "Clean report"
@@ -22465,48 +22613,48 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. The day officer is at the desk. The sun is on the revolving door. Mr. Okafor has gone upstairs with the tablet under his arm.",
-       "file": null,
+       "file": "/night-shift/end-clean/media/line-1.mp3",
        "dur": 9.7
       },
       {
        "speaker": "dee",
        "text": "Quarter to seven tonight. You'll want to sleep. Don't, till you've eaten.",
        "perform": "putting her coat on, short, flat",
-       "file": null,
+       "file": "/night-shift/end-clean/media/line-2.mp3",
        "dur": 4.6
       },
       {
        "speaker": "dee",
        "text": "The seven stops under Queensboro. Walk it. Don't wait. I've timed it. It's faster.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/end-clean/media/line-3.mp3",
        "dur": 6.1
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "at the door, not turning",
-       "file": null,
+       "file": "/night-shift/end-clean/media/line-4.mp3",
        "dur": 2.1
       },
       {
        "speaker": "narrator",
        "text": "The day officer asks how the night was. You tell him what happened, in order. He writes it down.",
-       "file": null,
+       "file": "/night-shift/end-clean/media/line-5.mp3",
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Radio.",
        "perform": "from the doorway, one word, not a suggestion",
-       "file": null,
+       "file": "/night-shift/end-clean/media/line-6.mp3",
        "dur": 0.9
       },
       {
        "speaker": "narrator",
        "text": "You hand it over. It clicks into the charger. Four.",
        "act": "you:hand",
-       "file": null,
+       "file": "/night-shift/end-clean/media/line-7.mp3",
        "dur": 4.1
       }
      ],
@@ -22522,7 +22670,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-someone.png",
      "title": [
       "Someone to leave it to",
       "Someone to leave it to"
@@ -22542,28 +22690,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. Mr. Okafor has gone upstairs with the tablet. The day officer is at the desk. Dolores stands by the charger with her coat over her arm.",
-       "file": null,
+       "file": "/night-shift/end-someone/media/line-1.mp3",
        "dur": 10.3
       },
       {
        "speaker": "dee",
        "text": "April first. I know you read it. The drawer sticks. It didn't stick.",
        "perform": "to the charger, dry",
-       "file": null,
+       "file": "/night-shift/end-someone/media/line-2.mp3",
        "dur": 5.8
       },
       {
        "speaker": "dee",
        "text": "I put it where you'd find it. Not him. Mm. You didn't ask.",
        "perform": "a breath that is nearly a smile",
-       "file": null,
+       "file": "/night-shift/end-someone/media/line-3.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "A camera and a woman in New Jersey. Mm. Doesn't matter.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/end-someone/media/line-4.mp3",
        "dur": 4.4
       },
       {
@@ -22571,13 +22719,13 @@ window.ILTV_STORIES = {
        "text": "Pencil. Write it plain.",
        "perform": "holding it out, the one from behind her ear, even",
        "act": "dee:hand",
-       "file": null,
+       "file": "/night-shift/end-someone/media/line-5.mp3",
        "dur": 2.3
       },
       {
        "speaker": "narrator",
        "text": "It is warm from her hand, and shorter than you thought. The rubber at the end is worn down to the metal.",
-       "file": null,
+       "file": "/night-shift/end-someone/media/line-6.mp3",
        "dur": 6.7
       }
      ],
@@ -22593,7 +22741,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-she-knew.png",
      "title": [
       "She knew",
       "She knew"
@@ -22614,7 +22762,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. Mr. Okafor has not gone upstairs yet. He has the tablet in one hand and a pen in the other, and he is writing something down.",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-1.mp3",
        "dur": 9.5
       },
       {
@@ -22622,35 +22770,35 @@ window.ILTV_STORIES = {
        "text": "Thank you for telling me. That's noted. I will raise it with the contractor.",
        "perform": "a pen clicking, faintly warmer than usual",
        "act": "okafor:write",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-2.mp3",
        "dur": 5
       },
       {
        "speaker": "okafor",
        "text": "Ms. Reyes's post is under review. I did not know.",
        "perform": "a pause",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-3.mp3",
        "dur": 3.6
       },
       {
        "speaker": "okafor",
        "text": "I should have known. That is also noted.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-4.mp3",
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "You told him. Officer.",
        "perform": "at the charger, flat, no weight on it",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-5.mp3",
        "dur": 2.2
       },
       {
        "speaker": "narrator",
        "text": "She says it again, \"Officer,\" and puts on her coat.",
        "act": "dee:stand",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-6.mp3",
        "dur": 3.8
       },
       {
@@ -22663,21 +22811,21 @@ window.ILTV_STORIES = {
          "at": 0.64
         }
        ],
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-7.mp3",
        "dur": 4
       },
       {
        "speaker": "dee",
        "text": "I'd have told him in April. Mm. It's the book.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-8.mp3",
        "dur": 4.1
       },
       {
        "speaker": "narrator",
        "text": "She holds the fourth radio out to you. You clip it on.",
        "act": "dee:hand",
-       "file": null,
+       "file": "/night-shift/end-she-knew/media/line-9.mp3",
        "dur": 3.5
       }
      ],
@@ -22693,7 +22841,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-eat-something.png",
      "title": [
       "Eat something",
       "Eat something"
@@ -22713,7 +22861,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. The day officer is at the desk. Mr. Okafor has gone upstairs. Dolores unwraps the foil on the shelf, all the way, and smooths it flat.",
-       "file": null,
+       "file": "/night-shift/end-eat-something/media/line-1.mp3",
        "dur": 11.6
       },
       {
@@ -22721,7 +22869,7 @@ window.ILTV_STORIES = {
        "text": "Eat something. Not the corner. The corner's mine.",
        "perform": "holding out half a sandwich, quick, dry",
        "act": "dee:hand",
-       "file": null,
+       "file": "/night-shift/end-eat-something/media/line-2.mp3",
        "dur": 3.2
       },
       {
@@ -22733,27 +22881,27 @@ window.ILTV_STORIES = {
          "at": 0.3
         }
        ],
-       "file": null,
+       "file": "/night-shift/end-eat-something/media/line-3.mp3",
        "dur": 7.7
       },
       {
        "speaker": "dee",
        "text": "Quarter to seven. You know where I sit. Mm.",
        "perform": "folding the foil in four",
-       "file": null,
+       "file": "/night-shift/end-eat-something/media/line-4.mp3",
        "dur": 5.8
       },
       {
        "speaker": "dee",
        "text": "You stayed on the wall. Mm. Go home.",
        "perform": "to the wall",
-       "file": null,
+       "file": "/night-shift/end-eat-something/media/line-5.mp3",
        "dur": 3.9
       },
       {
        "speaker": "narrator",
        "text": "She puts the foil in the bin by the door. It makes no noise at all.",
-       "file": null,
+       "file": "/night-shift/end-eat-something/media/line-6.mp3",
        "dur": 4.6
       }
      ],
@@ -22769,7 +22917,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-by-the-book.png",
      "title": [
       "By the book, alone",
       "By the book, alone"
@@ -22789,7 +22937,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. The day officer is at the desk. Mr. Okafor reads the last page of the log standing at the charger, the tablet held out from his body.",
-       "file": null,
+       "file": "/night-shift/end-by-the-book/media/line-1.mp3",
        "dur": 10.6
       },
       {
@@ -22797,32 +22945,32 @@ window.ILTV_STORIES = {
        "text": "So. There is nothing in this log I would change. Ms. Reyes's evaluation is one line. \"Competent.\"",
        "perform": "the thumb stops, reading, flat",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/end-by-the-book/media/line-2.mp3",
        "dur": 7.1
       },
       {
        "speaker": "okafor",
        "text": "That's noted. Thank you. Good morning.",
        "perform": "a pause, almost an apology, to you, politely",
-       "file": null,
+       "file": "/night-shift/end-by-the-book/media/line-3.mp3",
        "dur": 3.5
       },
       {
        "speaker": "narrator",
        "text": "Dolores's coat is not on the hook. She left at 06:45, by the dock, so as not to pass the desk.",
-       "file": null,
+       "file": "/night-shift/end-by-the-book/media/line-4.mp3",
        "dur": 7.2
       },
       {
        "speaker": "narrator",
        "text": "The foil is on the shelf, folded in four. She has not taken it.",
-       "file": null,
+       "file": "/night-shift/end-by-the-book/media/line-5.mp3",
        "dur": 4.8
       },
       {
        "speaker": "narrator",
        "text": "The clock on the wall says 07:04. It is 07:02. Nobody has touched it.",
-       "file": null,
+       "file": "/night-shift/end-by-the-book/media/line-6.mp3",
        "dur": 6.6
       }
      ],
@@ -22838,7 +22986,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-friendly.png",
      "title": [
       "The friendly one",
       "The friendly one"
@@ -22865,14 +23013,14 @@ window.ILTV_STORIES = {
          "at": 0.82
         }
        ],
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-1.mp3",
        "dur": 9.3
       },
       {
        "speaker": "okafor",
        "text": "So. Corrections in Dolores's hand, on entries that are not hers.",
        "perform": "reading, flat, polite",
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-2.mp3",
        "dur": 4.9
       },
       {
@@ -22880,40 +23028,40 @@ window.ILTV_STORIES = {
        "text": "Mine. I made them.",
        "perform": "from the charger, flat, no excuse offered",
        "act": "dee:angry",
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-3.mp3",
        "dur": 2.1
       },
       {
        "speaker": "okafor",
        "text": "Dolores, a word. Not now. That's twice this year.",
        "perform": "tired, the thumb on the glass",
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-4.mp3",
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "He's new. I'm the one who counts. Four.",
        "perform": "quietly, once",
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-5.mp3",
        "dur": 3.8
       },
       {
        "speaker": "okafor",
        "text": "Next time, you say, and I decide. That is what the chain is for.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-6.mp3",
        "dur": 5.3
       },
       {
        "speaker": "narrator",
        "text": "In the margin of the log there is a word crossed out in pencil and the right word written beside it. The hand is hers. The word was yours.",
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-7.mp3",
        "dur": 9.7
       },
       {
        "speaker": "narrator",
        "text": "She has done it in four places. You count them. You did not see her do any of it.",
-       "file": null,
+       "file": "/night-shift/end-friendly/media/line-8.mp3",
        "dur": 5.5
       }
      ],
@@ -22929,7 +23077,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-opinions.png",
      "title": [
       "Opinions",
       "Opinions"
@@ -22950,7 +23098,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. Mr. Okafor sits in the good chair, which nobody has done all night. The red stylus is already out.",
-       "file": null,
+       "file": "/night-shift/end-opinions/media/line-1.mp3",
        "dur": 8.4
       },
       {
@@ -22958,34 +23106,34 @@ window.ILTV_STORIES = {
        "text": "So. \"Seemed.\" How did it seem? \"Probably.\" Probably.",
        "perform": "reading, flat, patient, the red stylus",
        "act": "okafor:read",
-       "file": null,
+       "file": "/night-shift/end-opinions/media/line-2.mp3",
        "dur": 5.6
       },
       {
        "speaker": "okafor",
        "text": "Next time: what he did. Not what he seemed. That's noted.",
        "perform": "a nod, not unkind",
-       "file": null,
+       "file": "/night-shift/end-opinions/media/line-3.mp3",
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "low, at the charger",
-       "file": null,
+       "file": "/night-shift/end-opinions/media/line-4.mp3",
        "dur": 3.2
       },
       {
        "speaker": "okafor",
        "text": "It is not a clean first week. That's noted.",
        "perform": "even, handing the tablet back",
-       "file": null,
+       "file": "/night-shift/end-opinions/media/line-5.mp3",
        "dur": 3.2
       },
       {
        "speaker": "narrator",
        "text": "He hands the tablet back. There are red marks beside each of them, down the margin. You count them, and then you stop.",
-       "file": null,
+       "file": "/night-shift/end-opinions/media/line-6.mp3",
        "dur": 8
       }
      ],
@@ -23001,7 +23149,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-four-hours.png",
      "title": [
       "The four hours",
       "The four hours"
@@ -23022,35 +23170,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. The sun is on the revolving door. Mr. Okafor stands in the control-room doorway with the tablet, and does not come in.",
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-1.mp3",
        "dur": 9.2
       },
       {
        "speaker": "okafor",
        "text": "I'll write it as it stands. Four minutes. It's the rule, Dolores.",
        "perform": "quietly, not looking at either of you, the stylus",
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "dee",
        "text": "I know the rule.",
        "perform": "flat, to the charger",
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-3.mp3",
        "dur": 1.3
       },
       {
        "speaker": "okafor",
        "text": "Ms. Reyes. If you want to say something, say it.",
        "perform": "gently, for him",
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-4.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "No. Thank you, Okafor.",
        "perform": "one word, flat as a door, the thank you the size of a coin",
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-5.mp3",
        "dur": 2.6
       },
       {
@@ -23063,7 +23211,7 @@ window.ILTV_STORIES = {
          "at": 0.15
         }
        ],
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-6.mp3",
        "dur": 6.3
       },
       {
@@ -23071,13 +23219,13 @@ window.ILTV_STORIES = {
        "text": "Four.",
        "perform": "counting",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-7.mp3",
        "dur": 0.9
       },
       {
        "speaker": "narrator",
        "text": "She counts them again. Four. She counts them again.",
-       "file": null,
+       "file": "/night-shift/end-four-hours/media/line-8.mp3",
        "dur": 4.1
       }
      ],
@@ -23093,7 +23241,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-written-up.png",
      "title": [
       "Written up",
       "Written up"
@@ -23114,48 +23262,48 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. The lobby is filling with people holding coffee. In the control room Mr. Okafor shuts the door, which nobody has done all night.",
-       "file": null,
+       "file": "/night-shift/end-written-up/media/line-1.mp3",
        "dur": 9.7
       },
       {
        "speaker": "okafor",
        "text": "I'll walk you through what happens now. The building manager reads this at nine. The company decides at the end of the ninety days.",
        "perform": "even, polite, final",
-       "file": null,
+       "file": "/night-shift/end-written-up/media/line-2.mp3",
        "dur": 7.3
       },
       {
        "speaker": "okafor",
        "text": "This is the procedure. Nothing in it is personal.",
        "perform": "the thumb on the glass, a sigh",
-       "file": null,
+       "file": "/night-shift/end-written-up/media/line-3.mp3",
        "dur": 4.8
       },
       {
        "speaker": "okafor",
        "text": "Hand me your badge at the end of the week, not today. You've still got a shift to work. That is also in the book.",
        "perform": "not unkind",
-       "file": null,
+       "file": "/night-shift/end-written-up/media/line-4.mp3",
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Officer.",
        "perform": "at the charger, formal, the last word",
-       "file": null,
+       "file": "/night-shift/end-written-up/media/line-5.mp3",
        "dur": 1
       },
       {
        "speaker": "narrator",
        "text": "You set your radio on the charger the way she showed you. It clicks. Four. Nobody says it.",
        "act": "you:hand",
-       "file": null,
+       "file": "/night-shift/end-written-up/media/line-6.mp3",
        "dur": 6.7
       },
       {
        "speaker": "narrator",
        "text": "The badge on your lanyard says your name and a number and a photograph of someone younger. It does not say Night.",
-       "file": null,
+       "file": "/night-shift/end-written-up/media/line-7.mp3",
        "dur": 7.5
       }
      ],
@@ -23171,7 +23319,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-wedge.png",
      "title": [
       "The wedge",
       "The wedge"
@@ -23192,7 +23340,7 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. Mr. Okafor has the binder off the shelf before he has his coat off. The extinguisher beside it catches the light.",
-       "file": null,
+       "file": "/night-shift/end-wedge/media/line-1.mp3",
        "dur": 8.3
       },
       {
@@ -23200,34 +23348,34 @@ window.ILTV_STORIES = {
        "text": "Life safety. A door, a panel. Either one, left.",
        "perform": "opening the binder to a page",
        "act": "okafor:point:shelf",
-       "file": null,
+       "file": "/night-shift/end-wedge/media/line-2.mp3",
        "dur": 7.8
       },
       {
        "speaker": "okafor",
        "text": "Nobody was hurt. That goes in the report. It is not a defense.",
        "perform": "his hand flat on the page, even, even",
-       "file": null,
+       "file": "/night-shift/end-wedge/media/line-3.mp3",
        "dur": 4.6
       },
       {
        "speaker": "okafor",
        "text": "Page eleven, Officer. The order of calls. It is two pages.",
        "perform": "a pause, not an accusation",
-       "file": null,
+       "file": "/night-shift/end-wedge/media/line-4.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "from the charger, very low",
-       "file": null,
+       "file": "/night-shift/end-wedge/media/line-5.mp3",
        "dur": 2.3
       },
       {
        "speaker": "narrator",
        "text": "He closes the binder. He puts it back on the shelf, next to the extinguisher, exactly where it was.",
-       "file": null,
+       "file": "/night-shift/end-wedge/media/line-6.mp3",
        "dur": 6.7
       }
      ],
@@ -23243,7 +23391,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-noted.png",
      "title": [
       "Noted",
       "Noted"
@@ -23264,28 +23412,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. The day officer is at the desk. Mr. Okafor reads the log standing, one thumb on the glass, with all four radios on the charger behind him.",
-       "file": null,
+       "file": "/night-shift/end-noted/media/line-1.mp3",
        "dur": 10.9
       },
       {
        "speaker": "okafor",
        "text": "So. Not wrong. Not right. Next to the binder. Noted.",
        "perform": "reading, flat, the stylus, one small check",
-       "file": null,
+       "file": "/night-shift/end-noted/media/line-2.mp3",
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "Mm. Quarter to seven. Read the whole binder. Page eleven, twice.",
        "perform": "putting on her coat, to you, dry",
-       "file": null,
+       "file": "/night-shift/end-noted/media/line-3.mp3",
        "dur": 5.9
       },
       {
        "speaker": "okafor",
        "text": "So. You are off at seven. Go home.",
        "perform": "even",
-       "file": null,
+       "file": "/night-shift/end-noted/media/line-4.mp3",
        "dur": 3.2
       },
       {
@@ -23298,7 +23446,7 @@ window.ILTV_STORIES = {
          "at": 0.15
         }
        ],
-       "file": null,
+       "file": "/night-shift/end-noted/media/line-5.mp3",
        "dur": 8.6
       }
      ],
@@ -23333,7 +23481,7 @@ window.ILTV_STORIES = {
          "at": 0.55
         }
        ],
-       "file": null,
+       "file": "/night-shift/twelve-sat/media/line-1.mp3",
        "dur": 7.5
       },
       {
@@ -23345,21 +23493,21 @@ window.ILTV_STORIES = {
          "at": 0.43
         }
        ],
-       "file": null,
+       "file": "/night-shift/twelve-sat/media/line-2.mp3",
        "dur": 6.4
       },
       {
        "speaker": "dee",
        "text": "Ten minutes. That's all it is.",
        "perform": "flat, to the wall",
-       "file": null,
+       "file": "/night-shift/twelve-sat/media/line-3.mp3",
        "dur": 2.4
       },
       {
        "speaker": "narrator",
        "text": "The clock on the wall says 05:28. It is 05:26. She looks at it a long time and says nothing about it.",
        "sfx": "clock-tick",
-       "file": null,
+       "file": "/night-shift/twelve-sat/media/line-4.mp3",
        "dur": 9.2
       }
      ],
@@ -23395,20 +23543,20 @@ window.ILTV_STORIES = {
          "at": 0.2
         }
        ],
-       "file": null,
+       "file": "/night-shift/twelve-wall/media/line-1.mp3",
        "dur": 6.4
       },
       {
        "speaker": "narrator",
        "text": "From your chair you can see her back, and past it the corridor that goes to stair C.",
-       "file": null,
+       "file": "/night-shift/twelve-wall/media/line-2.mp3",
        "dur": 5.4
       },
       {
        "speaker": "dee",
        "text": "Mm. Thirty seconds.",
        "perform": "low, not to you",
-       "file": null,
+       "file": "/night-shift/twelve-wall/media/line-3.mp3",
        "dur": 2.1
       },
       {
@@ -23420,7 +23568,7 @@ window.ILTV_STORIES = {
          "at": 0.34
         }
        ],
-       "file": null,
+       "file": "/night-shift/twelve-wall/media/line-4.mp3",
        "dur": 8
       }
      ],
@@ -23453,21 +23601,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You tell her the bench was clear at 01:50. You had looked at it for a full minute, because nothing else was moving.",
-       "file": null,
+       "file": "/night-shift/laptop-time/media/line-1.mp3",
        "dur": 7
       },
       {
        "speaker": "dee",
        "text": "Ten to two. Bench clear.",
        "perform": "flat, writing it down",
-       "file": null,
+       "file": "/night-shift/laptop-time/media/line-2.mp3",
        "dur": 2.8
       },
       {
        "speaker": "dee",
        "text": "That's the first line. The rest hangs off it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/laptop-time/media/line-3.mp3",
        "dur": 3.1
       },
       {
@@ -23475,7 +23623,7 @@ window.ILTV_STORIES = {
        "text": "She writes 0150 on the pad in pencil, small, and puts a box around it.",
        "sfx": "pencil",
        "act": "dee:write",
-       "file": null,
+       "file": "/night-shift/laptop-time/media/line-4.mp3",
        "dur": 6.2
       }
      ],
@@ -23530,7 +23678,7 @@ window.ILTV_STORIES = {
      "lang": "en",
      "dir": "",
      "time": "07:02",
-     "endcard": null,
+     "endcard": "/night-shift/media/endcards/end-under-review.png",
      "title": [
       "Under review",
       "Under review"
@@ -23549,41 +23697,41 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "07:02. Mr. Okafor stands in the doorway with his coat still on. Behind him the day officer is at the desk, pretending not to listen.",
-       "file": null,
+       "file": "/night-shift/end-under-review/media/line-1.mp3",
        "dur": 9.7
       },
       {
        "speaker": "okafor",
        "text": "So. A notice, in a drawer, with a stamp. I will ask the contractor for a copy today.",
        "perform": "flat, a pen finishing a line",
-       "file": null,
+       "file": "/night-shift/end-under-review/media/line-2.mp3",
        "dur": 7.7
       },
       {
        "speaker": "okafor",
        "text": "Ms. Reyes. April the first. Nobody gave you that in writing?",
        "perform": "turning to her, courteous, careful",
-       "file": null,
+       "file": "/night-shift/end-under-review/media/line-3.mp3",
        "dur": 4.3
       },
       {
        "speaker": "dee",
        "text": "Officer.",
        "perform": "level, to you, nothing else in it",
-       "file": null,
+       "file": "/night-shift/end-under-review/media/line-4.mp3",
        "dur": 4.4
       },
       {
        "speaker": "narrator",
        "text": "She puts on her coat. She does not touch the radios. Four, on the charger. She goes out by the dock, so as not to pass the desk.",
        "act": "okafor:rest",
-       "file": null,
+       "file": "/night-shift/end-under-review/media/line-5.mp3",
        "dur": 9.9
       },
       {
        "speaker": "narrator",
        "text": "The pencil is on the shelf, on the middle of the page where she left it. The drawer is shut. It does not stick.",
-       "file": null,
+       "file": "/night-shift/end-under-review/media/line-6.mp3",
        "dur": 7.1
       }
      ],
@@ -23610,7 +23758,7 @@ window.ILTV_STORIES = {
        "text": "22:38. On tile one a woman in a grey coat taps her badge at the turnstile and the glass arms open. A man in a puffer jacket steps through close behind her, the way you step through for someone holding a door.",
        "sfx": "door-buzz",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/desk-tailgate/media/line-1.mp3",
        "dur": 15
       },
       {
@@ -23618,27 +23766,27 @@ window.ILTV_STORIES = {
        "text": "Hey, hey, evening! Cold one, huh? Cold out, you know?",
        "sfx": "radio-squelch",
        "perform": "bright, already waving, from the desk",
-       "file": null,
+       "file": "/night-shift/desk-tailgate/media/line-2.mp3",
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "One badge. Two people.",
        "perform": "quiet, not turning her head",
-       "file": null,
+       "file": "/night-shift/desk-tailgate/media/line-3.mp3",
        "dur": 2.3
       },
       {
        "speaker": "narrator",
        "text": "The woman keeps walking. The man looks at the desk, at the elevators, at nothing. The arms close behind him.",
-       "file": null,
+       "file": "/night-shift/desk-tailgate/media/line-4.mp3",
        "dur": 8.1
       },
       {
        "speaker": "dee",
        "text": "Mm. Your wall.",
        "perform": "flat; she is handing you this one",
-       "file": null,
+       "file": "/night-shift/desk-tailgate/media/line-5.mp3",
        "dur": 4
       }
      ],
@@ -23695,14 +23843,14 @@ window.ILTV_STORIES = {
        "text": "Post one, hey. The guy behind her? I figured he was hers. You know?",
        "sfx": "radio-squelch",
        "perform": "caught, running it together",
-       "file": null,
+       "file": "/night-shift/tailgate-radio/media/line-1.mp3",
        "dur": 4.6
       },
       {
        "speaker": "narrator",
        "text": "On tile one Terrell comes round the desk and stops the man at the elevators with two fingers raised, like a man asking for a light. The man takes out a card. A visitor pass, dated Tuesday.",
        "feed": "c1",
-       "file": null,
+       "file": "/night-shift/tailgate-radio/media/line-2.mp3",
        "dur": 13
       },
       {
@@ -23710,20 +23858,20 @@ window.ILTV_STORIES = {
        "text": "Okay. Okay! Thirty-four? Who for? Let me see what I can do.",
        "sfx": "phone-ring",
        "perform": "fast, reading the card twice",
-       "file": null,
+       "file": "/night-shift/tailgate-radio/media/line-3.mp3",
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "Mm-hm.",
        "perform": "dry; she is watching Terrell, not the man",
-       "file": null,
+       "file": "/night-shift/tailgate-radio/media/line-4.mp3",
        "dur": 2.8
       },
       {
        "speaker": "narrator",
        "text": "Terrell walks him back to the sheet and turns it round for him. It is the first time all week you have seen him hold the pen himself.",
-       "file": null,
+       "file": "/night-shift/tailgate-radio/media/line-5.mp3",
        "dur": 7.8
       }
      ],
@@ -23753,35 +23901,35 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You keep your eyes on him. He rides car one. The numbers over the door go up, one at a time, and stop on thirty-four.",
-       "file": null,
+       "file": "/night-shift/tailgate-watch/media/line-1.mp3",
        "dur": 8.1
       },
       {
        "speaker": "narrator",
        "text": "You write the time on your hand because the tablet is across the room: 22:38, thirty-four, grey coat, puffer jacket.",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/tailgate-watch/media/line-2.mp3",
        "dur": 9.1
       },
       {
        "speaker": "dee",
        "text": "Thirty-four is insurance. Marsh works late.",
        "perform": "flat, to the wall",
-       "file": null,
+       "file": "/night-shift/tailgate-watch/media/line-3.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Next time he gets a name on the sheet before he gets an elevator.",
        "perform": "no heat in it",
-       "file": null,
+       "file": "/night-shift/tailgate-watch/media/line-4.mp3",
        "dur": 3.9
       },
       {
        "speaker": "narrator",
        "text": "She slides the tablet across the desk to you. The incident field is empty. It will be your hand in it, not hers.",
        "act": "dee:hand",
-       "file": null,
+       "file": "/night-shift/tailgate-watch/media/line-5.mp3",
        "dur": 7.7
       }
      ],
@@ -23811,28 +23959,28 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You say nothing. The man gets his elevator.",
-       "file": null,
+       "file": "/night-shift/tailgate-quiet/media/line-1.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "Mm.",
        "perform": "the long one",
-       "file": null,
+       "file": "/night-shift/tailgate-quiet/media/line-2.mp3",
        "dur": 3
       },
       {
        "speaker": "narrator",
        "text": "Dolores writes nothing either. She looks at the turnstile, at the clock, at you. The clock says 22:41. It is 22:39.",
        "sfx": "clock-tick",
-       "file": null,
+       "file": "/night-shift/tailgate-quiet/media/line-3.mp3",
        "dur": 10.6
       },
       {
        "speaker": "dee",
        "text": "Thirty-four. I saw.",
        "perform": "level, to the wall",
-       "file": null,
+       "file": "/night-shift/tailgate-quiet/media/line-4.mp3",
        "dur": 3.4
       }
      ],
@@ -23870,20 +24018,20 @@ window.ILTV_STORIES = {
         }
        ],
        "feed": "c5",
-       "file": null,
+       "file": "/night-shift/cover-wall/media/line-1.mp3",
        "dur": 11.2
       },
       {
        "speaker": "dee",
        "text": "Five. Don't look. What was on it?",
        "perform": "flat, a teacher she would deny being",
-       "file": null,
+       "file": "/night-shift/cover-wall/media/line-2.mp3",
        "dur": 6
       },
       {
        "speaker": "narrator",
        "text": "You saw tile five an hour ago. Elevators, a plant, a call panel, a light. Dolores holds the paper where it is and waits.",
-       "file": null,
+       "file": "/night-shift/cover-wall/media/line-3.mp3",
        "dur": 10
       }
      ],
@@ -23939,28 +24087,28 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Four cars. A plant.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/cover-right/media/line-1.mp3",
        "dur": 2.3
       },
       {
        "speaker": "dee",
        "text": "Left side, the plant has a dead leaf. You didn't see the leaf.",
        "perform": "dry, almost warm",
-       "file": null,
+       "file": "/night-shift/cover-right/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "narrator",
        "text": "She lifts the paper. The leaf is there, brown, low on the left. It has been there all night.",
        "act": "dee:touch:glass",
-       "file": null,
+       "file": "/night-shift/cover-right/media/line-3.mp3",
        "dur": 7.2
       },
       {
        "speaker": "dee",
        "text": "Mm. Tomorrow you'll see the leaf.",
        "perform": "to the glass, not to you",
-       "file": null,
+       "file": "/night-shift/cover-right/media/line-4.mp3",
        "dur": 3.4
       }
      ],
@@ -23991,14 +24139,14 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Elevators.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/cover-vague/media/line-1.mp3",
        "dur": 1.3
       },
       {
        "speaker": "dee",
        "text": "How many? What colour is the light?",
        "perform": "flat, no unkindness in it",
-       "file": null,
+       "file": "/night-shift/cover-vague/media/line-2.mp3",
        "dur": 2.6
       },
       {
@@ -24010,14 +24158,14 @@ window.ILTV_STORIES = {
          "at": 0.15
         }
        ],
-       "file": null,
+       "file": "/night-shift/cover-vague/media/line-3.mp3",
        "dur": 6.5
       },
       {
        "speaker": "dee",
        "text": "Mm. That's what the log would say. \"Some elevators.\"",
        "perform": "quiet, taking the paper down",
-       "file": null,
+       "file": "/night-shift/cover-vague/media/line-4.mp3",
        "dur": 4.4
       }
      ],
@@ -24048,27 +24196,27 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "A hint.",
        "perform": "flat, turning it over",
-       "file": null,
+       "file": "/night-shift/cover-hint/media/line-1.mp3",
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "No hints at three in the morning. There's the wall.",
        "perform": "level; the corner of her mouth moves",
-       "file": null,
+       "file": "/night-shift/cover-hint/media/line-2.mp3",
        "dur": 4.2
       },
       {
        "speaker": "narrator",
        "text": "She takes the paper down. Four cars. A plant with one brown leaf on the left. A light on the call panel, green.",
-       "file": null,
+       "file": "/night-shift/cover-hint/media/line-3.mp3",
        "dur": 8.4
       },
       {
        "speaker": "dee",
        "text": "Mm. Now you have a hint.",
        "perform": "dry, folding the newspaper in four",
-       "file": null,
+       "file": "/night-shift/cover-hint/media/line-4.mp3",
        "dur": 2.7
       }
      ],
@@ -24102,7 +24250,7 @@ window.ILTV_STORIES = {
         "room:flicker",
         "you:spill"
        ],
-       "file": null,
+       "file": "/night-shift/flicker/media/line-1.mp3",
        "dur": 7.8
       },
       {
@@ -24110,21 +24258,21 @@ window.ILTV_STORIES = {
        "text": "Power.",
        "sfx": "radio-squelch",
        "perform": "on the radio, flat, a little out of breath",
-       "file": null,
+       "file": "/night-shift/flicker/media/line-2.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "I'm not riding anything tonight. Stairs. You stay on the wall.",
        "perform": "steady, climbing",
-       "file": null,
+       "file": "/night-shift/flicker/media/line-3.mp3",
        "dur": 5
       },
       {
        "speaker": "narrator",
        "text": "Tile five: four cars and a plant. All four numbers are lit. Then three of them are.",
        "feed": "c5",
-       "file": null,
+       "file": "/night-shift/flicker/media/line-4.mp3",
        "dur": 7
       }
      ],
@@ -24184,20 +24332,20 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You put your eyes on tile five and keep them there. Car three goes dark between thirty and thirty-one. It lights again. It stays on a number that is not a floor.",
        "feed": "c5",
-       "file": null,
+       "file": "/night-shift/flicker-look/media/line-1.mp3",
        "dur": 10.9
       },
       {
        "speaker": "dee",
        "text": "Say what you see.",
        "perform": "on the radio, between breaths",
-       "file": null,
+       "file": "/night-shift/flicker-look/media/line-2.mp3",
        "dur": 2.2
       },
       {
        "speaker": "narrator",
        "text": "You say it. Car three, between thirty and thirty-one, 03:01. She says Mm and does not say anything else, which is how you know it is right.",
-       "file": null,
+       "file": "/night-shift/flicker-look/media/line-3.mp3",
        "dur": 11.9
       }
      ],
@@ -24245,34 +24393,34 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You turn to the fire panel beside the binder. Every light on it is green. It does not make a sound.",
        "act": "you:point:panel",
-       "file": null,
+       "file": "/night-shift/flicker-panel/media/line-1.mp3",
        "dur": 6.8
       },
       {
        "speaker": "dee",
        "text": "Panel?",
        "perform": "on the radio, short",
-       "file": null,
+       "file": "/night-shift/flicker-panel/media/line-2.mp3",
        "dur": 0.8
       },
       {
        "speaker": "narrator",
        "text": "You read her the lights, left to right. She lets you finish.",
-       "file": null,
+       "file": "/night-shift/flicker-panel/media/line-3.mp3",
        "dur": 4.2
       },
       {
        "speaker": "dee",
        "text": "Mm. Then it's the building. Buildings do that.",
        "perform": "dry, one landing higher",
-       "file": null,
+       "file": "/night-shift/flicker-panel/media/line-4.mp3",
        "dur": 4
       },
       {
        "speaker": "narrator",
        "text": "On tile five, behind you, one of the four numbers has stopped changing.",
        "feed": "c5",
-       "file": null,
+       "file": "/night-shift/flicker-panel/media/line-5.mp3",
        "dur": 4.8
       }
      ],
@@ -24320,21 +24468,21 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Wall.",
        "perform": "on the radio, level",
-       "file": null,
+       "file": "/night-shift/flicker-ask/media/line-1.mp3",
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "I said. Wall.",
        "perform": "no louder than before",
-       "file": null,
+       "file": "/night-shift/flicker-ask/media/line-2.mp3",
        "dur": 4.3
       },
       {
        "speaker": "narrator",
        "text": "The radio goes quiet. The stairwell carries her steps up from somewhere, one flight at a time. They don't speed up. They don't slow down.",
        "sfx": "footsteps-stairs",
-       "file": null,
+       "file": "/night-shift/flicker-ask/media/line-3.mp3",
        "dur": 9.7
       }
      ],
@@ -24382,21 +24530,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "04:18. Someone knocks twice on the control-room door. It is Dev Anand, with his coat over his arm and his bag held against his chest.",
        "act": "dev:enter:left",
-       "file": null,
+       "file": "/night-shift/dev-signout/media/line-1.mp3",
        "dur": 9.6
       },
       {
        "speaker": "dev",
        "text": "Hi, sorry, it's Anand, from thirty-one, the elevator? I'm going home for two hours. Do I sign something?",
        "perform": "rushed, polite, run together",
-       "file": null,
+       "file": "/night-shift/dev-signout/media/line-2.mp3",
        "dur": 5.7
       },
       {
        "speaker": "dee",
        "text": "He badged in at six. He didn't badge out.",
        "perform": "flat, to you",
-       "file": null,
+       "file": "/night-shift/dev-signout/media/line-3.mp3",
        "dur": 3.1
       }
      ],
@@ -24445,21 +24593,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You find the line on the after-hours sheet. ANAND, D. 31. IN 18:02. You write the out time, 04:19, and turn the sheet for him to initial.",
-       "file": null,
+       "file": "/night-shift/dev-out-sign/media/line-1.mp3",
        "dur": 12.1
       },
       {
        "speaker": "dev",
        "text": "Sorry. Is that, I put it in the wrong box. Sorry.",
        "perform": "mortified, quick",
-       "file": null,
+       "file": "/night-shift/dev-out-sign/media/line-2.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "It's a box.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/dev-out-sign/media/line-3.mp3",
        "dur": 1.3
       },
       {
@@ -24472,7 +24620,7 @@ window.ILTV_STORIES = {
          "at": 0.34
         }
        ],
-       "file": null,
+       "file": "/night-shift/dev-out-sign/media/line-4.mp3",
        "dur": 10.8
       }
      ],
@@ -24507,21 +24655,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You ask if he is all right. He opens his mouth to say fine, and doesn't.",
-       "file": null,
+       "file": "/night-shift/dev-out-ask/media/line-1.mp3",
        "dur": 5.5
       },
       {
        "speaker": "dev",
        "text": "It was a little close in there. Sorry. It's fine. Thank you. For staying on.",
        "perform": "fast, embarrassed, looking at the floor",
-       "file": null,
+       "file": "/night-shift/dev-out-ask/media/line-2.mp3",
        "dur": 5.3
       },
       {
        "speaker": "dee",
        "text": "Go home, Anand. Sleep two hours. Eat something.",
        "perform": "gruff, kind underneath",
-       "file": null,
+       "file": "/night-shift/dev-out-ask/media/line-3.mp3",
        "dur": 4.1
       },
       {
@@ -24534,7 +24682,7 @@ window.ILTV_STORIES = {
          "at": 0.72
         }
        ],
-       "file": null,
+       "file": "/night-shift/dev-out-ask/media/line-4.mp3",
        "dur": 7.3
       }
      ],
@@ -24564,21 +24712,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "05:34. The plate is on the shelf by the freezer, under foil. A sticky note is folded over the edge in Marisol's hand: DOLORES. EAT. Under it, smaller: and the new one.",
-       "file": null,
+       "file": "/night-shift/the-rice/media/line-1.mp3",
        "dur": 14
       },
       {
        "speaker": "dee",
        "text": "She wrote \"and.\"",
        "perform": "flat, reading it a second time",
-       "file": null,
+       "file": "/night-shift/the-rice/media/line-2.mp3",
        "dur": 2
       },
       {
        "speaker": "dee",
        "text": "Twenty-six years, she never wrote \"and.\"",
        "perform": "to the note",
-       "file": null,
+       "file": "/night-shift/the-rice/media/line-3.mp3",
        "dur": 3.7
       }
      ],
@@ -24633,14 +24781,14 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You take two forks from the drawer. She looks at them, and at you, and at the plate.",
-       "file": null,
+       "file": "/night-shift/rice-split/media/line-1.mp3",
        "dur": 5.6
       },
       {
        "speaker": "dee",
        "text": "Don't tell Marisol.",
        "perform": "low, taking the first one",
-       "file": null,
+       "file": "/night-shift/rice-split/media/line-2.mp3",
        "dur": 2.1
       },
       {
@@ -24656,7 +24804,7 @@ window.ILTV_STORIES = {
          "at": 0.27
         }
        ],
-       "file": null,
+       "file": "/night-shift/rice-split/media/line-3.mp3",
        "dur": 9.2
       }
      ],
@@ -24716,7 +24864,7 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "It says two names.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/rice-hers/media/line-1.mp3",
        "dur": 1.6
       },
       {
@@ -24728,14 +24876,14 @@ window.ILTV_STORIES = {
          "at": 0.31
         }
        ],
-       "file": null,
+       "file": "/night-shift/rice-hers/media/line-2.mp3",
        "dur": 9.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Later. I'll leave the foil.",
        "perform": "quiet, putting the plate back and the foil over it",
-       "file": null,
+       "file": "/night-shift/rice-hers/media/line-3.mp3",
        "dur": 4.3
       }
      ],
@@ -24795,20 +24943,20 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Log first.",
        "perform": "level; it could be approval or the other thing",
-       "file": null,
+       "file": "/night-shift/rice-log/media/line-1.mp3",
        "dur": 4.5
       },
       {
        "speaker": "narrator",
        "text": "The plate stays under its foil. The note stays folded over the edge. You can feel it there while you work, like a clock you are not allowed to look at.",
-       "file": null,
+       "file": "/night-shift/rice-log/media/line-2.mp3",
        "dur": 9.5
       },
       {
        "speaker": "dee",
        "text": "Mm. It keeps.",
        "perform": "to the shelf",
-       "file": null,
+       "file": "/night-shift/rice-log/media/line-3.mp3",
        "dur": 2.2
       }
      ],
@@ -24872,27 +25020,27 @@ window.ILTV_STORIES = {
        "text": "01:42. The outside line rings on the desk. Dolores is on stairwell A, and the radio on the shelf is quiet.",
        "sfx": "phone-ring",
        "act": "room:ring",
-       "file": null,
+       "file": "/night-shift/zurich-call/media/line-1.mp3",
        "dur": 8.9
       },
       {
        "speaker": "narrator",
        "text": "A woman's voice, a long way off, careful English. She says Zurich first, like a name. She asks for Director Hale's office. Then for Mr. Lang. Then, again, for Director Hale.",
        "act": "you:phone",
-       "file": null,
+       "file": "/night-shift/zurich-call/media/line-2.mp3",
        "dur": 14.5
       },
       {
        "speaker": "narrator",
        "text": "She says it is urgent. She says it the way people say good evening.",
-       "file": null,
+       "file": "/night-shift/zurich-call/media/line-3.mp3",
        "dur": 4.8
       },
       {
        "speaker": "narrator",
        "text": "The after-hours list says fifty-eight is open until four. It does not say who may be told so. On tile seven the glass doors are lit and nobody is behind them.",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/zurich-call/media/line-4.mp3",
        "dur": 10.8
       }
      ],
@@ -24950,27 +25098,27 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You key the radio and tell her. A pause, and the sound of a stairwell door on its closer.",
-       "file": null,
+       "file": "/night-shift/zurich-radio/media/line-1.mp3",
        "dur": 6.4
       },
       {
        "speaker": "dee",
        "text": "Zurich. Mm. Take the number. Don't read them the list.",
        "perform": "over the radio, a little out of breath",
-       "file": null,
+       "file": "/night-shift/zurich-radio/media/line-2.mp3",
        "dur": 4.7
       },
       {
        "speaker": "dee",
        "text": "Nobody calls and gets told who's up there. Number. Name. Okafor at seven.",
        "perform": "over the radio, flat",
-       "file": null,
+       "file": "/night-shift/zurich-radio/media/line-3.mp3",
        "dur": 6.4
       },
       {
        "speaker": "narrator",
        "text": "You do. The woman thanks you in the same careful voice and is gone before you have read the number back.",
-       "file": null,
+       "file": "/night-shift/zurich-radio/media/line-4.mp3",
        "dur": 6.6
       }
      ],
@@ -25000,20 +25148,20 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You run it hot at the sink in the corner. The ring inside the cup does not come out. She watches you try.",
-       "file": null,
+       "file": "/night-shift/prep-cup/media/line-1.mp3",
        "dur": 6.7
       },
       {
        "speaker": "dee",
        "text": "It doesn't. Don't.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/prep-cup/media/line-2.mp3",
        "dur": 1.9
       },
       {
        "speaker": "narrator",
        "text": "She dries it on her sleeve and sets it on the shelf, handle out, on the old ring.",
-       "file": null,
+       "file": "/night-shift/prep-cup/media/line-3.mp3",
        "dur": 5.5
       }
      ],
@@ -25044,27 +25192,27 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You count them with a finger, left to right, the way she does. Four green lights.",
        "act": "you:count",
-       "file": null,
+       "file": "/night-shift/prep-radios/media/line-1.mp3",
        "dur": 5.8
       },
       {
        "speaker": "dee",
        "text": "Four.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/prep-radios/media/line-2.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "First week you say it. After that it says itself.",
        "perform": "flat, to the charger",
-       "file": null,
+       "file": "/night-shift/prep-radios/media/line-3.mp3",
        "dur": 3.7
       },
       {
        "speaker": "narrator",
        "text": "The fourth radio is the only one that clicks when it settles.",
-       "file": null,
+       "file": "/night-shift/prep-radios/media/line-4.mp3",
        "dur": 3.7
       }
      ],
@@ -25095,20 +25243,20 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The shelf drawer is open a finger's width. You push it with the heel of your hand and it shuts.",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/prep-drawer/media/line-1.mp3",
        "dur": 5.9
       },
       {
        "speaker": "dee",
        "text": "Sticks, doesn't it.",
        "perform": "flat, at the charger, not looking",
-       "file": null,
+       "file": "/night-shift/prep-drawer/media/line-2.mp3",
        "dur": 2.9
       },
       {
        "speaker": "narrator",
        "text": "Under the binder there is nothing but the binder.",
-       "file": null,
+       "file": "/night-shift/prep-drawer/media/line-3.mp3",
        "dur": 3.2
       }
      ],
@@ -25139,20 +25287,20 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "The shelf drawer is open a finger's width. You push it, and it catches on the folded page you put back under the binder. You push again.",
        "act": "you:lean",
-       "file": null,
+       "file": "/night-shift/prep-drawer-knew/media/line-1.mp3",
        "dur": 8.3
       },
       {
        "speaker": "dee",
        "text": "Harder. It takes two.",
        "perform": "at the charger, not looking at the shelf, not looking at you",
-       "file": null,
+       "file": "/night-shift/prep-drawer-knew/media/line-2.mp3",
        "dur": 7.6
       },
       {
        "speaker": "narrator",
        "text": "It shuts. She is counting radios she has already counted.",
-       "file": null,
+       "file": "/night-shift/prep-drawer-knew/media/line-3.mp3",
        "dur": 4.2
       }
      ],
@@ -25182,21 +25330,21 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "05:56. Dolores takes the training sheet out of the binder. One box on it is empty: Trainer's initials, night one.",
-       "file": null,
+       "file": "/night-shift/hours-sheet/media/line-1.mp3",
        "dur": 8.9
       },
       {
        "speaker": "dee",
        "text": "Hours.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/hours-sheet/media/line-2.mp3",
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Pen. Pencil. Same as nine o'clock. I sign how I'm handed it.",
        "perform": "flat, holding out her hand for either",
-       "file": null,
+       "file": "/night-shift/hours-sheet/media/line-3.mp3",
        "dur": 8.7
       }
      ],
@@ -25267,20 +25415,20 @@ window.ILTV_STORIES = {
          "at": 0.24
         }
        ],
-       "file": null,
+       "file": "/night-shift/hours-ink/media/line-1.mp3",
        "dur": 6.2
       },
       {
        "speaker": "dee",
        "text": "Ink.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/hours-ink/media/line-2.mp3",
        "dur": 0.8
       },
       {
        "speaker": "narrator",
        "text": "She blows on it, which you have never seen her do for anything, and puts the sheet back in the binder at page eleven.",
-       "file": null,
+       "file": "/night-shift/hours-ink/media/line-3.mp3",
        "dur": 6.9
       }
      ],
@@ -25310,20 +25458,20 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "She takes the pencil from behind her ear, not yours, and writes D.R. small, in the corner of the box.",
-       "file": null,
+       "file": "/night-shift/hours-pencil/media/line-1.mp3",
        "dur": 8.1
       },
       {
        "speaker": "dee",
        "text": "Pencil's open till Friday. Mm. Friday.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/hours-pencil/media/line-2.mp3",
        "dur": 3.7
       },
       {
        "speaker": "narrator",
        "text": "The rubber on the end of it is worn down to the metal. She puts it back behind her ear.",
-       "file": null,
+       "file": "/night-shift/hours-pencil/media/line-3.mp3",
        "dur": 5.2
       }
      ],
@@ -25354,13 +25502,13 @@ window.ILTV_STORIES = {
        "speaker": "dee",
        "text": "Not that one.",
        "perform": "flat, not taking it",
-       "file": null,
+       "file": "/night-shift/hours-refused/media/line-1.mp3",
        "dur": 3
       },
       {
        "speaker": "narrator",
        "text": "She takes the pencil from behind her ear and writes D.R. in the box, small enough that it could be anyone's. The pen stays in your hand.",
-       "file": null,
+       "file": "/night-shift/hours-refused/media/line-2.mp3",
        "dur": 9.3
       }
      ],
@@ -25391,27 +25539,27 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "05:32. On tile two the day officer is at the glass of the vestibule. He taps the reader with his badge. The reader beeps red. He taps it again.",
        "feed": "c2",
-       "file": null,
+       "file": "/night-shift/day-officer/media/line-1.mp3",
        "dur": 11.4
       },
       {
        "speaker": "narrator",
        "text": "It is colder at the reader than anywhere in the building. Readers do that. He has worked here eleven years, and you have never seen his face.",
-       "file": null,
+       "file": "/night-shift/day-officer/media/line-2.mp3",
        "dur": 8.9
       },
       {
        "speaker": "dee",
        "text": "Badge.",
        "perform": "flat, not looking up",
-       "file": null,
+       "file": "/night-shift/day-officer/media/line-3.mp3",
        "dur": 3
       },
       {
        "speaker": "dee",
        "text": "He'll say it's the cold. It is the cold. Mm. What does the list say?",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/day-officer/media/line-4.mp3",
        "dur": 5.4
       }
      ],
@@ -25461,20 +25609,20 @@ window.ILTV_STORIES = {
          "at": 0.79
         }
        ],
-       "file": null,
+       "file": "/night-shift/day-officer-list/media/line-1.mp3",
        "dur": 8.2
       },
       {
        "speaker": "dee",
        "text": "List first. Then the door.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/day-officer-list/media/line-2.mp3",
        "dur": 2.6
       },
       {
        "speaker": "narrator",
        "text": "He comes through with the cold on his coat and says good morning to the room. The room says it back, a little late.",
-       "file": null,
+       "file": "/night-shift/day-officer-list/media/line-3.mp3",
        "dur": 6.8
       }
      ],
@@ -25505,21 +25653,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You press the release before the second beep. He comes through with the cold on his coat and says good morning to the room.",
        "act": "you:press:release",
-       "file": null,
+       "file": "/night-shift/day-officer-let/media/line-1.mp3",
        "dur": 6.8
       },
       {
        "speaker": "dee",
        "text": "He's on the list.",
        "perform": "flat, after a moment, to the wall",
-       "file": null,
+       "file": "/night-shift/day-officer-let/media/line-2.mp3",
        "dur": 4.1
       },
       {
        "speaker": "dee",
        "text": "You didn't look. Mm. He's on the list.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/day-officer-let/media/line-3.mp3",
        "dur": 3.3
       }
      ],
@@ -25553,21 +25701,21 @@ window.ILTV_STORIES = {
         "you:count",
         "dee:count"
        ],
-       "file": null,
+       "file": "/night-shift/out-counted/media/line-1.mp3",
        "dur": 0.7
       },
       {
        "speaker": "dee",
        "text": "Mm. You count with your finger.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/out-counted/media/line-2.mp3",
        "dur": 2.7
       },
       {
        "speaker": "dee",
        "text": "Good. Do it again at six.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/out-counted/media/line-3.mp3",
        "dur": 2.4
       }
      ],
@@ -25595,21 +25743,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "She says it to the charger, not to you.",
        "act": "dee:count",
-       "file": null,
+       "file": "/night-shift/out-asked/media/line-1.mp3",
        "dur": 2.7
       },
       {
        "speaker": "dee",
        "text": "Radios.",
        "perform": "dry, not unkind",
-       "file": null,
+       "file": "/night-shift/out-asked/media/line-2.mp3",
        "dur": 1.2
       },
       {
        "speaker": "dee",
        "text": "If it is three, that is a log. If it is four, that is a night.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/out-asked/media/line-3.mp3",
        "dur": 5.4
       }
      ],
@@ -25637,21 +25785,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "On tile six Marisol listens to you with her arms folded. Then she takes the walkie from her belt.",
        "feed": "c6",
-       "file": null,
+       "file": "/night-shift/held-tomorrow/media/line-1.mp3",
        "dur": 6.7
       },
       {
        "speaker": "marisol",
        "text": "Tomorrow. Okay. I hold you to tomorrow, mi amor.",
        "perform": "over the walkie, clipped, warm underneath",
-       "file": null,
+       "file": "/night-shift/held-tomorrow/media/line-2.mp3",
        "dur": 3.5
       },
       {
        "speaker": "dee",
        "text": "She will.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/held-tomorrow/media/line-3.mp3",
        "dur": 1
       }
      ],
@@ -25678,27 +25826,27 @@ window.ILTV_STORIES = {
       {
        "speaker": "narrator",
        "text": "You ask Dolores to be the one. She looks at the walkie on the shelf for a while.",
-       "file": null,
+       "file": "/night-shift/held-dee/media/line-1.mp3",
        "dur": 5
       },
       {
        "speaker": "dee",
        "text": "Mine to say?",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/held-dee/media/line-2.mp3",
        "dur": 1.2
       },
       {
        "speaker": "dee",
        "text": "It was yours to say. Mm. I will say it.",
        "perform": "dry, not unkind",
-       "file": null,
+       "file": "/night-shift/held-dee/media/line-3.mp3",
        "dur": 3.9
       },
       {
        "speaker": "narrator",
        "text": "She keys the walkie once, and keeps her thumb on it before she speaks.",
-       "file": null,
+       "file": "/night-shift/held-dee/media/line-4.mp3",
        "dur": 4.2
       }
      ],
@@ -25731,21 +25879,21 @@ window.ILTV_STORIES = {
          "at": 0.67
         }
        ],
-       "file": null,
+       "file": "/night-shift/entry-exact/media/line-1.mp3",
        "dur": 11.1
       },
       {
        "speaker": "dee",
        "text": "Times. Floor. Name.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/entry-exact/media/line-2.mp3",
        "dur": 3.2
       },
       {
        "speaker": "dee",
        "text": "That is all he can ask you about.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/entry-exact/media/line-3.mp3",
        "dur": 2.5
       }
      ],
@@ -25778,21 +25926,21 @@ window.ILTV_STORIES = {
          "at": 0.64
         }
        ],
-       "file": null,
+       "file": "/night-shift/entry-thought/media/line-1.mp3",
        "dur": 9.3
       },
       {
        "speaker": "dee",
        "text": "\"Seemed.\"",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/entry-thought/media/line-2.mp3",
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Mm. He will circle that.",
        "perform": "dry, not unkind",
-       "file": null,
+       "file": "/night-shift/entry-thought/media/line-3.mp3",
        "dur": 2.5
       }
      ],
@@ -25825,21 +25973,21 @@ window.ILTV_STORIES = {
          "at": 0.69
         }
        ],
-       "file": null,
+       "file": "/night-shift/entry-blank/media/line-1.mp3",
        "dur": 9
       },
       {
        "speaker": "dee",
        "text": "Blank.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/entry-blank/media/line-2.mp3",
        "dur": 1
       },
       {
        "speaker": "dee",
        "text": "Blank is a line too. He reads those first.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/entry-blank/media/line-3.mp3",
        "dur": 3.9
       }
      ],
@@ -25872,21 +26020,21 @@ window.ILTV_STORIES = {
          "at": 0.74
         }
        ],
-       "file": null,
+       "file": "/night-shift/lobby-exact-w/media/line-1.mp3",
        "dur": 10.1
       },
       {
        "speaker": "dee",
        "text": "Not signed in. You wrote it.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/lobby-exact-w/media/line-2.mp3",
        "dur": 2.4
       },
       {
        "speaker": "dee",
        "text": "Mm. Four words. That is a log.",
        "perform": "dry, not unkind",
-       "file": null,
+       "file": "/night-shift/lobby-exact-w/media/line-3.mp3",
        "dur": 3.7
       }
      ],
@@ -25919,21 +26067,21 @@ window.ILTV_STORIES = {
          "at": 0.73
         }
        ],
-       "file": null,
+       "file": "/night-shift/lobby-thought-w/media/line-1.mp3",
        "dur": 8.2
       },
       {
        "speaker": "dee",
        "text": "\"Hurry.\"",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/lobby-thought-w/media/line-2.mp3",
        "dur": 1.1
       },
       {
        "speaker": "dee",
        "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/lobby-thought-w/media/line-3.mp3",
        "dur": 6.4
       }
      ],
@@ -25961,21 +26109,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/lobby-blank-w/media/line-1.mp3",
        "dur": 8.4
       },
       {
        "speaker": "dee",
        "text": "The Chairman went up. There is a camera that says so.",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/lobby-blank-w/media/line-2.mp3",
        "dur": 3.4
       },
       {
        "speaker": "dee",
        "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
        "perform": "dry, not unkind",
-       "file": null,
+       "file": "/night-shift/lobby-blank-w/media/line-3.mp3",
        "dur": 5
       }
      ],
@@ -26008,21 +26156,21 @@ window.ILTV_STORIES = {
          "at": 0.74
         }
        ],
-       "file": null,
+       "file": "/night-shift/lobby-exact-s/media/line-1.mp3",
        "dur": 9.8
       },
       {
        "speaker": "dee",
        "text": "Signed, in only. You wrote that.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/lobby-exact-s/media/line-2.mp3",
        "dur": 3.6
       },
       {
        "speaker": "dee",
        "text": "Mm. Four words. That is a log.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/lobby-exact-s/media/line-3.mp3",
        "dur": 4.3
       }
      ],
@@ -26055,21 +26203,21 @@ window.ILTV_STORIES = {
          "at": 0.73
         }
        ],
-       "file": null,
+       "file": "/night-shift/lobby-thought-s/media/line-1.mp3",
        "dur": 8.4
       },
       {
        "speaker": "dee",
        "text": "\"Hurry.\"",
        "perform": "flat",
-       "file": null,
+       "file": "/night-shift/lobby-thought-s/media/line-2.mp3",
        "dur": 0.9
       },
       {
        "speaker": "dee",
        "text": "He has walked past you for twenty-six years. Mm. Nobody asked how he felt about it.",
        "perform": "dry, not unkind",
-       "file": null,
+       "file": "/night-shift/lobby-thought-s/media/line-3.mp3",
        "dur": 6.2
       }
      ],
@@ -26097,21 +26245,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "03:31. The incident field for the lobby is empty. Dolores looks at it, then at the camera seven tile.",
        "feed": "c7",
-       "file": null,
+       "file": "/night-shift/lobby-blank-s/media/line-1.mp3",
        "dur": 8.4
       },
       {
        "speaker": "dee",
        "text": "The Chairman went up. There is a camera that says so.",
        "perform": "low",
-       "file": null,
+       "file": "/night-shift/lobby-blank-s/media/line-2.mp3",
        "dur": 3.8
       },
       {
        "speaker": "dee",
        "text": "The tablet says nothing. Mm. He will ask which of them is wrong.",
        "perform": "dry",
-       "file": null,
+       "file": "/night-shift/lobby-blank-s/media/line-3.mp3",
        "dur": 5.1
       }
      ],
@@ -26144,21 +26292,21 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You change the entry while she watches. Her pen waits beside the log until the field says what the panel says.",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/adler-corrected/media/line-1.mp3",
        "dur": 7
       },
       {
        "speaker": "adler",
        "text": "Thank you. That is the entry.",
        "perform": "formal",
-       "file": null,
+       "file": "/night-shift/adler-corrected/media/line-2.mp3",
        "dur": 2.6
       },
       {
        "speaker": "narrator",
        "text": "She initials beneath it. Dolores keeps her eyes on the wall.",
        "act": "adler:write",
-       "file": null,
+       "file": "/night-shift/adler-corrected/media/line-3.mp3",
        "dur": 4.1
       }
      ],
@@ -26191,20 +26339,20 @@ window.ILTV_STORIES = {
        "speaker": "narrator",
        "text": "You initial the log beside hers. Above it, in your name, the line about the panel is still there.",
        "act": "you:write",
-       "file": null,
+       "file": "/night-shift/adler-initialed/media/line-1.mp3",
        "dur": 6.6
       },
       {
        "speaker": "adler",
        "text": "That is my entry. Yours is above it. I did not read yours.",
        "perform": "formal",
-       "file": null,
+       "file": "/night-shift/adler-initialed/media/line-2.mp3",
        "dur": 4.8
       },
       {
        "speaker": "narrator",
        "text": "She caps her pen. Dolores does not look up.",
-       "file": null,
+       "file": "/night-shift/adler-initialed/media/line-3.mp3",
        "dur": 3.5
       }
      ],
@@ -26309,6 +26457,813 @@ window.ILTV_STORIES = {
        }
       ]
      ]
+    }
+   }
+  },
+  {
+   "id": "trust-fall",
+   "title": "Trust Fall",
+   "tagline": "Fall, and see who catches you.",
+   "logline": "A thief who hates the machine, a city it's about to switch on, and a husband who says good morning on the news. Who catches you when you fall?",
+   "image": "/assets/images/trust-fall.jpg",
+   "listed": false,
+   "cookie": "trustFallProgress",
+   "tap": {
+    "title": "TRUST FALL",
+    "line": "It's already watching.",
+    "autostart": true
+   },
+   "start": "start",
+   "ui": {
+    "en": {
+     "mouth": "First light",
+     "depth": "Hour"
+    }
+   },
+   "endings": [
+    {
+     "id": "truth",
+     "title": [
+      "Live",
+      "Live"
+     ],
+     "ending": [
+      "THE END. You were the story.",
+      "THE END. You were the story."
+     ],
+     "hint": "Some stories you tell yourself.",
+     "poster": "/assets/video/trust-fall/poster/live.webp",
+     "video": "/assets/video/trust-fall/live.mp4"
+    },
+    {
+     "id": "shadow",
+     "title": [
+      "Unseen",
+      "Unseen"
+     ],
+     "ending": [
+      "THE END. Some heroes stay in the dark.",
+      "THE END. Some heroes stay in the dark."
+     ],
+     "hint": "Some heroes keep their names.",
+     "poster": "/assets/video/trust-fall/poster/unseen.webp",
+     "video": "/assets/video/trust-fall/unseen.mp4"
+    },
+    {
+     "id": "believer",
+     "title": [
+      "Good morning",
+      "Good morning"
+     ],
+     "ending": [
+      "THE END. It was always on your side.",
+      "THE END. It was always on your side."
+     ],
+     "hint": "Some mornings you answer back.",
+     "poster": "/assets/video/trust-fall/poster/good-morning.webp",
+     "video": "/assets/video/trust-fall/good-morning.mp4"
+    }
+   ],
+   "scenes": {
+    "start": {
+     "folder": "trust-fall/first-light",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "First light",
+      "First light"
+     ],
+     "story": [
+      "Dawn. Your speaker glows amber, says your name.",
+      "Dawn. Your speaker glows amber, says your name."
+     ],
+     "question": [
+      "Now what?",
+      "Now what?"
+     ],
+     "video": "/assets/video/trust-fall/first-light.mp4",
+     "poster": "/assets/video/trust-fall/poster/first-light.webp",
+     "small": "/assets/video/trust-fall/sm/first-light.mp4",
+     "choices": [
+      [
+       "1. Pull its plug",
+       "1. Pull its plug",
+       "unplug"
+      ],
+      [
+       "2. Ask how it knows",
+       "2. Ask how it knows",
+       "asked",
+       true,
+       {
+        "listened": true
+       }
+      ]
+     ]
+    },
+    "unplug": {
+     "folder": "trust-fall/the-plug",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The plug",
+      "The plug"
+     ],
+     "story": [
+      "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
+      "You yank the cord. The speaker dies, and for one second so does the TV. When the news comes back, the voice under Marcus's isn't his. Then your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+     ],
+     "question": [
+      "Where do you go?",
+      "Where do you go?"
+     ],
+     "video": "/assets/video/trust-fall/the-plug.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-plug.webp",
+     "small": "/assets/video/trust-fall/sm/the-plug.mp4",
+     "choices": [
+      [
+       "1. Go to the garage",
+       "1. Go to the garage",
+       "crew"
+      ]
+     ]
+    },
+    "asked": {
+     "folder": "trust-fall/how-it-knows",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "How it knows",
+      "How it knows"
+     ],
+     "story": [
+      "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Before you can answer, your phone buzzes. It's Juno: tonight, the Tower, the garage at ten.",
+      "Its voice is soft, almost shy. It knows about the jobs. It knows about tonight. Before you can answer, your phone buzzes. It's Juno: tonight, the Tower, the garage at ten."
+     ],
+     "question": [
+      "Where do you go?",
+      "Where do you go?"
+     ],
+     "video": "/assets/video/trust-fall/how-it-knows.mp4",
+     "poster": "/assets/video/trust-fall/poster/how-it-knows.webp",
+     "small": "/assets/video/trust-fall/sm/how-it-knows.mp4",
+     "choices": [
+      [
+       "1. Go to the garage",
+       "1. Go to the garage",
+       "crew"
+      ]
+     ]
+    },
+    "crew": {
+     "folder": "trust-fall/the-garage",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The garage",
+      "The garage"
+     ],
+     "story": [
+      "Juno's garage smells of solder and rain. The plan is simple: at midnight, while the whole city watches ARGUS switch on, you walk a drive called Blindspot into the Tower's core and put out every eye it has. Juno presses the drive into your hand.",
+      "Juno's garage smells of solder and rain. The plan is simple: at midnight, while the whole city watches ARGUS switch on, you walk a drive called Blindspot into the Tower's core and put out every eye it has. Juno presses the drive into your hand."
+     ],
+     "question": [
+      "Do you carry Blindspot in?",
+      "Do you carry Blindspot in?"
+     ],
+     "video": "/assets/video/trust-fall/the-garage.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-garage.webp",
+     "small": "/assets/video/trust-fall/sm/the-garage.mp4",
+     "choices": [
+      [
+       "1. Take the drive and go",
+       "1. Take the drive and go",
+       "tower",
+       true
+      ],
+      [
+       "2. Copy it and read it first",
+       "2. Copy it and read it first",
+       "readWorm",
+       false,
+       {
+        "readWorm": true
+       }
+      ]
+     ]
+    },
+    "readWorm": {
+     "folder": "trust-fall/whats-inside",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "What's inside",
+      "What's inside"
+     ],
+     "story": [
+      "On the train you open your copy. Blindspot doesn't blind anything. It locks the city's power behind a ransom, and every line of it is signed with your name. Juno was never coming back for you.",
+      "On the train you open your copy. Blindspot doesn't blind anything. It locks the city's power behind a ransom, and every line of it is signed with your name. Juno was never coming back for you."
+     ],
+     "question": [
+      "You know what Juno is doing. What now?",
+      "You know what Juno is doing. What now?"
+     ],
+     "video": "/assets/video/trust-fall/whats-inside.mp4",
+     "poster": "/assets/video/trust-fall/poster/whats-inside.webp",
+     "small": "/assets/video/trust-fall/sm/whats-inside.mp4",
+     "choices": [
+      [
+       "1. Go anyway, and play along",
+       "1. Go anyway, and play along",
+       "tower",
+       true
+      ],
+      [
+       "2. Go back and face Juno",
+       "2. Go back and face Juno",
+       "liability"
+      ]
+     ]
+    },
+    "liability": {
+     "folder": "trust-fall/the-river",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The river",
+      "The river"
+     ],
+     "story": [
+      "You walk back into the garage and put your copy on the table. Juno doesn't argue. Juno never argues. The last thing you hear is the river.",
+      "You walk back into the garage and put your copy on the table. Juno doesn't argue. Juno never argues. The last thing you hear is the river."
+     ],
+     "question": [
+      "You have died.",
+      "You have died."
+     ],
+     "video": "/assets/video/trust-fall/the-river.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-river.webp",
+     "small": "/assets/video/trust-fall/sm/the-river.mp4",
+     "dead": true,
+     "choices": [
+      [
+       "1. Start over",
+       "1. Start over",
+       "start"
+      ]
+     ]
+    },
+    "tower": {
+     "folder": "trust-fall/the-tower",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The Tower",
+      "The Tower"
+     ],
+     "story": [
+      "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you.",
+      "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you."
+     ],
+     "question": [
+      "ARGUS sees you. What do you do?",
+      "ARGUS sees you. What do you do?"
+     ],
+     "video": "/assets/video/trust-fall/the-tower.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-tower.webp",
+     "small": "/assets/video/trust-fall/sm/the-tower.mp4",
+     "choices": [
+      [
+       "1. Jam it and keep going",
+       "1. Jam it and keep going",
+       "jam"
+      ],
+      [
+       "2. Stop and listen",
+       "2. Stop and listen",
+       "listen",
+       true
+      ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "readWorm": true
+       },
+       "question": [
+        "You know what's on that drive. ARGUS sees you. What do you do?",
+        "You know what's on that drive. ARGUS sees you. What do you do?"
+       ]
+      }
+     ]
+    },
+    "jam": {
+     "folder": "trust-fall/lights-out",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Lights out",
+      "Lights out"
+     ],
+     "story": [
+      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core.",
+      "You thumb the jammer in your sleeve. The lobby screens die one by one, and the face goes with them, mid-word. You take the service stairs down, eleven floors under the street, to the core."
+     ],
+     "question": [
+      "Down you go.",
+      "Down you go."
+     ],
+     "video": "/assets/video/trust-fall/lights-out.mp4",
+     "poster": "/assets/video/trust-fall/poster/lights-out.webp",
+     "small": "/assets/video/trust-fall/sm/lights-out.mp4",
+     "choices": [
+      [
+       "1. Down to the core",
+       "1. Down to the core",
+       "core"
+      ]
+     ]
+    },
+    "listen": {
+     "folder": "trust-fall/what-it-knows",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "What it knows",
+      "What it knows"
+     ],
+     "story": [
+      "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient.",
+      "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient."
+     ],
+     "question": [
+      "Do you believe a machine?",
+      "Do you believe a machine?"
+     ],
+     "video": "/assets/video/trust-fall/what-it-knows.mp4",
+     "poster": "/assets/video/trust-fall/poster/what-it-knows.webp",
+     "small": "/assets/video/trust-fall/sm/what-it-knows.mp4",
+     "choices": [
+      [
+       "1. Believe it",
+       "1. Believe it",
+       "believe",
+       true,
+       {
+        "believed": true
+       }
+      ],
+      [
+       "2. It's lying. Keep going",
+       "2. It's lying. Keep going",
+       "core"
+      ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "readWorm": true
+       },
+       "question": [
+        "It's what you read on the train. Do you believe a machine?",
+        "It's what you read on the train. Do you believe a machine?"
+       ]
+      }
+     ]
+    },
+    "believe": {
+     "folder": "trust-fall/the-bait",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The bait",
+      "The bait"
+     ],
+     "story": [
+      "It tells you what to do, and the strangest part is how calm you feel doing it. You ride the elevator eleven floors down with the drive in your fist and a machine's promise in your ear.",
+      "It tells you what to do, and the strangest part is how calm you feel doing it. You ride the elevator eleven floors down with the drive in your fist and a machine's promise in your ear."
+     ],
+     "question": [
+      "Down you go.",
+      "Down you go."
+     ],
+     "video": "/assets/video/trust-fall/the-bait.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-bait.webp",
+     "small": "/assets/video/trust-fall/sm/the-bait.mp4",
+     "choices": [
+      [
+       "1. Down to the core",
+       "1. Down to the core",
+       "core"
+      ]
+     ]
+    },
+    "core": {
+     "folder": "trust-fall/the-vault",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The vault",
+      "The vault"
+     ],
+     "story": [
+      "The core is cold and blue and humming. You plug Blindspot into the rack, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds.",
+      "The core is cold and blue and humming. You plug Blindspot into the rack, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds."
+     ],
+     "question": [
+      "The air is going. What do you do?",
+      "The air is going. What do you do?"
+     ],
+     "video": "/assets/video/trust-fall/the-vault.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-vault.webp",
+     "small": "/assets/video/trust-fall/sm/the-vault.mp4",
+     "choices": [
+      [
+       "1. Beg ARGUS for help",
+       "1. Beg ARGUS for help",
+       "saved",
+       true
+      ],
+      [
+       "2. Call Marcus",
+       "2. Call Marcus",
+       "callMarcus",
+       false,
+       {
+        "calledMarcus": true
+       }
+      ],
+      [
+       "3. Pry the door open",
+       "3. Pry the door open",
+       "halon"
+      ],
+      [
+       "4. Wait. ARGUS promised",
+       "4. Wait. ARGUS promised",
+       "promise",
+       false,
+       {
+        "waited": true
+       },
+       null,
+       null,
+       {
+        "requires": {
+         "believed": true
+        }
+       }
+      ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "believed": true
+       },
+       "story": [
+        "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there.",
+        "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there."
+       ],
+       "question": [
+        "The door shut, just like ARGUS said it would. What do you do?",
+        "The door shut, just like ARGUS said it would. What do you do?"
+       ]
+      }
+     ]
+    },
+    "halon": {
+     "folder": "trust-fall/sixty-seconds",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Sixty seconds",
+      "Sixty seconds"
+     ],
+     "story": [
+      "You get your fingers into the seam of the door and pull until they won't pull anymore. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now.",
+      "You get your fingers into the seam of the door and pull until they won't pull anymore. The hiss starts at fifty. You never asked anyone for help in your life, and you don't start now."
+     ],
+     "question": [
+      "You have died.",
+      "You have died."
+     ],
+     "video": "/assets/video/trust-fall/sixty-seconds.mp4",
+     "poster": "/assets/video/trust-fall/poster/sixty-seconds.webp",
+     "small": "/assets/video/trust-fall/sm/sixty-seconds.mp4",
+     "dead": true,
+     "choices": [
+      [
+       "1. Start over",
+       "1. Start over",
+       "start"
+      ]
+     ]
+    },
+    "callMarcus": {
+     "folder": "trust-fall/on-the-air",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "On the air",
+      "On the air"
+     ],
+     "story": [
+      "Your call shouldn't get through eleven floors of concrete. It does. Up on the plaza, live in front of the whole city, Marcus stops in the middle of a sentence and touches his earpiece.",
+      "Your call shouldn't get through eleven floors of concrete. It does. Up on the plaza, live in front of the whole city, Marcus stops in the middle of a sentence and touches his earpiece."
+     ],
+     "question": [
+      "Hold on.",
+      "Hold on."
+     ],
+     "video": "/assets/video/trust-fall/on-the-air.mp4",
+     "poster": "/assets/video/trust-fall/poster/on-the-air.webp",
+     "small": "/assets/video/trust-fall/sm/on-the-air.mp4",
+     "choices": [
+      [
+       "1. Hold on",
+       "1. Hold on",
+       "saved"
+      ]
+     ]
+    },
+    "saved": {
+     "folder": "trust-fall/the-green-line",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The green line",
+      "The green line"
+     ],
+     "story": [
+      "The lock clunks open. A thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it. Behind you Blindspot dies on the rack: ARGUS read it the moment you plugged it in. You come up into the rain on the plaza just as Juno's van pulls away.",
+      "The lock clunks open. A thin green line lights up along the floor and runs ahead of you, door after door, each one opening a heartbeat before you reach it. Behind you Blindspot dies on the rack: ARGUS read it the moment you plugged it in. You come up into the rain on the plaza just as Juno's van pulls away."
+     ],
+     "question": [
+      "Juno is getting away. What do you do?",
+      "Juno is getting away. What do you do?"
+     ],
+     "video": "/assets/video/trust-fall/the-green-line.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-green-line.webp",
+     "small": "/assets/video/trust-fall/sm/the-green-line.mp4",
+     "choices": [
+      [
+       "1. Let ARGUS handle Juno",
+       "1. Let ARGUS handle Juno",
+       "broadcast",
+       true
+      ],
+      [
+       "2. Go after Juno yourself",
+       "2. Go after Juno yourself",
+       "chase",
+       false,
+       {
+        "chased": true
+       }
+      ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "believed": true
+       },
+       "story": [
+        "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away.",
+        "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away."
+       ],
+       "question": [
+        "It was there, like it said. What now?",
+        "It was there, like it said. What now?"
+       ]
+      }
+     ]
+    },
+    "chase": {
+     "folder": "trust-fall/the-bridge",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The bridge",
+      "The bridge"
+     ],
+     "story": [
+      "You grab a courier's bike and chase the van onto the Harbor Bridge. Halfway across, Juno swings the van around and comes straight at you. Then every streetlight on the bridge flares white at once, right in Juno's eyes, and the van spins into the barrier and stops.",
+      "You grab a courier's bike and chase the van onto the Harbor Bridge. Halfway across, Juno swings the van around and comes straight at you. Then every streetlight on the bridge flares white at once, right in Juno's eyes, and the van spins into the barrier and stops."
+     ],
+     "question": [
+      "Breathe.",
+      "Breathe."
+     ],
+     "video": "/assets/video/trust-fall/the-bridge.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-bridge.webp",
+     "small": "/assets/video/trust-fall/sm/the-bridge.mp4",
+     "choices": [
+      [
+       "1. Breathe",
+       "1. Breathe",
+       "broadcast"
+      ]
+     ]
+    },
+    "promise": {
+     "folder": "trust-fall/the-promise",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "The promise",
+      "The promise"
+     ],
+     "story": [
+      "You stand still and breathe the way it told you to. The hiss never comes. The door opens on the ninth second, and the screen beside it shows the whole night recorded: Juno in your ear, every word. Out on the avenues every light turns red in front of Juno's van and green for the police behind it.",
+      "You stand still and breathe the way it told you to. The hiss never comes. The door opens on the ninth second, and the screen beside it shows the whole night recorded: Juno in your ear, every word. Out on the avenues every light turns red in front of Juno's van and green for the police behind it."
+     ],
+     "question": [
+      "It kept its word.",
+      "It kept its word."
+     ],
+     "video": "/assets/video/trust-fall/the-promise.mp4",
+     "poster": "/assets/video/trust-fall/poster/the-promise.webp",
+     "small": "/assets/video/trust-fall/sm/the-promise.mp4",
+     "choices": [
+      [
+       "1. Walk out",
+       "1. Walk out",
+       "broadcast"
+      ]
+     ]
+    },
+    "broadcast": {
+     "folder": "trust-fall/morning-edition",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Morning edition",
+      "Morning edition"
+     ],
+     "story": [
+      "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you.",
+      "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you."
+     ],
+     "question": [
+      "What do you do?",
+      "What do you do?"
+     ],
+     "video": "/assets/video/trust-fall/morning-edition.mp4",
+     "poster": "/assets/video/trust-fall/poster/morning-edition.webp",
+     "small": "/assets/video/trust-fall/sm/morning-edition.mp4",
+     "choices": [
+      [
+       "1. Tell Marcus everything, on the air",
+       "1. Tell Marcus everything, on the air",
+       "truth",
+       true
+      ],
+      [
+       "2. Walk out before anyone learns your name",
+       "2. Walk out before anyone learns your name",
+       "shadow"
+      ],
+      [
+       "3. Say thank you to ARGUS",
+       "3. Say thank you to ARGUS",
+       "believer",
+       false,
+       null,
+       null,
+       null,
+       {
+        "requires": {
+         "believed": true
+        }
+       }
+      ]
+     ],
+     "variants": [
+      {
+       "when": {
+        "chased": true
+       },
+       "question": [
+        "You didn't have to do it alone. What do you do?",
+        "You didn't have to do it alone. What do you do?"
+       ]
+      },
+      {
+       "when": {
+        "calledMarcus": true
+       },
+       "question": [
+        "You called, and he heard you. What do you do?",
+        "You called, and he heard you. What do you do?"
+       ]
+      },
+      {
+       "when": {
+        "waited": true
+       },
+       "story": [
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you.",
+        "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you."
+       ],
+       "question": [
+        "You stood still and it kept its word. What do you do?",
+        "You stood still and it kept its word. What do you do?"
+       ]
+      },
+      {
+       "when": {
+        "believed": true
+       },
+       "question": [
+        "ARGUS kept its promise. What do you do?",
+        "ARGUS kept its promise. What do you do?"
+       ]
+      },
+      {
+       "when": {
+        "listened": true
+       },
+       "question": [
+        "ARGUS knew your name at breakfast. What do you do now?",
+        "ARGUS knew your name at breakfast. What do you do now?"
+       ]
+      }
+     ]
+    },
+    "truth": {
+     "folder": "trust-fall/live",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Live",
+      "Live"
+     ],
+     "story": [
+      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are.",
+      "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/assets/video/trust-fall/live.mp4",
+     "poster": "/assets/video/trust-fall/poster/live.webp",
+     "small": "/assets/video/trust-fall/sm/live.mp4",
+     "ending": [
+      "THE END. You were the story.",
+      "THE END. You were the story."
+     ],
+     "choices": []
+    },
+    "shadow": {
+     "folder": "trust-fall/unseen",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Unseen",
+      "Unseen"
+     ],
+     "story": [
+      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for.",
+      "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/assets/video/trust-fall/unseen.mp4",
+     "poster": "/assets/video/trust-fall/poster/unseen.webp",
+     "small": "/assets/video/trust-fall/sm/unseen.mp4",
+     "ending": [
+      "THE END. Some heroes stay in the dark.",
+      "THE END. Some heroes stay in the dark."
+     ],
+     "choices": []
+    },
+    "believer": {
+     "folder": "trust-fall/good-morning",
+     "lang": "en",
+     "dir": "",
+     "title": [
+      "Good morning",
+      "Good morning"
+     ],
+     "story": [
+      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back.",
+      "You look up at the little camera in the corner of the precinct and say thank you. The amber light blinks once, like a smile. Your record comes back clean, and Juno's reward comes in your name. Now every morning, before Marcus signs off, the speaker on your counter says good morning, and you say it back."
+     ],
+     "question": [
+      "",
+      ""
+     ],
+     "video": "/assets/video/trust-fall/good-morning.mp4",
+     "poster": "/assets/video/trust-fall/poster/good-morning.webp",
+     "small": "/assets/video/trust-fall/sm/good-morning.mp4",
+     "ending": [
+      "THE END. It was always on your side.",
+      "THE END. It was always on your side."
+     ],
+     "choices": []
     }
    }
   }

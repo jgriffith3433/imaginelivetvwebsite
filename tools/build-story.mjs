@@ -385,6 +385,12 @@ function videoOf(st, s) {
   return s.film ?? null;
 }
 
+/** The graded still a scene shows while its generated cut isn't made (js/game.js .spark-still): the story's key art. */
+function stillOf(st, s) {
+  if (st.console || s.film || useOf(st, s) !== 'gen' || !st.entry.image) return null;
+  return cutParts(st, s).missing.length ? st.entry.image : null;
+}
+
 /** The poster and the phone rendition of a clip, when tools/make-posters.mjs has made them. */
 function clipExtras(video) {
   if (!video) return {};
@@ -411,6 +417,7 @@ function endingsList(st) {
       id: s.id,
       title: s.title,
       ending: s.ending,
+      ...(s.hint ? { hint: s.hint } : {}),
       ...(extras.poster ? { poster: extras.poster } : {}),
       ...(video ? { video } : {}),
     };
@@ -451,6 +458,8 @@ function storyData() {
         question: s.question,
         video: videoOf(st, s),
         ...clipExtras(videoOf(st, s)),
+        // A gen scene whose cut isn't made, with no filmed clip: the story's key art, graded, instead of a title card.
+        ...(stillOf(st, s) ? { still: stillOf(st, s) } : {}),
         // Seconds of live picture the cut keeps after the narration, so the choices come up over moving footage (js/game.js).
         ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s) ? { live: LIVE_TAIL } : {}),
         ...(s.dead ? { dead: true } : {}),
@@ -557,7 +566,7 @@ function hero(st) {
     ? `<div class="hero-media">
         ${pic}
         <video class="hero-trailer" muted loop playsinline preload="metadata" aria-hidden="true"${tr.poster ? ` poster="${esc(tr.poster)}"` : ''} data-src="${esc(tr.trailer)}" data-small="${esc(tr.trailerSm)}"></video>
-        <button type="button" class="hero-sound" aria-pressed="false" aria-label="Unmute trailer">Sound</button>
+        <button type="button" class="hero-sound" aria-pressed="false" aria-label="Unmute trailer">&#x1F50A;</button>
       </div>`
     : pic;
   return `      <a class="hero" href="/?story=${st.id}" data-story="${st.id}" data-progress="new"${tr ? ` data-trailer="${esc(tr.trailer)}"` : ''}>

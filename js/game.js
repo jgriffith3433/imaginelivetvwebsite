@@ -26,10 +26,13 @@
       storyEn: spec.story[1],
       question: spec.question[0],
       questionEn: spec.question[1],
-      video: spec.video,
+      // A scene whose clip isn't made shows the story's key art, graded (.spark-still), never a title card:
+      // no clip is played and the still is the poster.
+      still: spec.still || "",
+      video: spec.still ? "" : spec.video,
       // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
-      poster: spec.poster || "",
-      small: spec.small || "",
+      poster: spec.still || spec.poster || "",
+      small: spec.still ? "" : spec.small || "",
       live: spec.live || 0,
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
@@ -126,9 +129,14 @@
   let shown = null; // the scene as it is on screen (variant and offered choices), set by show()
   let rewindFlag = false; // set by a Rewind, read by the show() that follows it
 
+  /** The choice from one scene to the next, as { next, set }. `story` is the story's data (js/story-data.js), where a
+      choice is a row [say, en, next, default, set, ...] (line() reads the same row); a scene from scenesOf() works too. */
   function choiceTo(story, fromId, toId) {
     const from = story.scenes[fromId];
-    return from && from.choices ? from.choices.filter(function (c) { return c.next === toId; })[0] : null;
+    if (!from || !from.choices) return null;
+    const c = from.choices.filter(function (x) { return (Array.isArray(x) ? x[2] : x.next) === toId; })[0];
+    if (!c) return null;
+    return { next: toId, set: (Array.isArray(c) ? c[4] : c.set) || null };
   }
 
   /** The flags of a way (scene ids, the last one where you are): each step applies its choice's `set`. */
@@ -813,6 +821,33 @@
     sync();
   }
 
+  /** A scene with no clip yet (a graded still): the same buffering ring sits over the player until the picture has
+      loaded, so a slow phone never shows a bare black box. The ring stays in the DOM, hidden, once the picture is up. */
+  function addStillLoading(url) {
+    var ring = document.createElement("div");
+    ring.className = "spark-video-loading";
+    ring.setAttribute("role", "status");
+    ring.setAttribute("aria-label", "Loading");
+    var scene = currentScene;
+    var story = STORY ? STORY.id : null;
+    var off = function () {
+      if (ring.hidden) return;
+      ring.hidden = true;
+      if (currentScene === scene) root.dataset.loading = "false";
+      tell("loading", { story: story, scene: scene, on: false });
+    };
+    ring.hidden = false;
+    root.dataset.loading = "true";
+    tell("loading", { story: story, scene: scene, on: true });
+    videoBox.appendChild(ring);
+    var img = new Image();
+    img.onload = off;
+    img.onerror = off;
+    img.src = url;
+    if (img.complete) off();
+    setTimeout(off, 6000); // never a ring that spins for ever
+  }
+
   /** Turning the phone must not leave the clip frozen: when the screen changes shape the clip carries on. */
   function onTurned() {
     var v = activeClip;
@@ -832,8 +867,16 @@
     if (!story) return "default";
     if (story.id === "final-spark") return "sewer";
     if (story.id === "water-road") return "dust";
+    if (story.id === "trust-fall") return "city";
     if (story.id === "night-shift" || story.id === "night-shift-demo") return "room";
     return "default";
+  }
+
+  /** Trust Fall's looping bed follows the place: the rainy city, or the tower's and the core's server hum. */
+  const SERVER_SCENES = { tower: 1, jam: 1, core: 1, halon: 1, broadcast: 1, truth: 1, shadow: 1, believer: 1 };
+  function sceneMood(story, sceneId) {
+    if (story && story.id === "trust-fall") return SERVER_SCENES[sceneId] ? "server" : "city";
+    return storyMood(story);
   }
 
   function audioBed(story) {
@@ -1005,6 +1048,8 @@
   // clip ends (or in Night Shift when lines finish), active choices slide and fade in one after another (70 ms apart)
   // with a 15 s countdown window, and the bar and title controls fade away after 3 s idle.
   const CHOICE_WINDOW = 15;
+  const READ_WPM = 250; // reading pace of a still page's words
+  let readTimer = null;
   const IDLE_MS = 3000;
   const timerBox = document.getElementById("spark-timer");
   const consoleChoicesBox = document.getElementById("console-choices");
@@ -1019,7 +1064,7 @@
     const buttons = container.querySelectorAll(".choice");
     buttons.forEach(function (btn, idx) {
       btn.style.setProperty("--choice-i", String(idx));
-      btn.dataset.choiceIndex = String(idx);
+      if (btn.dataset.choiceIndex == null) btn.dataset.choiceIndex = String(idx);
     });
   }
 
@@ -1052,6 +1097,9 @@
   }
 
   function stopChoiceWindow() {
+    if (readTimer) clearTimeout(readTimer);
+    readTimer = null;
+    if (choicesBox) delete choicesBox.dataset.reading;
     if (windowTick) cancelAnimationFrame(windowTick);
     windowTick = null;
     if (defaultTimer) clearTimeout(defaultTimer);
@@ -1127,7 +1175,7 @@
       button.type = "button";
       button.className = "choice death-choice";
       button.dataset.death = kind;
-      button.dataset.choiceIndex = String(choice.index != null ? choice.index : idx);
+      button.dataset.choiceIndex = String(idx);
       button.style.setProperty("--choice-i", String(idx));
       fillSpot(button, say, en, kind === "rewind" ? "en" : scene.lang, scene.dir);
       button.addEventListener("click", function () {
@@ -1159,6 +1207,32 @@
       root.classList.remove("is-auto-advance");
       if (currentScene === sceneId && !pendingTap) goTo(shownChoices[0]);
     }, reduce ? 0 : AUTO_FADE_MS);
+  }
+
+  /** Reading time of a page's words at 250 words a minute (a floor of 1.5 s so a one-liner still lands). */
+  function readingMs(scene) {
+    const text = ((scene.storyEn || "") + " " + (scene.questionEn || "")).trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    return Math.max(1500, Math.round((words / READ_WPM) * 60000));
+  }
+
+  /** A page with a graded still and no clip: the choices stay hidden for the reading time, then come up. */
+  function holdForReading(sceneId, scene, timed) {
+    if (!shownChoices.length && !scene.dead) return;
+    const ms = readingMs(scene);
+    choicesBox.dataset.reading = "true";
+    root.dataset.choices = "reading";
+    choicesBox.dataset.phase = "reading";
+    if (timerBox) { timerBox.hidden = true; timerBox.dataset.state = "off"; }
+    tell("feature", { feature: "reading_hold", story: STORY.id, node: sceneId, value: String(ms) });
+    if (readTimer) clearTimeout(readTimer);
+    readTimer = setTimeout(function () {
+      readTimer = null;
+      if (currentScene !== sceneId) return;
+      delete choicesBox.dataset.reading;
+      if (timed) revealChoices(true);
+      else { setChoicePhase("ready"); maybeSweep(sceneId); }
+    }, ms);
   }
 
   /** The clip is over (or there is none): the choices come up and, if there are any, the countdown starts. */
@@ -1258,6 +1332,7 @@
     const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
+    if (window.iltvAudio && STORY.id === "trust-fall") window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
     // Only the player unlocks a scene (the branch pages don't touch the cookies).
     unlocked[sceneId] = true;
     if (scene.ending) {
@@ -1281,6 +1356,7 @@
     wakeChrome();
     stopChoiceWindow();
 
+    if (window.hawkesSound && window.hawkesSound.clear && window.hawkesSound.unlocked()) window.hawkesSound.clear();
     crossfadeOut();
     // The poster is also the box's own picture, so it stays under the loading ring and between clips: never a black box.
     const newBg = scene.poster ? 'url("' + scene.poster + '")' : "";
@@ -1290,10 +1366,20 @@
     let video = null;
 
     if (videoSrc) {
-      video = document.createElement("video");
+      // The clip the choices preloaded is the one that plays: its buffer is already there, so the swap is one frame.
+      const pre = preloaded[sceneId];
+      if (pre && !pre.error && pre.readyState >= 2 && pre.getAttribute("src") === videoSrc) {
+        video = pre;
+        delete preloaded[sceneId];
+        video.muted = false;
+        videoBox.dataset.adopted = "true";
+      } else {
+        video = document.createElement("video");
+        videoBox.dataset.adopted = "false";
+        video.src = videoSrc;
+      }
       // The poster shows from the first paint, before any of the clip has loaded.
       if (scene.poster) video.poster = scene.poster;
-      video.src = videoSrc;
       // With the sound prompt, playClip starts it (autoplay would start it behind the prompt).
       video.autoplay = !window.hawkesSound;
       video.playsInline = true;
@@ -1344,11 +1430,29 @@
     } else {
       setChoicePhase("ready");
       if (window.iltvAudio) window.iltvAudio.beginBeds("image");
-      // A draft story's scene before its media is made: its title on black, where the video will be.
-      const blank = document.createElement("div");
-      blank.className = "spark-video-blank";
-      blank.textContent = scene.titleEn;
-      videoBox.appendChild(blank);
+      if (scene.still) {
+        // The clip isn't made yet: one graded still (css/site.css .spark-still) where it will play, framed a little
+        // differently per scene so the run isn't one picture. No title card, no "in production" text.
+        let h = 0;
+        for (let i = 0; i < sceneId.length; i++) h = (h * 31 + sceneId.charCodeAt(i)) >>> 0;
+        const still = document.createElement("div");
+        still.className = "spark-still";
+        still.dataset.still = scene.still;
+        still.setAttribute("role", "img");
+        still.setAttribute("aria-label", scene.titleEn);
+        still.style.backgroundImage = 'url("' + scene.still + '")';
+        still.style.setProperty("--still-x", 20 + (h % 61) + "%");
+        still.style.setProperty("--still-y", 25 + ((h >> 8) % 51) + "%");
+        still.style.setProperty("--still-zoom", String(1.08 + ((h >> 16) % 14) / 100));
+        videoBox.appendChild(still);
+        addStillLoading(scene.still);
+      } else {
+        // A draft story's scene before its media is made: its title on black, where the video will be.
+        const blank = document.createElement("div");
+        blank.className = "spark-video-blank";
+        blank.textContent = scene.titleEn;
+        videoBox.appendChild(blank);
+      }
     }
 
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
@@ -1366,7 +1470,7 @@
       button.type = "button";
       button.className = "choice";
       button.style.setProperty("--choice-i", String(idx));
-      button.dataset.choiceIndex = String(idx);
+      button.dataset.choiceIndex = String(choice.index != null ? choice.index : idx);
       fillSpot(button, choice.say, choice.en, scene.lang, scene.dir);
       const mark = choiceMark(STORY, unlocked, sceneId, choice.next, replayNow);
       if (triedHere.indexOf(choice.next) >= 0) {
@@ -1416,6 +1520,11 @@
     if (!videoSrc) setChoicePhase("ready");
     // Back from a death, the fork is playable at once: the clip plays, the choices don't wait for it.
     if (rewound && shownChoices.length > 1) { setChoicePhase("ready"); stopChoiceWindow(); }
+    // No clip to wait for (a graded still): the choices are up at once and the countdown starts with
+    // them, its default picked when it runs out. (With a clip, the clip's end reveals them.)
+    // The words are read first, at 250 words a minute (a radio play over the still): the buttons are in place but
+    // hidden until the reading time has passed, then the countdown starts (a death's two buttons wait the same way).
+    if (!videoSrc && scene.still) holdForReading(sceneId, scene, timed);
 
     pendingTap = null;
     preloadNext(scene);
@@ -1553,6 +1662,12 @@
       label.className = "ending-tile-name";
       label.textContent = known ? endingTitleOf(entry) : "???";
       tile.append(media, label);
+      if (!known && entry.hint) {
+        const hint = document.createElement("span");
+        hint.className = "ending-tile-hint";
+        hint.textContent = entry.hint;
+        tile.appendChild(hint);
+      }
       if (known) {
         tile.addEventListener("click", function () {
           showFoundEndingCard(story, entry.id);
@@ -1661,6 +1776,11 @@
       a choice from one of them to a scene you haven't reached is a locked "?" with nothing below it (one per
       choice, so it never tells whether two ways meet, where they go, how deep it goes, or if it's a death or an
       ending). Nothing in it can be pressed; the current scene is marked. */
+  function treeEndingsText() {
+    const ends = endingsOf(STORY);
+    return ends.length ? ", " + endingsCardText(Object.keys(readFoundEndings(STORY)).length, ends.length) + " found" : "";
+  }
+
   function renderTree() {
     if (!treeRoot) return;
 
@@ -1812,7 +1932,7 @@
     }).join("");
 
     treeRoot.innerHTML =
-      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
+      '<p class="tree-note">What you have found: ' + exploredOf(STORY, unlocked) + '% explored' + treeEndingsText() + '. Drag sideways. A ? is a way you haven\'t taken.' + (treeReplay ? ' New: a way you haven\'t found. A tick: everything down that way is seen.' : '') + (lastWay ? ' Marked: the path of your last run.' : '') + '</p>' +
       '<div class="tree-scroll"><div class="tree-canvas" style="width:' + width + "px;height:" + height + 'px">' +
       '<svg class="tree-svg" viewBox="0 0 ' + width + " " + height + '" aria-hidden="true">' +
       paths.join("") +
@@ -2126,7 +2246,7 @@
     const ms = fadeMs();
     const old = Array.prototype.slice.call(videoBox.children);
     old.forEach(function (node) {
-      const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank");
+      const keep = node.tagName === "VIDEO" || node.classList.contains("spark-video-blank") || node.classList.contains("spark-still");
       if (!keep || node.classList.contains("spark-leave")) { node.remove(); return; }
       node.classList.add("spark-leave");
       node.style.setProperty("--fade-ms", ms + "ms");
@@ -2354,6 +2474,8 @@
     history = [];
     unlocked = unlocks.seen;
     completed = unlocks.completed;
+    // A saved run was played through its history, so those pages are on the Tree even if the unlocks cookie was lost.
+    history.forEach(function (sid) { if (SCENES[sid]) unlocked[sid] = true; });
     if (saved && saved.from && saved.choice) {
       lastRecap = { from: saved.from, choice: saved.choice, poster: saved.poster || posterOfScene(story, saved.from) };
     } else {
@@ -2400,7 +2522,7 @@
     syncReading();
     document.title = story.title + " · " + SITE_TITLE;
     prompt(story.tap, posterOfStory(story));
-    sound("ask");
+    sound("ask", story.tap && story.tap.autostart ? { autostart: true } : undefined);
     markSplashed();
 
     landing.hidden = true;

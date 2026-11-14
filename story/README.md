@@ -13,6 +13,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
 | **The Final Spark** | `story/final-spark.json` | the site root, as they always were: `/the-sewer/`, `/you-turned-right/`, … | this file, below |
 | **The Water Road** (approved by J 2026-10-18, on the landing page) | `story/water-road.json` | `/water-road/the-water-road/`, … | `story/water-road.md` |
 | **Night Shift** (listed; its demo, `night-shift-demo`, is the unlisted placeholder the console playtests use) | `story/night-shift-demo.json` (the real story: `story/night-shift.json`) | `/night-shift-demo/radio-check/`, … | `story/night-shift.md` |
+| **Trust Fall** (draft, `listed: false`, J asked for it 2026-11-13; placeholder title cards until its media is made) | `story/trust-fall.json` | `/trust-fall/first-light/`, … | `story/trust-fall.md` |
 
 ## Adding a story (a data job, no code)
 

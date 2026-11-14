@@ -592,20 +592,29 @@ function sparkState(st, way) {
   return { flags, matches };
 }
 
-/** The choice rows of a scene that are on offer after `way` (a row's `when` flags and `matches` {min,max}, [5] and [6]). */
+/** The choice rows of a scene that are on offer after `way` (a row's `when` flags and `matches` {min,max}, [5] and [6],
+    and a gate's `requires` flags, [7]: a choice not there at all without them, like Trust Fall's belief gates). */
 function offeredRows(st, id, way) {
   const { flags, matches } = sparkState(st, way);
+  const hold = (want) => Object.entries(want).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v);
   return st.scenes[id].choices.filter((c) => {
-    if (c[5] && !Object.entries(c[5]).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v)) return false;
+    if (c[5] && !hold(c[5])) return false;
+    if (c[7] && c[7].requires && !hold(c[7].requires)) return false;
     if (c[6] && matches != null && ((c[6].min != null && matches < c[6].min) || (c[6].max != null && matches > c[6].max))) return false;
     return true;
   });
 }
 
+/** Whether some choice of the story is offered only in some states: a `when` [5], a `matches` range [6] or a gate's
+    `requires` flags [7]. */
+function hasConditionalChoices(st) {
+  return Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6] || (c[7] && c[7].requires)));
+}
+
 /** The shortest way from the start (not through a death) to a scene that passes `test`: the scene ids after the start.
     A story with conditional choices is walked by state (scene, flags, matches), so the way only uses choices that are offered. */
 function wayTo(st, test) {
-  const conditional = Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6]));
+  const conditional = hasConditionalChoices(st);
   const key = (way) => (conditional ? `${way[way.length - 1]} ${JSON.stringify(sparkState(st, way))}` : way[way.length - 1]);
   const seen = new Set([key([st.start])]);
   const queue = [[st.start]];
@@ -1157,7 +1166,7 @@ async function walkStory(t, st, sums, total) {
   await visit(st.start, [st.start], [st.start]);
   // A fork with conditional choices (flags, a match range) hides some in some states. A scene no press above reached is walked
   // to by state (the shortest way that only uses choices on offer), by real presses, and visited from there.
-  if (Object.values(st.scenes).some((s) => s.choices.some((c) => c[5] || c[6]))) {
+  if (hasConditionalChoices(st)) {
     for (let round = 0; round < all.length; round++) {
       const todo = all
         .filter((id) => !seen.has(id))
@@ -7891,7 +7900,7 @@ function gateWay(st, target, ok) {
     return out;
   };
   const open = (c, way) => {
-    const g = c[5];
+    const g = c[7]; // a choice row's gate: [say, en, next, default, set, when, matches, gate]
     if (!g) return true;
     const flags = flagsOf(way);
     for (const [k, v] of Object.entries(g.requires || {})) if ((flags[k] === undefined ? false : flags[k]) !== v) return false;
@@ -8498,6 +8507,380 @@ async function rewindRun(options, t) {
   t.progress(1);
 }
 
+/* ---------------- trust-fall: a draft clip story on a phone, every scene by a real press, both deaths, three endings, belief gates ---------------- */
+
+/** A scene whose clip isn't made shows the story's graded key art (.spark-still), never the text title card: it is an
+    image that loaded, carries no words, the page doesn't scroll sideways, and every choice is 44px or taller. */
+function checkStill(t, doc, label, W) {
+  const el = doc.querySelector("#spark-video .spark-still:not(.spark-leave)");
+  const blank = doc.querySelector("#spark-video .spark-video-blank");
+  const root = doc.documentElement;
+  const sideways = Math.max(root.scrollWidth, doc.body.scrollWidth) - root.clientWidth;
+  const small = [...doc.querySelectorAll("#spark-choices .choice")].filter((b) => b.getClientRects().length && b.getBoundingClientRect().height < 43.5);
+  const r = el && el.getBoundingClientRect();
+  const img = el && new Image();
+  const loaded = el ? new Promise((ok) => { img.onload = () => ok(true); img.onerror = () => ok(false); img.src = el.dataset.still; }) : Promise.resolve(false);
+  return loaded.then((ok) => {
+    const text = el ? (el.textContent || "").trim() : "";
+    const filt = el ? getComputedStyle(el).filter : "none";
+    if (blank || !el) t.problem("bug", `${label}: shows the placeholder text card, not a graded still`);
+    else if (!ok || !r.width || !r.height) t.problem("bug", `${label}: the graded still didn't load or has no size (${el.dataset.still})`);
+    else if (text) t.problem("bug", `${label}: the graded still carries text ("${text}")`);
+    else if (filt === "none") t.problem("bug", `${label}: the still isn't graded (no shared filter)`);
+    else t.event("graded-still", `${label}: graded still ${el.dataset.still.split("/").pop()} ${Math.round(r.width)}x${Math.round(r.height)}, no text card`);
+    if (sideways > 1) t.problem("bug", `${label}: scrolls sideways by ${sideways}px at ${W}px wide`);
+    if (small.length) t.problem("bug", `${label}: ${small.length} choice(s) under 44px tall (${small.map((b) => Math.round(b.getBoundingClientRect().height)).join(", ")})`);
+    if (ok && el && !blank) t.add("trustFallGradedStills");
+  });
+}
+
+/** Trust Fall (story/trust-fall.md, listed: false, plays at /?story=trust-fall) at 390x844 with touch input. Setup shortcut:
+    a seeded run (event seeded-run) at the parent of each scene, opened by the story's link in a frame; every scene is then
+    entered by a real press (tapAt) of the choice that leads there. Options: {"story":"<id>"} (default trust-fall). */
+async function trustFallRun(options, t) {
+  const id = (options && options.story) || "trust-fall";
+  const st = story(id);
+  if (!st || !st.scenes[st.start]) throw new Error(`no story ${id}`);
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const ids = Object.keys(st.scenes);
+  const dead = (sid) => !!st.scenes[sid].dead;
+  const ending = (sid) => !!st.scenes[sid].ending;
+  if (listedStories().some((s) => s.id === id)) t.problem("bug", `${id} is listed on the landing page; it is a draft and stays unlisted`);
+  await passPrompt(t);
+  clearProgress();
+  if (!landingShown()) await toLanding(t);
+  const W = 390, H = 844;
+  const flagsOf = (way) => {
+    const out = {};
+    for (let i = 0; i + 1 < way.length; i++) {
+      const c = st.scenes[way[i]].choices.find((x) => x[2] === way[i + 1]);
+      if (c && c[4]) Object.assign(out, c[4]);
+    }
+    return out;
+  };
+  /** The shortest way (never through a death) to `target` whose flags satisfy `ok`, honouring each choice's `requires` (c[7]). */
+  const wayTo = (target, ok = () => true) => {
+    const queue = [[st.start]];
+    while (queue.length) {
+      const way = queue.shift();
+      const sid = way[way.length - 1];
+      if (sid === target && ok(flagsOf(way))) return way;
+      if (way.length > 14 || (dead(sid) && sid !== target) || sid === target) continue;
+      const flags = flagsOf(way);
+      for (const c of st.scenes[sid].choices) {
+        const req = (c[7] && c[7].requires) || {};
+        if (Object.entries(req).every(([k, v]) => (flags[k] === undefined ? false : flags[k]) === v)) queue.push([...way, c[2]]);
+      }
+    }
+    return null;
+  };
+  const open = async (way, why) => {
+    gateSeed(t, st, way, why);
+    return viewFrameLoad(t, `/?story=${id}`, W, H);
+  };
+  const ready = async (doc, sid) => {
+    const win = doc.defaultView;
+    await passPrompt(t, doc, `${id} ${sid} ${W}x${H}`);
+    if (!(await waitFor(() => win.finalSpark.scene() === sid, 8000))) throw new Error(`${id}: the seeded run didn't open ${sid} (at ${win.finalSpark.scene()})`);
+    await rewindEndClip(doc);
+    const box = doc.getElementById("spark-choices");
+    if (!(await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice, [data-death]").length > 0, 10000))) t.problem("bug", `${id}/${sid}: the choices never came up at ${W}x${H}`);
+    await sleep(350);
+    return box;
+  };
+  const touchOn = (doc) => doc.defaultView.matchMedia("(pointer: coarse)").matches;
+  const visible = (box) => [...box.querySelectorAll(".choice")].filter((b) => b.getClientRects().length);
+  const label = (b) => enText(b);
+
+  // 1. First scene on a phone: one tap on Tap to play starts the clip; the buffering ring is in the player and gone once it plays.
+  t.scene(`${id}: first scene at ${W}x${H}`);
+  clearProgress();
+  {
+    const doc = await viewFrameLoad(t, `/?story=${id}`, W, H);
+    const win = doc.defaultView;
+    const rings = [];
+    doc.addEventListener("iltv:loading", (e) => rings.push(e.detail && e.detail.on));
+    // Autostart (tap.autostart): the story's own opening press is the tap, so no Tap to play overlay is ever shown.
+    const t0 = performance.now();
+    const overlay = () => doc.querySelectorAll(".tap-to-play, .tap-splash").length;
+    if (win.hawkesSound.prompt() || overlay()) t.problem("bug", `${id}: /?story=${id} shows a Tap to play overlay; the first scene must autostart with no overlay`);
+    else t.event("autostart", `${id}: no Tap to play overlay; sound unlocked: ${win.hawkesSound.unlocked()}`);
+    t.milestone && t.milestone("first-input-accepted");
+    const v = () => doc.querySelector("#spark-video video:not(.spark-leave)");
+    const stillOf = () => doc.querySelector("#spark-video .spark-still:not(.spark-leave)");
+    const played = await waitFor(() => (v() && !v().paused && v().currentTime > 0) || stillOf(), 8000);
+    const ms = Math.round(performance.now() - t0);
+    if (stillOf() && !(v() && v().currentTime > 0)) { await checkStill(t, doc, `${id}/${st.start}`, W); t.milestone && t.milestone("gameplay"); }
+    else if (!played) t.problem("bug", `${id}: the first clip didn't autostart (no overlay) (at ${W}x${H})`);
+    else t.event("first-tap", `${id}: one tap, the clip plays after ${ms} ms${touchOn(doc) ? " (touch)" : ""}`);
+    t.metric("trustFallFirstTapMs", ms);
+    if (played && v()) {
+      const src = decodeURI(new URL(v().currentSrc || v().src, location.href).pathname);
+      if (/\/scene\.mp4$/.test(src)) { checkCut(t, v(), `${id}/${st.start}`); t.add("trustFallRealClips"); }
+      else t.problem("bug", `${id}/${st.start}: plays a placeholder title card (${src}), not a filmed clip (its media isn't made)`);
+    }
+    {
+      // Words on screen before the first choice (the story, the question and the choices): under 40.
+      const txt = (sel) => [...doc.querySelectorAll(sel)].filter((e) => e.getClientRects().length).map((e) => e.textContent).join(" ");
+      const words = (txt("#spark-story") + " " + txt("#spark-question") + " " + txt("#spark-choices .choice")).split(/\s+/).filter(Boolean).length;
+      t.metric("trustFallWordsBeforeFirstChoice", words);
+      if (words >= 40) t.problem("bug", `${id}: ${words} words before the first choice (limit 40)`);
+      else t.event("intro-words", `${id}: ${words} words before the first choice`);
+      if (played) t.milestone && t.milestone("gameplay");
+    }
+    const ring = doc.querySelector(".spark-video-loading");
+    if (!ring) t.problem("bug", `${id}: the player has no buffering ring over the clip`);
+    else {
+      // The ring is up while the clip (or the scene's still) loads and hidden once it is showing.
+      if (played) await waitFor(() => ring.hidden, 6000);
+      if (played && !ring.hidden) t.problem("bug", `${id}: the buffering ring is still showing while the clip plays`);
+      t.event("buffering-ring", `${id}: ${rings.includes(true) ? "shown while the clip loaded" : "not needed (the clip loaded at once)"}; hidden once it plays: ${ring.hidden}`);
+    }
+    if (win.finalSpark.scene() !== st.start) t.problem("bug", `${id}: the first scene is ${win.finalSpark.scene()}, not ${st.start}`);
+    // The player is the whole screen: no catalogue or header showing, no sideways scroll, no stray debug control.
+    {
+      const de = doc.documentElement;
+      const vis = (e) => e && e.getClientRects().length && win.getComputedStyle(e).visibility !== "hidden";
+      const sp = doc.querySelector(".spark:not([hidden])");
+      const r = sp ? sp.getBoundingClientRect() : null;
+      const shown = [".site-header", "body > main", ".stories", ".hero", ".story-card"].filter((q) => [...doc.querySelectorAll(q)].some(vis));
+      if (shown.length) t.problem("bug", `${id}: the landing page still shows behind the player (${shown.join(", ")})`);
+      if (!r || r.width < W - 2) t.problem("bug", `${id}: the player is ${r ? Math.round(r.width) : 0}px wide, not the whole ${W}px screen`);
+      if (de.scrollWidth > W + 1) t.problem("bug", `${id}: sideways scroll at ${W}x${H} (${de.scrollWidth}px)`);
+      const dbg = [...doc.querySelectorAll("button, a, [role=button]")].filter((e) => vis(e) && /debug|bug|report a problem/i.test((e.id || "") + (e.className || "") + (e.getAttribute("aria-label") || "") + (e.title || "")));
+      if (dbg.length) t.problem("bug", `${id}: a debug control is on the page (${dbg.length})`);
+      t.event("player-fullscreen", `${id}: player ${r ? Math.round(r.width) + "x" + Math.round(r.height) : "none"} of ${W}x${H}; landing hidden: ${!shown.length}; no sideways scroll: ${de.scrollWidth <= W + 1}`);
+    }
+    await sleep(800);
+    closeViewFrame();
+  }
+  t.progress(0.05);
+
+  // 2 and 3. Every scene by a real press from a seeded run at its parent. Forks: full-width 48px choices and a countdown.
+  const entered = new Set([st.start]);
+  const endingsSeen = [], deathsSeen = [];
+  let n = 0;
+  for (const target of ids) {
+    n++;
+    if (target === st.start) continue;
+    const way = wayTo(target);
+    if (!way) { t.problem("bug", `${id}: no way reaches ${target}`); continue; }
+    const parent = way[way.length - 2];
+    t.scene(`${id}: ${target}`);
+    const doc = await open(way.slice(0, -1), `the press into ${target}`);
+    const win = doc.defaultView;
+    const box = await ready(doc, parent);
+    const btns = visible(box);
+    const index = st.scenes[parent].choices.findIndex((c) => c[2] === target);
+    const btn = btns.find((b) => Number(b.dataset.choiceIndex) === index);
+    if (!btn) { t.problem("bug", `${id}/${parent}: the choice into ${target} isn't on screen (${btns.map(label).join(" | ")})`); closeViewFrame(); continue; }
+    if (btns.length > 1) {
+      const timer = doc.getElementById("spark-timer");
+      const timerOn = !!timer && !timer.hidden && win.getComputedStyle(timer).display !== "none";
+      if (!timerOn) t.problem("bug", `${id}/${parent}: a fork with ${btns.length} choices shows no countdown`);
+      const bw = box.getBoundingClientRect().width;
+      for (const b of btns) {
+        const r = b.getBoundingClientRect();
+        if (r.height < 48) t.problem("bug", `${id}/${parent}: "${label(b)}" is ${Math.round(r.height)}px tall (48px at least)`);
+        if (r.width < bw * 0.95) t.problem("bug", `${id}/${parent}: "${label(b)}" is ${Math.round(r.width)}px wide in a ${Math.round(bw)}px row (full width wanted)`);
+        if (r.left < 0 || r.right > W + 1 || r.bottom > H + 1) t.problem("bug", `${id}/${parent}: "${label(b)}" is not fully on screen at ${W}x${H}`);
+      }
+      {
+        // Thumb reach: every choice sits in the lower half of the screen, the last one clear of the home bar.
+        const top = Math.min(...btns.map((b) => b.getBoundingClientRect().top)), foot = Math.max(...btns.map((b) => b.getBoundingClientRect().bottom));
+        if (top < H * 0.45) t.problem("bug", `${id}/${parent}: the choices start ${Math.round(top)}px down a ${H}px screen (lower half wanted, thumb reach)`);
+        else t.event("thumb-reach", `${id}/${parent}: choices ${Math.round(top)}-${Math.round(foot)}px of ${H}px`);
+        const bug = [...doc.querySelectorAll("button, a, [role=button]")].filter((e) => e.getClientRects().length && /bug/i.test((e.id || "") + (e.className || "") + (e.getAttribute("aria-label") || "") + (e.title || "")));
+        if (bug.length) t.problem("bug", `${id}/${parent}: a bug button is on screen`);
+      }
+      const def = win.finalSpark.choicesOf(parent).find((c) => c.default);
+      if (def && dead(def.next)) t.problem("bug", `${id}/${parent}: the countdown's default leads to a death (${def.next})`);
+      t.event("fork", `${id}/${parent}: ${btns.length} choices, ${btns.map((b) => `${Math.round(b.getBoundingClientRect().width)}x${Math.round(b.getBoundingClientRect().height)}`).join(", ")}, countdown ${timerOn ? "on" : "off"}${touchOn(doc) ? ", touch" : ""}`);
+    }
+    {
+      // Clarity: the story text is never cut mid-sentence under the choices; it fits, or scrolls inside itself with the
+      // choices on screen right under the prompt.
+      const sb = doc.getElementById("spark-story"), qb = doc.getElementById("spark-question");
+      if (sb && sb.textContent.trim()) {
+        const sr = sb.getBoundingClientRect(), cr = btns[0].getBoundingClientRect();
+        const scrolls = sb.scrollHeight > sb.clientHeight + 1;
+        const oy = win.getComputedStyle(sb).overflowY;
+        if (scrolls && oy !== "auto" && oy !== "scroll") t.problem("bug", `${id}/${parent}: the story text is cut off (${sb.scrollHeight}px in ${sb.clientHeight}px) and can't scroll`);
+        if (sr.bottom > cr.top + 1) t.problem("bug", `${id}/${parent}: the story text runs under the choices`);
+        const qr = qb && qb.getBoundingClientRect();
+        if (qr && qr.height && cr.top - qr.bottom > 140) t.problem("bug", `${id}/${parent}: the choices are ${Math.round(cr.top - qr.bottom)}px below the prompt`);
+        t.event("story-text-fit", `${id}/${parent}: text ${sb.clientHeight}px of ${sb.scrollHeight}px${scrolls ? " (scrolls)" : " (fits)"}, choices ${Math.round(cr.top - sr.bottom)}px under it`);
+      }
+    }
+    btn.scrollIntoView({ block: "center", behavior: "instant" });
+    const au = win.iltvAudio, auT0 = Date.now() - 5;
+    await tapAt(t, btn, `"${label(btn)}" (${W}x${H})`);
+    if (au && au.events) {
+      // Sound: every choice press answers with a UI sting, and the scene has its looping ambient bed.
+      const tapEv = au.events().filter((e) => e.at >= auT0).find((e) => e.what === "ui" && e.name === "tap");
+      if (!tapEv) t.problem("bug", `${id}/${parent}: pressing "${label(btn)}" made no choice sting (audio events: ${au.events().filter((e) => e.at >= auT0).map((e) => e.what).join(",") || "none"})`);
+      else t.event("choice-sting", `${id}/${parent}: sting "${tapEv.name}" ${Math.max(0, tapEv.at - auT0)} ms after the press`);
+    }
+    if (!(await waitFor(() => win.finalSpark.scene() === target, 4000))) { t.problem("bug", `${id}: the press on "${label(btn)}" didn't open ${target} (at ${win.finalSpark.scene()})`); closeViewFrame(); continue; }
+    entered.add(target);
+    {
+      // Reading time: a still page's choices (a death's two buttons too) stay unseen until its words have had 250 words
+      // a minute, then come up. Timed from the press that opened the page.
+      const box = doc.getElementById("spark-choices");
+      const sb = doc.getElementById("spark-story"), qb = doc.getElementById("spark-question");
+      const words = (enText(sb) + " " + enText(qb)).split(/\s+/).filter(Boolean).length;
+      const want = Math.max(1500, Math.round((words / 250) * 60000));
+      const t0 = performance.now();
+      let early = null;
+      while (box.dataset.phase !== "ready" && performance.now() - t0 < want + 6000) {
+        await sleep(100);
+        if (box.dataset.phase === "ready") break;
+        const shownNow = [...box.querySelectorAll(".choice, [data-death]")].filter((b) => b.getClientRects().length && doc.defaultView.getComputedStyle(box).visibility !== "hidden");
+        if (shownNow.length && early == null) early = Math.round(performance.now() - t0);
+      }
+      const took = Math.round(performance.now() - t0);
+      if (box.dataset.phase !== "ready") t.problem("bug", `${id}/${target}: the choices never came up after the reading time (${want} ms for ${words} words)`);
+      else if (!box.querySelectorAll(".choice, [data-death]").length) t.event("reading-time", `${id}/${target}: an ending, no choices to hold`);
+      else if (early != null || took < want - 500) t.problem("bug", `${id}/${target}: the choices appeared after ${early != null ? early : took} ms, before the ${want} ms reading time of ${words} words at 250 wpm`);
+      else t.event("reading-time", `${id}/${target}: ${words} words, choices held ${took} ms (reading time ${want} ms)`);
+      t.metric("trustFallReadingHoldMs", took);
+      await sleep(400);
+    }
+    {
+      // A clean swap: no Tap to play / title layer left over the new scene, the clip adopted from the preload.
+      const ghost = () => doc.querySelectorAll(".tap-to-play, .tap-splash").length;
+      const g0 = ghost();
+      await sleep(120);
+      const g1 = ghost();
+      if (g0 || g1) t.problem("bug", `${id}/${target}: a Tap to play / title layer is still over the scene after the press (${g0} at once, ${g1} after 120 ms)`);
+      else t.event("clean-swap", `${id}/${target}: no Tap to play or title layer over the scene; ${doc.querySelectorAll("#spark-video video").length} clip element(s); preloaded clip adopted: ${doc.getElementById("spark-video").dataset.adopted || "no"}`);
+    }
+    {
+      // A real clip, not the 'Video in production' title card: the scene plays its generated cut (scene.mp4: the
+      // filmed shots, narration, talking shots and music) once its media is made (use: "gen"), 9:16, with sound.
+      const v = doc.querySelector("#spark-video video:not(.spark-leave)");
+      if (!v && doc.querySelector("#spark-video .spark-still:not(.spark-leave)")) await checkStill(t, doc, `${id}/${target}`, W);
+      else if (v && (await waitFor(() => v.readyState >= 2 && v.currentTime > 0.5, 6000))) {
+        if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); t.add("trustFallRealClips"); }
+        else t.problem("bug", `${id}/${target}: plays a placeholder title card (${v.currentSrc || v.src}), not a filmed clip (its media isn't made: hawkes.assets.json trust-fall-${target}-*)`);
+      } else t.problem("bug", `${id}/${target}: no clip is playing after the press`);
+    }
+    await sleep(380);
+    if (au && au.bed) {
+      const bd = au.bed();
+      if (!bd.playing) t.problem("bug", `${id}/${target}: no looping ambient bed is playing in the scene`);
+      else t.event("scene-bed", `${id}/${target}: bed ${bd.url || "on"} loops under the scene`);
+    }
+    if (ending(target)) {
+      await rewindEndClip(doc);
+      const nameEl = doc.getElementById("spark-ending");
+      const card = nameEl && (nameEl.textContent || "").trim();
+      if (doc.getElementById("spark").dataset.state !== "soon" || !card) t.problem("bug", `${id}/${target}: an ending shows no ending card`);
+      else { endingsSeen.push(target); t.event("ending", `${id}/${target}: "${card}"`); }
+      await sleep(800);
+    } else if (dead(target)) {
+      await rewindEndClip(doc);
+      await waitFor(() => doc.querySelectorAll("#spark-choices [data-death]").length >= 2, 8000);
+      rewindCheckButtons(t, doc, `${id} ${target} (${W}x${H})`, { phone: true });
+      for (const b of doc.querySelectorAll("#spark-choices [data-death]")) {
+        const r = b.getBoundingClientRect();
+        if (r.top < H * 0.6 || r.width < 44 || r.height < 44) t.problem("bug", `${id}/${target}: the ${b.dataset.death} button (${Math.round(r.width)}x${Math.round(r.height)} at ${Math.round(r.top)}px) is not in the bottom 40% of a ${H}px screen with a 44px target`);
+        else t.event("thumb-reach", `${id}/${target}: ${b.dataset.death} ${Math.round(r.width)}x${Math.round(r.height)}, top ${Math.round(r.top)}px of ${H}px (bottom 40%)`);
+      }
+      deathsSeen.push(target);
+      t.event("death", `${id}: ${target}`);
+      await sleep(800);
+    }
+    closeViewFrame();
+    t.progress(0.05 + (0.6 * n) / ids.length);
+  }
+  t.metric("trustFallScenesEntered", entered.size);
+  t.metric("trustFallEndings", endingsSeen.length);
+  t.metric("trustFallDeaths", deathsSeen.length);
+  if (entered.size !== ids.length) t.problem("bug", `${id}: ${entered.size} of ${ids.length} scenes entered by a press (missing ${ids.filter((x) => !entered.has(x)).join(", ")})`);
+  if (endingsSeen.length !== ids.filter(ending).length) t.problem("bug", `${id}: ${endingsSeen.length} of ${ids.filter(ending).length} endings showed their ending card`);
+  if (deathsSeen.length !== ids.filter(dead).length) t.problem("bug", `${id}: ${deathsSeen.length} of ${ids.filter(dead).length} deaths showed Rewind and Start over`);
+
+  // 4. Belief gates: a choice that needs the flag `believed` is there only on a run that chose Believe it.
+  const gated = [];
+  for (const sid of ids) for (const c of st.scenes[sid].choices) if (c[7] && c[7].requires && c[7].requires.believed) gated.push({ sid, en: c[1], to: c[2] });
+  if (gated.length < 2) t.problem("bug", `${id}: ${gated.length} choices wait on having believed ARGUS (two wanted: the promise and the thank you)`);
+  for (const g of gated) {
+    const yes = wayTo(g.sid, (f) => f.believed === true);
+    const no = wayTo(g.sid, (f) => !f.believed);
+    if (!yes || !no) { t.problem("bug", `${id}/${g.sid}: no way arrives ${yes ? "without" : "with"} having believed ARGUS`); continue; }
+    t.scene(`${id}: ${g.sid}, believed`);
+    let doc = await open(yes, `believed, at ${g.sid}`);
+    let box = await ready(doc, g.sid);
+    const withIt = visible(box).map(label);
+    closeViewFrame();
+    t.scene(`${id}: ${g.sid}, did not believe`);
+    doc = await open(no, `not believed, at ${g.sid}`);
+    box = await ready(doc, g.sid);
+    const without = visible(box).map(label);
+    const locked = box.querySelectorAll(".choice-locked").length;
+    closeViewFrame();
+    if (!withIt.includes(g.en)) t.problem("bug", `${id}/${g.sid}: after Believe it "${g.en}" isn't offered (${withIt.join(" | ")})`);
+    if (without.includes(g.en)) t.problem("bug", `${id}/${g.sid}: without believing "${g.en}" is offered (${without.join(" | ")})`);
+    if (locked) t.problem("bug", `${id}/${g.sid}: without believing a locked row shows (the choice should not be there at all)`);
+    t.event("belief-gate", `${id}/${g.sid}: "${g.en}" - believed [${withIt.join(" | ")}]; not believed [${without.join(" | ")}]`);
+  }
+  t.progress(0.8);
+
+  // 5. The countdown never picks a death: the forks with a deadly option are left to the 15 s timer.
+  for (const sid of ids.filter((x) => !dead(x) && st.scenes[x].choices.some((c) => dead(c[2])))) {
+    t.scene(`${id}: the timer runs out at ${sid}`);
+    const doc = await open(wayTo(sid), `the timeout at ${sid}`);
+    const win = doc.defaultView;
+    await ready(doc, sid);
+    const left = await waitFor(() => win.finalSpark.scene() !== sid, 22000);
+    const now = win.finalSpark.scene();
+    if (!left) t.problem("bug", `${id}/${sid}: nothing happened when the countdown ran out`);
+    else if (dead(now)) t.problem("bug", `${id}/${sid}: the countdown picked a death (${now})`);
+    else t.event("timeout-safe", `${id}/${sid}: the countdown chose ${now}`);
+    closeViewFrame();
+  }
+
+  // 6. Reasons to come back: after one ending the Tree shows visited and unvisited branches and the Endings tab shows
+  // the other endings as locked tiles with a hint, all by touch at 390x844.
+  {
+    const endIds = ids.filter(ending);
+    const found = endIds.find((x) => !st.scenes[x].choices.length && wayTo(x, (f) => !f.believed));
+    const wayEnd = found && wayTo(found, (f) => !f.believed);
+    if (!wayEnd) t.problem("bug", `${id}: no ending reachable without believing ARGUS`);
+    else {
+      t.scene(`${id}: Tree and Endings after ${found}`);
+      let doc = await open(wayEnd, `the Tree and Endings tabs after ${found}`);
+      await ready(doc, found);
+      const win = doc.defaultView;
+      const tab = (n) => doc.getElementById(n);
+      for (const n of ["tab-tree", "tab-endings"]) {
+        const r = tab(n).getBoundingClientRect();
+        if (r.height < 44 || r.width < 44) t.problem("bug", `${id}: the ${n} tab is ${Math.round(r.width)}x${Math.round(r.height)}px (44px at least)`);
+      }
+      await tapAt(t, tab("tab-tree"), "Tree tab");
+      await sleep(300);
+      const tree = doc.getElementById("spark-tree");
+      const seen = tree.querySelectorAll(".tree-node:not(.is-locked)").length, hidden = tree.querySelectorAll(".tree-node.is-locked").length;
+      if (seen < wayEnd.length || hidden < 1) t.problem("bug", `${id}: the Tree shows ${seen} visited and ${hidden} unvisited branches after a ${wayEnd.length}-page way (visited >= ${wayEnd.length}, unvisited >= 1 wanted)`);
+      if (doc.documentElement.scrollWidth > W + 1) t.problem("bug", `${id}: the Tree scrolls the page sideways at ${W}x${H}`);
+      t.event("tree-branches", `${id}: Tree shows ${seen} visited and ${hidden} unvisited branches; "${(tree.querySelector(".tree-note") || {}).textContent || ""}"`);
+      await tapAt(t, tab("tab-endings"), "Endings tab");
+      await sleep(300);
+      const tiles = [...doc.querySelectorAll("#spark-endings .ending-tile")];
+      const open1 = tiles.filter((x) => x.classList.contains("is-found")).length, lockedTiles = tiles.filter((x) => x.classList.contains("is-locked"));
+      const hints = lockedTiles.filter((x) => (x.querySelector(".ending-tile-hint") || {}).textContent);
+      if (tiles.length !== endIds.length) t.problem("bug", `${id}: the Endings tab has ${tiles.length} tiles for ${endIds.length} endings`);
+      if (open1 !== 1) t.problem("bug", `${id}: the Endings tab shows ${open1} found endings after one (1 wanted)`);
+      if (hints.length !== lockedTiles.length) t.problem("bug", `${id}: ${lockedTiles.length - hints.length} locked endings give no hint on how to chase them`);
+      if (doc.documentElement.scrollWidth > W + 1) t.problem("bug", `${id}: the Endings tab scrolls the page sideways at ${W}x${H}`);
+      t.event("endings-chase", `${id}: ${open1} found, ${lockedTiles.length} locked with hints [${hints.map((x) => x.querySelector(".ending-tile-hint").textContent).join(" | ")}]`);
+      closeViewFrame();
+    }
+  }
+  t.progress(1);
+}
+
 async function decisiveRun(options, t) {
   // Same guard as audioBusesRun / phoneChoicesRun: a smoke leg must not overwrite the outer snapshot.
   if (!savedRuns && savedCookie == null) rememberProgress();
@@ -8745,6 +9128,13 @@ installPlaytest({
       description: "The Water Road at 390x844 (a frame; each fork opened from a seeded run there, a setup shortcut, event seeded-run; the Tap to play prompt pressed). At each fork that has a choice behind a count of water (the dry wash needs 2, the night's barrel on the rocks needs 3): reached with enough water the option is a button; reached short of it the option is not a button but a greyed-out row that says why (\"needs water 3+\", 48px or taller, 14px type or more, not pressable: a touch on it does nothing), and the water count in the inventory bar is fully on screen above no choice, with the count the story holds (events water-gate-open, water-gate-locked, metric waterForks). At the dry wash and the night raid, a run that helped the family and one that passed them read and offer differently (the boy recognises the riders, the father stands with you; event family-callback). Each ending's words name an earlier choice (ending-callback). Two deaths at most, and the warning shot and the high ground cost barrels, a mule or a rider instead (events cost-not-death, deaths). Options: {\"story\":\"<id>\"}.",
     },
     {
+      id: "trust-fall",
+      title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
+      seconds: 300,
+      tags: ["full"],
+      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene.",
+    },
+    {
       id: "rewind",
       title: "A death goes back to the decision: Rewind to the choice (the deadly option marked Tried) and Start over; a timeout never kills; one-choice pages play on by themselves",
       seconds: 240,
@@ -8975,6 +9365,7 @@ installPlaytest({
       else if (id === "rewind") await rewindRun(options, t);
       else if (id === "spark-depth") await sparkDepthRun(options, t);
       else if (id === "water-gates") await waterGatesRun(options, t);
+      else if (id === "trust-fall") await trustFallRun(options, t);
       else if (id === "living-home") await livingHomeRun(options, t);
       else if (id === "front-door") await frontDoorRun(options, t);
       else if (id === "night-shift-card") await nightCardRun(options, t);

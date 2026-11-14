@@ -292,10 +292,14 @@
   }
 
   // A story opens (js/game.js): its Tap to play prompt, unless sound is already unlocked.
-  function ask() {
+  // autostart (a story's tap.autostart): the card's own press is the tap, so there is no overlay at all; sound unlocks
+  // here and the first clip plays with sound. If the browser still refuses (a link opened cold), play() shows the prompt.
+  function ask(opts) {
     decided = true;
     markSplashed();
-    if (!unlocked) showPrompt();
+    if (!unlocked) {
+      if (opts && opts.autostart) { taps++; trusted = true; unlock(); } else showPrompt();
+    }
     lift();
   }
 
@@ -513,6 +517,12 @@
         that tap starts every data-sound-start element then on the page. */
     relock: function () { if (!unlocked || overlay) return; unlocked = false; showPrompt(); },
     prompt: function () { return overlay; },
+    /** A scene change must never show a leftover prompt or title layer: take any faded or fading one away at once. */
+    clear: function () {
+      if (splashEl) endSplash(true);
+      var stale = document.querySelectorAll(".tap-to-play.is-gone, .tap-to-play.tap-splash");
+      for (var i = 0; i < stale.length; i++) if (stale[i] !== overlay && stale[i].parentNode) stale[i].parentNode.removeChild(stale[i]);
+    },
     open: openSettings,
     label: label,
     ask: ask,

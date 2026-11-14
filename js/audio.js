@@ -290,6 +290,43 @@
         });
         normalise(d, 0.6);
       });
+    } else if (mood === "city") {
+      // Trust Fall, the street and the flat: steady rain on glass (bright filtered noise), a low traffic wash far off,
+      // a slow swell on the loop, and one distant siren-like falling tone each half loop.
+      buf = mono(LOOP, function (d, rate) {
+        var i, t, rnd = rand(23);
+        loopNoise(d, rnd, 0.6, 0.08, 0.7);
+        for (i = 0; i < d.length; i++) {
+          t = i / rate;
+          d[i] *= 0.6 + 0.2 * Math.sin(TAU * t / LOOP * 2);
+          d[i] += 0.05 * Math.sin(TAU * 55 * t) * (0.6 + 0.4 * Math.sin(TAU * t / LOOP));
+        }
+        [[1.0, 640], [5.0, 560]].forEach(function (sr) {
+          var start = Math.floor(sr[0] * rate), len = Math.floor(rate * 1.4);
+          for (var k = 0; k < len && start + k < d.length; k++) {
+            var tt = k / rate, env = Math.sin(Math.PI * k / len);
+            d[start + k] += 0.05 * env * env * Math.sin(TAU * (sr[1] + 90 * Math.sin(TAU * 0.7 * tt)) * tt);
+          }
+        });
+        normalise(d, 0.6);
+      });
+    } else if (mood === "server") {
+      // Trust Fall, the tower and the core: cooling fans (whole-cycle hum and a mains harmonic), a dry hiss, a faint
+      // relay tick once a second.
+      buf = mono(LOOP, function (d, rate) {
+        var i, t, rnd = rand(31);
+        loopNoise(d, rnd, 0.3, 0.05, 0.35);
+        for (i = 0; i < d.length; i++) {
+          t = i / rate;
+          d[i] += 0.1 * Math.sin(TAU * 60 * t) + 0.06 * Math.sin(TAU * 120 * t) + 0.03 * Math.sin(TAU * 180 * t);
+          d[i] *= 0.8 + 0.2 * Math.sin(TAU * t / LOOP * 4);
+        }
+        for (var s = 0; s < LOOP; s++) {
+          var st = Math.floor((s + 0.5) * rate);
+          for (var k = 0; k < rate * 0.02 && st + k < d.length; k++) d[st + k] += 0.12 * Math.exp(-k / rate * 300) * Math.sin(TAU * 1800 * k / rate);
+        }
+        normalise(d, 0.6);
+      });
     }
     if (buf) bufferCache[key] = buf;
     return buf;
@@ -349,6 +386,13 @@
         for (var i = 0; i < n; i++) { var w = rnd() * 2 - 1; y1 += 0.18 * (w - y1); y2 += 0.01 * (w - y2); d[i] += (y1 - y2) * 0.9 * Math.sin(Math.PI * Math.min(1, i / n)) * 0.5; }
         tone(d, r, 1.2, 0.7, 130, 108, 0.1, 3, 0.5);
         normalise(d, 0.7);
+      });
+    }] },
+    "sting-trust-fall": { priority: 4, variants: [function () {
+      // a cold rising pair that stops short: something heard you
+      return mono(2.8, function (d, r) {
+        tone(d, r, 0, 2.6, 130.8, 130.8, 0.28, 1.2, 0.3); tone(d, r, 0.3, 2.3, 196, 207.7, 0.16, 1.4, 0.2); tone(d, r, 1.4, 0.4, 880, 660, 0.1, 9, 0);
+        normalise(d, 0.65);
       });
     }] },
     "sting-night-shift": { priority: 4, variants: [function () {
@@ -456,6 +500,8 @@
     try {
       var src = context.createBufferSource(), g = context.createGain();
       src.buffer = buf;
+      src.__hawkesSampleId = name === "choose" ? "tap" : name;
+      src.__hawkesBus = name.indexOf("sting") === 0 ? "music" : "ui";
       src.playbackRate.value = rate;
       src.connect(g);
       g.connect(buses.ui);
@@ -525,6 +571,8 @@
     try {
       var src = context.createBufferSource(), g = context.createGain();
       src.buffer = buf;
+      src.__hawkesSampleId = "bed:" + key;
+      src.__hawkesBus = "ambience";
       src.loop = true;
       g.gain.value = 0.0001;
       src.connect(g);
