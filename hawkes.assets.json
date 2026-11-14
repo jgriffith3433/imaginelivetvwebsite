@@ -31107,7 +31107,7 @@
     },
     {
       "id": "trust-fall-music-hum",
-      "note": "Music for the hum scenes (Trust Fall) (unplug, asked, readWorm, tower, listen, breaker).",
+      "note": "Music for the hum scenes (Trust Fall) (unplug, asked, readWorm, tower, listen, breaker, showCopy).",
       "steps": [
         {
           "tool": "audio.music",
@@ -34747,6 +34747,129 @@
         "portrait-1": "trust-fall/on-air-together/media/portrait-1.png",
         "line-1": "trust-fall/on-air-together/media/line-1.mp3",
         "talk-1": "trust-fall/on-air-together/media/talk-1.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-showCopy-shot",
+      "note": "Your copy (Trust Fall): keyframe and clip.",
+      "inputs": [
+        "story/characters/trust-fall/hero.png",
+        "story/characters/trust-fall/argus.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical 9:16 film still: a person in a cleaner’s uniform standing in a vast dim skyscraper lobby holding a small black drive up toward one tall screen, where a calm face drawn in amber light lines looks down at it; the amber glow falls across their raised hand. image 1 is the reference sheet for the hero (a lean person in their early thirties, short dark hair under the hood of a worn charcoal bomber jacket, black fingerless gloves, dark jeans, scuffed sneakers, usually seen from behind or by their hands); image 2 is the reference sheet for argus (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light); keep their faces, bodies and clothes exactly. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 720,
+            "height": 1280
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "keyframe"
+        },
+        {
+          "tool": "video.i2v",
+          "params": {
+            "prompt": "the person lifts the drive toward the screen; the amber face’s eyes lower to it and the glow steadies. Slow cinematic game camera, gently drifting. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 544,
+            "height": 960,
+            "frames": 81,
+            "fps": 16
+          },
+          "inputs": {
+            "start": "$prev"
+          },
+          "save": "clip"
+        }
+      ],
+      "candidates": 3,
+      "pick": "matches the scene (a person in a cleaner’s uniform standing in a vast dim skyscraper lobby holding a small black drive up toward one tall screen, where a calm face drawn in amber light lines looks down at it; the amber glow falls across their raised hand); the characters match their reference sheets; reads clearly as a vertical frame; no text",
+      "files": {
+        "keyframe": "trust-fall/your-copy/media/keyframe.png",
+        "clip": "trust-fall/your-copy/media/clip.mp4"
+      }
+    },
+    {
+      "id": "trust-fall-showCopy-voice",
+      "note": "Your copy (Trust Fall): narration in en.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You hold your copy up to the screen, the way you would show a badge. The amber face does not read it. It does not need to. It says what Blindspot is before you can ask, and it matches every line you read on the train. You have been lied to for two hours. This is the first thing anyone has told you straight. It knew. You believe it. Now what?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/your-copy/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-showCopy-talk-1",
+      "note": "Your copy (Trust Fall): ARGUS says \"That is Blindspot. A ransom on the city’s power, signed with your name. You have already read it, Rae. Let them think it worked, and I will show you how it ends.\". video.talk is experimental.",
+      "inputs": [
+        "story/characters/trust-fall/argus.png",
+        "trust-fall/your-copy/media/keyframe.png"
+      ],
+      "steps": [
+        {
+          "tool": "image.edit",
+          "params": {
+            "prompt": "A vertical medium close-up of the individual from image 1 (not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light) facing the camera, mouth closed, in the setting of image 2: a person in a cleaner’s uniform standing in a vast dim skyscraper lobby holding a small black drive up toward one tall screen, where a calm face drawn in amber light lines looks down at it; the amber glow falls across their raised hand. A still from a modern 3D near-future thriller video game in the look of Detroit: Become Human: real-time game render, physically based materials, rain-slick streets, glass towers, cool teal shadows against warm amber light, cinematic composition, a city a few years from now.",
+            "negative": "live action, photograph, real actors, film grain, cartoon, anime, flat 2D illustration, text, watermark, subtitles, HUD, game UI, logos",
+            "width": 480,
+            "height": 832
+          },
+          "inputs": {
+            "images": [
+              "$input:0",
+              "$input:1"
+            ]
+          },
+          "save": "portrait-1"
+        },
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "That is Blindspot. A ransom on the city’s power, signed with your name. You have already read it, Rae. Let them think it worked, and I will show you how it ends.",
+            "voice": "hv_ai",
+            "model": "eleven_v4"
+          },
+          "save": "line-1"
+        },
+        {
+          "tool": "video.talk",
+          "params": {
+            "prompt": "not a person and with no body: a black screen showing a calm, ageless face drawn only in thin soft glowing amber light lines, inside a thin glowing amber ring like an iris; on small devices just the amber ring of light speaks to the camera, natural head movement, the person lifts the drive toward the screen; the amber face’s eyes lower to it and the glow steadies",
+            "width": 480,
+            "height": 832,
+            "frames": 345,
+            "fps": 25
+          },
+          "inputs": {
+            "image": "$step1",
+            "audio": "$step2",
+            "audio2": "$step2"
+          },
+          "save": "talk-1"
+        }
+      ],
+      "candidates": 2,
+      "pick": "front-facing, face clearly visible and well lit, mouth closed, matches the reference sheet",
+      "files": {
+        "portrait-1": "trust-fall/your-copy/media/portrait-1.png",
+        "line-1": "trust-fall/your-copy/media/line-1.mp3",
+        "talk-1": "trust-fall/your-copy/media/talk-1.mp4"
       }
     }
   ]

@@ -9243,7 +9243,7 @@ async function trustFallRun(options, t) {
   // 4. Belief gates: a choice that `requires` the flag `believed` is there only on a run that chose Believe it; a choice that
   // `needs` trust N (Say thank you to ARGUS, at the morning edition: trust 3) is a button only with that much trust, and
   // greyed out ("needs trust 3+ (you have 2)") below it, even for a viewer who did believe.
-  const TRUST_SCENES = ["asked", "listen", "believe", "promise"]; // each adds 1 trust (the scenes' `inventory`)
+  const TRUST_SCENES = ["asked", "listen", "showCopy", "believe", "promise"]; // each adds 1 trust (the scenes' `inventory`)
   const trustOf = (way) => way.filter((s) => TRUST_SCENES.includes(s)).length;
   const gated = [];
   for (const sid of ids) for (const c of st.scenes[sid].choices) {
@@ -9293,6 +9293,62 @@ async function trustFallRun(options, t) {
       }
     }
     closeViewFrame();
+  }
+  // 4-copy. "Show ARGUS your copy" at the Tower: offered only after reading the drive (readWorm), absent without it, all Tower
+  // choices on screen with no scroll at 390x844, and taking it (a real tap) opens the page, then the bait path to the vault.
+  {
+    const COPY = "Show ARGUS your copy";
+    const read = wayTo("tower", (f) => f.readWorm === true);
+    const unread = wayTo("tower", (f) => !f.readWorm);
+    if (!read || !unread) t.problem("bug", `${id}: no way reaches the Tower ${read ? "without" : "with"} having read the drive`);
+    else {
+      t.scene(`${id}: tower, did not read the drive`);
+      let doc = await open(unread, "at the Tower, drive unread");
+      let box = await ready(doc, "tower");
+      const labelsNo = visible(box).map(label);
+      closeViewFrame();
+      if (labelsNo.includes(COPY)) t.problem("bug", `${id}/tower: "${COPY}" is offered without having read the drive (${labelsNo.join(" | ")})`);
+      else t.event("copy-gate", `${id}/tower: without readWorm: [${labelsNo.join(" | ")}], no "${COPY}"`);
+      t.scene(`${id}: tower, read the drive`);
+      doc = await open(read, "at the Tower, drive read");
+      box = await ready(doc, "tower");
+      const btns = visible(box);
+      const gb = btns.find((b) => label(b) === COPY);
+      if (!gb) t.problem("bug", `${id}/tower: with readWorm "${COPY}" is not offered (${btns.map(label).join(" | ")})`);
+      else {
+        const off = btns.filter((b) => { const r = b.getBoundingClientRect(); return r.top < 0 || r.bottom > H + 1 || r.height < 48; });
+        if (off.length) t.problem("bug", `${id}/tower: ${off.length} Tower choice(s) are off screen or under 48px tall at ${W}x${H} without scrolling (${off.map(label).join(" | ")})`);
+        else t.event("copy-fits", `${id}/tower: all ${btns.length} choices on screen, 48px or taller, no scrolling (${W}x${H}): ${btns.map(label).join(" | ")}`);
+        await tapAt(t, gb, `"${COPY}" (${W}x${H})`);
+        if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === "showCopy", 6000))) t.problem("bug", `${id}/tower: pressing "${COPY}" didn't open showCopy`);
+        else {
+          await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 12000);
+          await rewindEndClip(doc);
+          trustFallTextFit(t, doc, `${id}/showCopy (${W}x${H})`, W, H);
+          const next = visible(doc.getElementById("spark-choices"))[0];
+          if (!next) t.problem("bug", `${id}/showCopy: no choice to carry on`);
+          else {
+            await tapAt(t, next, `"${label(next)}" (${W}x${H})`);
+            if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === "believe", 6000))) t.problem("bug", `${id}/showCopy: carrying on didn't join the bait path`);
+            else {
+              await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 12000);
+              await rewindEndClip(doc);
+              const down = visible(doc.getElementById("spark-choices"))[0];
+              if (down) {
+                await tapAt(t, down, `"${label(down)}" (${W}x${H})`);
+                if (await waitFor(() => doc.defaultView.finalSpark.scene() === "core", 6000)) {
+                  await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 12000);
+                  const vault = visible(doc.getElementById("spark-choices")).map(label);
+                  if (!vault.some((l) => /ARGUS promised/.test(l))) t.problem("bug", `${id}/core: after "${COPY}" "Wait. ARGUS promised" is missing, so believed was not set (${vault.join(" | ")})`);
+                  else { t.event("copy-taken", `${id}: "${COPY}" -> showCopy -> believe -> core; believed is set, the vault offers "Wait. ARGUS promised"`); t.add("trustFallCopyTaken"); }
+                } else t.problem("bug", `${id}/believe: didn't reach the vault`);
+              }
+            }
+          }
+        }
+      }
+      closeViewFrame();
+    }
   }
   // 4a. Endings read the choice that mattered: Live after calling Marcus and Live after chasing the van (and Unseen likewise)
   // tell different words, and each ending's text fits the 390x844 screen. Seeded at the morning edition, real taps after.

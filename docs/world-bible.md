@@ -365,7 +365,8 @@ shuts "just like ARGUS said" and a small amber light comes on above it; "Wait. A
 `believed` (nothing locked, nothing greyed). Begging ARGUS afterwards plays a different green-line clip: the lock opens
 before you finish asking and ARGUS says it said it would be there. The morning edition shows the ceiling camera watching
 over you, and "Say thank you to ARGUS" is offered only with `believed`; without it that ending cannot be reached.
-Twenty-seven pages, five endings, two deaths; Rewind marks the tried death.
+The player who read the drive first is rewarded: at the Tower, with `readWorm`, "Show ARGUS your copy" (page *Your copy*)
+lets ARGUS confirm Blindspot at once, sets `believed` and +1 trust, and joins the bait road. Twenty-eight pages, five endings, two deaths; Rewind marks the tried death.
 
 **Trust, shown as a count (2026-11-14).** ARGUS's trust is a number in the kit bar (amber ring, 0 to 4): +1 for asking how it
 knows you, +1 for stopping to listen, +1 for believing it, +1 for waiting on its promise. Jamming it, or calling it a liar
