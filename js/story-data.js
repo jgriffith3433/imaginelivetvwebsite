@@ -26520,6 +26520,12 @@ window.ILTV_STORIES = {
      }
     ]
    },
+   "news": {
+    "station": "Meridian Morning",
+    "anchor": "Marcus Okoro",
+    "role": "Anchor",
+    "channel": "Meridian 7"
+   },
    "endings": [
     {
      "id": "truth",
@@ -26531,7 +26537,8 @@ window.ILTV_STORIES = {
       "THE END. You were the story.",
       "THE END. You were the story."
      ],
-     "hint": "Some stories you tell yourself."
+     "hint": "Some stories you tell yourself.",
+     "video": "/trust-fall/live/scene.mp4"
     },
     {
      "id": "shadow",
@@ -26543,7 +26550,8 @@ window.ILTV_STORIES = {
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
      ],
-     "hint": "Some heroes keep their names."
+     "hint": "Some heroes keep their names.",
+     "video": "/trust-fall/unseen/scene.mp4"
     },
     {
      "id": "believer",
@@ -26555,7 +26563,8 @@ window.ILTV_STORIES = {
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
      ],
-     "hint": "Some mornings you answer back."
+     "hint": "Some mornings you answer back.",
+     "video": "/trust-fall/good-morning/scene.mp4"
     },
     {
      "id": "unvouched",
@@ -26603,6 +26612,25 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/first-light/poster/scene.webp",
      "small": "/trust-fall/first-light/sm/scene.mp4",
      "live": 18,
+     "news": {
+      "time": "6:00 AM",
+      "caption": [
+       [
+        "Marcus",
+        "Good morning, Meridian. At midnight, ARGUS goes live: every camera, every light, every door. And to the one who always watches: you know who you are."
+       ],
+       [
+        "ARGUS",
+        "Good morning, Rae. He says that to you, doesn't he?"
+       ]
+      ],
+      "lower": 1,
+      "third": "First light",
+      "chapter": {
+       "time": "6:00 AM",
+       "title": "First light"
+      }
+     },
      "choices": [
       [
        "1. Pull its plug",
@@ -26618,26 +26646,7 @@ window.ILTV_STORIES = {
         "listened": true
        }
       ]
-     ],
-     "news": {
-      "time": "6:00 AM",
-      "caption": [
-       [
-        "Marcus",
-        "Good morning, Meridian. At midnight, ARGUS goes live: every camera, every light, every door. And to the one who always watches: you know who you are."
-       ],
-       [
-        "ARGUS",
-        "Good morning, Rae. He says that to you, doesn't he?"
-       ]
-      ],
-      "lower": 1,
-      "chapter": {
-       "time": "6:00 AM",
-       "title": "First light"
-      },
-      "third": "First light"
-     }
+     ]
     },
     "unplug": {
      "folder": "trust-fall/the-plug",
@@ -26658,13 +26667,6 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/the-plug/scene.mp4",
      "poster": "/trust-fall/the-plug/poster/scene.webp",
      "small": "/trust-fall/the-plug/sm/scene.mp4",
-     "choices": [
-      [
-       "1. Go to the garage",
-       "1. Go to the garage",
-       "crew"
-      ]
-     ],
      "news": {
       "time": "6:03 AM",
       "caption": [
@@ -26674,7 +26676,14 @@ window.ILTV_STORIES = {
        ]
       ],
       "third": "The plug"
-     }
+     },
+     "choices": [
+      [
+       "1. Go to the garage",
+       "1. Go to the garage",
+       "crew"
+      ]
+     ]
     },
     "asked": {
      "folder": "trust-fall/how-it-knows",
@@ -26695,6 +26704,15 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/how-it-knows/scene.mp4",
      "poster": "/trust-fall/how-it-knows/poster/scene.webp",
      "small": "/trust-fall/how-it-knows/sm/scene.mp4",
+     "news": {
+      "time": "6:03 AM",
+      "caption": [
+       [
+        "ARGUS",
+        "I know everyone's name, Rae. I'm telling you because tonight someone is going to hurt you, and I want you to let me help."
+       ]
+      ]
+     },
      "inventory": {
       "trust": 1
      },
@@ -26704,16 +26722,7 @@ window.ILTV_STORIES = {
        "1. Go to the garage",
        "crew"
       ]
-     ],
-     "news": {
-      "time": "6:03 AM",
-      "caption": [
-       [
-        "ARGUS",
-        "I know everyone's name, Rae. I'm telling you because tonight someone is going to hurt you, and I want you to let me help."
-       ]
-      ]
-     }
+     ]
     },
     "crew": {
      "folder": "trust-fall/the-garage",
@@ -26735,6 +26744,23 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-garage/poster/scene.webp",
      "small": "/trust-fall/the-garage/sm/scene.mp4",
      "live": 18,
+     "news": {
+      "time": "10:00 PM",
+      "caption": [
+       [
+        "Juno",
+        "Seven years ago I pulled you out of that cell. I asked nothing."
+       ],
+       [
+        "Juno",
+        "One night, Rae. This city is ours."
+       ]
+      ],
+      "chapter": {
+       "time": "10:00 PM",
+       "title": "The garage"
+      }
+     },
      "inventory": {
       "blindspot": 1
      },
@@ -26754,24 +26780,7 @@ window.ILTV_STORIES = {
         "readWorm": true
        }
       ]
-     ],
-     "news": {
-      "time": "10:00 PM",
-      "caption": [
-       [
-        "Juno",
-        "Seven years ago I pulled you out of that cell. I asked nothing."
-       ],
-       [
-        "Juno",
-        "One night, Rae. This city is ours."
-       ]
-      ],
-      "chapter": {
-       "time": "10:00 PM",
-       "title": "The garage"
-      }
-     }
+     ]
     },
     "readWorm": {
      "folder": "trust-fall/whats-inside",
@@ -26793,6 +26802,10 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/whats-inside/poster/scene.webp",
      "small": "/trust-fall/whats-inside/sm/scene.mp4",
      "live": 18,
+     "news": {
+      "time": "10:25 PM",
+      "caption": []
+     },
      "inventory": {
       "copy": 1
      },
@@ -26808,11 +26821,7 @@ window.ILTV_STORIES = {
        "2. Go back and face Juno",
        "liability"
       ]
-     ],
-     "news": {
-      "time": "10:25 PM",
-      "caption": []
-     }
+     ]
     },
     "liability": {
      "folder": "trust-fall/the-river",
@@ -26834,17 +26843,17 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-river/poster/scene.webp",
      "small": "/trust-fall/the-river/sm/scene.mp4",
      "dead": true,
+     "news": {
+      "time": "10:20 PM",
+      "caption": []
+     },
      "choices": [
       [
        "1. Start over",
        "1. Start over",
        "start"
       ]
-     ],
-     "news": {
-      "time": "10:20 PM",
-      "caption": []
-     }
+     ]
     },
     "tower": {
      "folder": "trust-fall/the-tower",
@@ -26866,6 +26875,25 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-tower/poster/scene.webp",
      "small": "/trust-fall/the-tower/sm/scene.mp4",
      "live": 18,
+     "news": {
+      "time": "11:50 PM",
+      "caption": [
+       [
+        "Marcus",
+        "Ten minutes, Meridian. Whatever you think of it, tonight it starts watching over all of us."
+       ],
+       [
+        "ARGUS",
+        "Rae. Please stop walking."
+       ]
+      ],
+      "lower": 1,
+      "third": "The Tower",
+      "chapter": {
+       "time": "11:50 PM",
+       "title": "The Tower"
+      }
+     },
      "choices": [
       [
        "1. Jam it and keep going",
@@ -26904,31 +26932,18 @@ window.ILTV_STORIES = {
        "when": {
         "readWorm": true
        },
+       "story": [
+        "Eleven fifty: lobby screens show Marcus live, counting down, as you wheel a cart past security. One screen cuts to an amber face, looking at you.",
+        "Eleven fifty: lobby screens show Marcus live, counting down, as you wheel a cart past security. One screen cuts to an amber face, looking at you."
+       ],
        "question": [
         "You know the drive. ARGUS sees you. What now?",
         "You know the drive. ARGUS sees you. What now?"
-       ]
-      }
-     ],
-     "news": {
-      "time": "11:50 PM",
-      "caption": [
-       [
-        "Marcus",
-        "Ten minutes, Meridian. Whatever you think of it, tonight it starts watching over all of us."
        ],
-       [
-        "ARGUS",
-        "Rae. Please stop walking."
-       ]
-      ],
-      "lower": 1,
-      "chapter": {
-       "time": "11:50 PM",
-       "title": "The Tower"
-      },
-      "third": "The Tower"
-     }
+       "video": "/trust-fall/the-tower/scene-v1.mp4",
+       "live": 18
+      }
+     ]
     },
     "jam": {
      "folder": "trust-fall/lights-out",
@@ -26949,6 +26964,10 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/lights-out/scene.mp4",
      "poster": "/trust-fall/lights-out/poster/scene.webp",
      "small": "/trust-fall/lights-out/sm/scene.mp4",
+     "news": {
+      "time": "11:53 PM",
+      "caption": []
+     },
      "inventory": {
       "jammer": 1,
       "trust": {
@@ -26961,11 +26980,7 @@ window.ILTV_STORIES = {
        "1. Down the dark stairs",
        "blackout"
       ]
-     ],
-     "news": {
-      "time": "11:53 PM",
-      "caption": []
-     }
+     ]
     },
     "listen": {
      "folder": "trust-fall/what-it-knows",
@@ -26987,6 +27002,15 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/what-it-knows/poster/scene.webp",
      "small": "/trust-fall/what-it-knows/sm/scene.mp4",
      "live": 18,
+     "news": {
+      "time": "11:52 PM",
+      "caption": [
+       [
+        "ARGUS",
+        "That drive doesn't blind me. It locks the city's power and signs your name to it. Juno sold you two hours ago."
+       ]
+      ]
+     },
      "inventory": {
       "trust": 1
      },
@@ -27018,18 +27042,11 @@ window.ILTV_STORIES = {
        "question": [
         "It's what you read on the train. Do you believe a machine?",
         "It's what you read on the train. Do you believe a machine?"
-       ]
+       ],
+       "video": "/trust-fall/what-it-knows/scene-v1.mp4",
+       "live": 18
       }
-     ],
-     "news": {
-      "time": "11:52 PM",
-      "caption": [
-       [
-        "ARGUS",
-        "That drive doesn't blind me. It locks the city's power and signs your name to it. Juno sold you two hours ago."
-       ]
-      ]
-     }
+     ]
     },
     "believe": {
      "folder": "trust-fall/the-bait",
@@ -27050,6 +27067,15 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/the-bait/scene.mp4",
      "poster": "/trust-fall/the-bait/poster/scene.webp",
      "small": "/trust-fall/the-bait/sm/scene.mp4",
+     "news": {
+      "time": "11:55 PM",
+      "caption": [
+       [
+        "ARGUS",
+        "Then let them think it worked. Go down and plug it in. When the door closes, don't be afraid. I'll be right there."
+       ]
+      ]
+     },
      "inventory": {
       "trust": 1
      },
@@ -27059,16 +27085,7 @@ window.ILTV_STORIES = {
        "1. Down to the core",
        "core"
       ]
-     ],
-     "news": {
-      "time": "11:55 PM",
-      "caption": [
-       [
-        "ARGUS",
-        "Then let them think it worked. Go down and plug it in. When the door closes, don't be afraid. I'll be right there."
-       ]
-      ]
-     }
+     ]
     },
     "core": {
      "folder": "trust-fall/the-vault",
@@ -27092,6 +27109,15 @@ window.ILTV_STORIES = {
      "live": 18,
      "timer": 10,
      "timerStyle": "air",
+     "news": {
+      "time": "11:58 PM",
+      "caption": [
+       [
+        "Juno",
+        "Sorry, Rae. Somebody has to be the face of it. Might as well be the one with the famous husband."
+       ]
+      ]
+     },
      "choices": [
       [
        "1. Beg ARGUS for help",
@@ -27142,18 +27168,11 @@ window.ILTV_STORIES = {
        "question": [
         "Just as ARGUS said. What now?",
         "Just as ARGUS said. What now?"
-       ]
+       ],
+       "video": "/trust-fall/the-vault/scene-v1.mp4",
+       "live": 18
       }
-     ],
-     "news": {
-      "time": "11:58 PM",
-      "caption": [
-       [
-        "Juno",
-        "Sorry, Rae. Somebody has to be the face of it. Might as well be the one with the famous husband."
-       ]
-      ]
-     }
+     ]
     },
     "halon": {
      "folder": "trust-fall/sixty-seconds",
@@ -27175,17 +27194,17 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/sixty-seconds/poster/scene.webp",
      "small": "/trust-fall/sixty-seconds/sm/scene.mp4",
      "dead": true,
+     "news": {
+      "time": "11:59 PM",
+      "caption": []
+     },
      "choices": [
       [
        "1. Start over",
        "1. Start over",
        "start"
       ]
-     ],
-     "news": {
-      "time": "11:59 PM",
-      "caption": []
-     }
+     ]
     },
     "callMarcus": {
      "folder": "trust-fall/on-the-air",
@@ -27206,13 +27225,6 @@ window.ILTV_STORIES = {
      "video": "/trust-fall/on-the-air/scene.mp4",
      "poster": "/trust-fall/on-the-air/poster/scene.webp",
      "small": "/trust-fall/on-the-air/sm/scene.mp4",
-     "choices": [
-      [
-       "1. Hold on",
-       "1. Hold on",
-       "saved"
-      ]
-     ],
      "news": {
       "time": "12:00 AM",
       "caption": [
@@ -27226,7 +27238,14 @@ window.ILTV_STORIES = {
        ]
       ],
       "lower": 1
-     }
+     },
+     "choices": [
+      [
+       "1. Hold on",
+       "1. Hold on",
+       "saved"
+      ]
+     ]
     },
     "saved": {
      "folder": "trust-fall/the-green-line",
@@ -27248,6 +27267,15 @@ window.ILTV_STORIES = {
      "poster": "/trust-fall/the-green-line/poster/scene.webp",
      "small": "/trust-fall/the-green-line/sm/scene.mp4",
      "live": 18,
+     "news": {
+      "time": "12:02 AM",
+      "caption": [
+       [
+        "ARGUS",
+        "Breathe slow. Left, then up. I have you."
+       ]
+      ]
+     },
      "choices": [
       [
        "1. Let ARGUS handle Juno",
@@ -27277,7 +27305,9 @@ window.ILTV_STORIES = {
        "question": [
         "It was there. What now?",
         "It was there. What now?"
-       ]
+       ],
+       "video": "/trust-fall/the-green-line/scene-v1.mp4",
+       "live": 18
       },
       {
        "when": {
@@ -27290,18 +27320,11 @@ window.ILTV_STORIES = {
        "question": [
         "It came late. What now?",
         "It came late. What now?"
-       ]
+       ],
+       "video": "/trust-fall/the-green-line/scene-v2.mp4",
+       "live": 18
       }
-     ],
-     "news": {
-      "time": "12:02 AM",
-      "caption": [
-       [
-        "ARGUS",
-        "Breathe slow. Left, then up. I have you."
-       ]
-      ]
-     }
+     ]
     },
     "chase": {
      "folder": "trust-fall/the-bridge",
@@ -27319,17 +27342,7 @@ window.ILTV_STORIES = {
       "Breathe.",
       "Breathe."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/the-bridge/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/heist.mp3",
-     "choices": [
-      [
-       "1. Breathe",
-       "1. Breathe",
-       "broadcast"
-      ]
-     ],
+     "video": "/trust-fall/the-bridge/scene.mp4",
      "news": {
       "time": "12:05 AM",
       "caption": [
@@ -27338,7 +27351,14 @@ window.ILTV_STORIES = {
         "You don't have to do everything alone, Rae."
        ]
       ]
-     }
+     },
+     "choices": [
+      [
+       "1. Breathe",
+       "1. Breathe",
+       "broadcast"
+      ]
+     ]
     },
     "promise": {
      "folder": "trust-fall/the-promise",
@@ -27356,10 +27376,16 @@ window.ILTV_STORIES = {
       "It kept its word.",
       "It kept its word."
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/the-promise/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/rescue.mp3",
+     "video": "/trust-fall/the-promise/scene.mp4",
+     "news": {
+      "time": "12:02 AM",
+      "caption": [
+       [
+        "ARGUS",
+        "You believed me when it cost you something. Thank you."
+       ]
+      ]
+     },
      "inventory": {
       "trust": 1
      },
@@ -27369,16 +27395,7 @@ window.ILTV_STORIES = {
        "1. Walk out",
        "broadcast"
       ]
-     ],
-     "news": {
-      "time": "12:02 AM",
-      "caption": [
-       [
-        "ARGUS",
-        "You believed me when it cost you something. Thank you."
-       ]
-      ]
-     }
+     ]
     },
     "broadcast": {
      "folder": "trust-fall/morning-edition",
@@ -27396,10 +27413,23 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/morning-edition/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/morning.mp3",
+     "video": "/trust-fall/morning-edition/scene.mp4",
+     "live": 18,
+     "news": {
+      "time": "6:00 AM",
+      "caption": [
+       [
+        "Marcus",
+        "Someone walked into that vault last night to break this city, and walked out because a machine wouldn't let go. If you're watching, you know who you are. Come home."
+       ]
+      ],
+      "lower": 1,
+      "third": "Morning edition",
+      "chapter": {
+       "time": "6:00 AM",
+       "title": "Morning edition"
+      }
+     },
      "choices": [
       [
        "1. Tell Marcus everything, on the air",
@@ -27478,7 +27508,9 @@ window.ILTV_STORIES = {
        "question": [
         "You weren't alone. What now?",
         "You weren't alone. What now?"
-       ]
+       ],
+       "video": "/trust-fall/morning-edition/scene-v1.mp4",
+       "live": 18
       },
       {
        "when": {
@@ -27487,7 +27519,9 @@ window.ILTV_STORIES = {
        "question": [
         "He heard you. What now?",
         "He heard you. What now?"
-       ]
+       ],
+       "video": "/trust-fall/morning-edition/scene-v2.mp4",
+       "live": 18
       },
       {
        "when": {
@@ -27500,7 +27534,9 @@ window.ILTV_STORIES = {
        "question": [
         "It kept its word. What now?",
         "It kept its word. What now?"
-       ]
+       ],
+       "video": "/trust-fall/morning-edition/scene-v3.mp4",
+       "live": 18
       },
       {
        "when": {
@@ -27509,7 +27545,9 @@ window.ILTV_STORIES = {
        "question": [
         "ARGUS kept its promise. What now?",
         "ARGUS kept its promise. What now?"
-       ]
+       ],
+       "video": "/trust-fall/morning-edition/scene-v4.mp4",
+       "live": 18
       },
       {
        "when": {
@@ -27518,7 +27556,9 @@ window.ILTV_STORIES = {
        "question": [
         "ARGUS knew your name. What now?",
         "ARGUS knew your name. What now?"
-       ]
+       ],
+       "video": "/trust-fall/morning-edition/scene-v5.mp4",
+       "live": 18
       },
       {
        "when": {
@@ -27531,24 +27571,11 @@ window.ILTV_STORIES = {
        "question": [
         "No light watched. What now?",
         "No light watched. What now?"
-       ]
+       ],
+       "video": "/trust-fall/morning-edition/scene-v6.mp4",
+       "live": 18
       }
-     ],
-     "news": {
-      "time": "6:00 AM",
-      "caption": [
-       [
-        "Marcus",
-        "Someone walked into that vault last night to break this city, and walked out because a machine wouldn't let go. If you're watching, you know who you are. Come home."
-       ]
-      ],
-      "lower": 1,
-      "chapter": {
-       "time": "6:00 AM",
-       "title": "Morning edition"
-      },
-      "third": "Morning edition"
-     }
+     ]
     },
     "truth": {
      "folder": "trust-fall/live",
@@ -27566,10 +27593,19 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/live/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/end.mp3",
+     "video": "/trust-fall/live/scene.mp4",
+     "news": {
+      "time": "6:14 AM",
+      "caption": [
+       [
+        "Marcus",
+        "Good morning, Meridian. My guest is the reason your lights are still on. Go ahead, Rae."
+       ]
+      ],
+      "lower": 1,
+      "third": "Live",
+      "signoff": "That was the whole truth, live. I'm Marcus Okoro. Good night, Meridian. You know who you are."
+     },
      "ending": [
       "THE END. You were the story.",
       "THE END. You were the story."
@@ -27583,7 +27619,8 @@ window.ILTV_STORIES = {
        "story": [
         "At seven you tell the city who you are, and that you chased Juno alone. ARGUS vouches for every word. Marcus tells you alone: you know who you are.",
         "At seven you tell the city who you are, and that you chased Juno alone. ARGUS vouches for every word. Marcus tells you alone: you know who you are."
-       ]
+       ],
+       "video": "/trust-fall/live/scene-v1.mp4"
       },
       {
        "when": {
@@ -27592,7 +27629,8 @@ window.ILTV_STORIES = {
        "story": [
         "At seven you tell the city who you are. Marcus says on air your call came through eleven floors. ARGUS vouches. To you alone: you know who you are.",
         "At seven you tell the city who you are. Marcus says on air your call came through eleven floors. ARGUS vouches. To you alone: you know who you are."
-       ]
+       ],
+       "video": "/trust-fall/live/scene-v2.mp4"
       },
       {
        "when": {
@@ -27601,21 +27639,10 @@ window.ILTV_STORIES = {
        "story": [
         "At seven you tell the city you believed a machine. The camera light is amber, not red. ARGUS vouches. Marcus tells you alone: you know who you are.",
         "At seven you tell the city you believed a machine. The camera light is amber, not red. ARGUS vouches. Marcus tells you alone: you know who you are."
-       ]
+       ],
+       "video": "/trust-fall/live/scene-v3.mp4"
       }
-     ],
-     "news": {
-      "time": "6:14 AM",
-      "caption": [
-       [
-        "Marcus",
-        "Good morning, Meridian. My guest is the reason your lights are still on. Go ahead, Rae."
-       ]
-      ],
-      "lower": 1,
-      "signoff": "That was the whole truth, live. I'm Marcus Okoro. Good night, Meridian. You know who you are.",
-      "third": "Live"
-     }
+     ]
     },
     "shadow": {
      "folder": "trust-fall/unseen",
@@ -27633,10 +27660,19 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/unseen/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/end.mp3",
+     "video": "/trust-fall/unseen/scene.mp4",
+     "news": {
+      "time": "6:14 AM",
+      "caption": [
+       [
+        "Marcus",
+        "Stay safe, Meridian. And to the one who came home: you know who you are."
+       ]
+      ],
+      "lower": 1,
+      "third": "Unseen",
+      "signoff": "Some mornings there's no name to give. I'm Marcus Okoro. I'll leave the light on. You know who you are."
+     },
      "ending": [
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
@@ -27650,7 +27686,8 @@ window.ILTV_STORIES = {
        "story": [
         "You leave the blanket on the bench and slip out alone. ARGUS never gives your name. Marcus's next broadcast ends with a line only you understand.",
         "You leave the blanket on the bench and slip out alone. ARGUS never gives your name. Marcus's next broadcast ends with a line only you understand."
-       ]
+       ],
+       "video": "/trust-fall/unseen/scene-v1.mp4"
       },
       {
        "when": {
@@ -27659,7 +27696,8 @@ window.ILTV_STORIES = {
        "story": [
         "You leave the blanket and slip out. Marcus knows only that someone called from under the Tower. His next broadcast ends with a line for you.",
         "You leave the blanket and slip out. Marcus knows only that someone called from under the Tower. His next broadcast ends with a line for you."
-       ]
+       ],
+       "video": "/trust-fall/unseen/scene-v2.mp4"
       },
       {
        "when": {
@@ -27668,21 +27706,10 @@ window.ILTV_STORIES = {
        "story": [
         "You leave the blanket on the bench and slip out. ARGUS never gives your name; you asked. Marcus's next broadcast ends with a line only you understand.",
         "You leave the blanket on the bench and slip out. ARGUS never gives your name; you asked. Marcus's next broadcast ends with a line only you understand."
-       ]
+       ],
+       "video": "/trust-fall/unseen/scene-v3.mp4"
       }
-     ],
-     "news": {
-      "time": "6:14 AM",
-      "caption": [
-       [
-        "Marcus",
-        "Stay safe, Meridian. And to the one who came home: you know who you are."
-       ]
-      ],
-      "lower": 1,
-      "signoff": "Some mornings there's no name to give. I'm Marcus Okoro. I'll leave the light on. You know who you are.",
-      "third": "Unseen"
-     }
+     ]
     },
     "believer": {
      "folder": "trust-fall/good-morning",
@@ -27700,15 +27727,7 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": null,
-     "still": "/assets/images/trust-fall.jpg",
-     "narration": "/trust-fall/good-morning/media/narration.mp3",
-     "score": "/assets/story/trust-fall/music/end.mp3",
-     "ending": [
-      "THE END. It was always on your side.",
-      "THE END. It was always on your side."
-     ],
-     "choices": [],
+     "video": "/trust-fall/good-morning/scene.mp4",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27717,9 +27736,14 @@ window.ILTV_STORIES = {
         "Good morning, Rae."
        ]
       ],
-      "signoff": "The city says good morning, and someone says it back. I'm Marcus Okoro. You know who you are.",
-      "third": "Good morning"
-     }
+      "third": "Good morning",
+      "signoff": "The city says good morning, and someone says it back. I'm Marcus Okoro. You know who you are."
+     },
+     "ending": [
+      "THE END. It was always on your side.",
+      "THE END. It was always on your side."
+     ],
+     "choices": []
     },
     "blackout": {
      "folder": "trust-fall/dead-stairs",
@@ -27739,17 +27763,19 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/dead-stairs/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/trapped.mp3",
+     "news": {
+      "time": "11:55 PM",
+      "caption": []
+     },
      "choices": [
       [
        "1. Feel for the breaker room",
        "1. Feel for the breaker room",
        "breaker"
       ]
-     ],
-     "news": {
-      "time": "11:55 PM",
-      "caption": []
-     }
+     ]
     },
     "breaker": {
      "folder": "trust-fall/the-breaker-room",
@@ -27769,17 +27795,19 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/the-breaker-room/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/hum.mp3",
+     "news": {
+      "time": "11:57 PM",
+      "caption": []
+     },
      "choices": [
       [
        "1. Climb into the service duct",
        "1. Climb into the service duct",
        "crawl"
       ]
-     ],
-     "news": {
-      "time": "11:57 PM",
-      "caption": []
-     }
+     ]
     },
     "crawl": {
      "folder": "trust-fall/the-duct",
@@ -27799,13 +27827,8 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "choices": [
-      [
-       "1. Drop into the dark core",
-       "1. Drop into the dark core",
-       "coreDark"
-      ]
-     ],
+     "narration": "/trust-fall/the-duct/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/trapped.mp3",
      "news": {
       "time": "11:58 PM",
       "caption": [
@@ -27814,7 +27837,14 @@ window.ILTV_STORIES = {
         "Rae. The jammer is still on. I cannot see you."
        ]
       ]
-     }
+     },
+     "choices": [
+      [
+       "1. Drop into the dark core",
+       "1. Drop into the dark core",
+       "coreDark"
+      ]
+     ]
     },
     "coreDark": {
      "folder": "trust-fall/the-dark-vault",
@@ -27834,8 +27864,19 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/the-dark-vault/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/trapped.mp3",
      "timer": 10,
      "timerStyle": "air",
+     "news": {
+      "time": "11:59 PM",
+      "caption": [
+       [
+        "Juno",
+        "Sorry, Rae. Somebody has to be the face of it. Nobody is coming for you."
+       ]
+      ]
+     },
      "choices": [
       [
        "1. Beg the dead air",
@@ -27857,16 +27898,7 @@ window.ILTV_STORIES = {
        "3. Pry the door open",
        "halon"
       ]
-     ],
-     "news": {
-      "time": "11:59 PM",
-      "caption": [
-       [
-        "Juno",
-        "Sorry, Rae. Somebody has to be the face of it. Nobody is coming for you."
-       ]
-      ]
-     }
+     ]
     },
     "unvouched": {
      "folder": "trust-fall/alone-on-air",
@@ -27886,11 +27918,8 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "ending": [
-      "THE END. Nobody vouched for you.",
-      "THE END. Nobody vouched for you."
-     ],
-     "choices": [],
+     "narration": "/trust-fall/alone-on-air/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/end.mp3",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27900,9 +27929,14 @@ window.ILTV_STORIES = {
        ]
       ],
       "lower": 1,
-      "signoff": "Nobody has spoken for you yet. I'm Marcus Okoro, and I will. You know who you are.",
-      "third": "Alone on air"
-     }
+      "third": "Alone on air",
+      "signoff": "Nobody has spoken for you yet. I'm Marcus Okoro, and I will. You know who you are."
+     },
+     "ending": [
+      "THE END. Nobody vouched for you.",
+      "THE END. Nobody vouched for you."
+     ],
+     "choices": []
     },
     "vouched": {
      "folder": "trust-fall/on-air-together",
@@ -27922,11 +27956,8 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
-     "ending": [
-      "THE END. It answered for you.",
-      "THE END. It answered for you."
-     ],
-     "choices": [],
+     "narration": "/trust-fall/on-air-together/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/end.mp3",
      "news": {
       "time": "6:14 AM",
       "caption": [
@@ -27935,9 +27966,14 @@ window.ILTV_STORIES = {
         "Everything she says is true, and I can show you why. Go ahead, Rae."
        ]
       ],
-      "signoff": "It answered for you, and so will I. I'm Marcus Okoro. You know who you are.",
-      "third": "On air, together"
-     }
+      "third": "On air, together",
+      "signoff": "It answered for you, and so will I. I'm Marcus Okoro. You know who you are."
+     },
+     "ending": [
+      "THE END. It answered for you.",
+      "THE END. It answered for you."
+     ],
+     "choices": []
     },
     "showCopy": {
      "folder": "trust-fall/your-copy",
@@ -27957,6 +27993,17 @@ window.ILTV_STORIES = {
      ],
      "video": null,
      "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/your-copy/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/hum.mp3",
+     "news": {
+      "time": "11:52 PM",
+      "caption": [
+       [
+        "ARGUS",
+        "That is Blindspot. A ransom on the city’s power, signed with your name. You have already read it, Rae. Let them think it worked, and I will show you how it ends."
+       ]
+      ]
+     },
      "inventory": {
       "trust": 1
      },
@@ -27966,23 +28013,8 @@ window.ILTV_STORIES = {
        "1. Do what it says",
        "believe"
       ]
-     ],
-     "news": {
-      "time": "11:52 PM",
-      "caption": [
-       [
-        "ARGUS",
-        "That is Blindspot. A ransom on the city’s power, signed with your name. You have already read it, Rae. Let them think it worked, and I will show you how it ends."
-       ]
-      ]
-     }
+     ]
     }
-   },
-   "news": {
-    "station": "Meridian Morning",
-    "anchor": "Marcus Okoro",
-    "role": "Anchor",
-    "channel": "Meridian 7"
    }
   }
  ]
