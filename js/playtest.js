@@ -8723,6 +8723,46 @@ async function trustFallEndingsRun(options, t) {
   }
 }
 
+/** Text fit (J, 2026-11-14): on a phone no page's text outlasts its page or is cut off. For the story line, the question,
+    the ending card, a death's line and every choice button: the box lies inside the screen; text that is taller than its box
+    must scroll inside it (overflow auto/scroll), never be clipped (overflow hidden/clip) by it or by an ancestor; a button's
+    words fit its button; and the page does not scroll down or sideways past the screen. Logs `text-fit`, returns the problems. */
+function trustFallTextFit(t, doc, label, W, H) {
+  const win = doc.defaultView;
+  const bad = [];
+  const shown = (e) => e && e.getClientRects().length && win.getComputedStyle(e).visibility !== "hidden" && !e.hidden;
+  const clips = (v) => v === "hidden" || v === "clip";
+  const parts = [["#spark-story", "story text"], ["#spark-question", "question"], ["#spark-ending", "ending card"], ["#spark-choices .choice, #spark-choices [data-death]", "choice"]];
+  let boxes = 0;
+  for (const [sel, what] of parts) {
+    for (const e of doc.querySelectorAll(sel)) {
+      if (!shown(e) || !(e.textContent || "").trim()) continue;
+      boxes++;
+      const r = e.getBoundingClientRect(), cs = win.getComputedStyle(e);
+      const name = `${what} "${(e.textContent || "").trim().replace(/\s+/g, " ").slice(0, 28)}"`;
+      if (r.left < -1 || r.right > W + 1 || r.bottom > H + 1) bad.push(`${name} lies off the ${W}x${H} screen (${Math.round(r.left)}..${Math.round(r.right)}, bottom ${Math.round(r.bottom)})`);
+      if (e.scrollHeight > e.clientHeight + 2 && clips(cs.overflowY)) bad.push(`${name} is cut off (${e.scrollHeight}px of text in ${e.clientHeight}px, overflow ${cs.overflowY})`);
+      if (e.scrollWidth > e.clientWidth + 2 && clips(cs.overflowX)) bad.push(`${name} is cut off sideways (${e.scrollWidth}px in ${e.clientWidth}px)`);
+      // An ancestor that clips this box (the panel, the player) must still show all of it, unless this box scrolls itself.
+      for (let a = e.parentElement; a && a !== doc.body; a = a.parentElement) {
+        const ac = win.getComputedStyle(a);
+        if (!clips(ac.overflowY) && !clips(ac.overflowX)) continue;
+        const ar = a.getBoundingClientRect();
+        if (r.bottom > ar.bottom + 2 || r.top < ar.top - 2 || r.right > ar.right + 2 || r.left < ar.left - 2) bad.push(`${name} is clipped by ${a.id || a.className || a.tagName} (box ${Math.round(r.top)}-${Math.round(r.bottom)}, clip ${Math.round(ar.top)}-${Math.round(ar.bottom)})`);
+        break;
+      }
+    }
+  }
+  // A text box that scrolls inside itself and a page that does too: the page itself holds still.
+  const de = doc.documentElement;
+  if (de.scrollWidth > W + 1) bad.push(`the page scrolls sideways (${de.scrollWidth}px of ${W})`);
+  if (Math.max(de.scrollHeight, doc.body.scrollHeight) > H + 1) bad.push(`the page's text outlasts the page (${Math.max(de.scrollHeight, doc.body.scrollHeight)}px of ${H})`);
+  for (const b of bad) t.problem("bug", `${label}: ${b}`);
+  t.event("text-fit", `${label}: ${boxes} text boxes, ${bad.length ? bad.length + " cut off or outside" : "all fit"}`);
+  t.add("trustFallTextFitPages");
+  return bad;
+}
+
 async function trustFallRun(options, t) {
   const id = (options && options.story) || "trust-fall";
   const st = story(id);
@@ -8921,6 +8961,7 @@ async function trustFallRun(options, t) {
         t.event("story-text-fit", `${id}/${parent}: text ${sb.clientHeight}px of ${sb.scrollHeight}px${scrolls ? " (scrolls)" : " (fits)"}, choices ${Math.round(cr.top - sr.bottom)}px under it`);
       }
     }
+    trustFallTextFit(t, doc, `${id}/${parent} fork (${W}x${H})`, W, H);
     btn.scrollIntoView({ block: "center", behavior: "instant" });
     const au = win.iltvAudio, auT0 = Date.now() - 5;
     // Swap quality: from the press on, sample every frame for 900 ms: spinners visible (expect 0), title cards with words
@@ -9026,6 +9067,7 @@ async function trustFallRun(options, t) {
         else { t.event("argus-voice", `${id}/${target}: ARGUS speaks (bed ducks under it)`); t.add("trustFallArgusVoices"); }
       }
     }
+    if (!ending(target) && !dead(target)) trustFallTextFit(t, doc, `${id}/${target} page (${W}x${H})`, W, H);
     if (ending(target)) {
       await rewindEndClip(doc);
       const nameEl = doc.getElementById("spark-ending");
@@ -9033,6 +9075,7 @@ async function trustFallRun(options, t) {
       if (doc.getElementById("spark").dataset.state !== "soon" || !card) t.problem("bug", `${id}/${target}: an ending shows no ending card`);
       else { endingsSeen.push(target); t.event("ending", `${id}/${target}: "${card}"`); }
       await sleep(800);
+      trustFallTextFit(t, doc, `${id}/${target} ending card (${W}x${H})`, W, H);
     } else if (dead(target)) {
       await rewindEndClip(doc);
       await waitFor(() => doc.querySelectorAll("#spark-choices [data-death]").length >= 2, 8000);
@@ -9045,6 +9088,7 @@ async function trustFallRun(options, t) {
       deathsSeen.push(target);
       t.event("death", `${id}: ${target}`);
       await sleep(800);
+      trustFallTextFit(t, doc, `${id}/${target} death page (${W}x${H})`, W, H);
     }
     closeViewFrame();
     t.progress(0.05 + (0.6 * n) / ids.length);
@@ -9089,6 +9133,28 @@ async function trustFallRun(options, t) {
     if (without.includes(g.en)) t.problem("bug", `${id}/${g.sid}: without believing "${g.en}" is offered (${without.join(" | ")})`);
     if (locked) t.problem("bug", `${id}/${g.sid}: without believing a locked row shows (the choice should not be there at all)`);
     t.event("belief-gate", `${id}/${g.sid}: "${g.en}" - believed [${withIt.join(" | ")}]; not believed [${without.join(" | ")}]`);
+    // And the gated choice is played: seeded to the fork after Believe it, a real tap on it opens its scene, text fits.
+    t.scene(`${id}: press "${g.en}"`);
+    doc = await open(yes, `pressing "${g.en}" at ${g.sid}`);
+    box = await ready(doc, g.sid);
+    trustFallTextFit(t, doc, `${id}/${g.sid} believed fork (${W}x${H})`, W, H);
+    const gi = st.scenes[g.sid].choices.findIndex((c) => c[1] === g.en && c[2] === g.to);
+    const gb = visible(box).find((b) => Number(b.dataset.choiceIndex) === gi);
+    if (!gb) t.problem("bug", `${id}/${g.sid}: the gated choice "${g.en}" can't be pressed after Believe it`);
+    else {
+      gb.scrollIntoView({ block: "center", behavior: "instant" });
+      await tapAt(t, gb, `gated "${g.en}" (${W}x${H})`);
+      if (!(await waitFor(() => doc.defaultView.finalSpark.scene() === g.to, 5000))) t.problem("bug", `${id}/${g.sid}: pressing "${g.en}" didn't open ${g.to}`);
+      else {
+        await waitFor(() => doc.getElementById("spark-choices").dataset.phase === "ready", 12000);
+        await rewindEndClip(doc);
+        await sleep(600);
+        trustFallTextFit(t, doc, `${id}/${g.to} after "${g.en}" (${W}x${H})`, W, H);
+        t.event("gated-pressed", `${id}/${g.sid}: "${g.en}" pressed by touch -> ${g.to}`);
+        t.add("trustFallGatedPressed");
+      }
+    }
+    closeViewFrame();
   }
   t.progress(0.8);
 
@@ -9122,6 +9188,19 @@ async function trustFallRun(options, t) {
       t.event("phone-layout", `${id}/${sid}: clip ${Math.round(stage.top)}-${Math.round(stage.bottom)}, text ${Math.round(text.top)}-${Math.round(text.bottom)}, choices ${btns.map((b) => `${Math.round(b.top)}-${Math.round(b.bottom)}`).join(", ")} of ${H}`);
       t.event("screenshot", `${id}/${sid} at ${W}x${H}: clip above the text, choices at the foot of the screen`);
       t.metric("trustFallPhoneChoiceTop", Math.round(Math.min(...btns.map((b) => b.top))));
+      {
+        // The check has teeth: clip the story text to 18px with overflow hidden and the same check must report it.
+        const sb = doc.getElementById("spark-story");
+        if (sb && sb.textContent.trim()) {
+          const keep = sb.getAttribute("style");
+          sb.style.cssText += ";max-height:18px;overflow:hidden;flex:none";
+          const caught = [];
+          trustFallTextFit({ problem: (k, m) => caught.push(m), event() {}, add() {} }, doc, `${id}/${sid} self-test`, W, H);
+          if (keep == null) sb.removeAttribute("style"); else sb.setAttribute("style", keep);
+          if (!caught.some((m) => /cut off/.test(m))) t.problem("bug", `${id}: the text-fit check did not catch story text clipped to 18px`);
+          else t.event("text-fit-catches", `${id}/${sid}: clipped story text is reported ("${caught[0].slice(0, 90)}")`);
+        }
+      }
       closeViewFrame();
     }
   }
@@ -9147,6 +9226,7 @@ async function trustFallRun(options, t) {
       await sleep(350);
       const btn = box.querySelector(`[data-death="${kind}"]`);
       if (!btn) { t.problem("bug", `${id}/${dsid}: no ${kind} button`); closeViewFrame(); continue; }
+      trustFallTextFit(t, doc, `${id}/${dsid} death page before ${kind} (${W}x${H})`, W, H);
       const r = btn.getBoundingClientRect();
       if (r.top < (H * 2) / 3 || r.height < 48) t.problem("bug", `${id}/${dsid}: ${kind} at ${Math.round(r.top)}px, ${Math.round(r.height)}px tall (bottom third, 48px wanted)`);
       else t.event("death-buttons-reach", `${id}/${dsid}: ${kind} top ${Math.round(r.top)} of ${H}, ${Math.round(r.width)}x${Math.round(r.height)}`);
@@ -9478,7 +9558,7 @@ installPlaytest({
       title: "Trust Fall on a phone: one tap starts it, every scene by a real press, both deaths, three endings, the belief gates, the countdown never kills",
       seconds: 300,
       tags: ["full"],
-      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene.",
+      description: "Trust Fall (draft, listed: false, /?story=trust-fall; or {\"story\":\"<id>\"}) at 390x844 with touch presses in a frame. One tap on Tap to play starts the first clip (the buffering ring is in the player and hidden once it plays). Every one of the 20 scenes is entered by a real press of the choice that leads there, from a seeded run at its parent (a setup shortcut, event seeded-run); every fork shows full-width choice buttons 48px tall or more with a countdown whose default is never a death; the 3 endings show the ending card and the 2 deaths show Rewind to the choice and Start over. The choices gated by having believed ARGUS (Wait. ARGUS promised; Say thank you to ARGUS) are on the page only after Believe it, and not at all (no locked row) without. The two forks with a deadly option are left to the 15 s countdown, which picks a safe scene. Text fit (J, 2026-11-14): every fork, page, ending card and death page is checked (trustFallTextFit: text boxes on screen, none cut off by overflow or an ancestor, no page scroll past the screen; event text-fit, metric trustFallTextFitPages) and the two gated choices are pressed by touch after Believe it (gated-pressed); a self-test clips the story text and must see it (text-fit-catches).",
     },
     {
       id: "rewind",
