@@ -126,6 +126,8 @@ function validate(st) {
       for (const who of sh.cast ?? []) if (!data.characters?.[who]) problems.push(`${at(s)}: cast member ${who} isn't in characters`);
     }
     if (!s.film && useOf(st, s) !== 'gen') problems.push(`${at(s)}: no filmed clip, so it must use "gen"`);
+    // A page is read in a breath: warn over 40 words (aim for two sentences, 35 at most).
+    if (words(narratedText(s)) > 40) warnings.push(`${at(s)}: ${words(narratedText(s))} words narrated (over 40: keep a page to two sentences, 35 words at most)`);
     // Words no page may say (The Water Road's bird is only ever seen).
     const said = [s.title, s.story, s.question, s.ending ?? [], ...s.choices.map((c) => [c.say, c.en])].flat().join(' ').toLowerCase();
     for (const w of data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test(said)) problems.push(`${at(s)}: its words say "${w}", which this story never says (unspoken)`);
@@ -198,6 +200,7 @@ function validateFlags(st, s) {
     if (!v.when || typeof v.when !== 'object' || !Object.keys(v.when).length || !Object.values(v.when).every(FLAG_VALUE)) problems.push(`${at(s)}: variant ${i}: when must be { flag: value }`);
     for (const k of ['story', 'question']) if (v[k] != null && (!Array.isArray(v[k]) || v[k].length !== 2)) problems.push(`${at(s)}: variant ${i}: ${k} must be [in ${s.lang}, in English]`);
     if (!['story', 'question', 'video'].some((k) => v[k] != null)) problems.push(`${at(s)}: variant ${i} changes nothing (story, question or video)`);
+    if (v.story && words(narratedText(s, v)) > 40) warnings.push(`${at(s)}: variant ${i} narrates ${words(narratedText(s, v))} words (over 40: keep a page to two sentences, 35 words at most)`);
     const setBy = (flag) => st.scenes.some((o) => o.choices.some((c) => c.set && flag in c.set));
     for (const flag of Object.keys(v.when ?? {})) if (!setBy(flag)) problems.push(`${at(s)}: variant ${i} reads flag "${flag}", which no choice sets`);
     for (const w of st.data.unspoken ?? []) if (new RegExp(`\\b${w.toLowerCase()}`).test([v.story, v.question].flat().filter(Boolean).join(' ').toLowerCase())) problems.push(`${at(s)}: variant ${i}'s words say "${w}" (unspoken)`);
