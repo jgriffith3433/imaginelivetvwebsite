@@ -8971,6 +8971,40 @@ async function trustFallRun(options, t) {
   }
   t.progress(0.8);
 
+  // 4b. Phone layout (Late Shift): at a fork the clip sits above the words, the words above the choices, nothing over the
+  // picture, and the choices are in the lower thumb zone, all by touch at 390x844 with no sideways scroll.
+  {
+    const sid = ids.find((x) => !dead(x) && !ending(x) && st.scenes[x].choices.length >= 2 && x !== st.start && wayTo(x));
+    if (!sid) t.problem("bug", `${id}: no fork to check the phone layout at`);
+    else {
+      t.scene(`${id}: phone layout at ${sid}`);
+      const doc = await open(wayTo(sid), `phone layout at ${sid}`);
+      const box = await ready(doc, sid);
+      const win = doc.defaultView;
+      const R = (el) => el.getBoundingClientRect();
+      const stage = R(doc.querySelector(".spark-stage"));
+      const story = doc.getElementById("spark-story");
+      const panel = R(doc.querySelector(".spark-panel"));
+      const btns = visible(box).map(R);
+      const text = R(story);
+      if (!touchOn(doc)) t.problem("bug", `${id}/${sid}: the phone frame is not a touch screen`);
+      if (stage.top > 1 || stage.height < H * 0.4) t.problem("bug", `${id}/${sid}: the clip is not at the top of the phone (${Math.round(stage.top)}, ${Math.round(stage.height)}px tall)`);
+      if (story.textContent.trim() && text.top < stage.bottom - 1) t.problem("bug", `${id}/${sid}: the story text (top ${Math.round(text.top)}) lies over the clip (bottom ${Math.round(stage.bottom)})`);
+      if (panel.top < stage.bottom - 1) t.problem("bug", `${id}/${sid}: the panel lies over the clip`);
+      if (btns.length < 2) t.problem("bug", `${id}/${sid}: ${btns.length} choices shown`);
+      for (const b of btns) {
+        if (b.top < text.bottom - 1 && story.textContent.trim()) t.problem("bug", `${id}/${sid}: a choice sits above the story text`);
+        if (b.top < H * 0.55) t.problem("bug", `${id}/${sid}: a choice is above the thumb zone (top ${Math.round(b.top)} of ${H})`);
+        if (b.height < 44 || b.left < 0 || b.right > W) t.problem("bug", `${id}/${sid}: a choice is ${Math.round(b.width)}x${Math.round(b.height)} at ${Math.round(b.left)}`);
+      }
+      if (doc.documentElement.scrollWidth > W) t.problem("bug", `${id}/${sid}: the page scrolls sideways (${doc.documentElement.scrollWidth}px)`);
+      t.event("phone-layout", `${id}/${sid}: clip ${Math.round(stage.top)}-${Math.round(stage.bottom)}, text ${Math.round(text.top)}-${Math.round(text.bottom)}, choices ${btns.map((b) => `${Math.round(b.top)}-${Math.round(b.bottom)}`).join(", ")} of ${H}`);
+      t.event("screenshot", `${id}/${sid} at ${W}x${H}: clip above the text, choices at the foot of the screen`);
+      t.metric("trustFallPhoneChoiceTop", Math.round(Math.min(...btns.map((b) => b.top))));
+      closeViewFrame();
+    }
+  }
+
   // 5. The countdown never picks a death: the forks with a deadly option are left to the 15 s timer.
   for (const sid of ids.filter((x) => !dead(x) && st.scenes[x].choices.some((c) => dead(c[2])))) {
     t.scene(`${id}: the timer runs out at ${sid}`);
