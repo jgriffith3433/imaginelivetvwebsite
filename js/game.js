@@ -1568,6 +1568,13 @@
         const still = document.createElement("div");
         still.className = "spark-still";
         still.dataset.still = scene.still;
+        if (STORY && STORY.id === "trust-fall") {
+          // Trust Fall's panel wears ARGUS's amber: a warm grade plus a speaker glow whose place and size follow the scene's place.
+          still.dataset.palette = "argus";
+          still.dataset.place = SERVER_SCENES[sceneId] ? "server" : VAULT_SCENES[sceneId] ? "vault" : DAWN_SCENES[sceneId] ? "dawn" : "city";
+          still.style.setProperty("--glow-x", 28 + (h % 45) + "%");
+          still.style.setProperty("--glow-y", 32 + ((h >> 6) % 30) + "%");
+        }
         still.setAttribute("role", "img");
         still.setAttribute("aria-label", scene.titleEn);
         still.style.backgroundImage = 'url("' + scene.still + '")';

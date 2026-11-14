@@ -1674,6 +1674,20 @@ html:not([data-kit]) .inventory.kit { display: none; }
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
+/* Trust Fall: the stills share ARGUS's amber (the speaker ring) instead of the other stories' teal grade. */
+.spark-still[data-palette="argus"] {
+  filter: brightness(0.8) contrast(1.1) saturate(0.85) sepia(0.45) hue-rotate(-12deg);
+}
+.spark-still[data-palette="argus"]::before { /* the ARGUS glow, then the vignette */
+  background:
+    radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 45%), rgba(255, 176, 64, 0.55) 0, rgba(255, 150, 40, 0.22) 14%, transparent 38%),
+    radial-gradient(ellipse at 50% 45%, transparent 38%, rgba(10, 5, 0, 0.78) 100%);
+  animation: argus-breathe 4.5s ease-in-out infinite alternate;
+}
+.spark-still[data-palette="argus"][data-place="server"]::before { filter: hue-rotate(-8deg) brightness(1.15); }
+.spark-still[data-palette="argus"][data-place="vault"]::before { filter: brightness(0.85); }
+@keyframes argus-breathe { from { opacity: 0.8; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .spark-still[data-palette="argus"]::before { animation: none; } }
 @keyframes still-drift { from { translate: 0 0; } to { translate: -1.5% 1%; } }
 @media (prefers-reduced-motion: reduce) { .spark-still { animation: none; } }
 
