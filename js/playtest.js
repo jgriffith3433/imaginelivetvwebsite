@@ -8680,6 +8680,7 @@ async function trustFallRun(options, t) {
     await rewindEndClip(doc);
     const box = doc.getElementById("spark-choices");
     if (!(await waitFor(() => box.dataset.phase === "ready" && box.querySelectorAll(".choice, [data-death]").length > 0, 10000))) t.problem("bug", `${id}/${sid}: the choices never came up at ${W}x${H}`);
+    await waitFor(() => !doc.getElementById("spark").dataset.beat, 6000); // a scene that opens on a beat shows its choices after it
     await sleep(350);
     return box;
   };
@@ -8885,6 +8886,18 @@ async function trustFallRun(options, t) {
         if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); t.add("trustFallRealClips"); }
         else t.problem("bug", `${id}/${target}: plays a placeholder title card (${v.currentSrc || v.src}), not a filmed clip (its media isn't made: hawkes.assets.json trust-fall-${target}-*)`);
       } else t.problem("bug", `${id}/${target}: no clip is playing after the press`);
+    }
+    if (target === "unplug") {
+      // Shown before told: the scene opens on the cord being yanked, and no story text, question or choice is visible until it ends.
+      const hidden = () => ["spark-story", "spark-question", "spark-choices"].every((i) => doc.defaultView.getComputedStyle(doc.getElementById(i)).visibility === "hidden");
+      const beat = doc.querySelector("#spark-video .spark-beat");
+      const r = beat && beat.getBoundingClientRect();
+      if (!beat) t.problem("bug", `${id}/${target}: no action beat shown (the plug being yanked) before the words`);
+      else if (!hidden()) t.problem("bug", `${id}/${target}: story text, question or choices are visible while the plug beat plays`);
+      else if (r.width < W * 0.9) t.problem("bug", `${id}/${target}: the plug beat does not fill the screen (${Math.round(r.width)}px of ${W})`);
+      else { t.event("beat-before-text", `${id}/${target}: the plug is yanked on screen (${Math.round(r.width)}x${Math.round(r.height)}) with no text, question or choice visible`); t.add("trustFallBeats"); }
+      if (!(await waitFor(() => !doc.getElementById("spark").dataset.beat && !hidden(), 5000))) t.problem("bug", `${id}/${target}: the words never appear after the plug beat`);
+      else t.event("beat-ended", `${id}/${target}: the words and choices appear after the beat`);
     }
     await sleep(380);
     if (au && au.bed) {

@@ -113,3 +113,13 @@ tool's own guess. Make it with `studio.cmd assets imaginelivetv make` (or Studio
 - **Beds per place** (`sceneMood` in `js/game.js`, built in `js/audio.js`): `dawn` (the flat and the morning: soft rain, a wall clock), `city` (rain and traffic: the garage, the river), `server` (the Tower, the lobby: fans, relay ticks), `vault` (the sealed vault and the core: slow alarm pulse, sub drone).
 - **Every choice** plays the click (`tap`) and 110 ms later a short rising stinger (`cue-trust-fall`, three pitches so no sample repeats), layered so it never cuts the click.
 - **ARGUS speaks** its line in each scene that has one (`ARGUS_LINES`, 0.9 s after the scene shows; beds and music duck under it). A recording at `assets/audio/voice/trust-fall-<scene>.mp3` (Gen voice `hv_ai`) is used when it exists; until then a synthetic phrase plus the browser's own speech. The recordings wait on Gen access.
+
+## Shown before told (2026-11-14, critic: story through play 4/10)
+
+The plug is the first thing the player does, so it is shown, not told. `unplug` (the plug) opens on a drawn cutaway
+(`BEATS` / `playBeat` in `js/game.js`, `.spark-beat` in `css/site.css`, no GPU): the speaker's amber ring pulsing, a
+gloved yank, the cord whipping out of the wall socket with a spark, the ring dying, the TV breaking into static and
+coming back with an amber edge, the phone lighting up. Sound `plug-yank` (`js/audio.js`) lands with it. For 2.6 s
+(1 s under reduced motion) the story text, the question and the choices stay hidden; then they appear. The clip, when
+its media is made, takes the beat's place and keeps the order: action first, words after. A new beat is one entry in
+`BEATS`. The `trust-fall` playtest checks it (`beat-before-text`, `beat-ended`, metric `trustFallBeats`).

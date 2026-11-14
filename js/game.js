@@ -995,6 +995,41 @@
     promise: "You believed me when it cost you something. Thank you.",
     believer: "Good morning, Rae."
   };
+  /** Story beats shown before any words (story doc "Shown before told"): the scene opens on the action itself (a drawn
+      cutaway, no GPU), its story text, question and choices stay hidden until it ends. Keyed by Trust Fall scene id. */
+  const BEATS = { unplug: { kind: "plug", ms: 2600, reducedMs: 1000, label: "The cord is yanked out of the wall; the speaker's amber ring dies and the TV breaks into static." } };
+
+  function playBeat(sceneId, scene) {
+    const old = videoBox.querySelector(".spark-beat");
+    if (old) old.remove();
+    delete root.dataset.beat;
+    const beat = STORY && STORY.id === "trust-fall" && BEATS[sceneId];
+    if (!beat) return;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ms = reduce ? beat.reducedMs : beat.ms;
+    const el = document.createElement("div");
+    el.className = "spark-beat";
+    el.dataset.beat = beat.kind;
+    el.style.setProperty("--beat-ms", ms + "ms");
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", beat.label);
+    ["tv", "sill", "socket", "cord", "spark", "speaker", "ring", "phone"].forEach(function (part) {
+      const d = document.createElement("i");
+      d.className = "beat-" + part;
+      el.appendChild(d);
+    });
+    videoBox.appendChild(el);
+    root.dataset.beat = "true";
+    if (window.iltvAudio) window.iltvAudio.playUi("plug-yank");
+    tell("feature", { feature: "beat", story: STORY.id, node: sceneId, beat: beat.kind });
+    setTimeout(function () {
+      if (currentScene !== sceneId) return;
+      delete root.dataset.beat;
+      el.classList.add("is-done");
+      setTimeout(function () { el.remove(); }, 400);
+    }, ms);
+  }
+
   function sceneMood(story, sceneId) {
     if (story && story.id === "trust-fall") return SERVER_SCENES[sceneId] ? "server" : VAULT_SCENES[sceneId] ? "vault" : DAWN_SCENES[sceneId] ? "dawn" : "city";
     return storyMood(story);
@@ -1592,6 +1627,7 @@
       }
     }
 
+    playBeat(sceneId, scene);
     fillSpot(storyBox, scene.story, scene.storyEn, scene.lang, scene.dir);
     fillSpot(questionBox, scene.question, scene.questionEn, scene.lang, scene.dir);
     choicesBox.replaceChildren();

@@ -433,6 +433,15 @@
         normalise(d, 0.5);
       });
     }; }) },
+    "plug-yank": { priority: 3, variants: [function () {
+      // Trust Fall, the plug: a hard tug, the cord snapping out with a spark crackle, the speaker's last whine falling away, a dull thud of the TV cutting
+      return mono(1.6, function (d, r) {
+        noiseBurst(d, r, 0, 0.05, 0.6, 90, 31, 0.9); tone(d, r, 0, 0.12, 180, 70, 0.4, 28, 0.2);
+        noiseBurst(d, r, 0.05, 0.35, 0.3, 14, 32, 0.95); tone(d, r, 0.1, 0.9, 1200, 160, 0.16, 4, 0);
+        tone(d, r, 0.5, 0.25, 70, 55, 0.35, 12, 0.3); noiseBurst(d, r, 0.7, 0.3, 0.12, 9, 33, 0.5);
+        normalise(d, 0.7);
+      });
+    }] },
     "sting-night-shift": { priority: 4, variants: [function () {
       // a cold fluorescent hum that cuts out
       return mono(2.6, function (d, r) {
