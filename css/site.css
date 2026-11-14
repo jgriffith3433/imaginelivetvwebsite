@@ -4022,4 +4022,8 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
   }
   .spark:not(.is-tree):not(.is-endings) .spark-story { min-height: 0; flex: 1 1 auto; }
   .spark:not(.is-tree):not(.is-endings) .spark-choices { margin-top: auto; padding-top: 0.5rem; }
+  /* A death (J, 2026-11-14): the death line fills the panel above, and Rewind to the choice and Start over are pinned to
+     its foot, in the bottom third of the screen (home bar clear), 56px tall, so one thumb gets straight back in. */
+  .spark[data-state="dead"] .spark-choices { position: sticky; bottom: 0; z-index: 2; background: #070807; display: flex; flex-direction: column; gap: 0.5rem; }
+  .spark[data-state="dead"] .spark-choices .choice.death-choice { min-height: 56px; flex: 0 0 auto; }
 }
