@@ -8575,15 +8575,27 @@ async function trustFallRun(options, t) {
     const win = doc.defaultView;
     const rings = [];
     doc.addEventListener("iltv:loading", (e) => rings.push(e.detail && e.detail.on));
-    if (!win.hawkesSound.prompt()) t.problem("bug", `${id}: /?story=${id} shows no Tap to play prompt`);
+    // Autostart (tap.autostart): the story's own opening press is the tap, so no Tap to play overlay is ever shown.
     const t0 = performance.now();
-    await passPrompt(t, doc, `${id} first scene ${W}x${H}`);
+    const overlay = () => doc.querySelectorAll(".tap-to-play, .tap-splash").length;
+    if (win.hawkesSound.prompt() || overlay()) t.problem("bug", `${id}: /?story=${id} shows a Tap to play overlay; the first scene must autostart with no overlay`);
+    else t.event("autostart", `${id}: no Tap to play overlay; sound unlocked: ${win.hawkesSound.unlocked()}`);
+    t.milestone && t.milestone("first-input-accepted");
     const v = () => doc.querySelector("#spark-video video:not(.spark-leave)");
     const played = await waitFor(() => v() && !v().paused && v().currentTime > 0, 8000);
     const ms = Math.round(performance.now() - t0);
-    if (!played) t.problem("bug", `${id}: one tap on Tap to play didn't start the first clip (at ${W}x${H})`);
+    if (!played) t.problem("bug", `${id}: the first clip didn't autostart (no overlay) (at ${W}x${H})`);
     else t.event("first-tap", `${id}: one tap, the clip plays after ${ms} ms${touchOn(doc) ? " (touch)" : ""}`);
     t.metric("trustFallFirstTapMs", ms);
+    {
+      // Words on screen before the first choice (the story, the question and the choices): under 40.
+      const txt = (sel) => [...doc.querySelectorAll(sel)].filter((e) => e.getClientRects().length).map((e) => e.textContent).join(" ");
+      const words = (txt("#spark-story") + " " + txt("#spark-question") + " " + txt("#spark-choices .choice")).split(/\s+/).filter(Boolean).length;
+      t.metric("trustFallWordsBeforeFirstChoice", words);
+      if (words >= 40) t.problem("bug", `${id}: ${words} words before the first choice (limit 40)`);
+      else t.event("intro-words", `${id}: ${words} words before the first choice`);
+      if (played) t.milestone && t.milestone("gameplay");
+    }
     const ring = doc.querySelector(".spark-video-loading");
     if (!ring) t.problem("bug", `${id}: the player has no buffering ring over the clip`);
     else {
