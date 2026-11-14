@@ -511,7 +511,9 @@
 
   function preloadFiles() {
     Object.keys(FILES).forEach(function (k) { FILES[k].forEach(function (rel) { loadFile(rel); }); });
+    TRUST_FALL_VOICE.forEach(function (id) { loadFile("voice/trust-fall-" + id + ".mp3"); }); // ARGUS's recordings, ready before the first line
   }
+  var TRUST_FALL_VOICE = ["start", "unplug", "asked", "tower", "listen", "believe", "callMarcus", "saved", "chase", "promise", "believer"];
 
   function playUi(name) {
     if (!unlocked || !enabled) return;
@@ -584,11 +586,16 @@
     }), secs: total + 0.3 };
   }
 
-  function playVoice(key, text, speaker) {
+  function playVoice(key, text, speaker, late) {
     if (!unlocked || !enabled || !text) return false;
     ensureGraph();
     if (!context || !buses.ui) return false;
     var rel = "voice/" + key + ".mp3", st = fileState[rel], buf = st && st.buf, secs;
+    if (!buf && st && !st.failed && !late) { // the recording is still loading: give it a moment rather than the synthetic voice
+      var waited = false, go = function () { if (!waited) { waited = true; playVoice(key, text, speaker, true); } };
+      st.wait.push(go); setTimeout(go, 1500);
+      return true;
+    }
     if (!buf && !st) loadFile(rel); // a recording for next time (404s quietly while none is made)
     var recorded = !!buf;
     if (!buf) { var ph = voicePhrase(text, key.length * 977 + text.length); buf = ph.buf; secs = ph.secs; } else secs = buf.duration;
