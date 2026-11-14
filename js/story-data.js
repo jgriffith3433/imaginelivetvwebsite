@@ -26466,7 +26466,7 @@ window.ILTV_STORIES = {
    "tagline": "Fall, and see who catches you.",
    "logline": "A thief who hates the machine, a city it's about to switch on, and a husband who says good morning on the news. Who catches you when you fall?",
    "image": "/assets/images/trust-fall.jpg",
-   "listed": false,
+   "listed": true,
    "cookie": "trustFallProgress",
    "tap": {
     "title": "TRUST FALL",
