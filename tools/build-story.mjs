@@ -164,6 +164,9 @@ function validateFlags(st, s) {
   }
   // Whatever the flags and the count, a fork always offers something: at least one choice has no condition.
   if (s.choices.length && !s.choices.some((c) => !c.when && !c.matches)) problems.push(`${at(s)}: every choice has a when or matches, so a viewer could be left with none`);
+  // A scene's own countdown: `timer` seconds (3 to 60, default 15); `timerStyle: "air"` draws it as the air running out.
+  if (s.timer != null && (!Number.isInteger(s.timer) || s.timer < 3 || s.timer > 60)) problems.push(`${at(s)}: timer must be a whole number of seconds from 3 to 60`);
+  if (s.timerStyle != null && s.timerStyle !== 'air') problems.push(`${at(s)}: timerStyle is "air" or left out`);
   // A timeout never kills a viewer who looked away: the default (or, with none, the first safe choice) is never a death.
   if (!s.dead && !s.ending && s.choices.length > 1) {
     const dead = (c) => !!st.byId.get(c.next)?.dead;
@@ -467,6 +470,8 @@ function storyData() {
         // Seconds of live picture the cut keeps after the narration, so the choices come up over moving footage (js/game.js).
         ...(videoOf(st, s) === '/' + cutFile(st, s) && liveTail(s, st) ? { live: LIVE_TAIL } : {}),
         ...(s.dead ? { dead: true } : {}),
+        ...(s.timer ? { timer: s.timer } : {}),
+        ...(s.timerStyle ? { timerStyle: s.timerStyle } : {}),
         ...(s.ending ? { ending: s.ending } : {}),
         ...(s.inventory ? { inventory: s.inventory } : {}),
         choices: s.choices.map((c) => {

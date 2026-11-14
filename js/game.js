@@ -38,6 +38,9 @@
       score: spec.still ? spec.score || "" : "",
       live: spec.live || 0,
       dead: !!spec.dead,
+      // This page's own countdown in seconds (default CHOICE_WINDOW) and how it is drawn ("air": the air running out).
+      timer: spec.timer || 0,
+      timerStyle: spec.timerStyle || "",
       ending: spec.ending ? spec.ending[0] : "",
       endingEn: spec.ending ? spec.ending[1] : "",
       choices: (spec.choices || []).map(function (choice, index) {
@@ -1282,6 +1285,7 @@
         bar.style.transform = "";
       }
       timerBox.dataset.urgent = "false";
+      timerBox.dataset.style = "";
       timerBox.hidden = true;
       timerBox.dataset.state = "off";
     }
@@ -1412,11 +1416,17 @@
     timerBox.dataset.urgent = "false";
     bar.style.animation = "";
     bar.style.transform = "scaleX(1)";
-    const total = CHOICE_WINDOW * 1000;
+    const cur = SCENES[currentScene];
+    const window_s = cur && cur.timer > 0 ? cur.timer : CHOICE_WINDOW;
+    const air = !!(cur && cur.timerStyle === "air");
+    const word = air ? "Air " : "Choose in ";
+    timerBox.dataset.style = air ? "air" : "";
+    timerBox.dataset.seconds = String(window_s);
+    const total = window_s * 1000;
     const t0 = performance.now();
     const scene = currentScene;
-    let shown = CHOICE_WINDOW;
-    label.textContent = "Choose in " + CHOICE_WINDOW + " s";
+    let shown = window_s;
+    label.textContent = word + window_s + " s";
     const frame = function (now) {
       if (currentScene !== scene || root.hidden) return;
       const left = Math.max(0, total - (now - t0));
@@ -1425,7 +1435,7 @@
       const secs = Math.ceil(left / 1000);
       if (secs > 0 && secs !== shown) {
         shown = secs;
-        label.textContent = "Choose in " + secs + " s";
+        label.textContent = word + secs + " s";
         if (secs <= 3) {
           timerBox.dataset.urgent = "true";
           if (window.iltvAudio) window.iltvAudio.playUi("tick");
@@ -1436,7 +1446,7 @@
       bar.style.transform = "scaleX(0)";
       timerBox.dataset.urgent = "false";
       timerBox.dataset.state = "done";
-      label.textContent = "Choosing...";
+      label.textContent = air ? "Air gone..." : "Choosing...";
       pickDefault(scene);
     };
     windowTick = requestAnimationFrame(frame);

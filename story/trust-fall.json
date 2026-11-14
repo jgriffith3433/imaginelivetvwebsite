@@ -533,6 +533,8 @@
     {
       "id": "core",
       "folder": "the-vault",
+      "timer": 10,
+      "timerStyle": "air",
       "lang": "en",
       "title": [
         "The vault",
