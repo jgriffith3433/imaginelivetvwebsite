@@ -126,8 +126,7 @@
           ]
         }
       ],
-      "music": "morning",
-      "film": "/assets/video/trust-fall/first-light.mp4"
+      "music": "morning"
     },
     {
       "id": "unplug",
@@ -160,7 +159,6 @@
         ]
       },
       "music": "hum",
-      "film": "/assets/video/trust-fall/the-plug.mp4",
       "lines": [
         {
           "speaker": "argus",
@@ -205,8 +203,7 @@
           "hero"
         ]
       },
-      "music": "hum",
-      "film": "/assets/video/trust-fall/how-it-knows.mp4"
+      "music": "hum"
     },
     {
       "id": "crew",
@@ -263,8 +260,7 @@
           ]
         }
       ],
-      "music": "heist",
-      "film": "/assets/video/trust-fall/the-garage.mp4"
+      "music": "heist"
     },
     {
       "id": "readWorm",
@@ -302,8 +298,7 @@
           "hero"
         ]
       },
-      "music": "hum",
-      "film": "/assets/video/trust-fall/whats-inside.mp4"
+      "music": "hum"
     },
     {
       "id": "liability",
@@ -334,8 +329,7 @@
         "motion": "rain falls on the water; the phone's amber glow fades slowly to dark",
         "cast": []
       },
-      "music": "death",
-      "film": "/assets/video/trust-fall/the-river.mp4"
+      "music": "death"
     },
     {
       "id": "tower",
@@ -404,8 +398,7 @@
           ]
         }
       ],
-      "music": "hum",
-      "film": "/assets/video/trust-fall/the-tower.mp4"
+      "music": "hum"
     },
     {
       "id": "jam",
@@ -438,8 +431,7 @@
           "argus"
         ]
       },
-      "music": "heist",
-      "film": "/assets/video/trust-fall/lights-out.mp4"
+      "music": "heist"
     },
     {
       "id": "listen",
@@ -498,8 +490,7 @@
           "argus"
         ]
       },
-      "music": "hum",
-      "film": "/assets/video/trust-fall/what-it-knows.mp4"
+      "music": "hum"
     },
     {
       "id": "believe",
@@ -537,8 +528,7 @@
           "hero"
         ]
       },
-      "music": "rescue",
-      "film": "/assets/video/trust-fall/the-bait.mp4"
+      "music": "rescue"
     },
     {
       "id": "core",
@@ -623,8 +613,7 @@
           "cast": []
         }
       ],
-      "music": "trapped",
-      "film": "/assets/video/trust-fall/the-vault.mp4"
+      "music": "trapped"
     },
     {
       "id": "halon",
@@ -655,8 +644,7 @@
         "motion": "the haze rolls in until the red light is only a soft glow, then that fades too",
         "cast": []
       },
-      "music": "death",
-      "film": "/assets/video/trust-fall/sixty-seconds.mp4"
+      "music": "death"
     },
     {
       "id": "callMarcus",
@@ -698,8 +686,7 @@
           "marcus"
         ]
       },
-      "music": "trapped",
-      "film": "/assets/video/trust-fall/on-the-air.mp4"
+      "music": "trapped"
     },
     {
       "id": "saved",
@@ -764,7 +751,6 @@
         }
       ],
       "music": "rescue",
-      "film": "/assets/video/trust-fall/the-green-line.mp4",
       "variants": [
         {
           "when": {
@@ -817,8 +803,7 @@
           "hero"
         ]
       },
-      "music": "heist",
-      "film": "/assets/video/trust-fall/the-bridge.mp4"
+      "music": "heist"
     },
     {
       "id": "promise",
@@ -864,8 +849,7 @@
           "cast": []
         }
       ],
-      "music": "rescue",
-      "film": "/assets/video/trust-fall/the-promise.mp4"
+      "music": "rescue"
     },
     {
       "id": "broadcast",
@@ -978,8 +962,7 @@
           ]
         }
       ],
-      "music": "morning",
-      "film": "/assets/video/trust-fall/morning-edition.mp4"
+      "music": "morning"
     },
     {
       "id": "truth",
@@ -1017,7 +1000,6 @@
         ]
       },
       "music": "end",
-      "film": "/assets/video/trust-fall/live.mp4",
       "hint": "Some stories you tell yourself."
     },
     {
@@ -1055,7 +1037,6 @@
         ]
       },
       "music": "end",
-      "film": "/assets/video/trust-fall/unseen.mp4",
       "hint": "Some heroes keep their names."
     },
     {
@@ -1095,7 +1076,6 @@
         ]
       },
       "music": "end",
-      "film": "/assets/video/trust-fall/good-morning.mp4",
       "hint": "Some mornings you answer back."
     }
   ]

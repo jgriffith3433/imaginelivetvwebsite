@@ -8641,6 +8641,26 @@ async function trustFallRun(options, t) {
   const dead = (sid) => !!st.scenes[sid].dead;
   const ending = (sid) => !!st.scenes[sid].ending;
   if (listedStories().some((s) => s.id === id)) t.problem("bug", `${id} is listed on the landing page; it is a draft and stays unlisted`);
+  // Which scenes have a made clip (<folder>/media/clip.mp4, found by a HEAD request) and so must play their real cut;
+  // trustFallRealClips counts each such scene once, however often it is entered, and must equal that count.
+  const clipMade = {};
+  const hasFile = async (url) => { try { return (await fetch(url, { method: "HEAD", cache: "no-store" })).ok; } catch (e) { return false; } };
+  const hasClip = async (sid) => (sid in clipMade ? clipMade[sid] : (clipMade[sid] = await hasFile(`${folderOf(sid, st)}media/clip.mp4`)));
+  const realClips = new Set();
+  const stills = new Set();
+  const sawRealClip = async (sid) => {
+    if (!(await hasClip(sid))) t.problem("bug", `${id}/${sid}: plays a cut (scene.mp4) but has no media/clip.mp4: it can only be a title card or a still`);
+    if (!realClips.has(sid)) { realClips.add(sid); t.add("trustFallRealClips"); }
+  };
+  /** A scene with no clip shows its graded still and speaks its narration (recorded, narrator voice) with its music cue under it. */
+  const stillNarrated = async (au, sid, doc) => {
+    if (await hasClip(sid)) { t.problem("bug", `${id}/${sid}: has media/clip.mp4 but shows a still, not its real cut`); return; }
+    stills.add(sid);
+    if (!(await hasFile(`${folderOf(sid, st)}media/narration.mp3`))) { t.event("still-silent", `${id}/${sid}: no narration recorded for this still`); return; }
+    if (!au || !au.events) return;
+    if (!(await waitFor(() => au.events().some((e) => e.what === "voice" && e.speaker === "narrator" && e.key === sid), 5000))) t.problem("bug", `${id}/${sid}: a still with a narration.mp3 plays no narration`);
+    else { t.event("still-narration", `${id}/${sid}: graded still, narration playing${au.bed && au.bed().playing ? ", music and bed under it" : ""}`); t.add("trustFallNarratedStills"); }
+  };
   await passPrompt(t);
   clearProgress();
   if (!landingShown()) await toLanding(t);
@@ -8712,7 +8732,7 @@ async function trustFallRun(options, t) {
     t.metric("trustFallFirstTapMs", ms);
     if (played && v()) {
       const src = decodeURI(new URL(v().currentSrc || v().src, location.href).pathname);
-      if (/\/scene\.mp4$/.test(src)) { checkCut(t, v(), `${id}/${st.start}`); t.add("trustFallRealClips"); }
+      if (/\/scene\.mp4$/.test(src)) { checkCut(t, v(), `${id}/${st.start}`); await sawRealClip(st.start); }
       else t.problem("bug", `${id}/${st.start}: plays a placeholder title card (${src}), not a filmed clip (its media isn't made)`);
     }
     {
@@ -8881,9 +8901,9 @@ async function trustFallRun(options, t) {
       // A real clip, not the 'Video in production' title card: the scene plays its generated cut (scene.mp4: the
       // filmed shots, narration, talking shots and music) once its media is made (use: "gen"), 9:16, with sound.
       const v = doc.querySelector("#spark-video video:not(.spark-leave)");
-      if (!v && doc.querySelector("#spark-video .spark-still:not(.spark-leave)")) await checkStill(t, doc, `${id}/${target}`, W);
+      if (!v && doc.querySelector("#spark-video .spark-still:not(.spark-leave)")) { await checkStill(t, doc, `${id}/${target}`, W); await stillNarrated(au, target, doc); }
       else if (v && (await waitFor(() => v.readyState >= 2 && v.currentTime > 0.5, 6000))) {
-        if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); t.add("trustFallRealClips"); }
+        if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); await sawRealClip(target); }
         else t.problem("bug", `${id}/${target}: plays a placeholder title card (${v.currentSrc || v.src}), not a filmed clip (its media isn't made: hawkes.assets.json trust-fall-${target}-*)`);
       } else t.problem("bug", `${id}/${target}: no clip is playing after the press`);
     }
@@ -8939,6 +8959,16 @@ async function trustFallRun(options, t) {
     t.progress(0.05 + (0.6 * n) / ids.length);
   }
   t.metric("trustFallScenesEntered", entered.size);
+  {
+    const withClip = [];
+    for (const sid of ids) if (await hasClip(sid)) withClip.push(sid);
+    t.metric("trustFallClipScenes", withClip.length);
+    t.metric("trustFallRealClipScenes", realClips.size);
+    t.metric("trustFallStillScenes", stills.size);
+    const missing = withClip.filter((sid) => !realClips.has(sid));
+    if (missing.length) t.problem("bug", `${id}: ${missing.length} scene(s) with a clip.mp4 never played their real cut (${missing.join(", ")})`);
+    else t.event("real-clips", `${id}: all ${withClip.length} scenes with a clip played their real cut (9:16, with sound); ${stills.size} without a clip showed the graded still: ${[...stills].join(", ")}`);
+  }
   t.metric("trustFallEndings", endingsSeen.length);
   t.metric("trustFallDeaths", deathsSeen.length);
   if (entered.size !== ids.length) t.problem("bug", `${id}: ${entered.size} of ${ids.length} scenes entered by a press (missing ${ids.filter((x) => !entered.has(x)).join(", ")})`);
