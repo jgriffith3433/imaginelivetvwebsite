@@ -8509,6 +8509,31 @@ async function rewindRun(options, t) {
 
 /* ---------------- trust-fall: a draft clip story on a phone, every scene by a real press, both deaths, three endings, belief gates ---------------- */
 
+/** A scene whose clip isn't made shows the story's graded key art (.spark-still), never the text title card: it is an
+    image that loaded, carries no words, the page doesn't scroll sideways, and every choice is 44px or taller. */
+function checkStill(t, doc, label, W) {
+  const el = doc.querySelector("#spark-video .spark-still:not(.spark-leave)");
+  const blank = doc.querySelector("#spark-video .spark-video-blank");
+  const root = doc.documentElement;
+  const sideways = Math.max(root.scrollWidth, doc.body.scrollWidth) - root.clientWidth;
+  const small = [...doc.querySelectorAll("#spark-choices .choice")].filter((b) => b.getClientRects().length && b.getBoundingClientRect().height < 43.5);
+  const r = el && el.getBoundingClientRect();
+  const img = el && new Image();
+  const loaded = el ? new Promise((ok) => { img.onload = () => ok(true); img.onerror = () => ok(false); img.src = el.dataset.still; }) : Promise.resolve(false);
+  return loaded.then((ok) => {
+    const text = el ? (el.textContent || "").trim() : "";
+    const filt = el ? getComputedStyle(el).filter : "none";
+    if (blank || !el) t.problem("bug", `${label}: shows the placeholder text card, not a graded still`);
+    else if (!ok || !r.width || !r.height) t.problem("bug", `${label}: the graded still didn't load or has no size (${el.dataset.still})`);
+    else if (text) t.problem("bug", `${label}: the graded still carries text ("${text}")`);
+    else if (filt === "none") t.problem("bug", `${label}: the still isn't graded (no shared filter)`);
+    else t.event("graded-still", `${label}: graded still ${el.dataset.still.split("/").pop()} ${Math.round(r.width)}x${Math.round(r.height)}, no text card`);
+    if (sideways > 1) t.problem("bug", `${label}: scrolls sideways by ${sideways}px at ${W}px wide`);
+    if (small.length) t.problem("bug", `${label}: ${small.length} choice(s) under 44px tall (${small.map((b) => Math.round(b.getBoundingClientRect().height)).join(", ")})`);
+    if (ok && el && !blank) t.add("trustFallGradedStills");
+  });
+}
+
 /** Trust Fall (story/trust-fall.md, listed: false, plays at /?story=trust-fall) at 390x844 with touch input. Setup shortcut:
     a seeded run (event seeded-run) at the parent of each scene, opened by the story's link in a frame; every scene is then
     entered by a real press (tapAt) of the choice that leads there. Options: {"story":"<id>"} (default trust-fall). */
@@ -8582,12 +8607,14 @@ async function trustFallRun(options, t) {
     else t.event("autostart", `${id}: no Tap to play overlay; sound unlocked: ${win.hawkesSound.unlocked()}`);
     t.milestone && t.milestone("first-input-accepted");
     const v = () => doc.querySelector("#spark-video video:not(.spark-leave)");
-    const played = await waitFor(() => v() && !v().paused && v().currentTime > 0, 8000);
+    const stillOf = () => doc.querySelector("#spark-video .spark-still:not(.spark-leave)");
+    const played = await waitFor(() => (v() && !v().paused && v().currentTime > 0) || stillOf(), 8000);
     const ms = Math.round(performance.now() - t0);
-    if (!played) t.problem("bug", `${id}: the first clip didn't autostart (no overlay) (at ${W}x${H})`);
+    if (stillOf() && !(v() && v().currentTime > 0)) { await checkStill(t, doc, `${id}/${st.start}`, W); t.milestone && t.milestone("gameplay"); }
+    else if (!played) t.problem("bug", `${id}: the first clip didn't autostart (no overlay) (at ${W}x${H})`);
     else t.event("first-tap", `${id}: one tap, the clip plays after ${ms} ms${touchOn(doc) ? " (touch)" : ""}`);
     t.metric("trustFallFirstTapMs", ms);
-    if (played) {
+    if (played && v()) {
       const src = decodeURI(new URL(v().currentSrc || v().src, location.href).pathname);
       if (/\/scene\.mp4$/.test(src)) { checkCut(t, v(), `${id}/${st.start}`); t.add("trustFallRealClips"); }
       else t.problem("bug", `${id}/${st.start}: plays a placeholder title card (${src}), not a filmed clip (its media isn't made)`);
@@ -8706,7 +8733,8 @@ async function trustFallRun(options, t) {
       // A real clip, not the 'Video in production' title card: the scene plays its generated cut (scene.mp4: the
       // filmed shots, narration, talking shots and music) once its media is made (use: "gen"), 9:16, with sound.
       const v = doc.querySelector("#spark-video video:not(.spark-leave)");
-      if (v && (await waitFor(() => v.readyState >= 2 && v.currentTime > 0.5, 6000))) {
+      if (!v && doc.querySelector("#spark-video .spark-still:not(.spark-leave)")) await checkStill(t, doc, `${id}/${target}`, W);
+      else if (v && (await waitFor(() => v.readyState >= 2 && v.currentTime > 0.5, 6000))) {
         if (/\/scene\.mp4$/.test(decodeURI(new URL(v.currentSrc || v.src, location.href).pathname))) { checkCut(t, v, `${id}/${target}`); t.add("trustFallRealClips"); }
         else t.problem("bug", `${id}/${target}: plays a placeholder title card (${v.currentSrc || v.src}), not a filmed clip (its media isn't made: hawkes.assets.json trust-fall-${target}-*)`);
       } else t.problem("bug", `${id}/${target}: no clip is playing after the press`);

@@ -1646,6 +1646,37 @@ html:not([data-kit]) .inventory.kit { display: none; }
   text-align: center;
 }
 
+/* A scene whose clip isn't made yet: the story's key art under one shared grade (dark teal-black, desaturated,
+   vignette, grain) so every still reads as the same look as the rat, dove and CCTV thumbnails. No text on it. */
+.spark-still {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #05080a center / cover no-repeat;
+  background-position: var(--still-x, 50%) var(--still-y, 50%);
+  filter: brightness(0.72) contrast(1.12) saturate(0.7) sepia(0.12) hue-rotate(155deg);
+  transform: scale(var(--still-zoom, 1.1));
+  transform-origin: var(--still-x, 50%) var(--still-y, 50%);
+  animation: still-drift 24s ease-in-out infinite alternate;
+}
+.spark-still::before,
+.spark-still::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.spark-still::before { /* vignette */
+  background: radial-gradient(ellipse at 50% 45%, transparent 38%, rgba(0, 6, 10, 0.78) 100%);
+}
+.spark-still::after { /* grain */
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+@keyframes still-drift { from { translate: 0 0; } to { translate: -1.5% 1%; } }
+@media (prefers-reduced-motion: reduce) { .spark-still { animation: none; } }
+
 .passage-blank {
   width: min(22rem, 100%);
   height: auto;
@@ -3286,6 +3317,7 @@ html[data-reading="en"] .post-card .spot-en { display: inline; }
   animation: spark-leave var(--fade-ms, 350ms) ease-in-out forwards;
 }
 .spark-video > video:not(.spark-leave),
+.spark-video > .spark-still:not(.spark-leave),
 .spark-video > .spark-video-blank:not(.spark-leave) {
   animation: spark-enter var(--fade-ms, 350ms) ease-in-out;
 }
