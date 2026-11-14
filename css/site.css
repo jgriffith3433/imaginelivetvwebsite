@@ -3817,6 +3817,13 @@ body.is-holding.torch-beckon .torch-lens { animation: none; }
     background-size: contain;
   }
   .spark:not(.is-tree):not(.is-endings) .spark-video video { object-fit: contain; }
+  /* A graded still is the story's key art, whose title and tagline are baked into the middle of the picture. The
+     story text floats over the lower half, so the art is lifted until its title block sits in the clear top third
+     (the longest scene text, 5 lines, at 390x844 no longer lands on the tagline); the foot of the picture is black. */
+  .spark:not(.is-tree):not(.is-endings) .spark-still {
+    transform: translateY(-30%) scale(1);
+    transform-origin: 50% 50%;
+  }
   /* The bar floats over the clip's top gradient. */
   .spark:not(.is-tree):not(.is-endings) > .spark-bar {
     position: fixed;
