@@ -1067,6 +1067,89 @@ async function swapRun(options, t) {
   closeViewFrame();
 }
 
+/** `media`: every listed story shows its video and plays with sound, under iPhone Safari's media rules (the page's
+    ?ios-rules=1, js/hawkes-sound.js: a video or audio may start with sound only if a press started it, else it is
+    refused as Safari refuses it), at 390x844 and 1280x800. After Tap to play and after each of three choices (real
+    presses, nothing else pressed in between): a clip story's clip is playing, unmuted, and has decoded sound; a
+    console story's voice line is playing unmuted (and its ambience when the scene has one). A refused play, Tap to
+    play coming back, a scene with no video or one that plays silent is a bug naming the story, size and scene. */
+async function mediaRun(options, t) {
+  if (!savedRuns && savedCookie == null) rememberProgress();
+  const keepSound = localStorage.getItem(SOUND_KEY);
+  localStorage.removeItem(SOUND_KEY); // sound on, full volume: a silent scene is then the player's fault
+  const sizes = options.sizes === "desktop" ? [[1280, 800, "desktop"]] : options.sizes === "phone" ? [[390, 844, "phone"]] : [[390, 844, "phone"], [1280, 800, "desktop"]];
+  const ids = options.story ? [options.story] : listedStories().map((x) => x.id);
+  const srcOf = (m) => decodeURI(String(m.currentSrc || m.getAttribute("src") || ""));
+  const playing = (m) => m && !m.paused && m.currentTime > 0.2 && !srcOf(m).startsWith("data:");
+  let checks = 0, n = 0;
+  try {
+    for (const id of ids) {
+      const st = story(id);
+      if (!st) { t.problem("bug", `media: no story "${id}"`); continue; }
+      const con = isConsole(st);
+      for (const [w, h, label] of sizes) {
+        clearProgress();
+        const where = `${id} (${label})`;
+        t.scene(`${st.title}: video and sound at ${w}x${h}, iPhone rules`);
+        const doc = await viewFrameLoad(t, `/?story=${id}&ios-rules=1`, w, h);
+        const win = doc.defaultView;
+        if (!win.iosMediaRefusals) t.problem("bug", `${where}: the page didn't take ?ios-rules=1 (js/hawkes-sound.js), so iPhone rules weren't checked`);
+        if (con) await consolePrompt(t, doc, where);
+        else await passPrompt(t, doc, where);
+        const scene = () => (con ? win.iltvConsole.scene() : win.finalSpark.scene());
+        for (let k = 0; k <= 3; k++) {
+          const at = `${where} at ${scene()}`;
+          if (soundOf(doc).prompt()) t.problem("bug", `${at}: Tap to play is up again ${k ? `after choice ${k}` : "after the first tap"} (iPhone refused the next sound)`);
+          if (con) {
+            const voice = () => [...doc.querySelectorAll("audio")].find((a) => playing(a) && /\/media\/|line-\d/.test(srcOf(a)) && !/ambience|music|sfx/.test(srcOf(a)));
+            const ok = await waitFor(() => voice() && !voice().muted, 8000);
+            const v = voice();
+            t.event("media-sound", `${at}: voice ${v ? `${srcOf(v).replace(win.location.origin, "")} playing${v.muted ? " MUTED" : ""} at ${v.currentTime.toFixed(1)} s` : "NOT playing"}`);
+            if (!ok) t.problem("bug", `${at}: no voice line is playing with sound${k ? ` after choice ${k}` : " after Tap to play"}`);
+            const amb = st.ambience && st.ambience[st.scenes[scene()].ambience];
+            if (amb) {
+              const bed = () => [...doc.querySelectorAll("audio")].find((a) => playing(a) && srcOf(a).endsWith(amb));
+              if (!(await waitFor(() => bed() && !bed().muted, 4000))) t.problem("bug", `${at}: the ambience ${amb} isn't playing with sound`);
+            }
+          } else {
+            const video = () => doc.querySelector("#spark-video video:not(.spark-leave)");
+            const shown = await waitFor(() => playing(video()) && video().videoWidth > 0, 10000);
+            const v = video();
+            if (!shown) t.problem("bug", `${at}: no video playing${v ? ` (${srcOf(v).replace(win.location.origin, "") || "no src"}, readyState ${v.readyState}, paused ${v.paused}${v.error ? `, error ${v.error.code}` : ""})` : " (no video element)"}`);
+            else {
+              await waitFor(() => v.webkitAudioDecodedByteCount > 0, 3000);
+              const heard = v.webkitAudioDecodedByteCount;
+              t.event("media-sound", `${at}: ${srcOf(v).replace(win.location.origin, "")} playing${v.muted ? " MUTED" : ""}, volume ${v.volume}, ${heard == null ? "?" : heard} bytes of sound decoded`);
+              if (v.muted) t.problem("bug", `${at}: the clip plays muted${k ? ` after choice ${k}` : " after Tap to play"}`);
+              if (heard === 0) t.problem("bug", `${at}: the clip plays silent (no sound decoded)`);
+            }
+          }
+          checks++;
+          if (k === 3) break;
+          // Next scene: a real press on the first choice, as a viewer would (console lines skipped with Skip, a press too).
+          const buttons = () => (con ? openChoices(doc) : [...doc.querySelectorAll("#spark-choices .choice")]);
+          if (con) await consoleHeard(t, doc, at);
+          if (!(await waitFor(() => buttons().length && (con || doc.getElementById("spark-choices").dataset.phase === "ready"), 60000))) { t.problem("bug", `${at}: no choice to press`); break; }
+          const before = scene();
+          await tapAt(t, buttons()[0], `choice ${k + 1} (${where})`, { quick: true });
+          if (!(await waitFor(() => scene() !== before, 9000))) { t.problem("bug", `${at}: choice ${k + 1} went nowhere`); break; }
+          await sleep(con ? 300 : 800);
+        }
+        const refused = win.iosMediaRefusals || [];
+        t.metric(`mediaRefusals-${id}-${label}`, refused.length);
+        t.event("media-refusals", `${where}: ${refused.length} play(s) iPhone would refuse${refused.length ? ": " + refused.slice(0, 5).map((r) => `${r.tag} ${r.src}`).join(", ") : ""}`);
+        for (const r of refused.slice(0, 5)) t.problem("bug", `${where}: iPhone would refuse to play ${r.tag} ${r.src} with sound at ${r.at} ms (no press started it; called from ${r.from || "?"})`);
+        t.progress(++n / (ids.length * sizes.length));
+      }
+    }
+  } finally {
+    if (keepSound == null) localStorage.removeItem(SOUND_KEY);
+    else localStorage.setItem(SOUND_KEY, keepSound);
+    closeViewFrame();
+  }
+  t.metric("mediaChecks", checks);
+}
+
 async function branches(options, t) {
   rememberProgress();
   if (!stories()) throw new Error("the player (js/game.js) didn't start");
@@ -5042,7 +5125,8 @@ async function phoneMediaRun(options, t) {
         closeViewFrame();
         clearProgress();
         const cdoc = await viewFrameLoad(t, `/?story=${id}`, 390, 844);
-        const shown = await waitFor(() => { const p = cdoc.querySelector(".tap-to-play[data-poster]"); return p && p.getAttribute("data-poster"); }, 6000);
+        let shown = "";
+        await waitFor(() => { const p = cdoc.querySelector(".tap-to-play[data-poster]"); shown = (p && p.getAttribute("data-poster")) || ""; return shown; }, 6000);
         t.event("poster-visible", `${id}: Tap to play shows ${shown || "NO picture"}`);
         if (!shown || !shown.endsWith(st.image.replace(/\.jpg$/, ".webp"))) t.problem("bug", `${id}: the Tap to play prompt doesn't show the story's picture (${shown || "none"})`);
         else t.add("postersShown");
@@ -9274,6 +9358,13 @@ installPlaytest({
       description: "A frame at 390x844 loads the landing page: first content within 2000 ms (metric phoneFirstContentMs), the hero's picture eager, every card with a picture that loads and the ones below the fold lazy-loaded. Then each clip story (The Final Spark, The Water Road) opens by its link: the clip has its poster (loaded) before Tap to play, the same poster is the picture behind the Tap to play prompt and the clip box's own picture (never a black box; Night Shift's prompt shows its card picture; event poster-visible), and after one real press the player plays the clip's smaller rendition (<dir>/sm/<name>.mp4, 9:16) and has not fetched the full clip; a 1280x800 frame plays the full clip. Events first-content, card-picture, poster, rendition; metrics phoneClipKB_<story>, postersShown, phoneRenditions. Options: {\"story\":\"<id>\"}.",
     },
     {
+      id: "media",
+      title: "Every listed story shows its video and plays with sound under iPhone Safari's rules, on a phone and a desktop: after Tap to play and after each of three choices",
+      seconds: 150,
+      tags: ["full"],
+      description: "Each listed story opens by its link in a frame at 390x844 and 1280x800 with ?ios-rules=1 (js/hawkes-sound.js: a video or audio may start with sound only if a press started it; any other start is refused, as iPhone Safari does, and listed in iosMediaRefusals). After Tap to play and after each of three choices (real presses): a clip story's clip is playing, unmuted, with decoded sound; a console story's voice line plays unmuted, with its ambience. Tap to play coming back, a refused play, no video or a silent scene is a bug naming the story, size and scene. npm run test:media checks every scene's files (picture and sound tracks) without a browser. Events media-sound, media-refusals; metrics mediaRefusals-<story>-<size>, mediaChecks. Options: {\"story\":\"<id>\"}, {\"sizes\":\"phone\"|\"desktop\"}.",
+    },
+    {
       id: "language",
       title: "The Final Spark's language picker at 390px, a switch mid-story that keeps the scene and puts the screen's text in the picked language, and every blog title in one language",
       seconds: 90,
@@ -9389,6 +9480,7 @@ installPlaytest({
       else if (id === "cinema") await cinemaRun(options, t);
       else if (id === "phone-player") await phonePlayerRun(options, t);
       else if (id === "phone-media") await phoneMediaRun(options, t);
+      else if (id === "media") await mediaRun(options, t);
       else if (id === "phone-choices") await phoneChoicesRun(options, t);
       else if (id === "language") await languageRun(options, t);
     } finally {

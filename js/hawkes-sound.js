@@ -25,6 +25,41 @@
   "use strict";
   if (window.hawkesSound) return;
 
+  // ?ios-rules=1 (the playtest's `media` scenario): this browser plays by iPhone Safari's media rules, so a desktop
+  // Chromium playtest catches what only a phone would show. A video or audio element may start with sound only once a
+  // press has started it (play() called while a press is handled, or in a timer that press set, not one set inside
+  // that); any other start with sound is refused with NotAllowedError, as Safari does. window.iosMediaRefusals lists
+  // every refusal (element, src, when).
+  if (/[?&]ios-rules=1(?:&|$)/.test(location.search) && window.HTMLMediaElement && !window.iosMediaRefusals) {
+    (function () {
+      var pressing = 0;
+      var nested = 0;
+      var refusals = window.iosMediaRefusals = [];
+      var press = function () { pressing++; nativeTimeout(function () { pressing = Math.max(0, pressing - 1); }, 0); };
+      var nativeTimeout = window.setTimeout;
+      ["touchend", "click", "keydown", "pointerup", "mouseup"].forEach(function (type) { window.addEventListener(type, press, true); });
+      window.setTimeout = function (fn, ms) {
+        var rest = Array.prototype.slice.call(arguments, 2);
+        var carry = pressing > 0 && nested === 0 && (ms || 0) <= 1000 && typeof fn === "function";
+        return nativeTimeout.call(window, function () {
+          nested++;
+          if (carry) pressing++;
+          try { return typeof fn === "function" ? fn.apply(this, rest) : undefined; } finally { nested--; if (carry) pressing--; }
+        }, ms);
+      };
+      var nativePlay = HTMLMediaElement.prototype.play;
+      HTMLMediaElement.prototype.play = function () {
+        if (pressing > 0) this._iosStarted = true;
+        if (!this._iosStarted && !this.muted) {
+          var from = String(new Error().stack || "").split("\n").slice(2).map(function (l) { return l.trim().replace(/\(?https?:\/\/[^/]+\//, "(").replace(/^at /, ""); }).slice(0, 4).join(" < ");
+          refusals.push({ at: Math.round(performance.now()), tag: this.tagName.toLowerCase(), src: String(this.currentSrc || this.getAttribute("src") || "").replace(location.origin, "").slice(0, 120), from: from });
+          return Promise.reject(new DOMException("The request is not allowed by the user agent (iPhone rules).", "NotAllowedError"));
+        }
+        return nativePlay.call(this);
+      };
+    })();
+  }
+
   var KEY = "hawkes.sound";
   var SPLASH_KEY = "iltv.splashed";
   var NativeContext = window.AudioContext || window.webkitAudioContext;
@@ -114,6 +149,9 @@
 
   function apply(video) {
     if (!video) return;
+    // A decorative copy (the clip's blurred mirror, the landing page's loops: aria-hidden) never has sound: unmuting
+    // it would play the clip's sound twice, a beat apart.
+    if (video.getAttribute("aria-hidden") === "true") return;
     video.muted = !settings.on;
     if (volumeWorks) {
       video.volume = settings.music;
@@ -188,6 +226,9 @@
     var waiting = document.querySelectorAll("video[data-sound-start], audio[data-sound-start]");
     for (var i = 0; i < waiting.length; i++) play(waiting[i]);
     applyAll();
+    // Still inside the press: the players start the elements they keep off the page (iOS unlocks each element only
+    // when a press starts it) and pick up anything that was waiting for sound. No timer waits for this.
+    try { document.dispatchEvent(new CustomEvent("hawkes:unlocked")); } catch (e) { /* very old browsers */ }
   }
 
   // ─── The prompt ────────────────────────────────────────────────
