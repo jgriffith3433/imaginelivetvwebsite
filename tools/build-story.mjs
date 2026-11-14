@@ -484,7 +484,7 @@ function storyData() {
           if (gate) row.push(gate);
           return row;
         }),
-        ...(s.variants?.length ? { variants: s.variants.map((v) => ({ when: v.when, ...(v.story ? { story: v.story } : {}), ...(v.question ? { question: v.question } : {}), ...(v.video ? { video: v.video, ...clipExtras(v.video) } : {}) })) } : {}),
+        ...(s.variants?.length ? { variants: s.variants.map((v, vi) => ({ when: v.when, ...((v.story || v.question) && stillOf(st, s) && exists(media(st, s, `narration-v${vi + 1}.mp3`)) ? { narration: '/' + media(st, s, `narration-v${vi + 1}.mp3`) } : {}), ...(v.story ? { story: v.story } : {}), ...(v.question ? { question: v.question } : {}), ...(v.video ? { video: v.video, ...clipExtras(v.video) } : {}) })) } : {}),
       };
     }
     const langs = new Set(['en', ...st.scenes.map((s) => s.lang)]);
@@ -818,6 +818,19 @@ function assets(st) {
       steps: [{ tool: 'audio.voice', params: { text: `${flat(s.story[0])} ${flat(s.question[0])}`, voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
       files: { narration: media(st, s, 'narration.mp3') },
     });
+
+    // In a story with `variantVoices: true`, a variant that changes the story or question is narrated by its own recipe (`<id>-voice-v<n>`, n from 1 in the
+    // scene's variants order); the player plays it when the run's flags pick that variant and it is made.
+    for (const [i, v] of (story.variantVoices ? s.variants ?? [] : []).entries()) {
+      if (!v.story && !v.question) continue;
+      const vs = v.story ?? s.story, vq = v.question ?? s.question;
+      list.push({
+        id: `${P}${s.id}-voice-v${i + 1}`,
+        note: `${s.title[1]}${of}: narration in ${s.lang} when ${Object.entries(v.when).map(([k, x]) => `${k}=${x}`).join(', ')}.`,
+        steps: [{ tool: 'audio.voice', params: { text: `${flat(vs[0])} ${flat(vq[0])}`, voice: story.narrator.voice, model: story.narrator.model }, save: 'narration' }],
+        files: { narration: media(st, s, `narration-v${i + 1}.mp3`) },
+      });
+    }
 
     // Talking shots: a close-up of the speaker (image.edit), the line (audio.voice), lips and head to it (video.talk).
     (s.lines ?? []).forEach((l, i) => {

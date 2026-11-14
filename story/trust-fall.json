@@ -40,6 +40,7 @@
       "voice": "hv_heroine"
     }
   },
+  "variantVoices": true,
   "narrator": {
     "voice": "hv_narrator_bright",
     "model": "eleven_v4"

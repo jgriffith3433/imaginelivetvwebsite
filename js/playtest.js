@@ -9240,6 +9240,24 @@ async function trustFallRun(options, t) {
   if (endingsSeen.length !== ids.filter(ending).length) t.problem("bug", `${id}: ${endingsSeen.length} of ${ids.filter(ending).length} endings showed their ending card`);
   if (deathsSeen.length !== ids.filter(dead).length) t.problem("bug", `${id}: ${deathsSeen.length} of ${ids.filter(dead).length} deaths showed Rewind and Start over`);
 
+  // 3b. Text variants (variant voices): a scene with a story/question variant is opened by the way whose flags pick it; with
+  // no variant recording made, the player plays the base narration and shows the variant's words, in full on the phone.
+  for (const sid of ids) for (const v of st.scenes[sid].variants || []) {
+    if (!v.story && !v.question) continue;
+    const way = wayTo(sid, (f) => Object.keys(v.when).every((k) => (f[k] === true) === (v.when[k] === true)));
+    if (!way) { t.problem("bug", `${id}/${sid}: no way arrives with ${JSON.stringify(v.when)}, so its variant is never shown`); continue; }
+    t.scene(`${id}: ${sid} variant ${JSON.stringify(v.when)}`);
+    const vdoc = await open(way, `variant ${JSON.stringify(v.when)} at ${sid}`);
+    await ready(vdoc, sid);
+    const words = (vdoc.getElementById("spark-story") || vdoc.body).textContent + " " + ((vdoc.getElementById("spark-question") || vdoc.body).textContent || "");
+    const want = String((v.question || v.story)[1] || "").slice(0, 24);
+    const made = !!v.narration;
+    if (!made && want && !words.includes(want)) t.problem("bug", `${id}/${sid}: with no variant recording the variant's words ("${want}...") are not on screen`);
+    trustFallTextFit(t, vdoc, `${id}/${sid} variant page (${W}x${H})`, W, H);
+    t.event("variant-words", `${id}/${sid}: ${JSON.stringify(v.when)} - words shown in full${made ? ", variant narration made" : ", base narration (variant recording not made)"}`);
+    closeViewFrame();
+  }
+
   // 4. Belief gates: a choice that `requires` the flag `believed` is there only on a run that chose Believe it; a choice that
   // `needs` trust N (Say thank you to ARGUS, at the morning edition: trust 3) is a button only with that much trust, and
   // greyed out ("needs trust 3+ (you have 2)") below it, even for a viewer who did believe.

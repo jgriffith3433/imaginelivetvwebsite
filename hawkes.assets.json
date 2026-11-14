@@ -32130,6 +32130,24 @@
       }
     },
     {
+      "id": "trust-fall-tower-voice-v1",
+      "note": "The Tower (Trust Fall): narration in en when readWorm=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Eleven fifty. Every screen in the Tower lobby shows Marcus live on the plaza, counting the city down. You push a cleaning cart past security with Blindspot in your pocket. Then the screen in front of you cuts to a face made of amber light, looking straight at you. You know what's on that drive. ARGUS sees you. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-tower/media/narration-v1.mp3"
+      }
+    },
+    {
       "id": "trust-fall-tower-talk-1",
       "note": "The Tower (Trust Fall): Marcus Okoro says \"Ten minutes, Meridian. Whatever you think of it, tonight it starts watching over all of us.\". video.talk is experimental.",
       "inputs": [
@@ -32373,6 +32391,24 @@
       ],
       "files": {
         "narration": "trust-fall/what-it-knows/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-listen-voice-v1",
+      "note": "What it knows (Trust Fall): narration in en when readWorm=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You stop in the middle of the lobby. Nobody else seems to hear it. The voice is only in the screen in front of you, quiet and patient. It's what you read on the train. Do you believe a machine?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/what-it-knows/media/narration-v1.mp3"
       }
     },
     {
@@ -32651,6 +32687,24 @@
       ],
       "files": {
         "narration": "trust-fall/the-vault/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-core-voice-v1",
+      "note": "The vault (Trust Fall): narration in en when believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The core is cold and blue and humming. You plug Blindspot in, exactly as ARGUS told you to, and Juno's voice clicks on in your earpiece. Behind you the vault door slides shut and locks, and a calm recording says: fire suppression in sixty seconds. Above the door a small amber light comes on. You were told not to be afraid. You are, a little. It's still there. The door shut, just like ARGUS said it would. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-vault/media/narration-v1.mp3"
       }
     },
     {
@@ -33097,6 +33151,42 @@
       ],
       "files": {
         "narration": "trust-fall/the-green-line/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-saved-voice-v1",
+      "note": "The green line (Trust Fall): narration in en when believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The lock clunks open. A thin green line runs ahead of you door after door, and a soft voice in the dark says: I told you I'd be there. Behind you Blindspot dies on the rack. You come up into the rain on the plaza just as Juno's van pulls away. It was there, like it said. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-green-line/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-saved-voice-v2",
+      "note": "The green line (Trust Fall): narration in en when jammed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "The lock clunks open onto pitch black. The jammer's battery has died in your burned hand, and ARGUS has to find you in the dark first. \"I could not see you,\" it says, \"I could only wait.\" Then a thin green line lights up along the floor and runs ahead of you, door after door, slower and shakier than it should be. Behind you Blindspot dies on the rack. You come up into the rain just as Juno's van pulls away. It found you, late. What now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/the-green-line/media/narration-v2.mp3"
       }
     },
     {
@@ -33548,6 +33638,114 @@
       }
     },
     {
+      "id": "trust-fall-broadcast-voice-v1",
+      "note": "Morning edition (Trust Fall): narration in en when chased=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you. You didn't have to do it alone. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v2",
+      "note": "Morning edition (Trust Fall): narration in en when calledMarcus=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you. You called, and he heard you. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v2.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v3",
+      "note": "Morning edition (Trust Fall): narration in en when waited=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. You're on a bench at the precinct in a borrowed blanket, and on the wall TV Marcus hasn't slept and his tie is crooked. Juno Vale is in custody; ARGUS handed the newsroom every word, the recording you stood still for. In the corner of the ceiling a small amber light is watching over you, the way it said it would. Then Marcus looks into the camera, and you know he's looking at you. You stood still and it kept its word. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v3.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v4",
+      "note": "Morning edition (Trust Fall): narration in en when believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you. ARGUS kept its promise. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v4.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v5",
+      "note": "Morning edition (Trust Fall): narration in en when listened=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. You're on a bench at the precinct in a borrowed blanket, watching the TV on the wall, and there's Marcus like every morning, except he hasn't slept and his tie is crooked. Juno Vale is in custody. ARGUS gave the newsroom everything. Then Marcus looks into the camera, and you know he's looking at you. ARGUS knew your name at breakfast. What do you do now?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v5.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-broadcast-voice-v6",
+      "note": "Morning edition (Trust Fall): narration in en when jammed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "Six in the morning. You're on a bench at the precinct in a borrowed blanket, your hands in bandages, watching the TV on the wall. Marcus hasn't slept and his tie is crooked. Juno Vale is in custody, caught by the police and not by anything that watches. The little amber light in the ceiling corner is dark. Then Marcus looks into the camera, and you know he's looking at you. No light was watching over you tonight. What do you do?",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/morning-edition/media/narration-v6.mp3"
+      }
+    },
+    {
       "id": "trust-fall-broadcast-talk-1",
       "note": "Morning edition (Trust Fall): Marcus Okoro says \"Someone walked into that vault last night to break this city, and walked out because a machine wouldn't let go. If you're watching, you know who you are. Come home.\". video.talk is experimental.",
       "inputs": [
@@ -33671,6 +33869,60 @@
       }
     },
     {
+      "id": "trust-fall-truth-voice-v1",
+      "note": "Live (Trust Fall): narration in en when chased=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You walk into the studio at seven in last night's jacket, the bridge still in your legs, and sit down at Marcus's glass desk. You tell the whole city who you are and what you came to do, and that you went after Juno alone when you didn't have to. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are. ",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/live/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-truth-voice-v2",
+      "note": "Live (Trust Fall): narration in en when calledMarcus=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. Marcus says on air that your call came through eleven floors of concrete, and that he heard you. ARGUS vouches for every word. When the camera light goes off, he leans over and says it just to you: you know who you are. ",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/live/media/narration-v2.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-truth-voice-v3",
+      "note": "Live (Trust Fall): narration in en when believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You walk into the studio at seven in last night's jacket, sit down at Marcus's glass desk, and tell the whole city who you are and what you came to do. You tell them you believed a machine in a lobby, and the light above the camera is amber, not red. ARGUS vouches for every word. When the camera light goes off, Marcus leans over and says it just to you: you know who you are. ",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/live/media/narration-v3.mp3"
+      }
+    },
+    {
       "id": "trust-fall-truth-talk-1",
       "note": "Live (Trust Fall): Marcus Okoro says \"Good morning, Meridian. My guest is the reason your lights are still on. Go ahead, Rae.\". video.talk is experimental.",
       "inputs": [
@@ -33789,6 +34041,60 @@
       ],
       "files": {
         "narration": "trust-fall/unseen/media/narration.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-shadow-voice-v1",
+      "note": "Unseen (Trust Fall): narration in en when chased=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You leave the blanket on the bench and walk out into the morning before anyone asks your name, the same way you rode off the Harbor Bridge, alone. ARGUS never gives your name to them. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for. ",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/unseen/media/narration-v1.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-shadow-voice-v2",
+      "note": "Unseen (Trust Fall): narration in en when calledMarcus=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You leave the blanket on the bench and walk out into the morning before anyone asks your name. Marcus knows only that someone called him from under the Tower and he heard them, and ARGUS never gives him more. The next morning there's a new line at the end of his broadcast, and only two people in Meridian know who it's for. ",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/unseen/media/narration-v2.mp3"
+      }
+    },
+    {
+      "id": "trust-fall-shadow-voice-v3",
+      "note": "Unseen (Trust Fall): narration in en when believed=true.",
+      "steps": [
+        {
+          "tool": "audio.voice",
+          "params": {
+            "text": "You leave the blanket on the bench and walk out into the morning before anyone asks your name. ARGUS never gives it to them; you asked it to keep that one thing, and it does. The next morning there's a new line at the end of Marcus's broadcast, and only two people in Meridian know who it's for. ",
+            "voice": "hv_narrator_bright",
+            "model": "eleven_v4"
+          },
+          "save": "narration"
+        }
+      ],
+      "files": {
+        "narration": "trust-fall/unseen/media/narration-v3.mp3"
       }
     },
     {
