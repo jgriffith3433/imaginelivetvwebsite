@@ -26534,12 +26534,12 @@ window.ILTV_STORIES = {
       "First light"
      ],
      "story": [
-      "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name.",
-      "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name."
+      "Dawn. Your speaker glows amber, says your name.",
+      "Dawn. Your speaker glows amber, says your name."
      ],
      "question": [
-      "ARGUS knows you. Now what?",
-      "ARGUS knows you. Now what?"
+      "Now what?",
+      "Now what?"
      ],
      "video": "/assets/video/trust-fall/first-light.mp4",
      "poster": "/assets/video/trust-fall/poster/first-light.webp",
@@ -26551,8 +26551,8 @@ window.ILTV_STORIES = {
        "unplug"
       ],
       [
-       "2. Ask how it knows you",
-       "2. Ask how it knows you",
+       "2. Ask how it knows",
+       "2. Ask how it knows",
        "asked",
        true,
        {

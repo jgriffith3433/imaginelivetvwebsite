@@ -68,12 +68,12 @@
         "First light"
       ],
       "story": [
-        "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name.",
-        "Six a.m. Your husband Marcus is on the kitchen TV: ARGUS goes live at midnight. The speaker on your counter lights amber and says your name."
+        "Dawn. Your speaker glows amber, says your name.",
+        "Dawn. Your speaker glows amber, says your name."
       ],
       "question": [
-        "ARGUS knows you. Now what?",
-        "ARGUS knows you. Now what?"
+        "Now what?",
+        "Now what?"
       ],
       "choices": [
         {
@@ -82,8 +82,8 @@
           "next": "unplug"
         },
         {
-          "say": "2. Ask how it knows you",
-          "en": "2. Ask how it knows you",
+          "say": "2. Ask how it knows",
+          "en": "2. Ask how it knows",
           "next": "asked",
           "set": {
             "listened": true
