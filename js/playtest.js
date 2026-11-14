@@ -8591,6 +8591,19 @@ async function trustFallRun(options, t) {
       t.event("buffering-ring", `${id}: ${rings.includes(true) ? "shown while the clip loaded" : "not needed (the clip loaded at once)"}; hidden once it plays: ${ring.hidden}`);
     }
     if (win.finalSpark.scene() !== st.start) t.problem("bug", `${id}: the first scene is ${win.finalSpark.scene()}, not ${st.start}`);
+    // The player is the whole screen: no catalogue or header showing, no sideways scroll, no stray debug control.
+    {
+      const de = doc.documentElement, vis = (e) => e && e.getClientRects().length && win.getComputedStyle(e).visibility !== "hidden";
+      const sp = doc.querySelector(".spark:not([hidden])");
+      const r = sp ? sp.getBoundingClientRect() : null;
+      const shown = [".site-header", "body > main", ".stories", ".hero", ".story-card"].filter((q) => [...doc.querySelectorAll(q)].some(vis));
+      if (shown.length) t.problem("bug", `${id}: the landing page still shows behind the player (${shown.join(", ")})`);
+      if (!r || r.width < W - 2) t.problem("bug", `${id}: the player is ${r ? Math.round(r.width) : 0}px wide, not the whole ${W}px screen`);
+      if (de.scrollWidth > W + 1) t.problem("bug", `${id}: sideways scroll at ${W}x${H} (${de.scrollWidth}px)`);
+      const dbg = [...doc.querySelectorAll("button, a, [role=button]")].filter((e) => vis(e) && /debug|bug|report a problem/i.test((e.id || "") + (e.className || "") + (e.getAttribute("aria-label") || "") + (e.title || "")));
+      if (dbg.length) t.problem("bug", `${id}: a debug control is on the page (${dbg.length})`);
+      t.event("player-fullscreen", `${id}: player ${r ? Math.round(r.width) + "x" + Math.round(r.height) : "none"} of ${W}x${H}; landing hidden: ${!shown.length}; no sideways scroll: ${de.scrollWidth <= W + 1}`);
+    }
     await sleep(800);
     closeViewFrame();
   }
