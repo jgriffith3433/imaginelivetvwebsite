@@ -33,6 +33,9 @@
       // The poster frame and the phone rendition of the clip (tools/make-posters.mjs); clipSrc() and show() read them.
       poster: spec.still || spec.poster || "",
       small: spec.still ? "" : spec.small || "",
+      // A still page's recorded narration and its music cue (spoken over the still: iltvAudio.playNarration).
+      narration: spec.still ? spec.narration || "" : "",
+      score: spec.still ? spec.score || "" : "",
       live: spec.live || 0,
       dead: !!spec.dead,
       ending: spec.ending ? spec.ending[0] : "",
@@ -1493,6 +1496,11 @@
     const timed = shownChoices.length > 0 && !scene.dead && !auto;
 
     currentScene = sceneId;
+    if (window.iltvAudio && window.iltvAudio.playNarration) {
+      // No clip, so the narration and its music cue come from the recordings, over the graded still (a clip carries its own).
+      if (scene.still && scene.narration) window.iltvAudio.playNarration(scene.narration, scene.score, sceneId);
+      else window.iltvAudio.stopNarration();
+    }
     if (window.iltvAudio && STORY.id === "trust-fall") {
       window.iltvAudio.setBed(STORY.id, sceneMood(STORY, sceneId));
       if (ARGUS_LINES[sceneId]) setTimeout(function () { if (currentScene === sceneId) window.iltvAudio.playVoice("trust-fall-" + sceneId, ARGUS_LINES[sceneId], "argus"); }, 900);

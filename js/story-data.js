@@ -26491,9 +26491,7 @@ window.ILTV_STORIES = {
       "THE END. You were the story.",
       "THE END. You were the story."
      ],
-     "hint": "Some stories you tell yourself.",
-     "poster": "/assets/video/trust-fall/poster/live.webp",
-     "video": "/assets/video/trust-fall/live.mp4"
+     "hint": "Some stories you tell yourself."
     },
     {
      "id": "shadow",
@@ -26505,9 +26503,7 @@ window.ILTV_STORIES = {
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
      ],
-     "hint": "Some heroes keep their names.",
-     "poster": "/assets/video/trust-fall/poster/unseen.webp",
-     "video": "/assets/video/trust-fall/unseen.mp4"
+     "hint": "Some heroes keep their names."
     },
     {
      "id": "believer",
@@ -26519,9 +26515,7 @@ window.ILTV_STORIES = {
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
      ],
-     "hint": "Some mornings you answer back.",
-     "poster": "/assets/video/trust-fall/poster/good-morning.webp",
-     "video": "/assets/video/trust-fall/good-morning.mp4"
+     "hint": "Some mornings you answer back."
     }
    ],
    "scenes": {
@@ -26541,9 +26535,10 @@ window.ILTV_STORIES = {
       "Now what?",
       "Now what?"
      ],
-     "video": "/assets/video/trust-fall/first-light.mp4",
-     "poster": "/assets/video/trust-fall/poster/first-light.webp",
-     "small": "/assets/video/trust-fall/sm/first-light.mp4",
+     "video": "/trust-fall/first-light/scene.mp4",
+     "poster": "/trust-fall/first-light/poster/scene.webp",
+     "small": "/trust-fall/first-light/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Pull its plug",
@@ -26577,9 +26572,9 @@ window.ILTV_STORIES = {
       "Where do you go?",
       "Where do you go?"
      ],
-     "video": "/assets/video/trust-fall/the-plug.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-plug.webp",
-     "small": "/assets/video/trust-fall/sm/the-plug.mp4",
+     "video": "/trust-fall/the-plug/scene.mp4",
+     "poster": "/trust-fall/the-plug/poster/scene.webp",
+     "small": "/trust-fall/the-plug/sm/scene.mp4",
      "choices": [
       [
        "1. Go to the garage",
@@ -26604,9 +26599,9 @@ window.ILTV_STORIES = {
       "Where do you go?",
       "Where do you go?"
      ],
-     "video": "/assets/video/trust-fall/how-it-knows.mp4",
-     "poster": "/assets/video/trust-fall/poster/how-it-knows.webp",
-     "small": "/assets/video/trust-fall/sm/how-it-knows.mp4",
+     "video": "/trust-fall/how-it-knows/scene.mp4",
+     "poster": "/trust-fall/how-it-knows/poster/scene.webp",
+     "small": "/trust-fall/how-it-knows/sm/scene.mp4",
      "choices": [
       [
        "1. Go to the garage",
@@ -26631,9 +26626,10 @@ window.ILTV_STORIES = {
       "Do you carry Blindspot in?",
       "Do you carry Blindspot in?"
      ],
-     "video": "/assets/video/trust-fall/the-garage.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-garage.webp",
-     "small": "/assets/video/trust-fall/sm/the-garage.mp4",
+     "video": "/trust-fall/the-garage/scene.mp4",
+     "poster": "/trust-fall/the-garage/poster/scene.webp",
+     "small": "/trust-fall/the-garage/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Take the drive and go",
@@ -26668,9 +26664,10 @@ window.ILTV_STORIES = {
       "You know what Juno is doing. What now?",
       "You know what Juno is doing. What now?"
      ],
-     "video": "/assets/video/trust-fall/whats-inside.mp4",
-     "poster": "/assets/video/trust-fall/poster/whats-inside.webp",
-     "small": "/assets/video/trust-fall/sm/whats-inside.mp4",
+     "video": "/trust-fall/whats-inside/scene.mp4",
+     "poster": "/trust-fall/whats-inside/poster/scene.webp",
+     "small": "/trust-fall/whats-inside/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Go anyway, and play along",
@@ -26701,9 +26698,9 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": "/assets/video/trust-fall/the-river.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-river.webp",
-     "small": "/assets/video/trust-fall/sm/the-river.mp4",
+     "video": "/trust-fall/the-river/scene.mp4",
+     "poster": "/trust-fall/the-river/poster/scene.webp",
+     "small": "/trust-fall/the-river/sm/scene.mp4",
      "dead": true,
      "choices": [
       [
@@ -26729,9 +26726,10 @@ window.ILTV_STORIES = {
       "ARGUS sees you. What do you do?",
       "ARGUS sees you. What do you do?"
      ],
-     "video": "/assets/video/trust-fall/the-tower.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-tower.webp",
-     "small": "/assets/video/trust-fall/sm/the-tower.mp4",
+     "video": "/trust-fall/the-tower/scene.mp4",
+     "poster": "/trust-fall/the-tower/poster/scene.webp",
+     "small": "/trust-fall/the-tower/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Jam it and keep going",
@@ -26773,9 +26771,9 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "video": "/assets/video/trust-fall/lights-out.mp4",
-     "poster": "/assets/video/trust-fall/poster/lights-out.webp",
-     "small": "/assets/video/trust-fall/sm/lights-out.mp4",
+     "video": "/trust-fall/lights-out/scene.mp4",
+     "poster": "/trust-fall/lights-out/poster/scene.webp",
+     "small": "/trust-fall/lights-out/sm/scene.mp4",
      "choices": [
       [
        "1. Down to the core",
@@ -26800,9 +26798,10 @@ window.ILTV_STORIES = {
       "Do you believe a machine?",
       "Do you believe a machine?"
      ],
-     "video": "/assets/video/trust-fall/what-it-knows.mp4",
-     "poster": "/assets/video/trust-fall/poster/what-it-knows.webp",
-     "small": "/assets/video/trust-fall/sm/what-it-knows.mp4",
+     "video": "/trust-fall/what-it-knows/scene.mp4",
+     "poster": "/trust-fall/what-it-knows/poster/scene.webp",
+     "small": "/trust-fall/what-it-knows/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Believe it",
@@ -26847,9 +26846,9 @@ window.ILTV_STORIES = {
       "Down you go.",
       "Down you go."
      ],
-     "video": "/assets/video/trust-fall/the-bait.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-bait.webp",
-     "small": "/assets/video/trust-fall/sm/the-bait.mp4",
+     "video": "/trust-fall/the-bait/scene.mp4",
+     "poster": "/trust-fall/the-bait/poster/scene.webp",
+     "small": "/trust-fall/the-bait/sm/scene.mp4",
      "choices": [
       [
        "1. Down to the core",
@@ -26874,9 +26873,10 @@ window.ILTV_STORIES = {
       "The air is going. What do you do?",
       "The air is going. What do you do?"
      ],
-     "video": "/assets/video/trust-fall/the-vault.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-vault.webp",
-     "small": "/assets/video/trust-fall/sm/the-vault.mp4",
+     "video": "/trust-fall/the-vault/scene.mp4",
+     "poster": "/trust-fall/the-vault/poster/scene.webp",
+     "small": "/trust-fall/the-vault/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Beg ARGUS for help",
@@ -26947,9 +26947,9 @@ window.ILTV_STORIES = {
       "You have died.",
       "You have died."
      ],
-     "video": "/assets/video/trust-fall/sixty-seconds.mp4",
-     "poster": "/assets/video/trust-fall/poster/sixty-seconds.webp",
-     "small": "/assets/video/trust-fall/sm/sixty-seconds.mp4",
+     "video": "/trust-fall/sixty-seconds/scene.mp4",
+     "poster": "/trust-fall/sixty-seconds/poster/scene.webp",
+     "small": "/trust-fall/sixty-seconds/sm/scene.mp4",
      "dead": true,
      "choices": [
       [
@@ -26975,9 +26975,9 @@ window.ILTV_STORIES = {
       "Hold on.",
       "Hold on."
      ],
-     "video": "/assets/video/trust-fall/on-the-air.mp4",
-     "poster": "/assets/video/trust-fall/poster/on-the-air.webp",
-     "small": "/assets/video/trust-fall/sm/on-the-air.mp4",
+     "video": "/trust-fall/on-the-air/scene.mp4",
+     "poster": "/trust-fall/on-the-air/poster/scene.webp",
+     "small": "/trust-fall/on-the-air/sm/scene.mp4",
      "choices": [
       [
        "1. Hold on",
@@ -27002,9 +27002,10 @@ window.ILTV_STORIES = {
       "Juno is getting away. What do you do?",
       "Juno is getting away. What do you do?"
      ],
-     "video": "/assets/video/trust-fall/the-green-line.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-green-line.webp",
-     "small": "/assets/video/trust-fall/sm/the-green-line.mp4",
+     "video": "/trust-fall/the-green-line/scene.mp4",
+     "poster": "/trust-fall/the-green-line/poster/scene.webp",
+     "small": "/trust-fall/the-green-line/sm/scene.mp4",
+     "live": 18,
      "choices": [
       [
        "1. Let ARGUS handle Juno",
@@ -27054,9 +27055,10 @@ window.ILTV_STORIES = {
       "Breathe.",
       "Breathe."
      ],
-     "video": "/assets/video/trust-fall/the-bridge.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-bridge.webp",
-     "small": "/assets/video/trust-fall/sm/the-bridge.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/the-bridge/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/heist.mp3",
      "choices": [
       [
        "1. Breathe",
@@ -27081,9 +27083,10 @@ window.ILTV_STORIES = {
       "It kept its word.",
       "It kept its word."
      ],
-     "video": "/assets/video/trust-fall/the-promise.mp4",
-     "poster": "/assets/video/trust-fall/poster/the-promise.webp",
-     "small": "/assets/video/trust-fall/sm/the-promise.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/the-promise/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/rescue.mp3",
      "choices": [
       [
        "1. Walk out",
@@ -27108,9 +27111,10 @@ window.ILTV_STORIES = {
       "What do you do?",
       "What do you do?"
      ],
-     "video": "/assets/video/trust-fall/morning-edition.mp4",
-     "poster": "/assets/video/trust-fall/poster/morning-edition.webp",
-     "small": "/assets/video/trust-fall/sm/morning-edition.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/morning-edition/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/morning.mp3",
      "choices": [
       [
        "1. Tell Marcus everything, on the air",
@@ -27206,9 +27210,10 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": "/assets/video/trust-fall/live.mp4",
-     "poster": "/assets/video/trust-fall/poster/live.webp",
-     "small": "/assets/video/trust-fall/sm/live.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/live/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/end.mp3",
      "ending": [
       "THE END. You were the story.",
       "THE END. You were the story."
@@ -27231,9 +27236,10 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": "/assets/video/trust-fall/unseen.mp4",
-     "poster": "/assets/video/trust-fall/poster/unseen.webp",
-     "small": "/assets/video/trust-fall/sm/unseen.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/unseen/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/end.mp3",
      "ending": [
       "THE END. Some heroes stay in the dark.",
       "THE END. Some heroes stay in the dark."
@@ -27256,9 +27262,10 @@ window.ILTV_STORIES = {
       "",
       ""
      ],
-     "video": "/assets/video/trust-fall/good-morning.mp4",
-     "poster": "/assets/video/trust-fall/poster/good-morning.webp",
-     "small": "/assets/video/trust-fall/sm/good-morning.mp4",
+     "video": null,
+     "still": "/assets/images/trust-fall.jpg",
+     "narration": "/trust-fall/good-morning/media/narration.mp3",
+     "score": "/assets/story/trust-fall/music/end.mp3",
      "ending": [
       "THE END. It was always on your side.",
       "THE END. It was always on your side."
