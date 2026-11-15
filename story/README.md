@@ -40,7 +40,7 @@ and each story's scenes, cast, music and labels are in `story/<id>.json`. `npm r
    and `avoid` (a line added to every `image.generate` prompt: that tool has no negative prompt, so what matters of
    `negative` is said there in positive words, e.g. "A modern 3D game render, not a photograph").
 4. `npm run story`, then `npm run story -- --check`. It checks every story's tree, writes the card into
-   `index.html`, the story's link page `/<id>/` (it opens `/?story=<id>`), its branch pages and its media recipes
+   `home.html`, the story's link page `/<id>/` (it opens `/?story=<id>`), its branch pages and its media recipes
    in `hawkes.assets.json` (ids `<id>-<scene>-shot`, `<id>-char-<who>`, `<id>-music-<cue>`; files under
    `<id>/<folder>/media/` and `assets/story/<id>/music/`).
 5. Media through Studio (GPU: J's OK first), then `listed` comes out of the entry once every scene has a video,
@@ -529,7 +529,7 @@ warning), and cut again with it once the cue is made; a listed story waits for i
 # Build
 
 ```
-npm run story          # every story: js/story-data.js, the landing cards in index.html, /<id>/ links,
+npm run story          # every story: js/story-data.js, the landing cards in home.html, /<id>/ links,
                        # every branch page, hawkes.assets.json, gen cuts
 npm run story -- --check   # fails if a tree is broken or anything generated is out of date
 ```

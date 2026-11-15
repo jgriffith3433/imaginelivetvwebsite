@@ -302,7 +302,7 @@ week of nights in a Manhattan tower. Nine cameras of nothing, one trainer who kn
 47. **"Completed" with 31% explored.** The percent counts scenes found; the longest way is 90 of 228 scenes (39%), the shortest 73 (32%), so a viewer who finishes the night sees "Completed, 31%" and never more than about 40% on one way; the card
     reaches 100% only after several different runs of 36 to 50 minutes. It is by design (the video stories' percent works the same) but a console story is far longer. Fix: for console stories show "endings found 1 of 12" on the card.
 48. **The unlisted demo is public.** `night-shift-demo` is `"listed": false` (no card) but its page `/night-shift-demo/` and `/?story=night-shift-demo` are built and published and play (the T4 `stories` run opens it by link); it is a placeholder with 5 scenes and no recordings. Fix: keep it out of the published site, or accept it.
-49. **The landing page loads every story's whole data.** `index.html` loads `js/story-data.js` (575 KB, 322 KB of it Night Shift's 228 scenes and 1,288 lines) before the landing page can show a card. Fix: load a story's scenes when it opens.
+49. **The landing page loads every story's whole data.** `home.html` loads `js/story-data.js` (575 KB, 322 KB of it Night Shift's 228 scenes and 1,288 lines) before the landing page can show a card. Fix: load a story's scenes when it opens.
 50. **The working tree is 765 MB** (`assets` 549 MB, `night-shift` 102 MB, `water-road` 98 MB; Pages publishes it) against GitHub Pages' 1 GB limit for a published site; Night Shift adds about 100 MB (items 9, 14). The next story or the 6 stings plus a re-cut will need the room. Fix: shrink
     the PNGs, share the repeated recordings, check the size in `npm run story`.
 

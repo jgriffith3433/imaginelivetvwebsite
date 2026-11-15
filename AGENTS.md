@@ -3,9 +3,13 @@
 **Lanes, local dev and deploys:** `LANES.md` (branches dev -> beta -> main; `dev.bat`, `deploy-beta.bat`, `deploy-prod.bat`, `status.bat`, `links.bat`, `sync.bat`; beta and live links).
 
 The site for **Imagine Live TV** (imaginelivetv.com), static on GitHub Pages. In the Hawkes Biomedical line
-it is sold as *live medical education*. It is a home for choose-your-path video stories: the home page is the
-landing page (a card per story, from `story/stories.json`), and choosing one opens its player on the same page
-(`/?story=<id>`). The first is **The Final Spark**: you wake in a sewer, found by a rat, and each choice is a page
+it is sold as *live medical education*. It is a home for choose-your-path video stories: the **front page (`/`, `index.html`) is only a full-screen
+mathematical visualization**: no buttons, no links, no way in (J, 2026-11-14). The landing page (a card per story, from
+`story/stories.json`) and the story player are **`home.html`**, one page, and choosing a story opens its player there
+(`/?story=<id>`). `index.html` has a gate script first: playtest bots (`navigator.webdriver`) and every URL with a query
+string or hash are forwarded to `/home.html` with it, so `/?story=<id>`, `/#blog`, `?playtest=` and the `/<id>/` link
+pages keep working. Inside the site, "back to the list" is `/home.html`, never bare `/`. `npm run story` rewrites
+`home.html` and never touches `index.html`. The first is **The Final Spark**: you wake in a sewer, found by a rat, and each choice is a page
 with a video (one folder per branch at the site root, e.g. `you-turned-right/`; other stories' pages go under
 `/<id>/`). Plus a blog. A second kind of story, the **console story** (`"type": "console"`: a camera wall, voiced lines, flags and meters, a shift log; story doc `story/README.md`, "Console stories"), has its own player. Planning notes and the decision tree are in `C:\Projects\TheFinalSpark`.
 Local dev: `auto-start.bat` (http://localhost:8090). Publishing is pushing to `main`: ask J first.
@@ -115,7 +119,7 @@ Hawkes Analytics is the only analytics here (J, 2026-10-18): never add another t
 `imaginelivetv`). Events go to `https://hawkesgen.ai/v1/analytics/collect`.
 
 **Loaded on every page people see**, at the end of `<body>`, in this order: `js/hawkes-build.js`,
-Hawkes Gen's SDK `https://hawkesgen.ai/sdk/analytics@1.js` (`data-product="imaginelivetv"`), `js/analytics.js`. That's `index.html` (before
+Hawkes Gen's SDK `https://hawkesgen.ai/sdk/analytics@1.js` (`data-product="imaginelivetv"`), `js/analytics.js`. That's `home.html` (before
 `js/hawkes-sound.js` and `js/game.js`, so it hears the first scene), `whatsnew.html`, `privacy.html`, `404.html`,
 every blog post (`f/*/index.html`, by hand: a new post needs the three lines) and every branch page (the template in
 `tools/build-story.mjs`). Not on the `/<id>/` link pages: they forward to `/?story=<id>` at once, where the home page
@@ -205,7 +209,7 @@ the fallback and still carry the state the tests and the `room` playtest read (`
 checks the layers; every layer must stay a full-plate WebP under 160 KB.
 
 Stories are data. `story/stories.json` lists them (id, logline, card image, `listed`), each one's scenes are in
-`story/<id>.json`, and `npm run story` builds every story: `js/story-data.js`, the landing cards in `index.html`
+`story/<id>.json`, and `npm run story` builds every story: `js/story-data.js`, the landing cards in `home.html`
 (between the `<!-- stories -->` markers), each story's `/<id>/` link, its branch pages and its media recipes in
 `hawkes.assets.json`. A new story is a new `story/<id>.json` (copy `final-spark.json`'s shape, with its own
 `cookie`, `tap` and `ui` labels) plus a listing entry: no code. Its pages go under `/<id>/`; only The Final Spark

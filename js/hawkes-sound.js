@@ -353,7 +353,7 @@
 
   // ─── The title splash (the landing page) ───────────────────────
 
-  // index.html's first-paint cover (html.is-splash-pending) comes off once the splash or a prompt is up, or there's none.
+  // home.html's first-paint cover (html.is-splash-pending) comes off once the splash or a prompt is up, or there's none.
   function lift() {
     document.documentElement.classList.remove("is-splash-pending");
   }

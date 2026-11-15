@@ -21,7 +21,7 @@ try {
   process.exit(0);
 }
 
-const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const html = fs.readFileSync(path.join(ROOT, 'home.html'), 'utf8');
 const section = html.slice(html.indexOf('<section class="console"'), html.indexOf('</section>', html.indexOf('<section class="console"')) + 10);
 const rulesSrc = fs.readFileSync(path.join(ROOT, 'js/console-rules.js'), 'utf8');
 const playerSrc = fs.readFileSync(path.join(ROOT, 'js/console.js'), 'utf8');

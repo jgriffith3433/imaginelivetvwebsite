@@ -540,7 +540,7 @@ function checkBadge(t, card, st, want, where) {
 
 /** The home page loaded fresh in the frame (a reload): every listed story's card says `want(st)`. */
 async function badgesAfterLoad(t, want, where) {
-  const doc = await frameLoad(t, (f) => (f.src = "/"));
+  const doc = await frameLoad(t, (f) => (f.src = "/home.html"));
   const win = frame && frame.contentWindow;
   if (!doc || !(await waitFor(() => win.iltvStories && doc.querySelector("#story-list a.story-card[data-progress]"), 10000))) {
     t.problem("bug", `${where}: the home page didn't load in the frame`);
@@ -561,7 +561,7 @@ async function badgesAfterLoad(t, want, where) {
 /** One story's card after a reload of the home page (a frame loading it, as a viewer's refresh does): its progress is read
     back from the cookies, so it must still say Started or Completed with the percent, never Not started / 0%. */
 async function badgeAfterReload(t, st, want, where) {
-  const doc = await frameLoad(t, (f) => (f.src = "/"));
+  const doc = await frameLoad(t, (f) => (f.src = "/home.html"));
   const win = frame && frame.contentWindow;
   const sel = `#story-list a.story-card[data-story="${st.id}"]`;
   if (!doc || !(await waitFor(() => win.iltvStories && doc.querySelector(sel + "[data-progress]"), 10000))) {
@@ -1890,7 +1890,7 @@ async function continueRecap(options, t) {
   // Always skip to stay inside the 400 s budget.
   for (const [w, h, label] of [[390, 844, "phone"], [844, 390, "landscape"], [1280, 720, "wide"]]) {
     t.scene(`Continue recap: ${label} ${w}x${h}`);
-    const doc = await viewFrameLoad(t, "/", w, h);
+    const doc = await viewFrameLoad(t, "/home.html", w, h);
     const win = doc.defaultView;
     await waitFor(() => !doc.getElementById("title-splash") && doc.querySelector("#story-list a.story-card"), 5000);
     await sleep(400);
@@ -2260,7 +2260,7 @@ async function creditsRun(t) {
   const pagesToCheck = [
     post && { from: "/notes/", to: pathOf(post.getAttribute("href")), name: "Studio notes post" },
     { from: null, to: folderOf(story().start), name: "branch page" },
-    { from: "/", to: "/whatsnew.html", name: "What's new" },
+    { from: "/home.html", to: "/whatsnew.html", name: "What's new" },
   ].filter(Boolean);
   for (let i = 0; i < pagesToCheck.length; i++) {
     const p = pagesToCheck[i];
@@ -3231,7 +3231,7 @@ async function endingsGalleryRun(options, t) {
   // Every ending found: the home card's count reads "N of N endings" and wears the completion badge (a tick, lit),
   // inside the card at 390x844.
   const bothFoundCard = async () => {
-        const doc = await viewFrameLoad(t, "/", 390, 844);
+        const doc = await viewFrameLoad(t, "/home.html", 390, 844);
         await sleep(700);
         const cardBox = doc.querySelector(`.story-card[data-story="${id}"]`);
         const cardEl = cardBox && cardBox.querySelector(".story-card-endings");
@@ -4669,7 +4669,7 @@ async function languageRun(options, t) {
   t.progress(0.7);
   // Studio notes titles: English on /notes/, each with a language chip (posts moved off the home page).
   t.scene("Studio notes titles");
-  const home = await viewFrameLoad(t, "/", 390, 844);
+  const home = await viewFrameLoad(t, "/home.html", 390, 844);
   await waitFor(() => { const sp = home.getElementById("title-splash"); return !sp || sp.hidden || home.defaultView.getComputedStyle(sp).display === "none" || +home.defaultView.getComputedStyle(sp).opacity === 0; }, 6000);
   if (home.querySelector("#blog .post-card, main .post-card")) t.problem("bug", "the home page still lists blog posts at 390x844");
   const notesLink = home.querySelector('footer a[href="/notes/"], footer a[href="/notes"]');
@@ -5058,7 +5058,7 @@ async function phoneMediaRun(options, t) {
   clearProgress();
   const fetchedBy = (win, url) => win.performance.getEntriesByType("resource").filter((e) => e.name.endsWith(url));
   t.scene("Landing page at phone size");
-  let doc = await viewFrameLoad(t, "/", 390, 844);
+  let doc = await viewFrameLoad(t, "/home.html", 390, 844);
   let win = doc.defaultView;
   const paint = win.performance.getEntriesByName("first-contentful-paint")[0];
   const nav = win.performance.getEntriesByType("navigation")[0];
@@ -6903,7 +6903,7 @@ async function trustFallCardRun(options, t) {
   };
   // 1. The home page lists Trust Fall after Night Shift, never as the featured hero.
   t.scene("home page: Trust Fall's card");
-  let doc = await frameLoad(t, (f) => { phone(f); f.src = "/"; });
+  let doc = await frameLoad(t, (f) => { phone(f); f.src = "/home.html"; });
   if (!doc) throw new Error("the home page didn't load in the frame");
   await waitFor(() => doc.querySelector(".story-card"), 10000);
   const home = [...doc.querySelectorAll(".story-card")].map((c) => c.dataset.story).filter(Boolean);
@@ -7581,7 +7581,7 @@ async function firstMinutesRun(options, t) {
   for (let si = 0; si < sizes.length; si++) {
     const [w, h, label] = sizes[si];
     t.scene(`First minutes at ${label}`);
-    const doc = await viewFrameLoad(t, "/", w, h);
+    const doc = await viewFrameLoad(t, "/home.html", w, h);
     const win = doc.defaultView;
     // Clear progress again inside the frame's origin (same as the runner page).
     try {
@@ -7881,7 +7881,7 @@ async function frontDoorRun(options, t) {
   t.progress(0.55);
 
   t.scene("Front door: 390 px");
-  const doc = await viewFrameLoad(t, "/", 390, 844);
+  const doc = await viewFrameLoad(t, "/home.html", 390, 844);
   await waitFor(() => doc.querySelector("#story-list a.story-card[data-progress]") && doc.getElementById("continue-row"), 8000);
   await sleep(600);
   await checkFront(doc, "390px");

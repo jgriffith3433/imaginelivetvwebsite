@@ -57,7 +57,7 @@ async function offered(st, way) {
   const errors = [];
   const vc = new VirtualConsole();
   vc.on("jsdomError", (e) => { if (!/Not implemented/.test(e.message)) errors.push(e.message); });
-  const dom = new JSDOM(fs.readFileSync(path.join(ROOT, "index.html"), "utf8"), {
+  const dom = new JSDOM(fs.readFileSync(path.join(ROOT, "home.html"), "utf8"), {
     url: `http://localhost/?story=${st.id}`,
     runScripts: "dangerously",
     resources: new Files(),

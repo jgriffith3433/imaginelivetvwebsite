@@ -8,7 +8,7 @@ description: Add a new story to Imagine Live TV, or add or change a story's bran
 The site hosts several choose-your-path stories behind a landing page. `story/stories.json` lists them (the
 landing page's cards), each story's scenes are in `story/<id>.json`, and `story/README.md` is the story doc (read its
 canon, rules and "Waiting for J" first; a new story has its own `story/<id>.md`). `npm run story` builds every story
-from the data. Never hand-edit `js/story-data.js`, the landing cards in `index.html`, the `/<id>/` link pages, the
+from the data. Never hand-edit `js/story-data.js`, the landing cards in `home.html`, the `/<id>/` link pages, the
 branch pages, `hawkes.assets.json` or `scene.mp4` files.
 
 ## 0. A new story (no GPU, no code)

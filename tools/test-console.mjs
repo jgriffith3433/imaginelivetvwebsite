@@ -17,7 +17,7 @@ let failed = 0;
 function build(name, change) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'iltv-console-'));
   for (const d of ['tools', 'js', 'story']) fs.cpSync(path.join(ROOT, d), path.join(dir, d), { recursive: true });
-  fs.copyFileSync(path.join(ROOT, 'index.html'), path.join(dir, 'index.html'));
+  fs.copyFileSync(path.join(ROOT, 'home.html'), path.join(dir, 'home.html'));
   fs.symlinkSync(path.join(ROOT, 'assets'), path.join(dir, 'assets'));
   const story = structuredClone(demo);
   change(story);

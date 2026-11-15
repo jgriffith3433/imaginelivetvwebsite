@@ -36,7 +36,7 @@ async function open(sceneId, history, { narrSecs = 0.8, patch } = {}) {
   const vc = new VirtualConsole();
   vc.on("jsdomError", (e) => { if (!/Not implemented/.test(String(e.message || e))) errors.push(String(e.message || e).slice(0, 160)); });
   const clip = { t: 0, paused: true, ended: false, duration: 30 };
-  const dom = new JSDOM(fs.readFileSync(path.join(ROOT, "index.html"), "utf8"), {
+  const dom = new JSDOM(fs.readFileSync(path.join(ROOT, "home.html"), "utf8"), {
     url: "http://localhost/?story=trust-fall",
     runScripts: "dangerously",
     resources: new Files(),

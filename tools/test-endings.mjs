@@ -21,7 +21,7 @@ try {
   process.exit(0);
 }
 const GAP = 0.35;
-const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const html = fs.readFileSync(path.join(ROOT, 'home.html'), 'utf8');
 const start = html.indexOf('<section class="console"');
 const section = html.slice(start, html.indexOf('</section>', start) + 10);
 const rulesSrc = fs.readFileSync(path.join(ROOT, 'js/console-rules.js'), 'utf8');
