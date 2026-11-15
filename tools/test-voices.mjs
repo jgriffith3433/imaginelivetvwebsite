@@ -159,7 +159,11 @@ function ordered(name, w, want) {
 // 2. A still: its narration is spoken first, ARGUS's recording only when it has ended.
 {
   const name = "the-promise (promise): still narration, then ARGUS";
-  const { w, errors, close } = await open("promise", ["start"], { narrSecs: 0.8 });
+  const { w, errors, close } = await open("promise", ["start"], {
+    narrSecs: 0.8,
+    // the-promise now has its clip, so this still case sets it back to a still (what a scene without a cut is)
+    patch: (st) => { const s = st.scenes.promise; delete s.video; delete s.poster; delete s.small; delete s.live; s.still = "/assets/images/trust-fall.jpg"; s.narration = "/trust-fall/the-promise/media/narration.mp3"; s.score = "/assets/story/trust-fall/music/rescue.mp3"; }
+  });
   if (!(await waitFor(() => spans(w).some((s) => s.who === "argus" && s.b != null), 12000))) fail(`${name}: ARGUS never finished speaking (voices: ${spans(w).map((s) => s.who).join(", ") || "none"})`);
   else ordered(name, w, "narrator > argus");
   if (errors.length) fail(`${name}: page errors ${errors.join(" | ")}`);
