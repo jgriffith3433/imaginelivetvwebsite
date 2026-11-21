@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>The Mistake · How an A.I. works, part 6 of 9</title>
-<meta name="description" content="The Mistake: how a machine finds out it was wrong · hide the next piece, guess, then look · the mistake is how surprised it was. Part 6 of nine on how a large language model works, drawn from real numbers and explained simply by an A.I. narrator, with captions. Flip the page for its opposite: the nudge.">
+<title>The Crowd · The rules of physics, level 6 of 9</title>
+<meta name="description" content="The Crowd: what huge numbers of pieces do together · left alone, they spread out and mix · not a law for each piece: just overwhelming odds. Level 6 of nine on the rules of physics, from the quark to the universe, drawn from measured numbers and explained simply by an A.I. narrator, with captions. Flip the page for its reverse: order that pays.">
 <meta name="theme-color" content="#03050b">
-<meta property="og:title" content="The Mistake · How an A.I. works, part 6 of 9">
-<meta property="og:description" content="The Mistake: how a machine finds out it was wrong · hide the next piece, guess, then look · the mistake is how surprised it was. Part 6 of nine on how a large language model works, drawn from real numbers and explained simply by an A.I. narrator, with captions. Flip the page for its opposite: the nudge.">
+<meta property="og:title" content="The Crowd · The rules of physics, level 6 of 9">
+<meta property="og:description" content="The Crowd: what huge numbers of pieces do together · left alone, they spread out and mix · not a law for each piece: just overwhelming odds. Level 6 of nine on the rules of physics, from the quark to the universe, drawn from measured numbers and explained simply by an A.I. narrator, with captions. Flip the page for its reverse: order that pays.">
 <meta name="color-scheme" content="dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,7 +82,7 @@ body.flip .nav{color:rgba(40,28,16,.75);text-shadow:none;font-family:Georgia,ser
 body.flip .nav i{background:rgba(255,252,244,.82);color:#17110a;box-shadow:0 0 0 1.5px rgba(70,45,20,.6)}
 body.flip .nav:hover i,body.flip .nav:focus-visible i{background:#17110a;color:#f1eadc;box-shadow:0 0 0 2px #7a3d0e}
 body.flip .nav b{color:#7a3d0e}
-@media (max-width:760px){.nav{top:auto;bottom:calc(max(12px,env(safe-area-inset-bottom)) - 4px);transform:none;padding:4px 2px}.nav.l{left:max(4px,env(safe-area-inset-left))}.nav.r{right:max(4px,env(safe-area-inset-right))}#hud,#hud2{padding-top:calc(max(14px,env(safe-area-inset-top)) + 42px)}.sub,.bsub{font-size:11px;line-height:1.4}#ruler a:not(.me) span{display:none}#ruler a:not(.me) b{font-size:9px}#ruler .cap{display:none}#cc{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 70px)}.nav span{display:none}.nav i{width:40px;height:40px;font-size:23px}#flip{font-size:10px;padding:.8em .9em}}
+@media (max-width:760px){.nav{top:auto;bottom:calc(max(12px,env(safe-area-inset-bottom)) - 4px);transform:none;padding:4px 2px}.nav.l{left:max(4px,env(safe-area-inset-left))}.nav.r{right:max(4px,env(safe-area-inset-right))}#hud,#hud2{padding-top:calc(max(14px,env(safe-area-inset-top)) + 84px)}.sub,.bsub{font-size:11px;line-height:1.4}#ruler a:not(.me) span{display:none}#ruler a:not(.me) b{font-size:9px}#ruler .cap{display:none}#cc{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 70px)}.nav span{display:none}.nav i{width:40px;height:40px;font-size:23px}#flip{font-size:10px;padding:.8em .9em}}
 @media (prefers-reduced-motion:reduce){#snd,.bname{animation:none}}
 /* ---- talking to the page. Front: a glass panel on the right. Back: paper, on the left, the bubbles swapped. */
 #askb{position:fixed;right:max(14px,env(safe-area-inset-right));top:calc(max(14px,env(safe-area-inset-top)) + 44px);z-index:9;border:0;cursor:pointer;font:600 11px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:#03050b;background:linear-gradient(180deg,#d7e9ff,#8fc2ff);padding:.9em 1.15em;border-radius:999px;box-shadow:0 0 22px rgba(143,194,255,.5),0 6px 16px rgba(0,0,0,.5);transition:transform .2s}
@@ -154,11 +154,11 @@ body.flip #askm{box-shadow:0 0 0 1px rgba(70,45,20,.45)}
 <script>
 (function () {
 'use strict';
-// One of nine pages on how a large language model works, from one piece of a word up to the data center. The front
-// draws one part from real numbers (most of them computed with GPT-2 small, a small open model from 2019) while an AI
-// voice explains it; the back of the page (Flip) is its opposite, told by the other narrator. Each picture is a film
-// timed to its narrator. Captions are cut from the voices' own timing. The ruler and the side arrows link the nine sites.
-var D = {"i":5,"key":"mistake","title":"The Mistake · How an A.I. works, part 6 of 9","chat":"https://api.hawkesgen.ai/v1/public/scale-chat","scales":[{"exp":1,"name":"The Token","short":"token","size":"1 piece","sub":"where every sentence starts · a word, or a piece of a word, swapped for a number · the small model in this page knows 50,257 pieces","domain":"doseofdestruction.com"},{"exp":2,"name":"The Neuron","short":"neuron","size":"1 light","sub":"the smallest working part · it multiplies, adds up, and glows or stays dark · this small model has 36,864 of them","domain":"hawkesgames.com"},{"exp":3,"name":"Attention","short":"attention","size":"144 lookers","sub":"how the pieces share what they know · each piece looks back at the ones before it · real looking, from the small model in this page","domain":"hawkesbiomedical.com"},{"exp":4,"name":"The Layers","short":"layers","size":"12 floors","sub":"one piece's trip up through the machine · every layer reads a running note and adds to it · 12 layers here, many more in big models","domain":"icanbe.ai"},{"exp":5,"name":"The Guess","short":"guess","size":"50,257 scores","sub":"what comes out at the top · not one word, but a score for every piece it knows · real scores from the small model in this page","domain":"yoobalandgame.com"},{"exp":6,"name":"The Mistake","short":"mistake","size":"1 surprise","sub":"how a machine finds out it was wrong · hide the next piece, guess, then look · the mistake is how surprised it was","domain":"imaginelivetv.com"},{"exp":7,"name":"Reading","short":"reading","size":"15 trillion pieces","sub":"the first school · guess the next piece of things people wrote, over and over · a tiny model learning from one book, for real","domain":"theplacedepartment.com"},{"exp":8,"name":"What It Knows","short":"what it knows","size":"frozen numbers","sub":"everything it learned, baked in · not one number changes while you talk to it · and it can't always tell knowing from guessing","domain":"phorigins.com"},{"exp":9,"name":"The Data Center","short":"data center","size":"16,000 chips","sub":"where a model gets made · buildings full of chips, all doing the same small sum · numbers from a maker who published them, with the year","domain":"hawkesgen.ai"}],"data":{"mistake":{"text":"Twinkle, twinkle, little star, how I wonder what you are.","per":[{"piece":"inkle","p":0.0001,"loss":9.658,"guess":".","pg":0.0421},{"piece":",","p":0.0614,"loss":2.79,"guess":" in","pg":0.1997},{"piece":" tw","p":0.0005,"loss":7.535,"guess":" the","pg":0.079},{"piece":"inkle","p":0.8672,"loss":0.143,"guess":"inkle","pg":0.8672},{"piece":",","p":0.4651,"loss":0.765,"guess":",","pg":0.4651},{"piece":" little","p":0.0024,"loss":6.016,"guess":" tw","pg":0.6},{"piece":" star","p":0.0043,"loss":5.442,"guess":" tw","pg":0.352},{"piece":",","p":0.2881,"loss":1.244,"guess":",","pg":0.2881},{"piece":" how","p":0.0011,"loss":6.784,"guess":" little","pg":0.1727},{"piece":" I","p":0.016,"loss":4.134,"guess":"ling","pg":0.0753},{"piece":" wonder","p":0.002,"loss":6.209,"guess":" love","pg":0.1612},{"piece":" what","p":0.1518,"loss":1.885,"guess":" if","pg":0.1774},{"piece":" you","p":0.0946,"loss":2.358,"guess":" it","pg":0.1171},{"piece":" are","p":0.0417,"loss":3.178,"guess":"'re","pg":0.1154},{"piece":".","p":0.0747,"loss":2.595,"guess":" doing","pg":0.1256}],"mean_loss":4.049,"at_star":{"before":"Twinkle, twinkle, little","top":[[" tw",0.352],[",",0.0124],[" red",0.0116],[" finger",0.0103],[" pink",0.0095],[" girl",0.0094]],"p":0.004332547541707754,"rank":21},"pieces":["Tw","inkle",","," tw","inkle",","," little"," star",","," how"," I"," wonder"," what"," you"," are","."]},"nudge":{"text":"Twinkle, twinkle, little star, how I wonder what you are.","steps":[{"loss":4.0491,"per":[0.0001,0.0614,0.0005,0.8672,0.4651,0.0024,0.0043,0.2881,0.0011,0.016,0.002,0.1518,0.0946,0.0417,0.0747]},{"loss":3.2798,"per":[0.0001,0.1612,0.0007,0.9065,0.6389,0.004,0.0082,0.4742,0.0021,0.0455,0.0195,0.2787,0.245,0.2331,0.1949]},{"loss":2.7735,"per":[0.0001,0.2423,0.0008,0.9334,0.6902,0.0059,0.0152,0.5348,0.0036,0.0934,0.1525,0.3983,0.3867,0.5523,0.3279]},{"loss":2.46,"per":[0.0001,0.3017,0.0009,0.9522,0.7066,0.0082,0.0278,0.5513,0.0061,0.1509,0.5316,0.4976,0.4561,0.6556,0.4286]},{"loss":2.265,"per":[0.0002,0.3649,0.0011,0.9655,0.7246,0.0107,0.049,0.5732,0.0097,0.2024,0.7236,0.551,0.4888,0.6785,0.4764]},{"loss":2.1128,"per":[0.0002,0.4202,0.0014,0.975,0.7352,0.0133,0.0831,0.5869,0.0149,0.2365,0.7756,0.5764,0.5124,0.7096,0.5128]}],"layer_grad":[6.924,3.968,6.091,4.082,3.64,3.175,2.955,2.631,2.614,2.278,2.706,3.45],"examples":[[-0.024567879736423492,-0.0002239475870737806],[-0.09533815085887909,0.0002104017185047269],[-0.06218988820910454,0.00007680788985453546],[0.23821516335010529,-0.000009056216185854282],[-0.2096073180437088,-0.0005629280931316316],[0.0074443332850933075,0.0004300821165088564]],"changed":85178127,"total":124439808,"max_move":0.017178505659103394,"mean_move":5.162491389592411e-7,"lr":0.0003,"other_before":0.0764,"other_after":0.072}},"sides":[{"cues":[[0,0.48,"Hi."],[0.48,2.6,"I'm the A.I. in this page."],[2.6,4.92,"How does a machine like me get any good?"],[4.92,6.69,"It starts by being wrong."],[6.69,7.7,"Here's a game."],[7.7,9.46,"Take a line that somebody wrote."],[9.46,11.61,"Twinkle, twinkle, little star."],[11.61,14.4,"Cover up the next piece, and make the machine guess."],[14.4,15.86,"Then uncover it."],[15.86,17.73,"Now comes the important part."],[17.73,19.86,"Nobody says right, or wrong."],[19.86,23.3,"We look at how big a slice the machine gave to the real answer."],[23.3,26.14,"A big slice means it wasn't surprised."],[26.14,26.88,"Good."],[26.88,29.58,"A tiny slice means it was very surprised."],[29.58,31.05,"That's a big mistake."],[31.05,32.81,"Look at the real numbers."],[32.81,35.06,"After twinkle, twinkle, little,"],[35.06,38.77,"this small model gave star less than one chance in a hundred."],[38.77,40.11,"Big surprise."],[40.11,42.07,"But in the middle of the word twinkle,"],[42.07,45.24,"it guessed the ending nearly nine times in ten."],[45.24,46.82,"No surprise at all."],[46.82,50.3,"Every piece of every line gets a score like this."],[50.3,54.2,"And one number at the end says how wrong it was, all together."],[54.2,56.23,"It's called the loss."],[56.23,59.69,"The whole point of training is to make it smaller."]],"dur":59.69},{"name":"the nudge","size":"124 million dials","sub":"what happens after a mistake · the numbers inside each turn a tiny bit · real nudges, done to the model in this page","cues":[[0,1.45,"You turned the page."],[1.45,3.18,"I'm the other A.I."],[3.18,4.78,"The front was one mistake."],[4.78,5.85,"One number."],[5.85,7.79,"Here is what it sets off."],[7.79,11.76,"Think of every number inside the machine as a little dial."],[11.76,15.65,"This small model has one hundred and twenty four million of them."],[15.65,19.74,"After a mistake, the machine works out, for every single dial,"],[19.74,23.86,"which way to turn it, so the surprise would have been a little smaller."],[23.86,25.74,"It doesn't try each one."],[25.74,29.18,"It works backward from the mistake, with arithmetic."],[29.18,30.96,"Then the dials turn."],[30.96,34.32,"More than eighty five million of them, in one go."],[34.32,37.47,"Each one, a tiny, tiny bit."],[37.47,40.65,"I really did this, to the model in this page."],[40.65,44.14,"Before, star had less than one chance in a hundred."],[44.14,47.22,"Five nudges later, eight in a hundred."],[47.22,49.63,"Nobody told it the answer was star."],[49.63,51.37,"The dials just moved."],[51.37,56.809999999999995,"Real training does this again and again, across trillions of guesses."]],"dur":56.81}]};
+// One of nine pages on the rules of physics, from the quark up to the universe. The front shows the rule in charge at
+// one level while an AI voice explains it; the back of the page (Flip) is the reverse of that rule, told by the other
+// narrator. Each picture is a film timed to its narrator and works its physics out here in the page from measured
+// constants. Captions are cut from the voices' own timing. The ruler and the side arrows link the nine sites.
+var D = {"i":5,"key":"crowd","title":"The Crowd · The rules of physics, level 6 of 9","chat":"https://api.hawkesgen.ai/v1/public/scale-chat","scales":[{"exp":1,"name":"The Quark","short":"quark","size":"never alone","sub":"the smallest pieces we know · three of them make a proton · the rule down here: you can never pull one out","domain":"doseofdestruction.com"},{"exp":2,"name":"The Nucleus","short":"nucleus","size":"held tight","sub":"the heart of an atom · protons push each other away, and a stronger glue holds them · squeeze small ones together and you get a star","domain":"hawkesgames.com"},{"exp":3,"name":"The Quantum","short":"quantum","size":"a wave of maybes","sub":"the rulebook for small things · something tiny travels as a spread-out wave of possibilities · a real experiment, one electron at a time","domain":"hawkesbiomedical.com"},{"exp":4,"name":"The Atom","short":"atom","size":"energy steps","sub":"the brick everything is made of · its electron can only have certain amounts of energy · drop a step, and out comes one exact color of light","domain":"icanbe.ai"},{"exp":5,"name":"The Bond","short":"bond","size":"holding on","sub":"atoms joining up to make stuff · strong joins inside a water molecule, weak ones between them · the weak ones are why ice floats","domain":"yoobalandgame.com"},{"exp":6,"name":"The Crowd","short":"crowd","size":"spreading out","sub":"what huge numbers of pieces do together · left alone, they spread out and mix · not a law for each piece: just overwhelming odds","domain":"imaginelivetv.com"},{"exp":7,"name":"Motion","short":"motion","size":"keeps going","sub":"the rule for things our size · left alone, a moving thing keeps moving, forever · a push doesn't keep it going: a push changes it","domain":"theplacedepartment.com"},{"exp":8,"name":"Light","short":"light","size":"one speed","sub":"a ripple in the electric and magnetic field · always the same speed in empty space: 299,792,458 meters a second · nothing with any weight can catch it","domain":"phorigins.com"},{"exp":9,"name":"Gravity","short":"gravity","size":"falling together","sub":"the rule for the heaviest things · stuff bends the space and time around it, and everything follows the bend · clocks run slower lower down","domain":"hawkesgen.ai"}],"data":{},"sides":[{"cues":[[0,2.15,"Now zoom out to a crowd."],[2.15,5.45,"Billions and billions of pieces, all jiggling."],[5.45,9.23,"And something new appears, that no single piece has."],[9.23,11.33,"Watch a drop of ink in water."],[11.33,14.85,"Each little piece just wanders about, bumping around."],[14.85,16.64,"None of them is trying to spread out."],[16.64,18.41,"But the whole drop does."],[18.41,20.6,"And it never gathers itself back up."],[20.6,21.5,"Why not?"],[21.5,22.8,"Nothing forbids it."],[22.8,24.73,"Each piece could wander back."],[24.73,25.91,"Here's the reason."],[25.91,27.33,"Count the ways."],[27.33,30.98,"There is only one way for every piece to be in the left half."],[30.98,34.65,"But there are a huge number of ways for them to be about half and half."],[34.65,37.87,"So half and half is what you nearly always get."],[37.87,43.19,"With just one hundred pieces, the chance of finding them all on one side is one in a million,"],[43.19,46.78,"million, million, million, million."],[46.78,49.77,"And a glass of water has far more pieces than that."],[49.77,51.92,"So the rule here isn't really a rule."],[51.92,55.04,"It's just very, very good odds."]],"dur":55.04},{"name":"order that pays","size":"tidy here","sub":"things can get tidier in one place · only by making somewhere else messier, and by more · that is how ice, and life, are allowed","cues":[[0,3.31,"On the front, things spread out, and never came back."],[3.31,4.34,"But wait."],[4.34,6.79,"Water freezes into neat rings."],[6.79,8.68,"Seeds grow into trees."],[8.68,10.3,"You tidy your room."],[10.3,12.05,"Things do get neater."],[12.05,14.63,"So here is the opposite of spreading out."],[14.63,15.28,"Order."],[15.28,16.96,"And how it's allowed."],[16.96,18.69,"Watch water freezing."],[18.69,21.97,"As the pieces lock into place, they give off heat."],[21.97,26.61,"That heat goes into the air around them, and makes the air jiggle more."],[26.61,28.44,"The inside got tidier."],[28.44,30.43,"The outside got messier."],[30.43,31.82,"And if you add it up,"],[31.82,35.91,"the outside always gets messier by more than the inside got neat."],[35.91,39.18,"That's the deal, as far as anyone has ever seen."],[39.18,43.14,"You can have order in one spot, if you pay for it somewhere else."],[43.14,46.27,"A freezer pays with the warm air behind it."],[46.27,48.24,"You pay with the food you eat."],[48.24,52.489999999999995,"And nearly all of it, in the end, is paid for by the Sun."]],"dur":52.49}]};
 var TAU = Math.PI * 2;
 function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 function gauss(r) { var u = 1 - r(), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(TAU * v); }
@@ -245,7 +245,7 @@ var K = (function () {
   function clear(x, W, H, col) { x.globalCompositeOperation = 'source-over'; x.globalAlpha = 1; x.fillStyle = col || C.bg; x.fillRect(0, 0, W, H); }
   // the part of the screen a picture may use: under the title, above the captions, between the side arrows
   function area(W, H) {
-    var wide = W > 760, top = wide ? Math.max(178, H * 0.235) : Math.max(206, H * 0.25), bot = H - (wide ? 192 : 196), l = wide ? 78 : 14, r = W - (wide ? 78 : 14);
+    var wide = W > 760, top = wide ? Math.max(178, H * 0.235) : Math.max(240, H * 0.295), bot = H - (wide ? 192 : 196), l = wide ? 78 : 14, r = W - (wide ? 78 : 14);
     return { x: l, y: top, w: r - l, h: Math.max(120, bot - top), cx: (l + r) / 2, cy: (top + bot) / 2, r: r, b: bot, wide: wide, u: Math.max(0.62, Math.min(1.25, Math.min((r - l) / 900, (bot - top) / 430))) };
   }
   function credit(x, A, s, al) { // where the numbers come from; on a narrow screen it takes two lines
@@ -263,133 +263,139 @@ var K = (function () {
     if (al != null && al <= 0.003) return; x.save(); x.globalAlpha = al == null ? 1 : al; x.lineWidth = Math.max(1.6, r * 0.3); x.lineCap = 'round'; x.strokeStyle = ok ? C.good : C.hot; x.beginPath();
     if (ok) { x.moveTo(px - r * 0.6, py); x.lineTo(px - r * 0.15, py + r * 0.5); x.lineTo(px + r * 0.7, py - r * 0.55); } else { x.moveTo(px - r * 0.55, py - r * 0.55); x.lineTo(px + r * 0.55, py + r * 0.55); x.moveTo(px + r * 0.55, py - r * 0.55); x.lineTo(px - r * 0.55, py + r * 0.55); } x.stroke(); x.restore();
   }
-  return { C: C, GROUP: GROUP, at: at, end: end, clock: clock, cl: cl, ramp: ramp, span: span, bump: bump, lerp: lerp, text: text, width: width, rr: rr, box: box, chip: chip, chipW: chipW, show: show, flow: flow, bar: bar, line: line, arc: arc, disc: disc, ring: ring, glow: glow, clear: clear, area: area, credit: credit, pct: pct, commas: commas, dial: dial, tick: tick };
+  // the screen color nearest to light of one wavelength (in nanometres); an approximation: a screen cannot show pure spectral colors
+  function nm(w, al) {
+    var r = 0, g = 0, b = 0, f = 1;
+    if (w < 380 || w > 780) { r = g = b = 0; } else if (w < 440) { r = (440 - w) / 60; b = 1; } else if (w < 490) { g = (w - 440) / 50; b = 1; } else if (w < 510) { g = 1; b = (510 - w) / 20; } else if (w < 580) { r = (w - 510) / 70; g = 1; } else if (w < 645) { r = 1; g = (645 - w) / 65; } else { r = 1; }
+    if (w < 420) f = 0.35 + 0.65 * (w - 380) / 40; else if (w > 700) f = 0.35 + 0.65 * (780 - w) / 80;
+    f = Math.max(0, f); return 'rgba(' + Math.round(255 * Math.pow(r * f, 0.8)) + ',' + Math.round(255 * Math.pow(g * f, 0.8)) + ',' + Math.round(255 * Math.pow(b * f, 0.8)) + ',' + (al == null ? 1 : al) + ')';
+  }
+  // a whole rainbow strip from 380 to 750 nanometres, drawn once and reused
+  var bowC = null;
+  function rainbow(x, px, py, w, h, al) { if (!bowC) { bowC = document.createElement('canvas'); bowC.width = 740; bowC.height = 1; var g = bowC.getContext('2d'); for (var i = 0; i < 740; i++) { g.fillStyle = nm(380 + i / 2); g.fillRect(i, 0, 1, 1); } } x.save(); x.globalAlpha = al == null ? 1 : al; x.drawImage(bowC, px, py, w, h); x.restore(); }
+  // The back of a page is shown as ink on paper (the canvas is inverted and its hues turned half way round). A true
+  // color has to be drawn as the color that comes back as itself after that: nmP and rainbowP do so.
+  function paper(r, g, b) { var R = -0.574 * r + 1.43 * g + 0.144 * b, G = 0.426 * r + 0.43 * g + 0.144 * b, B = 0.426 * r + 1.43 * g - 0.856 * b, c = function (v) { return Math.round(255 * (1 - Math.max(0, Math.min(1, v)))); }; return [c(R), c(G), c(B)]; }
+  function nmP(w, al) { var m = nm(w).slice(5).split(','), p = paper(m[0] / 255, m[1] / 255, m[2] / 255); return 'rgba(' + p[0] + ',' + p[1] + ',' + p[2] + ',' + (al == null ? 1 : al) + ')'; }
+  var bowP = null;
+  function rainbowP(x, px, py, w, h, al) { if (!bowP) { bowP = document.createElement('canvas'); bowP.width = 740; bowP.height = 1; var g = bowP.getContext('2d'); for (var i = 0; i < 740; i++) { g.fillStyle = nmP(380 + i / 2); g.fillRect(i, 0, 1, 1); } } x.save(); x.globalAlpha = al == null ? 1 : al; x.drawImage(bowP, px, py, w, h); x.restore(); }
+  function nmX(w, px, wd) { return px + (w - 380) / 370 * wd; }
+  return { C: C, GROUP: GROUP, nm: nm, rainbow: rainbow, nmX: nmX, nmP: nmP, rainbowP: rainbowP, at: at, end: end, clock: clock, cl: cl, ramp: ramp, span: span, bump: bump, lerp: lerp, text: text, width: width, rr: rr, box: box, chip: chip, chipW: chipW, show: show, flow: flow, bar: bar, line: line, arc: arc, disc: disc, ring: ring, glow: glow, clear: clear, area: area, credit: credit, pct: pct, commas: commas, dial: dial, tick: tick };
 })();
 
 
 // ---------------------------------------------------------------- the front
-// THE MISTAKE (the loss). The line "Twinkle, twinkle, little star, how I wonder what you are." as the 16 pieces GPT-2
-// small (OpenAI, 2019) cuts it into. The piece "star" is covered; the model's real guesses for that spot are listed
-// ("tw" 35%, then a comma, "red", "finger", "pink", "girl" at about 1% each); the real answer, "star", was given 0.4%
-// (21st place). A meter shows the rule: a big share for the real answer means a small surprise, a tiny share means a
-// big surprise (the surprise is minus the logarithm of the share). Real values: "star" 0.4%, surprise 5.4; the
-// second "inkle" 87%, surprise 0.1. Then every piece of the line gets its real surprise as a bar, and their average,
-// 4.05, is the loss for this line.
+// THE CROWD (why things spread out). 300 specks of ink start in a small drop in a box of water and each takes small
+// random steps, worked out here in the page: nothing tells them to spread, and yet the drop spreads and does not
+// gather itself again. A tally shows how many are in the left half, and how many different ways there are to have
+// that many on the left (the number of ways to choose them). Then the counting is shown with four specks: one way to
+// have all four on the left, six ways to have two and two. With 100 specks there is still one way to be all on the
+// left, against about 10 to the power 29 ways to be half and half, so the chance of finding all 100 on one named side
+// is 1 in 2 to the power 100: 1 in 1,267,650,600,228,229,401,496,703,205,376. A glass of water holds about 8 million
+// billion billion molecules (250 grams; our arithmetic). The spreading is not a law each speck obeys: it is odds.
 var SCENE = (function () {
-  var d = D.data.mistake, P = d.pieces, PER = d.per, AT = d.at_star, t = {}, C = K.C, STAR = 7, INK = 4;
+  var t = {}, C = K.C, N = 300, P = [], rngS = null, simT = -1, TWO100 = '1,267,650,600,228,229,401,496,703,205,376';
+  function reset() { rngS = H3.rng(55); P = []; for (var i = 0; i < N; i++) { var a = rngS() * 6.283, d = Math.sqrt(rngS()) * 0.07; P.push([0.2 + Math.cos(a) * d, 0.5 + Math.sin(a) * d * 1.6]); } simT = 0; }
+  function lg(n) { var s = 0; for (var i = 2; i <= n; i++) s += Math.log10(i); return s; }
   function init() {
-    t.good = K.at(0, 'get any good'); t.wrong = K.at(0, 'starts by being wrong'); t.game = K.at(0, "Here's a game"); t.line = K.at(0, 'a line that somebody wrote'); t.tw = K.at(0, 'Twinkle, twinkle, little star'); t.cover = K.at(0, 'Cover up the next piece');
-    t.uncover = K.at(0, 'Then uncover it'); t.imp = K.at(0, 'the important part'); t.nobody = K.at(0, 'Nobody says right'); t.slice = K.at(0, 'how big a slice'); t.big = K.at(0, "wasn't surprised"); t.goodw = K.at(0, 'Good.');
-    t.tiny = K.at(0, 'very surprised'); t.bigm = K.at(0, 'a big mistake'); t.real = K.at(0, 'Look at the real numbers'); t.after = K.at(0, 'After twinkle, twinkle, little'); t.star = K.at(0, 'gave star less than one'); t.bs = K.at(0, 'Big surprise');
-    t.mid = K.at(0, 'in the middle of the word'); t.nine = K.at(0, 'nine times in ten'); t.none = K.at(0, 'No surprise at all'); t.every = K.at(0, 'Every piece of every line'); t.one = K.at(0, 'one number at the end'); t.loss = K.at(0, 'called the loss'); t.smaller = K.at(0, 'make it smaller');
+    t.crowd = K.at(0, 'zoom out to a crowd'); t.bill = K.at(0, 'Billions and billions'); t.new = K.at(0, 'something new appears'); t.ink = K.at(0, 'a drop of ink'); t.wander = K.at(0, 'just wanders about'); t.none = K.at(0, 'None of them is trying');
+    t.whole = K.at(0, 'the whole drop does'); t.never = K.at(0, 'never gathers itself'); t.why = K.at(0, 'Why not'); t.forbid = K.at(0, 'Nothing forbids it'); t.back = K.at(0, 'could wander back'); t.reason = K.at(0, "Here's the reason");
+    t.count = K.at(0, 'Count the ways'); t.one = K.at(0, 'only one way'); t.huge = K.at(0, 'a huge number of ways'); t.half = K.at(0, 'what you nearly always get'); t.hundred = K.at(0, 'just one hundred pieces'); t.mill = K.at(0, 'million, million, million');
+    t.glass = K.at(0, 'a glass of water'); t.rule = K.at(0, "isn't really a rule"); t.odds = K.at(0, 'very good odds'); reset();
   }
-  function meter(x, cx, cy, w, share, sur, al, fs) { // a share on the left, the surprise it means on the right
-    if (al <= 0.01) return; var bw = w * 0.42;
-    K.text(x, 'its share for the real answer', cx - w / 2, cy - fs * 1.5, fs * 0.8, { mono: true, c: C.dim, w: 400, al: al }); K.bar(x, cx - w / 2, cy - 7, bw, 14, Math.max(0.012, share), C.acc, { al: al }); K.text(x, K.pct(share), cx - w / 2, cy + fs * 1.4, fs * 1.1, { mono: true, w: 700, c: C.acc, al: al });
-    K.text(x, 'so its surprise', cx + w / 2 - bw, cy - fs * 1.5, fs * 0.8, { mono: true, c: C.dim, w: 400, al: al }); K.bar(x, cx + w / 2 - bw, cy - 7, bw, 14, sur / 9.7, sur > 3 ? C.hot : C.good, { al: al }); K.text(x, sur.toFixed(1) + (sur > 3 ? '  big' : '  small'), cx + w / 2 - bw, cy + fs * 1.4, fs * 1.1, { mono: true, w: 700, c: sur > 3 ? C.hot : C.good, al: al });
-    K.text(x, '→', cx, cy, fs * 1.6, { a: 'center', c: C.dim, al: al });
+  function sim(to) { // random steps, 30 a second, bouncing off the walls
+    if (to < simT) reset(); var steps = Math.min(4000, Math.floor((to - simT) * 30)); for (var s = 0; s < steps; s++) for (var i = 0; i < N; i++) { var p = P[i]; p[0] += H3.gauss(rngS) * 0.012; p[1] += H3.gauss(rngS) * 0.02; if (p[0] < 0) p[0] = -p[0]; if (p[0] > 1) p[0] = 2 - p[0]; if (p[1] < 0) p[1] = -p[1]; if (p[1] > 1) p[1] = 2 - p[1]; } simT += steps / 30;
   }
   function draw(x, W, H, tt, dt, nt) {
     var n = K.clock(0, nt), A = K.area(W, H), u = A.u, i, fs = Math.max(11.5, 16 * u);
     K.clear(x, W, H);
-    var intro = K.span(n, t.good, t.game, 0.5); if (intro > 0.01) K.text(x, n < t.wrong ? 'how does it get any good?' : 'it starts by being wrong', A.cx, A.cy, fs * 1.8, { a: 'center', w: 600, c: n < t.wrong ? C.ink : C.hot, al: intro });
-    var size = (A.wide ? 23 : 16) * u, L = K.flow(x, P, size, A.cx, 0, A.w * 0.98, size * 0.24, { lh: A.wide ? 2.5 : 4.4 }), top = A.y + size * 0.5, every = K.ramp(n, t.every, 0.6), barMax = L.rows > 1 ? size * 1.9 : Math.min(A.h * 0.3, 120 * u);
-    var covered = K.span(n, t.cover, t.uncover, 0.3), revealRest = K.ramp(n, t.every - 0.4, 0.6), la = K.ramp(n, t.line, 0.5);
-    for (i = 0; i < P.length; i++) { var p = L[i], shown = i <= STAR ? K.ramp(n, t.tw + i * 0.22, 0.3) : revealRest; if (shown <= 0.01) continue;
-      var hot = (i === STAR ? Math.max(K.span(n, t.uncover, t.big, 0.3), K.span(n, t.after, t.mid, 0.3)) : 0) + (i === INK ? K.span(n, t.mid, t.every, 0.3) : 0);
-      K.chip(x, P[i], p.x, top + p.y, size, { wd: p.w, al: la * shown, bd: hot > 0.02 ? C.warm : null, bg: hot > 0.02 ? 'rgba(255,196,107,.24)' : null, lw: hot > 0.02 ? 2 : 1.2 });
-      if (i === STAR && covered > 0.01) { K.box(x, p.x - 2, top + p.y - size * 0.95, p.w + 4, size * 1.9, { fill: '#1b2a44', line: C.acc, r: size * 0.38, al: covered, lw: 2 }); K.text(x, '?', p.x + p.w / 2, top + p.y, size, { a: 'center', w: 700, c: C.acc, al: covered }); }
-      // each piece's real surprise, as a bar hanging under it
-      if (i > 0 && every > 0.01) { var e = PER[i - 1], g = K.ramp(n, t.every + i * 0.16, 0.5), bh = e.loss / 9.7 * barMax * g; K.box(x, p.x + p.w * 0.2, top + p.y + size * 1.0, p.w * 0.6, Math.max(2, bh), { fill: e.loss > 3 ? C.hot : C.good, r: 3, al: every * 0.9 }); if (L.rows === 1 && g > 0.9) K.text(x, e.loss.toFixed(1), p.x + p.w / 2, top + p.y + size * 1.0 + bh + fs * 0.7, fs * 0.72, { a: 'center', mono: true, c: C.dim, w: 400, al: every }); }
-    }
-    var base = top + L.h + (L.rows > 1 ? 0 : fs * 0.4), zh = A.b - base, zc = base + zh / 2;
-    // the machine's real guesses for the covered piece
-    var gl = K.span(n, t.cover + 0.6, t.slice + 3.2, 0.5);
-    if (gl > 0.01) { var gw = Math.min(A.w * 0.6, 420 * u), gx = A.cx - gw / 2, rh = Math.min(fs * 1.75, (zh - fs * 3) / 7.4);
-      K.text(x, 'the machine’s real guesses for the covered piece', A.cx, base + fs * 0.6, fs * 0.85, { a: 'center', mono: true, c: C.dim, w: 400, al: gl });
-      for (i = 0; i < 6; i++) { var q = AT.top[i], y = base + fs * 2.2 + i * rh, g2 = K.ramp(n, t.cover + 0.8 + i * 0.12, 0.4); K.text(x, K.show(q[0]).replace('·', ''), gx + fs * 4, y, fs, { a: 'right', w: 500, al: gl * g2 }); K.bar(x, gx + fs * 4.6, y - rh * 0.22, gw - fs * 8.6, rh * 0.44, q[1] / 0.36 * g2, C.acc, { al: gl }); K.text(x, K.pct(q[1]), gx + gw - fs * 3.6, y, fs * 0.85, { mono: true, c: C.acc, al: gl * g2 }); }
-      var sy = base + fs * 2.2 + 6.3 * rh, sa = gl * K.ramp(n, t.uncover + 0.3, 0.4), pick = K.span(n, t.slice, t.slice + 3.2, 0.3);
-      K.text(x, 'star', gx + fs * 4, sy, fs * 1.05, { a: 'right', w: 700, c: C.warm, al: sa }); K.bar(x, gx + fs * 4.6, sy - rh * 0.22, gw - fs * 8.6, rh * 0.44, AT.p / 0.36, C.warm, { al: sa }); K.text(x, K.pct(AT.p) + '  (place ' + AT.rank + ')', gx + gw - fs * 3.6, sy, fs * 0.85, { mono: true, w: 600, c: C.warm, al: sa });
-      if (pick > 0.01) K.ring(x, gx + fs * 4.6 + 6, sy, fs * 1.1, C.warm, 2, pick * (0.6 + 0.4 * Math.sin(tt * 5)));
-      var nb = K.span(n, t.nobody, t.slice, 0.3); if (nb > 0.01) { var ix = gx + gw + fs * 1.5; K.tick(x, ix, base + fs * 3, fs * 0.9, true, nb * 0.7); K.tick(x, ix + fs * 2.6, base + fs * 3, fs * 0.9, false, nb * 0.7); K.line(x, ix - fs, base + fs * 3, ix + fs * 3.6, base + fs * 3, C.ink, 2.5, nb * (A.wide ? 1 : 0)); } }
-    // the rule, then the two real examples
-    var rule = K.span(n, t.big, t.every, 0.5);
-    if (rule > 0.01) { var share = n < t.tiny ? 0.87 : n < t.real ? 0.004 : n < t.mid ? AT.p : PER[INK - 1].p, sur = -Math.log(share), cap = n < t.tiny ? 'a big slice for the real answer' : n < t.real ? 'a tiny slice for the real answer' : n < t.mid ? '“star”, after “Twinkle, twinkle, little”' : 'the end of “twinkle”, after “tw”';
-      K.text(x, cap, A.cx, zc - fs * 3.4, fs * 1.15, { a: 'center', w: 600, c: n < t.real ? C.ink : C.warm, al: rule }); meter(x, A.cx, zc, Math.min(A.w * 0.9, 620 * u), share, sur, rule, fs);
-      if (n >= t.real) K.text(x, 'real numbers', A.cx, zc + fs * 3.4, fs * 0.8, { a: 'center', mono: true, c: C.dim, w: 400, al: rule }); }
-    // one number for the whole line
-    var one = K.ramp(n, t.one, 0.6);
-    if (one > 0.01) { var ny = Math.min(A.b - fs * 3.6, (L.rows > 1 ? base + fs * 2.4 : base + barMax + fs * 2.4) + fs * 2.2), small = K.ramp(n, t.smaller, 0.8), bigf = Math.min(fs * 3.6, A.h * 0.16);
-      K.text(x, 'all the surprises, averaged', A.cx, ny - bigf * 0.95, fs * 0.9, { a: 'center', mono: true, c: C.dim, w: 400, al: one }); K.text(x, d.mean_loss.toFixed(2), A.cx, ny, bigf, { a: 'center', mono: true, w: 700, c: C.hot, al: one, glow: C.hot });
-      K.text(x, n >= t.loss ? 'the loss' : '', A.cx, ny + bigf * 0.85, fs * 1.3, { a: 'center', w: 700, c: C.ink, al: one * K.ramp(n, t.loss, 0.4) });
-      if (small > 0.01) { var ax = A.cx + bigf * 1.7; K.line(x, ax, ny - bigf * 0.4, ax, ny + bigf * 0.4, C.good, 3, small); K.line(x, ax, ny + bigf * 0.4, ax - 7, ny + bigf * 0.4 - 9, C.good, 3, small); K.line(x, ax, ny + bigf * 0.4, ax + 7, ny + bigf * 0.4 - 9, C.good, 3, small); K.text(x, 'training pushes it down', ax + 14, ny, fs * 0.9, { mono: true, c: C.good, al: small * (A.wide ? 1 : 0) }); } }
-    K.credit(x, A, 'real numbers from GPT-2 small (OpenAI, 2019) · surprise = −log of the share it gave the real next piece');
+    var cnt = K.ramp(n, t.count - 0.3, 0.8), bw = A.wide ? A.w * K.lerp(0.62, 0.4, cnt) : A.w * 0.94, bh = A.wide ? A.h - fs * 3.4 : A.h * K.lerp(0.5, 0.3, cnt), bx = A.wide ? A.x + A.w * 0.02 : A.cx - bw / 2, by = A.y + fs * 2.2, show = K.ramp(n, t.ink - 0.6, 0.8);
+    var intro = K.span(n, t.crowd, t.ink - 0.4, 0.5); if (intro > 0.01) K.text(x, n < t.new ? 'billions of pieces, all jiggling' : 'together they do something no single piece does', A.cx, A.cy, Math.min(fs * 1.5, A.w / 30), { a: 'center', w: 700, al: intro });
+    sim(Math.max(0, n - t.ink));
+    if (show > 0.01) { K.box(x, bx, by, bw, bh, { fill: 'rgba(143,194,255,.06)', line: 'rgba(143,194,255,.4)', r: 10, al: show }); x.save(); x.setLineDash([4, 6]); K.line(x, bx + bw / 2, by, bx + bw / 2, by + bh, C.dim, 1, show * K.ramp(n, t.never, 0.6)); x.restore();
+      var left = 0; for (i = 0; i < N; i++) { var p = P[i]; if (p[0] < 0.5) left++; K.disc(x, bx + 6 + p[0] * (bw - 12), by + 6 + p[1] * (bh - 12), 2.6 * u, i === 7 ? C.warm : '#7fb4ff', show * 0.9); }
+      var one = K.span(n, t.wander, t.whole, 0.4); if (one > 0.01) { var q = P[7]; K.ring(x, bx + 6 + q[0] * (bw - 12), by + 6 + q[1] * (bh - 12), 9 * u, C.warm, 1.5, one * show); K.text(x, 'one speck, just wandering', bx + 6 + q[0] * (bw - 12) + 12 * u, by + 6 + q[1] * (bh - 12) - 12 * u, fs * 0.78, { mono: true, c: C.warm, al: one * show }); }
+      K.text(x, n < t.never ? 'a drop of ink in water' : 'left half · right half', bx + bw / 2, by - fs * 0.8, fs * 0.9, { a: 'center', mono: true, c: C.dim, al: show });
+      var ta = K.ramp(n, t.never, 0.6) * show, ways = lg(N) - lg(left) - lg(N - left); K.text(x, left + ' on the left · ' + (N - left) + ' on the right', bx + 12, by + bh - fs * 2.3, fs * 0.9, { mono: true, w: 700, c: '#fff', al: ta, glow: '#000' }); K.text(x, left === N || left === 0 ? 'ways to do that: 1' : 'ways to do that: about 1 with ' + Math.round(ways) + ' zeros', bx + 12, by + bh - fs * 0.95, fs * 0.82, { mono: true, c: C.warm, al: ta, glow: '#000' });
+      var wy = K.span(n, t.why, t.count, 0.4); K.text(x, n < t.forbid ? 'why does it never go back?' : n < t.back ? 'nothing forbids it' : 'each speck could wander back', bx + bw / 2, by + bh * 0.5, Math.min(fs * 1.3, bw / 20), { a: 'center', w: 700, c: '#fff', al: wy * show, glow: '#000' }); }
+    // ---- counting the ways
+    if (cnt > 0.01) { var rx = A.wide ? bx + bw + A.w * 0.04 : A.x + 6, rw = A.wide ? A.r - rx - 4 : A.w - 12, ry = A.wide ? by : by + bh + fs * 2.8, big = K.ramp(n, t.hundred - 0.4, 0.6), small = cnt * (1 - big);
+      if (small > 0.01) { K.text(x, 'count the ways, with 4 specks', rx, ry, fs * 0.9, { w: 700, al: small }); var cs = Math.min(rw / 8.4, fs * 2.6), a1 = K.ramp(n, t.one, 0.4), a2 = K.ramp(n, t.huge, 0.4);
+        var cell = function (px, py, mask, al) { K.box(x, px, py, cs, cs * 0.72, { line: C.dim, r: 3, al: al }); K.line(x, px + cs / 2, py, px + cs / 2, py + cs * 0.72, C.faint, 1, al); var l = 0, rr = 0; for (var k = 0; k < 4; k++) { var isL = (mask >> k) & 1; K.disc(x, px + (isL ? cs * 0.14 + (l++) * cs * 0.11 : cs * 0.62 + (rr++) * cs * 0.11), py + cs * 0.36 + (k % 2 ? 1 : -1) * cs * 0.1, cs * 0.045, ['#ffc46b', '#8fc2ff', '#7dffb0', '#ff7a9c'][k], al); } };
+        K.text(x, 'all four on the left:', rx, ry + fs * 1.9, fs * 0.8, { mono: true, c: C.dim, w: 400, al: small * a1 }); cell(rx, ry + fs * 2.7, 15, small * a1); K.text(x, '1 way', rx + cs * 1.3, ry + fs * 2.7 + cs * 0.36, fs, { mono: true, w: 700, c: C.warm, al: small * a1 });
+        var y2 = ry + fs * 3.4 + cs; K.text(x, 'two and two:', rx, y2, fs * 0.8, { mono: true, c: C.dim, w: 400, al: small * a2 }); [3, 5, 6, 9, 10, 12].forEach(function (m, k) { cell(rx + (k % 3) * cs * 1.12, y2 + fs * 0.8 + Math.floor(k / 3) * cs * 0.86, m, small * a2 * K.ramp(n, t.huge + k * 0.25, 0.3)); }); K.text(x, '6 ways', rx + cs * 3.6, y2 + fs * 0.8 + cs * 0.8, fs, { mono: true, w: 700, c: C.good, al: small * a2 });
+        K.text(x, 'so two and two turns up six times as often', rx, y2 + fs * 1.6 + cs * 1.9, Math.min(fs * 0.82, rw / 26), { mono: true, c: C.ink, al: small * K.ramp(n, t.half, 0.5) }); }
+      if (big > 0.01) { var gl = K.ramp(n, t.glass, 0.6), rl = K.ramp(n, t.rule, 0.6); K.text(x, 'with 100 specks', rx, ry, fs * 0.95, { w: 700, al: cnt * big });
+        K.text(x, 'all on the left: 1 way', rx, ry + fs * 1.9, fs * 0.82, { mono: true, c: C.warm, al: cnt * big }); K.bar(x, rx, ry + fs * 2.7, rw, 8, 0.004, C.warm, { al: cnt * big });
+        K.text(x, 'half and half: about 1 with 29 zeros ways', rx, ry + fs * 4.4, fs * 0.82, { mono: true, c: C.good, al: cnt * big }); K.bar(x, rx, ry + fs * 5.2, rw, 8, 1, C.good, { al: cnt * big });
+        K.text(x, 'chance of all 100 on one side: 1 in', rx, ry + fs * 7.4, fs * 0.82, { mono: true, c: C.dim, w: 400, al: cnt * big }); var shownN = TWO100.slice(0, Math.floor(K.ramp(n, t.hundred + 2.5, 6) * TWO100.length)); K.text(x, shownN.slice(0, 20), rx, ry + fs * 8.9, Math.min(fs * 1.05, rw / 13), { mono: true, w: 700, c: C.hot, al: cnt * big }); K.text(x, shownN.slice(20), rx, ry + fs * 10.3, Math.min(fs * 1.05, rw / 13), { mono: true, w: 700, c: C.hot, al: cnt * big });
+        K.text(x, 'a glass of water: about', rx, ry + fs * 12.4, fs * 0.82, { mono: true, c: C.dim, w: 400, al: cnt * gl }); K.text(x, '8 million billion billion pieces', rx, ry + fs * 13.7, Math.min(fs * 0.95, rw / 20), { mono: true, w: 700, c: C.acc, al: cnt * gl });
+        if (rl > 0.01) { K.box(x, bx + bw * 0.08, by + bh * 0.36, bw * 0.84, bh * 0.28, { fill: 'rgba(3,5,11,.86)', r: 10, al: rl }); K.text(x, n < t.odds ? 'not a rule each piece obeys' : 'just very, very good odds', bx + bw / 2, by + bh / 2, Math.min(fs * 1.35, bw / 20), { a: 'center', w: 700, al: rl }); } } }
+    K.credit(x, A, 'worked out here: 300 specks, each taking random steps · counts of ways are exact arithmetic · the glass of water is 250 grams');
   }
   return { init: init, draw: draw };
 })();
 
 
 // ---------------------------------------------------------------- the back: its opposite (drawn light on black, shown as ink on paper)
-// THE OPPOSITE OF ONE MISTAKE: the nudge (backpropagation and one step of gradient descent). A field of little
-// dials stands for the 124,439,808 numbers of GPT-2 small (OpenAI, 2019), one row for each of its 12 layers. The
-// mistake (the loss for the line "Twinkle, twinkle, little star, how I wonder what you are.": 4.05) sits on top. A
-// wave runs down through the layers, top to bottom, the way the arithmetic really runs backward, and each dial gets
-// an arrow for which way to turn; beside each layer is the real size of that layer's corrections. Then the dials
-// turn. This was really done to the model, five times, with plain gradient descent: each time 85,178,127 of its
-// numbers changed (the rest belong to pieces that are not in the line), the biggest by 0.017 and a typical one by
-// 0.0000005; the dials here turn far more than that so the eye can see it. The chance it gives "star" went 0.4%,
-// 0.8%, 1.5%, 2.8%, 4.9%, 8.3%, and the loss fell from 4.05 to 2.11.
+// THE REVERSE OF SPREADING OUT: order that pays its way. Three everyday cases of things getting tidier (water freezing,
+// a seed growing, a room being tidied). Then water freezing, drawn with an inside and an outside: as the inside locks
+// into a neat pattern it gives off heat, which makes the air outside jiggle more. The tally uses real numbers for one
+// gram of water freezing at 0 degrees Celsius in a freezer at minus 10: the water's entropy (its amount of mixed-up-
+// ness) falls by 1.22 joules per kelvin, the freezer air's rises by 1.27, so the total goes up by 0.05 (the heat
+// given off, 333.55 joules, divided by each temperature in kelvins; our arithmetic). Order in one place is paid for
+// by more disorder elsewhere, and the total has never been seen to go down. Then who pays: a freezer warms the air
+// behind it, a person runs on food, and nearly all of it on Earth is paid for by sunlight.
 var SCENE2 = (function () {
-  var d = D.data.nudge, t = {}, C = K.C, r = H3.rng(124), dl = [], STAR = d.steps.map(function (s) { return s.per[6]; }), GMAX = Math.max.apply(null, d.layer_grad);
+  var t = {}, C = K.C, r = H3.rng(273), IN = [], OUT = [];
   function init() {
-    t.one = K.at(1, 'The front was one mistake'); t.num = K.at(1, 'One number'); t.sets = K.at(1, 'what it sets off'); t.dial = K.at(1, 'as a little dial'); t.million = K.at(1, 'twenty four million'); t.works = K.at(1, 'for every single dial');
-    t.which = K.at(1, 'which way to turn it'); t.try = K.at(1, "doesn't try each one"); t.back = K.at(1, 'works backward'); t.turn = K.at(1, 'Then the dials turn'); t.eighty = K.at(1, 'eighty five million'); t.tiny = K.at(1, 'a tiny, tiny bit');
-    t.did = K.at(1, 'I really did this'); t.before = K.at(1, 'Before, star'); t.five = K.at(1, 'Five nudges later'); t.nobody = K.at(1, 'Nobody told it'); t.moved = K.at(1, 'The dials just moved'); t.real = K.at(1, 'again and again');
-    for (var i = 0; i < 12 * 40; i++) dl.push([r() * 6.28, (r() < 0.5 ? -1 : 1) * (0.25 + r() * 0.75), r()]);
+    t.front = K.at(1, 'never came back'); t.wait = K.at(1, 'But wait'); t.rings = K.at(1, 'freezes into neat rings'); t.seeds = K.at(1, 'Seeds grow'); t.room = K.at(1, 'tidy your room'); t.neater = K.at(1, 'do get neater');
+    t.opp = K.at(1, 'the opposite of spreading out'); t.order = K.at(1, 'Order.'); t.allowed = K.at(1, "how it's allowed"); t.watch = K.at(1, 'Watch water freezing'); t.lock = K.at(1, 'they give off heat'); t.air = K.at(1, 'makes the air jiggle more');
+    t.inside = K.at(1, 'inside got tidier'); t.outside = K.at(1, 'outside got messier'); t.add = K.at(1, 'if you add it up'); t.more = K.at(1, 'by more than the inside'); t.deal = K.at(1, "That's the deal"); t.pay = K.at(1, 'pay for it somewhere else');
+    t.freezer = K.at(1, 'A freezer pays'); t.food = K.at(1, 'the food you eat'); t.sun = K.at(1, 'paid for by the Sun');
+    for (var i = 0; i < 48; i++) IN.push([r(), r(), r() * 6.28, (i % 8 + 0.5) / 8, (Math.floor(i / 8) + 0.5) / 6]); for (i = 0; i < 90; i++) OUT.push([r(), r(), r() * 6.28, 0.5 + r()]);
   }
   function draw(x, W, H, tt, dt, nt) {
-    var n = K.clock(1, nt), A = K.area(W, H), u = A.u, i, j, fs = Math.max(11.5, 16 * u);
+    var n = K.clock(1, nt), A = K.area(W, H), u = A.u, i, fs = Math.max(11.5, 16 * u);
     K.clear(x, W, H, '#000');
-    var cols = A.wide ? 26 : 13, fw = A.wide ? A.w * 0.56 : A.w * 0.8, fx = A.wide ? A.x + A.w * 0.06 : A.cx - fw / 2 + fs, fh0 = A.wide ? A.h - fs * 5 : A.h * 0.46, cell = Math.min(fw / cols, fh0 / 12), fh = cell * 12, fy = A.wide ? A.cy - fh / 2 + fs * 1.2 : A.y + fs * 3.4; fw = cell * cols;
-    var px = A.wide ? fx + fw + A.w * 0.09 : A.x + 6, pw = A.wide ? A.r - px - 4 : A.w - 12, py = A.wide ? fy : fy + fh + fs * 2;
-    // the mistake, on top
-    var ma = K.ramp(n, t.one, 0.5), big = K.span(n, t.one, t.dial, 0.5), mx = fx + fw / 2, my = fy - fs * 1.9;
-    if (big > 0.01) K.text(x, d.steps[0].loss.toFixed(2), A.cx, A.cy, Math.min(fs * 6, A.h * 0.3), { a: 'center', mono: true, w: 700, c: C.hot, al: big, glow: C.hot });
-    if (big > 0.01) K.text(x, 'one mistake · one number', A.cx, A.cy + Math.min(fs * 4.2, A.h * 0.2), fs * 1.1, { a: 'center', mono: true, c: C.dim, al: big });
-    var da = K.ramp(n, t.dial, 0.8); if (da <= 0.01) { K.credit(x, A, 'the real loss of GPT-2 small on the line “Twinkle, twinkle, little star, how I wonder what you are.”'); return; }
-    // which nudge are we on (0 = none yet); the five nudges are replayed one by one
-    var turn1 = K.ramp(n, t.turn, 1.6), step = 0, part = 0; if (n >= t.five - 2.6) { var u5 = (n - (t.five - 2.6)) / 0.9; step = Math.max(0, Math.min(5, Math.floor(u5) + 1)); part = step >= 5 && u5 >= 5 ? 1 : K.cl((u5 - Math.floor(u5)) * 1.6); if (u5 >= 5) { step = 5; part = 1; } }
-    var loss = n >= t.five - 2.6 ? K.lerp(d.steps[Math.max(0, step - 1)].loss, d.steps[step].loss, part) : d.steps[0].loss;
-    K.text(x, 'the mistake: ' + loss.toFixed(2), mx, my, fs * 1.3, { a: 'center', mono: true, w: 700, c: C.hot, al: da });
-    // the wave of arithmetic, running backward (top layer first)
-    var wave = (n - t.back) / 3, wrow = wave >= 0 && wave <= 1.15 ? wave * 12.5 : -9, arrows = K.span(n, t.works, t.turn + 1.4, 0.6);
-    for (j = 0; j < 12; j++) { var layer = 11 - j, y = fy + (j + 0.5) * cell, lit = Math.max(0, 1 - Math.abs(wrow - j) / 1.6);
-      if (lit > 0.01) K.box(x, fx - 4, y - cell * 0.5, fw + 8, cell, { fill: 'rgba(255,122,92,' + (0.22 * lit).toFixed(3) + ')', r: 4 });
-      for (i = 0; i < cols; i++) { var q = dl[j * 40 + i], moved = turn1 * 0.5 + (step > 0 ? (step - 1 + part) * 0.22 : 0), ang = q[0] + q[1] * moved * 1.3, cx = fx + (i + 0.5) * cell, R = cell * 0.33;
-        K.dial(x, cx, y, R, ang, lit > 0.3 ? C.hot : C.acc, da * (0.55 + 0.45 * q[2]));
-        if (arrows > 0.01 && (wrow > j || n >= t.turn || n < t.back)) { var s = q[1] > 0 ? 1 : -1, a0 = ang - Math.PI / 2, aa = arrows * (n < t.back ? K.ramp(n, t.works + q[2] * 2, 0.5) : 1); x.save(); x.globalAlpha = aa * 0.9; x.strokeStyle = s > 0 ? C.good : C.warm; x.lineWidth = 1.4; x.beginPath(); x.arc(cx, y, R * 1.45, a0, a0 + s * 0.9, s < 0); x.stroke(); x.restore(); } }
-      if (A.wide) K.text(x, 'layer ' + (layer + 1), fx - 10, y, fs * 0.72, { a: 'right', mono: true, c: C.dim, w: 400, al: da * (j % 11 === 0 ? 1 : 0) });
-      var gb = K.ramp(n, t.back + j * 0.25, 0.4); if (gb > 0.01) K.bar(x, fx + fw + 10, y - 3, Math.min(60 * u, A.w * 0.06), 6, d.layer_grad[layer] / GMAX * gb, C.hot, { al: da * (A.wide ? 1 : 0) }); }
-    if (A.wide) K.text(x, 'size of the fix', fx + fw + 10, fy - fs * 0.7, fs * 0.7, { mono: true, c: C.dim, w: 400, al: da * K.ramp(n, t.back, 0.5) });
-    K.text(x, K.commas(d.total) + ' dials (each one drawn here stands for about ' + K.commas(Math.round(d.total / (cols * 12) / 1000) * 1000) + ')', mx, fy + fh + fs * 0.9, fs * 0.76, { a: 'center', mono: true, c: C.dim, w: 400, al: da * K.ramp(n, t.million, 0.6) });
-    // ---- beside the dials: what is going on, in words and real numbers
-    var lines = [], col = C.ink;
-    if (n < t.works) lines = ['every number inside', 'is a dial']; else if (n < t.try) lines = ['for each dial: which way', 'would have made the', 'surprise a little smaller?']; else if (n < t.turn) lines = ['not by trying each one.', 'by working backward from', 'the mistake, with arithmetic.'];
-    else if (n < t.did) lines = [K.commas(d.changed) + ' dials turned', 'biggest turn:  ' + d.max_move.toFixed(3), 'a typical turn: 0.0000005', '(drawn far bigger here)'];
-    var la = n < t.did ? da : 0; for (i = 0; i < lines.length; i++) K.text(x, lines[i], px, py + fs * (0.8 + i * 1.6), Math.min(fs * 1.12, pw / 15), { w: i === 0 ? 700 : 500, c: i === 0 ? C.ink : C.dim, mono: n >= t.turn, al: la });
-    var st = K.ramp(n, t.did, 0.6);
-    if (st > 0.01) { K.text(x, 'the chance it gives “star”', px, py + fs * 0.6, Math.min(fs * 1.1, pw / 15), { w: 700, al: st }); K.text(x, 'really done to GPT-2 small, five times', px, py + fs * 2.1, fs * 0.76, { mono: true, c: C.dim, w: 400, al: st });
-      var rh = Math.min(fs * 2.1, (A.b - py - fs * 5) / 6.2), bw = pw - fs * 9.5;
-      for (i = 0; i <= 5; i++) { var on = i === 0 ? K.ramp(n, t.before, 0.4) : i < step ? 1 : i === step ? part : 0; if (on <= 0.01) continue; var yy = py + fs * 3.8 + i * rh; K.text(x, i === 0 ? 'before' : 'nudge ' + i, px + fs * 4.4, yy, fs * 0.85, { a: 'right', mono: true, c: C.dim, w: 400, al: st * on }); K.bar(x, px + fs * 5, yy - 5, bw, 10, STAR[i] / 0.09 * on, i === 5 ? C.good : C.warm, { al: st }); K.text(x, K.pct(STAR[i]), px + fs * 5.5 + bw, yy, fs * 0.9, { mono: true, w: 700, c: i === 5 ? C.good : C.warm, al: st * on }); }
-      var en = K.ramp(n, t.nobody, 0.6); K.text(x, n < t.real ? 'nobody typed in the answer.' : 'real training: trillions of guesses.', px, py + fs * 4 + 6 * rh, Math.min(fs, pw / 17), { mono: true, c: C.ink, al: st * en }); }
-    K.credit(x, A, 'a real test: five steps of gradient descent on GPT-2 small (2019) for one line of text · dial turns are drawn far bigger than they are');
+    // ---- things do get neater
+    var ex = K.span(n, t.wait, t.watch, 0.5); if (ex > 0.01) { var items = [['water freezes', t.rings], ['a seed grows', t.seeds], ['you tidy your room', t.room]], gap = Math.min(A.w / 3.1, 290 * u), s = Math.min(46 * u, A.h * 0.12), cy = A.cy - fs;
+      for (i = 0; i < 3; i++) { var on = ex * K.ramp(n, items[i][1], 0.4), cx = A.cx + (i - 1) * gap; if (on <= 0.01) continue;
+        if (i === 0) { for (var k = 0; k < 6; k++) { var a = k / 6 * 6.283; K.line(x, cx, cy, cx + Math.cos(a) * s, cy + Math.sin(a) * s, '#bfe3ff', 3, on); K.line(x, cx + Math.cos(a) * s * 0.6, cy + Math.sin(a) * s * 0.6, cx + Math.cos(a + 0.5) * s * 0.85, cy + Math.sin(a + 0.5) * s * 0.85, '#bfe3ff', 2, on); } }
+        else if (i === 1) { K.line(x, cx, cy + s, cx, cy - s * 0.3, C.good, 4, on); K.disc(x, cx, cy - s * 0.6, s * 0.55, C.good, on * 0.85); K.disc(x, cx - s * 0.4, cy - s * 0.3, s * 0.35, C.good, on * 0.85); K.disc(x, cx + s * 0.4, cy - s * 0.3, s * 0.35, C.good, on * 0.85); }
+        else { for (var q = 0; q < 9; q++) K.box(x, cx - s * 0.8 + (q % 3) * s * 0.58, cy - s * 0.8 + Math.floor(q / 3) * s * 0.58, s * 0.42, s * 0.42, { line: C.warm, r: 3, al: on, lw: 2 }); }
+        K.text(x, items[i][0], cx, cy + s * 1.7, Math.min(fs, gap / 12), { a: 'center', w: 600, al: on }); }
+      K.text(x, n < t.opp ? 'things do get neater' : n < t.allowed ? 'order' : 'and how it is allowed', A.cx, A.y + fs * 0.8, fs * 1.4, { a: 'center', w: 700, al: ex * K.ramp(n, t.neater, 0.4) }); }
+    // ---- water freezing: tidier inside, messier outside, and the sum
+    var fz = K.span(n, t.watch - 0.4, t.freezer, 0.6);
+    if (fz > 0.01) { var ow = A.wide ? A.w * 0.56 : A.w * 0.96, oh = A.wide ? A.h - fs * 3 : A.h * 0.52, ox = A.wide ? A.x + A.w * 0.02 : A.cx - ow / 2, oy = A.y + fs * 2, iw = ow * 0.44, ih = oh * 0.46, ix = ox + (ow - iw) / 2, iy = oy + (oh - ih) / 2, lock = K.ramp(n, t.watch + 0.8, 5), e = lock * lock * (3 - 2 * lock), hot = K.ramp(n, t.lock, 4);
+      K.box(x, ox, oy, ow, oh, { line: C.dim, fill: 'rgba(255,255,255,.02)', r: 12, al: fz }); K.box(x, ix, iy, iw, ih, { line: '#bfe3ff', fill: 'rgba(191,227,255,.07)', r: 8, al: fz, lw: 2 }); K.text(x, 'the air outside', ox + fs, oy + fs, fs * 0.8, { mono: true, c: C.dim, w: 400, al: fz }); K.text(x, e < 0.9 ? 'water' : 'ice', ix + iw / 2, iy - fs * 0.7, fs * 0.9, { a: 'center', mono: true, w: 700, c: '#bfe3ff', al: fz });
+      for (i = 0; i < IN.length; i++) { var p = IN[i], jx = Math.sin(tt * 9 + p[2]) * 2.5 * (1 - e * 0.7), px = ix + 6 + K.lerp(p[0] + Math.sin(tt * 0.8 + p[2]) * 0.06, p[3], e) * (iw - 12), py = iy + 6 + K.lerp(p[1] + Math.cos(tt * 0.9 + p[2]) * 0.06, p[4], e) * (ih - 12); K.disc(x, px + jx, py, 3.6 * u, '#bfe3ff', fz); }
+      for (i = 0; i < OUT.length; i++) { var o = OUT[i], sp = (1 + hot * 2.6) * o[3], ax = ox + 8 + ((o[0] + Math.sin(tt * 0.5 * sp + o[2]) * 0.05) * (ow - 16)), ay = oy + 8 + (o[1] + Math.cos(tt * 0.6 * sp + o[2]) * 0.05) * (oh - 16); if (ax > ix - 6 && ax < ix + iw + 6 && ay > iy - 6 && ay < iy + ih + 6) continue; K.disc(x, ax + Math.sin(tt * 12 * sp + i) * (1.5 + hot * 4), ay + Math.cos(tt * 11 * sp + i) * (1.5 + hot * 4), 2.6 * u, hot > 0.4 ? C.warm : C.acc, fz * 0.9); }
+      // heat leaving the inside
+      var heat = K.span(n, t.lock, t.add, 0.5); if (heat > 0.01) for (i = 0; i < 4; i++) { var ph = ((tt * 0.5 + i / 4) % 1); x.save(); x.globalAlpha = fz * heat * (1 - ph); x.strokeStyle = C.hot; x.lineWidth = 2.5; K.rr(x, ix - ph * (ix - ox) * 0.8, iy - ph * (iy - oy) * 0.8, iw + ph * (ix - ox) * 1.6, ih + ph * (iy - oy) * 1.6, 12); x.stroke(); x.restore(); }
+      K.text(x, 'heat', ix + iw + fs * 0.6, iy + ih / 2, fs * 0.9, { mono: true, w: 700, c: C.hot, al: fz * heat * (0.6 + 0.4 * Math.sin(tt * 4)) });
+      // the tally, in real units
+      var tx = A.wide ? ox + ow + A.w * 0.04 : A.x + 6, tw = A.wide ? A.r - tx - 4 : A.w - 12, ty = A.wide ? oy + fs : oy + oh + fs * 1.4, rows = [['inside: tidier', -1.22, '#bfe3ff', t.inside], ['outside: messier', 1.27, C.warm, t.outside], ['all together', 0.05, C.good, t.add + 1]];
+      K.text(x, 'one gram of water freezing', tx, ty, fs * 0.8, { mono: true, c: C.dim, w: 400, al: fz * K.ramp(n, t.inside - 0.5, 0.5) }); var mid = tx + tw * 0.5;
+      for (i = 0; i < 3; i++) { var on2 = fz * K.ramp(n, rows[i][3], 0.5), yy = ty + fs * (2 + i * 3.1); K.text(x, rows[i][0], tx, yy, Math.min(fs * 0.95, tw / 15), { w: 600, al: on2 }); K.line(x, mid, yy + fs * 0.7, mid, yy + fs * 1.7, C.dim, 1, on2); var wv = rows[i][1] / 1.3 * (tw * 0.46); K.box(x, wv < 0 ? mid + wv : mid, yy + fs * 0.85, Math.max(3, Math.abs(wv)), fs * 0.7, { fill: rows[i][2], r: 3, al: on2 }); K.text(x, (rows[i][1] > 0 ? '+' : '−') + Math.abs(rows[i][1]).toFixed(2), wv < 0 ? mid + wv - 6 : mid + wv + 6, yy + fs * 1.2, fs * 0.82, { a: wv < 0 ? 'right' : 'left', mono: true, w: 700, c: rows[i][2], al: on2 }); }
+      K.text(x, n >= t.deal ? 'the total has never been seen to go down' : 'the total went up', tx, ty + fs * 11.6, Math.min(fs * 0.85, tw / 22), { mono: true, c: C.good, w: 600, al: fz * K.ramp(n, t.more, 0.5) }); K.text(x, 'order here, paid for there', tx, ty + fs * 13.3, Math.min(fs * 1.05, tw / 17), { w: 700, al: fz * K.ramp(n, t.pay, 0.5) }); }
+    // ---- who pays
+    var pay = K.ramp(n, t.freezer, 0.6); if (pay > 0.01) { var its = [['a freezer', 'warms the air behind it', t.freezer], ['you', 'run on the food you eat', t.food], ['nearly all of it', 'is paid for by the Sun', t.sun]], g2 = Math.min(A.w / 3.1, 300 * u), cy2 = A.cy - fs * 1.4, s2 = Math.min(52 * u, A.h * 0.13);
+      for (i = 0; i < 3; i++) { var o2 = pay * K.ramp(n, its[i][2], 0.5), cx2 = A.cx + (i - 1) * g2; if (o2 <= 0.01) continue;
+        if (i === 0) { K.box(x, cx2 - s2 * 0.5, cy2 - s2, s2, s2 * 2, { line: '#bfe3ff', r: 6, al: o2, lw: 2.5 }); K.line(x, cx2 - s2 * 0.5, cy2 - s2 * 0.2, cx2 + s2 * 0.5, cy2 - s2 * 0.2, '#bfe3ff', 2, o2); for (var w = 0; w < 3; w++) { var py2 = cy2 - s2 * 0.6 + w * s2 * 0.6, wob = Math.sin(tt * 3 + w) * 4; K.line(x, cx2 + s2 * 0.7, py2, cx2 + s2 * 1.1 + wob, py2 - s2 * 0.2, C.hot, 2.5, o2); } }
+        else if (i === 1) { K.ring(x, cx2, cy2 - s2 * 0.6, s2 * 0.32, C.ink, 2.5, o2); K.line(x, cx2, cy2 - s2 * 0.28, cx2, cy2 + s2 * 0.5, C.ink, 2.5, o2); K.line(x, cx2 - s2 * 0.45, cy2, cx2 + s2 * 0.45, cy2, C.ink, 2.5, o2); K.line(x, cx2, cy2 + s2 * 0.5, cx2 - s2 * 0.35, cy2 + s2 * 1.1, C.ink, 2.5, o2); K.line(x, cx2, cy2 + s2 * 0.5, cx2 + s2 * 0.35, cy2 + s2 * 1.1, C.ink, 2.5, o2); K.disc(x, cx2 + s2 * 0.9, cy2, s2 * 0.22, C.hot, o2); }
+        else { K.glow(x, cx2, cy2, s2 * 1.8, 'rgba(255,196,107,1)', o2 * 0.8); K.disc(x, cx2, cy2, s2 * 0.6, C.warm, o2); for (var ry2 = 0; ry2 < 10; ry2++) { var a2 = ry2 / 10 * 6.283 + tt * 0.2; K.line(x, cx2 + Math.cos(a2) * s2 * 0.8, cy2 + Math.sin(a2) * s2 * 0.8, cx2 + Math.cos(a2) * s2 * 1.15, cy2 + Math.sin(a2) * s2 * 1.15, C.warm, 3, o2); } }
+        K.text(x, its[i][0], cx2, cy2 + s2 * 1.8, Math.min(fs * 1.15, g2 / 11), { a: 'center', w: 700, al: o2 }); K.text(x, its[i][1], cx2, cy2 + s2 * 1.8 + fs * 1.5, Math.min(fs * 0.82, g2 / 16), { a: 'center', mono: true, c: C.dim, w: 400, al: o2 }); }
+      K.text(x, 'who pays for the order?', A.cx, A.y + fs * 0.8, fs * 1.3, { a: 'center', w: 700, al: pay }); }
+    K.credit(x, A, fz > 0.5 ? 'real numbers: 333.55 joules given off per gram, at 0 °C inside and −10 °C outside, in joules per kelvin (our arithmetic) · the motion is a drawing' : 'the second law of thermodynamics, in pictures');
   }
   return { init: init, draw: draw };
 })();
 
 
-// The page itself: captions, the voice, the ruler of the nine parts, the side arrows, and the flip.
-// Each page has two sides. The front is one part of how the machine works; the back is its opposite, with the other narrator. Flipping turns
+// The page itself: captions, the voice, the ruler of the nine levels, the side arrows, and the flip.
+// Each page has two sides. The front is the rule in charge at one level of physics; the back is its opposite, with the other narrator. Flipping turns
 // the whole page over in 3D (it swaps sides when it is edge-on) and everything on the back runs the other way:
 // ink on paper instead of light on black, the ruler and arrows reversed.
 function Chrome(D, opt) {
@@ -403,7 +409,7 @@ function Chrome(D, opt) {
   var cc = el('div', 'cc', '<span id="cap"></span>'); cc.setAttribute('aria-live', 'polite');
   var snd = el('div', 'snd', '&#128266; Tap anywhere to hear it explained'); snd.setAttribute('role', 'button'); snd.tabIndex = 0;
   var flipB = el('div', 'flip', ''); flipB.setAttribute('role', 'button'); flipB.tabIndex = 0;
-  var ruler = el('nav', 'ruler', ''); ruler.setAttribute('aria-label', 'The nine parts, from one piece of a word to the data center');
+  var ruler = el('nav', 'ruler', ''); ruler.setAttribute('aria-label', 'The nine levels, from the quark to the universe');
   var navL = el('a', '', '', 'nav l'), navR = el('a', '', '', 'nav r'), shade = el('div', 'shade', ''), cap = doc.getElementById('cap');
   var A = [new Audio('./narration.mp3'), new Audio('./narration-flip.mp3')]; A[0].loop = A[1].loop = false; /* each explanation plays once */ A[0].preload = 'auto'; A[1].preload = 'none'; A[0].muted = A[1].muted = true;
   var subs = [], side = 0, started = false, done = false, userMute = false, t0 = performance.now(), shown = -2, turning = false, fresh = false;
@@ -417,11 +423,11 @@ function Chrome(D, opt) {
     body.classList.toggle('flip', back);
     ruler.innerHTML = '<span class="cap l">' + (back ? '← bigger' : '← smaller') + '</span><span class="cap r">' + (back ? 'smaller →' : 'bigger →') + '</span>' + D.scales.map(function (s, i) {
       var pct = (s.exp - lo) / (hi - lo) * 100; if (back) pct = 100 - pct;
-      return '<a href="https://' + s.domain + '/" class="' + (i === D.i ? 'me ' : '') + (i % 2 ? 'up' : '') + '" style="left:' + pct.toFixed(2) + '%"' + (i === D.i ? ' aria-current="page"' : '') + ' title="Part ' + (i + 1) + ': ' + s.name + ' · ' + s.domain + '"><b>' + (i + 1) + '</b><span>' + s.short + '</span></a>';
+      return '<a href="https://' + s.domain + '/" class="' + (i === D.i ? 'me ' : '') + (i % 2 ? 'up' : '') + '" style="left:' + pct.toFixed(2) + '%"' + (i === D.i ? ' aria-current="page"' : '') + ' title="Level ' + (i + 1) + ': ' + s.name + ' · ' + s.domain + '"><b>' + (i + 1) + '</b><span>' + s.short + '</span></a>';
     }).join('');
     var smaller = D.scales[(D.i - 1 + n) % n], bigger = D.scales[(D.i + 1) % n];
     function nav(a, s, arrow, word) { a.href = 'https://' + s.domain + '/'; a.title = word + ': ' + s.name; a.setAttribute('aria-label', word + ': ' + s.name); a.innerHTML = '<i>' + arrow + '</i><span>' + word + '<b>' + s.short + '</b></span>'; }
-    var wS = D.i === 0 ? 'the last part' : 'before this', wB = D.i === n - 1 ? 'back to the start' : 'next';
+    var wS = D.i === 0 ? 'the biggest' : 'smaller', wB = D.i === n - 1 ? 'the smallest' : 'bigger';
     if (back) { nav(navL, bigger, '‹', wB); nav(navR, smaller, '›', wS); } else { nav(navL, smaller, '‹', wS); nav(navR, bigger, '›', wB); }
     var b = D.sides[1];
     doc.getElementById('bk').textContent = 'the other side of ' + me.name.toLowerCase() + '  ·  ' + b.size;
@@ -485,14 +491,14 @@ function Chat(D, CH, page) {
     btn.textContent = isOpen() ? 'Close the chat' : 'Ask about ' + lc; btn.classList.toggle('open', isOpen());
     $('askwho').textContent = 'The A.I. on this page'; $('askon').textContent = (s ? 'the back: ' : 'the front: ') + lc;
     inp.placeholder = 'Ask about ' + lc + '…';
-    var qs = s ? ['What am I looking at?', 'Why is this the opposite?', 'Is that known for sure?'] : ['What am I looking at?', 'Are those numbers real?', 'Do you work like this too?'];
+    var qs = s ? ['What am I looking at?', 'Why is this the opposite?', 'Is that known for sure?'] : ['What am I looking at?', 'Is that really true?', 'How do we know?'];
     chips.innerHTML = ''; qs.forEach(function (q) { var b = doc.createElement('button'); b.type = 'button'; b.textContent = q; b.onclick = function () { send(q); }; chips.appendChild(b); });
     if (!isOpen()) return;
     if (lastSide >= 0 && lastSide !== s) add('', (s ? 'you turned the page: now ' : 'you turned back: now ') + lc, 'i');
     if (!greeted[s]) {
       greeted[s] = true;
-      add('ai', s ? 'Hello from the other side. As far as I can tell, you are now looking at ' + lc + ', which this page calls the opposite of ' + front().toLowerCase() + '. I find it a bit strange too. What are you wondering?'
-        : 'Hi. I am the A.I. on this page. From what I can tell, you are looking at ' + lc + '. I do not know everything about it, but I like working it out. What would you like to know?');
+      add('ai', s ? 'As far as I can tell, you are now looking at ' + lc + ', which this page calls the reverse of ' + front().toLowerCase() + '. What are you wondering?'
+        : 'From what I can tell, you are looking at ' + lc + '. I do not know everything about it, but I like working it out. What would you like to know?');
     }
     lastSide = s;
   }
@@ -538,7 +544,7 @@ function Chat(D, CH, page) {
 
 // ---------------------------------------------------------------- page
 var cv = document.getElementById('c'), cx = cv.getContext('2d'), W = 0, Hh = 0, dpr = 1, me = D.scales[D.i];
-document.getElementById('k').innerHTML = 'Part ' + (D.i + 1) + ' of ' + D.scales.length + ' · <b>' + me.size + '</b>';
+document.getElementById('k').innerHTML = 'Level ' + (D.i + 1) + ' of ' + D.scales.length + ' · <b>' + me.size + '</b>';
 document.getElementById('name').textContent = me.name;
 document.getElementById('sub').textContent = me.sub;
 var QS = new URLSearchParams(location.search), CH = Chrome(D, QS.get('n') != null ? { fix: +QS.get('n'), go: QS.get('go') != null } : {}); // ?n=seconds holds the film at that moment (&go lets it run on from there)
